@@ -84,10 +84,7 @@ public final class PrefixListResourceImpl
     }
 
     public PrefixListResource create() {
-        this.innerObject = serviceManager.serviceClient()
-            .getPrefixListLocalRulestacks()
-            .createOrUpdate(resourceGroupName, localRulestackName, name, this.innerModel(), Context.NONE);
-        return this;
+        return this.create(Context.NONE);
     }
 
     public PrefixListResource create(Context context) {
@@ -109,10 +106,7 @@ public final class PrefixListResourceImpl
     }
 
     public PrefixListResource apply() {
-        this.innerObject = serviceManager.serviceClient()
-            .getPrefixListLocalRulestacks()
-            .createOrUpdate(resourceGroupName, localRulestackName, name, this.innerModel(), Context.NONE);
-        return this;
+        return this.apply(Context.NONE);
     }
 
     public PrefixListResource apply(Context context) {
@@ -138,11 +132,7 @@ public final class PrefixListResourceImpl
     }
 
     public PrefixListResource refresh() {
-        this.innerObject = serviceManager.serviceClient()
-            .getPrefixListLocalRulestacks()
-            .getWithResponse(resourceGroupName, localRulestackName, name, Context.NONE)
-            .getValue();
-        return this;
+        return this.refresh(Context.NONE);
     }
 
     public PrefixListResource refresh(Context context) {

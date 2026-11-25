@@ -89,10 +89,7 @@ public final class TransitHubResourceImpl
     }
 
     public TransitHubResource create() {
-        this.innerObject = serviceManager.serviceClient()
-            .getTransitHubs()
-            .createOrUpdate(resourceGroupName, communityName, transitHubName, this.innerModel(), Context.NONE);
-        return this;
+        return this.create(Context.NONE);
     }
 
     public TransitHubResource create(Context context) {
@@ -114,10 +111,7 @@ public final class TransitHubResourceImpl
     }
 
     public TransitHubResource apply() {
-        this.innerObject = serviceManager.serviceClient()
-            .getTransitHubs()
-            .update(resourceGroupName, communityName, transitHubName, updateProperties, Context.NONE);
-        return this;
+        return this.apply(Context.NONE);
     }
 
     public TransitHubResource apply(Context context) {
@@ -143,11 +137,7 @@ public final class TransitHubResourceImpl
     }
 
     public TransitHubResource refresh() {
-        this.innerObject = serviceManager.serviceClient()
-            .getTransitHubs()
-            .getWithResponse(resourceGroupName, communityName, transitHubName, Context.NONE)
-            .getValue();
-        return this;
+        return this.refresh(Context.NONE);
     }
 
     public TransitHubResource refresh(Context context) {

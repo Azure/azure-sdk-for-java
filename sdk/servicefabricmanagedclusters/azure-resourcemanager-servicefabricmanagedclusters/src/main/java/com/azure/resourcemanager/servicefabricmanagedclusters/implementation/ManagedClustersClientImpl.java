@@ -349,19 +349,7 @@ public final class ManagedClustersClientImpl implements ManagedClustersClient {
             .flatMap(res -> Mono.justOrEmpty(res.getValue()));
     }
 
-    /**
-     * Get a Service Fabric managed cluster resource created or in the process of being created in the specified
-     * resource group.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param clusterName The name of the cluster resource.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return a Service Fabric managed cluster resource created or in the process of being created in the specified
-     * resource group along with {@link Response}.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Response<ManagedClusterInner> getByResourceGroupWithResponse(String resourceGroupName, String clusterName,
         Context context) {
@@ -370,18 +358,7 @@ public final class ManagedClustersClientImpl implements ManagedClustersClient {
             this.client.getSubscriptionId(), resourceGroupName, clusterName, accept, context);
     }
 
-    /**
-     * Get a Service Fabric managed cluster resource created or in the process of being created in the specified
-     * resource group.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param clusterName The name of the cluster resource.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return a Service Fabric managed cluster resource created or in the process of being created in the specified
-     * resource group.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public ManagedClusterInner getByResourceGroup(String resourceGroupName, String clusterName) {
         return getByResourceGroupWithResponse(resourceGroupName, clusterName, Context.NONE).getValue();
@@ -424,11 +401,7 @@ public final class ManagedClustersClientImpl implements ManagedClustersClient {
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Response<BinaryData> createOrUpdateWithResponse(String resourceGroupName, String clusterName,
         ManagedClusterInner parameters) {
-        final String contentType = "application/json";
-        final String accept = "application/json";
-        return service.createOrUpdateSync(this.client.getEndpoint(), this.client.getApiVersion(),
-            this.client.getSubscriptionId(), resourceGroupName, clusterName, contentType, accept, parameters,
-            Context.NONE);
+        return createOrUpdateWithResponse(resourceGroupName, clusterName, parameters, Context.NONE);
     }
 
     /**
@@ -472,37 +445,14 @@ public final class ManagedClustersClientImpl implements ManagedClustersClient {
             ManagedClusterInner.class, ManagedClusterInner.class, this.client.getContext());
     }
 
-    /**
-     * Create or update a Service Fabric managed cluster resource with the specified name.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param clusterName The name of the cluster resource.
-     * @param parameters The cluster resource.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the {@link SyncPoller} for polling of the managed cluster resource.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public SyncPoller<PollResult<ManagedClusterInner>, ManagedClusterInner>
         beginCreateOrUpdate(String resourceGroupName, String clusterName, ManagedClusterInner parameters) {
-        Response<BinaryData> response = createOrUpdateWithResponse(resourceGroupName, clusterName, parameters);
-        return this.client.<ManagedClusterInner, ManagedClusterInner>getLroResult(response, ManagedClusterInner.class,
-            ManagedClusterInner.class, Context.NONE);
+        return beginCreateOrUpdate(resourceGroupName, clusterName, parameters, Context.NONE);
     }
 
-    /**
-     * Create or update a Service Fabric managed cluster resource with the specified name.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param clusterName The name of the cluster resource.
-     * @param parameters The cluster resource.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the {@link SyncPoller} for polling of the managed cluster resource.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public SyncPoller<PollResult<ManagedClusterInner>, ManagedClusterInner> beginCreateOrUpdate(
         String resourceGroupName, String clusterName, ManagedClusterInner parameters, Context context) {
@@ -529,39 +479,19 @@ public final class ManagedClustersClientImpl implements ManagedClustersClient {
             .flatMap(this.client::getLroFinalResultOrError);
     }
 
-    /**
-     * Create or update a Service Fabric managed cluster resource with the specified name.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param clusterName The name of the cluster resource.
-     * @param parameters The cluster resource.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the managed cluster resource.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public ManagedClusterInner createOrUpdate(String resourceGroupName, String clusterName,
         ManagedClusterInner parameters) {
-        return beginCreateOrUpdate(resourceGroupName, clusterName, parameters).getFinalResult();
+        return createOrUpdate(resourceGroupName, clusterName, parameters, Context.NONE);
     }
 
-    /**
-     * Create or update a Service Fabric managed cluster resource with the specified name.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param clusterName The name of the cluster resource.
-     * @param parameters The cluster resource.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the managed cluster resource.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public ManagedClusterInner createOrUpdate(String resourceGroupName, String clusterName,
         ManagedClusterInner parameters, Context context) {
-        return beginCreateOrUpdate(resourceGroupName, clusterName, parameters, context).getFinalResult();
+        return this.client
+            .getLroFinalResultOrError(beginCreateOrUpdate(resourceGroupName, clusterName, parameters, context));
     }
 
     /**
@@ -599,11 +529,7 @@ public final class ManagedClustersClientImpl implements ManagedClustersClient {
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Response<BinaryData> updateWithResponse(String resourceGroupName, String clusterName,
         ManagedClusterUpdateParameters parameters) {
-        final String contentType = "application/json";
-        final String accept = "application/json";
-        return service.updateSync(this.client.getEndpoint(), this.client.getApiVersion(),
-            this.client.getSubscriptionId(), resourceGroupName, clusterName, contentType, accept, parameters,
-            Context.NONE);
+        return updateWithResponse(resourceGroupName, clusterName, parameters, Context.NONE);
     }
 
     /**
@@ -646,37 +572,14 @@ public final class ManagedClustersClientImpl implements ManagedClustersClient {
             ManagedClusterInner.class, ManagedClusterInner.class, this.client.getContext());
     }
 
-    /**
-     * Update the tags of of a Service Fabric managed cluster resource with the specified name.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param clusterName The name of the cluster resource.
-     * @param parameters The managed cluster resource updated tags.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the {@link SyncPoller} for polling of the managed cluster resource.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public SyncPoller<PollResult<ManagedClusterInner>, ManagedClusterInner> beginUpdate(String resourceGroupName,
         String clusterName, ManagedClusterUpdateParameters parameters) {
-        Response<BinaryData> response = updateWithResponse(resourceGroupName, clusterName, parameters);
-        return this.client.<ManagedClusterInner, ManagedClusterInner>getLroResult(response, ManagedClusterInner.class,
-            ManagedClusterInner.class, Context.NONE);
+        return beginUpdate(resourceGroupName, clusterName, parameters, Context.NONE);
     }
 
-    /**
-     * Update the tags of of a Service Fabric managed cluster resource with the specified name.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param clusterName The name of the cluster resource.
-     * @param parameters The managed cluster resource updated tags.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the {@link SyncPoller} for polling of the managed cluster resource.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public SyncPoller<PollResult<ManagedClusterInner>, ManagedClusterInner> beginUpdate(String resourceGroupName,
         String clusterName, ManagedClusterUpdateParameters parameters, Context context) {
@@ -703,39 +606,18 @@ public final class ManagedClustersClientImpl implements ManagedClustersClient {
             .flatMap(this.client::getLroFinalResultOrError);
     }
 
-    /**
-     * Update the tags of of a Service Fabric managed cluster resource with the specified name.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param clusterName The name of the cluster resource.
-     * @param parameters The managed cluster resource updated tags.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the managed cluster resource.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public ManagedClusterInner update(String resourceGroupName, String clusterName,
         ManagedClusterUpdateParameters parameters) {
-        return beginUpdate(resourceGroupName, clusterName, parameters).getFinalResult();
+        return update(resourceGroupName, clusterName, parameters, Context.NONE);
     }
 
-    /**
-     * Update the tags of of a Service Fabric managed cluster resource with the specified name.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param clusterName The name of the cluster resource.
-     * @param parameters The managed cluster resource updated tags.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the managed cluster resource.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public ManagedClusterInner update(String resourceGroupName, String clusterName,
         ManagedClusterUpdateParameters parameters, Context context) {
-        return beginUpdate(resourceGroupName, clusterName, parameters, context).getFinalResult();
+        return this.client.getLroFinalResultOrError(beginUpdate(resourceGroupName, clusterName, parameters, context));
     }
 
     /**
@@ -768,8 +650,7 @@ public final class ManagedClustersClientImpl implements ManagedClustersClient {
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Response<BinaryData> deleteWithResponse(String resourceGroupName, String clusterName) {
-        return service.deleteSync(this.client.getEndpoint(), this.client.getApiVersion(),
-            this.client.getSubscriptionId(), resourceGroupName, clusterName, Context.NONE);
+        return deleteWithResponse(resourceGroupName, clusterName, Context.NONE);
     }
 
     /**
@@ -806,33 +687,13 @@ public final class ManagedClustersClientImpl implements ManagedClustersClient {
             this.client.getContext());
     }
 
-    /**
-     * Delete a Service Fabric managed cluster resource with the specified name.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param clusterName The name of the cluster resource.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the {@link SyncPoller} for polling of long-running operation.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public SyncPoller<PollResult<Void>, Void> beginDelete(String resourceGroupName, String clusterName) {
-        Response<BinaryData> response = deleteWithResponse(resourceGroupName, clusterName);
-        return this.client.<Void, Void>getLroResult(response, Void.class, Void.class, Context.NONE);
+        return beginDelete(resourceGroupName, clusterName, Context.NONE);
     }
 
-    /**
-     * Delete a Service Fabric managed cluster resource with the specified name.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param clusterName The name of the cluster resource.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the {@link SyncPoller} for polling of long-running operation.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public SyncPoller<PollResult<Void>, Void> beginDelete(String resourceGroupName, String clusterName,
         Context context) {
@@ -855,33 +716,16 @@ public final class ManagedClustersClientImpl implements ManagedClustersClient {
         return beginDeleteAsync(resourceGroupName, clusterName).last().flatMap(this.client::getLroFinalResultOrError);
     }
 
-    /**
-     * Delete a Service Fabric managed cluster resource with the specified name.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param clusterName The name of the cluster resource.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public void delete(String resourceGroupName, String clusterName) {
-        beginDelete(resourceGroupName, clusterName).getFinalResult();
+        delete(resourceGroupName, clusterName, Context.NONE);
     }
 
-    /**
-     * Delete a Service Fabric managed cluster resource with the specified name.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param clusterName The name of the cluster resource.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public void delete(String resourceGroupName, String clusterName, Context context) {
-        beginDelete(resourceGroupName, clusterName, context).getFinalResult();
+        this.client.getLroFinalResultOrError(beginDelete(resourceGroupName, clusterName, context));
     }
 
     /**
@@ -933,11 +777,7 @@ public final class ManagedClustersClientImpl implements ManagedClustersClient {
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private PagedResponse<ManagedClusterInner> listByResourceGroupSinglePage(String resourceGroupName) {
-        final String accept = "application/json";
-        Response<ManagedClusterListResult> res = service.listByResourceGroupSync(this.client.getEndpoint(),
-            this.client.getApiVersion(), this.client.getSubscriptionId(), resourceGroupName, accept, Context.NONE);
-        return new PagedResponseBase<>(res.getRequest(), res.getStatusCode(), res.getHeaders(), res.getValue().value(),
-            res.getValue().nextLink(), null);
+        return listByResourceGroupSinglePage(resourceGroupName, Context.NONE);
     }
 
     /**
@@ -961,33 +801,13 @@ public final class ManagedClustersClientImpl implements ManagedClustersClient {
             res.getValue().nextLink(), null);
     }
 
-    /**
-     * Gets all Service Fabric cluster resources created or in the process of being created in the resource group.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return all Service Fabric cluster resources created or in the process of being created in the resource group as
-     * paginated response with {@link PagedIterable}.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.COLLECTION)
     public PagedIterable<ManagedClusterInner> listByResourceGroup(String resourceGroupName) {
-        return new PagedIterable<>(() -> listByResourceGroupSinglePage(resourceGroupName),
-            nextLink -> listByResourceGroupNextSinglePage(nextLink));
+        return listByResourceGroup(resourceGroupName, Context.NONE);
     }
 
-    /**
-     * Gets all Service Fabric cluster resources created or in the process of being created in the resource group.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return all Service Fabric cluster resources created or in the process of being created in the resource group as
-     * paginated response with {@link PagedIterable}.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.COLLECTION)
     public PagedIterable<ManagedClusterInner> listByResourceGroup(String resourceGroupName, Context context) {
         return new PagedIterable<>(() -> listByResourceGroupSinglePage(resourceGroupName, context),
@@ -1037,11 +857,7 @@ public final class ManagedClustersClientImpl implements ManagedClustersClient {
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private PagedResponse<ManagedClusterInner> listSinglePage() {
-        final String accept = "application/json";
-        Response<ManagedClusterListResult> res = service.listSync(this.client.getEndpoint(),
-            this.client.getApiVersion(), this.client.getSubscriptionId(), accept, Context.NONE);
-        return new PagedResponseBase<>(res.getRequest(), res.getStatusCode(), res.getHeaders(), res.getValue().value(),
-            res.getValue().nextLink(), null);
+        return listSinglePage(Context.NONE);
     }
 
     /**
@@ -1063,29 +879,13 @@ public final class ManagedClustersClientImpl implements ManagedClustersClient {
             res.getValue().nextLink(), null);
     }
 
-    /**
-     * Gets all Service Fabric cluster resources created or in the process of being created in the subscription.
-     * 
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return all Service Fabric cluster resources created or in the process of being created in the subscription as
-     * paginated response with {@link PagedIterable}.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.COLLECTION)
     public PagedIterable<ManagedClusterInner> list() {
-        return new PagedIterable<>(() -> listSinglePage(), nextLink -> listBySubscriptionNextSinglePage(nextLink));
+        return list(Context.NONE);
     }
 
-    /**
-     * Gets all Service Fabric cluster resources created or in the process of being created in the subscription.
-     * 
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return all Service Fabric cluster resources created or in the process of being created in the subscription as
-     * paginated response with {@link PagedIterable}.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.COLLECTION)
     public PagedIterable<ManagedClusterInner> list(Context context) {
         return new PagedIterable<>(() -> listSinglePage(context),
@@ -1134,18 +934,7 @@ public final class ManagedClustersClientImpl implements ManagedClustersClient {
             .flatMap(res -> Mono.justOrEmpty(res.getValue()));
     }
 
-    /**
-     * Gets a fault simulation by the simulationId.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param clusterName The name of the cluster resource.
-     * @param parameters parameter with fault simulation id.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return a fault simulation by the simulationId along with {@link Response}.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Response<FaultSimulationInner> getFaultSimulationWithResponse(String resourceGroupName, String clusterName,
         FaultSimulationIdContent parameters, Context context) {
@@ -1155,17 +944,7 @@ public final class ManagedClustersClientImpl implements ManagedClustersClient {
             this.client.getSubscriptionId(), resourceGroupName, clusterName, contentType, accept, parameters, context);
     }
 
-    /**
-     * Gets a fault simulation by the simulationId.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param clusterName The name of the cluster resource.
-     * @param parameters parameter with fault simulation id.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return a fault simulation by the simulationId.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public FaultSimulationInner getFaultSimulation(String resourceGroupName, String clusterName,
         FaultSimulationIdContent parameters) {
@@ -1224,12 +1003,7 @@ public final class ManagedClustersClientImpl implements ManagedClustersClient {
     @ServiceMethod(returns = ReturnType.SINGLE)
     private PagedResponse<FaultSimulationInner> listFaultSimulationSinglePage(String resourceGroupName,
         String clusterName) {
-        final String accept = "application/json";
-        Response<FaultSimulationListResult> res
-            = service.listFaultSimulationSync(this.client.getEndpoint(), this.client.getApiVersion(),
-                this.client.getSubscriptionId(), resourceGroupName, clusterName, accept, Context.NONE);
-        return new PagedResponseBase<>(res.getRequest(), res.getStatusCode(), res.getHeaders(), res.getValue().value(),
-            res.getValue().nextLink(), null);
+        return listFaultSimulationSinglePage(resourceGroupName, clusterName, Context.NONE);
     }
 
     /**
@@ -1254,33 +1028,13 @@ public final class ManagedClustersClientImpl implements ManagedClustersClient {
             res.getValue().nextLink(), null);
     }
 
-    /**
-     * Gets the list of recent fault simulations for the cluster.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param clusterName The name of the cluster resource.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the list of recent fault simulations for the cluster as paginated response with {@link PagedIterable}.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.COLLECTION)
     public PagedIterable<FaultSimulationInner> listFaultSimulation(String resourceGroupName, String clusterName) {
-        return new PagedIterable<>(() -> listFaultSimulationSinglePage(resourceGroupName, clusterName),
-            nextLink -> listFaultSimulationNextSinglePage(nextLink));
+        return listFaultSimulation(resourceGroupName, clusterName, Context.NONE);
     }
 
-    /**
-     * Gets the list of recent fault simulations for the cluster.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param clusterName The name of the cluster resource.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the list of recent fault simulations for the cluster as paginated response with {@link PagedIterable}.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.COLLECTION)
     public PagedIterable<FaultSimulationInner> listFaultSimulation(String resourceGroupName, String clusterName,
         Context context) {
@@ -1323,9 +1077,7 @@ public final class ManagedClustersClientImpl implements ManagedClustersClient {
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Response<BinaryData> startFaultSimulationWithResponse(String resourceGroupName, String clusterName,
         FaultSimulationContentWrapper parameters) {
-        final String contentType = "application/json";
-        return service.startFaultSimulationSync(this.client.getEndpoint(), this.client.getApiVersion(),
-            this.client.getSubscriptionId(), resourceGroupName, clusterName, contentType, parameters, Context.NONE);
+        return startFaultSimulationWithResponse(resourceGroupName, clusterName, parameters, Context.NONE);
     }
 
     /**
@@ -1368,37 +1120,14 @@ public final class ManagedClustersClientImpl implements ManagedClustersClient {
             FaultSimulationInner.class, FaultSimulationInner.class, this.client.getContext());
     }
 
-    /**
-     * Starts a fault simulation on the cluster.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param clusterName The name of the cluster resource.
-     * @param parameters parameters describing the fault simulation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the {@link SyncPoller} for polling of long-running operation.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public SyncPoller<PollResult<FaultSimulationInner>, FaultSimulationInner> beginStartFaultSimulation(
         String resourceGroupName, String clusterName, FaultSimulationContentWrapper parameters) {
-        Response<BinaryData> response = startFaultSimulationWithResponse(resourceGroupName, clusterName, parameters);
-        return this.client.<FaultSimulationInner, FaultSimulationInner>getLroResult(response,
-            FaultSimulationInner.class, FaultSimulationInner.class, Context.NONE);
+        return beginStartFaultSimulation(resourceGroupName, clusterName, parameters, Context.NONE);
     }
 
-    /**
-     * Starts a fault simulation on the cluster.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param clusterName The name of the cluster resource.
-     * @param parameters parameters describing the fault simulation.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the {@link SyncPoller} for polling of long-running operation.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public SyncPoller<PollResult<FaultSimulationInner>, FaultSimulationInner> beginStartFaultSimulation(
         String resourceGroupName, String clusterName, FaultSimulationContentWrapper parameters, Context context) {
@@ -1426,39 +1155,19 @@ public final class ManagedClustersClientImpl implements ManagedClustersClient {
             .flatMap(this.client::getLroFinalResultOrError);
     }
 
-    /**
-     * Starts a fault simulation on the cluster.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param clusterName The name of the cluster resource.
-     * @param parameters parameters describing the fault simulation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the response.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public FaultSimulationInner startFaultSimulation(String resourceGroupName, String clusterName,
         FaultSimulationContentWrapper parameters) {
-        return beginStartFaultSimulation(resourceGroupName, clusterName, parameters).getFinalResult();
+        return startFaultSimulation(resourceGroupName, clusterName, parameters, Context.NONE);
     }
 
-    /**
-     * Starts a fault simulation on the cluster.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param clusterName The name of the cluster resource.
-     * @param parameters parameters describing the fault simulation.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the response.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public FaultSimulationInner startFaultSimulation(String resourceGroupName, String clusterName,
         FaultSimulationContentWrapper parameters, Context context) {
-        return beginStartFaultSimulation(resourceGroupName, clusterName, parameters, context).getFinalResult();
+        return this.client
+            .getLroFinalResultOrError(beginStartFaultSimulation(resourceGroupName, clusterName, parameters, context));
     }
 
     /**
@@ -1496,9 +1205,7 @@ public final class ManagedClustersClientImpl implements ManagedClustersClient {
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Response<BinaryData> stopFaultSimulationWithResponse(String resourceGroupName, String clusterName,
         FaultSimulationIdContent parameters) {
-        final String contentType = "application/json";
-        return service.stopFaultSimulationSync(this.client.getEndpoint(), this.client.getApiVersion(),
-            this.client.getSubscriptionId(), resourceGroupName, clusterName, contentType, parameters, Context.NONE);
+        return stopFaultSimulationWithResponse(resourceGroupName, clusterName, parameters, Context.NONE);
     }
 
     /**
@@ -1541,37 +1248,14 @@ public final class ManagedClustersClientImpl implements ManagedClustersClient {
             FaultSimulationInner.class, FaultSimulationInner.class, this.client.getContext());
     }
 
-    /**
-     * Stops a fault simulation on the cluster.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param clusterName The name of the cluster resource.
-     * @param parameters parameter with fault simulation id.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the {@link SyncPoller} for polling of long-running operation.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public SyncPoller<PollResult<FaultSimulationInner>, FaultSimulationInner>
         beginStopFaultSimulation(String resourceGroupName, String clusterName, FaultSimulationIdContent parameters) {
-        Response<BinaryData> response = stopFaultSimulationWithResponse(resourceGroupName, clusterName, parameters);
-        return this.client.<FaultSimulationInner, FaultSimulationInner>getLroResult(response,
-            FaultSimulationInner.class, FaultSimulationInner.class, Context.NONE);
+        return beginStopFaultSimulation(resourceGroupName, clusterName, parameters, Context.NONE);
     }
 
-    /**
-     * Stops a fault simulation on the cluster.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param clusterName The name of the cluster resource.
-     * @param parameters parameter with fault simulation id.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the {@link SyncPoller} for polling of long-running operation.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public SyncPoller<PollResult<FaultSimulationInner>, FaultSimulationInner> beginStopFaultSimulation(
         String resourceGroupName, String clusterName, FaultSimulationIdContent parameters, Context context) {
@@ -1599,39 +1283,19 @@ public final class ManagedClustersClientImpl implements ManagedClustersClient {
             .flatMap(this.client::getLroFinalResultOrError);
     }
 
-    /**
-     * Stops a fault simulation on the cluster.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param clusterName The name of the cluster resource.
-     * @param parameters parameter with fault simulation id.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the response.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public FaultSimulationInner stopFaultSimulation(String resourceGroupName, String clusterName,
         FaultSimulationIdContent parameters) {
-        return beginStopFaultSimulation(resourceGroupName, clusterName, parameters).getFinalResult();
+        return stopFaultSimulation(resourceGroupName, clusterName, parameters, Context.NONE);
     }
 
-    /**
-     * Stops a fault simulation on the cluster.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param clusterName The name of the cluster resource.
-     * @param parameters parameter with fault simulation id.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the response.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public FaultSimulationInner stopFaultSimulation(String resourceGroupName, String clusterName,
         FaultSimulationIdContent parameters, Context context) {
-        return beginStopFaultSimulation(resourceGroupName, clusterName, parameters, context).getFinalResult();
+        return this.client
+            .getLroFinalResultOrError(beginStopFaultSimulation(resourceGroupName, clusterName, parameters, context));
     }
 
     /**
@@ -1667,11 +1331,7 @@ public final class ManagedClustersClientImpl implements ManagedClustersClient {
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private PagedResponse<ManagedClusterInner> listByResourceGroupNextSinglePage(String nextLink) {
-        final String accept = "application/json";
-        Response<ManagedClusterListResult> res
-            = service.listByResourceGroupNextSync(nextLink, this.client.getEndpoint(), accept, Context.NONE);
-        return new PagedResponseBase<>(res.getRequest(), res.getStatusCode(), res.getHeaders(), res.getValue().value(),
-            res.getValue().nextLink(), null);
+        return listByResourceGroupNextSinglePage(nextLink, Context.NONE);
     }
 
     /**
@@ -1727,11 +1387,7 @@ public final class ManagedClustersClientImpl implements ManagedClustersClient {
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private PagedResponse<ManagedClusterInner> listBySubscriptionNextSinglePage(String nextLink) {
-        final String accept = "application/json";
-        Response<ManagedClusterListResult> res
-            = service.listBySubscriptionNextSync(nextLink, this.client.getEndpoint(), accept, Context.NONE);
-        return new PagedResponseBase<>(res.getRequest(), res.getStatusCode(), res.getHeaders(), res.getValue().value(),
-            res.getValue().nextLink(), null);
+        return listBySubscriptionNextSinglePage(nextLink, Context.NONE);
     }
 
     /**
@@ -1786,11 +1442,7 @@ public final class ManagedClustersClientImpl implements ManagedClustersClient {
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private PagedResponse<FaultSimulationInner> listFaultSimulationNextSinglePage(String nextLink) {
-        final String accept = "application/json";
-        Response<FaultSimulationListResult> res
-            = service.listFaultSimulationNextSync(nextLink, this.client.getEndpoint(), accept, Context.NONE);
-        return new PagedResponseBase<>(res.getRequest(), res.getStatusCode(), res.getHeaders(), res.getValue().value(),
-            res.getValue().nextLink(), null);
+        return listFaultSimulationNextSinglePage(nextLink, Context.NONE);
     }
 
     /**

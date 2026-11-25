@@ -9,7 +9,7 @@ package com.azure.resourcemanager.keyvault.generated;
  */
 public final class KeysListSamples {
     /*
-     * x-ms-original-file: 2026-05-15/listKeys.json
+     * x-ms-original-file: 2026-10-01-preview/listKeys.json
      */
     /**
      * Sample code: List keys in the vault.

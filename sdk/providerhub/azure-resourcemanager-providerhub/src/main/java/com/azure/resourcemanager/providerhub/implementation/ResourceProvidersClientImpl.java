@@ -142,16 +142,7 @@ public final class ResourceProvidersClientImpl implements ResourceProvidersClien
         return generateManifestWithResponseAsync(providerNamespace).flatMap(res -> Mono.justOrEmpty(res.getValue()));
     }
 
-    /**
-     * Generates the manifest for the given provider.
-     * 
-     * @param providerNamespace The name of the resource provider hosted within ProviderHub.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the response body along with {@link Response}.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Response<ResourceProviderManifestInner> generateManifestWithResponse(String providerNamespace,
         Context context) {
@@ -174,15 +165,7 @@ public final class ResourceProvidersClientImpl implements ResourceProvidersClien
             this.client.getSubscriptionId(), providerNamespace, accept, context);
     }
 
-    /**
-     * Generates the manifest for the given provider.
-     * 
-     * @param providerNamespace The name of the resource provider hosted within ProviderHub.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the response.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public ResourceProviderManifestInner generateManifest(String providerNamespace) {
         return generateManifestWithResponse(providerNamespace, Context.NONE).getValue();
@@ -245,17 +228,7 @@ public final class ResourceProvidersClientImpl implements ResourceProvidersClien
             .flatMap(res -> Mono.justOrEmpty(res.getValue()));
     }
 
-    /**
-     * Checkin the manifest.
-     * 
-     * @param providerNamespace The name of the resource provider hosted within ProviderHub.
-     * @param checkinManifestParams The required body parameters supplied to the checkin manifest operation.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the response body along with {@link Response}.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Response<CheckinManifestInfoInner> checkinManifestWithResponse(String providerNamespace,
         CheckinManifestParams checkinManifestParams, Context context) {
@@ -285,16 +258,7 @@ public final class ResourceProvidersClientImpl implements ResourceProvidersClien
             this.client.getSubscriptionId(), providerNamespace, contentType, accept, checkinManifestParams, context);
     }
 
-    /**
-     * Checkin the manifest.
-     * 
-     * @param providerNamespace The name of the resource provider hosted within ProviderHub.
-     * @param checkinManifestParams The required body parameters supplied to the checkin manifest operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the response.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public CheckinManifestInfoInner checkinManifest(String providerNamespace,
         CheckinManifestParams checkinManifestParams) {

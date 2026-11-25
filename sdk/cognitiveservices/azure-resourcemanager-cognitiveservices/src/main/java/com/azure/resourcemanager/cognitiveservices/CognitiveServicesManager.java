@@ -27,17 +27,18 @@ import com.azure.core.util.logging.ClientLogger;
 import com.azure.resourcemanager.cognitiveservices.fluent.CognitiveServicesManagementClient;
 import com.azure.resourcemanager.cognitiveservices.implementation.AccountCapabilityHostsImpl;
 import com.azure.resourcemanager.cognitiveservices.implementation.AccountConnectionsImpl;
+import com.azure.resourcemanager.cognitiveservices.implementation.AccountCostControlsImpl;
 import com.azure.resourcemanager.cognitiveservices.implementation.AccountsImpl;
 import com.azure.resourcemanager.cognitiveservices.implementation.AdapterDeploymentsImpl;
 import com.azure.resourcemanager.cognitiveservices.implementation.AgentApplicationsImpl;
 import com.azure.resourcemanager.cognitiveservices.implementation.AgentDeploymentsImpl;
 import com.azure.resourcemanager.cognitiveservices.implementation.ArcDeploymentsImpl;
+import com.azure.resourcemanager.cognitiveservices.implementation.AttachedAksClustersImpl;
 import com.azure.resourcemanager.cognitiveservices.implementation.CognitiveServicesManagementClientBuilder;
 import com.azure.resourcemanager.cognitiveservices.implementation.CommitmentPlansImpl;
 import com.azure.resourcemanager.cognitiveservices.implementation.CommitmentTiersImpl;
 import com.azure.resourcemanager.cognitiveservices.implementation.ComputeOperationsImpl;
 import com.azure.resourcemanager.cognitiveservices.implementation.ComputesImpl;
-import com.azure.resourcemanager.cognitiveservices.implementation.CostControlsImpl;
 import com.azure.resourcemanager.cognitiveservices.implementation.DefenderForAISettingsImpl;
 import com.azure.resourcemanager.cognitiveservices.implementation.DeletedAccountsImpl;
 import com.azure.resourcemanager.cognitiveservices.implementation.DeploymentsImpl;
@@ -58,6 +59,7 @@ import com.azure.resourcemanager.cognitiveservices.implementation.PrivateEndpoin
 import com.azure.resourcemanager.cognitiveservices.implementation.PrivateLinkResourcesImpl;
 import com.azure.resourcemanager.cognitiveservices.implementation.ProjectCapabilityHostsImpl;
 import com.azure.resourcemanager.cognitiveservices.implementation.ProjectConnectionsImpl;
+import com.azure.resourcemanager.cognitiveservices.implementation.ProjectCostControlsImpl;
 import com.azure.resourcemanager.cognitiveservices.implementation.ProjectsImpl;
 import com.azure.resourcemanager.cognitiveservices.implementation.QuotaTiersImpl;
 import com.azure.resourcemanager.cognitiveservices.implementation.RaiBindingsImpl;
@@ -78,16 +80,17 @@ import com.azure.resourcemanager.cognitiveservices.implementation.UsagesImpl;
 import com.azure.resourcemanager.cognitiveservices.implementation.WorkbenchesImpl;
 import com.azure.resourcemanager.cognitiveservices.models.AccountCapabilityHosts;
 import com.azure.resourcemanager.cognitiveservices.models.AccountConnections;
+import com.azure.resourcemanager.cognitiveservices.models.AccountCostControls;
 import com.azure.resourcemanager.cognitiveservices.models.Accounts;
 import com.azure.resourcemanager.cognitiveservices.models.AdapterDeployments;
 import com.azure.resourcemanager.cognitiveservices.models.AgentApplications;
 import com.azure.resourcemanager.cognitiveservices.models.AgentDeployments;
 import com.azure.resourcemanager.cognitiveservices.models.ArcDeployments;
+import com.azure.resourcemanager.cognitiveservices.models.AttachedAksClusters;
 import com.azure.resourcemanager.cognitiveservices.models.CommitmentPlans;
 import com.azure.resourcemanager.cognitiveservices.models.CommitmentTiers;
 import com.azure.resourcemanager.cognitiveservices.models.ComputeOperations;
 import com.azure.resourcemanager.cognitiveservices.models.Computes;
-import com.azure.resourcemanager.cognitiveservices.models.CostControls;
 import com.azure.resourcemanager.cognitiveservices.models.DefenderForAISettings;
 import com.azure.resourcemanager.cognitiveservices.models.DeletedAccounts;
 import com.azure.resourcemanager.cognitiveservices.models.Deployments;
@@ -108,6 +111,7 @@ import com.azure.resourcemanager.cognitiveservices.models.PrivateEndpointConnect
 import com.azure.resourcemanager.cognitiveservices.models.PrivateLinkResources;
 import com.azure.resourcemanager.cognitiveservices.models.ProjectCapabilityHosts;
 import com.azure.resourcemanager.cognitiveservices.models.ProjectConnections;
+import com.azure.resourcemanager.cognitiveservices.models.ProjectCostControls;
 import com.azure.resourcemanager.cognitiveservices.models.Projects;
 import com.azure.resourcemanager.cognitiveservices.models.QuotaTiers;
 import com.azure.resourcemanager.cognitiveservices.models.RaiBindings;
@@ -146,6 +150,8 @@ public final class CognitiveServicesManager {
     private Accounts accounts;
 
     private DeletedAccounts deletedAccounts;
+
+    private AttachedAksClusters attachedAksClusters;
 
     private PrivateEndpointConnections privateEndpointConnections;
 
@@ -203,7 +209,9 @@ public final class CognitiveServicesManager {
 
     private ManagedComputeCapacities managedComputeCapacities;
 
-    private CostControls costControls;
+    private AccountCostControls accountCostControls;
+
+    private ProjectCostControls projectCostControls;
 
     private PrivateLinkResources privateLinkResources;
 
@@ -500,6 +508,18 @@ public final class CognitiveServicesManager {
             this.deletedAccounts = new DeletedAccountsImpl(clientObject.getDeletedAccounts(), this);
         }
         return deletedAccounts;
+    }
+
+    /**
+     * Gets the resource collection API of AttachedAksClusters. It manages AttachedAksCluster.
+     * 
+     * @return Resource collection API of AttachedAksClusters.
+     */
+    public AttachedAksClusters attachedAksClusters() {
+        if (this.attachedAksClusters == null) {
+            this.attachedAksClusters = new AttachedAksClustersImpl(clientObject.getAttachedAksClusters(), this);
+        }
+        return attachedAksClusters;
     }
 
     /**
@@ -846,15 +866,27 @@ public final class CognitiveServicesManager {
     }
 
     /**
-     * Gets the resource collection API of CostControls. It manages CostControl.
+     * Gets the resource collection API of AccountCostControls. It manages AccountCostControl.
      * 
-     * @return Resource collection API of CostControls.
+     * @return Resource collection API of AccountCostControls.
      */
-    public CostControls costControls() {
-        if (this.costControls == null) {
-            this.costControls = new CostControlsImpl(clientObject.getCostControls(), this);
+    public AccountCostControls accountCostControls() {
+        if (this.accountCostControls == null) {
+            this.accountCostControls = new AccountCostControlsImpl(clientObject.getAccountCostControls(), this);
         }
-        return costControls;
+        return accountCostControls;
+    }
+
+    /**
+     * Gets the resource collection API of ProjectCostControls. It manages ProjectCostControl.
+     * 
+     * @return Resource collection API of ProjectCostControls.
+     */
+    public ProjectCostControls projectCostControls() {
+        if (this.projectCostControls == null) {
+            this.projectCostControls = new ProjectCostControlsImpl(clientObject.getProjectCostControls(), this);
+        }
+        return projectCostControls;
     }
 
     /**

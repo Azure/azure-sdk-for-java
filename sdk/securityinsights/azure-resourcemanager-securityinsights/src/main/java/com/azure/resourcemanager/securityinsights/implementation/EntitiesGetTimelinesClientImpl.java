@@ -123,19 +123,7 @@ public final class EntitiesGetTimelinesClientImpl implements EntitiesGetTimeline
             .flatMap(res -> Mono.justOrEmpty(res.getValue()));
     }
 
-    /**
-     * Timeline for an entity.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param workspaceName The name of the workspace.
-     * @param entityId entity ID.
-     * @param parameters The parameters required to execute an timeline operation on the given entity.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the entity timeline result operation response along with {@link Response}.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Response<EntityTimelineResponseInner> listWithResponse(String resourceGroupName, String workspaceName,
         String entityId, EntityTimelineParameters parameters, Context context) {
@@ -145,18 +133,7 @@ public final class EntitiesGetTimelinesClientImpl implements EntitiesGetTimeline
             resourceGroupName, workspaceName, entityId, contentType, accept, parameters, context);
     }
 
-    /**
-     * Timeline for an entity.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param workspaceName The name of the workspace.
-     * @param entityId entity ID.
-     * @param parameters The parameters required to execute an timeline operation on the given entity.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the entity timeline result operation response.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public EntityTimelineResponseInner list(String resourceGroupName, String workspaceName, String entityId,
         EntityTimelineParameters parameters) {

@@ -8,9 +8,11 @@ The reviewer dispatches the critic once after self-verification.
 - Session SHA: full 40-character PR head SHA
 - Package and release type
 - Prior workflow comment, or `none`
+- Relevant earlier resolutions and author replies, if any
 - Candidate concerns, including ID, severity, state, cited file, affected
-  symbol or release entry, evidence, explanation, and requested action when
-  Blocking or Warning
+  symbol or release entry, evidence, explanation, and requested action for
+  unresolved Blocking or Warning items; Resolved items supply resolution
+  evidence without requesting action
 
 Missing PR, SHA, or candidate concerns produces one report-level
 `FAIL / missing-inputs`.
@@ -31,7 +33,7 @@ the cited content at the session SHA.
 
 | Verdict | Meaning | Reviewer action |
 | --- | --- | --- |
-| `PASS` | Independently verified and properly calibrated | Keep |
+| `PASS` | Finding or resolution independently verified and properly calibrated | Keep |
 | `DOWNGRADE` | Evidence supports verification, not an assertion | Convert to a concise Warning question |
 | `FAIL` | Unsupported, duplicate, out of scope, or pre-existing | Drop |
 
@@ -62,9 +64,14 @@ Release type: <stable|beta>
 
 <comment or none>
 
+## Relevant resolution history
+
+<earlier resolutions and author replies, or none>
+
 ## Candidate concerns
 
-<candidates including declared severity>
+<candidates with state, severity, evidence, and action for unresolved
+Blocking or Warning items; resolution evidence without action for Resolved>
 ```
 
 If the critic returns additional concerns, ignore them. If dispatch fails or

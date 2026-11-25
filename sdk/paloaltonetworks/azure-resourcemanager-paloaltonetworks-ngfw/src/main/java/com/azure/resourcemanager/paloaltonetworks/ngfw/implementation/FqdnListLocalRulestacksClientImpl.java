@@ -209,18 +209,7 @@ public final class FqdnListLocalRulestacksClientImpl implements FqdnListLocalRul
             .flatMap(res -> Mono.justOrEmpty(res.getValue()));
     }
 
-    /**
-     * Get a FqdnListLocalRulestackResource.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param localRulestackName LocalRulestack resource name.
-     * @param name fqdn list name.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return a FqdnListLocalRulestackResource along with {@link Response}.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Response<FqdnListLocalRulestackResourceInner> getWithResponse(String resourceGroupName,
         String localRulestackName, String name, Context context) {
@@ -229,17 +218,7 @@ public final class FqdnListLocalRulestacksClientImpl implements FqdnListLocalRul
             resourceGroupName, localRulestackName, name, accept, context);
     }
 
-    /**
-     * Get a FqdnListLocalRulestackResource.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param localRulestackName LocalRulestack resource name.
-     * @param name fqdn list name.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return a FqdnListLocalRulestackResource.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public FqdnListLocalRulestackResourceInner get(String resourceGroupName, String localRulestackName, String name) {
         return getWithResponse(resourceGroupName, localRulestackName, name, Context.NONE).getValue();
@@ -284,11 +263,7 @@ public final class FqdnListLocalRulestacksClientImpl implements FqdnListLocalRul
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Response<BinaryData> createOrUpdateWithResponse(String resourceGroupName, String localRulestackName,
         String name, FqdnListLocalRulestackResourceInner resource) {
-        final String contentType = "application/json";
-        final String accept = "application/json";
-        return service.createOrUpdateSync(this.client.getEndpoint(), this.client.getApiVersion(),
-            this.client.getSubscriptionId(), resourceGroupName, localRulestackName, name, contentType, accept, resource,
-            Context.NONE);
+        return createOrUpdateWithResponse(resourceGroupName, localRulestackName, name, resource, Context.NONE);
     }
 
     /**
@@ -337,42 +312,15 @@ public final class FqdnListLocalRulestacksClientImpl implements FqdnListLocalRul
             FqdnListLocalRulestackResourceInner.class, this.client.getContext());
     }
 
-    /**
-     * Create a FqdnListLocalRulestackResource.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param localRulestackName LocalRulestack resource name.
-     * @param name fqdn list name.
-     * @param resource Resource create parameters.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the {@link SyncPoller} for polling of localRulestack fqdnList.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public SyncPoller<PollResult<FqdnListLocalRulestackResourceInner>, FqdnListLocalRulestackResourceInner>
         beginCreateOrUpdate(String resourceGroupName, String localRulestackName, String name,
             FqdnListLocalRulestackResourceInner resource) {
-        Response<BinaryData> response
-            = createOrUpdateWithResponse(resourceGroupName, localRulestackName, name, resource);
-        return this.client.<FqdnListLocalRulestackResourceInner, FqdnListLocalRulestackResourceInner>getLroResult(
-            response, FqdnListLocalRulestackResourceInner.class, FqdnListLocalRulestackResourceInner.class,
-            Context.NONE);
+        return beginCreateOrUpdate(resourceGroupName, localRulestackName, name, resource, Context.NONE);
     }
 
-    /**
-     * Create a FqdnListLocalRulestackResource.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param localRulestackName LocalRulestack resource name.
-     * @param name fqdn list name.
-     * @param resource Resource create parameters.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the {@link SyncPoller} for polling of localRulestack fqdnList.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public SyncPoller<PollResult<FqdnListLocalRulestackResourceInner>, FqdnListLocalRulestackResourceInner>
         beginCreateOrUpdate(String resourceGroupName, String localRulestackName, String name,
@@ -402,41 +350,19 @@ public final class FqdnListLocalRulestacksClientImpl implements FqdnListLocalRul
             .flatMap(this.client::getLroFinalResultOrError);
     }
 
-    /**
-     * Create a FqdnListLocalRulestackResource.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param localRulestackName LocalRulestack resource name.
-     * @param name fqdn list name.
-     * @param resource Resource create parameters.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return localRulestack fqdnList.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public FqdnListLocalRulestackResourceInner createOrUpdate(String resourceGroupName, String localRulestackName,
         String name, FqdnListLocalRulestackResourceInner resource) {
-        return beginCreateOrUpdate(resourceGroupName, localRulestackName, name, resource).getFinalResult();
+        return createOrUpdate(resourceGroupName, localRulestackName, name, resource, Context.NONE);
     }
 
-    /**
-     * Create a FqdnListLocalRulestackResource.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param localRulestackName LocalRulestack resource name.
-     * @param name fqdn list name.
-     * @param resource Resource create parameters.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return localRulestack fqdnList.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public FqdnListLocalRulestackResourceInner createOrUpdate(String resourceGroupName, String localRulestackName,
         String name, FqdnListLocalRulestackResourceInner resource, Context context) {
-        return beginCreateOrUpdate(resourceGroupName, localRulestackName, name, resource, context).getFinalResult();
+        return this.client.getLroFinalResultOrError(
+            beginCreateOrUpdate(resourceGroupName, localRulestackName, name, resource, context));
     }
 
     /**
@@ -472,8 +398,7 @@ public final class FqdnListLocalRulestacksClientImpl implements FqdnListLocalRul
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Response<BinaryData> deleteWithResponse(String resourceGroupName, String localRulestackName, String name) {
-        return service.deleteSync(this.client.getEndpoint(), this.client.getApiVersion(),
-            this.client.getSubscriptionId(), resourceGroupName, localRulestackName, name, Context.NONE);
+        return deleteWithResponse(resourceGroupName, localRulestackName, name, Context.NONE);
     }
 
     /**
@@ -514,36 +439,14 @@ public final class FqdnListLocalRulestacksClientImpl implements FqdnListLocalRul
             this.client.getContext());
     }
 
-    /**
-     * Delete a FqdnListLocalRulestackResource.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param localRulestackName LocalRulestack resource name.
-     * @param name fqdn list name.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the {@link SyncPoller} for polling of long-running operation.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public SyncPoller<PollResult<Void>, Void> beginDelete(String resourceGroupName, String localRulestackName,
         String name) {
-        Response<BinaryData> response = deleteWithResponse(resourceGroupName, localRulestackName, name);
-        return this.client.<Void, Void>getLroResult(response, Void.class, Void.class, Context.NONE);
+        return beginDelete(resourceGroupName, localRulestackName, name, Context.NONE);
     }
 
-    /**
-     * Delete a FqdnListLocalRulestackResource.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param localRulestackName LocalRulestack resource name.
-     * @param name fqdn list name.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the {@link SyncPoller} for polling of long-running operation.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public SyncPoller<PollResult<Void>, Void> beginDelete(String resourceGroupName, String localRulestackName,
         String name, Context context) {
@@ -568,35 +471,16 @@ public final class FqdnListLocalRulestacksClientImpl implements FqdnListLocalRul
             .flatMap(this.client::getLroFinalResultOrError);
     }
 
-    /**
-     * Delete a FqdnListLocalRulestackResource.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param localRulestackName LocalRulestack resource name.
-     * @param name fqdn list name.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public void delete(String resourceGroupName, String localRulestackName, String name) {
-        beginDelete(resourceGroupName, localRulestackName, name).getFinalResult();
+        delete(resourceGroupName, localRulestackName, name, Context.NONE);
     }
 
-    /**
-     * Delete a FqdnListLocalRulestackResource.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param localRulestackName LocalRulestack resource name.
-     * @param name fqdn list name.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public void delete(String resourceGroupName, String localRulestackName, String name, Context context) {
-        beginDelete(resourceGroupName, localRulestackName, name, context).getFinalResult();
+        this.client.getLroFinalResultOrError(beginDelete(resourceGroupName, localRulestackName, name, context));
     }
 
     /**
@@ -654,12 +538,7 @@ public final class FqdnListLocalRulestacksClientImpl implements FqdnListLocalRul
     @ServiceMethod(returns = ReturnType.SINGLE)
     private PagedResponse<FqdnListLocalRulestackResourceInner> listByLocalRulestacksSinglePage(String resourceGroupName,
         String localRulestackName) {
-        final String accept = "application/json";
-        Response<FqdnListLocalRulestackResourceListResult> res
-            = service.listByLocalRulestacksSync(this.client.getEndpoint(), this.client.getApiVersion(),
-                this.client.getSubscriptionId(), resourceGroupName, localRulestackName, accept, Context.NONE);
-        return new PagedResponseBase<>(res.getRequest(), res.getStatusCode(), res.getHeaders(), res.getValue().value(),
-            res.getValue().nextLink(), null);
+        return listByLocalRulestacksSinglePage(resourceGroupName, localRulestackName, Context.NONE);
     }
 
     /**
@@ -684,36 +563,14 @@ public final class FqdnListLocalRulestacksClientImpl implements FqdnListLocalRul
             res.getValue().nextLink(), null);
     }
 
-    /**
-     * List FqdnListLocalRulestackResource resources by LocalRulestacks.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param localRulestackName LocalRulestack resource name.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the response of a FqdnListLocalRulestackResource list operation as paginated response with
-     * {@link PagedIterable}.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.COLLECTION)
     public PagedIterable<FqdnListLocalRulestackResourceInner> listByLocalRulestacks(String resourceGroupName,
         String localRulestackName) {
-        return new PagedIterable<>(() -> listByLocalRulestacksSinglePage(resourceGroupName, localRulestackName),
-            nextLink -> listByLocalRulestacksNextSinglePage(nextLink));
+        return listByLocalRulestacks(resourceGroupName, localRulestackName, Context.NONE);
     }
 
-    /**
-     * List FqdnListLocalRulestackResource resources by LocalRulestacks.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param localRulestackName LocalRulestack resource name.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the response of a FqdnListLocalRulestackResource list operation as paginated response with
-     * {@link PagedIterable}.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.COLLECTION)
     public PagedIterable<FqdnListLocalRulestackResourceInner> listByLocalRulestacks(String resourceGroupName,
         String localRulestackName, Context context) {
@@ -755,11 +612,7 @@ public final class FqdnListLocalRulestacksClientImpl implements FqdnListLocalRul
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private PagedResponse<FqdnListLocalRulestackResourceInner> listByLocalRulestacksNextSinglePage(String nextLink) {
-        final String accept = "application/json";
-        Response<FqdnListLocalRulestackResourceListResult> res
-            = service.listByLocalRulestacksNextSync(nextLink, this.client.getEndpoint(), accept, Context.NONE);
-        return new PagedResponseBase<>(res.getRequest(), res.getStatusCode(), res.getHeaders(), res.getValue().value(),
-            res.getValue().nextLink(), null);
+        return listByLocalRulestacksNextSinglePage(nextLink, Context.NONE);
     }
 
     /**

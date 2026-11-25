@@ -190,31 +190,14 @@ public final class DeploymentSafeguardsClientImpl implements DeploymentSafeguard
         return getWithResponseAsync(resourceUri).flatMap(res -> Mono.justOrEmpty(res.getValue()));
     }
 
-    /**
-     * Fetch a deployment safeguard by name.
-     * 
-     * @param resourceUri The fully qualified Azure Resource manager identifier of the resource.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return deployment Safeguards along with {@link Response}.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Response<DeploymentSafeguardInner> getWithResponse(String resourceUri, Context context) {
         final String accept = "application/json";
         return service.getSync(this.client.getEndpoint(), this.client.getApiVersion(), resourceUri, accept, context);
     }
 
-    /**
-     * Fetch a deployment safeguard by name.
-     * 
-     * @param resourceUri The fully qualified Azure Resource manager identifier of the resource.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return deployment Safeguards.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public DeploymentSafeguardInner get(String resourceUri) {
         return getWithResponse(resourceUri, Context.NONE).getValue();
@@ -253,10 +236,7 @@ public final class DeploymentSafeguardsClientImpl implements DeploymentSafeguard
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Response<BinaryData> createWithResponse(String resourceUri, DeploymentSafeguardInner resource) {
-        final String contentType = "application/json";
-        final String accept = "application/json";
-        return service.createSync(this.client.getEndpoint(), this.client.getApiVersion(), resourceUri, contentType,
-            accept, resource, Context.NONE);
+        return createWithResponse(resourceUri, resource, Context.NONE);
     }
 
     /**
@@ -298,35 +278,14 @@ public final class DeploymentSafeguardsClientImpl implements DeploymentSafeguard
             this.client.getContext());
     }
 
-    /**
-     * Creates or updates a deploymentSafeguard.
-     * 
-     * @param resourceUri The fully qualified Azure Resource manager identifier of the resource.
-     * @param resource Resource create parameters.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the {@link SyncPoller} for polling of deployment Safeguards.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public SyncPoller<PollResult<DeploymentSafeguardInner>, DeploymentSafeguardInner> beginCreate(String resourceUri,
         DeploymentSafeguardInner resource) {
-        Response<BinaryData> response = createWithResponse(resourceUri, resource);
-        return this.client.<DeploymentSafeguardInner, DeploymentSafeguardInner>getLroResult(response,
-            DeploymentSafeguardInner.class, DeploymentSafeguardInner.class, Context.NONE);
+        return beginCreate(resourceUri, resource, Context.NONE);
     }
 
-    /**
-     * Creates or updates a deploymentSafeguard.
-     * 
-     * @param resourceUri The fully qualified Azure Resource manager identifier of the resource.
-     * @param resource Resource create parameters.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the {@link SyncPoller} for polling of deployment Safeguards.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public SyncPoller<PollResult<DeploymentSafeguardInner>, DeploymentSafeguardInner> beginCreate(String resourceUri,
         DeploymentSafeguardInner resource, Context context) {
@@ -350,35 +309,16 @@ public final class DeploymentSafeguardsClientImpl implements DeploymentSafeguard
         return beginCreateAsync(resourceUri, resource).last().flatMap(this.client::getLroFinalResultOrError);
     }
 
-    /**
-     * Creates or updates a deploymentSafeguard.
-     * 
-     * @param resourceUri The fully qualified Azure Resource manager identifier of the resource.
-     * @param resource Resource create parameters.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return deployment Safeguards.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public DeploymentSafeguardInner create(String resourceUri, DeploymentSafeguardInner resource) {
-        return beginCreate(resourceUri, resource).getFinalResult();
+        return create(resourceUri, resource, Context.NONE);
     }
 
-    /**
-     * Creates or updates a deploymentSafeguard.
-     * 
-     * @param resourceUri The fully qualified Azure Resource manager identifier of the resource.
-     * @param resource Resource create parameters.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return deployment Safeguards.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public DeploymentSafeguardInner create(String resourceUri, DeploymentSafeguardInner resource, Context context) {
-        return beginCreate(resourceUri, resource, context).getFinalResult();
+        return this.client.getLroFinalResultOrError(beginCreate(resourceUri, resource, context));
     }
 
     /**
@@ -409,7 +349,7 @@ public final class DeploymentSafeguardsClientImpl implements DeploymentSafeguard
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Response<BinaryData> deleteWithResponse(String resourceUri) {
-        return service.deleteSync(this.client.getEndpoint(), this.client.getApiVersion(), resourceUri, Context.NONE);
+        return deleteWithResponse(resourceUri, Context.NONE);
     }
 
     /**
@@ -443,31 +383,13 @@ public final class DeploymentSafeguardsClientImpl implements DeploymentSafeguard
             this.client.getContext());
     }
 
-    /**
-     * Delete DeploymentSafeguards.
-     * 
-     * @param resourceUri The fully qualified Azure Resource manager identifier of the resource.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the {@link SyncPoller} for polling of long-running operation.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public SyncPoller<PollResult<Void>, Void> beginDelete(String resourceUri) {
-        Response<BinaryData> response = deleteWithResponse(resourceUri);
-        return this.client.<Void, Void>getLroResult(response, Void.class, Void.class, Context.NONE);
+        return beginDelete(resourceUri, Context.NONE);
     }
 
-    /**
-     * Delete DeploymentSafeguards.
-     * 
-     * @param resourceUri The fully qualified Azure Resource manager identifier of the resource.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the {@link SyncPoller} for polling of long-running operation.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public SyncPoller<PollResult<Void>, Void> beginDelete(String resourceUri, Context context) {
         Response<BinaryData> response = deleteWithResponse(resourceUri, context);
@@ -488,31 +410,16 @@ public final class DeploymentSafeguardsClientImpl implements DeploymentSafeguard
         return beginDeleteAsync(resourceUri).last().flatMap(this.client::getLroFinalResultOrError);
     }
 
-    /**
-     * Delete DeploymentSafeguards.
-     * 
-     * @param resourceUri The fully qualified Azure Resource manager identifier of the resource.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public void delete(String resourceUri) {
-        beginDelete(resourceUri).getFinalResult();
+        delete(resourceUri, Context.NONE);
     }
 
-    /**
-     * Delete DeploymentSafeguards.
-     * 
-     * @param resourceUri The fully qualified Azure Resource manager identifier of the resource.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public void delete(String resourceUri, Context context) {
-        beginDelete(resourceUri, context).getFinalResult();
+        this.client.getLroFinalResultOrError(beginDelete(resourceUri, context));
     }
 
     /**
@@ -561,11 +468,7 @@ public final class DeploymentSafeguardsClientImpl implements DeploymentSafeguard
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private PagedResponse<DeploymentSafeguardInner> listSinglePage(String resourceUri) {
-        final String accept = "application/json";
-        Response<DeploymentSafeguardListResult> res = service.listSync(this.client.getEndpoint(),
-            this.client.getApiVersion(), resourceUri, accept, Context.NONE);
-        return new PagedResponseBase<>(res.getRequest(), res.getStatusCode(), res.getHeaders(), res.getValue().value(),
-            res.getValue().nextLink(), null);
+        return listSinglePage(resourceUri, Context.NONE);
     }
 
     /**
@@ -587,30 +490,13 @@ public final class DeploymentSafeguardsClientImpl implements DeploymentSafeguard
             res.getValue().nextLink(), null);
     }
 
-    /**
-     * List DeploymentSafeguards by parent resource.
-     * 
-     * @param resourceUri The fully qualified Azure Resource manager identifier of the resource.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the response of a DeploymentSafeguard list operation as paginated response with {@link PagedIterable}.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.COLLECTION)
     public PagedIterable<DeploymentSafeguardInner> list(String resourceUri) {
-        return new PagedIterable<>(() -> listSinglePage(resourceUri), nextLink -> listNextSinglePage(nextLink));
+        return list(resourceUri, Context.NONE);
     }
 
-    /**
-     * List DeploymentSafeguards by parent resource.
-     * 
-     * @param resourceUri The fully qualified Azure Resource manager identifier of the resource.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the response of a DeploymentSafeguard list operation as paginated response with {@link PagedIterable}.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.COLLECTION)
     public PagedIterable<DeploymentSafeguardInner> list(String resourceUri, Context context) {
         return new PagedIterable<>(() -> listSinglePage(resourceUri, context),
@@ -647,11 +533,7 @@ public final class DeploymentSafeguardsClientImpl implements DeploymentSafeguard
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private PagedResponse<DeploymentSafeguardInner> listNextSinglePage(String nextLink) {
-        final String accept = "application/json";
-        Response<DeploymentSafeguardListResult> res
-            = service.listNextSync(nextLink, this.client.getEndpoint(), accept, Context.NONE);
-        return new PagedResponseBase<>(res.getRequest(), res.getStatusCode(), res.getHeaders(), res.getValue().value(),
-            res.getValue().nextLink(), null);
+        return listNextSinglePage(nextLink, Context.NONE);
     }
 
     /**

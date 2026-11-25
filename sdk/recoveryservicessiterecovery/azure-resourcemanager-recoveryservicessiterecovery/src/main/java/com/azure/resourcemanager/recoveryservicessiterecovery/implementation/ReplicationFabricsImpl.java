@@ -47,7 +47,7 @@ public final class ReplicationFabricsImpl implements ReplicationFabrics {
     }
 
     public void purge(String resourceGroupName, String resourceName, String fabricName) {
-        this.serviceClient().purge(resourceGroupName, resourceName, fabricName);
+        this.purge(resourceGroupName, resourceName, fabricName, Context.NONE);
     }
 
     public void purge(String resourceGroupName, String resourceName, String fabricName, Context context) {
@@ -55,8 +55,7 @@ public final class ReplicationFabricsImpl implements ReplicationFabrics {
     }
 
     public PagedIterable<Fabric> list(String resourceGroupName, String resourceName) {
-        PagedIterable<FabricInner> inner = this.serviceClient().list(resourceGroupName, resourceName);
-        return ResourceManagerUtils.mapPage(inner, inner1 -> new FabricImpl(inner1, this.manager()));
+        return this.list(resourceGroupName, resourceName, Context.NONE);
     }
 
     public PagedIterable<Fabric> list(String resourceGroupName, String resourceName, Context context) {
@@ -65,12 +64,7 @@ public final class ReplicationFabricsImpl implements ReplicationFabrics {
     }
 
     public Fabric checkConsistency(String resourceGroupName, String resourceName, String fabricName) {
-        FabricInner inner = this.serviceClient().checkConsistency(resourceGroupName, resourceName, fabricName);
-        if (inner != null) {
-            return new FabricImpl(inner, this.manager());
-        } else {
-            return null;
-        }
+        return this.checkConsistency(resourceGroupName, resourceName, fabricName, Context.NONE);
     }
 
     public Fabric checkConsistency(String resourceGroupName, String resourceName, String fabricName, Context context) {
@@ -83,7 +77,7 @@ public final class ReplicationFabricsImpl implements ReplicationFabrics {
     }
 
     public void migrateToAad(String resourceGroupName, String resourceName, String fabricName) {
-        this.serviceClient().migrateToAad(resourceGroupName, resourceName, fabricName);
+        this.migrateToAad(resourceGroupName, resourceName, fabricName, Context.NONE);
     }
 
     public void migrateToAad(String resourceGroupName, String resourceName, String fabricName, Context context) {
@@ -92,13 +86,8 @@ public final class ReplicationFabricsImpl implements ReplicationFabrics {
 
     public Fabric reassociateGateway(String resourceGroupName, String resourceName, String fabricName,
         FailoverProcessServerRequest failoverProcessServerRequest) {
-        FabricInner inner = this.serviceClient()
-            .reassociateGateway(resourceGroupName, resourceName, fabricName, failoverProcessServerRequest);
-        if (inner != null) {
-            return new FabricImpl(inner, this.manager());
-        } else {
-            return null;
-        }
+        return this.reassociateGateway(resourceGroupName, resourceName, fabricName, failoverProcessServerRequest,
+            Context.NONE);
     }
 
     public Fabric reassociateGateway(String resourceGroupName, String resourceName, String fabricName,
@@ -113,7 +102,7 @@ public final class ReplicationFabricsImpl implements ReplicationFabrics {
     }
 
     public void delete(String resourceGroupName, String resourceName, String fabricName) {
-        this.serviceClient().delete(resourceGroupName, resourceName, fabricName);
+        this.delete(resourceGroupName, resourceName, fabricName, Context.NONE);
     }
 
     public void delete(String resourceGroupName, String resourceName, String fabricName, Context context) {
@@ -122,13 +111,7 @@ public final class ReplicationFabricsImpl implements ReplicationFabrics {
 
     public Fabric renewCertificate(String resourceGroupName, String resourceName, String fabricName,
         RenewCertificateInput renewCertificate) {
-        FabricInner inner
-            = this.serviceClient().renewCertificate(resourceGroupName, resourceName, fabricName, renewCertificate);
-        if (inner != null) {
-            return new FabricImpl(inner, this.manager());
-        } else {
-            return null;
-        }
+        return this.renewCertificate(resourceGroupName, resourceName, fabricName, renewCertificate, Context.NONE);
     }
 
     public Fabric renewCertificate(String resourceGroupName, String resourceName, String fabricName,
@@ -143,7 +126,7 @@ public final class ReplicationFabricsImpl implements ReplicationFabrics {
     }
 
     public void removeInfra(String resourceGroupName, String resourceName, String fabricName) {
-        this.serviceClient().removeInfra(resourceGroupName, resourceName, fabricName);
+        this.removeInfra(resourceGroupName, resourceName, fabricName, Context.NONE);
     }
 
     public void removeInfra(String resourceGroupName, String resourceName, String fabricName, Context context) {
@@ -151,53 +134,20 @@ public final class ReplicationFabricsImpl implements ReplicationFabrics {
     }
 
     public Fabric getById(String id) {
-        String resourceGroupName = ResourceManagerUtils.getValueFromIdByParameterName(id,
-            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.RecoveryServices/vaults/{resourceName}/replicationFabrics/{fabricName}",
-            "resourceGroupName");
-        if (resourceGroupName == null) {
-            throw LOGGER.logExceptionAsError(new IllegalArgumentException(
-                String.format("The resource ID '%s' is not valid. Missing path segment 'resourceGroups'.", id)));
-        }
-        String resourceName = ResourceManagerUtils.getValueFromIdByParameterName(id,
-            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.RecoveryServices/vaults/{resourceName}/replicationFabrics/{fabricName}",
-            "resourceName");
-        if (resourceName == null) {
-            throw LOGGER.logExceptionAsError(new IllegalArgumentException(
-                String.format("The resource ID '%s' is not valid. Missing path segment 'vaults'.", id)));
-        }
-        String fabricName = ResourceManagerUtils.getValueFromIdByParameterName(id,
-            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.RecoveryServices/vaults/{resourceName}/replicationFabrics/{fabricName}",
-            "fabricName");
-        if (fabricName == null) {
-            throw LOGGER.logExceptionAsError(new IllegalArgumentException(
-                String.format("The resource ID '%s' is not valid. Missing path segment 'replicationFabrics'.", id)));
-        }
         String localFilter = null;
-        return this.getWithResponse(resourceGroupName, resourceName, fabricName, localFilter, Context.NONE).getValue();
+        return this.getByIdWithResponse(id, localFilter, Context.NONE).getValue();
     }
 
     public Response<Fabric> getByIdWithResponse(String id, String filter, Context context) {
-        String resourceGroupName = ResourceManagerUtils.getValueFromIdByParameterName(id,
+        String resourceGroupName = ResourceManagerUtils.getRequiredValueFromIdByParameterName(id,
             "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.RecoveryServices/vaults/{resourceName}/replicationFabrics/{fabricName}",
-            "resourceGroupName");
-        if (resourceGroupName == null) {
-            throw LOGGER.logExceptionAsError(new IllegalArgumentException(
-                String.format("The resource ID '%s' is not valid. Missing path segment 'resourceGroups'.", id)));
-        }
-        String resourceName = ResourceManagerUtils.getValueFromIdByParameterName(id,
+            "resourceGroupName", "resourceGroups", LOGGER);
+        String resourceName = ResourceManagerUtils.getRequiredValueFromIdByParameterName(id,
             "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.RecoveryServices/vaults/{resourceName}/replicationFabrics/{fabricName}",
-            "resourceName");
-        if (resourceName == null) {
-            throw LOGGER.logExceptionAsError(new IllegalArgumentException(
-                String.format("The resource ID '%s' is not valid. Missing path segment 'vaults'.", id)));
-        }
-        String fabricName = ResourceManagerUtils.getValueFromIdByParameterName(id,
+            "resourceName", "vaults", LOGGER);
+        String fabricName = ResourceManagerUtils.getRequiredValueFromIdByParameterName(id,
             "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.RecoveryServices/vaults/{resourceName}/replicationFabrics/{fabricName}",
-            "fabricName");
-        if (fabricName == null) {
-            throw LOGGER.logExceptionAsError(new IllegalArgumentException(
-                String.format("The resource ID '%s' is not valid. Missing path segment 'replicationFabrics'.", id)));
-        }
+            "fabricName", "replicationFabrics", LOGGER);
         return this.getWithResponse(resourceGroupName, resourceName, fabricName, filter, context);
     }
 

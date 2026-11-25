@@ -15,30 +15,30 @@ public final class RaiAcsToolDefinitionTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
         RaiAcsToolDefinition model = BinaryData.fromString(
-            "{\"id\":\"em\",\"type\":\"h\",\"description\":\"uj\",\"security_labels\":[\"wkozz\"],\"clearance\":\"ulkb\",\"alhsnvkc\":\"\\\"datafajnjwltlwtjjguk\\\"\",\"mlnwiaaomylweazu\":\"\\\"datamxzrpoa\\\"\",\"hwwn\":\"\\\"datacse\\\"\",\"ousnfepgfewe\":\"\\\"datajhlfzswpchwahf\\\"\"}")
+            "{\"id\":\"emxhzzy\",\"type\":\"vusxiv\",\"description\":\"rryveimipskdy\",\"security_labels\":[\"vfuzka\"],\"clearance\":\"jvvruxwigsyei\",\"kileplkcsmknhwtb\":\"\\\"datasmjtgrqgdg\\\"\",\"oygbdgwumgxd\":\"\\\"dataaedorvvmqf\\\"\"}")
             .toObject(RaiAcsToolDefinition.class);
-        Assertions.assertEquals("em", model.id());
-        Assertions.assertEquals("h", model.type());
-        Assertions.assertEquals("uj", model.description());
-        Assertions.assertEquals("wkozz", model.securityLabels().get(0));
-        Assertions.assertEquals("ulkb", model.clearance());
+        Assertions.assertEquals("emxhzzy", model.id());
+        Assertions.assertEquals("vusxiv", model.type());
+        Assertions.assertEquals("rryveimipskdy", model.description());
+        Assertions.assertEquals("vfuzka", model.securityLabels().get(0));
+        Assertions.assertEquals("jvvruxwigsyei", model.clearance());
     }
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
-        RaiAcsToolDefinition model = new RaiAcsToolDefinition().withId("em")
-            .withType("h")
-            .withDescription("uj")
-            .withSecurityLabels(Arrays.asList("wkozz"))
-            .withClearance("ulkb")
-            .withAdditionalProperties(mapOf("mlnwiaaomylweazu", "\"datamxzrpoa\"", "alhsnvkc",
-                "\"datafajnjwltlwtjjguk\"", "hwwn", "\"datacse\"", "ousnfepgfewe", "\"datajhlfzswpchwahf\""));
+        RaiAcsToolDefinition model = new RaiAcsToolDefinition().withId("emxhzzy")
+            .withType("vusxiv")
+            .withDescription("rryveimipskdy")
+            .withSecurityLabels(Arrays.asList("vfuzka"))
+            .withClearance("jvvruxwigsyei")
+            .withAdditionalProperties(
+                mapOf("oygbdgwumgxd", "\"dataaedorvvmqf\"", "kileplkcsmknhwtb", "\"datasmjtgrqgdg\""));
         model = BinaryData.fromObject(model).toObject(RaiAcsToolDefinition.class);
-        Assertions.assertEquals("em", model.id());
-        Assertions.assertEquals("h", model.type());
-        Assertions.assertEquals("uj", model.description());
-        Assertions.assertEquals("wkozz", model.securityLabels().get(0));
-        Assertions.assertEquals("ulkb", model.clearance());
+        Assertions.assertEquals("emxhzzy", model.id());
+        Assertions.assertEquals("vusxiv", model.type());
+        Assertions.assertEquals("rryveimipskdy", model.description());
+        Assertions.assertEquals("vfuzka", model.securityLabels().get(0));
+        Assertions.assertEquals("jvvruxwigsyei", model.clearance());
     }
 
     // Use "Map.of" if available

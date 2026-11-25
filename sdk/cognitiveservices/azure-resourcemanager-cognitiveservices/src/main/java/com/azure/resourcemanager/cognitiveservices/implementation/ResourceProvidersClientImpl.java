@@ -151,17 +151,7 @@ public final class ResourceProvidersClientImpl implements ResourceProvidersClien
             .flatMap(res -> Mono.justOrEmpty(res.getValue()));
     }
 
-    /**
-     * Check available SKUs.
-     * 
-     * @param location The location name.
-     * @param parameters The request body.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return check SKU availability result list along with {@link Response}.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Response<SkuAvailabilityListResultInner> checkSkuAvailabilityWithResponse(String location,
         CheckSkuAvailabilityParameter parameters, Context context) {
@@ -171,16 +161,7 @@ public final class ResourceProvidersClientImpl implements ResourceProvidersClien
             this.client.getSubscriptionId(), location, contentType, accept, parameters, context);
     }
 
-    /**
-     * Check available SKUs.
-     * 
-     * @param location The location name.
-     * @param parameters The request body.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return check SKU availability result list.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public SkuAvailabilityListResultInner checkSkuAvailability(String location,
         CheckSkuAvailabilityParameter parameters) {
@@ -221,16 +202,7 @@ public final class ResourceProvidersClientImpl implements ResourceProvidersClien
         return checkDomainAvailabilityWithResponseAsync(parameters).flatMap(res -> Mono.justOrEmpty(res.getValue()));
     }
 
-    /**
-     * Check whether a domain is available.
-     * 
-     * @param parameters The request body.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return domain availability along with {@link Response}.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Response<DomainAvailabilityInner>
         checkDomainAvailabilityWithResponse(CheckDomainAvailabilityParameter parameters, Context context) {
@@ -240,15 +212,7 @@ public final class ResourceProvidersClientImpl implements ResourceProvidersClien
             this.client.getSubscriptionId(), contentType, accept, parameters, context);
     }
 
-    /**
-     * Check whether a domain is available.
-     * 
-     * @param parameters The request body.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return domain availability.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public DomainAvailabilityInner checkDomainAvailability(CheckDomainAvailabilityParameter parameters) {
         return checkDomainAvailabilityWithResponse(parameters, Context.NONE).getValue();
@@ -289,16 +253,7 @@ public final class ResourceProvidersClientImpl implements ResourceProvidersClien
         return calculateModelCapacityWithResponseAsync(parameters).flatMap(res -> Mono.justOrEmpty(res.getValue()));
     }
 
-    /**
-     * Model capacity calculator.
-     * 
-     * @param parameters The request body.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return calculate Model Capacity result along with {@link Response}.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Response<CalculateModelCapacityResultInner>
         calculateModelCapacityWithResponse(CalculateModelCapacityParameter parameters, Context context) {
@@ -308,15 +263,7 @@ public final class ResourceProvidersClientImpl implements ResourceProvidersClien
             this.client.getSubscriptionId(), contentType, accept, parameters, context);
     }
 
-    /**
-     * Model capacity calculator.
-     * 
-     * @param parameters The request body.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return calculate Model Capacity result.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public CalculateModelCapacityResultInner calculateModelCapacity(CalculateModelCapacityParameter parameters) {
         return calculateModelCapacityWithResponse(parameters, Context.NONE).getValue();

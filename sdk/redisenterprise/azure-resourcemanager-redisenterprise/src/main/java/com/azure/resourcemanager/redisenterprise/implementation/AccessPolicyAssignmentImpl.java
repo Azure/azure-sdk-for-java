@@ -83,11 +83,7 @@ public final class AccessPolicyAssignmentImpl
     }
 
     public AccessPolicyAssignment create() {
-        this.innerObject = serviceManager.serviceClient()
-            .getAccessPolicyAssignments()
-            .createUpdate(resourceGroupName, clusterName, databaseName, accessPolicyAssignmentName, this.innerModel(),
-                Context.NONE);
-        return this;
+        return this.create(Context.NONE);
     }
 
     public AccessPolicyAssignment create(Context context) {
@@ -110,11 +106,7 @@ public final class AccessPolicyAssignmentImpl
     }
 
     public AccessPolicyAssignment apply() {
-        this.innerObject = serviceManager.serviceClient()
-            .getAccessPolicyAssignments()
-            .createUpdate(resourceGroupName, clusterName, databaseName, accessPolicyAssignmentName, this.innerModel(),
-                Context.NONE);
-        return this;
+        return this.apply(Context.NONE);
     }
 
     public AccessPolicyAssignment apply(Context context) {
@@ -144,11 +136,7 @@ public final class AccessPolicyAssignmentImpl
     }
 
     public AccessPolicyAssignment refresh() {
-        this.innerObject = serviceManager.serviceClient()
-            .getAccessPolicyAssignments()
-            .getWithResponse(resourceGroupName, clusterName, databaseName, accessPolicyAssignmentName, Context.NONE)
-            .getValue();
-        return this;
+        return this.refresh(Context.NONE);
     }
 
     public AccessPolicyAssignment refresh(Context context) {

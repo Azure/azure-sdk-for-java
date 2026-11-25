@@ -12,6 +12,7 @@ import com.azure.core.annotation.HeaderParam;
 import com.azure.core.annotation.Headers;
 import com.azure.core.annotation.Host;
 import com.azure.core.annotation.HostParam;
+import com.azure.core.annotation.Patch;
 import com.azure.core.annotation.PathParam;
 import com.azure.core.annotation.Post;
 import com.azure.core.annotation.Put;
@@ -36,8 +37,10 @@ import com.azure.resourcemanager.containerservice.fluent.AgentPoolsClient;
 import com.azure.resourcemanager.containerservice.fluent.models.AgentPoolAvailableVersionsInner;
 import com.azure.resourcemanager.containerservice.fluent.models.AgentPoolInner;
 import com.azure.resourcemanager.containerservice.fluent.models.AgentPoolUpgradeProfileInner;
+import com.azure.resourcemanager.containerservice.fluent.models.PoolBootstrapDataInner;
 import com.azure.resourcemanager.containerservice.implementation.models.AgentPoolListResult;
 import com.azure.resourcemanager.containerservice.models.AgentPoolDeleteMachinesParameter;
+import com.azure.resourcemanager.containerservice.models.AgentPoolUpdate;
 import java.nio.ByteBuffer;
 import reactor.core.publisher.Flux;
 import reactor.core.publisher.Mono;
@@ -123,6 +126,15 @@ public final class AgentPoolsClientImpl implements AgentPoolsClient {
             @PathParam("resourceGroupName") String resourceGroupName, @PathParam("resourceName") String resourceName,
             @PathParam("agentPoolName") String agentPoolName, Context context);
 
+        @Headers({ "Accept: application/json;q=0.9", "Content-Type: application/json" })
+        @Post("/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.ContainerService/managedClusters/{resourceName}/agentPools/{agentPoolName}/completeUpgrade")
+        @ExpectedResponses({ 202, 204 })
+        @UnexpectedResponseExceptionType(ManagementException.class)
+        Mono<Response<Flux<ByteBuffer>>> completeUpgrade(@HostParam("endpoint") String endpoint,
+            @QueryParam("api-version") String apiVersion, @PathParam("subscriptionId") String subscriptionId,
+            @PathParam("resourceGroupName") String resourceGroupName, @PathParam("resourceName") String resourceName,
+            @PathParam("agentPoolName") String agentPoolName, Context context);
+
         @Headers({ "Accept: application/json;q=0.9" })
         @Post("/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.ContainerService/managedClusters/{resourceName}/agentPools/{agentPoolName}/deleteMachines")
         @ExpectedResponses({ 202 })
@@ -141,6 +153,25 @@ public final class AgentPoolsClientImpl implements AgentPoolsClient {
             @QueryParam("api-version") String apiVersion, @PathParam("subscriptionId") String subscriptionId,
             @PathParam("resourceGroupName") String resourceGroupName, @PathParam("resourceName") String resourceName,
             @PathParam("agentPoolName") String agentPoolName, @HeaderParam("Accept") String accept, Context context);
+
+        @Headers({ "Content-Type: application/json" })
+        @Post("/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.ContainerService/managedClusters/{resourceName}/agentPools/{agentPoolName}/listBootstrapData")
+        @ExpectedResponses({ 200 })
+        @UnexpectedResponseExceptionType(ManagementException.class)
+        Mono<Response<PoolBootstrapDataInner>> listBootstrapData(@HostParam("endpoint") String endpoint,
+            @QueryParam("api-version") String apiVersion, @PathParam("subscriptionId") String subscriptionId,
+            @PathParam("resourceGroupName") String resourceGroupName, @PathParam("resourceName") String resourceName,
+            @PathParam("agentPoolName") String agentPoolName, @HeaderParam("Accept") String accept, Context context);
+
+        @Patch("/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.ContainerService/managedClusters/{resourceName}/agentPools/{agentPoolName}")
+        @ExpectedResponses({ 200, 202 })
+        @UnexpectedResponseExceptionType(ManagementException.class)
+        Mono<Response<Flux<ByteBuffer>>> update(@HostParam("endpoint") String endpoint,
+            @QueryParam("api-version") String apiVersion, @PathParam("subscriptionId") String subscriptionId,
+            @PathParam("resourceGroupName") String resourceGroupName, @PathParam("resourceName") String resourceName,
+            @PathParam("agentPoolName") String agentPoolName, @HeaderParam("if-match") String ifMatch,
+            @HeaderParam("Content-Type") String contentType, @HeaderParam("Accept") String accept,
+            @BodyParam("application/json") AgentPoolUpdate parameters, Context context);
 
         @Headers({ "Content-Type: application/json" })
         @Get("/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.ContainerService/managedClusters/{resourceName}/availableAgentPoolVersions")
@@ -169,18 +200,7 @@ public final class AgentPoolsClientImpl implements AgentPoolsClient {
             @HostParam("endpoint") String endpoint, @HeaderParam("Accept") String accept, Context context);
     }
 
-    /**
-     * Gets the specified managed cluster agent pool.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param resourceName The name of the managed cluster resource.
-     * @param agentPoolName The name of the agent pool.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the specified managed cluster agent pool along with {@link Response} on successful completion of
-     * {@link Mono}.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Response<AgentPoolInner>> getWithResponseAsync(String resourceGroupName, String resourceName,
         String agentPoolName) {
@@ -249,71 +269,27 @@ public final class AgentPoolsClientImpl implements AgentPoolsClient {
             resourceGroupName, resourceName, agentPoolName, accept, context);
     }
 
-    /**
-     * Gets the specified managed cluster agent pool.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param resourceName The name of the managed cluster resource.
-     * @param agentPoolName The name of the agent pool.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the specified managed cluster agent pool on successful completion of {@link Mono}.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<AgentPoolInner> getAsync(String resourceGroupName, String resourceName, String agentPoolName) {
         return getWithResponseAsync(resourceGroupName, resourceName, agentPoolName)
             .flatMap(res -> Mono.justOrEmpty(res.getValue()));
     }
 
-    /**
-     * Gets the specified managed cluster agent pool.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param resourceName The name of the managed cluster resource.
-     * @param agentPoolName The name of the agent pool.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the specified managed cluster agent pool along with {@link Response}.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Response<AgentPoolInner> getWithResponse(String resourceGroupName, String resourceName, String agentPoolName,
         Context context) {
         return getWithResponseAsync(resourceGroupName, resourceName, agentPoolName, context).block();
     }
 
-    /**
-     * Gets the specified managed cluster agent pool.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param resourceName The name of the managed cluster resource.
-     * @param agentPoolName The name of the agent pool.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the specified managed cluster agent pool.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public AgentPoolInner get(String resourceGroupName, String resourceName, String agentPoolName) {
         return getWithResponse(resourceGroupName, resourceName, agentPoolName, Context.NONE).getValue();
     }
 
-    /**
-     * Creates or updates an agent pool in the specified managed cluster.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param resourceName The name of the managed cluster resource.
-     * @param agentPoolName The name of the agent pool.
-     * @param parameters The agent pool to create or update.
-     * @param ifMatch The request should only proceed if an entity matches this string.
-     * @param ifNoneMatch The request should only proceed if no entity matches this string.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return agent Pool along with {@link Response} on successful completion of {@link Mono}.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Response<Flux<ByteBuffer>>> createOrUpdateWithResponseAsync(String resourceGroupName,
         String resourceName, String agentPoolName, AgentPoolInner parameters, String ifMatch, String ifNoneMatch) {
@@ -399,20 +375,7 @@ public final class AgentPoolsClientImpl implements AgentPoolsClient {
             contentType, accept, parameters, context);
     }
 
-    /**
-     * Creates or updates an agent pool in the specified managed cluster.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param resourceName The name of the managed cluster resource.
-     * @param agentPoolName The name of the agent pool.
-     * @param parameters The agent pool to create or update.
-     * @param ifMatch The request should only proceed if an entity matches this string.
-     * @param ifNoneMatch The request should only proceed if no entity matches this string.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the {@link PollerFlux} for polling of agent Pool.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public PollerFlux<PollResult<AgentPoolInner>, AgentPoolInner> beginCreateOrUpdateAsync(String resourceGroupName,
         String resourceName, String agentPoolName, AgentPoolInner parameters, String ifMatch, String ifNoneMatch) {
@@ -422,18 +385,7 @@ public final class AgentPoolsClientImpl implements AgentPoolsClient {
             AgentPoolInner.class, AgentPoolInner.class, this.client.getContext());
     }
 
-    /**
-     * Creates or updates an agent pool in the specified managed cluster.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param resourceName The name of the managed cluster resource.
-     * @param agentPoolName The name of the agent pool.
-     * @param parameters The agent pool to create or update.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the {@link PollerFlux} for polling of agent Pool.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public PollerFlux<PollResult<AgentPoolInner>, AgentPoolInner> beginCreateOrUpdateAsync(String resourceGroupName,
         String resourceName, String agentPoolName, AgentPoolInner parameters) {
@@ -471,18 +423,7 @@ public final class AgentPoolsClientImpl implements AgentPoolsClient {
             AgentPoolInner.class, AgentPoolInner.class, context);
     }
 
-    /**
-     * Creates or updates an agent pool in the specified managed cluster.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param resourceName The name of the managed cluster resource.
-     * @param agentPoolName The name of the agent pool.
-     * @param parameters The agent pool to create or update.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the {@link SyncPoller} for polling of agent Pool.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public SyncPoller<PollResult<AgentPoolInner>, AgentPoolInner> beginCreateOrUpdate(String resourceGroupName,
         String resourceName, String agentPoolName, AgentPoolInner parameters) {
@@ -493,21 +434,7 @@ public final class AgentPoolsClientImpl implements AgentPoolsClient {
             .getSyncPoller();
     }
 
-    /**
-     * Creates or updates an agent pool in the specified managed cluster.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param resourceName The name of the managed cluster resource.
-     * @param agentPoolName The name of the agent pool.
-     * @param parameters The agent pool to create or update.
-     * @param ifMatch The request should only proceed if an entity matches this string.
-     * @param ifNoneMatch The request should only proceed if no entity matches this string.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the {@link SyncPoller} for polling of agent Pool.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public SyncPoller<PollResult<AgentPoolInner>, AgentPoolInner> beginCreateOrUpdate(String resourceGroupName,
         String resourceName, String agentPoolName, AgentPoolInner parameters, String ifMatch, String ifNoneMatch,
@@ -518,20 +445,7 @@ public final class AgentPoolsClientImpl implements AgentPoolsClient {
             .getSyncPoller();
     }
 
-    /**
-     * Creates or updates an agent pool in the specified managed cluster.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param resourceName The name of the managed cluster resource.
-     * @param agentPoolName The name of the agent pool.
-     * @param parameters The agent pool to create or update.
-     * @param ifMatch The request should only proceed if an entity matches this string.
-     * @param ifNoneMatch The request should only proceed if no entity matches this string.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return agent Pool on successful completion of {@link Mono}.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<AgentPoolInner> createOrUpdateAsync(String resourceGroupName, String resourceName, String agentPoolName,
         AgentPoolInner parameters, String ifMatch, String ifNoneMatch) {
@@ -539,18 +453,7 @@ public final class AgentPoolsClientImpl implements AgentPoolsClient {
             ifNoneMatch).last().flatMap(this.client::getLroFinalResultOrError);
     }
 
-    /**
-     * Creates or updates an agent pool in the specified managed cluster.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param resourceName The name of the managed cluster resource.
-     * @param agentPoolName The name of the agent pool.
-     * @param parameters The agent pool to create or update.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return agent Pool on successful completion of {@link Mono}.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<AgentPoolInner> createOrUpdateAsync(String resourceGroupName, String resourceName, String agentPoolName,
         AgentPoolInner parameters) {
@@ -582,18 +485,7 @@ public final class AgentPoolsClientImpl implements AgentPoolsClient {
             ifNoneMatch, context).last().flatMap(this.client::getLroFinalResultOrError);
     }
 
-    /**
-     * Creates or updates an agent pool in the specified managed cluster.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param resourceName The name of the managed cluster resource.
-     * @param agentPoolName The name of the agent pool.
-     * @param parameters The agent pool to create or update.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return agent Pool.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public AgentPoolInner createOrUpdate(String resourceGroupName, String resourceName, String agentPoolName,
         AgentPoolInner parameters) {
@@ -603,21 +495,7 @@ public final class AgentPoolsClientImpl implements AgentPoolsClient {
             .block();
     }
 
-    /**
-     * Creates or updates an agent pool in the specified managed cluster.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param resourceName The name of the managed cluster resource.
-     * @param agentPoolName The name of the agent pool.
-     * @param parameters The agent pool to create or update.
-     * @param ifMatch The request should only proceed if an entity matches this string.
-     * @param ifNoneMatch The request should only proceed if no entity matches this string.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return agent Pool.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public AgentPoolInner createOrUpdate(String resourceGroupName, String resourceName, String agentPoolName,
         AgentPoolInner parameters, String ifMatch, String ifNoneMatch, Context context) {
@@ -625,20 +503,7 @@ public final class AgentPoolsClientImpl implements AgentPoolsClient {
             context).block();
     }
 
-    /**
-     * Deletes an agent pool in the specified managed cluster.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param resourceName The name of the managed cluster resource.
-     * @param agentPoolName The name of the agent pool.
-     * @param ignorePodDisruptionBudget ignore-pod-disruption-budget=true to delete those pods on a node without
-     * considering Pod Disruption Budget.
-     * @param ifMatch The request should only proceed if an entity matches this string.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the {@link Response} on successful completion of {@link Mono}.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Response<Flux<ByteBuffer>>> deleteWithResponseAsync(String resourceGroupName, String resourceName,
         String agentPoolName, Boolean ignorePodDisruptionBudget, String ifMatch) {
@@ -708,20 +573,7 @@ public final class AgentPoolsClientImpl implements AgentPoolsClient {
             resourceGroupName, resourceName, agentPoolName, ignorePodDisruptionBudget, ifMatch, context);
     }
 
-    /**
-     * Deletes an agent pool in the specified managed cluster.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param resourceName The name of the managed cluster resource.
-     * @param agentPoolName The name of the agent pool.
-     * @param ignorePodDisruptionBudget ignore-pod-disruption-budget=true to delete those pods on a node without
-     * considering Pod Disruption Budget.
-     * @param ifMatch The request should only proceed if an entity matches this string.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the {@link PollerFlux} for polling of long-running operation.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public PollerFlux<PollResult<Void>, Void> beginDeleteAsync(String resourceGroupName, String resourceName,
         String agentPoolName, Boolean ignorePodDisruptionBudget, String ifMatch) {
@@ -731,17 +583,7 @@ public final class AgentPoolsClientImpl implements AgentPoolsClient {
             this.client.getContext());
     }
 
-    /**
-     * Deletes an agent pool in the specified managed cluster.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param resourceName The name of the managed cluster resource.
-     * @param agentPoolName The name of the agent pool.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the {@link PollerFlux} for polling of long-running operation.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public PollerFlux<PollResult<Void>, Void> beginDeleteAsync(String resourceGroupName, String resourceName,
         String agentPoolName) {
@@ -778,17 +620,7 @@ public final class AgentPoolsClientImpl implements AgentPoolsClient {
             context);
     }
 
-    /**
-     * Deletes an agent pool in the specified managed cluster.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param resourceName The name of the managed cluster resource.
-     * @param agentPoolName The name of the agent pool.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the {@link SyncPoller} for polling of long-running operation.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public SyncPoller<PollResult<Void>, Void> beginDelete(String resourceGroupName, String resourceName,
         String agentPoolName) {
@@ -798,21 +630,7 @@ public final class AgentPoolsClientImpl implements AgentPoolsClient {
             .getSyncPoller();
     }
 
-    /**
-     * Deletes an agent pool in the specified managed cluster.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param resourceName The name of the managed cluster resource.
-     * @param agentPoolName The name of the agent pool.
-     * @param ignorePodDisruptionBudget ignore-pod-disruption-budget=true to delete those pods on a node without
-     * considering Pod Disruption Budget.
-     * @param ifMatch The request should only proceed if an entity matches this string.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the {@link SyncPoller} for polling of long-running operation.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public SyncPoller<PollResult<Void>, Void> beginDelete(String resourceGroupName, String resourceName,
         String agentPoolName, Boolean ignorePodDisruptionBudget, String ifMatch, Context context) {
@@ -822,20 +640,7 @@ public final class AgentPoolsClientImpl implements AgentPoolsClient {
             .getSyncPoller();
     }
 
-    /**
-     * Deletes an agent pool in the specified managed cluster.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param resourceName The name of the managed cluster resource.
-     * @param agentPoolName The name of the agent pool.
-     * @param ignorePodDisruptionBudget ignore-pod-disruption-budget=true to delete those pods on a node without
-     * considering Pod Disruption Budget.
-     * @param ifMatch The request should only proceed if an entity matches this string.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return A {@link Mono} that completes when a successful response is received.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Void> deleteAsync(String resourceGroupName, String resourceName, String agentPoolName,
         Boolean ignorePodDisruptionBudget, String ifMatch) {
@@ -844,17 +649,7 @@ public final class AgentPoolsClientImpl implements AgentPoolsClient {
             .flatMap(this.client::getLroFinalResultOrError);
     }
 
-    /**
-     * Deletes an agent pool in the specified managed cluster.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param resourceName The name of the managed cluster resource.
-     * @param agentPoolName The name of the agent pool.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return A {@link Mono} that completes when a successful response is received.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Void> deleteAsync(String resourceGroupName, String resourceName, String agentPoolName) {
         final Boolean ignorePodDisruptionBudget = null;
@@ -886,16 +681,7 @@ public final class AgentPoolsClientImpl implements AgentPoolsClient {
             context).last().flatMap(this.client::getLroFinalResultOrError);
     }
 
-    /**
-     * Deletes an agent pool in the specified managed cluster.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param resourceName The name of the managed cluster resource.
-     * @param agentPoolName The name of the agent pool.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public void delete(String resourceGroupName, String resourceName, String agentPoolName) {
         final Boolean ignorePodDisruptionBudget = null;
@@ -903,20 +689,7 @@ public final class AgentPoolsClientImpl implements AgentPoolsClient {
         deleteAsync(resourceGroupName, resourceName, agentPoolName, ignorePodDisruptionBudget, ifMatch).block();
     }
 
-    /**
-     * Deletes an agent pool in the specified managed cluster.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param resourceName The name of the managed cluster resource.
-     * @param agentPoolName The name of the agent pool.
-     * @param ignorePodDisruptionBudget ignore-pod-disruption-budget=true to delete those pods on a node without
-     * considering Pod Disruption Budget.
-     * @param ifMatch The request should only proceed if an entity matches this string.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public void delete(String resourceGroupName, String resourceName, String agentPoolName,
         Boolean ignorePodDisruptionBudget, String ifMatch, Context context) {
@@ -1000,16 +773,7 @@ public final class AgentPoolsClientImpl implements AgentPoolsClient {
                 res.getValue().value(), res.getValue().nextLink(), null));
     }
 
-    /**
-     * Gets a list of agent pools in the specified managed cluster.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param resourceName The name of the managed cluster resource.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return a list of agent pools in the specified managed cluster as paginated response with {@link PagedFlux}.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.COLLECTION)
     public PagedFlux<AgentPoolInner> listAsync(String resourceGroupName, String resourceName) {
         return new PagedFlux<>(() -> listSinglePageAsync(resourceGroupName, resourceName),
@@ -1033,52 +797,19 @@ public final class AgentPoolsClientImpl implements AgentPoolsClient {
             nextLink -> listNextSinglePageAsync(nextLink, context));
     }
 
-    /**
-     * Gets a list of agent pools in the specified managed cluster.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param resourceName The name of the managed cluster resource.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return a list of agent pools in the specified managed cluster as paginated response with {@link PagedIterable}.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.COLLECTION)
     public PagedIterable<AgentPoolInner> list(String resourceGroupName, String resourceName) {
         return new PagedIterable<>(listAsync(resourceGroupName, resourceName));
     }
 
-    /**
-     * Gets a list of agent pools in the specified managed cluster.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param resourceName The name of the managed cluster resource.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return a list of agent pools in the specified managed cluster as paginated response with {@link PagedIterable}.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.COLLECTION)
     public PagedIterable<AgentPoolInner> list(String resourceGroupName, String resourceName, Context context) {
         return new PagedIterable<>(listAsync(resourceGroupName, resourceName, context));
     }
 
-    /**
-     * Aborts last operation running on agent pool.
-     * 
-     * Aborts the currently running operation on the agent pool. The Agent Pool will be moved to a Canceling state and
-     * eventually to a Canceled state when cancellation finishes. If the operation completes before cancellation can
-     * take place, a 409 error code is returned.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param resourceName The name of the managed cluster resource.
-     * @param agentPoolName The name of the agent pool.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the {@link Response} on successful completion of {@link Mono}.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Response<Flux<ByteBuffer>>> abortLatestOperationWithResponseAsync(String resourceGroupName,
         String resourceName, String agentPoolName) {
@@ -1148,21 +879,7 @@ public final class AgentPoolsClientImpl implements AgentPoolsClient {
             this.client.getSubscriptionId(), resourceGroupName, resourceName, agentPoolName, context);
     }
 
-    /**
-     * Aborts last operation running on agent pool.
-     * 
-     * Aborts the currently running operation on the agent pool. The Agent Pool will be moved to a Canceling state and
-     * eventually to a Canceled state when cancellation finishes. If the operation completes before cancellation can
-     * take place, a 409 error code is returned.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param resourceName The name of the managed cluster resource.
-     * @param agentPoolName The name of the agent pool.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the {@link PollerFlux} for polling of long-running operation.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public PollerFlux<PollResult<Void>, Void> beginAbortLatestOperationAsync(String resourceGroupName,
         String resourceName, String agentPoolName) {
@@ -1198,43 +915,14 @@ public final class AgentPoolsClientImpl implements AgentPoolsClient {
             context);
     }
 
-    /**
-     * Aborts last operation running on agent pool.
-     * 
-     * Aborts the currently running operation on the agent pool. The Agent Pool will be moved to a Canceling state and
-     * eventually to a Canceled state when cancellation finishes. If the operation completes before cancellation can
-     * take place, a 409 error code is returned.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param resourceName The name of the managed cluster resource.
-     * @param agentPoolName The name of the agent pool.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the {@link SyncPoller} for polling of long-running operation.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public SyncPoller<PollResult<Void>, Void> beginAbortLatestOperation(String resourceGroupName, String resourceName,
         String agentPoolName) {
         return this.beginAbortLatestOperationAsync(resourceGroupName, resourceName, agentPoolName).getSyncPoller();
     }
 
-    /**
-     * Aborts last operation running on agent pool.
-     * 
-     * Aborts the currently running operation on the agent pool. The Agent Pool will be moved to a Canceling state and
-     * eventually to a Canceled state when cancellation finishes. If the operation completes before cancellation can
-     * take place, a 409 error code is returned.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param resourceName The name of the managed cluster resource.
-     * @param agentPoolName The name of the agent pool.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the {@link SyncPoller} for polling of long-running operation.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public SyncPoller<PollResult<Void>, Void> beginAbortLatestOperation(String resourceGroupName, String resourceName,
         String agentPoolName, Context context) {
@@ -1242,21 +930,7 @@ public final class AgentPoolsClientImpl implements AgentPoolsClient {
             .getSyncPoller();
     }
 
-    /**
-     * Aborts last operation running on agent pool.
-     * 
-     * Aborts the currently running operation on the agent pool. The Agent Pool will be moved to a Canceling state and
-     * eventually to a Canceled state when cancellation finishes. If the operation completes before cancellation can
-     * take place, a 409 error code is returned.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param resourceName The name of the managed cluster resource.
-     * @param agentPoolName The name of the agent pool.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return A {@link Mono} that completes when a successful response is received.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Void> abortLatestOperationAsync(String resourceGroupName, String resourceName, String agentPoolName) {
         return beginAbortLatestOperationAsync(resourceGroupName, resourceName, agentPoolName).last()
@@ -1286,31 +960,51 @@ public final class AgentPoolsClientImpl implements AgentPoolsClient {
             .flatMap(this.client::getLroFinalResultOrError);
     }
 
-    /**
-     * Aborts last operation running on agent pool.
-     * 
-     * Aborts the currently running operation on the agent pool. The Agent Pool will be moved to a Canceling state and
-     * eventually to a Canceled state when cancellation finishes. If the operation completes before cancellation can
-     * take place, a 409 error code is returned.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param resourceName The name of the managed cluster resource.
-     * @param agentPoolName The name of the agent pool.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public void abortLatestOperation(String resourceGroupName, String resourceName, String agentPoolName) {
         abortLatestOperationAsync(resourceGroupName, resourceName, agentPoolName).block();
     }
 
+    @Override
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public void abortLatestOperation(String resourceGroupName, String resourceName, String agentPoolName,
+        Context context) {
+        abortLatestOperationAsync(resourceGroupName, resourceName, agentPoolName, context).block();
+    }
+
+    @Override
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public Mono<Response<Flux<ByteBuffer>>> completeUpgradeWithResponseAsync(String resourceGroupName,
+        String resourceName, String agentPoolName) {
+        if (this.client.getEndpoint() == null) {
+            return Mono.error(
+                new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
+        }
+        if (this.client.getSubscriptionId() == null) {
+            return Mono.error(new IllegalArgumentException(
+                "Parameter this.client.getSubscriptionId() is required and cannot be null."));
+        }
+        if (resourceGroupName == null) {
+            return Mono
+                .error(new IllegalArgumentException("Parameter resourceGroupName is required and cannot be null."));
+        }
+        if (resourceName == null) {
+            return Mono.error(new IllegalArgumentException("Parameter resourceName is required and cannot be null."));
+        }
+        if (agentPoolName == null) {
+            return Mono.error(new IllegalArgumentException("Parameter agentPoolName is required and cannot be null."));
+        }
+        return FluxUtil
+            .withContext(context -> service.completeUpgrade(this.client.getEndpoint(), this.client.getApiVersion(),
+                this.client.getSubscriptionId(), resourceGroupName, resourceName, agentPoolName, context))
+            .contextWrite(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext()).readOnly()));
+    }
+
     /**
-     * Aborts last operation running on agent pool.
+     * Completes the upgrade of an agent pool.
      * 
-     * Aborts the currently running operation on the agent pool. The Agent Pool will be moved to a Canceling state and
-     * eventually to a Canceled state when cancellation finishes. If the operation completes before cancellation can
-     * take place, a 409 error code is returned.
+     * Completes the upgrade operation for the specified agent pool.
      * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param resourceName The name of the managed cluster resource.
@@ -1319,25 +1013,123 @@ public final class AgentPoolsClientImpl implements AgentPoolsClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return the {@link Response} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public void abortLatestOperation(String resourceGroupName, String resourceName, String agentPoolName,
-        Context context) {
-        abortLatestOperationAsync(resourceGroupName, resourceName, agentPoolName, context).block();
+    private Mono<Response<Flux<ByteBuffer>>> completeUpgradeWithResponseAsync(String resourceGroupName,
+        String resourceName, String agentPoolName, Context context) {
+        if (this.client.getEndpoint() == null) {
+            return Mono.error(
+                new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
+        }
+        if (this.client.getSubscriptionId() == null) {
+            return Mono.error(new IllegalArgumentException(
+                "Parameter this.client.getSubscriptionId() is required and cannot be null."));
+        }
+        if (resourceGroupName == null) {
+            return Mono
+                .error(new IllegalArgumentException("Parameter resourceGroupName is required and cannot be null."));
+        }
+        if (resourceName == null) {
+            return Mono.error(new IllegalArgumentException("Parameter resourceName is required and cannot be null."));
+        }
+        if (agentPoolName == null) {
+            return Mono.error(new IllegalArgumentException("Parameter agentPoolName is required and cannot be null."));
+        }
+        context = this.client.mergeContext(context);
+        return service.completeUpgrade(this.client.getEndpoint(), this.client.getApiVersion(),
+            this.client.getSubscriptionId(), resourceGroupName, resourceName, agentPoolName, context);
+    }
+
+    @Override
+    @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
+    public PollerFlux<PollResult<Void>, Void> beginCompleteUpgradeAsync(String resourceGroupName, String resourceName,
+        String agentPoolName) {
+        Mono<Response<Flux<ByteBuffer>>> mono
+            = completeUpgradeWithResponseAsync(resourceGroupName, resourceName, agentPoolName);
+        return this.client.<Void, Void>getLroResult(mono, this.client.getHttpPipeline(), Void.class, Void.class,
+            this.client.getContext());
     }
 
     /**
-     * Deletes specific machines in an agent pool.
+     * Completes the upgrade of an agent pool.
+     * 
+     * Completes the upgrade operation for the specified agent pool.
      * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param resourceName The name of the managed cluster resource.
      * @param agentPoolName The name of the agent pool.
-     * @param machines A list of machines from the agent pool to be deleted.
+     * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the {@link Response} on successful completion of {@link Mono}.
+     * @return the {@link PollerFlux} for polling of long-running operation.
      */
+    @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
+    private PollerFlux<PollResult<Void>, Void> beginCompleteUpgradeAsync(String resourceGroupName, String resourceName,
+        String agentPoolName, Context context) {
+        context = this.client.mergeContext(context);
+        Mono<Response<Flux<ByteBuffer>>> mono
+            = completeUpgradeWithResponseAsync(resourceGroupName, resourceName, agentPoolName, context);
+        return this.client.<Void, Void>getLroResult(mono, this.client.getHttpPipeline(), Void.class, Void.class,
+            context);
+    }
+
+    @Override
+    @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
+    public SyncPoller<PollResult<Void>, Void> beginCompleteUpgrade(String resourceGroupName, String resourceName,
+        String agentPoolName) {
+        return this.beginCompleteUpgradeAsync(resourceGroupName, resourceName, agentPoolName).getSyncPoller();
+    }
+
+    @Override
+    @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
+    public SyncPoller<PollResult<Void>, Void> beginCompleteUpgrade(String resourceGroupName, String resourceName,
+        String agentPoolName, Context context) {
+        return this.beginCompleteUpgradeAsync(resourceGroupName, resourceName, agentPoolName, context).getSyncPoller();
+    }
+
+    @Override
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public Mono<Void> completeUpgradeAsync(String resourceGroupName, String resourceName, String agentPoolName) {
+        return beginCompleteUpgradeAsync(resourceGroupName, resourceName, agentPoolName).last()
+            .flatMap(this.client::getLroFinalResultOrError);
+    }
+
+    /**
+     * Completes the upgrade of an agent pool.
+     * 
+     * Completes the upgrade operation for the specified agent pool.
+     * 
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
+     * @param resourceName The name of the managed cluster resource.
+     * @param agentPoolName The name of the agent pool.
+     * @param context The context to associate with this operation.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return A {@link Mono} that completes when a successful response is received.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    private Mono<Void> completeUpgradeAsync(String resourceGroupName, String resourceName, String agentPoolName,
+        Context context) {
+        return beginCompleteUpgradeAsync(resourceGroupName, resourceName, agentPoolName, context).last()
+            .flatMap(this.client::getLroFinalResultOrError);
+    }
+
+    @Override
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public void completeUpgrade(String resourceGroupName, String resourceName, String agentPoolName) {
+        completeUpgradeAsync(resourceGroupName, resourceName, agentPoolName).block();
+    }
+
+    @Override
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public void completeUpgrade(String resourceGroupName, String resourceName, String agentPoolName, Context context) {
+        completeUpgradeAsync(resourceGroupName, resourceName, agentPoolName, context).block();
+    }
+
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Response<Flux<ByteBuffer>>> deleteMachinesWithResponseAsync(String resourceGroupName,
         String resourceName, String agentPoolName, AgentPoolDeleteMachinesParameter machines) {
@@ -1418,18 +1210,7 @@ public final class AgentPoolsClientImpl implements AgentPoolsClient {
             context);
     }
 
-    /**
-     * Deletes specific machines in an agent pool.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param resourceName The name of the managed cluster resource.
-     * @param agentPoolName The name of the agent pool.
-     * @param machines A list of machines from the agent pool to be deleted.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the {@link PollerFlux} for polling of long-running operation.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public PollerFlux<PollResult<Void>, Void> beginDeleteMachinesAsync(String resourceGroupName, String resourceName,
         String agentPoolName, AgentPoolDeleteMachinesParameter machines) {
@@ -1462,37 +1243,14 @@ public final class AgentPoolsClientImpl implements AgentPoolsClient {
             context);
     }
 
-    /**
-     * Deletes specific machines in an agent pool.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param resourceName The name of the managed cluster resource.
-     * @param agentPoolName The name of the agent pool.
-     * @param machines A list of machines from the agent pool to be deleted.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the {@link SyncPoller} for polling of long-running operation.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public SyncPoller<PollResult<Void>, Void> beginDeleteMachines(String resourceGroupName, String resourceName,
         String agentPoolName, AgentPoolDeleteMachinesParameter machines) {
         return this.beginDeleteMachinesAsync(resourceGroupName, resourceName, agentPoolName, machines).getSyncPoller();
     }
 
-    /**
-     * Deletes specific machines in an agent pool.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param resourceName The name of the managed cluster resource.
-     * @param agentPoolName The name of the agent pool.
-     * @param machines A list of machines from the agent pool to be deleted.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the {@link SyncPoller} for polling of long-running operation.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public SyncPoller<PollResult<Void>, Void> beginDeleteMachines(String resourceGroupName, String resourceName,
         String agentPoolName, AgentPoolDeleteMachinesParameter machines, Context context) {
@@ -1500,18 +1258,7 @@ public final class AgentPoolsClientImpl implements AgentPoolsClient {
             .getSyncPoller();
     }
 
-    /**
-     * Deletes specific machines in an agent pool.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param resourceName The name of the managed cluster resource.
-     * @param agentPoolName The name of the agent pool.
-     * @param machines A list of machines from the agent pool to be deleted.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return A {@link Mono} that completes when a successful response is received.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Void> deleteMachinesAsync(String resourceGroupName, String resourceName, String agentPoolName,
         AgentPoolDeleteMachinesParameter machines) {
@@ -1539,56 +1286,21 @@ public final class AgentPoolsClientImpl implements AgentPoolsClient {
             .flatMap(this.client::getLroFinalResultOrError);
     }
 
-    /**
-     * Deletes specific machines in an agent pool.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param resourceName The name of the managed cluster resource.
-     * @param agentPoolName The name of the agent pool.
-     * @param machines A list of machines from the agent pool to be deleted.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public void deleteMachines(String resourceGroupName, String resourceName, String agentPoolName,
         AgentPoolDeleteMachinesParameter machines) {
         deleteMachinesAsync(resourceGroupName, resourceName, agentPoolName, machines).block();
     }
 
-    /**
-     * Deletes specific machines in an agent pool.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param resourceName The name of the managed cluster resource.
-     * @param agentPoolName The name of the agent pool.
-     * @param machines A list of machines from the agent pool to be deleted.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public void deleteMachines(String resourceGroupName, String resourceName, String agentPoolName,
         AgentPoolDeleteMachinesParameter machines, Context context) {
         deleteMachinesAsync(resourceGroupName, resourceName, agentPoolName, machines, context).block();
     }
 
-    /**
-     * Upgrades the node image version of an agent pool to the latest.
-     * 
-     * Upgrading the node image version of an agent pool applies the newest OS and runtime updates to the nodes. AKS
-     * provides one new image per week with the latest updates. For more details on node image versions, see:
-     * https://docs.microsoft.com/azure/aks/node-image-upgrade.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param resourceName The name of the managed cluster resource.
-     * @param agentPoolName The name of the agent pool.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return agent Pool along with {@link Response} on successful completion of {@link Mono}.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Response<Flux<ByteBuffer>>> upgradeNodeImageVersionWithResponseAsync(String resourceGroupName,
         String resourceName, String agentPoolName) {
@@ -1661,21 +1373,7 @@ public final class AgentPoolsClientImpl implements AgentPoolsClient {
             this.client.getSubscriptionId(), resourceGroupName, resourceName, agentPoolName, accept, context);
     }
 
-    /**
-     * Upgrades the node image version of an agent pool to the latest.
-     * 
-     * Upgrading the node image version of an agent pool applies the newest OS and runtime updates to the nodes. AKS
-     * provides one new image per week with the latest updates. For more details on node image versions, see:
-     * https://docs.microsoft.com/azure/aks/node-image-upgrade.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param resourceName The name of the managed cluster resource.
-     * @param agentPoolName The name of the agent pool.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the {@link PollerFlux} for polling of agent Pool.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public PollerFlux<PollResult<Void>, Void> beginUpgradeNodeImageVersionAsync(String resourceGroupName,
         String resourceName, String agentPoolName) {
@@ -1711,43 +1409,14 @@ public final class AgentPoolsClientImpl implements AgentPoolsClient {
             context);
     }
 
-    /**
-     * Upgrades the node image version of an agent pool to the latest.
-     * 
-     * Upgrading the node image version of an agent pool applies the newest OS and runtime updates to the nodes. AKS
-     * provides one new image per week with the latest updates. For more details on node image versions, see:
-     * https://docs.microsoft.com/azure/aks/node-image-upgrade.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param resourceName The name of the managed cluster resource.
-     * @param agentPoolName The name of the agent pool.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the {@link SyncPoller} for polling of agent Pool.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public SyncPoller<PollResult<Void>, Void> beginUpgradeNodeImageVersion(String resourceGroupName,
         String resourceName, String agentPoolName) {
         return this.beginUpgradeNodeImageVersionAsync(resourceGroupName, resourceName, agentPoolName).getSyncPoller();
     }
 
-    /**
-     * Upgrades the node image version of an agent pool to the latest.
-     * 
-     * Upgrading the node image version of an agent pool applies the newest OS and runtime updates to the nodes. AKS
-     * provides one new image per week with the latest updates. For more details on node image versions, see:
-     * https://docs.microsoft.com/azure/aks/node-image-upgrade.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param resourceName The name of the managed cluster resource.
-     * @param agentPoolName The name of the agent pool.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the {@link SyncPoller} for polling of agent Pool.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public SyncPoller<PollResult<Void>, Void> beginUpgradeNodeImageVersion(String resourceGroupName,
         String resourceName, String agentPoolName, Context context) {
@@ -1755,21 +1424,7 @@ public final class AgentPoolsClientImpl implements AgentPoolsClient {
             .getSyncPoller();
     }
 
-    /**
-     * Upgrades the node image version of an agent pool to the latest.
-     * 
-     * Upgrading the node image version of an agent pool applies the newest OS and runtime updates to the nodes. AKS
-     * provides one new image per week with the latest updates. For more details on node image versions, see:
-     * https://docs.microsoft.com/azure/aks/node-image-upgrade.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param resourceName The name of the managed cluster resource.
-     * @param agentPoolName The name of the agent pool.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return agent Pool on successful completion of {@link Mono}.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Void> upgradeNodeImageVersionAsync(String resourceGroupName, String resourceName,
         String agentPoolName) {
@@ -1800,31 +1455,52 @@ public final class AgentPoolsClientImpl implements AgentPoolsClient {
             .flatMap(this.client::getLroFinalResultOrError);
     }
 
-    /**
-     * Upgrades the node image version of an agent pool to the latest.
-     * 
-     * Upgrading the node image version of an agent pool applies the newest OS and runtime updates to the nodes. AKS
-     * provides one new image per week with the latest updates. For more details on node image versions, see:
-     * https://docs.microsoft.com/azure/aks/node-image-upgrade.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param resourceName The name of the managed cluster resource.
-     * @param agentPoolName The name of the agent pool.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public void upgradeNodeImageVersion(String resourceGroupName, String resourceName, String agentPoolName) {
         upgradeNodeImageVersionAsync(resourceGroupName, resourceName, agentPoolName).block();
     }
 
+    @Override
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public void upgradeNodeImageVersion(String resourceGroupName, String resourceName, String agentPoolName,
+        Context context) {
+        upgradeNodeImageVersionAsync(resourceGroupName, resourceName, agentPoolName, context).block();
+    }
+
+    @Override
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public Mono<Response<PoolBootstrapDataInner>> listBootstrapDataWithResponseAsync(String resourceGroupName,
+        String resourceName, String agentPoolName) {
+        if (this.client.getEndpoint() == null) {
+            return Mono.error(
+                new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
+        }
+        if (this.client.getSubscriptionId() == null) {
+            return Mono.error(new IllegalArgumentException(
+                "Parameter this.client.getSubscriptionId() is required and cannot be null."));
+        }
+        if (resourceGroupName == null) {
+            return Mono
+                .error(new IllegalArgumentException("Parameter resourceGroupName is required and cannot be null."));
+        }
+        if (resourceName == null) {
+            return Mono.error(new IllegalArgumentException("Parameter resourceName is required and cannot be null."));
+        }
+        if (agentPoolName == null) {
+            return Mono.error(new IllegalArgumentException("Parameter agentPoolName is required and cannot be null."));
+        }
+        final String accept = "application/json";
+        return FluxUtil
+            .withContext(context -> service.listBootstrapData(this.client.getEndpoint(), this.client.getApiVersion(),
+                this.client.getSubscriptionId(), resourceGroupName, resourceName, agentPoolName, accept, context))
+            .contextWrite(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext()).readOnly()));
+    }
+
     /**
-     * Upgrades the node image version of an agent pool to the latest.
+     * Lists bootstrap data for a FlexNode agent pool.
      * 
-     * Upgrading the node image version of an agent pool applies the newest OS and runtime updates to the nodes. AKS
-     * provides one new image per week with the latest updates. For more details on node image versions, see:
-     * https://docs.microsoft.com/azure/aks/node-image-upgrade.
+     * Returns pool-level bootstrap configuration for FlexNode machines.
      * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param resourceName The name of the managed cluster resource.
@@ -1833,29 +1509,260 @@ public final class AgentPoolsClientImpl implements AgentPoolsClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return bootstrap configuration for a FlexNode pool along with {@link Response} on successful completion of
+     * {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public void upgradeNodeImageVersion(String resourceGroupName, String resourceName, String agentPoolName,
-        Context context) {
-        upgradeNodeImageVersionAsync(resourceGroupName, resourceName, agentPoolName, context).block();
+    private Mono<Response<PoolBootstrapDataInner>> listBootstrapDataWithResponseAsync(String resourceGroupName,
+        String resourceName, String agentPoolName, Context context) {
+        if (this.client.getEndpoint() == null) {
+            return Mono.error(
+                new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
+        }
+        if (this.client.getSubscriptionId() == null) {
+            return Mono.error(new IllegalArgumentException(
+                "Parameter this.client.getSubscriptionId() is required and cannot be null."));
+        }
+        if (resourceGroupName == null) {
+            return Mono
+                .error(new IllegalArgumentException("Parameter resourceGroupName is required and cannot be null."));
+        }
+        if (resourceName == null) {
+            return Mono.error(new IllegalArgumentException("Parameter resourceName is required and cannot be null."));
+        }
+        if (agentPoolName == null) {
+            return Mono.error(new IllegalArgumentException("Parameter agentPoolName is required and cannot be null."));
+        }
+        final String accept = "application/json";
+        context = this.client.mergeContext(context);
+        return service.listBootstrapData(this.client.getEndpoint(), this.client.getApiVersion(),
+            this.client.getSubscriptionId(), resourceGroupName, resourceName, agentPoolName, accept, context);
+    }
+
+    @Override
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public Mono<PoolBootstrapDataInner> listBootstrapDataAsync(String resourceGroupName, String resourceName,
+        String agentPoolName) {
+        return listBootstrapDataWithResponseAsync(resourceGroupName, resourceName, agentPoolName)
+            .flatMap(res -> Mono.justOrEmpty(res.getValue()));
+    }
+
+    @Override
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public Response<PoolBootstrapDataInner> listBootstrapDataWithResponse(String resourceGroupName, String resourceName,
+        String agentPoolName, Context context) {
+        return listBootstrapDataWithResponseAsync(resourceGroupName, resourceName, agentPoolName, context).block();
+    }
+
+    @Override
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public PoolBootstrapDataInner listBootstrapData(String resourceGroupName, String resourceName,
+        String agentPoolName) {
+        return listBootstrapDataWithResponse(resourceGroupName, resourceName, agentPoolName, Context.NONE).getValue();
+    }
+
+    @Override
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public Mono<Response<Flux<ByteBuffer>>> updateWithResponseAsync(String resourceGroupName, String resourceName,
+        String agentPoolName, AgentPoolUpdate parameters, String ifMatch) {
+        if (this.client.getEndpoint() == null) {
+            return Mono.error(
+                new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
+        }
+        if (this.client.getSubscriptionId() == null) {
+            return Mono.error(new IllegalArgumentException(
+                "Parameter this.client.getSubscriptionId() is required and cannot be null."));
+        }
+        if (resourceGroupName == null) {
+            return Mono
+                .error(new IllegalArgumentException("Parameter resourceGroupName is required and cannot be null."));
+        }
+        if (resourceName == null) {
+            return Mono.error(new IllegalArgumentException("Parameter resourceName is required and cannot be null."));
+        }
+        if (agentPoolName == null) {
+            return Mono.error(new IllegalArgumentException("Parameter agentPoolName is required and cannot be null."));
+        }
+        if (parameters == null) {
+            return Mono.error(new IllegalArgumentException("Parameter parameters is required and cannot be null."));
+        } else {
+            parameters.validate();
+        }
+        final String contentType = "application/json";
+        final String accept = "application/json";
+        return FluxUtil
+            .withContext(context -> service.update(this.client.getEndpoint(), this.client.getApiVersion(),
+                this.client.getSubscriptionId(), resourceGroupName, resourceName, agentPoolName, ifMatch, contentType,
+                accept, parameters, context))
+            .contextWrite(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext()).readOnly()));
     }
 
     /**
-     * Gets a list of supported Kubernetes versions for the specified agent pool.
-     * 
-     * See [supported Kubernetes versions](https://docs.microsoft.com/azure/aks/supported-kubernetes-versions) for more
-     * details about the version lifecycle.
+     * Updates an agent pool in the specified managed cluster. Visit https://aka.ms/aks/concurrent-node-operations for
+     * more information.
      * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param resourceName The name of the managed cluster resource.
+     * @param agentPoolName The name of the agent pool.
+     * @param parameters The resource properties to be updated.
+     * @param ifMatch The request should only proceed if an entity matches this string.
+     * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return a list of supported Kubernetes versions for the specified agent pool.
-     * 
-     * See [supported Kubernetes versions](https://docs.microsoft.com/azure/aks/supported-kubernetes-versions) for more
-     * details about the version lifecycle along with {@link Response} on successful completion of {@link Mono}.
+     * @return agent Pool along with {@link Response} on successful completion of {@link Mono}.
      */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    private Mono<Response<Flux<ByteBuffer>>> updateWithResponseAsync(String resourceGroupName, String resourceName,
+        String agentPoolName, AgentPoolUpdate parameters, String ifMatch, Context context) {
+        if (this.client.getEndpoint() == null) {
+            return Mono.error(
+                new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
+        }
+        if (this.client.getSubscriptionId() == null) {
+            return Mono.error(new IllegalArgumentException(
+                "Parameter this.client.getSubscriptionId() is required and cannot be null."));
+        }
+        if (resourceGroupName == null) {
+            return Mono
+                .error(new IllegalArgumentException("Parameter resourceGroupName is required and cannot be null."));
+        }
+        if (resourceName == null) {
+            return Mono.error(new IllegalArgumentException("Parameter resourceName is required and cannot be null."));
+        }
+        if (agentPoolName == null) {
+            return Mono.error(new IllegalArgumentException("Parameter agentPoolName is required and cannot be null."));
+        }
+        if (parameters == null) {
+            return Mono.error(new IllegalArgumentException("Parameter parameters is required and cannot be null."));
+        } else {
+            parameters.validate();
+        }
+        final String contentType = "application/json";
+        final String accept = "application/json";
+        context = this.client.mergeContext(context);
+        return service.update(this.client.getEndpoint(), this.client.getApiVersion(), this.client.getSubscriptionId(),
+            resourceGroupName, resourceName, agentPoolName, ifMatch, contentType, accept, parameters, context);
+    }
+
+    @Override
+    @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
+    public PollerFlux<PollResult<AgentPoolInner>, AgentPoolInner> beginUpdateAsync(String resourceGroupName,
+        String resourceName, String agentPoolName, AgentPoolUpdate parameters, String ifMatch) {
+        Mono<Response<Flux<ByteBuffer>>> mono
+            = updateWithResponseAsync(resourceGroupName, resourceName, agentPoolName, parameters, ifMatch);
+        return this.client.<AgentPoolInner, AgentPoolInner>getLroResult(mono, this.client.getHttpPipeline(),
+            AgentPoolInner.class, AgentPoolInner.class, this.client.getContext());
+    }
+
+    @Override
+    @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
+    public PollerFlux<PollResult<AgentPoolInner>, AgentPoolInner> beginUpdateAsync(String resourceGroupName,
+        String resourceName, String agentPoolName, AgentPoolUpdate parameters) {
+        final String ifMatch = null;
+        Mono<Response<Flux<ByteBuffer>>> mono
+            = updateWithResponseAsync(resourceGroupName, resourceName, agentPoolName, parameters, ifMatch);
+        return this.client.<AgentPoolInner, AgentPoolInner>getLroResult(mono, this.client.getHttpPipeline(),
+            AgentPoolInner.class, AgentPoolInner.class, this.client.getContext());
+    }
+
+    /**
+     * Updates an agent pool in the specified managed cluster. Visit https://aka.ms/aks/concurrent-node-operations for
+     * more information.
+     * 
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
+     * @param resourceName The name of the managed cluster resource.
+     * @param agentPoolName The name of the agent pool.
+     * @param parameters The resource properties to be updated.
+     * @param ifMatch The request should only proceed if an entity matches this string.
+     * @param context The context to associate with this operation.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return the {@link PollerFlux} for polling of agent Pool.
+     */
+    @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
+    private PollerFlux<PollResult<AgentPoolInner>, AgentPoolInner> beginUpdateAsync(String resourceGroupName,
+        String resourceName, String agentPoolName, AgentPoolUpdate parameters, String ifMatch, Context context) {
+        context = this.client.mergeContext(context);
+        Mono<Response<Flux<ByteBuffer>>> mono
+            = updateWithResponseAsync(resourceGroupName, resourceName, agentPoolName, parameters, ifMatch, context);
+        return this.client.<AgentPoolInner, AgentPoolInner>getLroResult(mono, this.client.getHttpPipeline(),
+            AgentPoolInner.class, AgentPoolInner.class, context);
+    }
+
+    @Override
+    @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
+    public SyncPoller<PollResult<AgentPoolInner>, AgentPoolInner> beginUpdate(String resourceGroupName,
+        String resourceName, String agentPoolName, AgentPoolUpdate parameters) {
+        final String ifMatch = null;
+        return this.beginUpdateAsync(resourceGroupName, resourceName, agentPoolName, parameters, ifMatch)
+            .getSyncPoller();
+    }
+
+    @Override
+    @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
+    public SyncPoller<PollResult<AgentPoolInner>, AgentPoolInner> beginUpdate(String resourceGroupName,
+        String resourceName, String agentPoolName, AgentPoolUpdate parameters, String ifMatch, Context context) {
+        return this.beginUpdateAsync(resourceGroupName, resourceName, agentPoolName, parameters, ifMatch, context)
+            .getSyncPoller();
+    }
+
+    @Override
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public Mono<AgentPoolInner> updateAsync(String resourceGroupName, String resourceName, String agentPoolName,
+        AgentPoolUpdate parameters, String ifMatch) {
+        return beginUpdateAsync(resourceGroupName, resourceName, agentPoolName, parameters, ifMatch).last()
+            .flatMap(this.client::getLroFinalResultOrError);
+    }
+
+    @Override
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public Mono<AgentPoolInner> updateAsync(String resourceGroupName, String resourceName, String agentPoolName,
+        AgentPoolUpdate parameters) {
+        final String ifMatch = null;
+        return beginUpdateAsync(resourceGroupName, resourceName, agentPoolName, parameters, ifMatch).last()
+            .flatMap(this.client::getLroFinalResultOrError);
+    }
+
+    /**
+     * Updates an agent pool in the specified managed cluster. Visit https://aka.ms/aks/concurrent-node-operations for
+     * more information.
+     * 
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
+     * @param resourceName The name of the managed cluster resource.
+     * @param agentPoolName The name of the agent pool.
+     * @param parameters The resource properties to be updated.
+     * @param ifMatch The request should only proceed if an entity matches this string.
+     * @param context The context to associate with this operation.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return agent Pool on successful completion of {@link Mono}.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    private Mono<AgentPoolInner> updateAsync(String resourceGroupName, String resourceName, String agentPoolName,
+        AgentPoolUpdate parameters, String ifMatch, Context context) {
+        return beginUpdateAsync(resourceGroupName, resourceName, agentPoolName, parameters, ifMatch, context).last()
+            .flatMap(this.client::getLroFinalResultOrError);
+    }
+
+    @Override
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public AgentPoolInner update(String resourceGroupName, String resourceName, String agentPoolName,
+        AgentPoolUpdate parameters) {
+        final String ifMatch = null;
+        return updateAsync(resourceGroupName, resourceName, agentPoolName, parameters, ifMatch).block();
+    }
+
+    @Override
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public AgentPoolInner update(String resourceGroupName, String resourceName, String agentPoolName,
+        AgentPoolUpdate parameters, String ifMatch, Context context) {
+        return updateAsync(resourceGroupName, resourceName, agentPoolName, parameters, ifMatch, context).block();
+    }
+
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Response<AgentPoolAvailableVersionsInner>>
         getAvailableAgentPoolVersionsWithResponseAsync(String resourceGroupName, String resourceName) {
@@ -1923,22 +1830,7 @@ public final class AgentPoolsClientImpl implements AgentPoolsClient {
             this.client.getSubscriptionId(), resourceGroupName, resourceName, accept, context);
     }
 
-    /**
-     * Gets a list of supported Kubernetes versions for the specified agent pool.
-     * 
-     * See [supported Kubernetes versions](https://docs.microsoft.com/azure/aks/supported-kubernetes-versions) for more
-     * details about the version lifecycle.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param resourceName The name of the managed cluster resource.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return a list of supported Kubernetes versions for the specified agent pool.
-     * 
-     * See [supported Kubernetes versions](https://docs.microsoft.com/azure/aks/supported-kubernetes-versions) for more
-     * details about the version lifecycle on successful completion of {@link Mono}.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<AgentPoolAvailableVersionsInner> getAvailableAgentPoolVersionsAsync(String resourceGroupName,
         String resourceName) {
@@ -1946,63 +1838,21 @@ public final class AgentPoolsClientImpl implements AgentPoolsClient {
             .flatMap(res -> Mono.justOrEmpty(res.getValue()));
     }
 
-    /**
-     * Gets a list of supported Kubernetes versions for the specified agent pool.
-     * 
-     * See [supported Kubernetes versions](https://docs.microsoft.com/azure/aks/supported-kubernetes-versions) for more
-     * details about the version lifecycle.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param resourceName The name of the managed cluster resource.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return a list of supported Kubernetes versions for the specified agent pool.
-     * 
-     * See [supported Kubernetes versions](https://docs.microsoft.com/azure/aks/supported-kubernetes-versions) for more
-     * details about the version lifecycle along with {@link Response}.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Response<AgentPoolAvailableVersionsInner> getAvailableAgentPoolVersionsWithResponse(String resourceGroupName,
         String resourceName, Context context) {
         return getAvailableAgentPoolVersionsWithResponseAsync(resourceGroupName, resourceName, context).block();
     }
 
-    /**
-     * Gets a list of supported Kubernetes versions for the specified agent pool.
-     * 
-     * See [supported Kubernetes versions](https://docs.microsoft.com/azure/aks/supported-kubernetes-versions) for more
-     * details about the version lifecycle.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param resourceName The name of the managed cluster resource.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return a list of supported Kubernetes versions for the specified agent pool.
-     * 
-     * See [supported Kubernetes versions](https://docs.microsoft.com/azure/aks/supported-kubernetes-versions) for more
-     * details about the version lifecycle.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public AgentPoolAvailableVersionsInner getAvailableAgentPoolVersions(String resourceGroupName,
         String resourceName) {
         return getAvailableAgentPoolVersionsWithResponse(resourceGroupName, resourceName, Context.NONE).getValue();
     }
 
-    /**
-     * Gets the upgrade profile for an agent pool.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param resourceName The name of the managed cluster resource.
-     * @param agentPoolName The name of the agent pool.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the upgrade profile for an agent pool along with {@link Response} on successful completion of
-     * {@link Mono}.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Response<AgentPoolUpgradeProfileInner>> getUpgradeProfileWithResponseAsync(String resourceGroupName,
         String resourceName, String agentPoolName) {
@@ -2071,17 +1921,7 @@ public final class AgentPoolsClientImpl implements AgentPoolsClient {
             this.client.getSubscriptionId(), resourceGroupName, resourceName, agentPoolName, accept, context);
     }
 
-    /**
-     * Gets the upgrade profile for an agent pool.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param resourceName The name of the managed cluster resource.
-     * @param agentPoolName The name of the agent pool.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the upgrade profile for an agent pool on successful completion of {@link Mono}.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<AgentPoolUpgradeProfileInner> getUpgradeProfileAsync(String resourceGroupName, String resourceName,
         String agentPoolName) {
@@ -2089,35 +1929,14 @@ public final class AgentPoolsClientImpl implements AgentPoolsClient {
             .flatMap(res -> Mono.justOrEmpty(res.getValue()));
     }
 
-    /**
-     * Gets the upgrade profile for an agent pool.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param resourceName The name of the managed cluster resource.
-     * @param agentPoolName The name of the agent pool.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the upgrade profile for an agent pool along with {@link Response}.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Response<AgentPoolUpgradeProfileInner> getUpgradeProfileWithResponse(String resourceGroupName,
         String resourceName, String agentPoolName, Context context) {
         return getUpgradeProfileWithResponseAsync(resourceGroupName, resourceName, agentPoolName, context).block();
     }
 
-    /**
-     * Gets the upgrade profile for an agent pool.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param resourceName The name of the managed cluster resource.
-     * @param agentPoolName The name of the agent pool.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the upgrade profile for an agent pool.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public AgentPoolUpgradeProfileInner getUpgradeProfile(String resourceGroupName, String resourceName,
         String agentPoolName) {

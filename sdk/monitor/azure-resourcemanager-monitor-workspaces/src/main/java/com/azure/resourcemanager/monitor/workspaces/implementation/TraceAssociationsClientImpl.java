@@ -205,19 +205,7 @@ public final class TraceAssociationsClientImpl implements TraceAssociationsClien
             .flatMap(res -> Mono.justOrEmpty(res.getValue()));
     }
 
-    /**
-     * Gets the trace association at the resource scope.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param providerName The provider namespace of the target resource.
-     * @param providerType The resource type of the target resource.
-     * @param resourceName The name of the target resource.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the trace association at the resource scope along with {@link Response}.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Response<TraceAssociationResourceInner> getWithResponse(String resourceGroupName, String providerName,
         String providerType, String resourceName, Context context) {
@@ -226,18 +214,7 @@ public final class TraceAssociationsClientImpl implements TraceAssociationsClien
             resourceGroupName, providerName, providerType, resourceName, accept, context);
     }
 
-    /**
-     * Gets the trace association at the resource scope.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param providerName The provider namespace of the target resource.
-     * @param providerType The resource type of the target resource.
-     * @param resourceName The name of the target resource.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the trace association at the resource scope.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public TraceAssociationResourceInner get(String resourceGroupName, String providerName, String providerType,
         String resourceName) {
@@ -291,21 +268,7 @@ public final class TraceAssociationsClientImpl implements TraceAssociationsClien
             .flatMap(res -> Mono.justOrEmpty(res.getValue()));
     }
 
-    /**
-     * Creates or replaces the trace association at the resource scope.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param providerName The provider namespace of the target resource.
-     * @param providerType The resource type of the target resource.
-     * @param resourceName The name of the target resource.
-     * @param resource Resource create parameters.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return an association between an Azure resource scope and an Azure Monitor Workspace along with
-     * {@link Response}.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Response<TraceAssociationResourceInner> createOrUpdateWithResponse(String resourceGroupName,
         String providerName, String providerType, String resourceName, TraceAssociationResourceInner resource,
@@ -317,19 +280,7 @@ public final class TraceAssociationsClientImpl implements TraceAssociationsClien
             accept, resource, context);
     }
 
-    /**
-     * Creates or replaces the trace association at the resource scope.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param providerName The provider namespace of the target resource.
-     * @param providerType The resource type of the target resource.
-     * @param resourceName The name of the target resource.
-     * @param resource Resource create parameters.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return an association between an Azure resource scope and an Azure Monitor Workspace.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public TraceAssociationResourceInner createOrUpdate(String resourceGroupName, String providerName,
         String providerType, String resourceName, TraceAssociationResourceInner resource) {
@@ -377,19 +328,7 @@ public final class TraceAssociationsClientImpl implements TraceAssociationsClien
             .flatMap(ignored -> Mono.empty());
     }
 
-    /**
-     * Deletes the trace association at the resource scope.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param providerName The provider namespace of the target resource.
-     * @param providerType The resource type of the target resource.
-     * @param resourceName The name of the target resource.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the {@link Response}.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Response<Void> deleteWithResponse(String resourceGroupName, String providerName, String providerType,
         String resourceName, Context context) {
@@ -397,17 +336,7 @@ public final class TraceAssociationsClientImpl implements TraceAssociationsClien
             this.client.getSubscriptionId(), resourceGroupName, providerName, providerType, resourceName, context);
     }
 
-    /**
-     * Deletes the trace association at the resource scope.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param providerName The provider namespace of the target resource.
-     * @param providerType The resource type of the target resource.
-     * @param resourceName The name of the target resource.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public void delete(String resourceGroupName, String providerName, String providerType, String resourceName) {
         deleteWithResponse(resourceGroupName, providerName, providerType, resourceName, Context.NONE);
@@ -473,12 +402,7 @@ public final class TraceAssociationsClientImpl implements TraceAssociationsClien
     @ServiceMethod(returns = ReturnType.SINGLE)
     private PagedResponse<TraceAssociationResourceInner> listSinglePage(String resourceGroupName, String providerName,
         String providerType, String resourceName) {
-        final String accept = "application/json";
-        Response<TraceAssociationResourceListResult> res
-            = service.listSync(this.client.getEndpoint(), this.client.getApiVersion(), this.client.getSubscriptionId(),
-                resourceGroupName, providerName, providerType, resourceName, accept, Context.NONE);
-        return new PagedResponseBase<>(res.getRequest(), res.getStatusCode(), res.getHeaders(), res.getValue().value(),
-            res.getValue().nextLink(), null);
+        return listSinglePage(resourceGroupName, providerName, providerType, resourceName, Context.NONE);
     }
 
     /**
@@ -505,40 +429,14 @@ public final class TraceAssociationsClientImpl implements TraceAssociationsClien
             res.getValue().nextLink(), null);
     }
 
-    /**
-     * Lists the trace associations that apply to the resource scope.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param providerName The provider namespace of the target resource.
-     * @param providerType The resource type of the target resource.
-     * @param resourceName The name of the target resource.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the response of a TraceAssociationResource list operation as paginated response with
-     * {@link PagedIterable}.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.COLLECTION)
     public PagedIterable<TraceAssociationResourceInner> list(String resourceGroupName, String providerName,
         String providerType, String resourceName) {
-        return new PagedIterable<>(() -> listSinglePage(resourceGroupName, providerName, providerType, resourceName),
-            nextLink -> listNextSinglePage(nextLink));
+        return list(resourceGroupName, providerName, providerType, resourceName, Context.NONE);
     }
 
-    /**
-     * Lists the trace associations that apply to the resource scope.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param providerName The provider namespace of the target resource.
-     * @param providerType The resource type of the target resource.
-     * @param resourceName The name of the target resource.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the response of a TraceAssociationResource list operation as paginated response with
-     * {@link PagedIterable}.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.COLLECTION)
     public PagedIterable<TraceAssociationResourceInner> list(String resourceGroupName, String providerName,
         String providerType, String resourceName, Context context) {
@@ -577,11 +475,7 @@ public final class TraceAssociationsClientImpl implements TraceAssociationsClien
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private PagedResponse<TraceAssociationResourceInner> listNextSinglePage(String nextLink) {
-        final String accept = "application/json";
-        Response<TraceAssociationResourceListResult> res
-            = service.listNextSync(nextLink, this.client.getEndpoint(), accept, Context.NONE);
-        return new PagedResponseBase<>(res.getRequest(), res.getStatusCode(), res.getHeaders(), res.getValue().value(),
-            res.getValue().nextLink(), null);
+        return listNextSinglePage(nextLink, Context.NONE);
     }
 
     /**

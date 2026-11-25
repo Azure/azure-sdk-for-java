@@ -79,12 +79,7 @@ public final class IntegrationRuntimeResourceImpl
     }
 
     public IntegrationRuntimeResource create() {
-        this.innerObject = serviceManager.serviceClient()
-            .getIntegrationRuntimes()
-            .createOrUpdateWithResponse(resourceGroupName, factoryName, integrationRuntimeName, this.innerModel(),
-                createIfMatch, Context.NONE)
-            .getValue();
-        return this;
+        return this.create(Context.NONE);
     }
 
     public IntegrationRuntimeResource create(Context context) {
@@ -110,12 +105,7 @@ public final class IntegrationRuntimeResourceImpl
     }
 
     public IntegrationRuntimeResource apply() {
-        this.innerObject = serviceManager.serviceClient()
-            .getIntegrationRuntimes()
-            .updateWithResponse(resourceGroupName, factoryName, integrationRuntimeName,
-                updateUpdateIntegrationRuntimeRequest, Context.NONE)
-            .getValue();
-        return this;
+        return this.apply(Context.NONE);
     }
 
     public IntegrationRuntimeResource apply(Context context) {
@@ -143,12 +133,7 @@ public final class IntegrationRuntimeResourceImpl
     }
 
     public IntegrationRuntimeResource refresh() {
-        String localIfNoneMatch = null;
-        this.innerObject = serviceManager.serviceClient()
-            .getIntegrationRuntimes()
-            .getWithResponse(resourceGroupName, factoryName, integrationRuntimeName, localIfNoneMatch, Context.NONE)
-            .getValue();
-        return this;
+        return this.refresh(Context.NONE);
     }
 
     public IntegrationRuntimeResource refresh(Context context) {

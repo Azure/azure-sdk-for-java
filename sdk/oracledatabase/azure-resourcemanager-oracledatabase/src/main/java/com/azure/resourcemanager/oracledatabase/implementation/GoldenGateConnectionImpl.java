@@ -98,10 +98,7 @@ public final class GoldenGateConnectionImpl
     }
 
     public GoldenGateConnection create() {
-        this.innerObject = serviceManager.serviceClient()
-            .getGoldenGateConnections()
-            .createOrUpdate(resourceGroupName, goldenGateConnectionName, this.innerModel(), Context.NONE);
-        return this;
+        return this.create(Context.NONE);
     }
 
     public GoldenGateConnection create(Context context) {
@@ -124,10 +121,7 @@ public final class GoldenGateConnectionImpl
     }
 
     public GoldenGateConnection apply() {
-        this.innerObject = serviceManager.serviceClient()
-            .getGoldenGateConnections()
-            .update(resourceGroupName, goldenGateConnectionName, updateProperties, Context.NONE);
-        return this;
+        return this.apply(Context.NONE);
     }
 
     public GoldenGateConnection apply(Context context) {
@@ -150,11 +144,7 @@ public final class GoldenGateConnectionImpl
     }
 
     public GoldenGateConnection refresh() {
-        this.innerObject = serviceManager.serviceClient()
-            .getGoldenGateConnections()
-            .getByResourceGroupWithResponse(resourceGroupName, goldenGateConnectionName, Context.NONE)
-            .getValue();
-        return this;
+        return this.refresh(Context.NONE);
     }
 
     public GoldenGateConnection refresh(Context context) {

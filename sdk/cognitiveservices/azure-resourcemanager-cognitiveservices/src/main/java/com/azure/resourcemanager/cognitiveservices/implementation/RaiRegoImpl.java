@@ -83,12 +83,7 @@ public final class RaiRegoImpl implements RaiRego, RaiRego.Definition, RaiRego.U
     }
 
     public RaiRego create() {
-        this.innerObject = serviceManager.serviceClient()
-            .getRaiRegos()
-            .createOrUpdateWithResponse(resourceGroupName, accountName, raiRegoName, this.innerModel(), createIfMatch,
-                createIfNoneMatch, Context.NONE)
-            .getValue();
-        return this;
+        return this.create(Context.NONE);
     }
 
     public RaiRego create(Context context) {
@@ -115,12 +110,7 @@ public final class RaiRegoImpl implements RaiRego, RaiRego.Definition, RaiRego.U
     }
 
     public RaiRego apply() {
-        this.innerObject = serviceManager.serviceClient()
-            .getRaiRegos()
-            .createOrUpdateWithResponse(resourceGroupName, accountName, raiRegoName, this.innerModel(), updateIfMatch,
-                updateIfNoneMatch, Context.NONE)
-            .getValue();
-        return this;
+        return this.apply(Context.NONE);
     }
 
     public RaiRego apply(Context context) {
@@ -148,11 +138,7 @@ public final class RaiRegoImpl implements RaiRego, RaiRego.Definition, RaiRego.U
     }
 
     public RaiRego refresh() {
-        this.innerObject = serviceManager.serviceClient()
-            .getRaiRegos()
-            .getWithResponse(resourceGroupName, accountName, raiRegoName, Context.NONE)
-            .getValue();
-        return this;
+        return this.refresh(Context.NONE);
     }
 
     public RaiRego refresh(Context context) {

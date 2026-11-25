@@ -113,17 +113,7 @@ public final class BackupStatusClientImpl implements BackupStatusClient {
         return getWithResponseAsync(azureRegion, parameters).flatMap(res -> Mono.justOrEmpty(res.getValue()));
     }
 
-    /**
-     * Get the container backup status.
-     * 
-     * @param azureRegion Azure region to hit Api.
-     * @param parameters Container Backup Status Request.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the container backup status along with {@link Response}.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Response<BackupStatusResponseInner> getWithResponse(String azureRegion, BackupStatusRequest parameters,
         Context context) {
@@ -133,16 +123,7 @@ public final class BackupStatusClientImpl implements BackupStatusClient {
             this.client.getSubscriptionId(), contentType, accept, parameters, context);
     }
 
-    /**
-     * Get the container backup status.
-     * 
-     * @param azureRegion Azure region to hit Api.
-     * @param parameters Container Backup Status Request.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the container backup status.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public BackupStatusResponseInner get(String azureRegion, BackupStatusRequest parameters) {
         return getWithResponse(azureRegion, parameters, Context.NONE).getValue();

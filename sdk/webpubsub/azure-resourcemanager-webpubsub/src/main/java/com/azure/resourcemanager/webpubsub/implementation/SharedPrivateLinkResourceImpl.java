@@ -89,11 +89,7 @@ public final class SharedPrivateLinkResourceImpl
     }
 
     public SharedPrivateLinkResource create() {
-        this.innerObject = serviceManager.serviceClient()
-            .getWebPubSubSharedPrivateLinkResources()
-            .createOrUpdate(resourceGroupName, resourceName, sharedPrivateLinkResourceName, this.innerModel(),
-                Context.NONE);
-        return this;
+        return this.create(Context.NONE);
     }
 
     public SharedPrivateLinkResource create(Context context) {
@@ -114,11 +110,7 @@ public final class SharedPrivateLinkResourceImpl
     }
 
     public SharedPrivateLinkResource apply() {
-        this.innerObject = serviceManager.serviceClient()
-            .getWebPubSubSharedPrivateLinkResources()
-            .createOrUpdate(resourceGroupName, resourceName, sharedPrivateLinkResourceName, this.innerModel(),
-                Context.NONE);
-        return this;
+        return this.apply(Context.NONE);
     }
 
     public SharedPrivateLinkResource apply(Context context) {
@@ -159,11 +151,7 @@ public final class SharedPrivateLinkResourceImpl
     }
 
     public SharedPrivateLinkResource refresh() {
-        this.innerObject = serviceManager.serviceClient()
-            .getWebPubSubSharedPrivateLinkResources()
-            .getWithResponse(resourceGroupName, resourceName, sharedPrivateLinkResourceName, Context.NONE)
-            .getValue();
-        return this;
+        return this.refresh(Context.NONE);
     }
 
     public SharedPrivateLinkResource refresh(Context context) {

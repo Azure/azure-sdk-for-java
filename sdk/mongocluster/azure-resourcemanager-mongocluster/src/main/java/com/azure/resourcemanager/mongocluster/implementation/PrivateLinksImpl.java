@@ -26,9 +26,7 @@ public final class PrivateLinksImpl implements PrivateLinks {
     }
 
     public PagedIterable<PrivateLinkResource> listByMongoCluster(String resourceGroupName, String mongoClusterName) {
-        PagedIterable<PrivateLinkResourceInner> inner
-            = this.serviceClient().listByMongoCluster(resourceGroupName, mongoClusterName);
-        return ResourceManagerUtils.mapPage(inner, inner1 -> new PrivateLinkResourceImpl(inner1, this.manager()));
+        return this.listByMongoCluster(resourceGroupName, mongoClusterName, Context.NONE);
     }
 
     public PagedIterable<PrivateLinkResource> listByMongoCluster(String resourceGroupName, String mongoClusterName,

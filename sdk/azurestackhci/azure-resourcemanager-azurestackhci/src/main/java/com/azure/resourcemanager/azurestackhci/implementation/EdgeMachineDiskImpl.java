@@ -60,10 +60,7 @@ public final class EdgeMachineDiskImpl implements EdgeMachineDisk, EdgeMachineDi
     }
 
     public EdgeMachineDisk create() {
-        this.innerObject = serviceManager.serviceClient()
-            .getEdgeMachineDisks()
-            .createOrUpdate(resourceGroupName, edgeMachineName, diskName, this.innerModel(), Context.NONE);
-        return this;
+        return this.create(Context.NONE);
     }
 
     public EdgeMachineDisk create(Context context) {
@@ -84,10 +81,7 @@ public final class EdgeMachineDiskImpl implements EdgeMachineDisk, EdgeMachineDi
     }
 
     public EdgeMachineDisk apply() {
-        this.innerObject = serviceManager.serviceClient()
-            .getEdgeMachineDisks()
-            .createOrUpdate(resourceGroupName, edgeMachineName, diskName, this.innerModel(), Context.NONE);
-        return this;
+        return this.apply(Context.NONE);
     }
 
     public EdgeMachineDisk apply(Context context) {
@@ -113,11 +107,7 @@ public final class EdgeMachineDiskImpl implements EdgeMachineDisk, EdgeMachineDi
     }
 
     public EdgeMachineDisk refresh() {
-        this.innerObject = serviceManager.serviceClient()
-            .getEdgeMachineDisks()
-            .getWithResponse(resourceGroupName, edgeMachineName, diskName, Context.NONE)
-            .getValue();
-        return this;
+        return this.refresh(Context.NONE);
     }
 
     public EdgeMachineDisk refresh(Context context) {

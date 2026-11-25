@@ -172,21 +172,7 @@ public final class KeyValuesClientImpl implements KeyValuesClient {
             .flatMap(res -> Mono.justOrEmpty(res.getValue()));
     }
 
-    /**
-     * Gets the properties of the specified key-value. NOTE: This operation is intended for use in ARM Template
-     * deployments. For all other scenarios involving App Configuration key-values the data plane API should be used
-     * instead.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param configStoreName The name of the configuration store.
-     * @param keyValueName Identifier of key and label combination. Key and label are joined by $ character. Label is
-     * optional.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the properties of the specified key-value along with {@link Response}.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Response<KeyValueInner> getWithResponse(String resourceGroupName, String configStoreName,
         String keyValueName, Context context) {
@@ -195,20 +181,7 @@ public final class KeyValuesClientImpl implements KeyValuesClient {
             resourceGroupName, configStoreName, keyValueName, accept, context);
     }
 
-    /**
-     * Gets the properties of the specified key-value. NOTE: This operation is intended for use in ARM Template
-     * deployments. For all other scenarios involving App Configuration key-values the data plane API should be used
-     * instead.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param configStoreName The name of the configuration store.
-     * @param keyValueName Identifier of key and label combination. Key and label are joined by $ character. Label is
-     * optional.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the properties of the specified key-value.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public KeyValueInner get(String resourceGroupName, String configStoreName, String keyValueName) {
         return getWithResponse(resourceGroupName, configStoreName, keyValueName, Context.NONE).getValue();
@@ -262,21 +235,7 @@ public final class KeyValuesClientImpl implements KeyValuesClient {
             .flatMap(res -> Mono.justOrEmpty(res.getValue()));
     }
 
-    /**
-     * Creates a key-value. NOTE: This operation is intended for use in ARM Template deployments. For all other
-     * scenarios involving App Configuration key-values the data plane API should be used instead.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param configStoreName The name of the configuration store.
-     * @param keyValueName Identifier of key and label combination. Key and label are joined by $ character. Label is
-     * optional.
-     * @param keyValueParameters The parameters for creating a key-value.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the key-value resource along with all resource properties along with {@link Response}.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Response<KeyValueInner> createOrUpdateWithResponse(String resourceGroupName, String configStoreName,
         String keyValueName, KeyValueInner keyValueParameters, Context context) {
@@ -287,20 +246,7 @@ public final class KeyValuesClientImpl implements KeyValuesClient {
             keyValueParameters, context);
     }
 
-    /**
-     * Creates a key-value. NOTE: This operation is intended for use in ARM Template deployments. For all other
-     * scenarios involving App Configuration key-values the data plane API should be used instead.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param configStoreName The name of the configuration store.
-     * @param keyValueName Identifier of key and label combination. Key and label are joined by $ character. Label is
-     * optional.
-     * @param keyValueParameters The parameters for creating a key-value.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the key-value resource along with all resource properties.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public KeyValueInner createOrUpdate(String resourceGroupName, String configStoreName, String keyValueName,
         KeyValueInner keyValueParameters) {
@@ -346,8 +292,7 @@ public final class KeyValuesClientImpl implements KeyValuesClient {
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Response<BinaryData> deleteWithResponse(String resourceGroupName, String configStoreName,
         String keyValueName) {
-        return service.deleteSync(this.client.getEndpoint(), this.client.getApiVersion(),
-            this.client.getSubscriptionId(), resourceGroupName, configStoreName, keyValueName, Context.NONE);
+        return deleteWithResponse(resourceGroupName, configStoreName, keyValueName, Context.NONE);
     }
 
     /**
@@ -393,40 +338,14 @@ public final class KeyValuesClientImpl implements KeyValuesClient {
             this.client.getContext());
     }
 
-    /**
-     * Deletes a key-value. NOTE: This operation is intended for use in ARM Template deployments. For all other
-     * scenarios involving App Configuration key-values the data plane API should be used instead.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param configStoreName The name of the configuration store.
-     * @param keyValueName Identifier of key and label combination. Key and label are joined by $ character. Label is
-     * optional.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the {@link SyncPoller} for polling of long-running operation.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public SyncPoller<PollResult<Void>, Void> beginDelete(String resourceGroupName, String configStoreName,
         String keyValueName) {
-        Response<BinaryData> response = deleteWithResponse(resourceGroupName, configStoreName, keyValueName);
-        return this.client.<Void, Void>getLroResult(response, Void.class, Void.class, Context.NONE);
+        return beginDelete(resourceGroupName, configStoreName, keyValueName, Context.NONE);
     }
 
-    /**
-     * Deletes a key-value. NOTE: This operation is intended for use in ARM Template deployments. For all other
-     * scenarios involving App Configuration key-values the data plane API should be used instead.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param configStoreName The name of the configuration store.
-     * @param keyValueName Identifier of key and label combination. Key and label are joined by $ character. Label is
-     * optional.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the {@link SyncPoller} for polling of long-running operation.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public SyncPoller<PollResult<Void>, Void> beginDelete(String resourceGroupName, String configStoreName,
         String keyValueName, Context context) {
@@ -453,38 +372,15 @@ public final class KeyValuesClientImpl implements KeyValuesClient {
             .flatMap(this.client::getLroFinalResultOrError);
     }
 
-    /**
-     * Deletes a key-value. NOTE: This operation is intended for use in ARM Template deployments. For all other
-     * scenarios involving App Configuration key-values the data plane API should be used instead.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param configStoreName The name of the configuration store.
-     * @param keyValueName Identifier of key and label combination. Key and label are joined by $ character. Label is
-     * optional.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public void delete(String resourceGroupName, String configStoreName, String keyValueName) {
-        beginDelete(resourceGroupName, configStoreName, keyValueName).getFinalResult();
+        delete(resourceGroupName, configStoreName, keyValueName, Context.NONE);
     }
 
-    /**
-     * Deletes a key-value. NOTE: This operation is intended for use in ARM Template deployments. For all other
-     * scenarios involving App Configuration key-values the data plane API should be used instead.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param configStoreName The name of the configuration store.
-     * @param keyValueName Identifier of key and label combination. Key and label are joined by $ character. Label is
-     * optional.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public void delete(String resourceGroupName, String configStoreName, String keyValueName, Context context) {
-        beginDelete(resourceGroupName, configStoreName, keyValueName, context).getFinalResult();
+        this.client.getLroFinalResultOrError(beginDelete(resourceGroupName, configStoreName, keyValueName, context));
     }
 }

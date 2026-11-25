@@ -259,11 +259,7 @@ public final class ResourceAnchorsClientImpl implements ResourceAnchorsClient {
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private PagedResponse<ResourceAnchorInner> listSinglePage() {
-        final String accept = "application/json";
-        Response<ResourceAnchorListResult> res = service.listSync(this.client.getEndpoint(),
-            this.client.getApiVersion(), this.client.getSubscriptionId(), accept, Context.NONE);
-        return new PagedResponseBase<>(res.getRequest(), res.getStatusCode(), res.getHeaders(), res.getValue().value(),
-            res.getValue().nextLink(), null);
+        return listSinglePage(Context.NONE);
     }
 
     /**
@@ -284,27 +280,13 @@ public final class ResourceAnchorsClientImpl implements ResourceAnchorsClient {
             res.getValue().nextLink(), null);
     }
 
-    /**
-     * List ResourceAnchor resources by subscription ID.
-     * 
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the response of a ResourceAnchor list operation as paginated response with {@link PagedIterable}.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.COLLECTION)
     public PagedIterable<ResourceAnchorInner> list() {
-        return new PagedIterable<>(() -> listSinglePage(), nextLink -> listBySubscriptionNextSinglePage(nextLink));
+        return list(Context.NONE);
     }
 
-    /**
-     * List ResourceAnchor resources by subscription ID.
-     * 
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the response of a ResourceAnchor list operation as paginated response with {@link PagedIterable}.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.COLLECTION)
     public PagedIterable<ResourceAnchorInner> list(Context context) {
         return new PagedIterable<>(() -> listSinglePage(context),
@@ -348,11 +330,7 @@ public final class ResourceAnchorsClientImpl implements ResourceAnchorsClient {
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Response<BinaryData> createOrUpdateWithResponse(String resourceGroupName, String resourceAnchorName,
         ResourceAnchorInner resource) {
-        final String contentType = "application/json";
-        final String accept = "application/json";
-        return service.createOrUpdateSync(this.client.getEndpoint(), this.client.getApiVersion(),
-            this.client.getSubscriptionId(), resourceGroupName, resourceAnchorName, contentType, accept, resource,
-            Context.NONE);
+        return createOrUpdateWithResponse(resourceGroupName, resourceAnchorName, resource, Context.NONE);
     }
 
     /**
@@ -397,37 +375,14 @@ public final class ResourceAnchorsClientImpl implements ResourceAnchorsClient {
             ResourceAnchorInner.class, ResourceAnchorInner.class, this.client.getContext());
     }
 
-    /**
-     * Create a ResourceAnchor.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param resourceAnchorName The name of the ResourceAnchor.
-     * @param resource Resource create parameters.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the {@link SyncPoller} for polling of resource Anchor model.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public SyncPoller<PollResult<ResourceAnchorInner>, ResourceAnchorInner>
         beginCreateOrUpdate(String resourceGroupName, String resourceAnchorName, ResourceAnchorInner resource) {
-        Response<BinaryData> response = createOrUpdateWithResponse(resourceGroupName, resourceAnchorName, resource);
-        return this.client.<ResourceAnchorInner, ResourceAnchorInner>getLroResult(response, ResourceAnchorInner.class,
-            ResourceAnchorInner.class, Context.NONE);
+        return beginCreateOrUpdate(resourceGroupName, resourceAnchorName, resource, Context.NONE);
     }
 
-    /**
-     * Create a ResourceAnchor.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param resourceAnchorName The name of the ResourceAnchor.
-     * @param resource Resource create parameters.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the {@link SyncPoller} for polling of resource Anchor model.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public SyncPoller<PollResult<ResourceAnchorInner>, ResourceAnchorInner> beginCreateOrUpdate(
         String resourceGroupName, String resourceAnchorName, ResourceAnchorInner resource, Context context) {
@@ -455,39 +410,19 @@ public final class ResourceAnchorsClientImpl implements ResourceAnchorsClient {
             .flatMap(this.client::getLroFinalResultOrError);
     }
 
-    /**
-     * Create a ResourceAnchor.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param resourceAnchorName The name of the ResourceAnchor.
-     * @param resource Resource create parameters.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return resource Anchor model.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public ResourceAnchorInner createOrUpdate(String resourceGroupName, String resourceAnchorName,
         ResourceAnchorInner resource) {
-        return beginCreateOrUpdate(resourceGroupName, resourceAnchorName, resource).getFinalResult();
+        return createOrUpdate(resourceGroupName, resourceAnchorName, resource, Context.NONE);
     }
 
-    /**
-     * Create a ResourceAnchor.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param resourceAnchorName The name of the ResourceAnchor.
-     * @param resource Resource create parameters.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return resource Anchor model.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public ResourceAnchorInner createOrUpdate(String resourceGroupName, String resourceAnchorName,
         ResourceAnchorInner resource, Context context) {
-        return beginCreateOrUpdate(resourceGroupName, resourceAnchorName, resource, context).getFinalResult();
+        return this.client
+            .getLroFinalResultOrError(beginCreateOrUpdate(resourceGroupName, resourceAnchorName, resource, context));
     }
 
     /**
@@ -526,17 +461,7 @@ public final class ResourceAnchorsClientImpl implements ResourceAnchorsClient {
             .flatMap(res -> Mono.justOrEmpty(res.getValue()));
     }
 
-    /**
-     * Get a ResourceAnchor.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param resourceAnchorName The name of the ResourceAnchor.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return a ResourceAnchor along with {@link Response}.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Response<ResourceAnchorInner> getByResourceGroupWithResponse(String resourceGroupName,
         String resourceAnchorName, Context context) {
@@ -545,16 +470,7 @@ public final class ResourceAnchorsClientImpl implements ResourceAnchorsClient {
             this.client.getSubscriptionId(), resourceGroupName, resourceAnchorName, accept, context);
     }
 
-    /**
-     * Get a ResourceAnchor.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param resourceAnchorName The name of the ResourceAnchor.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return a ResourceAnchor.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public ResourceAnchorInner getByResourceGroup(String resourceGroupName, String resourceAnchorName) {
         return getByResourceGroupWithResponse(resourceGroupName, resourceAnchorName, Context.NONE).getValue();
@@ -597,11 +513,7 @@ public final class ResourceAnchorsClientImpl implements ResourceAnchorsClient {
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Response<BinaryData> updateWithResponse(String resourceGroupName, String resourceAnchorName,
         ResourceAnchorUpdate properties) {
-        final String contentType = "application/json";
-        final String accept = "application/json";
-        return service.updateSync(this.client.getEndpoint(), this.client.getApiVersion(),
-            this.client.getSubscriptionId(), resourceGroupName, resourceAnchorName, contentType, accept, properties,
-            Context.NONE);
+        return updateWithResponse(resourceGroupName, resourceAnchorName, properties, Context.NONE);
     }
 
     /**
@@ -646,37 +558,14 @@ public final class ResourceAnchorsClientImpl implements ResourceAnchorsClient {
             ResourceAnchorInner.class, ResourceAnchorInner.class, this.client.getContext());
     }
 
-    /**
-     * Update a ResourceAnchor.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param resourceAnchorName The name of the ResourceAnchor.
-     * @param properties The resource properties to be updated.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the {@link SyncPoller} for polling of resource Anchor model.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public SyncPoller<PollResult<ResourceAnchorInner>, ResourceAnchorInner> beginUpdate(String resourceGroupName,
         String resourceAnchorName, ResourceAnchorUpdate properties) {
-        Response<BinaryData> response = updateWithResponse(resourceGroupName, resourceAnchorName, properties);
-        return this.client.<ResourceAnchorInner, ResourceAnchorInner>getLroResult(response, ResourceAnchorInner.class,
-            ResourceAnchorInner.class, Context.NONE);
+        return beginUpdate(resourceGroupName, resourceAnchorName, properties, Context.NONE);
     }
 
-    /**
-     * Update a ResourceAnchor.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param resourceAnchorName The name of the ResourceAnchor.
-     * @param properties The resource properties to be updated.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the {@link SyncPoller} for polling of resource Anchor model.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public SyncPoller<PollResult<ResourceAnchorInner>, ResourceAnchorInner> beginUpdate(String resourceGroupName,
         String resourceAnchorName, ResourceAnchorUpdate properties, Context context) {
@@ -703,39 +592,19 @@ public final class ResourceAnchorsClientImpl implements ResourceAnchorsClient {
             .flatMap(this.client::getLroFinalResultOrError);
     }
 
-    /**
-     * Update a ResourceAnchor.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param resourceAnchorName The name of the ResourceAnchor.
-     * @param properties The resource properties to be updated.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return resource Anchor model.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public ResourceAnchorInner update(String resourceGroupName, String resourceAnchorName,
         ResourceAnchorUpdate properties) {
-        return beginUpdate(resourceGroupName, resourceAnchorName, properties).getFinalResult();
+        return update(resourceGroupName, resourceAnchorName, properties, Context.NONE);
     }
 
-    /**
-     * Update a ResourceAnchor.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param resourceAnchorName The name of the ResourceAnchor.
-     * @param properties The resource properties to be updated.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return resource Anchor model.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public ResourceAnchorInner update(String resourceGroupName, String resourceAnchorName,
         ResourceAnchorUpdate properties, Context context) {
-        return beginUpdate(resourceGroupName, resourceAnchorName, properties, context).getFinalResult();
+        return this.client
+            .getLroFinalResultOrError(beginUpdate(resourceGroupName, resourceAnchorName, properties, context));
     }
 
     /**
@@ -769,8 +638,7 @@ public final class ResourceAnchorsClientImpl implements ResourceAnchorsClient {
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Response<BinaryData> deleteWithResponse(String resourceGroupName, String resourceAnchorName) {
-        return service.deleteSync(this.client.getEndpoint(), this.client.getApiVersion(),
-            this.client.getSubscriptionId(), resourceGroupName, resourceAnchorName, Context.NONE);
+        return deleteWithResponse(resourceGroupName, resourceAnchorName, Context.NONE);
     }
 
     /**
@@ -808,33 +676,13 @@ public final class ResourceAnchorsClientImpl implements ResourceAnchorsClient {
             this.client.getContext());
     }
 
-    /**
-     * Delete a ResourceAnchor.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param resourceAnchorName The name of the ResourceAnchor.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the {@link SyncPoller} for polling of long-running operation.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public SyncPoller<PollResult<Void>, Void> beginDelete(String resourceGroupName, String resourceAnchorName) {
-        Response<BinaryData> response = deleteWithResponse(resourceGroupName, resourceAnchorName);
-        return this.client.<Void, Void>getLroResult(response, Void.class, Void.class, Context.NONE);
+        return beginDelete(resourceGroupName, resourceAnchorName, Context.NONE);
     }
 
-    /**
-     * Delete a ResourceAnchor.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param resourceAnchorName The name of the ResourceAnchor.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the {@link SyncPoller} for polling of long-running operation.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public SyncPoller<PollResult<Void>, Void> beginDelete(String resourceGroupName, String resourceAnchorName,
         Context context) {
@@ -858,33 +706,16 @@ public final class ResourceAnchorsClientImpl implements ResourceAnchorsClient {
             .flatMap(this.client::getLroFinalResultOrError);
     }
 
-    /**
-     * Delete a ResourceAnchor.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param resourceAnchorName The name of the ResourceAnchor.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public void delete(String resourceGroupName, String resourceAnchorName) {
-        beginDelete(resourceGroupName, resourceAnchorName).getFinalResult();
+        delete(resourceGroupName, resourceAnchorName, Context.NONE);
     }
 
-    /**
-     * Delete a ResourceAnchor.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param resourceAnchorName The name of the ResourceAnchor.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public void delete(String resourceGroupName, String resourceAnchorName, Context context) {
-        beginDelete(resourceGroupName, resourceAnchorName, context).getFinalResult();
+        this.client.getLroFinalResultOrError(beginDelete(resourceGroupName, resourceAnchorName, context));
     }
 
     /**
@@ -934,11 +765,7 @@ public final class ResourceAnchorsClientImpl implements ResourceAnchorsClient {
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private PagedResponse<ResourceAnchorInner> listByResourceGroupSinglePage(String resourceGroupName) {
-        final String accept = "application/json";
-        Response<ResourceAnchorListResult> res = service.listByResourceGroupSync(this.client.getEndpoint(),
-            this.client.getApiVersion(), this.client.getSubscriptionId(), resourceGroupName, accept, Context.NONE);
-        return new PagedResponseBase<>(res.getRequest(), res.getStatusCode(), res.getHeaders(), res.getValue().value(),
-            res.getValue().nextLink(), null);
+        return listByResourceGroupSinglePage(resourceGroupName, Context.NONE);
     }
 
     /**
@@ -961,31 +788,13 @@ public final class ResourceAnchorsClientImpl implements ResourceAnchorsClient {
             res.getValue().nextLink(), null);
     }
 
-    /**
-     * List ResourceAnchor resources by resource group.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the response of a ResourceAnchor list operation as paginated response with {@link PagedIterable}.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.COLLECTION)
     public PagedIterable<ResourceAnchorInner> listByResourceGroup(String resourceGroupName) {
-        return new PagedIterable<>(() -> listByResourceGroupSinglePage(resourceGroupName),
-            nextLink -> listByResourceGroupNextSinglePage(nextLink));
+        return listByResourceGroup(resourceGroupName, Context.NONE);
     }
 
-    /**
-     * List ResourceAnchor resources by resource group.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the response of a ResourceAnchor list operation as paginated response with {@link PagedIterable}.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.COLLECTION)
     public PagedIterable<ResourceAnchorInner> listByResourceGroup(String resourceGroupName, Context context) {
         return new PagedIterable<>(() -> listByResourceGroupSinglePage(resourceGroupName, context),
@@ -1024,11 +833,7 @@ public final class ResourceAnchorsClientImpl implements ResourceAnchorsClient {
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private PagedResponse<ResourceAnchorInner> listBySubscriptionNextSinglePage(String nextLink) {
-        final String accept = "application/json";
-        Response<ResourceAnchorListResult> res
-            = service.listBySubscriptionNextSync(nextLink, this.client.getEndpoint(), accept, Context.NONE);
-        return new PagedResponseBase<>(res.getRequest(), res.getStatusCode(), res.getHeaders(), res.getValue().value(),
-            res.getValue().nextLink(), null);
+        return listBySubscriptionNextSinglePage(nextLink, Context.NONE);
     }
 
     /**
@@ -1082,11 +887,7 @@ public final class ResourceAnchorsClientImpl implements ResourceAnchorsClient {
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private PagedResponse<ResourceAnchorInner> listByResourceGroupNextSinglePage(String nextLink) {
-        final String accept = "application/json";
-        Response<ResourceAnchorListResult> res
-            = service.listByResourceGroupNextSync(nextLink, this.client.getEndpoint(), accept, Context.NONE);
-        return new PagedResponseBase<>(res.getRequest(), res.getStatusCode(), res.getHeaders(), res.getValue().value(),
-            res.getValue().nextLink(), null);
+        return listByResourceGroupNextSinglePage(nextLink, Context.NONE);
     }
 
     /**

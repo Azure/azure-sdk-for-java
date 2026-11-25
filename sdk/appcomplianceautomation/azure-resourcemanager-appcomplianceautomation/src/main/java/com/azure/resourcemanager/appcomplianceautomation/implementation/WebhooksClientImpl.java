@@ -206,17 +206,7 @@ public final class WebhooksClientImpl implements WebhooksClient {
         return getWithResponseAsync(reportName, webhookName).flatMap(res -> Mono.justOrEmpty(res.getValue()));
     }
 
-    /**
-     * Get the AppComplianceAutomation webhook and its properties.
-     * 
-     * @param reportName Report Name.
-     * @param webhookName Webhook Name.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the AppComplianceAutomation webhook and its properties along with {@link Response}.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Response<WebhookResourceInner> getWithResponse(String reportName, String webhookName, Context context) {
         final String accept = "application/json";
@@ -224,16 +214,7 @@ public final class WebhooksClientImpl implements WebhooksClient {
             context);
     }
 
-    /**
-     * Get the AppComplianceAutomation webhook and its properties.
-     * 
-     * @param reportName Report Name.
-     * @param webhookName Webhook Name.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the AppComplianceAutomation webhook and its properties.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public WebhookResourceInner get(String reportName, String webhookName) {
         return getWithResponse(reportName, webhookName, Context.NONE).getValue();
@@ -280,18 +261,7 @@ public final class WebhooksClientImpl implements WebhooksClient {
             .flatMap(res -> Mono.justOrEmpty(res.getValue()));
     }
 
-    /**
-     * Create a new AppComplianceAutomation webhook or update an exiting AppComplianceAutomation webhook.
-     * 
-     * @param reportName Report Name.
-     * @param webhookName Webhook Name.
-     * @param properties Parameters for the create or update operation.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return a class represent an AppComplianceAutomation webhook resource along with {@link Response}.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Response<WebhookResourceInner> createOrUpdateWithResponse(String reportName, String webhookName,
         WebhookResourceInner properties, Context context) {
@@ -301,17 +271,7 @@ public final class WebhooksClientImpl implements WebhooksClient {
             webhookName, contentType, accept, properties, context);
     }
 
-    /**
-     * Create a new AppComplianceAutomation webhook or update an exiting AppComplianceAutomation webhook.
-     * 
-     * @param reportName Report Name.
-     * @param webhookName Webhook Name.
-     * @param properties Parameters for the create or update operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return a class represent an AppComplianceAutomation webhook resource.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public WebhookResourceInner createOrUpdate(String reportName, String webhookName, WebhookResourceInner properties) {
         return createOrUpdateWithResponse(reportName, webhookName, properties, Context.NONE).getValue();
@@ -358,18 +318,7 @@ public final class WebhooksClientImpl implements WebhooksClient {
             .flatMap(res -> Mono.justOrEmpty(res.getValue()));
     }
 
-    /**
-     * Update an exiting AppComplianceAutomation webhook.
-     * 
-     * @param reportName Report Name.
-     * @param webhookName Webhook Name.
-     * @param properties Parameters for the create or update operation.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return a class represent an AppComplianceAutomation webhook resource along with {@link Response}.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Response<WebhookResourceInner> updateWithResponse(String reportName, String webhookName,
         WebhookResourcePatch properties, Context context) {
@@ -379,17 +328,7 @@ public final class WebhooksClientImpl implements WebhooksClient {
             contentType, accept, properties, context);
     }
 
-    /**
-     * Update an exiting AppComplianceAutomation webhook.
-     * 
-     * @param reportName Report Name.
-     * @param webhookName Webhook Name.
-     * @param properties Parameters for the create or update operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return a class represent an AppComplianceAutomation webhook resource.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public WebhookResourceInner update(String reportName, String webhookName, WebhookResourcePatch properties) {
         return updateWithResponse(reportName, webhookName, properties, Context.NONE).getValue();
@@ -428,32 +367,14 @@ public final class WebhooksClientImpl implements WebhooksClient {
         return deleteWithResponseAsync(reportName, webhookName).flatMap(ignored -> Mono.empty());
     }
 
-    /**
-     * Delete an AppComplianceAutomation webhook.
-     * 
-     * @param reportName Report Name.
-     * @param webhookName Webhook Name.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the {@link Response}.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Response<Void> deleteWithResponse(String reportName, String webhookName, Context context) {
         return service.deleteSync(this.client.getEndpoint(), this.client.getApiVersion(), reportName, webhookName,
             context);
     }
 
-    /**
-     * Delete an AppComplianceAutomation webhook.
-     * 
-     * @param reportName Report Name.
-     * @param webhookName Webhook Name.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public void delete(String reportName, String webhookName) {
         deleteWithResponse(reportName, webhookName, Context.NONE);
@@ -555,12 +476,8 @@ public final class WebhooksClientImpl implements WebhooksClient {
     @ServiceMethod(returns = ReturnType.SINGLE)
     private PagedResponse<WebhookResourceInner> listSinglePage(String reportName, String skipToken, Integer top,
         String select, String filter, String orderby, String offerGuid, String reportCreatorTenantId) {
-        final String accept = "application/json";
-        Response<WebhookResourceListResult> res
-            = service.listSync(this.client.getEndpoint(), this.client.getApiVersion(), skipToken, top, select, filter,
-                orderby, offerGuid, reportCreatorTenantId, reportName, accept, Context.NONE);
-        return new PagedResponseBase<>(res.getRequest(), res.getStatusCode(), res.getHeaders(), res.getValue().value(),
-            res.getValue().nextLink(), null);
+        return listSinglePage(reportName, skipToken, top, select, filter, orderby, offerGuid, reportCreatorTenantId,
+            Context.NONE);
     }
 
     /**
@@ -592,15 +509,7 @@ public final class WebhooksClientImpl implements WebhooksClient {
             res.getValue().nextLink(), null);
     }
 
-    /**
-     * Get the AppComplianceAutomation webhook list.
-     * 
-     * @param reportName Report Name.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the AppComplianceAutomation webhook list as paginated response with {@link PagedIterable}.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.COLLECTION)
     public PagedIterable<WebhookResourceInner> list(String reportName) {
         final String skipToken = null;
@@ -610,29 +519,11 @@ public final class WebhooksClientImpl implements WebhooksClient {
         final String orderby = null;
         final String offerGuid = null;
         final String reportCreatorTenantId = null;
-        return new PagedIterable<>(
-            () -> listSinglePage(reportName, skipToken, top, select, filter, orderby, offerGuid, reportCreatorTenantId),
-            nextLink -> listNextSinglePage(nextLink));
+        return list(reportName, skipToken, top, select, filter, orderby, offerGuid, reportCreatorTenantId,
+            Context.NONE);
     }
 
-    /**
-     * Get the AppComplianceAutomation webhook list.
-     * 
-     * @param reportName Report Name.
-     * @param skipToken Skip over when retrieving results.
-     * @param top Number of elements to return when retrieving results.
-     * @param select OData Select statement. Limits the properties on each entry to just those requested, e.g.
-     * ?$select=reportName,id.
-     * @param filter The filter to apply on the operation.
-     * @param orderby OData order by query option.
-     * @param offerGuid The offerGuid which mapping to the reports.
-     * @param reportCreatorTenantId The tenant id of the report creator.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the AppComplianceAutomation webhook list as paginated response with {@link PagedIterable}.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.COLLECTION)
     public PagedIterable<WebhookResourceInner> list(String reportName, String skipToken, Integer top, String select,
         String filter, String orderby, String offerGuid, String reportCreatorTenantId, Context context) {
@@ -670,11 +561,7 @@ public final class WebhooksClientImpl implements WebhooksClient {
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private PagedResponse<WebhookResourceInner> listNextSinglePage(String nextLink) {
-        final String accept = "application/json";
-        Response<WebhookResourceListResult> res
-            = service.listNextSync(nextLink, this.client.getEndpoint(), accept, Context.NONE);
-        return new PagedResponseBase<>(res.getRequest(), res.getStatusCode(), res.getHeaders(), res.getValue().value(),
-            res.getValue().nextLink(), null);
+        return listNextSinglePage(nextLink, Context.NONE);
     }
 
     /**

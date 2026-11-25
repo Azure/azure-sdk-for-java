@@ -93,10 +93,7 @@ public final class EnclaveResourceImpl implements EnclaveResource, EnclaveResour
     }
 
     public EnclaveResource create() {
-        this.innerObject = serviceManager.serviceClient()
-            .getVirtualEnclaves()
-            .createOrUpdate(resourceGroupName, virtualEnclaveName, this.innerModel(), Context.NONE);
-        return this;
+        return this.create(Context.NONE);
     }
 
     public EnclaveResource create(Context context) {
@@ -118,10 +115,7 @@ public final class EnclaveResourceImpl implements EnclaveResource, EnclaveResour
     }
 
     public EnclaveResource apply() {
-        this.innerObject = serviceManager.serviceClient()
-            .getVirtualEnclaves()
-            .update(resourceGroupName, virtualEnclaveName, updateProperties, Context.NONE);
-        return this;
+        return this.apply(Context.NONE);
     }
 
     public EnclaveResource apply(Context context) {
@@ -144,11 +138,7 @@ public final class EnclaveResourceImpl implements EnclaveResource, EnclaveResour
     }
 
     public EnclaveResource refresh() {
-        this.innerObject = serviceManager.serviceClient()
-            .getVirtualEnclaves()
-            .getByResourceGroupWithResponse(resourceGroupName, virtualEnclaveName, Context.NONE)
-            .getValue();
-        return this;
+        return this.refresh(Context.NONE);
     }
 
     public EnclaveResource refresh(Context context) {

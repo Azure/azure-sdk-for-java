@@ -151,11 +151,7 @@ public final class PlatformWorkloadIdentityRoleSetsClientImpl implements Platfor
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private PagedResponse<PlatformWorkloadIdentityRoleSetInner> listSinglePage(String location) {
-        final String accept = "application/json";
-        Response<PlatformWorkloadIdentityRoleSetList> res = service.listSync(this.client.getEndpoint(),
-            this.client.getApiVersion(), this.client.getSubscriptionId(), location, accept, Context.NONE);
-        return new PagedResponseBase<>(res.getRequest(), res.getStatusCode(), res.getHeaders(), res.getValue().value(),
-            res.getValue().nextLink(), null);
+        return listSinglePage(location, Context.NONE);
     }
 
     /**
@@ -180,38 +176,13 @@ public final class PlatformWorkloadIdentityRoleSetsClientImpl implements Platfor
             res.getValue().nextLink(), null);
     }
 
-    /**
-     * Lists a mapping of OpenShift versions to identity requirements, which include operatorName, roleDefinitionName,
-     * roleDefinitionId, and serviceAccounts.
-     * 
-     * This operation returns a list of Platform Workload Identity Role Sets as a string.
-     * 
-     * @param location The name of the Azure region.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return platformWorkloadIdentityRoleSetList represents a List of role sets as paginated response with
-     * {@link PagedIterable}.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.COLLECTION)
     public PagedIterable<PlatformWorkloadIdentityRoleSetInner> list(String location) {
-        return new PagedIterable<>(() -> listSinglePage(location), nextLink -> listNextSinglePage(nextLink));
+        return list(location, Context.NONE);
     }
 
-    /**
-     * Lists a mapping of OpenShift versions to identity requirements, which include operatorName, roleDefinitionName,
-     * roleDefinitionId, and serviceAccounts.
-     * 
-     * This operation returns a list of Platform Workload Identity Role Sets as a string.
-     * 
-     * @param location The name of the Azure region.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return platformWorkloadIdentityRoleSetList represents a List of role sets as paginated response with
-     * {@link PagedIterable}.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.COLLECTION)
     public PagedIterable<PlatformWorkloadIdentityRoleSetInner> list(String location, Context context) {
         return new PagedIterable<>(() -> listSinglePage(location, context),
@@ -254,11 +225,7 @@ public final class PlatformWorkloadIdentityRoleSetsClientImpl implements Platfor
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private PagedResponse<PlatformWorkloadIdentityRoleSetInner> listNextSinglePage(String nextLink) {
-        final String accept = "application/json";
-        Response<PlatformWorkloadIdentityRoleSetList> res
-            = service.listNextSync(nextLink, this.client.getEndpoint(), accept, Context.NONE);
-        return new PagedResponseBase<>(res.getRequest(), res.getStatusCode(), res.getHeaders(), res.getValue().value(),
-            res.getValue().nextLink(), null);
+        return listNextSinglePage(nextLink, Context.NONE);
     }
 
     /**

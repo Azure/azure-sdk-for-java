@@ -93,10 +93,7 @@ public final class SolutionTemplateImpl
     }
 
     public SolutionTemplate create() {
-        this.innerObject = serviceManager.serviceClient()
-            .getSolutionTemplates()
-            .createOrUpdate(resourceGroupName, solutionTemplateName, this.innerModel(), Context.NONE);
-        return this;
+        return this.create(Context.NONE);
     }
 
     public SolutionTemplate create(Context context) {
@@ -119,11 +116,7 @@ public final class SolutionTemplateImpl
     }
 
     public SolutionTemplate apply() {
-        this.innerObject = serviceManager.serviceClient()
-            .getSolutionTemplates()
-            .updateWithResponse(resourceGroupName, solutionTemplateName, updateProperties, Context.NONE)
-            .getValue();
-        return this;
+        return this.apply(Context.NONE);
     }
 
     public SolutionTemplate apply(Context context) {
@@ -147,11 +140,7 @@ public final class SolutionTemplateImpl
     }
 
     public SolutionTemplate refresh() {
-        this.innerObject = serviceManager.serviceClient()
-            .getSolutionTemplates()
-            .getByResourceGroupWithResponse(resourceGroupName, solutionTemplateName, Context.NONE)
-            .getValue();
-        return this;
+        return this.refresh(Context.NONE);
     }
 
     public SolutionTemplate refresh(Context context) {

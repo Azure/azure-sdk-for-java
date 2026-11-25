@@ -12,18 +12,18 @@ public final class RegionRecordTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
         RegionRecord model = BinaryData.fromString(
-            "{\"kind\":\"ivkwlzuvccfwnfnb\",\"id\":\"fionl\",\"properties\":{\"metadata\":{\"self\":\"tqgtzxdpnqbqq\",\"resourceName\":\"rjfeallnwsubisnj\",\"createdTimestamp\":\"pmng\",\"updatedTimestamp\":\"scxaq\",\"deletedTimestamp\":\"ochcbonqvpkvl\"},\"spec\":{\"name\":\"jease\",\"cloud\":\"heoflokeyyienjbd\",\"regionName\":\"tgrhpdjpjumas\",\"packages\":[\"jpqyegu\"]}}}")
+            "{\"kind\":\"zj\",\"id\":\"ggd\",\"properties\":{\"metadata\":{\"self\":\"hbkuofqwey\",\"resourceName\":\"menevfyexfwh\",\"createdTimestamp\":\"cibvyvdcsitynn\",\"updatedTimestamp\":\"mdectehfiqscjey\",\"deletedTimestamp\":\"hezrkgq\"},\"spec\":{\"name\":\"refovgmkqsleyyvx\",\"cloud\":\"jpkcattpng\",\"regionName\":\"rcczsqpjhvmd\",\"packages\":[\"nysounqe\"]}}}")
             .toObject(RegionRecord.class);
-        Assertions.assertEquals("ivkwlzuvccfwnfnb", model.kind());
-        Assertions.assertEquals("fionl", model.id());
-        Assertions.assertEquals("tqgtzxdpnqbqq", model.metadata().self());
-        Assertions.assertEquals("rjfeallnwsubisnj", model.metadata().resourceName());
-        Assertions.assertEquals("pmng", model.metadata().createdTimestamp());
-        Assertions.assertEquals("scxaq", model.metadata().updatedTimestamp());
-        Assertions.assertEquals("ochcbonqvpkvl", model.metadata().deletedTimestamp());
-        Assertions.assertEquals("jease", model.spec().name());
-        Assertions.assertEquals("heoflokeyyienjbd", model.spec().cloud());
-        Assertions.assertEquals("tgrhpdjpjumas", model.spec().regionName());
-        Assertions.assertEquals("jpqyegu", model.spec().packages().get(0));
+        Assertions.assertEquals("zj", model.kind());
+        Assertions.assertEquals("ggd", model.id());
+        Assertions.assertEquals("hbkuofqwey", model.metadata().self());
+        Assertions.assertEquals("menevfyexfwh", model.metadata().resourceName());
+        Assertions.assertEquals("cibvyvdcsitynn", model.metadata().createdTimestamp());
+        Assertions.assertEquals("mdectehfiqscjey", model.metadata().updatedTimestamp());
+        Assertions.assertEquals("hezrkgq", model.metadata().deletedTimestamp());
+        Assertions.assertEquals("refovgmkqsleyyvx", model.spec().name());
+        Assertions.assertEquals("jpkcattpng", model.spec().cloud());
+        Assertions.assertEquals("rcczsqpjhvmd", model.spec().regionName());
+        Assertions.assertEquals("nysounqe", model.spec().packages().get(0));
     }
 }

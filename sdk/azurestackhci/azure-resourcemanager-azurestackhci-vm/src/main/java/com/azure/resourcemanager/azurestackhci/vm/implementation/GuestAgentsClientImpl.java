@@ -190,31 +190,14 @@ public final class GuestAgentsClientImpl implements GuestAgentsClient {
         return getWithResponseAsync(resourceUri).flatMap(res -> Mono.justOrEmpty(res.getValue()));
     }
 
-    /**
-     * Implements GuestAgent GET method.
-     * 
-     * @param resourceUri The fully qualified Azure Resource manager identifier of the resource.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return defines the GuestAgent along with {@link Response}.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Response<GuestAgentInner> getWithResponse(String resourceUri, Context context) {
         final String accept = "application/json";
         return service.getSync(this.client.getEndpoint(), this.client.getApiVersion(), resourceUri, accept, context);
     }
 
-    /**
-     * Implements GuestAgent GET method.
-     * 
-     * @param resourceUri The fully qualified Azure Resource manager identifier of the resource.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return defines the GuestAgent.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public GuestAgentInner get(String resourceUri) {
         return getWithResponse(resourceUri, Context.NONE).getValue();
@@ -252,10 +235,7 @@ public final class GuestAgentsClientImpl implements GuestAgentsClient {
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Response<BinaryData> createWithResponse(String resourceUri, GuestAgentInner resource) {
-        final String contentType = "application/json";
-        final String accept = "application/json";
-        return service.createSync(this.client.getEndpoint(), this.client.getApiVersion(), resourceUri, contentType,
-            accept, resource, Context.NONE);
+        return createWithResponse(resourceUri, resource, Context.NONE);
     }
 
     /**
@@ -295,35 +275,14 @@ public final class GuestAgentsClientImpl implements GuestAgentsClient {
             GuestAgentInner.class, GuestAgentInner.class, this.client.getContext());
     }
 
-    /**
-     * Create Or Update GuestAgent.
-     * 
-     * @param resourceUri The fully qualified Azure Resource manager identifier of the resource.
-     * @param resource Resource create parameters.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the {@link SyncPoller} for polling of defines the GuestAgent.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public SyncPoller<PollResult<GuestAgentInner>, GuestAgentInner> beginCreate(String resourceUri,
         GuestAgentInner resource) {
-        Response<BinaryData> response = createWithResponse(resourceUri, resource);
-        return this.client.<GuestAgentInner, GuestAgentInner>getLroResult(response, GuestAgentInner.class,
-            GuestAgentInner.class, Context.NONE);
+        return beginCreate(resourceUri, resource, Context.NONE);
     }
 
-    /**
-     * Create Or Update GuestAgent.
-     * 
-     * @param resourceUri The fully qualified Azure Resource manager identifier of the resource.
-     * @param resource Resource create parameters.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the {@link SyncPoller} for polling of defines the GuestAgent.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public SyncPoller<PollResult<GuestAgentInner>, GuestAgentInner> beginCreate(String resourceUri,
         GuestAgentInner resource, Context context) {
@@ -347,35 +306,16 @@ public final class GuestAgentsClientImpl implements GuestAgentsClient {
         return beginCreateAsync(resourceUri, resource).last().flatMap(this.client::getLroFinalResultOrError);
     }
 
-    /**
-     * Create Or Update GuestAgent.
-     * 
-     * @param resourceUri The fully qualified Azure Resource manager identifier of the resource.
-     * @param resource Resource create parameters.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return defines the GuestAgent.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public GuestAgentInner create(String resourceUri, GuestAgentInner resource) {
-        return beginCreate(resourceUri, resource).getFinalResult();
+        return create(resourceUri, resource, Context.NONE);
     }
 
-    /**
-     * Create Or Update GuestAgent.
-     * 
-     * @param resourceUri The fully qualified Azure Resource manager identifier of the resource.
-     * @param resource Resource create parameters.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return defines the GuestAgent.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public GuestAgentInner create(String resourceUri, GuestAgentInner resource, Context context) {
-        return beginCreate(resourceUri, resource, context).getFinalResult();
+        return this.client.getLroFinalResultOrError(beginCreate(resourceUri, resource, context));
     }
 
     /**
@@ -406,7 +346,7 @@ public final class GuestAgentsClientImpl implements GuestAgentsClient {
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Response<BinaryData> deleteWithResponse(String resourceUri) {
-        return service.deleteSync(this.client.getEndpoint(), this.client.getApiVersion(), resourceUri, Context.NONE);
+        return deleteWithResponse(resourceUri, Context.NONE);
     }
 
     /**
@@ -440,31 +380,13 @@ public final class GuestAgentsClientImpl implements GuestAgentsClient {
             this.client.getContext());
     }
 
-    /**
-     * Implements GuestAgent DELETE method.
-     * 
-     * @param resourceUri The fully qualified Azure Resource manager identifier of the resource.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the {@link SyncPoller} for polling of long-running operation.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public SyncPoller<PollResult<Void>, Void> beginDelete(String resourceUri) {
-        Response<BinaryData> response = deleteWithResponse(resourceUri);
-        return this.client.<Void, Void>getLroResult(response, Void.class, Void.class, Context.NONE);
+        return beginDelete(resourceUri, Context.NONE);
     }
 
-    /**
-     * Implements GuestAgent DELETE method.
-     * 
-     * @param resourceUri The fully qualified Azure Resource manager identifier of the resource.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the {@link SyncPoller} for polling of long-running operation.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public SyncPoller<PollResult<Void>, Void> beginDelete(String resourceUri, Context context) {
         Response<BinaryData> response = deleteWithResponse(resourceUri, context);
@@ -485,31 +407,16 @@ public final class GuestAgentsClientImpl implements GuestAgentsClient {
         return beginDeleteAsync(resourceUri).last().flatMap(this.client::getLroFinalResultOrError);
     }
 
-    /**
-     * Implements GuestAgent DELETE method.
-     * 
-     * @param resourceUri The fully qualified Azure Resource manager identifier of the resource.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public void delete(String resourceUri) {
-        beginDelete(resourceUri).getFinalResult();
+        delete(resourceUri, Context.NONE);
     }
 
-    /**
-     * Implements GuestAgent DELETE method.
-     * 
-     * @param resourceUri The fully qualified Azure Resource manager identifier of the resource.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public void delete(String resourceUri, Context context) {
-        beginDelete(resourceUri, context).getFinalResult();
+        this.client.getLroFinalResultOrError(beginDelete(resourceUri, context));
     }
 
     /**
@@ -559,11 +466,7 @@ public final class GuestAgentsClientImpl implements GuestAgentsClient {
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private PagedResponse<GuestAgentInner> listByVirtualMachineInstanceSinglePage(String resourceUri) {
-        final String accept = "application/json";
-        Response<GuestAgentListResult> res = service.listByVirtualMachineInstanceSync(this.client.getEndpoint(),
-            this.client.getApiVersion(), resourceUri, accept, Context.NONE);
-        return new PagedResponseBase<>(res.getRequest(), res.getStatusCode(), res.getHeaders(), res.getValue().value(),
-            res.getValue().nextLink(), null);
+        return listByVirtualMachineInstanceSinglePage(resourceUri, Context.NONE);
     }
 
     /**
@@ -585,31 +488,13 @@ public final class GuestAgentsClientImpl implements GuestAgentsClient {
             res.getValue().nextLink(), null);
     }
 
-    /**
-     * Returns the list of GuestAgent of the given vm.
-     * 
-     * @param resourceUri The fully qualified Azure Resource manager identifier of the resource.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the response of a GuestAgent list operation as paginated response with {@link PagedIterable}.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.COLLECTION)
     public PagedIterable<GuestAgentInner> listByVirtualMachineInstance(String resourceUri) {
-        return new PagedIterable<>(() -> listByVirtualMachineInstanceSinglePage(resourceUri),
-            nextLink -> listByVirtualMachineInstanceNextSinglePage(nextLink));
+        return listByVirtualMachineInstance(resourceUri, Context.NONE);
     }
 
-    /**
-     * Returns the list of GuestAgent of the given vm.
-     * 
-     * @param resourceUri The fully qualified Azure Resource manager identifier of the resource.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the response of a GuestAgent list operation as paginated response with {@link PagedIterable}.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.COLLECTION)
     public PagedIterable<GuestAgentInner> listByVirtualMachineInstance(String resourceUri, Context context) {
         return new PagedIterable<>(() -> listByVirtualMachineInstanceSinglePage(resourceUri, context),
@@ -647,11 +532,7 @@ public final class GuestAgentsClientImpl implements GuestAgentsClient {
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private PagedResponse<GuestAgentInner> listByVirtualMachineInstanceNextSinglePage(String nextLink) {
-        final String accept = "application/json";
-        Response<GuestAgentListResult> res
-            = service.listByVirtualMachineInstanceNextSync(nextLink, this.client.getEndpoint(), accept, Context.NONE);
-        return new PagedResponseBase<>(res.getRequest(), res.getStatusCode(), res.getHeaders(), res.getValue().value(),
-            res.getValue().nextLink(), null);
+        return listByVirtualMachineInstanceNextSinglePage(nextLink, Context.NONE);
     }
 
     /**

@@ -278,17 +278,7 @@ public final class StorageSyncServicesClientImpl implements StorageSyncServicesC
             .flatMap(res -> Mono.justOrEmpty(res.getValue()));
     }
 
-    /**
-     * Get a given StorageSyncService.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param storageSyncServiceName Name of Storage Sync Service resource.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws StorageSyncApiErrorException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return a given StorageSyncService.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public StorageSyncServicesGetByResourceGroupResponse getByResourceGroupWithResponse(String resourceGroupName,
         String storageSyncServiceName, Context context) {
@@ -297,16 +287,7 @@ public final class StorageSyncServicesClientImpl implements StorageSyncServicesC
             this.client.getSubscriptionId(), resourceGroupName, storageSyncServiceName, accept, context);
     }
 
-    /**
-     * Get a given StorageSyncService.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param storageSyncServiceName Name of Storage Sync Service resource.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws StorageSyncApiErrorException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return a given StorageSyncService.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public StorageSyncServiceInner getByResourceGroup(String resourceGroupName, String storageSyncServiceName) {
         return getByResourceGroupWithResponse(resourceGroupName, storageSyncServiceName, Context.NONE).getValue();
@@ -349,11 +330,7 @@ public final class StorageSyncServicesClientImpl implements StorageSyncServicesC
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Response<BinaryData> createWithResponse(String resourceGroupName, String storageSyncServiceName,
         StorageSyncServiceCreateParameters parameters) {
-        final String contentType = "application/json";
-        final String accept = "application/json";
-        return service.createSync(this.client.getEndpoint(), this.client.getApiVersion(),
-            this.client.getSubscriptionId(), resourceGroupName, storageSyncServiceName, contentType, accept, parameters,
-            Context.NONE);
+        return createWithResponse(resourceGroupName, storageSyncServiceName, parameters, Context.NONE);
     }
 
     /**
@@ -399,37 +376,14 @@ public final class StorageSyncServicesClientImpl implements StorageSyncServicesC
             this.client.getContext());
     }
 
-    /**
-     * Create a new StorageSyncService.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param storageSyncServiceName Name of Storage Sync Service resource.
-     * @param parameters Storage Sync Service resource name.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws StorageSyncApiErrorException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the {@link SyncPoller} for polling of storage Sync Service object.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public SyncPoller<PollResult<StorageSyncServiceInner>, StorageSyncServiceInner> beginCreate(
         String resourceGroupName, String storageSyncServiceName, StorageSyncServiceCreateParameters parameters) {
-        Response<BinaryData> response = createWithResponse(resourceGroupName, storageSyncServiceName, parameters);
-        return this.client.<StorageSyncServiceInner, StorageSyncServiceInner>getLroResult(response,
-            StorageSyncServiceInner.class, StorageSyncServiceInner.class, Context.NONE);
+        return beginCreate(resourceGroupName, storageSyncServiceName, parameters, Context.NONE);
     }
 
-    /**
-     * Create a new StorageSyncService.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param storageSyncServiceName Name of Storage Sync Service resource.
-     * @param parameters Storage Sync Service resource name.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws StorageSyncApiErrorException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the {@link SyncPoller} for polling of storage Sync Service object.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public SyncPoller<PollResult<StorageSyncServiceInner>, StorageSyncServiceInner> beginCreate(
         String resourceGroupName, String storageSyncServiceName, StorageSyncServiceCreateParameters parameters,
@@ -458,39 +412,19 @@ public final class StorageSyncServicesClientImpl implements StorageSyncServicesC
             .flatMap(this.client::getLroFinalResultOrError);
     }
 
-    /**
-     * Create a new StorageSyncService.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param storageSyncServiceName Name of Storage Sync Service resource.
-     * @param parameters Storage Sync Service resource name.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws StorageSyncApiErrorException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return storage Sync Service object.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public StorageSyncServiceInner create(String resourceGroupName, String storageSyncServiceName,
         StorageSyncServiceCreateParameters parameters) {
-        return beginCreate(resourceGroupName, storageSyncServiceName, parameters).getFinalResult();
+        return create(resourceGroupName, storageSyncServiceName, parameters, Context.NONE);
     }
 
-    /**
-     * Create a new StorageSyncService.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param storageSyncServiceName Name of Storage Sync Service resource.
-     * @param parameters Storage Sync Service resource name.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws StorageSyncApiErrorException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return storage Sync Service object.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public StorageSyncServiceInner create(String resourceGroupName, String storageSyncServiceName,
         StorageSyncServiceCreateParameters parameters, Context context) {
-        return beginCreate(resourceGroupName, storageSyncServiceName, parameters, context).getFinalResult();
+        return this.client
+            .getLroFinalResultOrError(beginCreate(resourceGroupName, storageSyncServiceName, parameters, context));
     }
 
     /**
@@ -527,10 +461,7 @@ public final class StorageSyncServicesClientImpl implements StorageSyncServicesC
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Response<BinaryData> updateWithResponse(String resourceGroupName, String storageSyncServiceName,
         StorageSyncServiceUpdateParameters parameters) {
-        final String accept = "application/json";
-        return service.updateSync(this.client.getEndpoint(), this.client.getApiVersion(),
-            this.client.getSubscriptionId(), resourceGroupName, storageSyncServiceName, accept, parameters,
-            Context.NONE);
+        return updateWithResponse(resourceGroupName, storageSyncServiceName, parameters, Context.NONE);
     }
 
     /**
@@ -609,42 +540,18 @@ public final class StorageSyncServicesClientImpl implements StorageSyncServicesC
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     private SyncPoller<PollResult<StorageSyncServiceInner>, StorageSyncServiceInner> beginUpdate(
         String resourceGroupName, String storageSyncServiceName, StorageSyncServiceUpdateParameters parameters) {
-        Response<BinaryData> response = updateWithResponse(resourceGroupName, storageSyncServiceName, parameters);
-        return this.client.<StorageSyncServiceInner, StorageSyncServiceInner>getLroResult(response,
-            StorageSyncServiceInner.class, StorageSyncServiceInner.class, Context.NONE);
+        return beginUpdate(resourceGroupName, storageSyncServiceName, parameters, Context.NONE);
     }
 
-    /**
-     * Patch a given StorageSyncService.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param storageSyncServiceName Name of Storage Sync Service resource.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws StorageSyncApiErrorException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the {@link SyncPoller} for polling of storage Sync Service object.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public SyncPoller<PollResult<StorageSyncServiceInner>, StorageSyncServiceInner>
         beginUpdate(String resourceGroupName, String storageSyncServiceName) {
         final StorageSyncServiceUpdateParameters parameters = null;
-        Response<BinaryData> response = updateWithResponse(resourceGroupName, storageSyncServiceName, parameters);
-        return this.client.<StorageSyncServiceInner, StorageSyncServiceInner>getLroResult(response,
-            StorageSyncServiceInner.class, StorageSyncServiceInner.class, Context.NONE);
+        return beginUpdate(resourceGroupName, storageSyncServiceName, parameters, Context.NONE);
     }
 
-    /**
-     * Patch a given StorageSyncService.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param storageSyncServiceName Name of Storage Sync Service resource.
-     * @param parameters Storage Sync Service resource.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws StorageSyncApiErrorException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the {@link SyncPoller} for polling of storage Sync Service object.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public SyncPoller<PollResult<StorageSyncServiceInner>, StorageSyncServiceInner> beginUpdate(
         String resourceGroupName, String storageSyncServiceName, StorageSyncServiceUpdateParameters parameters,
@@ -690,38 +597,19 @@ public final class StorageSyncServicesClientImpl implements StorageSyncServicesC
             .flatMap(this.client::getLroFinalResultOrError);
     }
 
-    /**
-     * Patch a given StorageSyncService.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param storageSyncServiceName Name of Storage Sync Service resource.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws StorageSyncApiErrorException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return storage Sync Service object.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public StorageSyncServiceInner update(String resourceGroupName, String storageSyncServiceName) {
         final StorageSyncServiceUpdateParameters parameters = null;
-        return beginUpdate(resourceGroupName, storageSyncServiceName, parameters).getFinalResult();
+        return update(resourceGroupName, storageSyncServiceName, parameters, Context.NONE);
     }
 
-    /**
-     * Patch a given StorageSyncService.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param storageSyncServiceName Name of Storage Sync Service resource.
-     * @param parameters Storage Sync Service resource.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws StorageSyncApiErrorException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return storage Sync Service object.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public StorageSyncServiceInner update(String resourceGroupName, String storageSyncServiceName,
         StorageSyncServiceUpdateParameters parameters, Context context) {
-        return beginUpdate(resourceGroupName, storageSyncServiceName, parameters, context).getFinalResult();
+        return this.client
+            .getLroFinalResultOrError(beginUpdate(resourceGroupName, storageSyncServiceName, parameters, context));
     }
 
     /**
@@ -755,8 +643,7 @@ public final class StorageSyncServicesClientImpl implements StorageSyncServicesC
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Response<BinaryData> deleteWithResponse(String resourceGroupName, String storageSyncServiceName) {
-        return service.deleteSync(this.client.getEndpoint(), this.client.getApiVersion(),
-            this.client.getSubscriptionId(), resourceGroupName, storageSyncServiceName, Context.NONE);
+        return deleteWithResponse(resourceGroupName, storageSyncServiceName, Context.NONE);
     }
 
     /**
@@ -795,33 +682,13 @@ public final class StorageSyncServicesClientImpl implements StorageSyncServicesC
             this.client.getContext());
     }
 
-    /**
-     * Delete a given StorageSyncService.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param storageSyncServiceName Name of Storage Sync Service resource.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws StorageSyncApiErrorException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the {@link SyncPoller} for polling of long-running operation.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public SyncPoller<PollResult<Void>, Void> beginDelete(String resourceGroupName, String storageSyncServiceName) {
-        Response<BinaryData> response = deleteWithResponse(resourceGroupName, storageSyncServiceName);
-        return this.client.<Void, Void>getLroResult(response, Void.class, Void.class, Context.NONE);
+        return beginDelete(resourceGroupName, storageSyncServiceName, Context.NONE);
     }
 
-    /**
-     * Delete a given StorageSyncService.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param storageSyncServiceName Name of Storage Sync Service resource.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws StorageSyncApiErrorException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the {@link SyncPoller} for polling of long-running operation.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public SyncPoller<PollResult<Void>, Void> beginDelete(String resourceGroupName, String storageSyncServiceName,
         Context context) {
@@ -845,33 +712,16 @@ public final class StorageSyncServicesClientImpl implements StorageSyncServicesC
             .flatMap(this.client::getLroFinalResultOrError);
     }
 
-    /**
-     * Delete a given StorageSyncService.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param storageSyncServiceName Name of Storage Sync Service resource.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws StorageSyncApiErrorException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public void delete(String resourceGroupName, String storageSyncServiceName) {
-        beginDelete(resourceGroupName, storageSyncServiceName).getFinalResult();
+        delete(resourceGroupName, storageSyncServiceName, Context.NONE);
     }
 
-    /**
-     * Delete a given StorageSyncService.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param storageSyncServiceName Name of Storage Sync Service resource.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws StorageSyncApiErrorException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public void delete(String resourceGroupName, String storageSyncServiceName, Context context) {
-        beginDelete(resourceGroupName, storageSyncServiceName, context).getFinalResult();
+        this.client.getLroFinalResultOrError(beginDelete(resourceGroupName, storageSyncServiceName, context));
     }
 
     /**
@@ -921,11 +771,7 @@ public final class StorageSyncServicesClientImpl implements StorageSyncServicesC
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private PagedResponse<StorageSyncServiceInner> listByResourceGroupSinglePage(String resourceGroupName) {
-        final String accept = "application/json";
-        Response<StorageSyncServiceArray> res = service.listByResourceGroupSync(this.client.getEndpoint(),
-            this.client.getApiVersion(), this.client.getSubscriptionId(), resourceGroupName, accept, Context.NONE);
-        return new PagedResponseBase<>(res.getRequest(), res.getStatusCode(), res.getHeaders(), res.getValue().value(),
-            res.getValue().nextLink(), null);
+        return listByResourceGroupSinglePage(resourceGroupName, Context.NONE);
     }
 
     /**
@@ -948,31 +794,13 @@ public final class StorageSyncServicesClientImpl implements StorageSyncServicesC
             res.getValue().nextLink(), null);
     }
 
-    /**
-     * Get a StorageSyncService list by Resource group name.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws StorageSyncApiErrorException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return a StorageSyncService list by Resource group name as paginated response with {@link PagedIterable}.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.COLLECTION)
     public PagedIterable<StorageSyncServiceInner> listByResourceGroup(String resourceGroupName) {
-        return new PagedIterable<>(() -> listByResourceGroupSinglePage(resourceGroupName),
-            nextLink -> listByResourceGroupNextSinglePage(nextLink));
+        return listByResourceGroup(resourceGroupName, Context.NONE);
     }
 
-    /**
-     * Get a StorageSyncService list by Resource group name.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws StorageSyncApiErrorException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return a StorageSyncService list by Resource group name as paginated response with {@link PagedIterable}.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.COLLECTION)
     public PagedIterable<StorageSyncServiceInner> listByResourceGroup(String resourceGroupName, Context context) {
         return new PagedIterable<>(() -> listByResourceGroupSinglePage(resourceGroupName, context),
@@ -1020,11 +848,7 @@ public final class StorageSyncServicesClientImpl implements StorageSyncServicesC
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private PagedResponse<StorageSyncServiceInner> listSinglePage() {
-        final String accept = "application/json";
-        Response<StorageSyncServiceArray> res = service.listSync(this.client.getEndpoint(), this.client.getApiVersion(),
-            this.client.getSubscriptionId(), accept, Context.NONE);
-        return new PagedResponseBase<>(res.getRequest(), res.getStatusCode(), res.getHeaders(), res.getValue().value(),
-            res.getValue().nextLink(), null);
+        return listSinglePage(Context.NONE);
     }
 
     /**
@@ -1045,27 +869,13 @@ public final class StorageSyncServicesClientImpl implements StorageSyncServicesC
             res.getValue().nextLink(), null);
     }
 
-    /**
-     * Get a StorageSyncService list by subscription.
-     * 
-     * @throws StorageSyncApiErrorException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return a StorageSyncService list by subscription as paginated response with {@link PagedIterable}.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.COLLECTION)
     public PagedIterable<StorageSyncServiceInner> list() {
-        return new PagedIterable<>(() -> listSinglePage(), nextLink -> listBySubscriptionNextSinglePage(nextLink));
+        return list(Context.NONE);
     }
 
-    /**
-     * Get a StorageSyncService list by subscription.
-     * 
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws StorageSyncApiErrorException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return a StorageSyncService list by subscription as paginated response with {@link PagedIterable}.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.COLLECTION)
     public PagedIterable<StorageSyncServiceInner> list(Context context) {
         return new PagedIterable<>(() -> listSinglePage(context),
@@ -1112,17 +922,7 @@ public final class StorageSyncServicesClientImpl implements StorageSyncServicesC
             .flatMap(res -> Mono.justOrEmpty(res.getValue()));
     }
 
-    /**
-     * Check the give namespace name availability.
-     * 
-     * @param locationName The desired region for the name check.
-     * @param parameters The request body.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws StorageSyncApiErrorException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the CheckNameAvailability operation response along with {@link Response}.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Response<CheckNameAvailabilityResultInner> checkNameAvailabilityWithResponse(String locationName,
         CheckNameAvailabilityParameters parameters, Context context) {
@@ -1132,16 +932,7 @@ public final class StorageSyncServicesClientImpl implements StorageSyncServicesC
             this.client.getSubscriptionId(), locationName, contentType, accept, parameters, context);
     }
 
-    /**
-     * Check the give namespace name availability.
-     * 
-     * @param locationName The desired region for the name check.
-     * @param parameters The request body.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws StorageSyncApiErrorException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the CheckNameAvailability operation response.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public CheckNameAvailabilityResultInner checkNameAvailability(String locationName,
         CheckNameAvailabilityParameters parameters) {
@@ -1180,11 +971,7 @@ public final class StorageSyncServicesClientImpl implements StorageSyncServicesC
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private PagedResponse<StorageSyncServiceInner> listByResourceGroupNextSinglePage(String nextLink) {
-        final String accept = "application/json";
-        Response<StorageSyncServiceArray> res
-            = service.listByResourceGroupNextSync(nextLink, this.client.getEndpoint(), accept, Context.NONE);
-        return new PagedResponseBase<>(res.getRequest(), res.getStatusCode(), res.getHeaders(), res.getValue().value(),
-            res.getValue().nextLink(), null);
+        return listByResourceGroupNextSinglePage(nextLink, Context.NONE);
     }
 
     /**
@@ -1238,11 +1025,7 @@ public final class StorageSyncServicesClientImpl implements StorageSyncServicesC
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private PagedResponse<StorageSyncServiceInner> listBySubscriptionNextSinglePage(String nextLink) {
-        final String accept = "application/json";
-        Response<StorageSyncServiceArray> res
-            = service.listBySubscriptionNextSync(nextLink, this.client.getEndpoint(), accept, Context.NONE);
-        return new PagedResponseBase<>(res.getRequest(), res.getStatusCode(), res.getHeaders(), res.getValue().value(),
-            res.getValue().nextLink(), null);
+        return listBySubscriptionNextSinglePage(nextLink, Context.NONE);
     }
 
     /**

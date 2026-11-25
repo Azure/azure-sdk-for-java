@@ -46,9 +46,7 @@ public final class DbServersImpl implements DbServers {
 
     public PagedIterable<DbServer> listByCloudExadataInfrastructure(String resourceGroupName,
         String cloudexadatainfrastructurename) {
-        PagedIterable<DbServerInner> inner
-            = this.serviceClient().listByCloudExadataInfrastructure(resourceGroupName, cloudexadatainfrastructurename);
-        return ResourceManagerUtils.mapPage(inner, inner1 -> new DbServerImpl(inner1, this.manager()));
+        return this.listByCloudExadataInfrastructure(resourceGroupName, cloudexadatainfrastructurename, Context.NONE);
     }
 
     public PagedIterable<DbServer> listByCloudExadataInfrastructure(String resourceGroupName,

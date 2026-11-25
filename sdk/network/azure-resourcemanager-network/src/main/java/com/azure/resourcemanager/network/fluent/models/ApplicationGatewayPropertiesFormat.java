@@ -17,6 +17,7 @@ import com.azure.resourcemanager.network.models.ApplicationGatewayBackendAddress
 import com.azure.resourcemanager.network.models.ApplicationGatewayBackendHttpSettings;
 import com.azure.resourcemanager.network.models.ApplicationGatewayBackendSettings;
 import com.azure.resourcemanager.network.models.ApplicationGatewayCustomError;
+import com.azure.resourcemanager.network.models.ApplicationGatewayDeploymentTier;
 import com.azure.resourcemanager.network.models.ApplicationGatewayEntraJwtValidationConfig;
 import com.azure.resourcemanager.network.models.ApplicationGatewayFrontendIpConfiguration;
 import com.azure.resourcemanager.network.models.ApplicationGatewayFrontendPort;
@@ -47,6 +48,11 @@ public final class ApplicationGatewayPropertiesFormat implements JsonSerializabl
      * SKU of the application gateway resource.
      */
     private ApplicationGatewaySku sku;
+
+    /*
+     * Deployment tier of the application gateway resource. Only valid on Standard_v2 and WAF_v2 SKUs.
+     */
+    private ApplicationGatewayDeploymentTier deploymentTier;
 
     /*
      * SSL policy of the application gateway resource.
@@ -201,6 +207,11 @@ public final class ApplicationGatewayPropertiesFormat implements JsonSerializabl
     private Boolean enableFips;
 
     /*
+     * Whether Confidential Compute is enabled on the application gateway resource.
+     */
+    private Boolean enableConfidentialCompute;
+
+    /*
      * Autoscale Configuration.
      */
     private ApplicationGatewayAutoscaleConfiguration autoscaleConfiguration;
@@ -285,6 +296,28 @@ public final class ApplicationGatewayPropertiesFormat implements JsonSerializabl
      */
     public ApplicationGatewayPropertiesFormat withSku(ApplicationGatewaySku sku) {
         this.sku = sku;
+        return this;
+    }
+
+    /**
+     * Get the deploymentTier property: Deployment tier of the application gateway resource. Only valid on Standard_v2
+     * and WAF_v2 SKUs.
+     * 
+     * @return the deploymentTier value.
+     */
+    public ApplicationGatewayDeploymentTier deploymentTier() {
+        return this.deploymentTier;
+    }
+
+    /**
+     * Set the deploymentTier property: Deployment tier of the application gateway resource. Only valid on Standard_v2
+     * and WAF_v2 SKUs.
+     * 
+     * @param deploymentTier the deploymentTier value to set.
+     * @return the ApplicationGatewayPropertiesFormat object itself.
+     */
+    public ApplicationGatewayPropertiesFormat withDeploymentTier(ApplicationGatewayDeploymentTier deploymentTier) {
+        this.deploymentTier = deploymentTier;
         return this;
     }
 
@@ -899,6 +932,28 @@ public final class ApplicationGatewayPropertiesFormat implements JsonSerializabl
     }
 
     /**
+     * Get the enableConfidentialCompute property: Whether Confidential Compute is enabled on the application gateway
+     * resource.
+     * 
+     * @return the enableConfidentialCompute value.
+     */
+    public Boolean enableConfidentialCompute() {
+        return this.enableConfidentialCompute;
+    }
+
+    /**
+     * Set the enableConfidentialCompute property: Whether Confidential Compute is enabled on the application gateway
+     * resource.
+     * 
+     * @param enableConfidentialCompute the enableConfidentialCompute value to set.
+     * @return the ApplicationGatewayPropertiesFormat object itself.
+     */
+    public ApplicationGatewayPropertiesFormat withEnableConfidentialCompute(Boolean enableConfidentialCompute) {
+        this.enableConfidentialCompute = enableConfidentialCompute;
+        return this;
+    }
+
+    /**
      * Get the autoscaleConfiguration property: Autoscale Configuration.
      * 
      * @return the autoscaleConfiguration value.
@@ -1218,6 +1273,8 @@ public final class ApplicationGatewayPropertiesFormat implements JsonSerializabl
     public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
         jsonWriter.writeStartObject();
         jsonWriter.writeJsonField("sku", this.sku);
+        jsonWriter.writeStringField("deploymentTier",
+            this.deploymentTier == null ? null : this.deploymentTier.toString());
         jsonWriter.writeJsonField("sslPolicy", this.sslPolicy);
         jsonWriter.writeArrayField("gatewayIPConfigurations", this.gatewayIpConfigurations,
             (writer, element) -> writer.writeJson(element));
@@ -1258,6 +1315,7 @@ public final class ApplicationGatewayPropertiesFormat implements JsonSerializabl
         jsonWriter.writeJsonField("firewallPolicy", this.firewallPolicy);
         jsonWriter.writeBooleanField("enableHttp2", this.enableHttp2);
         jsonWriter.writeBooleanField("enableFips", this.enableFips);
+        jsonWriter.writeBooleanField("enableConfidentialCompute", this.enableConfidentialCompute);
         jsonWriter.writeJsonField("autoscaleConfiguration", this.autoscaleConfiguration);
         jsonWriter.writeNumberField("reservedCapacity", this.reservedCapacity);
         jsonWriter.writeArrayField("privateLinkConfigurations", this.privateLinkConfigurations,
@@ -1291,6 +1349,9 @@ public final class ApplicationGatewayPropertiesFormat implements JsonSerializabl
 
                 if ("sku".equals(fieldName)) {
                     deserializedApplicationGatewayPropertiesFormat.sku = ApplicationGatewaySku.fromJson(reader);
+                } else if ("deploymentTier".equals(fieldName)) {
+                    deserializedApplicationGatewayPropertiesFormat.deploymentTier
+                        = ApplicationGatewayDeploymentTier.fromString(reader.getString());
                 } else if ("sslPolicy".equals(fieldName)) {
                     deserializedApplicationGatewayPropertiesFormat.sslPolicy
                         = ApplicationGatewaySslPolicy.fromJson(reader);
@@ -1396,6 +1457,9 @@ public final class ApplicationGatewayPropertiesFormat implements JsonSerializabl
                         = reader.getNullable(JsonReader::getBoolean);
                 } else if ("enableFips".equals(fieldName)) {
                     deserializedApplicationGatewayPropertiesFormat.enableFips
+                        = reader.getNullable(JsonReader::getBoolean);
+                } else if ("enableConfidentialCompute".equals(fieldName)) {
+                    deserializedApplicationGatewayPropertiesFormat.enableConfidentialCompute
                         = reader.getNullable(JsonReader::getBoolean);
                 } else if ("autoscaleConfiguration".equals(fieldName)) {
                     deserializedApplicationGatewayPropertiesFormat.autoscaleConfiguration

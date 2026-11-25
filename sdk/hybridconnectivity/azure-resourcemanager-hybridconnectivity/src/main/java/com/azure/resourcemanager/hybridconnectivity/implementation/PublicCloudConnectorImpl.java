@@ -92,10 +92,7 @@ public final class PublicCloudConnectorImpl
     }
 
     public PublicCloudConnector create() {
-        this.innerObject = serviceManager.serviceClient()
-            .getPublicCloudConnectors()
-            .createOrUpdate(resourceGroupName, publicCloudConnector, this.innerModel(), Context.NONE);
-        return this;
+        return this.create(Context.NONE);
     }
 
     public PublicCloudConnector create(Context context) {
@@ -118,11 +115,7 @@ public final class PublicCloudConnectorImpl
     }
 
     public PublicCloudConnector apply() {
-        this.innerObject = serviceManager.serviceClient()
-            .getPublicCloudConnectors()
-            .updateWithResponse(resourceGroupName, publicCloudConnector, updateProperties, Context.NONE)
-            .getValue();
-        return this;
+        return this.apply(Context.NONE);
     }
 
     public PublicCloudConnector apply(Context context) {
@@ -146,11 +139,7 @@ public final class PublicCloudConnectorImpl
     }
 
     public PublicCloudConnector refresh() {
-        this.innerObject = serviceManager.serviceClient()
-            .getPublicCloudConnectors()
-            .getByResourceGroupWithResponse(resourceGroupName, publicCloudConnector, Context.NONE)
-            .getValue();
-        return this;
+        return this.refresh(Context.NONE);
     }
 
     public PublicCloudConnector refresh(Context context) {

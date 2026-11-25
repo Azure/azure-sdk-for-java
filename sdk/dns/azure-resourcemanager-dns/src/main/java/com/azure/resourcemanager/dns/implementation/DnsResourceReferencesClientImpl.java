@@ -67,16 +67,7 @@ public final class DnsResourceReferencesClientImpl implements DnsResourceReferen
             @BodyParam("application/json") DnsResourceReferenceRequest parameters, Context context);
     }
 
-    /**
-     * Returns the DNS records specified by the referencing targetResourceIds.
-     * 
-     * @param parameters The request body.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return represents the properties of the Dns Resource Reference Result along with {@link Response} on successful
-     * completion of {@link Mono}.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Response<DnsResourceReferenceResultInner>>
         getByTargetResourcesWithResponseAsync(DnsResourceReferenceRequest parameters) {
@@ -135,45 +126,20 @@ public final class DnsResourceReferencesClientImpl implements DnsResourceReferen
             this.client.getSubscriptionId(), contentType, accept, parameters, context);
     }
 
-    /**
-     * Returns the DNS records specified by the referencing targetResourceIds.
-     * 
-     * @param parameters The request body.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return represents the properties of the Dns Resource Reference Result on successful completion of {@link Mono}.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<DnsResourceReferenceResultInner> getByTargetResourcesAsync(DnsResourceReferenceRequest parameters) {
         return getByTargetResourcesWithResponseAsync(parameters).flatMap(res -> Mono.justOrEmpty(res.getValue()));
     }
 
-    /**
-     * Returns the DNS records specified by the referencing targetResourceIds.
-     * 
-     * @param parameters The request body.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return represents the properties of the Dns Resource Reference Result along with {@link Response}.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Response<DnsResourceReferenceResultInner>
         getByTargetResourcesWithResponse(DnsResourceReferenceRequest parameters, Context context) {
         return getByTargetResourcesWithResponseAsync(parameters, context).block();
     }
 
-    /**
-     * Returns the DNS records specified by the referencing targetResourceIds.
-     * 
-     * @param parameters The request body.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return represents the properties of the Dns Resource Reference Result.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public DnsResourceReferenceResultInner getByTargetResources(DnsResourceReferenceRequest parameters) {
         return getByTargetResourcesWithResponse(parameters, Context.NONE).getValue();

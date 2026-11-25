@@ -38,18 +38,6 @@ public final class EvaluatorGenerationArtifacts implements JsonSerializable<Eval
     private final List<String> kinds;
 
     /**
-     * Creates an instance of EvaluatorGenerationArtifacts class.
-     *
-     * @param dataset the dataset value to set.
-     * @param kinds the kinds value to set.
-     */
-    @Generated
-    private EvaluatorGenerationArtifacts(DatasetReference dataset, List<String> kinds) {
-        this.dataset = dataset;
-        this.kinds = kinds;
-    }
-
-    /**
      * Get the dataset property: Reference to the single Foundry Dataset (one combined JSONL file, version-aligned to
      * `EvaluatorVersion.version`) holding all artifacts produced by the generation pipeline. Each row in the JSONL
      * carries a `kind` field discriminating its content (e.g. `spec`, `tools`, `context`).
@@ -113,5 +101,17 @@ public final class EvaluatorGenerationArtifacts implements JsonSerializable<Eval
             }
             return new EvaluatorGenerationArtifacts(dataset, kinds);
         });
+    }
+
+    /**
+     * Creates an instance of EvaluatorGenerationArtifacts class.
+     *
+     * @param dataset the dataset value to set.
+     * @param kinds the kinds value to set.
+     */
+    @Generated
+    private EvaluatorGenerationArtifacts(DatasetReference dataset, List<String> kinds) {
+        this.dataset = dataset;
+        this.kinds = kinds;
     }
 }

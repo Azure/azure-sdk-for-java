@@ -369,19 +369,7 @@ public final class MongoDBResourcesClientImpl implements MongoDBResourcesClient 
             @HeaderParam("Accept") String accept, Context context);
     }
 
-    /**
-     * Gets the RUs per second of the MongoDB database under an existing Azure Cosmos DB database account with the
-     * provided name.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param accountName Cosmos DB database account name.
-     * @param databaseName Cosmos DB database name.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the RUs per second of the MongoDB database under an existing Azure Cosmos DB database account with the
-     * provided name along with {@link Response} on successful completion of {@link Mono}.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Response<ThroughputSettingsGetResultsInner>> getMongoDBDatabaseThroughputWithResponseAsync(
         String resourceGroupName, String accountName, String databaseName) {
@@ -452,19 +440,7 @@ public final class MongoDBResourcesClientImpl implements MongoDBResourcesClient 
             this.client.getSubscriptionId(), resourceGroupName, accountName, databaseName, accept, context);
     }
 
-    /**
-     * Gets the RUs per second of the MongoDB database under an existing Azure Cosmos DB database account with the
-     * provided name.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param accountName Cosmos DB database account name.
-     * @param databaseName Cosmos DB database name.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the RUs per second of the MongoDB database under an existing Azure Cosmos DB database account with the
-     * provided name on successful completion of {@link Mono}.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<ThroughputSettingsGetResultsInner> getMongoDBDatabaseThroughputAsync(String resourceGroupName,
         String accountName, String databaseName) {
@@ -472,20 +448,7 @@ public final class MongoDBResourcesClientImpl implements MongoDBResourcesClient 
             .flatMap(res -> Mono.justOrEmpty(res.getValue()));
     }
 
-    /**
-     * Gets the RUs per second of the MongoDB database under an existing Azure Cosmos DB database account with the
-     * provided name.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param accountName Cosmos DB database account name.
-     * @param databaseName Cosmos DB database name.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the RUs per second of the MongoDB database under an existing Azure Cosmos DB database account with the
-     * provided name along with {@link Response}.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Response<ThroughputSettingsGetResultsInner> getMongoDBDatabaseThroughputWithResponse(
         String resourceGroupName, String accountName, String databaseName, Context context) {
@@ -493,19 +456,7 @@ public final class MongoDBResourcesClientImpl implements MongoDBResourcesClient 
             .block();
     }
 
-    /**
-     * Gets the RUs per second of the MongoDB database under an existing Azure Cosmos DB database account with the
-     * provided name.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param accountName Cosmos DB database account name.
-     * @param databaseName Cosmos DB database name.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the RUs per second of the MongoDB database under an existing Azure Cosmos DB database account with the
-     * provided name.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public ThroughputSettingsGetResultsInner getMongoDBDatabaseThroughput(String resourceGroupName, String accountName,
         String databaseName) {
@@ -513,20 +464,7 @@ public final class MongoDBResourcesClientImpl implements MongoDBResourcesClient 
             .getValue();
     }
 
-    /**
-     * Update RUs per second of the an Azure Cosmos DB MongoDB database.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param accountName Cosmos DB database account name.
-     * @param databaseName Cosmos DB database name.
-     * @param updateThroughputParameters The RUs per second of the parameters to provide for the current MongoDB
-     * database.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return an Azure Cosmos DB resource throughput along with {@link Response} on successful completion of
-     * {@link Mono}.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Response<Flux<ByteBuffer>>> updateMongoDBDatabaseThroughputWithResponseAsync(String resourceGroupName,
         String accountName, String databaseName, ThroughputSettingsUpdateParameters updateThroughputParameters) {
@@ -614,19 +552,7 @@ public final class MongoDBResourcesClientImpl implements MongoDBResourcesClient 
             updateThroughputParameters, context);
     }
 
-    /**
-     * Update RUs per second of the an Azure Cosmos DB MongoDB database.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param accountName Cosmos DB database account name.
-     * @param databaseName Cosmos DB database name.
-     * @param updateThroughputParameters The RUs per second of the parameters to provide for the current MongoDB
-     * database.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the {@link PollerFlux} for polling of an Azure Cosmos DB resource throughput.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public PollerFlux<PollResult<ThroughputSettingsGetResultsInner>, ThroughputSettingsGetResultsInner>
         beginUpdateMongoDBDatabaseThroughputAsync(String resourceGroupName, String accountName, String databaseName,
@@ -664,19 +590,7 @@ public final class MongoDBResourcesClientImpl implements MongoDBResourcesClient 
             ThroughputSettingsGetResultsInner.class, context);
     }
 
-    /**
-     * Update RUs per second of the an Azure Cosmos DB MongoDB database.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param accountName Cosmos DB database account name.
-     * @param databaseName Cosmos DB database name.
-     * @param updateThroughputParameters The RUs per second of the parameters to provide for the current MongoDB
-     * database.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the {@link SyncPoller} for polling of an Azure Cosmos DB resource throughput.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public SyncPoller<PollResult<ThroughputSettingsGetResultsInner>, ThroughputSettingsGetResultsInner>
         beginUpdateMongoDBDatabaseThroughput(String resourceGroupName, String accountName, String databaseName,
@@ -687,20 +601,7 @@ public final class MongoDBResourcesClientImpl implements MongoDBResourcesClient 
             .getSyncPoller();
     }
 
-    /**
-     * Update RUs per second of the an Azure Cosmos DB MongoDB database.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param accountName Cosmos DB database account name.
-     * @param databaseName Cosmos DB database name.
-     * @param updateThroughputParameters The RUs per second of the parameters to provide for the current MongoDB
-     * database.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the {@link SyncPoller} for polling of an Azure Cosmos DB resource throughput.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public SyncPoller<PollResult<ThroughputSettingsGetResultsInner>, ThroughputSettingsGetResultsInner>
         beginUpdateMongoDBDatabaseThroughput(String resourceGroupName, String accountName, String databaseName,
@@ -711,19 +612,7 @@ public final class MongoDBResourcesClientImpl implements MongoDBResourcesClient 
             .getSyncPoller();
     }
 
-    /**
-     * Update RUs per second of the an Azure Cosmos DB MongoDB database.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param accountName Cosmos DB database account name.
-     * @param databaseName Cosmos DB database name.
-     * @param updateThroughputParameters The RUs per second of the parameters to provide for the current MongoDB
-     * database.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return an Azure Cosmos DB resource throughput on successful completion of {@link Mono}.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<ThroughputSettingsGetResultsInner> updateMongoDBDatabaseThroughputAsync(String resourceGroupName,
         String accountName, String databaseName, ThroughputSettingsUpdateParameters updateThroughputParameters) {
@@ -753,19 +642,7 @@ public final class MongoDBResourcesClientImpl implements MongoDBResourcesClient 
             updateThroughputParameters, context).last().flatMap(this.client::getLroFinalResultOrError);
     }
 
-    /**
-     * Update RUs per second of the an Azure Cosmos DB MongoDB database.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param accountName Cosmos DB database account name.
-     * @param databaseName Cosmos DB database name.
-     * @param updateThroughputParameters The RUs per second of the parameters to provide for the current MongoDB
-     * database.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return an Azure Cosmos DB resource throughput.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public ThroughputSettingsGetResultsInner updateMongoDBDatabaseThroughput(String resourceGroupName,
         String accountName, String databaseName, ThroughputSettingsUpdateParameters updateThroughputParameters) {
@@ -773,20 +650,7 @@ public final class MongoDBResourcesClientImpl implements MongoDBResourcesClient 
             updateThroughputParameters).block();
     }
 
-    /**
-     * Update RUs per second of the an Azure Cosmos DB MongoDB database.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param accountName Cosmos DB database account name.
-     * @param databaseName Cosmos DB database name.
-     * @param updateThroughputParameters The RUs per second of the parameters to provide for the current MongoDB
-     * database.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return an Azure Cosmos DB resource throughput.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public ThroughputSettingsGetResultsInner updateMongoDBDatabaseThroughput(String resourceGroupName,
         String accountName, String databaseName, ThroughputSettingsUpdateParameters updateThroughputParameters,
@@ -795,18 +659,7 @@ public final class MongoDBResourcesClientImpl implements MongoDBResourcesClient 
             updateThroughputParameters, context).block();
     }
 
-    /**
-     * Migrate an Azure Cosmos DB MongoDB database from manual throughput to autoscale.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param accountName Cosmos DB database account name.
-     * @param databaseName Cosmos DB database name.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return an Azure Cosmos DB resource throughput along with {@link Response} on successful completion of
-     * {@link Mono}.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Response<Flux<ByteBuffer>>> migrateMongoDBDatabaseToAutoscaleWithResponseAsync(String resourceGroupName,
         String accountName, String databaseName) {
@@ -876,17 +729,7 @@ public final class MongoDBResourcesClientImpl implements MongoDBResourcesClient 
             this.client.getSubscriptionId(), resourceGroupName, accountName, databaseName, accept, context);
     }
 
-    /**
-     * Migrate an Azure Cosmos DB MongoDB database from manual throughput to autoscale.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param accountName Cosmos DB database account name.
-     * @param databaseName Cosmos DB database name.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the {@link PollerFlux} for polling of an Azure Cosmos DB resource throughput.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public PollerFlux<PollResult<ThroughputSettingsGetResultsInner>, ThroughputSettingsGetResultsInner>
         beginMigrateMongoDBDatabaseToAutoscaleAsync(String resourceGroupName, String accountName, String databaseName) {
@@ -921,17 +764,7 @@ public final class MongoDBResourcesClientImpl implements MongoDBResourcesClient 
             ThroughputSettingsGetResultsInner.class, context);
     }
 
-    /**
-     * Migrate an Azure Cosmos DB MongoDB database from manual throughput to autoscale.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param accountName Cosmos DB database account name.
-     * @param databaseName Cosmos DB database name.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the {@link SyncPoller} for polling of an Azure Cosmos DB resource throughput.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public SyncPoller<PollResult<ThroughputSettingsGetResultsInner>, ThroughputSettingsGetResultsInner>
         beginMigrateMongoDBDatabaseToAutoscale(String resourceGroupName, String accountName, String databaseName) {
@@ -939,18 +772,7 @@ public final class MongoDBResourcesClientImpl implements MongoDBResourcesClient 
             .getSyncPoller();
     }
 
-    /**
-     * Migrate an Azure Cosmos DB MongoDB database from manual throughput to autoscale.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param accountName Cosmos DB database account name.
-     * @param databaseName Cosmos DB database name.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the {@link SyncPoller} for polling of an Azure Cosmos DB resource throughput.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public SyncPoller<PollResult<ThroughputSettingsGetResultsInner>, ThroughputSettingsGetResultsInner>
         beginMigrateMongoDBDatabaseToAutoscale(String resourceGroupName, String accountName, String databaseName,
@@ -959,17 +781,7 @@ public final class MongoDBResourcesClientImpl implements MongoDBResourcesClient 
             .getSyncPoller();
     }
 
-    /**
-     * Migrate an Azure Cosmos DB MongoDB database from manual throughput to autoscale.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param accountName Cosmos DB database account name.
-     * @param databaseName Cosmos DB database name.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return an Azure Cosmos DB resource throughput on successful completion of {@link Mono}.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<ThroughputSettingsGetResultsInner> migrateMongoDBDatabaseToAutoscaleAsync(String resourceGroupName,
         String accountName, String databaseName) {
@@ -996,53 +808,21 @@ public final class MongoDBResourcesClientImpl implements MongoDBResourcesClient 
             .flatMap(this.client::getLroFinalResultOrError);
     }
 
-    /**
-     * Migrate an Azure Cosmos DB MongoDB database from manual throughput to autoscale.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param accountName Cosmos DB database account name.
-     * @param databaseName Cosmos DB database name.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return an Azure Cosmos DB resource throughput.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public ThroughputSettingsGetResultsInner migrateMongoDBDatabaseToAutoscale(String resourceGroupName,
         String accountName, String databaseName) {
         return migrateMongoDBDatabaseToAutoscaleAsync(resourceGroupName, accountName, databaseName).block();
     }
 
-    /**
-     * Migrate an Azure Cosmos DB MongoDB database from manual throughput to autoscale.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param accountName Cosmos DB database account name.
-     * @param databaseName Cosmos DB database name.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return an Azure Cosmos DB resource throughput.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public ThroughputSettingsGetResultsInner migrateMongoDBDatabaseToAutoscale(String resourceGroupName,
         String accountName, String databaseName, Context context) {
         return migrateMongoDBDatabaseToAutoscaleAsync(resourceGroupName, accountName, databaseName, context).block();
     }
 
-    /**
-     * Migrate an Azure Cosmos DB MongoDB database from autoscale to manual throughput.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param accountName Cosmos DB database account name.
-     * @param databaseName Cosmos DB database name.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return an Azure Cosmos DB resource throughput along with {@link Response} on successful completion of
-     * {@link Mono}.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Response<Flux<ByteBuffer>>> migrateMongoDBDatabaseToManualThroughputWithResponseAsync(
         String resourceGroupName, String accountName, String databaseName) {
@@ -1112,17 +892,7 @@ public final class MongoDBResourcesClientImpl implements MongoDBResourcesClient 
             this.client.getSubscriptionId(), resourceGroupName, accountName, databaseName, accept, context);
     }
 
-    /**
-     * Migrate an Azure Cosmos DB MongoDB database from autoscale to manual throughput.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param accountName Cosmos DB database account name.
-     * @param databaseName Cosmos DB database name.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the {@link PollerFlux} for polling of an Azure Cosmos DB resource throughput.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public PollerFlux<PollResult<ThroughputSettingsGetResultsInner>, ThroughputSettingsGetResultsInner>
         beginMigrateMongoDBDatabaseToManualThroughputAsync(String resourceGroupName, String accountName,
@@ -1158,17 +928,7 @@ public final class MongoDBResourcesClientImpl implements MongoDBResourcesClient 
             ThroughputSettingsGetResultsInner.class, context);
     }
 
-    /**
-     * Migrate an Azure Cosmos DB MongoDB database from autoscale to manual throughput.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param accountName Cosmos DB database account name.
-     * @param databaseName Cosmos DB database name.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the {@link SyncPoller} for polling of an Azure Cosmos DB resource throughput.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public SyncPoller<PollResult<ThroughputSettingsGetResultsInner>, ThroughputSettingsGetResultsInner>
         beginMigrateMongoDBDatabaseToManualThroughput(String resourceGroupName, String accountName,
@@ -1177,18 +937,7 @@ public final class MongoDBResourcesClientImpl implements MongoDBResourcesClient 
             .getSyncPoller();
     }
 
-    /**
-     * Migrate an Azure Cosmos DB MongoDB database from autoscale to manual throughput.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param accountName Cosmos DB database account name.
-     * @param databaseName Cosmos DB database name.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the {@link SyncPoller} for polling of an Azure Cosmos DB resource throughput.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public SyncPoller<PollResult<ThroughputSettingsGetResultsInner>, ThroughputSettingsGetResultsInner>
         beginMigrateMongoDBDatabaseToManualThroughput(String resourceGroupName, String accountName, String databaseName,
@@ -1198,17 +947,7 @@ public final class MongoDBResourcesClientImpl implements MongoDBResourcesClient 
             .getSyncPoller();
     }
 
-    /**
-     * Migrate an Azure Cosmos DB MongoDB database from autoscale to manual throughput.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param accountName Cosmos DB database account name.
-     * @param databaseName Cosmos DB database name.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return an Azure Cosmos DB resource throughput on successful completion of {@link Mono}.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<ThroughputSettingsGetResultsInner> migrateMongoDBDatabaseToManualThroughputAsync(
         String resourceGroupName, String accountName, String databaseName) {
@@ -1236,35 +975,14 @@ public final class MongoDBResourcesClientImpl implements MongoDBResourcesClient 
             .flatMap(this.client::getLroFinalResultOrError);
     }
 
-    /**
-     * Migrate an Azure Cosmos DB MongoDB database from autoscale to manual throughput.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param accountName Cosmos DB database account name.
-     * @param databaseName Cosmos DB database name.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return an Azure Cosmos DB resource throughput.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public ThroughputSettingsGetResultsInner migrateMongoDBDatabaseToManualThroughput(String resourceGroupName,
         String accountName, String databaseName) {
         return migrateMongoDBDatabaseToManualThroughputAsync(resourceGroupName, accountName, databaseName).block();
     }
 
-    /**
-     * Migrate an Azure Cosmos DB MongoDB database from autoscale to manual throughput.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param accountName Cosmos DB database account name.
-     * @param databaseName Cosmos DB database name.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return an Azure Cosmos DB resource throughput.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public ThroughputSettingsGetResultsInner migrateMongoDBDatabaseToManualThroughput(String resourceGroupName,
         String accountName, String databaseName, Context context) {
@@ -1272,20 +990,7 @@ public final class MongoDBResourcesClientImpl implements MongoDBResourcesClient 
             .block();
     }
 
-    /**
-     * Gets the RUs per second of the MongoDB collection under an existing Azure Cosmos DB database account with the
-     * provided name.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param accountName Cosmos DB database account name.
-     * @param databaseName Cosmos DB database name.
-     * @param collectionName Cosmos DB collection name.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the RUs per second of the MongoDB collection under an existing Azure Cosmos DB database account with the
-     * provided name along with {@link Response} on successful completion of {@link Mono}.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Response<ThroughputSettingsGetResultsInner>> getMongoDBCollectionThroughputWithResponseAsync(
         String resourceGroupName, String accountName, String databaseName, String collectionName) {
@@ -1364,20 +1069,7 @@ public final class MongoDBResourcesClientImpl implements MongoDBResourcesClient 
             context);
     }
 
-    /**
-     * Gets the RUs per second of the MongoDB collection under an existing Azure Cosmos DB database account with the
-     * provided name.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param accountName Cosmos DB database account name.
-     * @param databaseName Cosmos DB database name.
-     * @param collectionName Cosmos DB collection name.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the RUs per second of the MongoDB collection under an existing Azure Cosmos DB database account with the
-     * provided name on successful completion of {@link Mono}.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<ThroughputSettingsGetResultsInner> getMongoDBCollectionThroughputAsync(String resourceGroupName,
         String accountName, String databaseName, String collectionName) {
@@ -1385,21 +1077,7 @@ public final class MongoDBResourcesClientImpl implements MongoDBResourcesClient 
             collectionName).flatMap(res -> Mono.justOrEmpty(res.getValue()));
     }
 
-    /**
-     * Gets the RUs per second of the MongoDB collection under an existing Azure Cosmos DB database account with the
-     * provided name.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param accountName Cosmos DB database account name.
-     * @param databaseName Cosmos DB database name.
-     * @param collectionName Cosmos DB collection name.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the RUs per second of the MongoDB collection under an existing Azure Cosmos DB database account with the
-     * provided name along with {@link Response}.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Response<ThroughputSettingsGetResultsInner> getMongoDBCollectionThroughputWithResponse(
         String resourceGroupName, String accountName, String databaseName, String collectionName, Context context) {
@@ -1407,20 +1085,7 @@ public final class MongoDBResourcesClientImpl implements MongoDBResourcesClient 
             collectionName, context).block();
     }
 
-    /**
-     * Gets the RUs per second of the MongoDB collection under an existing Azure Cosmos DB database account with the
-     * provided name.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param accountName Cosmos DB database account name.
-     * @param databaseName Cosmos DB database name.
-     * @param collectionName Cosmos DB collection name.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the RUs per second of the MongoDB collection under an existing Azure Cosmos DB database account with the
-     * provided name.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public ThroughputSettingsGetResultsInner getMongoDBCollectionThroughput(String resourceGroupName,
         String accountName, String databaseName, String collectionName) {
@@ -1428,21 +1093,7 @@ public final class MongoDBResourcesClientImpl implements MongoDBResourcesClient 
             Context.NONE).getValue();
     }
 
-    /**
-     * Update the RUs per second of an Azure Cosmos DB MongoDB collection.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param accountName Cosmos DB database account name.
-     * @param databaseName Cosmos DB database name.
-     * @param collectionName Cosmos DB collection name.
-     * @param updateThroughputParameters The RUs per second of the parameters to provide for the current MongoDB
-     * collection.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return an Azure Cosmos DB resource throughput along with {@link Response} on successful completion of
-     * {@link Mono}.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Response<Flux<ByteBuffer>>> updateMongoDBCollectionThroughputWithResponseAsync(String resourceGroupName,
         String accountName, String databaseName, String collectionName,
@@ -1538,20 +1189,7 @@ public final class MongoDBResourcesClientImpl implements MongoDBResourcesClient 
             accept, updateThroughputParameters, context);
     }
 
-    /**
-     * Update the RUs per second of an Azure Cosmos DB MongoDB collection.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param accountName Cosmos DB database account name.
-     * @param databaseName Cosmos DB database name.
-     * @param collectionName Cosmos DB collection name.
-     * @param updateThroughputParameters The RUs per second of the parameters to provide for the current MongoDB
-     * collection.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the {@link PollerFlux} for polling of an Azure Cosmos DB resource throughput.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public PollerFlux<PollResult<ThroughputSettingsGetResultsInner>, ThroughputSettingsGetResultsInner>
         beginUpdateMongoDBCollectionThroughputAsync(String resourceGroupName, String accountName, String databaseName,
@@ -1590,20 +1228,7 @@ public final class MongoDBResourcesClientImpl implements MongoDBResourcesClient 
             ThroughputSettingsGetResultsInner.class, context);
     }
 
-    /**
-     * Update the RUs per second of an Azure Cosmos DB MongoDB collection.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param accountName Cosmos DB database account name.
-     * @param databaseName Cosmos DB database name.
-     * @param collectionName Cosmos DB collection name.
-     * @param updateThroughputParameters The RUs per second of the parameters to provide for the current MongoDB
-     * collection.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the {@link SyncPoller} for polling of an Azure Cosmos DB resource throughput.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public SyncPoller<PollResult<ThroughputSettingsGetResultsInner>, ThroughputSettingsGetResultsInner>
         beginUpdateMongoDBCollectionThroughput(String resourceGroupName, String accountName, String databaseName,
@@ -1614,21 +1239,7 @@ public final class MongoDBResourcesClientImpl implements MongoDBResourcesClient 
             .getSyncPoller();
     }
 
-    /**
-     * Update the RUs per second of an Azure Cosmos DB MongoDB collection.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param accountName Cosmos DB database account name.
-     * @param databaseName Cosmos DB database name.
-     * @param collectionName Cosmos DB collection name.
-     * @param updateThroughputParameters The RUs per second of the parameters to provide for the current MongoDB
-     * collection.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the {@link SyncPoller} for polling of an Azure Cosmos DB resource throughput.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public SyncPoller<PollResult<ThroughputSettingsGetResultsInner>, ThroughputSettingsGetResultsInner>
         beginUpdateMongoDBCollectionThroughput(String resourceGroupName, String accountName, String databaseName,
@@ -1639,20 +1250,7 @@ public final class MongoDBResourcesClientImpl implements MongoDBResourcesClient 
             .getSyncPoller();
     }
 
-    /**
-     * Update the RUs per second of an Azure Cosmos DB MongoDB collection.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param accountName Cosmos DB database account name.
-     * @param databaseName Cosmos DB database name.
-     * @param collectionName Cosmos DB collection name.
-     * @param updateThroughputParameters The RUs per second of the parameters to provide for the current MongoDB
-     * collection.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return an Azure Cosmos DB resource throughput on successful completion of {@link Mono}.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<ThroughputSettingsGetResultsInner> updateMongoDBCollectionThroughputAsync(String resourceGroupName,
         String accountName, String databaseName, String collectionName,
@@ -1684,20 +1282,7 @@ public final class MongoDBResourcesClientImpl implements MongoDBResourcesClient 
             updateThroughputParameters, context).last().flatMap(this.client::getLroFinalResultOrError);
     }
 
-    /**
-     * Update the RUs per second of an Azure Cosmos DB MongoDB collection.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param accountName Cosmos DB database account name.
-     * @param databaseName Cosmos DB database name.
-     * @param collectionName Cosmos DB collection name.
-     * @param updateThroughputParameters The RUs per second of the parameters to provide for the current MongoDB
-     * collection.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return an Azure Cosmos DB resource throughput.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public ThroughputSettingsGetResultsInner updateMongoDBCollectionThroughput(String resourceGroupName,
         String accountName, String databaseName, String collectionName,
@@ -1706,21 +1291,7 @@ public final class MongoDBResourcesClientImpl implements MongoDBResourcesClient 
             updateThroughputParameters).block();
     }
 
-    /**
-     * Update the RUs per second of an Azure Cosmos DB MongoDB collection.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param accountName Cosmos DB database account name.
-     * @param databaseName Cosmos DB database name.
-     * @param collectionName Cosmos DB collection name.
-     * @param updateThroughputParameters The RUs per second of the parameters to provide for the current MongoDB
-     * collection.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return an Azure Cosmos DB resource throughput.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public ThroughputSettingsGetResultsInner updateMongoDBCollectionThroughput(String resourceGroupName,
         String accountName, String databaseName, String collectionName,
@@ -1729,19 +1300,7 @@ public final class MongoDBResourcesClientImpl implements MongoDBResourcesClient 
             updateThroughputParameters, context).block();
     }
 
-    /**
-     * Migrate an Azure Cosmos DB MongoDB collection from manual throughput to autoscale.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param accountName Cosmos DB database account name.
-     * @param databaseName Cosmos DB database name.
-     * @param collectionName Cosmos DB collection name.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return an Azure Cosmos DB resource throughput along with {@link Response} on successful completion of
-     * {@link Mono}.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Response<Flux<ByteBuffer>>> migrateMongoDBCollectionToAutoscaleWithResponseAsync(
         String resourceGroupName, String accountName, String databaseName, String collectionName) {
@@ -1819,18 +1378,7 @@ public final class MongoDBResourcesClientImpl implements MongoDBResourcesClient 
             context);
     }
 
-    /**
-     * Migrate an Azure Cosmos DB MongoDB collection from manual throughput to autoscale.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param accountName Cosmos DB database account name.
-     * @param databaseName Cosmos DB database name.
-     * @param collectionName Cosmos DB collection name.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the {@link PollerFlux} for polling of an Azure Cosmos DB resource throughput.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public PollerFlux<PollResult<ThroughputSettingsGetResultsInner>, ThroughputSettingsGetResultsInner>
         beginMigrateMongoDBCollectionToAutoscaleAsync(String resourceGroupName, String accountName, String databaseName,
@@ -1867,18 +1415,7 @@ public final class MongoDBResourcesClientImpl implements MongoDBResourcesClient 
             ThroughputSettingsGetResultsInner.class, context);
     }
 
-    /**
-     * Migrate an Azure Cosmos DB MongoDB collection from manual throughput to autoscale.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param accountName Cosmos DB database account name.
-     * @param databaseName Cosmos DB database name.
-     * @param collectionName Cosmos DB collection name.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the {@link SyncPoller} for polling of an Azure Cosmos DB resource throughput.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public SyncPoller<PollResult<ThroughputSettingsGetResultsInner>, ThroughputSettingsGetResultsInner>
         beginMigrateMongoDBCollectionToAutoscale(String resourceGroupName, String accountName, String databaseName,
@@ -1888,19 +1425,7 @@ public final class MongoDBResourcesClientImpl implements MongoDBResourcesClient 
             .getSyncPoller();
     }
 
-    /**
-     * Migrate an Azure Cosmos DB MongoDB collection from manual throughput to autoscale.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param accountName Cosmos DB database account name.
-     * @param databaseName Cosmos DB database name.
-     * @param collectionName Cosmos DB collection name.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the {@link SyncPoller} for polling of an Azure Cosmos DB resource throughput.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public SyncPoller<PollResult<ThroughputSettingsGetResultsInner>, ThroughputSettingsGetResultsInner>
         beginMigrateMongoDBCollectionToAutoscale(String resourceGroupName, String accountName, String databaseName,
@@ -1911,18 +1436,7 @@ public final class MongoDBResourcesClientImpl implements MongoDBResourcesClient 
             .getSyncPoller();
     }
 
-    /**
-     * Migrate an Azure Cosmos DB MongoDB collection from manual throughput to autoscale.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param accountName Cosmos DB database account name.
-     * @param databaseName Cosmos DB database name.
-     * @param collectionName Cosmos DB collection name.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return an Azure Cosmos DB resource throughput on successful completion of {@link Mono}.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<ThroughputSettingsGetResultsInner> migrateMongoDBCollectionToAutoscaleAsync(String resourceGroupName,
         String accountName, String databaseName, String collectionName) {
@@ -1950,18 +1464,7 @@ public final class MongoDBResourcesClientImpl implements MongoDBResourcesClient 
             collectionName, context).last().flatMap(this.client::getLroFinalResultOrError);
     }
 
-    /**
-     * Migrate an Azure Cosmos DB MongoDB collection from manual throughput to autoscale.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param accountName Cosmos DB database account name.
-     * @param databaseName Cosmos DB database name.
-     * @param collectionName Cosmos DB collection name.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return an Azure Cosmos DB resource throughput.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public ThroughputSettingsGetResultsInner migrateMongoDBCollectionToAutoscale(String resourceGroupName,
         String accountName, String databaseName, String collectionName) {
@@ -1969,19 +1472,7 @@ public final class MongoDBResourcesClientImpl implements MongoDBResourcesClient 
             .block();
     }
 
-    /**
-     * Migrate an Azure Cosmos DB MongoDB collection from manual throughput to autoscale.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param accountName Cosmos DB database account name.
-     * @param databaseName Cosmos DB database name.
-     * @param collectionName Cosmos DB collection name.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return an Azure Cosmos DB resource throughput.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public ThroughputSettingsGetResultsInner migrateMongoDBCollectionToAutoscale(String resourceGroupName,
         String accountName, String databaseName, String collectionName, Context context) {
@@ -1989,19 +1480,7 @@ public final class MongoDBResourcesClientImpl implements MongoDBResourcesClient 
             context).block();
     }
 
-    /**
-     * Migrate an Azure Cosmos DB MongoDB collection from autoscale to manual throughput.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param accountName Cosmos DB database account name.
-     * @param databaseName Cosmos DB database name.
-     * @param collectionName Cosmos DB collection name.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return an Azure Cosmos DB resource throughput along with {@link Response} on successful completion of
-     * {@link Mono}.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Response<Flux<ByteBuffer>>> migrateMongoDBCollectionToManualThroughputWithResponseAsync(
         String resourceGroupName, String accountName, String databaseName, String collectionName) {
@@ -2079,18 +1558,7 @@ public final class MongoDBResourcesClientImpl implements MongoDBResourcesClient 
             collectionName, accept, context);
     }
 
-    /**
-     * Migrate an Azure Cosmos DB MongoDB collection from autoscale to manual throughput.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param accountName Cosmos DB database account name.
-     * @param databaseName Cosmos DB database name.
-     * @param collectionName Cosmos DB collection name.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the {@link PollerFlux} for polling of an Azure Cosmos DB resource throughput.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public PollerFlux<PollResult<ThroughputSettingsGetResultsInner>, ThroughputSettingsGetResultsInner>
         beginMigrateMongoDBCollectionToManualThroughputAsync(String resourceGroupName, String accountName,
@@ -2127,18 +1595,7 @@ public final class MongoDBResourcesClientImpl implements MongoDBResourcesClient 
             ThroughputSettingsGetResultsInner.class, context);
     }
 
-    /**
-     * Migrate an Azure Cosmos DB MongoDB collection from autoscale to manual throughput.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param accountName Cosmos DB database account name.
-     * @param databaseName Cosmos DB database name.
-     * @param collectionName Cosmos DB collection name.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the {@link SyncPoller} for polling of an Azure Cosmos DB resource throughput.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public SyncPoller<PollResult<ThroughputSettingsGetResultsInner>, ThroughputSettingsGetResultsInner>
         beginMigrateMongoDBCollectionToManualThroughput(String resourceGroupName, String accountName,
@@ -2149,19 +1606,7 @@ public final class MongoDBResourcesClientImpl implements MongoDBResourcesClient 
             .getSyncPoller();
     }
 
-    /**
-     * Migrate an Azure Cosmos DB MongoDB collection from autoscale to manual throughput.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param accountName Cosmos DB database account name.
-     * @param databaseName Cosmos DB database name.
-     * @param collectionName Cosmos DB collection name.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the {@link SyncPoller} for polling of an Azure Cosmos DB resource throughput.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public SyncPoller<PollResult<ThroughputSettingsGetResultsInner>, ThroughputSettingsGetResultsInner>
         beginMigrateMongoDBCollectionToManualThroughput(String resourceGroupName, String accountName,
@@ -2172,18 +1617,7 @@ public final class MongoDBResourcesClientImpl implements MongoDBResourcesClient 
             .getSyncPoller();
     }
 
-    /**
-     * Migrate an Azure Cosmos DB MongoDB collection from autoscale to manual throughput.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param accountName Cosmos DB database account name.
-     * @param databaseName Cosmos DB database name.
-     * @param collectionName Cosmos DB collection name.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return an Azure Cosmos DB resource throughput on successful completion of {@link Mono}.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<ThroughputSettingsGetResultsInner> migrateMongoDBCollectionToManualThroughputAsync(
         String resourceGroupName, String accountName, String databaseName, String collectionName) {
@@ -2211,18 +1645,7 @@ public final class MongoDBResourcesClientImpl implements MongoDBResourcesClient 
             collectionName, context).last().flatMap(this.client::getLroFinalResultOrError);
     }
 
-    /**
-     * Migrate an Azure Cosmos DB MongoDB collection from autoscale to manual throughput.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param accountName Cosmos DB database account name.
-     * @param databaseName Cosmos DB database name.
-     * @param collectionName Cosmos DB collection name.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return an Azure Cosmos DB resource throughput.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public ThroughputSettingsGetResultsInner migrateMongoDBCollectionToManualThroughput(String resourceGroupName,
         String accountName, String databaseName, String collectionName) {
@@ -2230,19 +1653,7 @@ public final class MongoDBResourcesClientImpl implements MongoDBResourcesClient 
             collectionName).block();
     }
 
-    /**
-     * Migrate an Azure Cosmos DB MongoDB collection from autoscale to manual throughput.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param accountName Cosmos DB database account name.
-     * @param databaseName Cosmos DB database name.
-     * @param collectionName Cosmos DB collection name.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return an Azure Cosmos DB resource throughput.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public ThroughputSettingsGetResultsInner migrateMongoDBCollectionToManualThroughput(String resourceGroupName,
         String accountName, String databaseName, String collectionName, Context context) {
@@ -2250,18 +1661,7 @@ public final class MongoDBResourcesClientImpl implements MongoDBResourcesClient 
             collectionName, context).block();
     }
 
-    /**
-     * Gets the MongoDB databases under an existing Azure Cosmos DB database account with the provided name.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param accountName Cosmos DB database account name.
-     * @param databaseName Cosmos DB database name.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the MongoDB databases under an existing Azure Cosmos DB database account with the provided name along
-     * with {@link Response} on successful completion of {@link Mono}.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Response<MongoDBDatabaseGetResultsInner>> getMongoDBDatabaseWithResponseAsync(String resourceGroupName,
         String accountName, String databaseName) {
@@ -2330,18 +1730,7 @@ public final class MongoDBResourcesClientImpl implements MongoDBResourcesClient 
             this.client.getSubscriptionId(), resourceGroupName, accountName, databaseName, accept, context);
     }
 
-    /**
-     * Gets the MongoDB databases under an existing Azure Cosmos DB database account with the provided name.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param accountName Cosmos DB database account name.
-     * @param databaseName Cosmos DB database name.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the MongoDB databases under an existing Azure Cosmos DB database account with the provided name on
-     * successful completion of {@link Mono}.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<MongoDBDatabaseGetResultsInner> getMongoDBDatabaseAsync(String resourceGroupName, String accountName,
         String databaseName) {
@@ -2349,54 +1738,21 @@ public final class MongoDBResourcesClientImpl implements MongoDBResourcesClient 
             .flatMap(res -> Mono.justOrEmpty(res.getValue()));
     }
 
-    /**
-     * Gets the MongoDB databases under an existing Azure Cosmos DB database account with the provided name.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param accountName Cosmos DB database account name.
-     * @param databaseName Cosmos DB database name.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the MongoDB databases under an existing Azure Cosmos DB database account with the provided name along
-     * with {@link Response}.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Response<MongoDBDatabaseGetResultsInner> getMongoDBDatabaseWithResponse(String resourceGroupName,
         String accountName, String databaseName, Context context) {
         return getMongoDBDatabaseWithResponseAsync(resourceGroupName, accountName, databaseName, context).block();
     }
 
-    /**
-     * Gets the MongoDB databases under an existing Azure Cosmos DB database account with the provided name.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param accountName Cosmos DB database account name.
-     * @param databaseName Cosmos DB database name.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the MongoDB databases under an existing Azure Cosmos DB database account with the provided name.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public MongoDBDatabaseGetResultsInner getMongoDBDatabase(String resourceGroupName, String accountName,
         String databaseName) {
         return getMongoDBDatabaseWithResponse(resourceGroupName, accountName, databaseName, Context.NONE).getValue();
     }
 
-    /**
-     * Create or updates Azure Cosmos DB MongoDB database.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param accountName Cosmos DB database account name.
-     * @param databaseName Cosmos DB database name.
-     * @param createUpdateMongoDBDatabaseParameters The parameters to provide for the current MongoDB database.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return an Azure Cosmos DB MongoDB database along with {@link Response} on successful completion of {@link Mono}.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Response<Flux<ByteBuffer>>> createUpdateMongoDBDatabaseWithResponseAsync(String resourceGroupName,
         String accountName, String databaseName,
@@ -2483,18 +1839,7 @@ public final class MongoDBResourcesClientImpl implements MongoDBResourcesClient 
             createUpdateMongoDBDatabaseParameters, context);
     }
 
-    /**
-     * Create or updates Azure Cosmos DB MongoDB database.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param accountName Cosmos DB database account name.
-     * @param databaseName Cosmos DB database name.
-     * @param createUpdateMongoDBDatabaseParameters The parameters to provide for the current MongoDB database.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the {@link PollerFlux} for polling of an Azure Cosmos DB MongoDB database.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public PollerFlux<PollResult<MongoDBDatabaseGetResultsInner>, MongoDBDatabaseGetResultsInner>
         beginCreateUpdateMongoDBDatabaseAsync(String resourceGroupName, String accountName, String databaseName,
@@ -2531,18 +1876,7 @@ public final class MongoDBResourcesClientImpl implements MongoDBResourcesClient 
             context);
     }
 
-    /**
-     * Create or updates Azure Cosmos DB MongoDB database.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param accountName Cosmos DB database account name.
-     * @param databaseName Cosmos DB database name.
-     * @param createUpdateMongoDBDatabaseParameters The parameters to provide for the current MongoDB database.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the {@link SyncPoller} for polling of an Azure Cosmos DB MongoDB database.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public SyncPoller<PollResult<MongoDBDatabaseGetResultsInner>, MongoDBDatabaseGetResultsInner>
         beginCreateUpdateMongoDBDatabase(String resourceGroupName, String accountName, String databaseName,
@@ -2553,19 +1887,7 @@ public final class MongoDBResourcesClientImpl implements MongoDBResourcesClient 
             .getSyncPoller();
     }
 
-    /**
-     * Create or updates Azure Cosmos DB MongoDB database.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param accountName Cosmos DB database account name.
-     * @param databaseName Cosmos DB database name.
-     * @param createUpdateMongoDBDatabaseParameters The parameters to provide for the current MongoDB database.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the {@link SyncPoller} for polling of an Azure Cosmos DB MongoDB database.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public SyncPoller<PollResult<MongoDBDatabaseGetResultsInner>, MongoDBDatabaseGetResultsInner>
         beginCreateUpdateMongoDBDatabase(String resourceGroupName, String accountName, String databaseName,
@@ -2576,18 +1898,7 @@ public final class MongoDBResourcesClientImpl implements MongoDBResourcesClient 
             .getSyncPoller();
     }
 
-    /**
-     * Create or updates Azure Cosmos DB MongoDB database.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param accountName Cosmos DB database account name.
-     * @param databaseName Cosmos DB database name.
-     * @param createUpdateMongoDBDatabaseParameters The parameters to provide for the current MongoDB database.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return an Azure Cosmos DB MongoDB database on successful completion of {@link Mono}.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<MongoDBDatabaseGetResultsInner> createUpdateMongoDBDatabaseAsync(String resourceGroupName,
         String accountName, String databaseName,
@@ -2617,18 +1928,7 @@ public final class MongoDBResourcesClientImpl implements MongoDBResourcesClient 
             createUpdateMongoDBDatabaseParameters, context).last().flatMap(this.client::getLroFinalResultOrError);
     }
 
-    /**
-     * Create or updates Azure Cosmos DB MongoDB database.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param accountName Cosmos DB database account name.
-     * @param databaseName Cosmos DB database name.
-     * @param createUpdateMongoDBDatabaseParameters The parameters to provide for the current MongoDB database.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return an Azure Cosmos DB MongoDB database.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public MongoDBDatabaseGetResultsInner createUpdateMongoDBDatabase(String resourceGroupName, String accountName,
         String databaseName, MongoDBDatabaseCreateUpdateParameters createUpdateMongoDBDatabaseParameters) {
@@ -2636,19 +1936,7 @@ public final class MongoDBResourcesClientImpl implements MongoDBResourcesClient 
             createUpdateMongoDBDatabaseParameters).block();
     }
 
-    /**
-     * Create or updates Azure Cosmos DB MongoDB database.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param accountName Cosmos DB database account name.
-     * @param databaseName Cosmos DB database name.
-     * @param createUpdateMongoDBDatabaseParameters The parameters to provide for the current MongoDB database.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return an Azure Cosmos DB MongoDB database.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public MongoDBDatabaseGetResultsInner createUpdateMongoDBDatabase(String resourceGroupName, String accountName,
         String databaseName, MongoDBDatabaseCreateUpdateParameters createUpdateMongoDBDatabaseParameters,
@@ -2657,17 +1945,7 @@ public final class MongoDBResourcesClientImpl implements MongoDBResourcesClient 
             createUpdateMongoDBDatabaseParameters, context).block();
     }
 
-    /**
-     * Deletes an existing Azure Cosmos DB MongoDB database.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param accountName Cosmos DB database account name.
-     * @param databaseName Cosmos DB database name.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the {@link Response} on successful completion of {@link Mono}.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Response<Flux<ByteBuffer>>> deleteMongoDBDatabaseWithResponseAsync(String resourceGroupName,
         String accountName, String databaseName) {
@@ -2734,17 +2012,7 @@ public final class MongoDBResourcesClientImpl implements MongoDBResourcesClient 
             this.client.getSubscriptionId(), resourceGroupName, accountName, databaseName, context);
     }
 
-    /**
-     * Deletes an existing Azure Cosmos DB MongoDB database.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param accountName Cosmos DB database account name.
-     * @param databaseName Cosmos DB database name.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the {@link PollerFlux} for polling of long-running operation.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public PollerFlux<PollResult<Void>, Void> beginDeleteMongoDBDatabaseAsync(String resourceGroupName,
         String accountName, String databaseName) {
@@ -2776,35 +2044,14 @@ public final class MongoDBResourcesClientImpl implements MongoDBResourcesClient 
             context);
     }
 
-    /**
-     * Deletes an existing Azure Cosmos DB MongoDB database.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param accountName Cosmos DB database account name.
-     * @param databaseName Cosmos DB database name.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the {@link SyncPoller} for polling of long-running operation.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public SyncPoller<PollResult<Void>, Void> beginDeleteMongoDBDatabase(String resourceGroupName, String accountName,
         String databaseName) {
         return this.beginDeleteMongoDBDatabaseAsync(resourceGroupName, accountName, databaseName).getSyncPoller();
     }
 
-    /**
-     * Deletes an existing Azure Cosmos DB MongoDB database.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param accountName Cosmos DB database account name.
-     * @param databaseName Cosmos DB database name.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the {@link SyncPoller} for polling of long-running operation.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public SyncPoller<PollResult<Void>, Void> beginDeleteMongoDBDatabase(String resourceGroupName, String accountName,
         String databaseName, Context context) {
@@ -2812,17 +2059,7 @@ public final class MongoDBResourcesClientImpl implements MongoDBResourcesClient 
             .getSyncPoller();
     }
 
-    /**
-     * Deletes an existing Azure Cosmos DB MongoDB database.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param accountName Cosmos DB database account name.
-     * @param databaseName Cosmos DB database name.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return A {@link Mono} that completes when a successful response is received.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Void> deleteMongoDBDatabaseAsync(String resourceGroupName, String accountName, String databaseName) {
         return beginDeleteMongoDBDatabaseAsync(resourceGroupName, accountName, databaseName).last()
@@ -2848,32 +2085,13 @@ public final class MongoDBResourcesClientImpl implements MongoDBResourcesClient 
             .flatMap(this.client::getLroFinalResultOrError);
     }
 
-    /**
-     * Deletes an existing Azure Cosmos DB MongoDB database.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param accountName Cosmos DB database account name.
-     * @param databaseName Cosmos DB database name.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public void deleteMongoDBDatabase(String resourceGroupName, String accountName, String databaseName) {
         deleteMongoDBDatabaseAsync(resourceGroupName, accountName, databaseName).block();
     }
 
-    /**
-     * Deletes an existing Azure Cosmos DB MongoDB database.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param accountName Cosmos DB database account name.
-     * @param databaseName Cosmos DB database name.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public void deleteMongoDBDatabase(String resourceGroupName, String accountName, String databaseName,
         Context context) {
@@ -2957,17 +2175,7 @@ public final class MongoDBResourcesClientImpl implements MongoDBResourcesClient 
                 res.getValue().value(), res.getValue().nextLink(), null));
     }
 
-    /**
-     * Lists the MongoDB databases under an existing Azure Cosmos DB database account.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param accountName Cosmos DB database account name.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the List operation response, that contains the MongoDB databases and their properties as paginated
-     * response with {@link PagedFlux}.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.COLLECTION)
     public PagedFlux<MongoDBDatabaseGetResultsInner> listMongoDBDatabasesAsync(String resourceGroupName,
         String accountName) {
@@ -2994,54 +2202,21 @@ public final class MongoDBResourcesClientImpl implements MongoDBResourcesClient 
             nextLink -> listMongoDBDatabasesNextSinglePageAsync(nextLink, context));
     }
 
-    /**
-     * Lists the MongoDB databases under an existing Azure Cosmos DB database account.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param accountName Cosmos DB database account name.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the List operation response, that contains the MongoDB databases and their properties as paginated
-     * response with {@link PagedIterable}.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.COLLECTION)
     public PagedIterable<MongoDBDatabaseGetResultsInner> listMongoDBDatabases(String resourceGroupName,
         String accountName) {
         return new PagedIterable<>(listMongoDBDatabasesAsync(resourceGroupName, accountName));
     }
 
-    /**
-     * Lists the MongoDB databases under an existing Azure Cosmos DB database account.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param accountName Cosmos DB database account name.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the List operation response, that contains the MongoDB databases and their properties as paginated
-     * response with {@link PagedIterable}.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.COLLECTION)
     public PagedIterable<MongoDBDatabaseGetResultsInner> listMongoDBDatabases(String resourceGroupName,
         String accountName, Context context) {
         return new PagedIterable<>(listMongoDBDatabasesAsync(resourceGroupName, accountName, context));
     }
 
-    /**
-     * Gets the MongoDB collection under an existing Azure Cosmos DB database account.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param accountName Cosmos DB database account name.
-     * @param databaseName Cosmos DB database name.
-     * @param collectionName Cosmos DB collection name.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the MongoDB collection under an existing Azure Cosmos DB database account along with {@link Response} on
-     * successful completion of {@link Mono}.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Response<MongoDBCollectionGetResultsInner>> getMongoDBCollectionWithResponseAsync(
         String resourceGroupName, String accountName, String databaseName, String collectionName) {
@@ -3119,19 +2294,7 @@ public final class MongoDBResourcesClientImpl implements MongoDBResourcesClient 
             context);
     }
 
-    /**
-     * Gets the MongoDB collection under an existing Azure Cosmos DB database account.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param accountName Cosmos DB database account name.
-     * @param databaseName Cosmos DB database name.
-     * @param collectionName Cosmos DB collection name.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the MongoDB collection under an existing Azure Cosmos DB database account on successful completion of
-     * {@link Mono}.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<MongoDBCollectionGetResultsInner> getMongoDBCollectionAsync(String resourceGroupName,
         String accountName, String databaseName, String collectionName) {
@@ -3139,19 +2302,7 @@ public final class MongoDBResourcesClientImpl implements MongoDBResourcesClient 
             .flatMap(res -> Mono.justOrEmpty(res.getValue()));
     }
 
-    /**
-     * Gets the MongoDB collection under an existing Azure Cosmos DB database account.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param accountName Cosmos DB database account name.
-     * @param databaseName Cosmos DB database name.
-     * @param collectionName Cosmos DB collection name.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the MongoDB collection under an existing Azure Cosmos DB database account along with {@link Response}.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Response<MongoDBCollectionGetResultsInner> getMongoDBCollectionWithResponse(String resourceGroupName,
         String accountName, String databaseName, String collectionName, Context context) {
@@ -3159,18 +2310,7 @@ public final class MongoDBResourcesClientImpl implements MongoDBResourcesClient 
             context).block();
     }
 
-    /**
-     * Gets the MongoDB collection under an existing Azure Cosmos DB database account.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param accountName Cosmos DB database account name.
-     * @param databaseName Cosmos DB database name.
-     * @param collectionName Cosmos DB collection name.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the MongoDB collection under an existing Azure Cosmos DB database account.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public MongoDBCollectionGetResultsInner getMongoDBCollection(String resourceGroupName, String accountName,
         String databaseName, String collectionName) {
@@ -3178,20 +2318,7 @@ public final class MongoDBResourcesClientImpl implements MongoDBResourcesClient 
             Context.NONE).getValue();
     }
 
-    /**
-     * Create or update an Azure Cosmos DB MongoDB Collection.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param accountName Cosmos DB database account name.
-     * @param databaseName Cosmos DB database name.
-     * @param collectionName Cosmos DB collection name.
-     * @param createUpdateMongoDBCollectionParameters The parameters to provide for the current MongoDB Collection.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return an Azure Cosmos DB MongoDB collection along with {@link Response} on successful completion of
-     * {@link Mono}.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Response<Flux<ByteBuffer>>> createUpdateMongoDBCollectionWithResponseAsync(String resourceGroupName,
         String accountName, String databaseName, String collectionName,
@@ -3286,19 +2413,7 @@ public final class MongoDBResourcesClientImpl implements MongoDBResourcesClient 
             accept, createUpdateMongoDBCollectionParameters, context);
     }
 
-    /**
-     * Create or update an Azure Cosmos DB MongoDB Collection.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param accountName Cosmos DB database account name.
-     * @param databaseName Cosmos DB database name.
-     * @param collectionName Cosmos DB collection name.
-     * @param createUpdateMongoDBCollectionParameters The parameters to provide for the current MongoDB Collection.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the {@link PollerFlux} for polling of an Azure Cosmos DB MongoDB collection.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public PollerFlux<PollResult<MongoDBCollectionGetResultsInner>, MongoDBCollectionGetResultsInner>
         beginCreateUpdateMongoDBCollectionAsync(String resourceGroupName, String accountName, String databaseName,
@@ -3337,19 +2452,7 @@ public final class MongoDBResourcesClientImpl implements MongoDBResourcesClient 
             MongoDBCollectionGetResultsInner.class, context);
     }
 
-    /**
-     * Create or update an Azure Cosmos DB MongoDB Collection.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param accountName Cosmos DB database account name.
-     * @param databaseName Cosmos DB database name.
-     * @param collectionName Cosmos DB collection name.
-     * @param createUpdateMongoDBCollectionParameters The parameters to provide for the current MongoDB Collection.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the {@link SyncPoller} for polling of an Azure Cosmos DB MongoDB collection.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public SyncPoller<PollResult<MongoDBCollectionGetResultsInner>, MongoDBCollectionGetResultsInner>
         beginCreateUpdateMongoDBCollection(String resourceGroupName, String accountName, String databaseName,
@@ -3360,20 +2463,7 @@ public final class MongoDBResourcesClientImpl implements MongoDBResourcesClient 
             .getSyncPoller();
     }
 
-    /**
-     * Create or update an Azure Cosmos DB MongoDB Collection.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param accountName Cosmos DB database account name.
-     * @param databaseName Cosmos DB database name.
-     * @param collectionName Cosmos DB collection name.
-     * @param createUpdateMongoDBCollectionParameters The parameters to provide for the current MongoDB Collection.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the {@link SyncPoller} for polling of an Azure Cosmos DB MongoDB collection.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public SyncPoller<PollResult<MongoDBCollectionGetResultsInner>, MongoDBCollectionGetResultsInner>
         beginCreateUpdateMongoDBCollection(String resourceGroupName, String accountName, String databaseName,
@@ -3385,19 +2475,7 @@ public final class MongoDBResourcesClientImpl implements MongoDBResourcesClient 
             .getSyncPoller();
     }
 
-    /**
-     * Create or update an Azure Cosmos DB MongoDB Collection.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param accountName Cosmos DB database account name.
-     * @param databaseName Cosmos DB database name.
-     * @param collectionName Cosmos DB collection name.
-     * @param createUpdateMongoDBCollectionParameters The parameters to provide for the current MongoDB Collection.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return an Azure Cosmos DB MongoDB collection on successful completion of {@link Mono}.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<MongoDBCollectionGetResultsInner> createUpdateMongoDBCollectionAsync(String resourceGroupName,
         String accountName, String databaseName, String collectionName,
@@ -3428,19 +2506,7 @@ public final class MongoDBResourcesClientImpl implements MongoDBResourcesClient 
             createUpdateMongoDBCollectionParameters, context).last().flatMap(this.client::getLroFinalResultOrError);
     }
 
-    /**
-     * Create or update an Azure Cosmos DB MongoDB Collection.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param accountName Cosmos DB database account name.
-     * @param databaseName Cosmos DB database name.
-     * @param collectionName Cosmos DB collection name.
-     * @param createUpdateMongoDBCollectionParameters The parameters to provide for the current MongoDB Collection.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return an Azure Cosmos DB MongoDB collection.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public MongoDBCollectionGetResultsInner createUpdateMongoDBCollection(String resourceGroupName, String accountName,
         String databaseName, String collectionName,
@@ -3449,20 +2515,7 @@ public final class MongoDBResourcesClientImpl implements MongoDBResourcesClient 
             createUpdateMongoDBCollectionParameters).block();
     }
 
-    /**
-     * Create or update an Azure Cosmos DB MongoDB Collection.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param accountName Cosmos DB database account name.
-     * @param databaseName Cosmos DB database name.
-     * @param collectionName Cosmos DB collection name.
-     * @param createUpdateMongoDBCollectionParameters The parameters to provide for the current MongoDB Collection.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return an Azure Cosmos DB MongoDB collection.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public MongoDBCollectionGetResultsInner createUpdateMongoDBCollection(String resourceGroupName, String accountName,
         String databaseName, String collectionName,
@@ -3471,18 +2524,7 @@ public final class MongoDBResourcesClientImpl implements MongoDBResourcesClient 
             createUpdateMongoDBCollectionParameters, context).block();
     }
 
-    /**
-     * Deletes an existing Azure Cosmos DB MongoDB Collection.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param accountName Cosmos DB database account name.
-     * @param databaseName Cosmos DB database name.
-     * @param collectionName Cosmos DB collection name.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the {@link Response} on successful completion of {@link Mono}.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Response<Flux<ByteBuffer>>> deleteMongoDBCollectionWithResponseAsync(String resourceGroupName,
         String accountName, String databaseName, String collectionName) {
@@ -3556,18 +2598,7 @@ public final class MongoDBResourcesClientImpl implements MongoDBResourcesClient 
             this.client.getSubscriptionId(), resourceGroupName, accountName, databaseName, collectionName, context);
     }
 
-    /**
-     * Deletes an existing Azure Cosmos DB MongoDB Collection.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param accountName Cosmos DB database account name.
-     * @param databaseName Cosmos DB database name.
-     * @param collectionName Cosmos DB collection name.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the {@link PollerFlux} for polling of long-running operation.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public PollerFlux<PollResult<Void>, Void> beginDeleteMongoDBCollectionAsync(String resourceGroupName,
         String accountName, String databaseName, String collectionName) {
@@ -3600,18 +2631,7 @@ public final class MongoDBResourcesClientImpl implements MongoDBResourcesClient 
             context);
     }
 
-    /**
-     * Deletes an existing Azure Cosmos DB MongoDB Collection.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param accountName Cosmos DB database account name.
-     * @param databaseName Cosmos DB database name.
-     * @param collectionName Cosmos DB collection name.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the {@link SyncPoller} for polling of long-running operation.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public SyncPoller<PollResult<Void>, Void> beginDeleteMongoDBCollection(String resourceGroupName, String accountName,
         String databaseName, String collectionName) {
@@ -3619,19 +2639,7 @@ public final class MongoDBResourcesClientImpl implements MongoDBResourcesClient 
             .getSyncPoller();
     }
 
-    /**
-     * Deletes an existing Azure Cosmos DB MongoDB Collection.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param accountName Cosmos DB database account name.
-     * @param databaseName Cosmos DB database name.
-     * @param collectionName Cosmos DB collection name.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the {@link SyncPoller} for polling of long-running operation.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public SyncPoller<PollResult<Void>, Void> beginDeleteMongoDBCollection(String resourceGroupName, String accountName,
         String databaseName, String collectionName, Context context) {
@@ -3640,18 +2648,7 @@ public final class MongoDBResourcesClientImpl implements MongoDBResourcesClient 
             .getSyncPoller();
     }
 
-    /**
-     * Deletes an existing Azure Cosmos DB MongoDB Collection.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param accountName Cosmos DB database account name.
-     * @param databaseName Cosmos DB database name.
-     * @param collectionName Cosmos DB collection name.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return A {@link Mono} that completes when a successful response is received.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Void> deleteMongoDBCollectionAsync(String resourceGroupName, String accountName, String databaseName,
         String collectionName) {
@@ -3680,35 +2677,14 @@ public final class MongoDBResourcesClientImpl implements MongoDBResourcesClient 
             .flatMap(this.client::getLroFinalResultOrError);
     }
 
-    /**
-     * Deletes an existing Azure Cosmos DB MongoDB Collection.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param accountName Cosmos DB database account name.
-     * @param databaseName Cosmos DB database name.
-     * @param collectionName Cosmos DB collection name.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public void deleteMongoDBCollection(String resourceGroupName, String accountName, String databaseName,
         String collectionName) {
         deleteMongoDBCollectionAsync(resourceGroupName, accountName, databaseName, collectionName).block();
     }
 
-    /**
-     * Deletes an existing Azure Cosmos DB MongoDB Collection.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param accountName Cosmos DB database account name.
-     * @param databaseName Cosmos DB database name.
-     * @param collectionName Cosmos DB collection name.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public void deleteMongoDBCollection(String resourceGroupName, String accountName, String databaseName,
         String collectionName, Context context) {
@@ -3801,18 +2777,7 @@ public final class MongoDBResourcesClientImpl implements MongoDBResourcesClient 
                 res.getValue().value(), res.getValue().nextLink(), null));
     }
 
-    /**
-     * Lists the MongoDB collection under an existing Azure Cosmos DB database account.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param accountName Cosmos DB database account name.
-     * @param databaseName Cosmos DB database name.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the List operation response, that contains the MongoDB collections and their properties as paginated
-     * response with {@link PagedFlux}.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.COLLECTION)
     public PagedFlux<MongoDBCollectionGetResultsInner> listMongoDBCollectionsAsync(String resourceGroupName,
         String accountName, String databaseName) {
@@ -3842,56 +2807,21 @@ public final class MongoDBResourcesClientImpl implements MongoDBResourcesClient 
             nextLink -> listMongoDBCollectionsNextSinglePageAsync(nextLink, context));
     }
 
-    /**
-     * Lists the MongoDB collection under an existing Azure Cosmos DB database account.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param accountName Cosmos DB database account name.
-     * @param databaseName Cosmos DB database name.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the List operation response, that contains the MongoDB collections and their properties as paginated
-     * response with {@link PagedIterable}.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.COLLECTION)
     public PagedIterable<MongoDBCollectionGetResultsInner> listMongoDBCollections(String resourceGroupName,
         String accountName, String databaseName) {
         return new PagedIterable<>(listMongoDBCollectionsAsync(resourceGroupName, accountName, databaseName));
     }
 
-    /**
-     * Lists the MongoDB collection under an existing Azure Cosmos DB database account.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param accountName Cosmos DB database account name.
-     * @param databaseName Cosmos DB database name.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the List operation response, that contains the MongoDB collections and their properties as paginated
-     * response with {@link PagedIterable}.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.COLLECTION)
     public PagedIterable<MongoDBCollectionGetResultsInner> listMongoDBCollections(String resourceGroupName,
         String accountName, String databaseName, Context context) {
         return new PagedIterable<>(listMongoDBCollectionsAsync(resourceGroupName, accountName, databaseName, context));
     }
 
-    /**
-     * Retrieves continuous backup information for a Mongodb collection.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param accountName Cosmos DB database account name.
-     * @param databaseName Cosmos DB database name.
-     * @param collectionName Cosmos DB collection name.
-     * @param location The name of the continuous backup restore location.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return backup information of a resource along with {@link Response} on successful completion of {@link Mono}.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Response<Flux<ByteBuffer>>> retrieveContinuousBackupInformationWithResponseAsync(
         String resourceGroupName, String accountName, String databaseName, String collectionName,
@@ -3983,19 +2913,7 @@ public final class MongoDBResourcesClientImpl implements MongoDBResourcesClient 
             accept, location, context);
     }
 
-    /**
-     * Retrieves continuous backup information for a Mongodb collection.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param accountName Cosmos DB database account name.
-     * @param databaseName Cosmos DB database name.
-     * @param collectionName Cosmos DB collection name.
-     * @param location The name of the continuous backup restore location.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the {@link PollerFlux} for polling of backup information of a resource.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public PollerFlux<PollResult<BackupInformationInner>, BackupInformationInner>
         beginRetrieveContinuousBackupInformationAsync(String resourceGroupName, String accountName, String databaseName,
@@ -4032,19 +2950,7 @@ public final class MongoDBResourcesClientImpl implements MongoDBResourcesClient 
             this.client.getHttpPipeline(), BackupInformationInner.class, BackupInformationInner.class, context);
     }
 
-    /**
-     * Retrieves continuous backup information for a Mongodb collection.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param accountName Cosmos DB database account name.
-     * @param databaseName Cosmos DB database name.
-     * @param collectionName Cosmos DB collection name.
-     * @param location The name of the continuous backup restore location.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the {@link SyncPoller} for polling of backup information of a resource.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public SyncPoller<PollResult<BackupInformationInner>, BackupInformationInner>
         beginRetrieveContinuousBackupInformation(String resourceGroupName, String accountName, String databaseName,
@@ -4055,20 +2961,7 @@ public final class MongoDBResourcesClientImpl implements MongoDBResourcesClient 
             .getSyncPoller();
     }
 
-    /**
-     * Retrieves continuous backup information for a Mongodb collection.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param accountName Cosmos DB database account name.
-     * @param databaseName Cosmos DB database name.
-     * @param collectionName Cosmos DB collection name.
-     * @param location The name of the continuous backup restore location.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the {@link SyncPoller} for polling of backup information of a resource.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public SyncPoller<PollResult<BackupInformationInner>, BackupInformationInner>
         beginRetrieveContinuousBackupInformation(String resourceGroupName, String accountName, String databaseName,
@@ -4079,19 +2972,7 @@ public final class MongoDBResourcesClientImpl implements MongoDBResourcesClient 
             .getSyncPoller();
     }
 
-    /**
-     * Retrieves continuous backup information for a Mongodb collection.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param accountName Cosmos DB database account name.
-     * @param databaseName Cosmos DB database name.
-     * @param collectionName Cosmos DB collection name.
-     * @param location The name of the continuous backup restore location.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return backup information of a resource on successful completion of {@link Mono}.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<BackupInformationInner> retrieveContinuousBackupInformationAsync(String resourceGroupName,
         String accountName, String databaseName, String collectionName, ContinuousBackupRestoreLocation location) {
@@ -4121,19 +3002,7 @@ public final class MongoDBResourcesClientImpl implements MongoDBResourcesClient 
             collectionName, location, context).last().flatMap(this.client::getLroFinalResultOrError);
     }
 
-    /**
-     * Retrieves continuous backup information for a Mongodb collection.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param accountName Cosmos DB database account name.
-     * @param databaseName Cosmos DB database name.
-     * @param collectionName Cosmos DB collection name.
-     * @param location The name of the continuous backup restore location.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return backup information of a resource.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public BackupInformationInner retrieveContinuousBackupInformation(String resourceGroupName, String accountName,
         String databaseName, String collectionName, ContinuousBackupRestoreLocation location) {
@@ -4141,20 +3010,7 @@ public final class MongoDBResourcesClientImpl implements MongoDBResourcesClient 
             location).block();
     }
 
-    /**
-     * Retrieves continuous backup information for a Mongodb collection.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param accountName Cosmos DB database account name.
-     * @param databaseName Cosmos DB database name.
-     * @param collectionName Cosmos DB collection name.
-     * @param location The name of the continuous backup restore location.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return backup information of a resource.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public BackupInformationInner retrieveContinuousBackupInformation(String resourceGroupName, String accountName,
         String databaseName, String collectionName, ContinuousBackupRestoreLocation location, Context context) {
@@ -4162,18 +3018,7 @@ public final class MongoDBResourcesClientImpl implements MongoDBResourcesClient 
             location, context).block();
     }
 
-    /**
-     * Retrieves the properties of an existing Azure Cosmos DB Mongo Role Definition with the given Id.
-     * 
-     * @param mongoRoleDefinitionId The ID for the Role Definition {dbName.roleName}.
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param accountName Cosmos DB database account name.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return an Azure Cosmos DB Mongo Role Definition along with {@link Response} on successful completion of
-     * {@link Mono}.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Response<MongoRoleDefinitionGetResultsInner>> getMongoRoleDefinitionWithResponseAsync(
         String mongoRoleDefinitionId, String resourceGroupName, String accountName) {
@@ -4229,17 +3074,7 @@ public final class MongoDBResourcesClientImpl implements MongoDBResourcesClient 
             this.client.getSubscriptionId(), resourceGroupName, accountName, mongoRoleDefinitionId, accept, context);
     }
 
-    /**
-     * Retrieves the properties of an existing Azure Cosmos DB Mongo Role Definition with the given Id.
-     * 
-     * @param mongoRoleDefinitionId The ID for the Role Definition {dbName.roleName}.
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param accountName Cosmos DB database account name.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return an Azure Cosmos DB Mongo Role Definition on successful completion of {@link Mono}.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<MongoRoleDefinitionGetResultsInner> getMongoRoleDefinitionAsync(String mongoRoleDefinitionId,
         String resourceGroupName, String accountName) {
@@ -4247,18 +3082,7 @@ public final class MongoDBResourcesClientImpl implements MongoDBResourcesClient 
             .flatMap(res -> Mono.justOrEmpty(res.getValue()));
     }
 
-    /**
-     * Retrieves the properties of an existing Azure Cosmos DB Mongo Role Definition with the given Id.
-     * 
-     * @param mongoRoleDefinitionId The ID for the Role Definition {dbName.roleName}.
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param accountName Cosmos DB database account name.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return an Azure Cosmos DB Mongo Role Definition along with {@link Response}.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Response<MongoRoleDefinitionGetResultsInner> getMongoRoleDefinitionWithResponse(String mongoRoleDefinitionId,
         String resourceGroupName, String accountName, Context context) {
@@ -4266,17 +3090,7 @@ public final class MongoDBResourcesClientImpl implements MongoDBResourcesClient 
             .block();
     }
 
-    /**
-     * Retrieves the properties of an existing Azure Cosmos DB Mongo Role Definition with the given Id.
-     * 
-     * @param mongoRoleDefinitionId The ID for the Role Definition {dbName.roleName}.
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param accountName Cosmos DB database account name.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return an Azure Cosmos DB Mongo Role Definition.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public MongoRoleDefinitionGetResultsInner getMongoRoleDefinition(String mongoRoleDefinitionId,
         String resourceGroupName, String accountName) {
@@ -4284,19 +3098,7 @@ public final class MongoDBResourcesClientImpl implements MongoDBResourcesClient 
             .getValue();
     }
 
-    /**
-     * Creates or updates an Azure Cosmos DB Mongo Role Definition.
-     * 
-     * @param mongoRoleDefinitionId The ID for the Role Definition {dbName.roleName}.
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param accountName Cosmos DB database account name.
-     * @param createUpdateMongoRoleDefinitionParameters The properties required to create or update a Role Definition.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return an Azure Cosmos DB Mongo Role Definition along with {@link Response} on successful completion of
-     * {@link Mono}.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Response<Flux<ByteBuffer>>> createUpdateMongoRoleDefinitionWithResponseAsync(
         String mongoRoleDefinitionId, String resourceGroupName, String accountName,
@@ -4370,18 +3172,7 @@ public final class MongoDBResourcesClientImpl implements MongoDBResourcesClient 
             createUpdateMongoRoleDefinitionParameters, context);
     }
 
-    /**
-     * Creates or updates an Azure Cosmos DB Mongo Role Definition.
-     * 
-     * @param mongoRoleDefinitionId The ID for the Role Definition {dbName.roleName}.
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param accountName Cosmos DB database account name.
-     * @param createUpdateMongoRoleDefinitionParameters The properties required to create or update a Role Definition.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the {@link PollerFlux} for polling of an Azure Cosmos DB Mongo Role Definition.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public PollerFlux<PollResult<MongoRoleDefinitionGetResultsInner>, MongoRoleDefinitionGetResultsInner>
         beginCreateUpdateMongoRoleDefinitionAsync(String mongoRoleDefinitionId, String resourceGroupName,
@@ -4419,18 +3210,7 @@ public final class MongoDBResourcesClientImpl implements MongoDBResourcesClient 
             MongoRoleDefinitionGetResultsInner.class, context);
     }
 
-    /**
-     * Creates or updates an Azure Cosmos DB Mongo Role Definition.
-     * 
-     * @param mongoRoleDefinitionId The ID for the Role Definition {dbName.roleName}.
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param accountName Cosmos DB database account name.
-     * @param createUpdateMongoRoleDefinitionParameters The properties required to create or update a Role Definition.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the {@link SyncPoller} for polling of an Azure Cosmos DB Mongo Role Definition.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public SyncPoller<PollResult<MongoRoleDefinitionGetResultsInner>, MongoRoleDefinitionGetResultsInner>
         beginCreateUpdateMongoRoleDefinition(String mongoRoleDefinitionId, String resourceGroupName, String accountName,
@@ -4441,19 +3221,7 @@ public final class MongoDBResourcesClientImpl implements MongoDBResourcesClient 
             .getSyncPoller();
     }
 
-    /**
-     * Creates or updates an Azure Cosmos DB Mongo Role Definition.
-     * 
-     * @param mongoRoleDefinitionId The ID for the Role Definition {dbName.roleName}.
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param accountName Cosmos DB database account name.
-     * @param createUpdateMongoRoleDefinitionParameters The properties required to create or update a Role Definition.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the {@link SyncPoller} for polling of an Azure Cosmos DB Mongo Role Definition.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public SyncPoller<PollResult<MongoRoleDefinitionGetResultsInner>, MongoRoleDefinitionGetResultsInner>
         beginCreateUpdateMongoRoleDefinition(String mongoRoleDefinitionId, String resourceGroupName, String accountName,
@@ -4464,18 +3232,7 @@ public final class MongoDBResourcesClientImpl implements MongoDBResourcesClient 
             .getSyncPoller();
     }
 
-    /**
-     * Creates or updates an Azure Cosmos DB Mongo Role Definition.
-     * 
-     * @param mongoRoleDefinitionId The ID for the Role Definition {dbName.roleName}.
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param accountName Cosmos DB database account name.
-     * @param createUpdateMongoRoleDefinitionParameters The properties required to create or update a Role Definition.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return an Azure Cosmos DB Mongo Role Definition on successful completion of {@link Mono}.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<MongoRoleDefinitionGetResultsInner> createUpdateMongoRoleDefinitionAsync(String mongoRoleDefinitionId,
         String resourceGroupName, String accountName,
@@ -4505,18 +3262,7 @@ public final class MongoDBResourcesClientImpl implements MongoDBResourcesClient 
             createUpdateMongoRoleDefinitionParameters, context).last().flatMap(this.client::getLroFinalResultOrError);
     }
 
-    /**
-     * Creates or updates an Azure Cosmos DB Mongo Role Definition.
-     * 
-     * @param mongoRoleDefinitionId The ID for the Role Definition {dbName.roleName}.
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param accountName Cosmos DB database account name.
-     * @param createUpdateMongoRoleDefinitionParameters The properties required to create or update a Role Definition.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return an Azure Cosmos DB Mongo Role Definition.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public MongoRoleDefinitionGetResultsInner createUpdateMongoRoleDefinition(String mongoRoleDefinitionId,
         String resourceGroupName, String accountName,
@@ -4525,19 +3271,7 @@ public final class MongoDBResourcesClientImpl implements MongoDBResourcesClient 
             createUpdateMongoRoleDefinitionParameters).block();
     }
 
-    /**
-     * Creates or updates an Azure Cosmos DB Mongo Role Definition.
-     * 
-     * @param mongoRoleDefinitionId The ID for the Role Definition {dbName.roleName}.
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param accountName Cosmos DB database account name.
-     * @param createUpdateMongoRoleDefinitionParameters The properties required to create or update a Role Definition.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return an Azure Cosmos DB Mongo Role Definition.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public MongoRoleDefinitionGetResultsInner createUpdateMongoRoleDefinition(String mongoRoleDefinitionId,
         String resourceGroupName, String accountName,
@@ -4546,17 +3280,7 @@ public final class MongoDBResourcesClientImpl implements MongoDBResourcesClient 
             createUpdateMongoRoleDefinitionParameters, context).block();
     }
 
-    /**
-     * Deletes an existing Azure Cosmos DB Mongo Role Definition.
-     * 
-     * @param mongoRoleDefinitionId The ID for the Role Definition {dbName.roleName}.
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param accountName Cosmos DB database account name.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the {@link Response} on successful completion of {@link Mono}.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Response<Flux<ByteBuffer>>> deleteMongoRoleDefinitionWithResponseAsync(String mongoRoleDefinitionId,
         String resourceGroupName, String accountName) {
@@ -4609,17 +3333,7 @@ public final class MongoDBResourcesClientImpl implements MongoDBResourcesClient 
             this.client.getSubscriptionId(), resourceGroupName, accountName, mongoRoleDefinitionId, context);
     }
 
-    /**
-     * Deletes an existing Azure Cosmos DB Mongo Role Definition.
-     * 
-     * @param mongoRoleDefinitionId The ID for the Role Definition {dbName.roleName}.
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param accountName Cosmos DB database account name.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the {@link PollerFlux} for polling of long-running operation.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public PollerFlux<PollResult<Void>, Void> beginDeleteMongoRoleDefinitionAsync(String mongoRoleDefinitionId,
         String resourceGroupName, String accountName) {
@@ -4651,17 +3365,7 @@ public final class MongoDBResourcesClientImpl implements MongoDBResourcesClient 
             context);
     }
 
-    /**
-     * Deletes an existing Azure Cosmos DB Mongo Role Definition.
-     * 
-     * @param mongoRoleDefinitionId The ID for the Role Definition {dbName.roleName}.
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param accountName Cosmos DB database account name.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the {@link SyncPoller} for polling of long-running operation.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public SyncPoller<PollResult<Void>, Void> beginDeleteMongoRoleDefinition(String mongoRoleDefinitionId,
         String resourceGroupName, String accountName) {
@@ -4669,18 +3373,7 @@ public final class MongoDBResourcesClientImpl implements MongoDBResourcesClient 
             .getSyncPoller();
     }
 
-    /**
-     * Deletes an existing Azure Cosmos DB Mongo Role Definition.
-     * 
-     * @param mongoRoleDefinitionId The ID for the Role Definition {dbName.roleName}.
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param accountName Cosmos DB database account name.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the {@link SyncPoller} for polling of long-running operation.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public SyncPoller<PollResult<Void>, Void> beginDeleteMongoRoleDefinition(String mongoRoleDefinitionId,
         String resourceGroupName, String accountName, Context context) {
@@ -4688,17 +3381,7 @@ public final class MongoDBResourcesClientImpl implements MongoDBResourcesClient 
             .getSyncPoller();
     }
 
-    /**
-     * Deletes an existing Azure Cosmos DB Mongo Role Definition.
-     * 
-     * @param mongoRoleDefinitionId The ID for the Role Definition {dbName.roleName}.
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param accountName Cosmos DB database account name.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return A {@link Mono} that completes when a successful response is received.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Void> deleteMongoRoleDefinitionAsync(String mongoRoleDefinitionId, String resourceGroupName,
         String accountName) {
@@ -4726,32 +3409,13 @@ public final class MongoDBResourcesClientImpl implements MongoDBResourcesClient 
             .flatMap(this.client::getLroFinalResultOrError);
     }
 
-    /**
-     * Deletes an existing Azure Cosmos DB Mongo Role Definition.
-     * 
-     * @param mongoRoleDefinitionId The ID for the Role Definition {dbName.roleName}.
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param accountName Cosmos DB database account name.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public void deleteMongoRoleDefinition(String mongoRoleDefinitionId, String resourceGroupName, String accountName) {
         deleteMongoRoleDefinitionAsync(mongoRoleDefinitionId, resourceGroupName, accountName).block();
     }
 
-    /**
-     * Deletes an existing Azure Cosmos DB Mongo Role Definition.
-     * 
-     * @param mongoRoleDefinitionId The ID for the Role Definition {dbName.roleName}.
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param accountName Cosmos DB database account name.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public void deleteMongoRoleDefinition(String mongoRoleDefinitionId, String resourceGroupName, String accountName,
         Context context) {
@@ -4836,16 +3500,7 @@ public final class MongoDBResourcesClientImpl implements MongoDBResourcesClient 
                 res.getValue().value(), res.getValue().nextLink(), null));
     }
 
-    /**
-     * Retrieves the list of all Azure Cosmos DB Mongo Role Definitions.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param accountName Cosmos DB database account name.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the relevant Mongo Role Definitions as paginated response with {@link PagedFlux}.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.COLLECTION)
     public PagedFlux<MongoRoleDefinitionGetResultsInner> listMongoRoleDefinitionsAsync(String resourceGroupName,
         String accountName) {
@@ -4871,50 +3526,21 @@ public final class MongoDBResourcesClientImpl implements MongoDBResourcesClient 
             nextLink -> listMongoRoleDefinitionsNextSinglePageAsync(nextLink, context));
     }
 
-    /**
-     * Retrieves the list of all Azure Cosmos DB Mongo Role Definitions.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param accountName Cosmos DB database account name.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the relevant Mongo Role Definitions as paginated response with {@link PagedIterable}.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.COLLECTION)
     public PagedIterable<MongoRoleDefinitionGetResultsInner> listMongoRoleDefinitions(String resourceGroupName,
         String accountName) {
         return new PagedIterable<>(listMongoRoleDefinitionsAsync(resourceGroupName, accountName));
     }
 
-    /**
-     * Retrieves the list of all Azure Cosmos DB Mongo Role Definitions.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param accountName Cosmos DB database account name.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the relevant Mongo Role Definitions as paginated response with {@link PagedIterable}.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.COLLECTION)
     public PagedIterable<MongoRoleDefinitionGetResultsInner> listMongoRoleDefinitions(String resourceGroupName,
         String accountName, Context context) {
         return new PagedIterable<>(listMongoRoleDefinitionsAsync(resourceGroupName, accountName, context));
     }
 
-    /**
-     * Retrieves the properties of an existing Azure Cosmos DB Mongo User Definition with the given Id.
-     * 
-     * @param mongoUserDefinitionId The ID for the User Definition {dbName.userName}.
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param accountName Cosmos DB database account name.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return an Azure Cosmos DB User Definition along with {@link Response} on successful completion of {@link Mono}.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Response<MongoUserDefinitionGetResultsInner>> getMongoUserDefinitionWithResponseAsync(
         String mongoUserDefinitionId, String resourceGroupName, String accountName) {
@@ -4969,17 +3595,7 @@ public final class MongoDBResourcesClientImpl implements MongoDBResourcesClient 
             this.client.getSubscriptionId(), resourceGroupName, accountName, mongoUserDefinitionId, accept, context);
     }
 
-    /**
-     * Retrieves the properties of an existing Azure Cosmos DB Mongo User Definition with the given Id.
-     * 
-     * @param mongoUserDefinitionId The ID for the User Definition {dbName.userName}.
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param accountName Cosmos DB database account name.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return an Azure Cosmos DB User Definition on successful completion of {@link Mono}.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<MongoUserDefinitionGetResultsInner> getMongoUserDefinitionAsync(String mongoUserDefinitionId,
         String resourceGroupName, String accountName) {
@@ -4987,18 +3603,7 @@ public final class MongoDBResourcesClientImpl implements MongoDBResourcesClient 
             .flatMap(res -> Mono.justOrEmpty(res.getValue()));
     }
 
-    /**
-     * Retrieves the properties of an existing Azure Cosmos DB Mongo User Definition with the given Id.
-     * 
-     * @param mongoUserDefinitionId The ID for the User Definition {dbName.userName}.
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param accountName Cosmos DB database account name.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return an Azure Cosmos DB User Definition along with {@link Response}.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Response<MongoUserDefinitionGetResultsInner> getMongoUserDefinitionWithResponse(String mongoUserDefinitionId,
         String resourceGroupName, String accountName, Context context) {
@@ -5006,17 +3611,7 @@ public final class MongoDBResourcesClientImpl implements MongoDBResourcesClient 
             .block();
     }
 
-    /**
-     * Retrieves the properties of an existing Azure Cosmos DB Mongo User Definition with the given Id.
-     * 
-     * @param mongoUserDefinitionId The ID for the User Definition {dbName.userName}.
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param accountName Cosmos DB database account name.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return an Azure Cosmos DB User Definition.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public MongoUserDefinitionGetResultsInner getMongoUserDefinition(String mongoUserDefinitionId,
         String resourceGroupName, String accountName) {
@@ -5024,18 +3619,7 @@ public final class MongoDBResourcesClientImpl implements MongoDBResourcesClient 
             .getValue();
     }
 
-    /**
-     * Creates or updates an Azure Cosmos DB Mongo User Definition.
-     * 
-     * @param mongoUserDefinitionId The ID for the User Definition {dbName.userName}.
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param accountName Cosmos DB database account name.
-     * @param createUpdateMongoUserDefinitionParameters The properties required to create or update a User Definition.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return an Azure Cosmos DB User Definition along with {@link Response} on successful completion of {@link Mono}.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Response<Flux<ByteBuffer>>> createUpdateMongoUserDefinitionWithResponseAsync(
         String mongoUserDefinitionId, String resourceGroupName, String accountName,
@@ -5108,18 +3692,7 @@ public final class MongoDBResourcesClientImpl implements MongoDBResourcesClient 
             createUpdateMongoUserDefinitionParameters, context);
     }
 
-    /**
-     * Creates or updates an Azure Cosmos DB Mongo User Definition.
-     * 
-     * @param mongoUserDefinitionId The ID for the User Definition {dbName.userName}.
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param accountName Cosmos DB database account name.
-     * @param createUpdateMongoUserDefinitionParameters The properties required to create or update a User Definition.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the {@link PollerFlux} for polling of an Azure Cosmos DB User Definition.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public PollerFlux<PollResult<MongoUserDefinitionGetResultsInner>, MongoUserDefinitionGetResultsInner>
         beginCreateUpdateMongoUserDefinitionAsync(String mongoUserDefinitionId, String resourceGroupName,
@@ -5157,18 +3730,7 @@ public final class MongoDBResourcesClientImpl implements MongoDBResourcesClient 
             MongoUserDefinitionGetResultsInner.class, context);
     }
 
-    /**
-     * Creates or updates an Azure Cosmos DB Mongo User Definition.
-     * 
-     * @param mongoUserDefinitionId The ID for the User Definition {dbName.userName}.
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param accountName Cosmos DB database account name.
-     * @param createUpdateMongoUserDefinitionParameters The properties required to create or update a User Definition.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the {@link SyncPoller} for polling of an Azure Cosmos DB User Definition.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public SyncPoller<PollResult<MongoUserDefinitionGetResultsInner>, MongoUserDefinitionGetResultsInner>
         beginCreateUpdateMongoUserDefinition(String mongoUserDefinitionId, String resourceGroupName, String accountName,
@@ -5179,19 +3741,7 @@ public final class MongoDBResourcesClientImpl implements MongoDBResourcesClient 
             .getSyncPoller();
     }
 
-    /**
-     * Creates or updates an Azure Cosmos DB Mongo User Definition.
-     * 
-     * @param mongoUserDefinitionId The ID for the User Definition {dbName.userName}.
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param accountName Cosmos DB database account name.
-     * @param createUpdateMongoUserDefinitionParameters The properties required to create or update a User Definition.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the {@link SyncPoller} for polling of an Azure Cosmos DB User Definition.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public SyncPoller<PollResult<MongoUserDefinitionGetResultsInner>, MongoUserDefinitionGetResultsInner>
         beginCreateUpdateMongoUserDefinition(String mongoUserDefinitionId, String resourceGroupName, String accountName,
@@ -5202,18 +3752,7 @@ public final class MongoDBResourcesClientImpl implements MongoDBResourcesClient 
             .getSyncPoller();
     }
 
-    /**
-     * Creates or updates an Azure Cosmos DB Mongo User Definition.
-     * 
-     * @param mongoUserDefinitionId The ID for the User Definition {dbName.userName}.
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param accountName Cosmos DB database account name.
-     * @param createUpdateMongoUserDefinitionParameters The properties required to create or update a User Definition.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return an Azure Cosmos DB User Definition on successful completion of {@link Mono}.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<MongoUserDefinitionGetResultsInner> createUpdateMongoUserDefinitionAsync(String mongoUserDefinitionId,
         String resourceGroupName, String accountName,
@@ -5243,18 +3782,7 @@ public final class MongoDBResourcesClientImpl implements MongoDBResourcesClient 
             createUpdateMongoUserDefinitionParameters, context).last().flatMap(this.client::getLroFinalResultOrError);
     }
 
-    /**
-     * Creates or updates an Azure Cosmos DB Mongo User Definition.
-     * 
-     * @param mongoUserDefinitionId The ID for the User Definition {dbName.userName}.
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param accountName Cosmos DB database account name.
-     * @param createUpdateMongoUserDefinitionParameters The properties required to create or update a User Definition.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return an Azure Cosmos DB User Definition.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public MongoUserDefinitionGetResultsInner createUpdateMongoUserDefinition(String mongoUserDefinitionId,
         String resourceGroupName, String accountName,
@@ -5263,19 +3791,7 @@ public final class MongoDBResourcesClientImpl implements MongoDBResourcesClient 
             createUpdateMongoUserDefinitionParameters).block();
     }
 
-    /**
-     * Creates or updates an Azure Cosmos DB Mongo User Definition.
-     * 
-     * @param mongoUserDefinitionId The ID for the User Definition {dbName.userName}.
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param accountName Cosmos DB database account name.
-     * @param createUpdateMongoUserDefinitionParameters The properties required to create or update a User Definition.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return an Azure Cosmos DB User Definition.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public MongoUserDefinitionGetResultsInner createUpdateMongoUserDefinition(String mongoUserDefinitionId,
         String resourceGroupName, String accountName,
@@ -5284,17 +3800,7 @@ public final class MongoDBResourcesClientImpl implements MongoDBResourcesClient 
             createUpdateMongoUserDefinitionParameters, context).block();
     }
 
-    /**
-     * Deletes an existing Azure Cosmos DB Mongo User Definition.
-     * 
-     * @param mongoUserDefinitionId The ID for the User Definition {dbName.userName}.
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param accountName Cosmos DB database account name.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the {@link Response} on successful completion of {@link Mono}.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Response<Flux<ByteBuffer>>> deleteMongoUserDefinitionWithResponseAsync(String mongoUserDefinitionId,
         String resourceGroupName, String accountName) {
@@ -5347,17 +3853,7 @@ public final class MongoDBResourcesClientImpl implements MongoDBResourcesClient 
             this.client.getSubscriptionId(), resourceGroupName, accountName, mongoUserDefinitionId, context);
     }
 
-    /**
-     * Deletes an existing Azure Cosmos DB Mongo User Definition.
-     * 
-     * @param mongoUserDefinitionId The ID for the User Definition {dbName.userName}.
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param accountName Cosmos DB database account name.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the {@link PollerFlux} for polling of long-running operation.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public PollerFlux<PollResult<Void>, Void> beginDeleteMongoUserDefinitionAsync(String mongoUserDefinitionId,
         String resourceGroupName, String accountName) {
@@ -5389,17 +3885,7 @@ public final class MongoDBResourcesClientImpl implements MongoDBResourcesClient 
             context);
     }
 
-    /**
-     * Deletes an existing Azure Cosmos DB Mongo User Definition.
-     * 
-     * @param mongoUserDefinitionId The ID for the User Definition {dbName.userName}.
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param accountName Cosmos DB database account name.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the {@link SyncPoller} for polling of long-running operation.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public SyncPoller<PollResult<Void>, Void> beginDeleteMongoUserDefinition(String mongoUserDefinitionId,
         String resourceGroupName, String accountName) {
@@ -5407,18 +3893,7 @@ public final class MongoDBResourcesClientImpl implements MongoDBResourcesClient 
             .getSyncPoller();
     }
 
-    /**
-     * Deletes an existing Azure Cosmos DB Mongo User Definition.
-     * 
-     * @param mongoUserDefinitionId The ID for the User Definition {dbName.userName}.
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param accountName Cosmos DB database account name.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the {@link SyncPoller} for polling of long-running operation.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public SyncPoller<PollResult<Void>, Void> beginDeleteMongoUserDefinition(String mongoUserDefinitionId,
         String resourceGroupName, String accountName, Context context) {
@@ -5426,17 +3901,7 @@ public final class MongoDBResourcesClientImpl implements MongoDBResourcesClient 
             .getSyncPoller();
     }
 
-    /**
-     * Deletes an existing Azure Cosmos DB Mongo User Definition.
-     * 
-     * @param mongoUserDefinitionId The ID for the User Definition {dbName.userName}.
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param accountName Cosmos DB database account name.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return A {@link Mono} that completes when a successful response is received.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Void> deleteMongoUserDefinitionAsync(String mongoUserDefinitionId, String resourceGroupName,
         String accountName) {
@@ -5464,32 +3929,13 @@ public final class MongoDBResourcesClientImpl implements MongoDBResourcesClient 
             .flatMap(this.client::getLroFinalResultOrError);
     }
 
-    /**
-     * Deletes an existing Azure Cosmos DB Mongo User Definition.
-     * 
-     * @param mongoUserDefinitionId The ID for the User Definition {dbName.userName}.
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param accountName Cosmos DB database account name.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public void deleteMongoUserDefinition(String mongoUserDefinitionId, String resourceGroupName, String accountName) {
         deleteMongoUserDefinitionAsync(mongoUserDefinitionId, resourceGroupName, accountName).block();
     }
 
-    /**
-     * Deletes an existing Azure Cosmos DB Mongo User Definition.
-     * 
-     * @param mongoUserDefinitionId The ID for the User Definition {dbName.userName}.
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param accountName Cosmos DB database account name.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public void deleteMongoUserDefinition(String mongoUserDefinitionId, String resourceGroupName, String accountName,
         Context context) {
@@ -5572,16 +4018,7 @@ public final class MongoDBResourcesClientImpl implements MongoDBResourcesClient 
                 res.getValue().value(), res.getValue().nextLink(), null));
     }
 
-    /**
-     * Retrieves the list of all Azure Cosmos DB Mongo User Definition.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param accountName Cosmos DB database account name.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the relevant User Definition as paginated response with {@link PagedFlux}.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.COLLECTION)
     public PagedFlux<MongoUserDefinitionGetResultsInner> listMongoUserDefinitionsAsync(String resourceGroupName,
         String accountName) {
@@ -5607,33 +4044,14 @@ public final class MongoDBResourcesClientImpl implements MongoDBResourcesClient 
             nextLink -> listMongoUserDefinitionsNextSinglePageAsync(nextLink, context));
     }
 
-    /**
-     * Retrieves the list of all Azure Cosmos DB Mongo User Definition.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param accountName Cosmos DB database account name.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the relevant User Definition as paginated response with {@link PagedIterable}.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.COLLECTION)
     public PagedIterable<MongoUserDefinitionGetResultsInner> listMongoUserDefinitions(String resourceGroupName,
         String accountName) {
         return new PagedIterable<>(listMongoUserDefinitionsAsync(resourceGroupName, accountName));
     }
 
-    /**
-     * Retrieves the list of all Azure Cosmos DB Mongo User Definition.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param accountName Cosmos DB database account name.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the relevant User Definition as paginated response with {@link PagedIterable}.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.COLLECTION)
     public PagedIterable<MongoUserDefinitionGetResultsInner> listMongoUserDefinitions(String resourceGroupName,
         String accountName, Context context) {

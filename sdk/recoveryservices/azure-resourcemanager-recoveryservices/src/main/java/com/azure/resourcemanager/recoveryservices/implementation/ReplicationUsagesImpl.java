@@ -26,8 +26,7 @@ public final class ReplicationUsagesImpl implements ReplicationUsages {
     }
 
     public PagedIterable<ReplicationUsage> list(String resourceGroupName, String vaultName) {
-        PagedIterable<ReplicationUsageInner> inner = this.serviceClient().list(resourceGroupName, vaultName);
-        return ResourceManagerUtils.mapPage(inner, inner1 -> new ReplicationUsageImpl(inner1, this.manager()));
+        return this.list(resourceGroupName, vaultName, Context.NONE);
     }
 
     public PagedIterable<ReplicationUsage> list(String resourceGroupName, String vaultName, Context context) {

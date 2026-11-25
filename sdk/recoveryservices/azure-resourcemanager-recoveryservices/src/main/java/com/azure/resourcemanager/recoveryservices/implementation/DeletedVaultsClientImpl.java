@@ -206,11 +206,7 @@ public final class DeletedVaultsClientImpl implements DeletedVaultsClient {
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private PagedResponse<DeletedVaultInner> listBySubscriptionIdSinglePage(String location) {
-        final String accept = "application/json";
-        Response<DeletedVaultList> res = service.listBySubscriptionIdSync(this.client.getEndpoint(),
-            this.client.getApiVersion(), this.client.getSubscriptionId(), location, accept, Context.NONE);
-        return new PagedResponseBase<>(res.getRequest(), res.getStatusCode(), res.getHeaders(), res.getValue().value(),
-            res.getValue().nextLink(), null);
+        return listBySubscriptionIdSinglePage(location, Context.NONE);
     }
 
     /**
@@ -232,31 +228,13 @@ public final class DeletedVaultsClientImpl implements DeletedVaultsClient {
             res.getValue().nextLink(), null);
     }
 
-    /**
-     * List deleted vaults in a subscription.
-     * 
-     * @param location The name of the Azure region.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the response model for a list of DeletedVaults as paginated response with {@link PagedIterable}.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.COLLECTION)
     public PagedIterable<DeletedVaultInner> listBySubscriptionId(String location) {
-        return new PagedIterable<>(() -> listBySubscriptionIdSinglePage(location),
-            nextLink -> listBySubscriptionIdNextSinglePage(nextLink));
+        return listBySubscriptionId(location, Context.NONE);
     }
 
-    /**
-     * List deleted vaults in a subscription.
-     * 
-     * @param location The name of the Azure region.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the response model for a list of DeletedVaults as paginated response with {@link PagedIterable}.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.COLLECTION)
     public PagedIterable<DeletedVaultInner> listBySubscriptionId(String location, Context context) {
         return new PagedIterable<>(() -> listBySubscriptionIdSinglePage(location, context),
@@ -297,17 +275,7 @@ public final class DeletedVaultsClientImpl implements DeletedVaultsClient {
         return getWithResponseAsync(location, deletedVaultName).flatMap(res -> Mono.justOrEmpty(res.getValue()));
     }
 
-    /**
-     * Get a specific deleted vault.
-     * 
-     * @param location The location name.
-     * @param deletedVaultName The name of the DeletedVault.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return a specific deleted vault along with {@link Response}.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Response<DeletedVaultInner> getWithResponse(String location, String deletedVaultName, Context context) {
         final String accept = "application/json";
@@ -315,16 +283,7 @@ public final class DeletedVaultsClientImpl implements DeletedVaultsClient {
             location, deletedVaultName, accept, context);
     }
 
-    /**
-     * Get a specific deleted vault.
-     * 
-     * @param location The location name.
-     * @param deletedVaultName The name of the DeletedVault.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return a specific deleted vault.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public DeletedVaultInner get(String location, String deletedVaultName) {
         return getWithResponse(location, deletedVaultName, Context.NONE).getValue();
@@ -367,10 +326,7 @@ public final class DeletedVaultsClientImpl implements DeletedVaultsClient {
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Response<BinaryData> undeleteWithResponse(String location, String deletedVaultName,
         DeletedVaultUndeleteInput body) {
-        final String contentType = "application/json";
-        final String accept = "application/json";
-        return service.undeleteSync(this.client.getEndpoint(), this.client.getApiVersion(),
-            this.client.getSubscriptionId(), location, deletedVaultName, contentType, accept, body, Context.NONE);
+        return undeleteWithResponse(location, deletedVaultName, body, Context.NONE);
     }
 
     /**
@@ -413,36 +369,14 @@ public final class DeletedVaultsClientImpl implements DeletedVaultsClient {
             this.client.getContext());
     }
 
-    /**
-     * Start undelete of a deleted vault.
-     * 
-     * @param location The location name.
-     * @param deletedVaultName The name of the DeletedVault.
-     * @param body The content of the action request.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the {@link SyncPoller} for polling of deletedVault information as returned by the resource provider.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public SyncPoller<PollResult<Void>, Void> beginUndelete(String location, String deletedVaultName,
         DeletedVaultUndeleteInput body) {
-        Response<BinaryData> response = undeleteWithResponse(location, deletedVaultName, body);
-        return this.client.<Void, Void>getLroResult(response, Void.class, Void.class, Context.NONE);
+        return beginUndelete(location, deletedVaultName, body, Context.NONE);
     }
 
-    /**
-     * Start undelete of a deleted vault.
-     * 
-     * @param location The location name.
-     * @param deletedVaultName The name of the DeletedVault.
-     * @param body The content of the action request.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the {@link SyncPoller} for polling of deletedVault information as returned by the resource provider.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public SyncPoller<PollResult<Void>, Void> beginUndelete(String location, String deletedVaultName,
         DeletedVaultUndeleteInput body, Context context) {
@@ -467,35 +401,16 @@ public final class DeletedVaultsClientImpl implements DeletedVaultsClient {
             .flatMap(this.client::getLroFinalResultOrError);
     }
 
-    /**
-     * Start undelete of a deleted vault.
-     * 
-     * @param location The location name.
-     * @param deletedVaultName The name of the DeletedVault.
-     * @param body The content of the action request.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public void undelete(String location, String deletedVaultName, DeletedVaultUndeleteInput body) {
-        beginUndelete(location, deletedVaultName, body).getFinalResult();
+        undelete(location, deletedVaultName, body, Context.NONE);
     }
 
-    /**
-     * Start undelete of a deleted vault.
-     * 
-     * @param location The location name.
-     * @param deletedVaultName The name of the DeletedVault.
-     * @param body The content of the action request.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public void undelete(String location, String deletedVaultName, DeletedVaultUndeleteInput body, Context context) {
-        beginUndelete(location, deletedVaultName, body, context).getFinalResult();
+        this.client.getLroFinalResultOrError(beginUndelete(location, deletedVaultName, body, context));
     }
 
     /**
@@ -538,18 +453,7 @@ public final class DeletedVaultsClientImpl implements DeletedVaultsClient {
             .flatMap(res -> Mono.justOrEmpty(res.getValue()));
     }
 
-    /**
-     * Get the operation status of a deleted vault.
-     * 
-     * @param location The location name.
-     * @param deletedVaultName The name of deleted vault.
-     * @param operationId The operationId parameter.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the operation status of a deleted vault along with {@link Response}.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Response<OperationResourceInner> getOperationStatusWithResponse(String location, String deletedVaultName,
         String operationId, Context context) {
@@ -558,17 +462,7 @@ public final class DeletedVaultsClientImpl implements DeletedVaultsClient {
             this.client.getSubscriptionId(), location, deletedVaultName, operationId, accept, context);
     }
 
-    /**
-     * Get the operation status of a deleted vault.
-     * 
-     * @param location The location name.
-     * @param deletedVaultName The name of deleted vault.
-     * @param operationId The operationId parameter.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the operation status of a deleted vault.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public OperationResourceInner getOperationStatus(String location, String deletedVaultName, String operationId) {
         return getOperationStatusWithResponse(location, deletedVaultName, operationId, Context.NONE).getValue();
@@ -606,11 +500,7 @@ public final class DeletedVaultsClientImpl implements DeletedVaultsClient {
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private PagedResponse<DeletedVaultInner> listBySubscriptionIdNextSinglePage(String nextLink) {
-        final String accept = "application/json";
-        Response<DeletedVaultList> res
-            = service.listBySubscriptionIdNextSync(nextLink, this.client.getEndpoint(), accept, Context.NONE);
-        return new PagedResponseBase<>(res.getRequest(), res.getStatusCode(), res.getHeaders(), res.getValue().value(),
-            res.getValue().nextLink(), null);
+        return listBySubscriptionIdNextSinglePage(nextLink, Context.NONE);
     }
 
     /**

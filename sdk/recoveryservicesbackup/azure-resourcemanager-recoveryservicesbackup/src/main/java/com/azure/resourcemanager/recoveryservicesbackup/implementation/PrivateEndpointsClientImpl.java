@@ -121,19 +121,7 @@ public final class PrivateEndpointsClientImpl implements PrivateEndpointsClient 
             operationId).flatMap(res -> Mono.justOrEmpty(res.getValue()));
     }
 
-    /**
-     * Gets the operation status for a private endpoint connection.
-     * 
-     * @param vaultName vaults.
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param privateEndpointConnectionName The name of the PrivateEndpointConnectionResource.
-     * @param operationId The name of the PrivateEndpointConnectionResource.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the operation status for a private endpoint connection along with {@link Response}.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Response<OperationStatusInner> getOperationStatusWithResponse(String vaultName, String resourceGroupName,
         String privateEndpointConnectionName, String operationId, Context context) {
@@ -143,18 +131,7 @@ public final class PrivateEndpointsClientImpl implements PrivateEndpointsClient 
             accept, context);
     }
 
-    /**
-     * Gets the operation status for a private endpoint connection.
-     * 
-     * @param vaultName vaults.
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param privateEndpointConnectionName The name of the PrivateEndpointConnectionResource.
-     * @param operationId The name of the PrivateEndpointConnectionResource.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the operation status for a private endpoint connection.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public OperationStatusInner getOperationStatus(String vaultName, String resourceGroupName,
         String privateEndpointConnectionName, String operationId) {

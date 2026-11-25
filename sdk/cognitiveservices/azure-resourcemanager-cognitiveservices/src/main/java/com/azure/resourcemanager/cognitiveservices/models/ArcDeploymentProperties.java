@@ -29,12 +29,12 @@ public final class ArcDeploymentProperties implements JsonSerializable<ArcDeploy
     private String extensionId;
 
     /*
-     * Inference runtime. Required on creation and immutable after creation.
+     * Read-only. Inference runtime resolved from the model asset.
      */
     private ArcDeploymentRuntime runtime;
 
     /*
-     * Compute type for the deployment. Required on creation and immutable after creation.
+     * Read-only. Compute type resolved from the model asset.
      */
     private ArcDeploymentComputeType compute;
 
@@ -144,7 +144,7 @@ public final class ArcDeploymentProperties implements JsonSerializable<ArcDeploy
     }
 
     /**
-     * Get the runtime property: Inference runtime. Required on creation and immutable after creation.
+     * Get the runtime property: Read-only. Inference runtime resolved from the model asset.
      * 
      * @return the runtime value.
      */
@@ -153,34 +153,12 @@ public final class ArcDeploymentProperties implements JsonSerializable<ArcDeploy
     }
 
     /**
-     * Set the runtime property: Inference runtime. Required on creation and immutable after creation.
-     * 
-     * @param runtime the runtime value to set.
-     * @return the ArcDeploymentProperties object itself.
-     */
-    public ArcDeploymentProperties withRuntime(ArcDeploymentRuntime runtime) {
-        this.runtime = runtime;
-        return this;
-    }
-
-    /**
-     * Get the compute property: Compute type for the deployment. Required on creation and immutable after creation.
+     * Get the compute property: Read-only. Compute type resolved from the model asset.
      * 
      * @return the compute value.
      */
     public ArcDeploymentComputeType compute() {
         return this.compute;
-    }
-
-    /**
-     * Set the compute property: Compute type for the deployment. Required on creation and immutable after creation.
-     * 
-     * @param compute the compute value to set.
-     * @return the ArcDeploymentProperties object itself.
-     */
-    public ArcDeploymentProperties withCompute(ArcDeploymentComputeType compute) {
-        this.compute = compute;
-        return this;
     }
 
     /**
@@ -365,8 +343,6 @@ public final class ArcDeploymentProperties implements JsonSerializable<ArcDeploy
         jsonWriter.writeStartObject();
         jsonWriter.writeJsonField("model", this.model);
         jsonWriter.writeStringField("extensionId", this.extensionId);
-        jsonWriter.writeStringField("runtime", this.runtime == null ? null : this.runtime.toString());
-        jsonWriter.writeStringField("compute", this.compute == null ? null : this.compute.toString());
         jsonWriter.writeIntField("replicas", this.replicas);
         jsonWriter.writeJsonField("resources", this.resources);
         jsonWriter.writeStringField("deploymentTemplate", this.deploymentTemplate);

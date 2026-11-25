@@ -38,14 +38,14 @@ public class VoiceAgentVersionsSample {
             .buildAgentsClient();
         try {
             AgentVersionDetails first = client.createAgentVersion(agentName,
-                new CreateAgentVersionInput(VoiceAgentSampleUtils.createDefinition(modelType, model,
+                new CreateAgentVersionInput(VoiceAgentRealtimeSampleUtils.createDefinition(modelType, model,
                     "You are a helpful voice assistant.")));
             AgentVersionDetails released = client.createAgentVersion(agentName,
-                new CreateAgentVersionInput(VoiceAgentSampleUtils.createDefinition(modelType, model,
+                new CreateAgentVersionInput(VoiceAgentRealtimeSampleUtils.createDefinition(modelType, model,
                     "You are a helpful voice assistant. Greet the caller by name."))
                     .setDescription("Added a personalized greeting."));
             AgentVersionDetails draft = client.createAgentVersion(agentName,
-                new CreateAgentVersionInput(VoiceAgentSampleUtils.createDefinition(modelType, model,
+                new CreateAgentVersionInput(VoiceAgentRealtimeSampleUtils.createDefinition(modelType, model,
                     "You are an experimental voice assistant."))
                     .setDescription("Candidate persona under review.")
                     .setDraft(true));

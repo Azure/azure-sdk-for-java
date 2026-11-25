@@ -164,19 +164,7 @@ public final class RecoveryPointsClientImpl implements RecoveryPointsClient {
             .flatMap(res -> Mono.justOrEmpty(res.getValue()));
     }
 
-    /**
-     * Gets a Recovery Point using recoveryPointId for a Datasource.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param vaultName The name of the backup vault.
-     * @param backupInstanceName The name of the backup instance.
-     * @param recoveryPointId The recoveryPointId parameter.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return a Recovery Point using recoveryPointId for a Datasource along with {@link Response}.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Response<AzureBackupRecoveryPointResourceInner> getWithResponse(String resourceGroupName, String vaultName,
         String backupInstanceName, String recoveryPointId, Context context) {
@@ -185,18 +173,7 @@ public final class RecoveryPointsClientImpl implements RecoveryPointsClient {
             resourceGroupName, vaultName, backupInstanceName, recoveryPointId, accept, context);
     }
 
-    /**
-     * Gets a Recovery Point using recoveryPointId for a Datasource.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param vaultName The name of the backup vault.
-     * @param backupInstanceName The name of the backup instance.
-     * @param recoveryPointId The recoveryPointId parameter.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return a Recovery Point using recoveryPointId for a Datasource.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public AzureBackupRecoveryPointResourceInner get(String resourceGroupName, String vaultName,
         String backupInstanceName, String recoveryPointId) {
@@ -289,12 +266,7 @@ public final class RecoveryPointsClientImpl implements RecoveryPointsClient {
     @ServiceMethod(returns = ReturnType.SINGLE)
     private PagedResponse<AzureBackupRecoveryPointResourceInner> listSinglePage(String resourceGroupName,
         String vaultName, String backupInstanceName, String filter, String skipToken) {
-        final String accept = "application/json";
-        Response<AzureBackupRecoveryPointResourceList> res
-            = service.listSync(this.client.getEndpoint(), this.client.getApiVersion(), this.client.getSubscriptionId(),
-                resourceGroupName, vaultName, backupInstanceName, filter, skipToken, accept, Context.NONE);
-        return new PagedResponseBase<>(res.getRequest(), res.getStatusCode(), res.getHeaders(), res.getValue().value(),
-            res.getValue().nextLink(), null);
+        return listSinglePage(resourceGroupName, vaultName, backupInstanceName, filter, skipToken, Context.NONE);
     }
 
     /**
@@ -322,41 +294,16 @@ public final class RecoveryPointsClientImpl implements RecoveryPointsClient {
             res.getValue().nextLink(), null);
     }
 
-    /**
-     * Returns a list of Recovery Points for a DataSource in a vault.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param vaultName The name of the backup vault.
-     * @param backupInstanceName The name of the backup instance.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return azure backup recoveryPoint resource list as paginated response with {@link PagedIterable}.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.COLLECTION)
     public PagedIterable<AzureBackupRecoveryPointResourceInner> list(String resourceGroupName, String vaultName,
         String backupInstanceName) {
         final String filter = null;
         final String skipToken = null;
-        return new PagedIterable<>(
-            () -> listSinglePage(resourceGroupName, vaultName, backupInstanceName, filter, skipToken),
-            nextLink -> listNextSinglePage(nextLink));
+        return list(resourceGroupName, vaultName, backupInstanceName, filter, skipToken, Context.NONE);
     }
 
-    /**
-     * Returns a list of Recovery Points for a DataSource in a vault.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param vaultName The name of the backup vault.
-     * @param backupInstanceName The name of the backup instance.
-     * @param filter OData filter options.
-     * @param skipToken skipToken Filter.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return azure backup recoveryPoint resource list as paginated response with {@link PagedIterable}.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.COLLECTION)
     public PagedIterable<AzureBackupRecoveryPointResourceInner> list(String resourceGroupName, String vaultName,
         String backupInstanceName, String filter, String skipToken, Context context) {
@@ -395,11 +342,7 @@ public final class RecoveryPointsClientImpl implements RecoveryPointsClient {
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private PagedResponse<AzureBackupRecoveryPointResourceInner> listNextSinglePage(String nextLink) {
-        final String accept = "application/json";
-        Response<AzureBackupRecoveryPointResourceList> res
-            = service.listNextSync(nextLink, this.client.getEndpoint(), accept, Context.NONE);
-        return new PagedResponseBase<>(res.getRequest(), res.getStatusCode(), res.getHeaders(), res.getValue().value(),
-            res.getValue().nextLink(), null);
+        return listNextSinglePage(nextLink, Context.NONE);
     }
 
     /**

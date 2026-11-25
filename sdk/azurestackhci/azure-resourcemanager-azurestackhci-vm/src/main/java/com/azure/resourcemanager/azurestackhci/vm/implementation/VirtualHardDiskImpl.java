@@ -92,10 +92,7 @@ public final class VirtualHardDiskImpl implements VirtualHardDisk, VirtualHardDi
     }
 
     public VirtualHardDisk create() {
-        this.innerObject = serviceManager.serviceClient()
-            .getVirtualHardDisks()
-            .createOrUpdate(resourceGroupName, virtualHardDiskName, this.innerModel(), Context.NONE);
-        return this;
+        return this.create(Context.NONE);
     }
 
     public VirtualHardDisk create(Context context) {
@@ -117,10 +114,7 @@ public final class VirtualHardDiskImpl implements VirtualHardDisk, VirtualHardDi
     }
 
     public VirtualHardDisk apply() {
-        this.innerObject = serviceManager.serviceClient()
-            .getVirtualHardDisks()
-            .update(resourceGroupName, virtualHardDiskName, updateProperties, Context.NONE);
-        return this;
+        return this.apply(Context.NONE);
     }
 
     public VirtualHardDisk apply(Context context) {
@@ -143,11 +137,7 @@ public final class VirtualHardDiskImpl implements VirtualHardDisk, VirtualHardDi
     }
 
     public VirtualHardDisk refresh() {
-        this.innerObject = serviceManager.serviceClient()
-            .getVirtualHardDisks()
-            .getByResourceGroupWithResponse(resourceGroupName, virtualHardDiskName, Context.NONE)
-            .getValue();
-        return this;
+        return this.refresh(Context.NONE);
     }
 
     public VirtualHardDisk refresh(Context context) {

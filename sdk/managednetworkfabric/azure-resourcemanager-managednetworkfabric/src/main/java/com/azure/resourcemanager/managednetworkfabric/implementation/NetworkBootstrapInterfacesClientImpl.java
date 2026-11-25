@@ -264,18 +264,7 @@ public final class NetworkBootstrapInterfacesClientImpl implements NetworkBootst
             .flatMap(res -> Mono.justOrEmpty(res.getValue()));
     }
 
-    /**
-     * Get the Network Bootstrap Interface resource details.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param networkBootstrapDeviceName Name of the Network Bootstrap Device.
-     * @param networkBootstrapInterfaceName Name of the Network Bootstrap Interface.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the Network Bootstrap Interface resource details along with {@link Response}.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Response<NetworkBootstrapInterfaceInner> getWithResponse(String resourceGroupName,
         String networkBootstrapDeviceName, String networkBootstrapInterfaceName, Context context) {
@@ -284,17 +273,7 @@ public final class NetworkBootstrapInterfacesClientImpl implements NetworkBootst
             resourceGroupName, networkBootstrapDeviceName, networkBootstrapInterfaceName, accept, context);
     }
 
-    /**
-     * Get the Network Bootstrap Interface resource details.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param networkBootstrapDeviceName Name of the Network Bootstrap Device.
-     * @param networkBootstrapInterfaceName Name of the Network Bootstrap Interface.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the Network Bootstrap Interface resource details.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public NetworkBootstrapInterfaceInner get(String resourceGroupName, String networkBootstrapDeviceName,
         String networkBootstrapInterfaceName) {
@@ -342,11 +321,8 @@ public final class NetworkBootstrapInterfacesClientImpl implements NetworkBootst
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Response<BinaryData> createWithResponse(String resourceGroupName, String networkBootstrapDeviceName,
         String networkBootstrapInterfaceName, NetworkBootstrapInterfaceInner body) {
-        final String contentType = "application/json";
-        final String accept = "application/json";
-        return service.createSync(this.client.getEndpoint(), this.client.getApiVersion(),
-            this.client.getSubscriptionId(), resourceGroupName, networkBootstrapDeviceName,
-            networkBootstrapInterfaceName, contentType, accept, body, Context.NONE);
+        return createWithResponse(resourceGroupName, networkBootstrapDeviceName, networkBootstrapInterfaceName, body,
+            Context.NONE);
     }
 
     /**
@@ -395,41 +371,16 @@ public final class NetworkBootstrapInterfacesClientImpl implements NetworkBootst
             this.client.getContext());
     }
 
-    /**
-     * Create a Network Bootstrap Interface resource.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param networkBootstrapDeviceName Name of the Network Bootstrap Device.
-     * @param networkBootstrapInterfaceName Name of the Network Bootstrap Interface.
-     * @param body Request payload.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the {@link SyncPoller} for polling of defines the NetworkBootstrapInterface resource.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public SyncPoller<PollResult<NetworkBootstrapInterfaceInner>, NetworkBootstrapInterfaceInner> beginCreate(
         String resourceGroupName, String networkBootstrapDeviceName, String networkBootstrapInterfaceName,
         NetworkBootstrapInterfaceInner body) {
-        Response<BinaryData> response
-            = createWithResponse(resourceGroupName, networkBootstrapDeviceName, networkBootstrapInterfaceName, body);
-        return this.client.<NetworkBootstrapInterfaceInner, NetworkBootstrapInterfaceInner>getLroResult(response,
-            NetworkBootstrapInterfaceInner.class, NetworkBootstrapInterfaceInner.class, Context.NONE);
+        return beginCreate(resourceGroupName, networkBootstrapDeviceName, networkBootstrapInterfaceName, body,
+            Context.NONE);
     }
 
-    /**
-     * Create a Network Bootstrap Interface resource.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param networkBootstrapDeviceName Name of the Network Bootstrap Device.
-     * @param networkBootstrapInterfaceName Name of the Network Bootstrap Interface.
-     * @param body Request payload.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the {@link SyncPoller} for polling of defines the NetworkBootstrapInterface resource.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public SyncPoller<PollResult<NetworkBootstrapInterfaceInner>, NetworkBootstrapInterfaceInner> beginCreate(
         String resourceGroupName, String networkBootstrapDeviceName, String networkBootstrapInterfaceName,
@@ -460,43 +411,19 @@ public final class NetworkBootstrapInterfacesClientImpl implements NetworkBootst
             .flatMap(this.client::getLroFinalResultOrError);
     }
 
-    /**
-     * Create a Network Bootstrap Interface resource.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param networkBootstrapDeviceName Name of the Network Bootstrap Device.
-     * @param networkBootstrapInterfaceName Name of the Network Bootstrap Interface.
-     * @param body Request payload.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return defines the NetworkBootstrapInterface resource.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public NetworkBootstrapInterfaceInner create(String resourceGroupName, String networkBootstrapDeviceName,
         String networkBootstrapInterfaceName, NetworkBootstrapInterfaceInner body) {
-        return beginCreate(resourceGroupName, networkBootstrapDeviceName, networkBootstrapInterfaceName, body)
-            .getFinalResult();
+        return create(resourceGroupName, networkBootstrapDeviceName, networkBootstrapInterfaceName, body, Context.NONE);
     }
 
-    /**
-     * Create a Network Bootstrap Interface resource.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param networkBootstrapDeviceName Name of the Network Bootstrap Device.
-     * @param networkBootstrapInterfaceName Name of the Network Bootstrap Interface.
-     * @param body Request payload.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return defines the NetworkBootstrapInterface resource.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public NetworkBootstrapInterfaceInner create(String resourceGroupName, String networkBootstrapDeviceName,
         String networkBootstrapInterfaceName, NetworkBootstrapInterfaceInner body, Context context) {
-        return beginCreate(resourceGroupName, networkBootstrapDeviceName, networkBootstrapInterfaceName, body, context)
-            .getFinalResult();
+        return this.client.getLroFinalResultOrError(
+            beginCreate(resourceGroupName, networkBootstrapDeviceName, networkBootstrapInterfaceName, body, context));
     }
 
     /**
@@ -539,11 +466,8 @@ public final class NetworkBootstrapInterfacesClientImpl implements NetworkBootst
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Response<BinaryData> updateWithResponse(String resourceGroupName, String networkBootstrapDeviceName,
         String networkBootstrapInterfaceName, NetworkBootstrapInterfacePatch body) {
-        final String contentType = "application/json";
-        final String accept = "application/json";
-        return service.updateSync(this.client.getEndpoint(), this.client.getApiVersion(),
-            this.client.getSubscriptionId(), resourceGroupName, networkBootstrapDeviceName,
-            networkBootstrapInterfaceName, contentType, accept, body, Context.NONE);
+        return updateWithResponse(resourceGroupName, networkBootstrapDeviceName, networkBootstrapInterfaceName, body,
+            Context.NONE);
     }
 
     /**
@@ -592,41 +516,16 @@ public final class NetworkBootstrapInterfacesClientImpl implements NetworkBootst
             this.client.getContext());
     }
 
-    /**
-     * Update certain properties of the Network Bootstrap Interface resource.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param networkBootstrapDeviceName Name of the Network Bootstrap Device.
-     * @param networkBootstrapInterfaceName Name of the Network Bootstrap Interface.
-     * @param body NetworkBootstrapInterface properties to update. Only tags are supported.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the {@link SyncPoller} for polling of defines the NetworkBootstrapInterface resource.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public SyncPoller<PollResult<NetworkBootstrapInterfaceInner>, NetworkBootstrapInterfaceInner> beginUpdate(
         String resourceGroupName, String networkBootstrapDeviceName, String networkBootstrapInterfaceName,
         NetworkBootstrapInterfacePatch body) {
-        Response<BinaryData> response
-            = updateWithResponse(resourceGroupName, networkBootstrapDeviceName, networkBootstrapInterfaceName, body);
-        return this.client.<NetworkBootstrapInterfaceInner, NetworkBootstrapInterfaceInner>getLroResult(response,
-            NetworkBootstrapInterfaceInner.class, NetworkBootstrapInterfaceInner.class, Context.NONE);
+        return beginUpdate(resourceGroupName, networkBootstrapDeviceName, networkBootstrapInterfaceName, body,
+            Context.NONE);
     }
 
-    /**
-     * Update certain properties of the Network Bootstrap Interface resource.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param networkBootstrapDeviceName Name of the Network Bootstrap Device.
-     * @param networkBootstrapInterfaceName Name of the Network Bootstrap Interface.
-     * @param body NetworkBootstrapInterface properties to update. Only tags are supported.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the {@link SyncPoller} for polling of defines the NetworkBootstrapInterface resource.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public SyncPoller<PollResult<NetworkBootstrapInterfaceInner>, NetworkBootstrapInterfaceInner> beginUpdate(
         String resourceGroupName, String networkBootstrapDeviceName, String networkBootstrapInterfaceName,
@@ -657,43 +556,19 @@ public final class NetworkBootstrapInterfacesClientImpl implements NetworkBootst
             .flatMap(this.client::getLroFinalResultOrError);
     }
 
-    /**
-     * Update certain properties of the Network Bootstrap Interface resource.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param networkBootstrapDeviceName Name of the Network Bootstrap Device.
-     * @param networkBootstrapInterfaceName Name of the Network Bootstrap Interface.
-     * @param body NetworkBootstrapInterface properties to update. Only tags are supported.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return defines the NetworkBootstrapInterface resource.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public NetworkBootstrapInterfaceInner update(String resourceGroupName, String networkBootstrapDeviceName,
         String networkBootstrapInterfaceName, NetworkBootstrapInterfacePatch body) {
-        return beginUpdate(resourceGroupName, networkBootstrapDeviceName, networkBootstrapInterfaceName, body)
-            .getFinalResult();
+        return update(resourceGroupName, networkBootstrapDeviceName, networkBootstrapInterfaceName, body, Context.NONE);
     }
 
-    /**
-     * Update certain properties of the Network Bootstrap Interface resource.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param networkBootstrapDeviceName Name of the Network Bootstrap Device.
-     * @param networkBootstrapInterfaceName Name of the Network Bootstrap Interface.
-     * @param body NetworkBootstrapInterface properties to update. Only tags are supported.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return defines the NetworkBootstrapInterface resource.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public NetworkBootstrapInterfaceInner update(String resourceGroupName, String networkBootstrapDeviceName,
         String networkBootstrapInterfaceName, NetworkBootstrapInterfacePatch body, Context context) {
-        return beginUpdate(resourceGroupName, networkBootstrapDeviceName, networkBootstrapInterfaceName, body, context)
-            .getFinalResult();
+        return this.client.getLroFinalResultOrError(
+            beginUpdate(resourceGroupName, networkBootstrapDeviceName, networkBootstrapInterfaceName, body, context));
     }
 
     /**
@@ -731,9 +606,8 @@ public final class NetworkBootstrapInterfacesClientImpl implements NetworkBootst
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Response<BinaryData> deleteWithResponse(String resourceGroupName, String networkBootstrapDeviceName,
         String networkBootstrapInterfaceName) {
-        return service.deleteSync(this.client.getEndpoint(), this.client.getApiVersion(),
-            this.client.getSubscriptionId(), resourceGroupName, networkBootstrapDeviceName,
-            networkBootstrapInterfaceName, Context.NONE);
+        return deleteWithResponse(resourceGroupName, networkBootstrapDeviceName, networkBootstrapInterfaceName,
+            Context.NONE);
     }
 
     /**
@@ -776,37 +650,14 @@ public final class NetworkBootstrapInterfacesClientImpl implements NetworkBootst
             this.client.getContext());
     }
 
-    /**
-     * Delete the Network Bootstrap Interface resource.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param networkBootstrapDeviceName Name of the Network Bootstrap Device.
-     * @param networkBootstrapInterfaceName Name of the Network Bootstrap Interface.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the {@link SyncPoller} for polling of long-running operation.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public SyncPoller<PollResult<Void>, Void> beginDelete(String resourceGroupName, String networkBootstrapDeviceName,
         String networkBootstrapInterfaceName) {
-        Response<BinaryData> response
-            = deleteWithResponse(resourceGroupName, networkBootstrapDeviceName, networkBootstrapInterfaceName);
-        return this.client.<Void, Void>getLroResult(response, Void.class, Void.class, Context.NONE);
+        return beginDelete(resourceGroupName, networkBootstrapDeviceName, networkBootstrapInterfaceName, Context.NONE);
     }
 
-    /**
-     * Delete the Network Bootstrap Interface resource.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param networkBootstrapDeviceName Name of the Network Bootstrap Device.
-     * @param networkBootstrapInterfaceName Name of the Network Bootstrap Interface.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the {@link SyncPoller} for polling of long-running operation.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public SyncPoller<PollResult<Void>, Void> beginDelete(String resourceGroupName, String networkBootstrapDeviceName,
         String networkBootstrapInterfaceName, Context context) {
@@ -833,38 +684,19 @@ public final class NetworkBootstrapInterfacesClientImpl implements NetworkBootst
             .flatMap(this.client::getLroFinalResultOrError);
     }
 
-    /**
-     * Delete the Network Bootstrap Interface resource.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param networkBootstrapDeviceName Name of the Network Bootstrap Device.
-     * @param networkBootstrapInterfaceName Name of the Network Bootstrap Interface.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public void delete(String resourceGroupName, String networkBootstrapDeviceName,
         String networkBootstrapInterfaceName) {
-        beginDelete(resourceGroupName, networkBootstrapDeviceName, networkBootstrapInterfaceName).getFinalResult();
+        delete(resourceGroupName, networkBootstrapDeviceName, networkBootstrapInterfaceName, Context.NONE);
     }
 
-    /**
-     * Delete the Network Bootstrap Interface resource.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param networkBootstrapDeviceName Name of the Network Bootstrap Device.
-     * @param networkBootstrapInterfaceName Name of the Network Bootstrap Interface.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public void delete(String resourceGroupName, String networkBootstrapDeviceName,
         String networkBootstrapInterfaceName, Context context) {
-        beginDelete(resourceGroupName, networkBootstrapDeviceName, networkBootstrapInterfaceName, context)
-            .getFinalResult();
+        this.client.getLroFinalResultOrError(
+            beginDelete(resourceGroupName, networkBootstrapDeviceName, networkBootstrapInterfaceName, context));
     }
 
     /**
@@ -922,12 +754,7 @@ public final class NetworkBootstrapInterfacesClientImpl implements NetworkBootst
     @ServiceMethod(returns = ReturnType.SINGLE)
     private PagedResponse<NetworkBootstrapInterfaceInner>
         listByNetworkBootstrapDeviceSinglePage(String resourceGroupName, String networkBootstrapDeviceName) {
-        final String accept = "application/json";
-        Response<NetworkBootstrapInterfaceListResult> res
-            = service.listByNetworkBootstrapDeviceSync(this.client.getEndpoint(), this.client.getApiVersion(),
-                this.client.getSubscriptionId(), resourceGroupName, networkBootstrapDeviceName, accept, Context.NONE);
-        return new PagedResponseBase<>(res.getRequest(), res.getStatusCode(), res.getHeaders(), res.getValue().value(),
-            res.getValue().nextLink(), null);
+        return listByNetworkBootstrapDeviceSinglePage(resourceGroupName, networkBootstrapDeviceName, Context.NONE);
     }
 
     /**
@@ -952,37 +779,14 @@ public final class NetworkBootstrapInterfacesClientImpl implements NetworkBootst
             res.getValue().nextLink(), null);
     }
 
-    /**
-     * List all the Network Bootstrap Interface resources in a given resource group.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param networkBootstrapDeviceName Name of the Network Bootstrap Device.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the response of a NetworkBootstrapInterface list operation as paginated response with
-     * {@link PagedIterable}.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.COLLECTION)
     public PagedIterable<NetworkBootstrapInterfaceInner> listByNetworkBootstrapDevice(String resourceGroupName,
         String networkBootstrapDeviceName) {
-        return new PagedIterable<>(
-            () -> listByNetworkBootstrapDeviceSinglePage(resourceGroupName, networkBootstrapDeviceName),
-            nextLink -> listByNetworkBootstrapDeviceNextSinglePage(nextLink));
+        return listByNetworkBootstrapDevice(resourceGroupName, networkBootstrapDeviceName, Context.NONE);
     }
 
-    /**
-     * List all the Network Bootstrap Interface resources in a given resource group.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param networkBootstrapDeviceName Name of the Network Bootstrap Device.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the response of a NetworkBootstrapInterface list operation as paginated response with
-     * {@link PagedIterable}.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.COLLECTION)
     public PagedIterable<NetworkBootstrapInterfaceInner> listByNetworkBootstrapDevice(String resourceGroupName,
         String networkBootstrapDeviceName, Context context) {
@@ -1031,11 +835,8 @@ public final class NetworkBootstrapInterfacesClientImpl implements NetworkBootst
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Response<BinaryData> updateAdministrativeStateWithResponse(String resourceGroupName,
         String networkBootstrapDeviceName, String networkBootstrapInterfaceName, UpdateAdministrativeState body) {
-        final String contentType = "application/json";
-        final String accept = "application/json";
-        return service.updateAdministrativeStateSync(this.client.getEndpoint(), this.client.getApiVersion(),
-            this.client.getSubscriptionId(), resourceGroupName, networkBootstrapDeviceName,
-            networkBootstrapInterfaceName, contentType, accept, body, Context.NONE);
+        return updateAdministrativeStateWithResponse(resourceGroupName, networkBootstrapDeviceName,
+            networkBootstrapInterfaceName, body, Context.NONE);
     }
 
     /**
@@ -1087,44 +888,17 @@ public final class NetworkBootstrapInterfacesClientImpl implements NetworkBootst
                 CommonPostActionResponseForStateUpdateInner.class, this.client.getContext());
     }
 
-    /**
-     * Update the admin state of the Network Interface.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param networkBootstrapDeviceName Name of the Network Bootstrap Device.
-     * @param networkBootstrapInterfaceName Name of the Network Bootstrap Interface.
-     * @param body Request payload.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the {@link SyncPoller} for polling of common response for the state updates.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public
         SyncPoller<PollResult<CommonPostActionResponseForStateUpdateInner>, CommonPostActionResponseForStateUpdateInner>
         beginUpdateAdministrativeState(String resourceGroupName, String networkBootstrapDeviceName,
             String networkBootstrapInterfaceName, UpdateAdministrativeState body) {
-        Response<BinaryData> response = updateAdministrativeStateWithResponse(resourceGroupName,
-            networkBootstrapDeviceName, networkBootstrapInterfaceName, body);
-        return this.client
-            .<CommonPostActionResponseForStateUpdateInner, CommonPostActionResponseForStateUpdateInner>getLroResult(
-                response, CommonPostActionResponseForStateUpdateInner.class,
-                CommonPostActionResponseForStateUpdateInner.class, Context.NONE);
+        return beginUpdateAdministrativeState(resourceGroupName, networkBootstrapDeviceName,
+            networkBootstrapInterfaceName, body, Context.NONE);
     }
 
-    /**
-     * Update the admin state of the Network Interface.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param networkBootstrapDeviceName Name of the Network Bootstrap Device.
-     * @param networkBootstrapInterfaceName Name of the Network Bootstrap Interface.
-     * @param body Request payload.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the {@link SyncPoller} for polling of common response for the state updates.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public
         SyncPoller<PollResult<CommonPostActionResponseForStateUpdateInner>, CommonPostActionResponseForStateUpdateInner>
@@ -1157,44 +931,21 @@ public final class NetworkBootstrapInterfacesClientImpl implements NetworkBootst
             networkBootstrapInterfaceName, body).last().flatMap(this.client::getLroFinalResultOrError);
     }
 
-    /**
-     * Update the admin state of the Network Interface.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param networkBootstrapDeviceName Name of the Network Bootstrap Device.
-     * @param networkBootstrapInterfaceName Name of the Network Bootstrap Interface.
-     * @param body Request payload.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return common response for the state updates.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public CommonPostActionResponseForStateUpdateInner updateAdministrativeState(String resourceGroupName,
         String networkBootstrapDeviceName, String networkBootstrapInterfaceName, UpdateAdministrativeState body) {
-        return beginUpdateAdministrativeState(resourceGroupName, networkBootstrapDeviceName,
-            networkBootstrapInterfaceName, body).getFinalResult();
+        return updateAdministrativeState(resourceGroupName, networkBootstrapDeviceName, networkBootstrapInterfaceName,
+            body, Context.NONE);
     }
 
-    /**
-     * Update the admin state of the Network Interface.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param networkBootstrapDeviceName Name of the Network Bootstrap Device.
-     * @param networkBootstrapInterfaceName Name of the Network Bootstrap Interface.
-     * @param body Request payload.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return common response for the state updates.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public CommonPostActionResponseForStateUpdateInner updateAdministrativeState(String resourceGroupName,
         String networkBootstrapDeviceName, String networkBootstrapInterfaceName, UpdateAdministrativeState body,
         Context context) {
-        return beginUpdateAdministrativeState(resourceGroupName, networkBootstrapDeviceName,
-            networkBootstrapInterfaceName, body, context).getFinalResult();
+        return this.client.getLroFinalResultOrError(beginUpdateAdministrativeState(resourceGroupName,
+            networkBootstrapDeviceName, networkBootstrapInterfaceName, body, context));
     }
 
     /**
@@ -1229,11 +980,7 @@ public final class NetworkBootstrapInterfacesClientImpl implements NetworkBootst
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private PagedResponse<NetworkBootstrapInterfaceInner> listByNetworkBootstrapDeviceNextSinglePage(String nextLink) {
-        final String accept = "application/json";
-        Response<NetworkBootstrapInterfaceListResult> res
-            = service.listByNetworkBootstrapDeviceNextSync(nextLink, this.client.getEndpoint(), accept, Context.NONE);
-        return new PagedResponseBase<>(res.getRequest(), res.getStatusCode(), res.getHeaders(), res.getValue().value(),
-            res.getValue().nextLink(), null);
+        return listByNetworkBootstrapDeviceNextSinglePage(nextLink, Context.NONE);
     }
 
     /**

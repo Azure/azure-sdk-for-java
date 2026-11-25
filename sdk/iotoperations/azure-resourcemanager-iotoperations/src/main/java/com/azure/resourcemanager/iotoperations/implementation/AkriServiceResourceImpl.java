@@ -66,10 +66,7 @@ public final class AkriServiceResourceImpl
     }
 
     public AkriServiceResource create() {
-        this.innerObject = serviceManager.serviceClient()
-            .getAkriServices()
-            .createOrUpdate(resourceGroupName, instanceName, akriServiceName, this.innerModel(), Context.NONE);
-        return this;
+        return this.create(Context.NONE);
     }
 
     public AkriServiceResource create(Context context) {
@@ -90,10 +87,7 @@ public final class AkriServiceResourceImpl
     }
 
     public AkriServiceResource apply() {
-        this.innerObject = serviceManager.serviceClient()
-            .getAkriServices()
-            .createOrUpdate(resourceGroupName, instanceName, akriServiceName, this.innerModel(), Context.NONE);
-        return this;
+        return this.apply(Context.NONE);
     }
 
     public AkriServiceResource apply(Context context) {
@@ -119,11 +113,7 @@ public final class AkriServiceResourceImpl
     }
 
     public AkriServiceResource refresh() {
-        this.innerObject = serviceManager.serviceClient()
-            .getAkriServices()
-            .getWithResponse(resourceGroupName, instanceName, akriServiceName, Context.NONE)
-            .getValue();
-        return this;
+        return this.refresh(Context.NONE);
     }
 
     public AkriServiceResource refresh(Context context) {

@@ -27,9 +27,7 @@ public final class ComputesImpl implements Computes {
 
     public PagedIterable<Compute> list(String resourceGroupName, String organizationName, String projectName,
         String branchName) {
-        PagedIterable<ComputeInner> inner
-            = this.serviceClient().list(resourceGroupName, organizationName, projectName, branchName);
-        return ResourceManagerUtils.mapPage(inner, inner1 -> new ComputeImpl(inner1, this.manager()));
+        return this.list(resourceGroupName, organizationName, projectName, branchName, Context.NONE);
     }
 
     public PagedIterable<Compute> list(String resourceGroupName, String organizationName, String projectName,

@@ -62,11 +62,7 @@ public final class WorkspacePrivateEndpointConnectionImpl implements WorkspacePr
     }
 
     public WorkspacePrivateEndpointConnection create() {
-        this.innerObject = serviceManager.serviceClient()
-            .getWorkspacePrivateEndpointConnections()
-            .createOrUpdate(resourceGroupName, workspaceName, privateEndpointConnectionName, this.innerModel(),
-                Context.NONE);
-        return this;
+        return this.create(Context.NONE);
     }
 
     public WorkspacePrivateEndpointConnection create(Context context) {
@@ -89,11 +85,7 @@ public final class WorkspacePrivateEndpointConnectionImpl implements WorkspacePr
     }
 
     public WorkspacePrivateEndpointConnection apply() {
-        this.innerObject = serviceManager.serviceClient()
-            .getWorkspacePrivateEndpointConnections()
-            .createOrUpdate(resourceGroupName, workspaceName, privateEndpointConnectionName, this.innerModel(),
-                Context.NONE);
-        return this;
+        return this.apply(Context.NONE);
     }
 
     public WorkspacePrivateEndpointConnection apply(Context context) {
@@ -120,11 +112,7 @@ public final class WorkspacePrivateEndpointConnectionImpl implements WorkspacePr
     }
 
     public WorkspacePrivateEndpointConnection refresh() {
-        this.innerObject = serviceManager.serviceClient()
-            .getWorkspacePrivateEndpointConnections()
-            .getWithResponse(resourceGroupName, workspaceName, privateEndpointConnectionName, Context.NONE)
-            .getValue();
-        return this;
+        return this.refresh(Context.NONE);
     }
 
     public WorkspacePrivateEndpointConnection refresh(Context context) {

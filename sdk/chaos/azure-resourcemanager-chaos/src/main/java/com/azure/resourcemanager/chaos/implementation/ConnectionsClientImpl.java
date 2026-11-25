@@ -192,18 +192,7 @@ public final class ConnectionsClientImpl implements ConnectionsClient {
             .flatMap(res -> Mono.justOrEmpty(res.getValue()));
     }
 
-    /**
-     * Get a connection.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param workspaceName String that represents a Workspace resource name.
-     * @param connectionName Name of the connection.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return a connection along with {@link Response}.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Response<ConnectionInner> getWithResponse(String resourceGroupName, String workspaceName,
         String connectionName, Context context) {
@@ -212,17 +201,7 @@ public final class ConnectionsClientImpl implements ConnectionsClient {
             resourceGroupName, workspaceName, connectionName, accept, context);
     }
 
-    /**
-     * Get a connection.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param workspaceName String that represents a Workspace resource name.
-     * @param connectionName Name of the connection.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return a connection.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public ConnectionInner get(String resourceGroupName, String workspaceName, String connectionName) {
         return getWithResponse(resourceGroupName, workspaceName, connectionName, Context.NONE).getValue();
@@ -277,22 +256,7 @@ public final class ConnectionsClientImpl implements ConnectionsClient {
             .flatMap(res -> Mono.justOrEmpty(res.getValue()));
     }
 
-    /**
-     * Create or update a connection.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param workspaceName String that represents a Workspace resource name.
-     * @param connectionName Name of the connection.
-     * @param resource Connection resource to be created or updated.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return model that represents a connection between a workspace and a target resource.
-     * A connection provisions and tracks the trust relationship that authorizes the
-     * actor to reach the Chaos Studio data plane for the workspace and target during
-     * fault injection along with {@link Response}.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Response<ConnectionInner> createOrUpdateWithResponse(String resourceGroupName, String workspaceName,
         String connectionName, ConnectionInner resource, Context context) {
@@ -303,21 +267,7 @@ public final class ConnectionsClientImpl implements ConnectionsClient {
             resource, context);
     }
 
-    /**
-     * Create or update a connection.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param workspaceName String that represents a Workspace resource name.
-     * @param connectionName Name of the connection.
-     * @param resource Connection resource to be created or updated.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return model that represents a connection between a workspace and a target resource.
-     * A connection provisions and tracks the trust relationship that authorizes the
-     * actor to reach the Chaos Studio data plane for the workspace and target during
-     * fault injection.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public ConnectionInner createOrUpdate(String resourceGroupName, String workspaceName, String connectionName,
         ConnectionInner resource) {
@@ -362,18 +312,7 @@ public final class ConnectionsClientImpl implements ConnectionsClient {
             .flatMap(ignored -> Mono.empty());
     }
 
-    /**
-     * Delete a connection.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param workspaceName String that represents a Workspace resource name.
-     * @param connectionName Name of the connection.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the {@link Response}.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Response<Void> deleteWithResponse(String resourceGroupName, String workspaceName, String connectionName,
         Context context) {
@@ -381,16 +320,7 @@ public final class ConnectionsClientImpl implements ConnectionsClient {
             this.client.getSubscriptionId(), resourceGroupName, workspaceName, connectionName, context);
     }
 
-    /**
-     * Delete a connection.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param workspaceName String that represents a Workspace resource name.
-     * @param connectionName Name of the connection.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public void delete(String resourceGroupName, String workspaceName, String connectionName) {
         deleteWithResponse(resourceGroupName, workspaceName, connectionName, Context.NONE);
@@ -446,11 +376,7 @@ public final class ConnectionsClientImpl implements ConnectionsClient {
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private PagedResponse<ConnectionInner> listAllSinglePage(String resourceGroupName, String workspaceName) {
-        final String accept = "application/json";
-        Response<ConnectionListResult> res = service.listAllSync(this.client.getEndpoint(), this.client.getApiVersion(),
-            this.client.getSubscriptionId(), resourceGroupName, workspaceName, accept, Context.NONE);
-        return new PagedResponseBase<>(res.getRequest(), res.getStatusCode(), res.getHeaders(), res.getValue().value(),
-            res.getValue().nextLink(), null);
+        return listAllSinglePage(resourceGroupName, workspaceName, Context.NONE);
     }
 
     /**
@@ -474,33 +400,13 @@ public final class ConnectionsClientImpl implements ConnectionsClient {
             res.getValue().nextLink(), null);
     }
 
-    /**
-     * Get a list of connections.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param workspaceName String that represents a Workspace resource name.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return a list of connections as paginated response with {@link PagedIterable}.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.COLLECTION)
     public PagedIterable<ConnectionInner> listAll(String resourceGroupName, String workspaceName) {
-        return new PagedIterable<>(() -> listAllSinglePage(resourceGroupName, workspaceName),
-            nextLink -> listAllNextSinglePage(nextLink));
+        return listAll(resourceGroupName, workspaceName, Context.NONE);
     }
 
-    /**
-     * Get a list of connections.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param workspaceName String that represents a Workspace resource name.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return a list of connections as paginated response with {@link PagedIterable}.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.COLLECTION)
     public PagedIterable<ConnectionInner> listAll(String resourceGroupName, String workspaceName, Context context) {
         return new PagedIterable<>(() -> listAllSinglePage(resourceGroupName, workspaceName, context),
@@ -537,11 +443,7 @@ public final class ConnectionsClientImpl implements ConnectionsClient {
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private PagedResponse<ConnectionInner> listAllNextSinglePage(String nextLink) {
-        final String accept = "application/json";
-        Response<ConnectionListResult> res
-            = service.listAllNextSync(nextLink, this.client.getEndpoint(), accept, Context.NONE);
-        return new PagedResponseBase<>(res.getRequest(), res.getStatusCode(), res.getHeaders(), res.getValue().value(),
-            res.getValue().nextLink(), null);
+        return listAllNextSinglePage(nextLink, Context.NONE);
     }
 
     /**

@@ -146,17 +146,7 @@ public final class OsImagesClientImpl implements OsImagesClient {
         return getWithResponseAsync(location, osImageName).flatMap(res -> Mono.justOrEmpty(res.getValue()));
     }
 
-    /**
-     * Get a os image.
-     * 
-     * @param location The name of the Azure region.
-     * @param osImageName The name of the OsImage.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return a os image along with {@link Response}.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Response<OsImageInner> getWithResponse(String location, String osImageName, Context context) {
         final String accept = "application/json";
@@ -164,16 +154,7 @@ public final class OsImagesClientImpl implements OsImagesClient {
             location, osImageName, accept, context);
     }
 
-    /**
-     * Get a os image.
-     * 
-     * @param location The name of the Azure region.
-     * @param osImageName The name of the OsImage.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return a os image.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public OsImageInner get(String location, String osImageName) {
         return getWithResponse(location, osImageName, Context.NONE).getValue();
@@ -226,11 +207,7 @@ public final class OsImagesClientImpl implements OsImagesClient {
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private PagedResponse<OsImageInner> listBySubscriptionLocationResourceSinglePage(String location) {
-        final String accept = "application/json";
-        Response<OsImageListResult> res = service.listBySubscriptionLocationResourceSync(this.client.getEndpoint(),
-            this.client.getApiVersion(), this.client.getSubscriptionId(), location, accept, Context.NONE);
-        return new PagedResponseBase<>(res.getRequest(), res.getStatusCode(), res.getHeaders(), res.getValue().value(),
-            res.getValue().nextLink(), null);
+        return listBySubscriptionLocationResourceSinglePage(location, Context.NONE);
     }
 
     /**
@@ -252,31 +229,13 @@ public final class OsImagesClientImpl implements OsImagesClient {
             res.getValue().nextLink(), null);
     }
 
-    /**
-     * List all os images.
-     * 
-     * @param location The name of the Azure region.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the response of a OsImage list operation as paginated response with {@link PagedIterable}.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.COLLECTION)
     public PagedIterable<OsImageInner> listBySubscriptionLocationResource(String location) {
-        return new PagedIterable<>(() -> listBySubscriptionLocationResourceSinglePage(location),
-            nextLink -> listBySubscriptionLocationResourceNextSinglePage(nextLink));
+        return listBySubscriptionLocationResource(location, Context.NONE);
     }
 
-    /**
-     * List all os images.
-     * 
-     * @param location The name of the Azure region.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the response of a OsImage list operation as paginated response with {@link PagedIterable}.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.COLLECTION)
     public PagedIterable<OsImageInner> listBySubscriptionLocationResource(String location, Context context) {
         return new PagedIterable<>(() -> listBySubscriptionLocationResourceSinglePage(location, context),
@@ -315,11 +274,7 @@ public final class OsImagesClientImpl implements OsImagesClient {
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private PagedResponse<OsImageInner> listBySubscriptionLocationResourceNextSinglePage(String nextLink) {
-        final String accept = "application/json";
-        Response<OsImageListResult> res = service.listBySubscriptionLocationResourceNextSync(nextLink,
-            this.client.getEndpoint(), accept, Context.NONE);
-        return new PagedResponseBase<>(res.getRequest(), res.getStatusCode(), res.getHeaders(), res.getValue().value(),
-            res.getValue().nextLink(), null);
+        return listBySubscriptionLocationResourceNextSinglePage(nextLink, Context.NONE);
     }
 
     /**

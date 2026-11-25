@@ -14,7 +14,7 @@ import java.util.Map;
  */
 public final class RaiRegosCreateOrUpdateSamples {
     /*
-     * x-ms-original-file: 2026-09-15-preview/UpdateRaiRego.json
+     * x-ms-original-file: 2026-11-15-preview/UpdateRaiRego.json
      */
     /**
      * Sample code: Replace a reusable Rego artifact conditionally.
@@ -34,7 +34,7 @@ public final class RaiRegosCreateOrUpdateSamples {
     }
 
     /*
-     * x-ms-original-file: 2026-09-15-preview/PutRaiRego.json
+     * x-ms-original-file: 2026-11-15-preview/PutRaiRego.json
      */
     /**
      * Sample code: Create a reusable Rego artifact.

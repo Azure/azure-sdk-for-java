@@ -122,10 +122,7 @@ public final class ExtensionImpl implements Extension, Extension.Definition, Ext
     }
 
     public Extension create() {
-        this.innerObject = serviceManager.serviceClient()
-            .getExtensions()
-            .create(resourceGroupName, clusterName, arcSettingName, extensionName, this.innerModel(), Context.NONE);
-        return this;
+        return this.create(Context.NONE);
     }
 
     public Extension create(Context context) {
@@ -147,10 +144,7 @@ public final class ExtensionImpl implements Extension, Extension.Definition, Ext
     }
 
     public Extension apply() {
-        this.innerObject = serviceManager.serviceClient()
-            .getExtensions()
-            .update(resourceGroupName, clusterName, arcSettingName, extensionName, updateExtension, Context.NONE);
-        return this;
+        return this.apply(Context.NONE);
     }
 
     public Extension apply(Context context) {
@@ -179,11 +173,7 @@ public final class ExtensionImpl implements Extension, Extension.Definition, Ext
     }
 
     public Extension refresh() {
-        this.innerObject = serviceManager.serviceClient()
-            .getExtensions()
-            .getWithResponse(resourceGroupName, clusterName, arcSettingName, extensionName, Context.NONE)
-            .getValue();
-        return this;
+        return this.refresh(Context.NONE);
     }
 
     public Extension refresh(Context context) {

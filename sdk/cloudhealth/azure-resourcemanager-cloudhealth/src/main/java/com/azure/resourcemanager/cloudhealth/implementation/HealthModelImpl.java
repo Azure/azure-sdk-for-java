@@ -89,10 +89,7 @@ public final class HealthModelImpl implements HealthModel, HealthModel.Definitio
     }
 
     public HealthModel create() {
-        this.innerObject = serviceManager.serviceClient()
-            .getHealthModels()
-            .create(resourceGroupName, healthModelName, this.innerModel(), Context.NONE);
-        return this;
+        return this.create(Context.NONE);
     }
 
     public HealthModel create(Context context) {
@@ -114,10 +111,7 @@ public final class HealthModelImpl implements HealthModel, HealthModel.Definitio
     }
 
     public HealthModel apply() {
-        this.innerObject = serviceManager.serviceClient()
-            .getHealthModels()
-            .update(resourceGroupName, healthModelName, updateProperties, Context.NONE);
-        return this;
+        return this.apply(Context.NONE);
     }
 
     public HealthModel apply(Context context) {
@@ -140,11 +134,7 @@ public final class HealthModelImpl implements HealthModel, HealthModel.Definitio
     }
 
     public HealthModel refresh() {
-        this.innerObject = serviceManager.serviceClient()
-            .getHealthModels()
-            .getByResourceGroupWithResponse(resourceGroupName, healthModelName, Context.NONE)
-            .getValue();
-        return this;
+        return this.refresh(Context.NONE);
     }
 
     public HealthModel refresh(Context context) {

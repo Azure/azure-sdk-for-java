@@ -122,17 +122,7 @@ public final class PasswordAuthenticationsClientImpl implements PasswordAuthenti
             @BodyParam("application/json") PasswordAuthenticationForPatchUpdate properties, Context context);
     }
 
-    /**
-     * Gets the service-created PostgreSQL username-and-password authentication method.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param clusterName The name of the HorizonDB cluster.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the service-created PostgreSQL username-and-password authentication method along with {@link Response} on
-     * successful completion of {@link Mono}.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Response<PasswordAuthenticationInner>> getWithResponseAsync(String resourceGroupName,
         String clusterName) {
@@ -143,33 +133,13 @@ public final class PasswordAuthenticationsClientImpl implements PasswordAuthenti
             .contextWrite(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext()).readOnly()));
     }
 
-    /**
-     * Gets the service-created PostgreSQL username-and-password authentication method.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param clusterName The name of the HorizonDB cluster.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the service-created PostgreSQL username-and-password authentication method on successful completion of
-     * {@link Mono}.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<PasswordAuthenticationInner> getAsync(String resourceGroupName, String clusterName) {
         return getWithResponseAsync(resourceGroupName, clusterName).flatMap(res -> Mono.justOrEmpty(res.getValue()));
     }
 
-    /**
-     * Gets the service-created PostgreSQL username-and-password authentication method.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param clusterName The name of the HorizonDB cluster.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the service-created PostgreSQL username-and-password authentication method along with {@link Response}.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Response<PasswordAuthenticationInner> getWithResponse(String resourceGroupName, String clusterName,
         Context context) {
@@ -178,33 +148,13 @@ public final class PasswordAuthenticationsClientImpl implements PasswordAuthenti
             resourceGroupName, clusterName, accept, context);
     }
 
-    /**
-     * Gets the service-created PostgreSQL username-and-password authentication method.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param clusterName The name of the HorizonDB cluster.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the service-created PostgreSQL username-and-password authentication method.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public PasswordAuthenticationInner get(String resourceGroupName, String clusterName) {
         return getWithResponse(resourceGroupName, clusterName, Context.NONE).getValue();
     }
 
-    /**
-     * Creates or replaces the service-created PostgreSQL username-and-password authentication method.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param clusterName The name of the HorizonDB cluster.
-     * @param resource Resource create parameters.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the service-created PostgreSQL username-and-password authentication method for a HorizonDB cluster along
-     * with {@link Response} on successful completion of {@link Mono}.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Response<Flux<ByteBuffer>>> createOrReplaceWithResponseAsync(String resourceGroupName,
         String clusterName, PasswordAuthenticationInner resource) {
@@ -232,11 +182,7 @@ public final class PasswordAuthenticationsClientImpl implements PasswordAuthenti
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Response<BinaryData> createOrReplaceWithResponse(String resourceGroupName, String clusterName,
         PasswordAuthenticationInner resource) {
-        final String contentType = "application/json";
-        final String accept = "application/json";
-        return service.createOrReplaceSync(this.client.getEndpoint(), this.client.getApiVersion(),
-            this.client.getSubscriptionId(), resourceGroupName, clusterName, contentType, accept, resource,
-            Context.NONE);
+        return createOrReplaceWithResponse(resourceGroupName, clusterName, resource, Context.NONE);
     }
 
     /**
@@ -261,18 +207,7 @@ public final class PasswordAuthenticationsClientImpl implements PasswordAuthenti
             this.client.getSubscriptionId(), resourceGroupName, clusterName, contentType, accept, resource, context);
     }
 
-    /**
-     * Creates or replaces the service-created PostgreSQL username-and-password authentication method.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param clusterName The name of the HorizonDB cluster.
-     * @param resource Resource create parameters.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the {@link PollerFlux} for polling of the service-created PostgreSQL username-and-password authentication
-     * method for a HorizonDB cluster.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public PollerFlux<PollResult<PasswordAuthenticationInner>, PasswordAuthenticationInner>
         beginCreateOrReplaceAsync(String resourceGroupName, String clusterName, PasswordAuthenticationInner resource) {
@@ -283,39 +218,14 @@ public final class PasswordAuthenticationsClientImpl implements PasswordAuthenti
             this.client.getContext());
     }
 
-    /**
-     * Creates or replaces the service-created PostgreSQL username-and-password authentication method.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param clusterName The name of the HorizonDB cluster.
-     * @param resource Resource create parameters.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the {@link SyncPoller} for polling of the service-created PostgreSQL username-and-password authentication
-     * method for a HorizonDB cluster.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public SyncPoller<PollResult<PasswordAuthenticationInner>, PasswordAuthenticationInner>
         beginCreateOrReplace(String resourceGroupName, String clusterName, PasswordAuthenticationInner resource) {
-        Response<BinaryData> response = createOrReplaceWithResponse(resourceGroupName, clusterName, resource);
-        return this.client.<PasswordAuthenticationInner, PasswordAuthenticationInner>getLroResult(response,
-            PasswordAuthenticationInner.class, PasswordAuthenticationInner.class, Context.NONE);
+        return beginCreateOrReplace(resourceGroupName, clusterName, resource, Context.NONE);
     }
 
-    /**
-     * Creates or replaces the service-created PostgreSQL username-and-password authentication method.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param clusterName The name of the HorizonDB cluster.
-     * @param resource Resource create parameters.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the {@link SyncPoller} for polling of the service-created PostgreSQL username-and-password authentication
-     * method for a HorizonDB cluster.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public SyncPoller<PollResult<PasswordAuthenticationInner>, PasswordAuthenticationInner> beginCreateOrReplace(
         String resourceGroupName, String clusterName, PasswordAuthenticationInner resource, Context context) {
@@ -324,18 +234,7 @@ public final class PasswordAuthenticationsClientImpl implements PasswordAuthenti
             PasswordAuthenticationInner.class, PasswordAuthenticationInner.class, context);
     }
 
-    /**
-     * Creates or replaces the service-created PostgreSQL username-and-password authentication method.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param clusterName The name of the HorizonDB cluster.
-     * @param resource Resource create parameters.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the service-created PostgreSQL username-and-password authentication method for a HorizonDB cluster on
-     * successful completion of {@link Mono}.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<PasswordAuthenticationInner> createOrReplaceAsync(String resourceGroupName, String clusterName,
         PasswordAuthenticationInner resource) {
@@ -343,58 +242,22 @@ public final class PasswordAuthenticationsClientImpl implements PasswordAuthenti
             .flatMap(this.client::getLroFinalResultOrError);
     }
 
-    /**
-     * Creates or replaces the service-created PostgreSQL username-and-password authentication method.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param clusterName The name of the HorizonDB cluster.
-     * @param resource Resource create parameters.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the service-created PostgreSQL username-and-password authentication method for a HorizonDB cluster.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public PasswordAuthenticationInner createOrReplace(String resourceGroupName, String clusterName,
         PasswordAuthenticationInner resource) {
-        return beginCreateOrReplace(resourceGroupName, clusterName, resource).getFinalResult();
+        return createOrReplace(resourceGroupName, clusterName, resource, Context.NONE);
     }
 
-    /**
-     * Creates or replaces the service-created PostgreSQL username-and-password authentication method.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param clusterName The name of the HorizonDB cluster.
-     * @param resource Resource create parameters.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the service-created PostgreSQL username-and-password authentication method for a HorizonDB cluster.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public PasswordAuthenticationInner createOrReplace(String resourceGroupName, String clusterName,
         PasswordAuthenticationInner resource, Context context) {
-        return beginCreateOrReplace(resourceGroupName, clusterName, resource, context).getFinalResult();
+        return this.client
+            .getLroFinalResultOrError(beginCreateOrReplace(resourceGroupName, clusterName, resource, context));
     }
 
-    /**
-     * Updates the service-created PostgreSQL username-and-password authentication method. The request is sparse and
-     * omitted properties preserve their current values. This API version supports enabling the method, disabling the
-     * method, and resetting its password. For a cluster that already has an administrator but currently has password
-     * authentication disabled, state Enabled and administratorLoginPassword can be supplied together to re-enable
-     * password authentication and reset the password. Disabling cannot include credentials and does not remove or
-     * modify existing database users or roles. Administrator rename is not supported in this API version.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param clusterName The name of the HorizonDB cluster.
-     * @param properties The resource properties to be updated.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the service-created PostgreSQL username-and-password authentication method for a HorizonDB cluster along
-     * with {@link Response} on successful completion of {@link Mono}.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Response<Flux<ByteBuffer>>> updateWithResponseAsync(String resourceGroupName, String clusterName,
         PasswordAuthenticationForPatchUpdate properties) {
@@ -425,11 +288,7 @@ public final class PasswordAuthenticationsClientImpl implements PasswordAuthenti
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Response<BinaryData> updateWithResponse(String resourceGroupName, String clusterName,
         PasswordAuthenticationForPatchUpdate properties) {
-        final String contentType = "application/json";
-        final String accept = "application/json";
-        return service.updateSync(this.client.getEndpoint(), this.client.getApiVersion(),
-            this.client.getSubscriptionId(), resourceGroupName, clusterName, contentType, accept, properties,
-            Context.NONE);
+        return updateWithResponse(resourceGroupName, clusterName, properties, Context.NONE);
     }
 
     /**
@@ -459,23 +318,7 @@ public final class PasswordAuthenticationsClientImpl implements PasswordAuthenti
             this.client.getSubscriptionId(), resourceGroupName, clusterName, contentType, accept, properties, context);
     }
 
-    /**
-     * Updates the service-created PostgreSQL username-and-password authentication method. The request is sparse and
-     * omitted properties preserve their current values. This API version supports enabling the method, disabling the
-     * method, and resetting its password. For a cluster that already has an administrator but currently has password
-     * authentication disabled, state Enabled and administratorLoginPassword can be supplied together to re-enable
-     * password authentication and reset the password. Disabling cannot include credentials and does not remove or
-     * modify existing database users or roles. Administrator rename is not supported in this API version.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param clusterName The name of the HorizonDB cluster.
-     * @param properties The resource properties to be updated.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the {@link PollerFlux} for polling of the service-created PostgreSQL username-and-password authentication
-     * method for a HorizonDB cluster.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public PollerFlux<PollResult<PasswordAuthenticationInner>, PasswordAuthenticationInner> beginUpdateAsync(
         String resourceGroupName, String clusterName, PasswordAuthenticationForPatchUpdate properties) {
@@ -485,49 +328,14 @@ public final class PasswordAuthenticationsClientImpl implements PasswordAuthenti
             this.client.getContext());
     }
 
-    /**
-     * Updates the service-created PostgreSQL username-and-password authentication method. The request is sparse and
-     * omitted properties preserve their current values. This API version supports enabling the method, disabling the
-     * method, and resetting its password. For a cluster that already has an administrator but currently has password
-     * authentication disabled, state Enabled and administratorLoginPassword can be supplied together to re-enable
-     * password authentication and reset the password. Disabling cannot include credentials and does not remove or
-     * modify existing database users or roles. Administrator rename is not supported in this API version.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param clusterName The name of the HorizonDB cluster.
-     * @param properties The resource properties to be updated.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the {@link SyncPoller} for polling of the service-created PostgreSQL username-and-password authentication
-     * method for a HorizonDB cluster.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public SyncPoller<PollResult<PasswordAuthenticationInner>, PasswordAuthenticationInner>
         beginUpdate(String resourceGroupName, String clusterName, PasswordAuthenticationForPatchUpdate properties) {
-        Response<BinaryData> response = updateWithResponse(resourceGroupName, clusterName, properties);
-        return this.client.<PasswordAuthenticationInner, PasswordAuthenticationInner>getLroResult(response,
-            PasswordAuthenticationInner.class, PasswordAuthenticationInner.class, Context.NONE);
+        return beginUpdate(resourceGroupName, clusterName, properties, Context.NONE);
     }
 
-    /**
-     * Updates the service-created PostgreSQL username-and-password authentication method. The request is sparse and
-     * omitted properties preserve their current values. This API version supports enabling the method, disabling the
-     * method, and resetting its password. For a cluster that already has an administrator but currently has password
-     * authentication disabled, state Enabled and administratorLoginPassword can be supplied together to re-enable
-     * password authentication and reset the password. Disabling cannot include credentials and does not remove or
-     * modify existing database users or roles. Administrator rename is not supported in this API version.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param clusterName The name of the HorizonDB cluster.
-     * @param properties The resource properties to be updated.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the {@link SyncPoller} for polling of the service-created PostgreSQL username-and-password authentication
-     * method for a HorizonDB cluster.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public SyncPoller<PollResult<PasswordAuthenticationInner>, PasswordAuthenticationInner> beginUpdate(
         String resourceGroupName, String clusterName, PasswordAuthenticationForPatchUpdate properties,
@@ -537,23 +345,7 @@ public final class PasswordAuthenticationsClientImpl implements PasswordAuthenti
             PasswordAuthenticationInner.class, PasswordAuthenticationInner.class, context);
     }
 
-    /**
-     * Updates the service-created PostgreSQL username-and-password authentication method. The request is sparse and
-     * omitted properties preserve their current values. This API version supports enabling the method, disabling the
-     * method, and resetting its password. For a cluster that already has an administrator but currently has password
-     * authentication disabled, state Enabled and administratorLoginPassword can be supplied together to re-enable
-     * password authentication and reset the password. Disabling cannot include credentials and does not remove or
-     * modify existing database users or roles. Administrator rename is not supported in this API version.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param clusterName The name of the HorizonDB cluster.
-     * @param properties The resource properties to be updated.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the service-created PostgreSQL username-and-password authentication method for a HorizonDB cluster on
-     * successful completion of {@link Mono}.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<PasswordAuthenticationInner> updateAsync(String resourceGroupName, String clusterName,
         PasswordAuthenticationForPatchUpdate properties) {
@@ -561,48 +353,17 @@ public final class PasswordAuthenticationsClientImpl implements PasswordAuthenti
             .flatMap(this.client::getLroFinalResultOrError);
     }
 
-    /**
-     * Updates the service-created PostgreSQL username-and-password authentication method. The request is sparse and
-     * omitted properties preserve their current values. This API version supports enabling the method, disabling the
-     * method, and resetting its password. For a cluster that already has an administrator but currently has password
-     * authentication disabled, state Enabled and administratorLoginPassword can be supplied together to re-enable
-     * password authentication and reset the password. Disabling cannot include credentials and does not remove or
-     * modify existing database users or roles. Administrator rename is not supported in this API version.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param clusterName The name of the HorizonDB cluster.
-     * @param properties The resource properties to be updated.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the service-created PostgreSQL username-and-password authentication method for a HorizonDB cluster.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public PasswordAuthenticationInner update(String resourceGroupName, String clusterName,
         PasswordAuthenticationForPatchUpdate properties) {
-        return beginUpdate(resourceGroupName, clusterName, properties).getFinalResult();
+        return update(resourceGroupName, clusterName, properties, Context.NONE);
     }
 
-    /**
-     * Updates the service-created PostgreSQL username-and-password authentication method. The request is sparse and
-     * omitted properties preserve their current values. This API version supports enabling the method, disabling the
-     * method, and resetting its password. For a cluster that already has an administrator but currently has password
-     * authentication disabled, state Enabled and administratorLoginPassword can be supplied together to re-enable
-     * password authentication and reset the password. Disabling cannot include credentials and does not remove or
-     * modify existing database users or roles. Administrator rename is not supported in this API version.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param clusterName The name of the HorizonDB cluster.
-     * @param properties The resource properties to be updated.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the service-created PostgreSQL username-and-password authentication method for a HorizonDB cluster.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public PasswordAuthenticationInner update(String resourceGroupName, String clusterName,
         PasswordAuthenticationForPatchUpdate properties, Context context) {
-        return beginUpdate(resourceGroupName, clusterName, properties, context).getFinalResult();
+        return this.client.getLroFinalResultOrError(beginUpdate(resourceGroupName, clusterName, properties, context));
     }
 }

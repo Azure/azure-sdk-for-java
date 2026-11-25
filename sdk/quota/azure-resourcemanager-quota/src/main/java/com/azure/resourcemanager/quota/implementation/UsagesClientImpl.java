@@ -149,20 +149,7 @@ public final class UsagesClientImpl implements UsagesClient {
         return getWithResponseAsync(resourceName, scope).flatMap(res -> Mono.justOrEmpty(res.getValue()));
     }
 
-    /**
-     * Get the current usage of a resource.
-     * 
-     * @param resourceName Resource name for a given resource provider. For example:
-     * - SKU name for Microsoft.Compute
-     * - SKU or TotalLowPriorityCores for Microsoft.MachineLearningServices
-     * For Microsoft.Network PublicIPAddresses.
-     * @param scope The fully qualified Azure Resource manager identifier of the resource.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the current usage of a resource.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public UsagesGetResponse getWithResponse(String resourceName, String scope, Context context) {
         final String accept = "application/json";
@@ -170,19 +157,7 @@ public final class UsagesClientImpl implements UsagesClient {
             context);
     }
 
-    /**
-     * Get the current usage of a resource.
-     * 
-     * @param resourceName Resource name for a given resource provider. For example:
-     * - SKU name for Microsoft.Compute
-     * - SKU or TotalLowPriorityCores for Microsoft.MachineLearningServices
-     * For Microsoft.Network PublicIPAddresses.
-     * @param scope The fully qualified Azure Resource manager identifier of the resource.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the current usage of a resource.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public CurrentUsagesBaseInner get(String resourceName, String scope) {
         return getWithResponse(resourceName, scope, Context.NONE).getValue();
@@ -235,11 +210,7 @@ public final class UsagesClientImpl implements UsagesClient {
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private PagedResponse<CurrentUsagesBaseInner> listSinglePage(String scope) {
-        final String accept = "application/json";
-        Response<UsagesLimits> res
-            = service.listSync(this.client.getEndpoint(), this.client.getApiVersion(), scope, accept, Context.NONE);
-        return new PagedResponseBase<>(res.getRequest(), res.getStatusCode(), res.getHeaders(), res.getValue().value(),
-            res.getValue().nextLink(), null);
+        return listSinglePage(scope, Context.NONE);
     }
 
     /**
@@ -261,32 +232,13 @@ public final class UsagesClientImpl implements UsagesClient {
             res.getValue().nextLink(), null);
     }
 
-    /**
-     * Get a list of current usage for all resources for the scope specified.
-     * 
-     * @param scope The fully qualified Azure Resource manager identifier of the resource.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return a list of current usage for all resources for the scope specified as paginated response with
-     * {@link PagedIterable}.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.COLLECTION)
     public PagedIterable<CurrentUsagesBaseInner> list(String scope) {
-        return new PagedIterable<>(() -> listSinglePage(scope), nextLink -> listNextSinglePage(nextLink));
+        return list(scope, Context.NONE);
     }
 
-    /**
-     * Get a list of current usage for all resources for the scope specified.
-     * 
-     * @param scope The fully qualified Azure Resource manager identifier of the resource.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return a list of current usage for all resources for the scope specified as paginated response with
-     * {@link PagedIterable}.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.COLLECTION)
     public PagedIterable<CurrentUsagesBaseInner> list(String scope, Context context) {
         return new PagedIterable<>(() -> listSinglePage(scope, context),
@@ -323,10 +275,7 @@ public final class UsagesClientImpl implements UsagesClient {
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private PagedResponse<CurrentUsagesBaseInner> listNextSinglePage(String nextLink) {
-        final String accept = "application/json";
-        Response<UsagesLimits> res = service.listNextSync(nextLink, this.client.getEndpoint(), accept, Context.NONE);
-        return new PagedResponseBase<>(res.getRequest(), res.getStatusCode(), res.getHeaders(), res.getValue().value(),
-            res.getValue().nextLink(), null);
+        return listNextSinglePage(nextLink, Context.NONE);
     }
 
     /**

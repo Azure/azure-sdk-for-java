@@ -174,23 +174,7 @@ public final class StorageTaskAssignmentsInstancesReportsClientImpl
                 res.getValue().value(), res.getValue().nextLink(), null));
     }
 
-    /**
-     * Fetch the report summary of all the storage task assignments and instances in an account.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param accountName The name of the storage account within the specified resource group. Storage account names
-     * must be between 3 and 24 characters in length and use numbers and lower-case letters only.
-     * @param maxpagesize Optional, specifies the maximum number of storage task assignment instances to be included in
-     * the list response.
-     * @param filter Optional. When specified, it can be used to query using reporting properties. See [Constructing
-     * Filter
-     * Strings](https://learn.microsoft.com/rest/api/storageservices/querying-tables-and-entities#constructing-filter-strings)
-     * for details.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return fetch Storage Tasks Run Summary as paginated response with {@link PagedFlux}.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.COLLECTION)
     public PagedFlux<StorageTaskReportInstanceInner> listAsync(String resourceGroupName, String accountName,
         Integer maxpagesize, String filter) {
@@ -198,17 +182,7 @@ public final class StorageTaskAssignmentsInstancesReportsClientImpl
             nextLink -> listNextSinglePageAsync(nextLink));
     }
 
-    /**
-     * Fetch the report summary of all the storage task assignments and instances in an account.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param accountName The name of the storage account within the specified resource group. Storage account names
-     * must be between 3 and 24 characters in length and use numbers and lower-case letters only.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return fetch Storage Tasks Run Summary as paginated response with {@link PagedFlux}.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.COLLECTION)
     public PagedFlux<StorageTaskReportInstanceInner> listAsync(String resourceGroupName, String accountName) {
         final Integer maxpagesize = null;
@@ -242,17 +216,7 @@ public final class StorageTaskAssignmentsInstancesReportsClientImpl
             nextLink -> listNextSinglePageAsync(nextLink, context));
     }
 
-    /**
-     * Fetch the report summary of all the storage task assignments and instances in an account.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param accountName The name of the storage account within the specified resource group. Storage account names
-     * must be between 3 and 24 characters in length and use numbers and lower-case letters only.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return fetch Storage Tasks Run Summary as paginated response with {@link PagedIterable}.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.COLLECTION)
     public PagedIterable<StorageTaskReportInstanceInner> list(String resourceGroupName, String accountName) {
         final Integer maxpagesize = null;
@@ -260,24 +224,7 @@ public final class StorageTaskAssignmentsInstancesReportsClientImpl
         return new PagedIterable<>(listAsync(resourceGroupName, accountName, maxpagesize, filter));
     }
 
-    /**
-     * Fetch the report summary of all the storage task assignments and instances in an account.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param accountName The name of the storage account within the specified resource group. Storage account names
-     * must be between 3 and 24 characters in length and use numbers and lower-case letters only.
-     * @param maxpagesize Optional, specifies the maximum number of storage task assignment instances to be included in
-     * the list response.
-     * @param filter Optional. When specified, it can be used to query using reporting properties. See [Constructing
-     * Filter
-     * Strings](https://learn.microsoft.com/rest/api/storageservices/querying-tables-and-entities#constructing-filter-strings)
-     * for details.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return fetch Storage Tasks Run Summary as paginated response with {@link PagedIterable}.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.COLLECTION)
     public PagedIterable<StorageTaskReportInstanceInner> list(String resourceGroupName, String accountName,
         Integer maxpagesize, String filter, Context context) {

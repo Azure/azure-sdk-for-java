@@ -117,10 +117,7 @@ public final class NetworkRackImpl implements NetworkRack, NetworkRack.Definitio
     }
 
     public NetworkRack create() {
-        this.innerObject = serviceManager.serviceClient()
-            .getNetworkRacks()
-            .create(resourceGroupName, networkRackName, this.innerModel(), Context.NONE);
-        return this;
+        return this.create(Context.NONE);
     }
 
     public NetworkRack create(Context context) {
@@ -143,10 +140,7 @@ public final class NetworkRackImpl implements NetworkRack, NetworkRack.Definitio
     }
 
     public NetworkRack apply() {
-        this.innerObject = serviceManager.serviceClient()
-            .getNetworkRacks()
-            .update(resourceGroupName, networkRackName, updateBody, Context.NONE);
-        return this;
+        return this.apply(Context.NONE);
     }
 
     public NetworkRack apply(Context context) {
@@ -169,11 +163,7 @@ public final class NetworkRackImpl implements NetworkRack, NetworkRack.Definitio
     }
 
     public NetworkRack refresh() {
-        this.innerObject = serviceManager.serviceClient()
-            .getNetworkRacks()
-            .getByResourceGroupWithResponse(resourceGroupName, networkRackName, Context.NONE)
-            .getValue();
-        return this;
+        return this.refresh(Context.NONE);
     }
 
     public NetworkRack refresh(Context context) {

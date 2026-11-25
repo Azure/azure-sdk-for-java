@@ -141,10 +141,7 @@ public final class CustomImageImpl implements CustomImage, CustomImage.Definitio
     }
 
     public CustomImage create() {
-        this.innerObject = serviceManager.serviceClient()
-            .getCustomImages()
-            .createOrUpdate(resourceGroupName, labName, name, this.innerModel(), Context.NONE);
-        return this;
+        return this.create(Context.NONE);
     }
 
     public CustomImage create(Context context) {
@@ -166,11 +163,7 @@ public final class CustomImageImpl implements CustomImage, CustomImage.Definitio
     }
 
     public CustomImage apply() {
-        this.innerObject = serviceManager.serviceClient()
-            .getCustomImages()
-            .updateWithResponse(resourceGroupName, labName, name, updateCustomImage, Context.NONE)
-            .getValue();
-        return this;
+        return this.apply(Context.NONE);
     }
 
     public CustomImage apply(Context context) {
@@ -197,12 +190,7 @@ public final class CustomImageImpl implements CustomImage, CustomImage.Definitio
     }
 
     public CustomImage refresh() {
-        String localExpand = null;
-        this.innerObject = serviceManager.serviceClient()
-            .getCustomImages()
-            .getWithResponse(resourceGroupName, labName, name, localExpand, Context.NONE)
-            .getValue();
-        return this;
+        return this.refresh(Context.NONE);
     }
 
     public CustomImage refresh(Context context) {

@@ -255,17 +255,7 @@ public final class LogicalNetworksClientImpl implements LogicalNetworksClient {
             .flatMap(res -> Mono.justOrEmpty(res.getValue()));
     }
 
-    /**
-     * The operation to get a logical network.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param logicalNetworkName Name of the logical network.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the logical network resource definition along with {@link Response}.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Response<LogicalNetworkInner> getByResourceGroupWithResponse(String resourceGroupName,
         String logicalNetworkName, Context context) {
@@ -274,16 +264,7 @@ public final class LogicalNetworksClientImpl implements LogicalNetworksClient {
             this.client.getSubscriptionId(), resourceGroupName, logicalNetworkName, accept, context);
     }
 
-    /**
-     * The operation to get a logical network.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param logicalNetworkName Name of the logical network.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the logical network resource definition.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public LogicalNetworkInner getByResourceGroup(String resourceGroupName, String logicalNetworkName) {
         return getByResourceGroupWithResponse(resourceGroupName, logicalNetworkName, Context.NONE).getValue();
@@ -329,11 +310,7 @@ public final class LogicalNetworksClientImpl implements LogicalNetworksClient {
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Response<BinaryData> createOrUpdateWithResponse(String resourceGroupName, String logicalNetworkName,
         LogicalNetworkInner resource) {
-        final String contentType = "application/json";
-        final String accept = "application/json";
-        return service.createOrUpdateSync(this.client.getEndpoint(), this.client.getApiVersion(),
-            this.client.getSubscriptionId(), resourceGroupName, logicalNetworkName, contentType, accept, resource,
-            Context.NONE);
+        return createOrUpdateWithResponse(resourceGroupName, logicalNetworkName, resource, Context.NONE);
     }
 
     /**
@@ -380,39 +357,14 @@ public final class LogicalNetworksClientImpl implements LogicalNetworksClient {
             LogicalNetworkInner.class, LogicalNetworkInner.class, this.client.getContext());
     }
 
-    /**
-     * The operation to create or update a logical network. Please note some properties can be set only during logical
-     * network creation.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param logicalNetworkName Name of the logical network.
-     * @param resource Resource create parameters.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the {@link SyncPoller} for polling of the logical network resource definition.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public SyncPoller<PollResult<LogicalNetworkInner>, LogicalNetworkInner>
         beginCreateOrUpdate(String resourceGroupName, String logicalNetworkName, LogicalNetworkInner resource) {
-        Response<BinaryData> response = createOrUpdateWithResponse(resourceGroupName, logicalNetworkName, resource);
-        return this.client.<LogicalNetworkInner, LogicalNetworkInner>getLroResult(response, LogicalNetworkInner.class,
-            LogicalNetworkInner.class, Context.NONE);
+        return beginCreateOrUpdate(resourceGroupName, logicalNetworkName, resource, Context.NONE);
     }
 
-    /**
-     * The operation to create or update a logical network. Please note some properties can be set only during logical
-     * network creation.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param logicalNetworkName Name of the logical network.
-     * @param resource Resource create parameters.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the {@link SyncPoller} for polling of the logical network resource definition.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public SyncPoller<PollResult<LogicalNetworkInner>, LogicalNetworkInner> beginCreateOrUpdate(
         String resourceGroupName, String logicalNetworkName, LogicalNetworkInner resource, Context context) {
@@ -441,41 +393,19 @@ public final class LogicalNetworksClientImpl implements LogicalNetworksClient {
             .flatMap(this.client::getLroFinalResultOrError);
     }
 
-    /**
-     * The operation to create or update a logical network. Please note some properties can be set only during logical
-     * network creation.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param logicalNetworkName Name of the logical network.
-     * @param resource Resource create parameters.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the logical network resource definition.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public LogicalNetworkInner createOrUpdate(String resourceGroupName, String logicalNetworkName,
         LogicalNetworkInner resource) {
-        return beginCreateOrUpdate(resourceGroupName, logicalNetworkName, resource).getFinalResult();
+        return createOrUpdate(resourceGroupName, logicalNetworkName, resource, Context.NONE);
     }
 
-    /**
-     * The operation to create or update a logical network. Please note some properties can be set only during logical
-     * network creation.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param logicalNetworkName Name of the logical network.
-     * @param resource Resource create parameters.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the logical network resource definition.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public LogicalNetworkInner createOrUpdate(String resourceGroupName, String logicalNetworkName,
         LogicalNetworkInner resource, Context context) {
-        return beginCreateOrUpdate(resourceGroupName, logicalNetworkName, resource, context).getFinalResult();
+        return this.client
+            .getLroFinalResultOrError(beginCreateOrUpdate(resourceGroupName, logicalNetworkName, resource, context));
     }
 
     /**
@@ -516,11 +446,7 @@ public final class LogicalNetworksClientImpl implements LogicalNetworksClient {
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Response<BinaryData> updateWithResponse(String resourceGroupName, String logicalNetworkName,
         LogicalNetworksUpdateRequest properties) {
-        final String contentType = "application/json";
-        final String accept = "application/json";
-        return service.updateSync(this.client.getEndpoint(), this.client.getApiVersion(),
-            this.client.getSubscriptionId(), resourceGroupName, logicalNetworkName, contentType, accept, properties,
-            Context.NONE);
+        return updateWithResponse(resourceGroupName, logicalNetworkName, properties, Context.NONE);
     }
 
     /**
@@ -565,37 +491,14 @@ public final class LogicalNetworksClientImpl implements LogicalNetworksClient {
             LogicalNetworkInner.class, LogicalNetworkInner.class, this.client.getContext());
     }
 
-    /**
-     * The operation to update a logical network.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param logicalNetworkName Name of the logical network.
-     * @param properties The resource properties to be updated.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the {@link SyncPoller} for polling of the logical network resource definition.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public SyncPoller<PollResult<LogicalNetworkInner>, LogicalNetworkInner> beginUpdate(String resourceGroupName,
         String logicalNetworkName, LogicalNetworksUpdateRequest properties) {
-        Response<BinaryData> response = updateWithResponse(resourceGroupName, logicalNetworkName, properties);
-        return this.client.<LogicalNetworkInner, LogicalNetworkInner>getLroResult(response, LogicalNetworkInner.class,
-            LogicalNetworkInner.class, Context.NONE);
+        return beginUpdate(resourceGroupName, logicalNetworkName, properties, Context.NONE);
     }
 
-    /**
-     * The operation to update a logical network.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param logicalNetworkName Name of the logical network.
-     * @param properties The resource properties to be updated.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the {@link SyncPoller} for polling of the logical network resource definition.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public SyncPoller<PollResult<LogicalNetworkInner>, LogicalNetworkInner> beginUpdate(String resourceGroupName,
         String logicalNetworkName, LogicalNetworksUpdateRequest properties, Context context) {
@@ -622,39 +525,19 @@ public final class LogicalNetworksClientImpl implements LogicalNetworksClient {
             .flatMap(this.client::getLroFinalResultOrError);
     }
 
-    /**
-     * The operation to update a logical network.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param logicalNetworkName Name of the logical network.
-     * @param properties The resource properties to be updated.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the logical network resource definition.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public LogicalNetworkInner update(String resourceGroupName, String logicalNetworkName,
         LogicalNetworksUpdateRequest properties) {
-        return beginUpdate(resourceGroupName, logicalNetworkName, properties).getFinalResult();
+        return update(resourceGroupName, logicalNetworkName, properties, Context.NONE);
     }
 
-    /**
-     * The operation to update a logical network.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param logicalNetworkName Name of the logical network.
-     * @param properties The resource properties to be updated.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the logical network resource definition.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public LogicalNetworkInner update(String resourceGroupName, String logicalNetworkName,
         LogicalNetworksUpdateRequest properties, Context context) {
-        return beginUpdate(resourceGroupName, logicalNetworkName, properties, context).getFinalResult();
+        return this.client
+            .getLroFinalResultOrError(beginUpdate(resourceGroupName, logicalNetworkName, properties, context));
     }
 
     /**
@@ -688,8 +571,7 @@ public final class LogicalNetworksClientImpl implements LogicalNetworksClient {
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Response<BinaryData> deleteWithResponse(String resourceGroupName, String logicalNetworkName) {
-        return service.deleteSync(this.client.getEndpoint(), this.client.getApiVersion(),
-            this.client.getSubscriptionId(), resourceGroupName, logicalNetworkName, Context.NONE);
+        return deleteWithResponse(resourceGroupName, logicalNetworkName, Context.NONE);
     }
 
     /**
@@ -727,33 +609,13 @@ public final class LogicalNetworksClientImpl implements LogicalNetworksClient {
             this.client.getContext());
     }
 
-    /**
-     * The operation to delete a logical network.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param logicalNetworkName Name of the logical network.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the {@link SyncPoller} for polling of long-running operation.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public SyncPoller<PollResult<Void>, Void> beginDelete(String resourceGroupName, String logicalNetworkName) {
-        Response<BinaryData> response = deleteWithResponse(resourceGroupName, logicalNetworkName);
-        return this.client.<Void, Void>getLroResult(response, Void.class, Void.class, Context.NONE);
+        return beginDelete(resourceGroupName, logicalNetworkName, Context.NONE);
     }
 
-    /**
-     * The operation to delete a logical network.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param logicalNetworkName Name of the logical network.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the {@link SyncPoller} for polling of long-running operation.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public SyncPoller<PollResult<Void>, Void> beginDelete(String resourceGroupName, String logicalNetworkName,
         Context context) {
@@ -777,33 +639,16 @@ public final class LogicalNetworksClientImpl implements LogicalNetworksClient {
             .flatMap(this.client::getLroFinalResultOrError);
     }
 
-    /**
-     * The operation to delete a logical network.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param logicalNetworkName Name of the logical network.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public void delete(String resourceGroupName, String logicalNetworkName) {
-        beginDelete(resourceGroupName, logicalNetworkName).getFinalResult();
+        delete(resourceGroupName, logicalNetworkName, Context.NONE);
     }
 
-    /**
-     * The operation to delete a logical network.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param logicalNetworkName Name of the logical network.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public void delete(String resourceGroupName, String logicalNetworkName, Context context) {
-        beginDelete(resourceGroupName, logicalNetworkName, context).getFinalResult();
+        this.client.getLroFinalResultOrError(beginDelete(resourceGroupName, logicalNetworkName, context));
     }
 
     /**
@@ -856,11 +701,7 @@ public final class LogicalNetworksClientImpl implements LogicalNetworksClient {
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private PagedResponse<LogicalNetworkInner> listByResourceGroupSinglePage(String resourceGroupName) {
-        final String accept = "application/json";
-        Response<LogicalNetworkListResult> res = service.listByResourceGroupSync(this.client.getEndpoint(),
-            this.client.getApiVersion(), this.client.getSubscriptionId(), resourceGroupName, accept, Context.NONE);
-        return new PagedResponseBase<>(res.getRequest(), res.getStatusCode(), res.getHeaders(), res.getValue().value(),
-            res.getValue().nextLink(), null);
+        return listByResourceGroupSinglePage(resourceGroupName, Context.NONE);
     }
 
     /**
@@ -884,33 +725,13 @@ public final class LogicalNetworksClientImpl implements LogicalNetworksClient {
             res.getValue().nextLink(), null);
     }
 
-    /**
-     * Lists all of the logical networks in the specified resource group. Use the nextLink property in the response to
-     * get the next page of logical networks.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the response of a LogicalNetwork list operation as paginated response with {@link PagedIterable}.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.COLLECTION)
     public PagedIterable<LogicalNetworkInner> listByResourceGroup(String resourceGroupName) {
-        return new PagedIterable<>(() -> listByResourceGroupSinglePage(resourceGroupName),
-            nextLink -> listByResourceGroupNextSinglePage(nextLink));
+        return listByResourceGroup(resourceGroupName, Context.NONE);
     }
 
-    /**
-     * Lists all of the logical networks in the specified resource group. Use the nextLink property in the response to
-     * get the next page of logical networks.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the response of a LogicalNetwork list operation as paginated response with {@link PagedIterable}.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.COLLECTION)
     public PagedIterable<LogicalNetworkInner> listByResourceGroup(String resourceGroupName, Context context) {
         return new PagedIterable<>(() -> listByResourceGroupSinglePage(resourceGroupName, context),
@@ -960,11 +781,7 @@ public final class LogicalNetworksClientImpl implements LogicalNetworksClient {
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private PagedResponse<LogicalNetworkInner> listSinglePage() {
-        final String accept = "application/json";
-        Response<LogicalNetworkListResult> res = service.listSync(this.client.getEndpoint(),
-            this.client.getApiVersion(), this.client.getSubscriptionId(), accept, Context.NONE);
-        return new PagedResponseBase<>(res.getRequest(), res.getStatusCode(), res.getHeaders(), res.getValue().value(),
-            res.getValue().nextLink(), null);
+        return listSinglePage(Context.NONE);
     }
 
     /**
@@ -986,29 +803,13 @@ public final class LogicalNetworksClientImpl implements LogicalNetworksClient {
             res.getValue().nextLink(), null);
     }
 
-    /**
-     * Lists all of the logical networks in the specified subscription. Use the nextLink property in the response to get
-     * the next page of logical networks.
-     * 
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the response of a LogicalNetwork list operation as paginated response with {@link PagedIterable}.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.COLLECTION)
     public PagedIterable<LogicalNetworkInner> list() {
-        return new PagedIterable<>(() -> listSinglePage(), nextLink -> listAllNextSinglePage(nextLink));
+        return list(Context.NONE);
     }
 
-    /**
-     * Lists all of the logical networks in the specified subscription. Use the nextLink property in the response to get
-     * the next page of logical networks.
-     * 
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the response of a LogicalNetwork list operation as paginated response with {@link PagedIterable}.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.COLLECTION)
     public PagedIterable<LogicalNetworkInner> list(Context context) {
         return new PagedIterable<>(() -> listSinglePage(context), nextLink -> listAllNextSinglePage(nextLink, context));
@@ -1046,11 +847,7 @@ public final class LogicalNetworksClientImpl implements LogicalNetworksClient {
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private PagedResponse<LogicalNetworkInner> listByResourceGroupNextSinglePage(String nextLink) {
-        final String accept = "application/json";
-        Response<LogicalNetworkListResult> res
-            = service.listByResourceGroupNextSync(nextLink, this.client.getEndpoint(), accept, Context.NONE);
-        return new PagedResponseBase<>(res.getRequest(), res.getStatusCode(), res.getHeaders(), res.getValue().value(),
-            res.getValue().nextLink(), null);
+        return listByResourceGroupNextSinglePage(nextLink, Context.NONE);
     }
 
     /**
@@ -1103,11 +900,7 @@ public final class LogicalNetworksClientImpl implements LogicalNetworksClient {
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private PagedResponse<LogicalNetworkInner> listAllNextSinglePage(String nextLink) {
-        final String accept = "application/json";
-        Response<LogicalNetworkListResult> res
-            = service.listAllNextSync(nextLink, this.client.getEndpoint(), accept, Context.NONE);
-        return new PagedResponseBase<>(res.getRequest(), res.getStatusCode(), res.getHeaders(), res.getValue().value(),
-            res.getValue().nextLink(), null);
+        return listAllNextSinglePage(nextLink, Context.NONE);
     }
 
     /**

@@ -53,9 +53,7 @@ public final class ProtectedItemsImpl implements ProtectedItems {
 
     public PagedIterable<ProtectedItem> listByProtectionGroup(String resourceGroupName, String cloudAccountName,
         String protectionGroupName) {
-        PagedIterable<ProtectedItemInner> inner
-            = this.serviceClient().listByProtectionGroup(resourceGroupName, cloudAccountName, protectionGroupName);
-        return ResourceManagerUtils.mapPage(inner, inner1 -> new ProtectedItemImpl(inner1, this.manager()));
+        return this.listByProtectionGroup(resourceGroupName, cloudAccountName, protectionGroupName, Context.NONE);
     }
 
     public PagedIterable<ProtectedItem> listByProtectionGroup(String resourceGroupName, String cloudAccountName,

@@ -67,11 +67,7 @@ public final class NeonDatabaseImpl implements NeonDatabase, NeonDatabase.Defini
     }
 
     public NeonDatabase create() {
-        this.innerObject = serviceManager.serviceClient()
-            .getNeonDatabases()
-            .createOrUpdate(resourceGroupName, organizationName, projectName, branchName, neonDatabaseName,
-                this.innerModel(), Context.NONE);
-        return this;
+        return this.create(Context.NONE);
     }
 
     public NeonDatabase create(Context context) {
@@ -93,11 +89,7 @@ public final class NeonDatabaseImpl implements NeonDatabase, NeonDatabase.Defini
     }
 
     public NeonDatabase apply() {
-        this.innerObject = serviceManager.serviceClient()
-            .getNeonDatabases()
-            .createOrUpdate(resourceGroupName, organizationName, projectName, branchName, neonDatabaseName,
-                this.innerModel(), Context.NONE);
-        return this;
+        return this.apply(Context.NONE);
     }
 
     public NeonDatabase apply(Context context) {

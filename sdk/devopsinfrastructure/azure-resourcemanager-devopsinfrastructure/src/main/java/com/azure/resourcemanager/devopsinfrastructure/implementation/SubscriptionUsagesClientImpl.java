@@ -139,11 +139,7 @@ public final class SubscriptionUsagesClientImpl implements SubscriptionUsagesCli
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private PagedResponse<QuotaInner> usagesSinglePage(String location) {
-        final String accept = "application/json";
-        Response<PagedQuota> res = service.usagesSync(this.client.getEndpoint(), this.client.getSubscriptionId(),
-            location, this.client.getApiVersion(), accept, Context.NONE);
-        return new PagedResponseBase<>(res.getRequest(), res.getStatusCode(), res.getHeaders(), res.getValue().value(),
-            res.getValue().nextLink(), null);
+        return usagesSinglePage(location, Context.NONE);
     }
 
     /**
@@ -165,30 +161,13 @@ public final class SubscriptionUsagesClientImpl implements SubscriptionUsagesCli
             res.getValue().nextLink(), null);
     }
 
-    /**
-     * List Quota resources by subscription ID.
-     * 
-     * @param location The name of the Azure region.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return paged collection of Quota items as paginated response with {@link PagedIterable}.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.COLLECTION)
     public PagedIterable<QuotaInner> usages(String location) {
-        return new PagedIterable<>(() -> usagesSinglePage(location), nextLink -> usagesNextSinglePage(nextLink));
+        return usages(location, Context.NONE);
     }
 
-    /**
-     * List Quota resources by subscription ID.
-     * 
-     * @param location The name of the Azure region.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return paged collection of Quota items as paginated response with {@link PagedIterable}.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.COLLECTION)
     public PagedIterable<QuotaInner> usages(String location, Context context) {
         return new PagedIterable<>(() -> usagesSinglePage(location, context),
@@ -225,10 +204,7 @@ public final class SubscriptionUsagesClientImpl implements SubscriptionUsagesCli
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private PagedResponse<QuotaInner> usagesNextSinglePage(String nextLink) {
-        final String accept = "application/json";
-        Response<PagedQuota> res = service.usagesNextSync(nextLink, this.client.getEndpoint(), accept, Context.NONE);
-        return new PagedResponseBase<>(res.getRequest(), res.getStatusCode(), res.getHeaders(), res.getValue().value(),
-            res.getValue().nextLink(), null);
+        return usagesNextSinglePage(nextLink, Context.NONE);
     }
 
     /**

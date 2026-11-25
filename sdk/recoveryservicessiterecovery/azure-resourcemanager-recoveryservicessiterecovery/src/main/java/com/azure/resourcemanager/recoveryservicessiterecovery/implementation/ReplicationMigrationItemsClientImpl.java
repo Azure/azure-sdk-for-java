@@ -467,20 +467,7 @@ public final class ReplicationMigrationItemsClientImpl implements ReplicationMig
             migrationItemName).flatMap(res -> Mono.justOrEmpty(res.getValue()));
     }
 
-    /**
-     * Gets the details of a migration item.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param resourceName The name of the Vault.
-     * @param fabricName Fabric name.
-     * @param protectionContainerName Protection container name.
-     * @param migrationItemName Migration item name.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the details of a migration item along with {@link Response}.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Response<MigrationItemInner> getWithResponse(String resourceGroupName, String resourceName,
         String fabricName, String protectionContainerName, String migrationItemName, Context context) {
@@ -519,19 +506,7 @@ public final class ReplicationMigrationItemsClientImpl implements ReplicationMig
             resourceGroupName, resourceName, fabricName, protectionContainerName, migrationItemName, accept, context);
     }
 
-    /**
-     * Gets the details of a migration item.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param resourceName The name of the Vault.
-     * @param fabricName Fabric name.
-     * @param protectionContainerName Protection container name.
-     * @param migrationItemName Migration item name.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the details of a migration item.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public MigrationItemInner get(String resourceGroupName, String resourceName, String fabricName,
         String protectionContainerName, String migrationItemName) {
@@ -617,46 +592,8 @@ public final class ReplicationMigrationItemsClientImpl implements ReplicationMig
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Response<BinaryData> createWithResponse(String resourceGroupName, String resourceName, String fabricName,
         String protectionContainerName, String migrationItemName, EnableMigrationInput input) {
-        if (this.client.getEndpoint() == null) {
-            throw LOGGER.atError()
-                .log(new IllegalArgumentException(
-                    "Parameter this.client.getEndpoint() is required and cannot be null."));
-        }
-        if (this.client.getSubscriptionId() == null) {
-            throw LOGGER.atError()
-                .log(new IllegalArgumentException(
-                    "Parameter this.client.getSubscriptionId() is required and cannot be null."));
-        }
-        if (resourceGroupName == null) {
-            throw LOGGER.atError()
-                .log(new IllegalArgumentException("Parameter resourceGroupName is required and cannot be null."));
-        }
-        if (resourceName == null) {
-            throw LOGGER.atError()
-                .log(new IllegalArgumentException("Parameter resourceName is required and cannot be null."));
-        }
-        if (fabricName == null) {
-            throw LOGGER.atError()
-                .log(new IllegalArgumentException("Parameter fabricName is required and cannot be null."));
-        }
-        if (protectionContainerName == null) {
-            throw LOGGER.atError()
-                .log(new IllegalArgumentException("Parameter protectionContainerName is required and cannot be null."));
-        }
-        if (migrationItemName == null) {
-            throw LOGGER.atError()
-                .log(new IllegalArgumentException("Parameter migrationItemName is required and cannot be null."));
-        }
-        if (input == null) {
-            throw LOGGER.atError().log(new IllegalArgumentException("Parameter input is required and cannot be null."));
-        } else {
-            input.validate();
-        }
-        final String contentType = "application/json";
-        final String accept = "application/json";
-        return service.createSync(this.client.getEndpoint(), this.client.getApiVersion(),
-            this.client.getSubscriptionId(), resourceGroupName, resourceName, fabricName, protectionContainerName,
-            migrationItemName, contentType, accept, input, Context.NONE);
+        return createWithResponse(resourceGroupName, resourceName, fabricName, protectionContainerName,
+            migrationItemName, input, Context.NONE);
     }
 
     /**
@@ -747,49 +684,16 @@ public final class ReplicationMigrationItemsClientImpl implements ReplicationMig
             MigrationItemInner.class, MigrationItemInner.class, this.client.getContext());
     }
 
-    /**
-     * Enables migration.
-     * 
-     * The operation to create an ASR migration item (enable migration).
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param resourceName The name of the Vault.
-     * @param fabricName Fabric name.
-     * @param protectionContainerName Protection container name.
-     * @param migrationItemName Migration item name.
-     * @param input Enable migration input.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the {@link SyncPoller} for polling of migration item.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public SyncPoller<PollResult<MigrationItemInner>, MigrationItemInner> beginCreate(String resourceGroupName,
         String resourceName, String fabricName, String protectionContainerName, String migrationItemName,
         EnableMigrationInput input) {
-        Response<BinaryData> response = createWithResponse(resourceGroupName, resourceName, fabricName,
-            protectionContainerName, migrationItemName, input);
-        return this.client.<MigrationItemInner, MigrationItemInner>getLroResult(response, MigrationItemInner.class,
-            MigrationItemInner.class, Context.NONE);
+        return beginCreate(resourceGroupName, resourceName, fabricName, protectionContainerName, migrationItemName,
+            input, Context.NONE);
     }
 
-    /**
-     * Enables migration.
-     * 
-     * The operation to create an ASR migration item (enable migration).
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param resourceName The name of the Vault.
-     * @param fabricName Fabric name.
-     * @param protectionContainerName Protection container name.
-     * @param migrationItemName Migration item name.
-     * @param input Enable migration input.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the {@link SyncPoller} for polling of migration item.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public SyncPoller<PollResult<MigrationItemInner>, MigrationItemInner> beginCreate(String resourceGroupName,
         String resourceName, String fabricName, String protectionContainerName, String migrationItemName,
@@ -823,51 +727,20 @@ public final class ReplicationMigrationItemsClientImpl implements ReplicationMig
             input).last().flatMap(this.client::getLroFinalResultOrError);
     }
 
-    /**
-     * Enables migration.
-     * 
-     * The operation to create an ASR migration item (enable migration).
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param resourceName The name of the Vault.
-     * @param fabricName Fabric name.
-     * @param protectionContainerName Protection container name.
-     * @param migrationItemName Migration item name.
-     * @param input Enable migration input.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return migration item.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public MigrationItemInner create(String resourceGroupName, String resourceName, String fabricName,
         String protectionContainerName, String migrationItemName, EnableMigrationInput input) {
-        return beginCreate(resourceGroupName, resourceName, fabricName, protectionContainerName, migrationItemName,
-            input).getFinalResult();
+        return create(resourceGroupName, resourceName, fabricName, protectionContainerName, migrationItemName, input,
+            Context.NONE);
     }
 
-    /**
-     * Enables migration.
-     * 
-     * The operation to create an ASR migration item (enable migration).
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param resourceName The name of the Vault.
-     * @param fabricName Fabric name.
-     * @param protectionContainerName Protection container name.
-     * @param migrationItemName Migration item name.
-     * @param input Enable migration input.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return migration item.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public MigrationItemInner create(String resourceGroupName, String resourceName, String fabricName,
         String protectionContainerName, String migrationItemName, EnableMigrationInput input, Context context) {
-        return beginCreate(resourceGroupName, resourceName, fabricName, protectionContainerName, migrationItemName,
-            input, context).getFinalResult();
+        return this.client.getLroFinalResultOrError(beginCreate(resourceGroupName, resourceName, fabricName,
+            protectionContainerName, migrationItemName, input, context));
     }
 
     /**
@@ -948,46 +821,8 @@ public final class ReplicationMigrationItemsClientImpl implements ReplicationMig
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Response<BinaryData> updateWithResponse(String resourceGroupName, String resourceName, String fabricName,
         String protectionContainerName, String migrationItemName, UpdateMigrationItemInput input) {
-        if (this.client.getEndpoint() == null) {
-            throw LOGGER.atError()
-                .log(new IllegalArgumentException(
-                    "Parameter this.client.getEndpoint() is required and cannot be null."));
-        }
-        if (this.client.getSubscriptionId() == null) {
-            throw LOGGER.atError()
-                .log(new IllegalArgumentException(
-                    "Parameter this.client.getSubscriptionId() is required and cannot be null."));
-        }
-        if (resourceGroupName == null) {
-            throw LOGGER.atError()
-                .log(new IllegalArgumentException("Parameter resourceGroupName is required and cannot be null."));
-        }
-        if (resourceName == null) {
-            throw LOGGER.atError()
-                .log(new IllegalArgumentException("Parameter resourceName is required and cannot be null."));
-        }
-        if (fabricName == null) {
-            throw LOGGER.atError()
-                .log(new IllegalArgumentException("Parameter fabricName is required and cannot be null."));
-        }
-        if (protectionContainerName == null) {
-            throw LOGGER.atError()
-                .log(new IllegalArgumentException("Parameter protectionContainerName is required and cannot be null."));
-        }
-        if (migrationItemName == null) {
-            throw LOGGER.atError()
-                .log(new IllegalArgumentException("Parameter migrationItemName is required and cannot be null."));
-        }
-        if (input == null) {
-            throw LOGGER.atError().log(new IllegalArgumentException("Parameter input is required and cannot be null."));
-        } else {
-            input.validate();
-        }
-        final String contentType = "application/json";
-        final String accept = "application/json";
-        return service.updateSync(this.client.getEndpoint(), this.client.getApiVersion(),
-            this.client.getSubscriptionId(), resourceGroupName, resourceName, fabricName, protectionContainerName,
-            migrationItemName, contentType, accept, input, Context.NONE);
+        return updateWithResponse(resourceGroupName, resourceName, fabricName, protectionContainerName,
+            migrationItemName, input, Context.NONE);
     }
 
     /**
@@ -1078,49 +913,16 @@ public final class ReplicationMigrationItemsClientImpl implements ReplicationMig
             MigrationItemInner.class, MigrationItemInner.class, this.client.getContext());
     }
 
-    /**
-     * Updates migration item.
-     * 
-     * The operation to update the recovery settings of an ASR migration item.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param resourceName The name of the Vault.
-     * @param fabricName Fabric name.
-     * @param protectionContainerName Protection container name.
-     * @param migrationItemName Migration item name.
-     * @param input Update migration item input.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the {@link SyncPoller} for polling of migration item.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public SyncPoller<PollResult<MigrationItemInner>, MigrationItemInner> beginUpdate(String resourceGroupName,
         String resourceName, String fabricName, String protectionContainerName, String migrationItemName,
         UpdateMigrationItemInput input) {
-        Response<BinaryData> response = updateWithResponse(resourceGroupName, resourceName, fabricName,
-            protectionContainerName, migrationItemName, input);
-        return this.client.<MigrationItemInner, MigrationItemInner>getLroResult(response, MigrationItemInner.class,
-            MigrationItemInner.class, Context.NONE);
+        return beginUpdate(resourceGroupName, resourceName, fabricName, protectionContainerName, migrationItemName,
+            input, Context.NONE);
     }
 
-    /**
-     * Updates migration item.
-     * 
-     * The operation to update the recovery settings of an ASR migration item.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param resourceName The name of the Vault.
-     * @param fabricName Fabric name.
-     * @param protectionContainerName Protection container name.
-     * @param migrationItemName Migration item name.
-     * @param input Update migration item input.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the {@link SyncPoller} for polling of migration item.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public SyncPoller<PollResult<MigrationItemInner>, MigrationItemInner> beginUpdate(String resourceGroupName,
         String resourceName, String fabricName, String protectionContainerName, String migrationItemName,
@@ -1154,51 +956,20 @@ public final class ReplicationMigrationItemsClientImpl implements ReplicationMig
             input).last().flatMap(this.client::getLroFinalResultOrError);
     }
 
-    /**
-     * Updates migration item.
-     * 
-     * The operation to update the recovery settings of an ASR migration item.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param resourceName The name of the Vault.
-     * @param fabricName Fabric name.
-     * @param protectionContainerName Protection container name.
-     * @param migrationItemName Migration item name.
-     * @param input Update migration item input.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return migration item.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public MigrationItemInner update(String resourceGroupName, String resourceName, String fabricName,
         String protectionContainerName, String migrationItemName, UpdateMigrationItemInput input) {
-        return beginUpdate(resourceGroupName, resourceName, fabricName, protectionContainerName, migrationItemName,
-            input).getFinalResult();
+        return update(resourceGroupName, resourceName, fabricName, protectionContainerName, migrationItemName, input,
+            Context.NONE);
     }
 
-    /**
-     * Updates migration item.
-     * 
-     * The operation to update the recovery settings of an ASR migration item.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param resourceName The name of the Vault.
-     * @param fabricName Fabric name.
-     * @param protectionContainerName Protection container name.
-     * @param migrationItemName Migration item name.
-     * @param input Update migration item input.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return migration item.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public MigrationItemInner update(String resourceGroupName, String resourceName, String fabricName,
         String protectionContainerName, String migrationItemName, UpdateMigrationItemInput input, Context context) {
-        return beginUpdate(resourceGroupName, resourceName, fabricName, protectionContainerName, migrationItemName,
-            input, context).getFinalResult();
+        return this.client.getLroFinalResultOrError(beginUpdate(resourceGroupName, resourceName, fabricName,
+            protectionContainerName, migrationItemName, input, context));
     }
 
     /**
@@ -1272,38 +1043,7 @@ public final class ReplicationMigrationItemsClientImpl implements ReplicationMig
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Response<BinaryData> deleteWithResponse(String resourceGroupName, String resourceName, String fabricName,
         String protectionContainerName, String migrationItemName, String deleteOption) {
-        if (this.client.getEndpoint() == null) {
-            throw LOGGER.atError()
-                .log(new IllegalArgumentException(
-                    "Parameter this.client.getEndpoint() is required and cannot be null."));
-        }
-        if (this.client.getSubscriptionId() == null) {
-            throw LOGGER.atError()
-                .log(new IllegalArgumentException(
-                    "Parameter this.client.getSubscriptionId() is required and cannot be null."));
-        }
-        if (resourceGroupName == null) {
-            throw LOGGER.atError()
-                .log(new IllegalArgumentException("Parameter resourceGroupName is required and cannot be null."));
-        }
-        if (resourceName == null) {
-            throw LOGGER.atError()
-                .log(new IllegalArgumentException("Parameter resourceName is required and cannot be null."));
-        }
-        if (fabricName == null) {
-            throw LOGGER.atError()
-                .log(new IllegalArgumentException("Parameter fabricName is required and cannot be null."));
-        }
-        if (protectionContainerName == null) {
-            throw LOGGER.atError()
-                .log(new IllegalArgumentException("Parameter protectionContainerName is required and cannot be null."));
-        }
-        if (migrationItemName == null) {
-            throw LOGGER.atError()
-                .log(new IllegalArgumentException("Parameter migrationItemName is required and cannot be null."));
-        }
-        return service.deleteSync(this.client.getEndpoint(), this.client.getApiVersion(),
-            this.client.getSubscriptionId(), resourceGroupName, resourceName, fabricName, protectionContainerName,
+        return deleteWithResponse(resourceGroupName, resourceName, fabricName, protectionContainerName,
             migrationItemName, deleteOption, Context.NONE);
     }
 
@@ -1431,52 +1171,20 @@ public final class ReplicationMigrationItemsClientImpl implements ReplicationMig
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     private SyncPoller<PollResult<Void>, Void> beginDelete(String resourceGroupName, String resourceName,
         String fabricName, String protectionContainerName, String migrationItemName, String deleteOption) {
-        Response<BinaryData> response = deleteWithResponse(resourceGroupName, resourceName, fabricName,
-            protectionContainerName, migrationItemName, deleteOption);
-        return this.client.<Void, Void>getLroResult(response, Void.class, Void.class, Context.NONE);
+        return beginDelete(resourceGroupName, resourceName, fabricName, protectionContainerName, migrationItemName,
+            deleteOption, Context.NONE);
     }
 
-    /**
-     * Delete the migration item.
-     * 
-     * The operation to delete an ASR migration item.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param resourceName The name of the Vault.
-     * @param fabricName Fabric name.
-     * @param protectionContainerName Protection container name.
-     * @param migrationItemName Migration item name.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the {@link SyncPoller} for polling of long-running operation.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public SyncPoller<PollResult<Void>, Void> beginDelete(String resourceGroupName, String resourceName,
         String fabricName, String protectionContainerName, String migrationItemName) {
         final String deleteOption = null;
-        Response<BinaryData> response = deleteWithResponse(resourceGroupName, resourceName, fabricName,
-            protectionContainerName, migrationItemName, deleteOption);
-        return this.client.<Void, Void>getLroResult(response, Void.class, Void.class, Context.NONE);
+        return beginDelete(resourceGroupName, resourceName, fabricName, protectionContainerName, migrationItemName,
+            deleteOption, Context.NONE);
     }
 
-    /**
-     * Delete the migration item.
-     * 
-     * The operation to delete an ASR migration item.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param resourceName The name of the Vault.
-     * @param fabricName Fabric name.
-     * @param protectionContainerName Protection container name.
-     * @param migrationItemName Migration item name.
-     * @param deleteOption The delete option.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the {@link SyncPoller} for polling of long-running operation.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public SyncPoller<PollResult<Void>, Void> beginDelete(String resourceGroupName, String resourceName,
         String fabricName, String protectionContainerName, String migrationItemName, String deleteOption,
@@ -1532,49 +1240,21 @@ public final class ReplicationMigrationItemsClientImpl implements ReplicationMig
             deleteOption).last().flatMap(this.client::getLroFinalResultOrError);
     }
 
-    /**
-     * Delete the migration item.
-     * 
-     * The operation to delete an ASR migration item.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param resourceName The name of the Vault.
-     * @param fabricName Fabric name.
-     * @param protectionContainerName Protection container name.
-     * @param migrationItemName Migration item name.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public void delete(String resourceGroupName, String resourceName, String fabricName, String protectionContainerName,
         String migrationItemName) {
         final String deleteOption = null;
-        beginDelete(resourceGroupName, resourceName, fabricName, protectionContainerName, migrationItemName,
-            deleteOption).getFinalResult();
+        delete(resourceGroupName, resourceName, fabricName, protectionContainerName, migrationItemName, deleteOption,
+            Context.NONE);
     }
 
-    /**
-     * Delete the migration item.
-     * 
-     * The operation to delete an ASR migration item.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param resourceName The name of the Vault.
-     * @param fabricName Fabric name.
-     * @param protectionContainerName Protection container name.
-     * @param migrationItemName Migration item name.
-     * @param deleteOption The delete option.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public void delete(String resourceGroupName, String resourceName, String fabricName, String protectionContainerName,
         String migrationItemName, String deleteOption, Context context) {
-        beginDelete(resourceGroupName, resourceName, fabricName, protectionContainerName, migrationItemName,
-            deleteOption, context).getFinalResult();
+        this.client.getLroFinalResultOrError(beginDelete(resourceGroupName, resourceName, fabricName,
+            protectionContainerName, migrationItemName, deleteOption, context));
     }
 
     /**
@@ -1713,38 +1393,8 @@ public final class ReplicationMigrationItemsClientImpl implements ReplicationMig
     private PagedResponse<MigrationItemInner> listByReplicationProtectionContainersSinglePage(String resourceGroupName,
         String resourceName, String fabricName, String protectionContainerName, String skipToken, String takeToken,
         String filter) {
-        if (this.client.getEndpoint() == null) {
-            throw LOGGER.atError()
-                .log(new IllegalArgumentException(
-                    "Parameter this.client.getEndpoint() is required and cannot be null."));
-        }
-        if (this.client.getSubscriptionId() == null) {
-            throw LOGGER.atError()
-                .log(new IllegalArgumentException(
-                    "Parameter this.client.getSubscriptionId() is required and cannot be null."));
-        }
-        if (resourceGroupName == null) {
-            throw LOGGER.atError()
-                .log(new IllegalArgumentException("Parameter resourceGroupName is required and cannot be null."));
-        }
-        if (resourceName == null) {
-            throw LOGGER.atError()
-                .log(new IllegalArgumentException("Parameter resourceName is required and cannot be null."));
-        }
-        if (fabricName == null) {
-            throw LOGGER.atError()
-                .log(new IllegalArgumentException("Parameter fabricName is required and cannot be null."));
-        }
-        if (protectionContainerName == null) {
-            throw LOGGER.atError()
-                .log(new IllegalArgumentException("Parameter protectionContainerName is required and cannot be null."));
-        }
-        final String accept = "application/json";
-        Response<MigrationItemCollection> res = service.listByReplicationProtectionContainersSync(
-            this.client.getEndpoint(), this.client.getApiVersion(), this.client.getSubscriptionId(), resourceGroupName,
-            resourceName, fabricName, protectionContainerName, skipToken, takeToken, filter, accept, Context.NONE);
-        return new PagedResponseBase<>(res.getRequest(), res.getStatusCode(), res.getHeaders(), res.getValue().value(),
-            res.getValue().nextLink(), null);
+        return listByReplicationProtectionContainersSinglePage(resourceGroupName, resourceName, fabricName,
+            protectionContainerName, skipToken, takeToken, filter, Context.NONE);
     }
 
     /**
@@ -1805,56 +1455,18 @@ public final class ReplicationMigrationItemsClientImpl implements ReplicationMig
             res.getValue().nextLink(), null);
     }
 
-    /**
-     * Gets the list of migration items in the protection container.
-     * 
-     * Gets the list of ASR migration items in the protection container.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param resourceName The name of the Vault.
-     * @param fabricName Fabric name.
-     * @param protectionContainerName Protection container name.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the list of migration items in the protection container.
-     * 
-     * Gets the list of ASR migration items in the protection container as paginated response with
-     * {@link PagedIterable}.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.COLLECTION)
     public PagedIterable<MigrationItemInner> listByReplicationProtectionContainers(String resourceGroupName,
         String resourceName, String fabricName, String protectionContainerName) {
         final String skipToken = null;
         final String takeToken = null;
         final String filter = null;
-        return new PagedIterable<>(
-            () -> listByReplicationProtectionContainersSinglePage(resourceGroupName, resourceName, fabricName,
-                protectionContainerName, skipToken, takeToken, filter),
-            nextLink -> listByReplicationProtectionContainersNextSinglePage(nextLink));
+        return listByReplicationProtectionContainers(resourceGroupName, resourceName, fabricName,
+            protectionContainerName, skipToken, takeToken, filter, Context.NONE);
     }
 
-    /**
-     * Gets the list of migration items in the protection container.
-     * 
-     * Gets the list of ASR migration items in the protection container.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param resourceName The name of the Vault.
-     * @param fabricName Fabric name.
-     * @param protectionContainerName Protection container name.
-     * @param skipToken The pagination token.
-     * @param takeToken The page size.
-     * @param filter OData filter options.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the list of migration items in the protection container.
-     * 
-     * Gets the list of ASR migration items in the protection container as paginated response with
-     * {@link PagedIterable}.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.COLLECTION)
     public PagedIterable<MigrationItemInner> listByReplicationProtectionContainers(String resourceGroupName,
         String resourceName, String fabricName, String protectionContainerName, String skipToken, String takeToken,
@@ -1943,47 +1555,8 @@ public final class ReplicationMigrationItemsClientImpl implements ReplicationMig
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Response<BinaryData> migrateWithResponse(String resourceGroupName, String resourceName, String fabricName,
         String protectionContainerName, String migrationItemName, MigrateInput migrateInput) {
-        if (this.client.getEndpoint() == null) {
-            throw LOGGER.atError()
-                .log(new IllegalArgumentException(
-                    "Parameter this.client.getEndpoint() is required and cannot be null."));
-        }
-        if (this.client.getSubscriptionId() == null) {
-            throw LOGGER.atError()
-                .log(new IllegalArgumentException(
-                    "Parameter this.client.getSubscriptionId() is required and cannot be null."));
-        }
-        if (resourceGroupName == null) {
-            throw LOGGER.atError()
-                .log(new IllegalArgumentException("Parameter resourceGroupName is required and cannot be null."));
-        }
-        if (resourceName == null) {
-            throw LOGGER.atError()
-                .log(new IllegalArgumentException("Parameter resourceName is required and cannot be null."));
-        }
-        if (fabricName == null) {
-            throw LOGGER.atError()
-                .log(new IllegalArgumentException("Parameter fabricName is required and cannot be null."));
-        }
-        if (protectionContainerName == null) {
-            throw LOGGER.atError()
-                .log(new IllegalArgumentException("Parameter protectionContainerName is required and cannot be null."));
-        }
-        if (migrationItemName == null) {
-            throw LOGGER.atError()
-                .log(new IllegalArgumentException("Parameter migrationItemName is required and cannot be null."));
-        }
-        if (migrateInput == null) {
-            throw LOGGER.atError()
-                .log(new IllegalArgumentException("Parameter migrateInput is required and cannot be null."));
-        } else {
-            migrateInput.validate();
-        }
-        final String contentType = "application/json";
-        final String accept = "application/json";
-        return service.migrateSync(this.client.getEndpoint(), this.client.getApiVersion(),
-            this.client.getSubscriptionId(), resourceGroupName, resourceName, fabricName, protectionContainerName,
-            migrationItemName, contentType, accept, migrateInput, Context.NONE);
+        return migrateWithResponse(resourceGroupName, resourceName, fabricName, protectionContainerName,
+            migrationItemName, migrateInput, Context.NONE);
     }
 
     /**
@@ -2075,49 +1648,16 @@ public final class ReplicationMigrationItemsClientImpl implements ReplicationMig
             MigrationItemInner.class, MigrationItemInner.class, this.client.getContext());
     }
 
-    /**
-     * Migrate item.
-     * 
-     * The operation to initiate migration of the item.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param resourceName The name of the Vault.
-     * @param fabricName Fabric name.
-     * @param protectionContainerName Protection container name.
-     * @param migrationItemName Migration item name.
-     * @param migrateInput Migrate input.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the {@link SyncPoller} for polling of migration item.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public SyncPoller<PollResult<MigrationItemInner>, MigrationItemInner> beginMigrate(String resourceGroupName,
         String resourceName, String fabricName, String protectionContainerName, String migrationItemName,
         MigrateInput migrateInput) {
-        Response<BinaryData> response = migrateWithResponse(resourceGroupName, resourceName, fabricName,
-            protectionContainerName, migrationItemName, migrateInput);
-        return this.client.<MigrationItemInner, MigrationItemInner>getLroResult(response, MigrationItemInner.class,
-            MigrationItemInner.class, Context.NONE);
+        return beginMigrate(resourceGroupName, resourceName, fabricName, protectionContainerName, migrationItemName,
+            migrateInput, Context.NONE);
     }
 
-    /**
-     * Migrate item.
-     * 
-     * The operation to initiate migration of the item.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param resourceName The name of the Vault.
-     * @param fabricName Fabric name.
-     * @param protectionContainerName Protection container name.
-     * @param migrationItemName Migration item name.
-     * @param migrateInput Migrate input.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the {@link SyncPoller} for polling of migration item.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public SyncPoller<PollResult<MigrationItemInner>, MigrationItemInner> beginMigrate(String resourceGroupName,
         String resourceName, String fabricName, String protectionContainerName, String migrationItemName,
@@ -2151,51 +1691,20 @@ public final class ReplicationMigrationItemsClientImpl implements ReplicationMig
             migrationItemName, migrateInput).last().flatMap(this.client::getLroFinalResultOrError);
     }
 
-    /**
-     * Migrate item.
-     * 
-     * The operation to initiate migration of the item.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param resourceName The name of the Vault.
-     * @param fabricName Fabric name.
-     * @param protectionContainerName Protection container name.
-     * @param migrationItemName Migration item name.
-     * @param migrateInput Migrate input.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return migration item.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public MigrationItemInner migrate(String resourceGroupName, String resourceName, String fabricName,
         String protectionContainerName, String migrationItemName, MigrateInput migrateInput) {
-        return beginMigrate(resourceGroupName, resourceName, fabricName, protectionContainerName, migrationItemName,
-            migrateInput).getFinalResult();
+        return migrate(resourceGroupName, resourceName, fabricName, protectionContainerName, migrationItemName,
+            migrateInput, Context.NONE);
     }
 
-    /**
-     * Migrate item.
-     * 
-     * The operation to initiate migration of the item.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param resourceName The name of the Vault.
-     * @param fabricName Fabric name.
-     * @param protectionContainerName Protection container name.
-     * @param migrationItemName Migration item name.
-     * @param migrateInput Migrate input.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return migration item.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public MigrationItemInner migrate(String resourceGroupName, String resourceName, String fabricName,
         String protectionContainerName, String migrationItemName, MigrateInput migrateInput, Context context) {
-        return beginMigrate(resourceGroupName, resourceName, fabricName, protectionContainerName, migrationItemName,
-            migrateInput, context).getFinalResult();
+        return this.client.getLroFinalResultOrError(beginMigrate(resourceGroupName, resourceName, fabricName,
+            protectionContainerName, migrationItemName, migrateInput, context));
     }
 
     /**
@@ -2279,47 +1788,8 @@ public final class ReplicationMigrationItemsClientImpl implements ReplicationMig
     private Response<BinaryData> pauseReplicationWithResponse(String resourceGroupName, String resourceName,
         String fabricName, String protectionContainerName, String migrationItemName,
         PauseReplicationInput pauseReplicationInput) {
-        if (this.client.getEndpoint() == null) {
-            throw LOGGER.atError()
-                .log(new IllegalArgumentException(
-                    "Parameter this.client.getEndpoint() is required and cannot be null."));
-        }
-        if (this.client.getSubscriptionId() == null) {
-            throw LOGGER.atError()
-                .log(new IllegalArgumentException(
-                    "Parameter this.client.getSubscriptionId() is required and cannot be null."));
-        }
-        if (resourceGroupName == null) {
-            throw LOGGER.atError()
-                .log(new IllegalArgumentException("Parameter resourceGroupName is required and cannot be null."));
-        }
-        if (resourceName == null) {
-            throw LOGGER.atError()
-                .log(new IllegalArgumentException("Parameter resourceName is required and cannot be null."));
-        }
-        if (fabricName == null) {
-            throw LOGGER.atError()
-                .log(new IllegalArgumentException("Parameter fabricName is required and cannot be null."));
-        }
-        if (protectionContainerName == null) {
-            throw LOGGER.atError()
-                .log(new IllegalArgumentException("Parameter protectionContainerName is required and cannot be null."));
-        }
-        if (migrationItemName == null) {
-            throw LOGGER.atError()
-                .log(new IllegalArgumentException("Parameter migrationItemName is required and cannot be null."));
-        }
-        if (pauseReplicationInput == null) {
-            throw LOGGER.atError()
-                .log(new IllegalArgumentException("Parameter pauseReplicationInput is required and cannot be null."));
-        } else {
-            pauseReplicationInput.validate();
-        }
-        final String contentType = "application/json";
-        final String accept = "application/json";
-        return service.pauseReplicationSync(this.client.getEndpoint(), this.client.getApiVersion(),
-            this.client.getSubscriptionId(), resourceGroupName, resourceName, fabricName, protectionContainerName,
-            migrationItemName, contentType, accept, pauseReplicationInput, Context.NONE);
+        return pauseReplicationWithResponse(resourceGroupName, resourceName, fabricName, protectionContainerName,
+            migrationItemName, pauseReplicationInput, Context.NONE);
     }
 
     /**
@@ -2412,49 +1882,16 @@ public final class ReplicationMigrationItemsClientImpl implements ReplicationMig
             MigrationItemInner.class, MigrationItemInner.class, this.client.getContext());
     }
 
-    /**
-     * Pause replication.
-     * 
-     * The operation to initiate pause replication of the item.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param resourceName The name of the Vault.
-     * @param fabricName Fabric name.
-     * @param protectionContainerName Protection container name.
-     * @param migrationItemName Migration item name.
-     * @param pauseReplicationInput Pause replication input.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the {@link SyncPoller} for polling of migration item.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public SyncPoller<PollResult<MigrationItemInner>, MigrationItemInner> beginPauseReplication(
         String resourceGroupName, String resourceName, String fabricName, String protectionContainerName,
         String migrationItemName, PauseReplicationInput pauseReplicationInput) {
-        Response<BinaryData> response = pauseReplicationWithResponse(resourceGroupName, resourceName, fabricName,
-            protectionContainerName, migrationItemName, pauseReplicationInput);
-        return this.client.<MigrationItemInner, MigrationItemInner>getLroResult(response, MigrationItemInner.class,
-            MigrationItemInner.class, Context.NONE);
+        return beginPauseReplication(resourceGroupName, resourceName, fabricName, protectionContainerName,
+            migrationItemName, pauseReplicationInput, Context.NONE);
     }
 
-    /**
-     * Pause replication.
-     * 
-     * The operation to initiate pause replication of the item.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param resourceName The name of the Vault.
-     * @param fabricName Fabric name.
-     * @param protectionContainerName Protection container name.
-     * @param migrationItemName Migration item name.
-     * @param pauseReplicationInput Pause replication input.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the {@link SyncPoller} for polling of migration item.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public SyncPoller<PollResult<MigrationItemInner>, MigrationItemInner> beginPauseReplication(
         String resourceGroupName, String resourceName, String fabricName, String protectionContainerName,
@@ -2489,52 +1926,21 @@ public final class ReplicationMigrationItemsClientImpl implements ReplicationMig
             migrationItemName, pauseReplicationInput).last().flatMap(this.client::getLroFinalResultOrError);
     }
 
-    /**
-     * Pause replication.
-     * 
-     * The operation to initiate pause replication of the item.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param resourceName The name of the Vault.
-     * @param fabricName Fabric name.
-     * @param protectionContainerName Protection container name.
-     * @param migrationItemName Migration item name.
-     * @param pauseReplicationInput Pause replication input.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return migration item.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public MigrationItemInner pauseReplication(String resourceGroupName, String resourceName, String fabricName,
         String protectionContainerName, String migrationItemName, PauseReplicationInput pauseReplicationInput) {
-        return beginPauseReplication(resourceGroupName, resourceName, fabricName, protectionContainerName,
-            migrationItemName, pauseReplicationInput).getFinalResult();
+        return pauseReplication(resourceGroupName, resourceName, fabricName, protectionContainerName, migrationItemName,
+            pauseReplicationInput, Context.NONE);
     }
 
-    /**
-     * Pause replication.
-     * 
-     * The operation to initiate pause replication of the item.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param resourceName The name of the Vault.
-     * @param fabricName Fabric name.
-     * @param protectionContainerName Protection container name.
-     * @param migrationItemName Migration item name.
-     * @param pauseReplicationInput Pause replication input.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return migration item.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public MigrationItemInner pauseReplication(String resourceGroupName, String resourceName, String fabricName,
         String protectionContainerName, String migrationItemName, PauseReplicationInput pauseReplicationInput,
         Context context) {
-        return beginPauseReplication(resourceGroupName, resourceName, fabricName, protectionContainerName,
-            migrationItemName, pauseReplicationInput, context).getFinalResult();
+        return this.client.getLroFinalResultOrError(beginPauseReplication(resourceGroupName, resourceName, fabricName,
+            protectionContainerName, migrationItemName, pauseReplicationInput, context));
     }
 
     /**
@@ -2618,47 +2024,8 @@ public final class ReplicationMigrationItemsClientImpl implements ReplicationMig
     private Response<BinaryData> resumeReplicationWithResponse(String resourceGroupName, String resourceName,
         String fabricName, String protectionContainerName, String migrationItemName,
         ResumeReplicationInput resumeReplicationInput) {
-        if (this.client.getEndpoint() == null) {
-            throw LOGGER.atError()
-                .log(new IllegalArgumentException(
-                    "Parameter this.client.getEndpoint() is required and cannot be null."));
-        }
-        if (this.client.getSubscriptionId() == null) {
-            throw LOGGER.atError()
-                .log(new IllegalArgumentException(
-                    "Parameter this.client.getSubscriptionId() is required and cannot be null."));
-        }
-        if (resourceGroupName == null) {
-            throw LOGGER.atError()
-                .log(new IllegalArgumentException("Parameter resourceGroupName is required and cannot be null."));
-        }
-        if (resourceName == null) {
-            throw LOGGER.atError()
-                .log(new IllegalArgumentException("Parameter resourceName is required and cannot be null."));
-        }
-        if (fabricName == null) {
-            throw LOGGER.atError()
-                .log(new IllegalArgumentException("Parameter fabricName is required and cannot be null."));
-        }
-        if (protectionContainerName == null) {
-            throw LOGGER.atError()
-                .log(new IllegalArgumentException("Parameter protectionContainerName is required and cannot be null."));
-        }
-        if (migrationItemName == null) {
-            throw LOGGER.atError()
-                .log(new IllegalArgumentException("Parameter migrationItemName is required and cannot be null."));
-        }
-        if (resumeReplicationInput == null) {
-            throw LOGGER.atError()
-                .log(new IllegalArgumentException("Parameter resumeReplicationInput is required and cannot be null."));
-        } else {
-            resumeReplicationInput.validate();
-        }
-        final String contentType = "application/json";
-        final String accept = "application/json";
-        return service.resumeReplicationSync(this.client.getEndpoint(), this.client.getApiVersion(),
-            this.client.getSubscriptionId(), resourceGroupName, resourceName, fabricName, protectionContainerName,
-            migrationItemName, contentType, accept, resumeReplicationInput, Context.NONE);
+        return resumeReplicationWithResponse(resourceGroupName, resourceName, fabricName, protectionContainerName,
+            migrationItemName, resumeReplicationInput, Context.NONE);
     }
 
     /**
@@ -2751,49 +2118,16 @@ public final class ReplicationMigrationItemsClientImpl implements ReplicationMig
             MigrationItemInner.class, MigrationItemInner.class, this.client.getContext());
     }
 
-    /**
-     * Resume replication.
-     * 
-     * The operation to initiate resume replication of the item.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param resourceName The name of the Vault.
-     * @param fabricName Fabric name.
-     * @param protectionContainerName Protection container name.
-     * @param migrationItemName Migration item name.
-     * @param resumeReplicationInput Resume replication input.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the {@link SyncPoller} for polling of migration item.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public SyncPoller<PollResult<MigrationItemInner>, MigrationItemInner> beginResumeReplication(
         String resourceGroupName, String resourceName, String fabricName, String protectionContainerName,
         String migrationItemName, ResumeReplicationInput resumeReplicationInput) {
-        Response<BinaryData> response = resumeReplicationWithResponse(resourceGroupName, resourceName, fabricName,
-            protectionContainerName, migrationItemName, resumeReplicationInput);
-        return this.client.<MigrationItemInner, MigrationItemInner>getLroResult(response, MigrationItemInner.class,
-            MigrationItemInner.class, Context.NONE);
+        return beginResumeReplication(resourceGroupName, resourceName, fabricName, protectionContainerName,
+            migrationItemName, resumeReplicationInput, Context.NONE);
     }
 
-    /**
-     * Resume replication.
-     * 
-     * The operation to initiate resume replication of the item.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param resourceName The name of the Vault.
-     * @param fabricName Fabric name.
-     * @param protectionContainerName Protection container name.
-     * @param migrationItemName Migration item name.
-     * @param resumeReplicationInput Resume replication input.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the {@link SyncPoller} for polling of migration item.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public SyncPoller<PollResult<MigrationItemInner>, MigrationItemInner> beginResumeReplication(
         String resourceGroupName, String resourceName, String fabricName, String protectionContainerName,
@@ -2828,52 +2162,21 @@ public final class ReplicationMigrationItemsClientImpl implements ReplicationMig
             migrationItemName, resumeReplicationInput).last().flatMap(this.client::getLroFinalResultOrError);
     }
 
-    /**
-     * Resume replication.
-     * 
-     * The operation to initiate resume replication of the item.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param resourceName The name of the Vault.
-     * @param fabricName Fabric name.
-     * @param protectionContainerName Protection container name.
-     * @param migrationItemName Migration item name.
-     * @param resumeReplicationInput Resume replication input.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return migration item.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public MigrationItemInner resumeReplication(String resourceGroupName, String resourceName, String fabricName,
         String protectionContainerName, String migrationItemName, ResumeReplicationInput resumeReplicationInput) {
-        return beginResumeReplication(resourceGroupName, resourceName, fabricName, protectionContainerName,
-            migrationItemName, resumeReplicationInput).getFinalResult();
+        return resumeReplication(resourceGroupName, resourceName, fabricName, protectionContainerName,
+            migrationItemName, resumeReplicationInput, Context.NONE);
     }
 
-    /**
-     * Resume replication.
-     * 
-     * The operation to initiate resume replication of the item.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param resourceName The name of the Vault.
-     * @param fabricName Fabric name.
-     * @param protectionContainerName Protection container name.
-     * @param migrationItemName Migration item name.
-     * @param resumeReplicationInput Resume replication input.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return migration item.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public MigrationItemInner resumeReplication(String resourceGroupName, String resourceName, String fabricName,
         String protectionContainerName, String migrationItemName, ResumeReplicationInput resumeReplicationInput,
         Context context) {
-        return beginResumeReplication(resourceGroupName, resourceName, fabricName, protectionContainerName,
-            migrationItemName, resumeReplicationInput, context).getFinalResult();
+        return this.client.getLroFinalResultOrError(beginResumeReplication(resourceGroupName, resourceName, fabricName,
+            protectionContainerName, migrationItemName, resumeReplicationInput, context));
     }
 
     /**
@@ -2954,46 +2257,8 @@ public final class ReplicationMigrationItemsClientImpl implements ReplicationMig
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Response<BinaryData> resyncWithResponse(String resourceGroupName, String resourceName, String fabricName,
         String protectionContainerName, String migrationItemName, ResyncInput input) {
-        if (this.client.getEndpoint() == null) {
-            throw LOGGER.atError()
-                .log(new IllegalArgumentException(
-                    "Parameter this.client.getEndpoint() is required and cannot be null."));
-        }
-        if (this.client.getSubscriptionId() == null) {
-            throw LOGGER.atError()
-                .log(new IllegalArgumentException(
-                    "Parameter this.client.getSubscriptionId() is required and cannot be null."));
-        }
-        if (resourceGroupName == null) {
-            throw LOGGER.atError()
-                .log(new IllegalArgumentException("Parameter resourceGroupName is required and cannot be null."));
-        }
-        if (resourceName == null) {
-            throw LOGGER.atError()
-                .log(new IllegalArgumentException("Parameter resourceName is required and cannot be null."));
-        }
-        if (fabricName == null) {
-            throw LOGGER.atError()
-                .log(new IllegalArgumentException("Parameter fabricName is required and cannot be null."));
-        }
-        if (protectionContainerName == null) {
-            throw LOGGER.atError()
-                .log(new IllegalArgumentException("Parameter protectionContainerName is required and cannot be null."));
-        }
-        if (migrationItemName == null) {
-            throw LOGGER.atError()
-                .log(new IllegalArgumentException("Parameter migrationItemName is required and cannot be null."));
-        }
-        if (input == null) {
-            throw LOGGER.atError().log(new IllegalArgumentException("Parameter input is required and cannot be null."));
-        } else {
-            input.validate();
-        }
-        final String contentType = "application/json";
-        final String accept = "application/json";
-        return service.resyncSync(this.client.getEndpoint(), this.client.getApiVersion(),
-            this.client.getSubscriptionId(), resourceGroupName, resourceName, fabricName, protectionContainerName,
-            migrationItemName, contentType, accept, input, Context.NONE);
+        return resyncWithResponse(resourceGroupName, resourceName, fabricName, protectionContainerName,
+            migrationItemName, input, Context.NONE);
     }
 
     /**
@@ -3084,49 +2349,16 @@ public final class ReplicationMigrationItemsClientImpl implements ReplicationMig
             MigrationItemInner.class, MigrationItemInner.class, this.client.getContext());
     }
 
-    /**
-     * Resynchronizes replication.
-     * 
-     * The operation to resynchronize replication of an ASR migration item.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param resourceName The name of the Vault.
-     * @param fabricName Fabric name.
-     * @param protectionContainerName Protection container name.
-     * @param migrationItemName Migration item name.
-     * @param input Resync input.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the {@link SyncPoller} for polling of migration item.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public SyncPoller<PollResult<MigrationItemInner>, MigrationItemInner> beginResync(String resourceGroupName,
         String resourceName, String fabricName, String protectionContainerName, String migrationItemName,
         ResyncInput input) {
-        Response<BinaryData> response = resyncWithResponse(resourceGroupName, resourceName, fabricName,
-            protectionContainerName, migrationItemName, input);
-        return this.client.<MigrationItemInner, MigrationItemInner>getLroResult(response, MigrationItemInner.class,
-            MigrationItemInner.class, Context.NONE);
+        return beginResync(resourceGroupName, resourceName, fabricName, protectionContainerName, migrationItemName,
+            input, Context.NONE);
     }
 
-    /**
-     * Resynchronizes replication.
-     * 
-     * The operation to resynchronize replication of an ASR migration item.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param resourceName The name of the Vault.
-     * @param fabricName Fabric name.
-     * @param protectionContainerName Protection container name.
-     * @param migrationItemName Migration item name.
-     * @param input Resync input.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the {@link SyncPoller} for polling of migration item.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public SyncPoller<PollResult<MigrationItemInner>, MigrationItemInner> beginResync(String resourceGroupName,
         String resourceName, String fabricName, String protectionContainerName, String migrationItemName,
@@ -3160,51 +2392,20 @@ public final class ReplicationMigrationItemsClientImpl implements ReplicationMig
             input).last().flatMap(this.client::getLroFinalResultOrError);
     }
 
-    /**
-     * Resynchronizes replication.
-     * 
-     * The operation to resynchronize replication of an ASR migration item.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param resourceName The name of the Vault.
-     * @param fabricName Fabric name.
-     * @param protectionContainerName Protection container name.
-     * @param migrationItemName Migration item name.
-     * @param input Resync input.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return migration item.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public MigrationItemInner resync(String resourceGroupName, String resourceName, String fabricName,
         String protectionContainerName, String migrationItemName, ResyncInput input) {
-        return beginResync(resourceGroupName, resourceName, fabricName, protectionContainerName, migrationItemName,
-            input).getFinalResult();
+        return resync(resourceGroupName, resourceName, fabricName, protectionContainerName, migrationItemName, input,
+            Context.NONE);
     }
 
-    /**
-     * Resynchronizes replication.
-     * 
-     * The operation to resynchronize replication of an ASR migration item.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param resourceName The name of the Vault.
-     * @param fabricName Fabric name.
-     * @param protectionContainerName Protection container name.
-     * @param migrationItemName Migration item name.
-     * @param input Resync input.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return migration item.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public MigrationItemInner resync(String resourceGroupName, String resourceName, String fabricName,
         String protectionContainerName, String migrationItemName, ResyncInput input, Context context) {
-        return beginResync(resourceGroupName, resourceName, fabricName, protectionContainerName, migrationItemName,
-            input, context).getFinalResult();
+        return this.client.getLroFinalResultOrError(beginResync(resourceGroupName, resourceName, fabricName,
+            protectionContainerName, migrationItemName, input, context));
     }
 
     /**
@@ -3288,47 +2489,8 @@ public final class ReplicationMigrationItemsClientImpl implements ReplicationMig
     private Response<BinaryData> testMigrateWithResponse(String resourceGroupName, String resourceName,
         String fabricName, String protectionContainerName, String migrationItemName,
         TestMigrateInput testMigrateInput) {
-        if (this.client.getEndpoint() == null) {
-            throw LOGGER.atError()
-                .log(new IllegalArgumentException(
-                    "Parameter this.client.getEndpoint() is required and cannot be null."));
-        }
-        if (this.client.getSubscriptionId() == null) {
-            throw LOGGER.atError()
-                .log(new IllegalArgumentException(
-                    "Parameter this.client.getSubscriptionId() is required and cannot be null."));
-        }
-        if (resourceGroupName == null) {
-            throw LOGGER.atError()
-                .log(new IllegalArgumentException("Parameter resourceGroupName is required and cannot be null."));
-        }
-        if (resourceName == null) {
-            throw LOGGER.atError()
-                .log(new IllegalArgumentException("Parameter resourceName is required and cannot be null."));
-        }
-        if (fabricName == null) {
-            throw LOGGER.atError()
-                .log(new IllegalArgumentException("Parameter fabricName is required and cannot be null."));
-        }
-        if (protectionContainerName == null) {
-            throw LOGGER.atError()
-                .log(new IllegalArgumentException("Parameter protectionContainerName is required and cannot be null."));
-        }
-        if (migrationItemName == null) {
-            throw LOGGER.atError()
-                .log(new IllegalArgumentException("Parameter migrationItemName is required and cannot be null."));
-        }
-        if (testMigrateInput == null) {
-            throw LOGGER.atError()
-                .log(new IllegalArgumentException("Parameter testMigrateInput is required and cannot be null."));
-        } else {
-            testMigrateInput.validate();
-        }
-        final String contentType = "application/json";
-        final String accept = "application/json";
-        return service.testMigrateSync(this.client.getEndpoint(), this.client.getApiVersion(),
-            this.client.getSubscriptionId(), resourceGroupName, resourceName, fabricName, protectionContainerName,
-            migrationItemName, contentType, accept, testMigrateInput, Context.NONE);
+        return testMigrateWithResponse(resourceGroupName, resourceName, fabricName, protectionContainerName,
+            migrationItemName, testMigrateInput, Context.NONE);
     }
 
     /**
@@ -3421,49 +2583,16 @@ public final class ReplicationMigrationItemsClientImpl implements ReplicationMig
             MigrationItemInner.class, MigrationItemInner.class, this.client.getContext());
     }
 
-    /**
-     * Test migrate item.
-     * 
-     * The operation to initiate test migration of the item.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param resourceName The name of the Vault.
-     * @param fabricName Fabric name.
-     * @param protectionContainerName Protection container name.
-     * @param migrationItemName Migration item name.
-     * @param testMigrateInput Test migrate input.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the {@link SyncPoller} for polling of migration item.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public SyncPoller<PollResult<MigrationItemInner>, MigrationItemInner> beginTestMigrate(String resourceGroupName,
         String resourceName, String fabricName, String protectionContainerName, String migrationItemName,
         TestMigrateInput testMigrateInput) {
-        Response<BinaryData> response = testMigrateWithResponse(resourceGroupName, resourceName, fabricName,
-            protectionContainerName, migrationItemName, testMigrateInput);
-        return this.client.<MigrationItemInner, MigrationItemInner>getLroResult(response, MigrationItemInner.class,
-            MigrationItemInner.class, Context.NONE);
+        return beginTestMigrate(resourceGroupName, resourceName, fabricName, protectionContainerName, migrationItemName,
+            testMigrateInput, Context.NONE);
     }
 
-    /**
-     * Test migrate item.
-     * 
-     * The operation to initiate test migration of the item.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param resourceName The name of the Vault.
-     * @param fabricName Fabric name.
-     * @param protectionContainerName Protection container name.
-     * @param migrationItemName Migration item name.
-     * @param testMigrateInput Test migrate input.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the {@link SyncPoller} for polling of migration item.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public SyncPoller<PollResult<MigrationItemInner>, MigrationItemInner> beginTestMigrate(String resourceGroupName,
         String resourceName, String fabricName, String protectionContainerName, String migrationItemName,
@@ -3497,51 +2626,20 @@ public final class ReplicationMigrationItemsClientImpl implements ReplicationMig
             migrationItemName, testMigrateInput).last().flatMap(this.client::getLroFinalResultOrError);
     }
 
-    /**
-     * Test migrate item.
-     * 
-     * The operation to initiate test migration of the item.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param resourceName The name of the Vault.
-     * @param fabricName Fabric name.
-     * @param protectionContainerName Protection container name.
-     * @param migrationItemName Migration item name.
-     * @param testMigrateInput Test migrate input.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return migration item.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public MigrationItemInner testMigrate(String resourceGroupName, String resourceName, String fabricName,
         String protectionContainerName, String migrationItemName, TestMigrateInput testMigrateInput) {
-        return beginTestMigrate(resourceGroupName, resourceName, fabricName, protectionContainerName, migrationItemName,
-            testMigrateInput).getFinalResult();
+        return testMigrate(resourceGroupName, resourceName, fabricName, protectionContainerName, migrationItemName,
+            testMigrateInput, Context.NONE);
     }
 
-    /**
-     * Test migrate item.
-     * 
-     * The operation to initiate test migration of the item.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param resourceName The name of the Vault.
-     * @param fabricName Fabric name.
-     * @param protectionContainerName Protection container name.
-     * @param migrationItemName Migration item name.
-     * @param testMigrateInput Test migrate input.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return migration item.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public MigrationItemInner testMigrate(String resourceGroupName, String resourceName, String fabricName,
         String protectionContainerName, String migrationItemName, TestMigrateInput testMigrateInput, Context context) {
-        return beginTestMigrate(resourceGroupName, resourceName, fabricName, protectionContainerName, migrationItemName,
-            testMigrateInput, context).getFinalResult();
+        return this.client.getLroFinalResultOrError(beginTestMigrate(resourceGroupName, resourceName, fabricName,
+            protectionContainerName, migrationItemName, testMigrateInput, context));
     }
 
     /**
@@ -3625,47 +2723,8 @@ public final class ReplicationMigrationItemsClientImpl implements ReplicationMig
     private Response<BinaryData> testMigrateCleanupWithResponse(String resourceGroupName, String resourceName,
         String fabricName, String protectionContainerName, String migrationItemName,
         TestMigrateCleanupInput testMigrateCleanupInput) {
-        if (this.client.getEndpoint() == null) {
-            throw LOGGER.atError()
-                .log(new IllegalArgumentException(
-                    "Parameter this.client.getEndpoint() is required and cannot be null."));
-        }
-        if (this.client.getSubscriptionId() == null) {
-            throw LOGGER.atError()
-                .log(new IllegalArgumentException(
-                    "Parameter this.client.getSubscriptionId() is required and cannot be null."));
-        }
-        if (resourceGroupName == null) {
-            throw LOGGER.atError()
-                .log(new IllegalArgumentException("Parameter resourceGroupName is required and cannot be null."));
-        }
-        if (resourceName == null) {
-            throw LOGGER.atError()
-                .log(new IllegalArgumentException("Parameter resourceName is required and cannot be null."));
-        }
-        if (fabricName == null) {
-            throw LOGGER.atError()
-                .log(new IllegalArgumentException("Parameter fabricName is required and cannot be null."));
-        }
-        if (protectionContainerName == null) {
-            throw LOGGER.atError()
-                .log(new IllegalArgumentException("Parameter protectionContainerName is required and cannot be null."));
-        }
-        if (migrationItemName == null) {
-            throw LOGGER.atError()
-                .log(new IllegalArgumentException("Parameter migrationItemName is required and cannot be null."));
-        }
-        if (testMigrateCleanupInput == null) {
-            throw LOGGER.atError()
-                .log(new IllegalArgumentException("Parameter testMigrateCleanupInput is required and cannot be null."));
-        } else {
-            testMigrateCleanupInput.validate();
-        }
-        final String contentType = "application/json";
-        final String accept = "application/json";
-        return service.testMigrateCleanupSync(this.client.getEndpoint(), this.client.getApiVersion(),
-            this.client.getSubscriptionId(), resourceGroupName, resourceName, fabricName, protectionContainerName,
-            migrationItemName, contentType, accept, testMigrateCleanupInput, Context.NONE);
+        return testMigrateCleanupWithResponse(resourceGroupName, resourceName, fabricName, protectionContainerName,
+            migrationItemName, testMigrateCleanupInput, Context.NONE);
     }
 
     /**
@@ -3758,49 +2817,16 @@ public final class ReplicationMigrationItemsClientImpl implements ReplicationMig
             MigrationItemInner.class, MigrationItemInner.class, this.client.getContext());
     }
 
-    /**
-     * Test migrate cleanup.
-     * 
-     * The operation to initiate test migrate cleanup.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param resourceName The name of the Vault.
-     * @param fabricName Fabric name.
-     * @param protectionContainerName Protection container name.
-     * @param migrationItemName Migration item name.
-     * @param testMigrateCleanupInput Test migrate cleanup input.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the {@link SyncPoller} for polling of migration item.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public SyncPoller<PollResult<MigrationItemInner>, MigrationItemInner> beginTestMigrateCleanup(
         String resourceGroupName, String resourceName, String fabricName, String protectionContainerName,
         String migrationItemName, TestMigrateCleanupInput testMigrateCleanupInput) {
-        Response<BinaryData> response = testMigrateCleanupWithResponse(resourceGroupName, resourceName, fabricName,
-            protectionContainerName, migrationItemName, testMigrateCleanupInput);
-        return this.client.<MigrationItemInner, MigrationItemInner>getLroResult(response, MigrationItemInner.class,
-            MigrationItemInner.class, Context.NONE);
+        return beginTestMigrateCleanup(resourceGroupName, resourceName, fabricName, protectionContainerName,
+            migrationItemName, testMigrateCleanupInput, Context.NONE);
     }
 
-    /**
-     * Test migrate cleanup.
-     * 
-     * The operation to initiate test migrate cleanup.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param resourceName The name of the Vault.
-     * @param fabricName Fabric name.
-     * @param protectionContainerName Protection container name.
-     * @param migrationItemName Migration item name.
-     * @param testMigrateCleanupInput Test migrate cleanup input.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the {@link SyncPoller} for polling of migration item.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public SyncPoller<PollResult<MigrationItemInner>, MigrationItemInner> beginTestMigrateCleanup(
         String resourceGroupName, String resourceName, String fabricName, String protectionContainerName,
@@ -3835,52 +2861,21 @@ public final class ReplicationMigrationItemsClientImpl implements ReplicationMig
             migrationItemName, testMigrateCleanupInput).last().flatMap(this.client::getLroFinalResultOrError);
     }
 
-    /**
-     * Test migrate cleanup.
-     * 
-     * The operation to initiate test migrate cleanup.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param resourceName The name of the Vault.
-     * @param fabricName Fabric name.
-     * @param protectionContainerName Protection container name.
-     * @param migrationItemName Migration item name.
-     * @param testMigrateCleanupInput Test migrate cleanup input.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return migration item.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public MigrationItemInner testMigrateCleanup(String resourceGroupName, String resourceName, String fabricName,
         String protectionContainerName, String migrationItemName, TestMigrateCleanupInput testMigrateCleanupInput) {
-        return beginTestMigrateCleanup(resourceGroupName, resourceName, fabricName, protectionContainerName,
-            migrationItemName, testMigrateCleanupInput).getFinalResult();
+        return testMigrateCleanup(resourceGroupName, resourceName, fabricName, protectionContainerName,
+            migrationItemName, testMigrateCleanupInput, Context.NONE);
     }
 
-    /**
-     * Test migrate cleanup.
-     * 
-     * The operation to initiate test migrate cleanup.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param resourceName The name of the Vault.
-     * @param fabricName Fabric name.
-     * @param protectionContainerName Protection container name.
-     * @param migrationItemName Migration item name.
-     * @param testMigrateCleanupInput Test migrate cleanup input.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return migration item.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public MigrationItemInner testMigrateCleanup(String resourceGroupName, String resourceName, String fabricName,
         String protectionContainerName, String migrationItemName, TestMigrateCleanupInput testMigrateCleanupInput,
         Context context) {
-        return beginTestMigrateCleanup(resourceGroupName, resourceName, fabricName, protectionContainerName,
-            migrationItemName, testMigrateCleanupInput, context).getFinalResult();
+        return this.client.getLroFinalResultOrError(beginTestMigrateCleanup(resourceGroupName, resourceName, fabricName,
+            protectionContainerName, migrationItemName, testMigrateCleanupInput, context));
     }
 
     /**
@@ -3980,30 +2975,7 @@ public final class ReplicationMigrationItemsClientImpl implements ReplicationMig
     @ServiceMethod(returns = ReturnType.SINGLE)
     private PagedResponse<MigrationItemInner> listSinglePage(String resourceGroupName, String resourceName,
         String skipToken, String takeToken, String filter) {
-        if (this.client.getEndpoint() == null) {
-            throw LOGGER.atError()
-                .log(new IllegalArgumentException(
-                    "Parameter this.client.getEndpoint() is required and cannot be null."));
-        }
-        if (this.client.getSubscriptionId() == null) {
-            throw LOGGER.atError()
-                .log(new IllegalArgumentException(
-                    "Parameter this.client.getSubscriptionId() is required and cannot be null."));
-        }
-        if (resourceGroupName == null) {
-            throw LOGGER.atError()
-                .log(new IllegalArgumentException("Parameter resourceGroupName is required and cannot be null."));
-        }
-        if (resourceName == null) {
-            throw LOGGER.atError()
-                .log(new IllegalArgumentException("Parameter resourceName is required and cannot be null."));
-        }
-        final String accept = "application/json";
-        Response<MigrationItemCollection> res
-            = service.listSync(this.client.getEndpoint(), this.client.getApiVersion(), this.client.getSubscriptionId(),
-                resourceGroupName, resourceName, skipToken, takeToken, filter, accept, Context.NONE);
-        return new PagedResponseBase<>(res.getRequest(), res.getStatusCode(), res.getHeaders(), res.getValue().value(),
-            res.getValue().nextLink(), null);
+        return listSinglePage(resourceGroupName, resourceName, skipToken, takeToken, filter, Context.NONE);
     }
 
     /**
@@ -4049,39 +3021,16 @@ public final class ReplicationMigrationItemsClientImpl implements ReplicationMig
             res.getValue().nextLink(), null);
     }
 
-    /**
-     * Gets the list of migration items in the vault.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param resourceName The name of the recovery services vault.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the list of migration items in the vault as paginated response with {@link PagedIterable}.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.COLLECTION)
     public PagedIterable<MigrationItemInner> list(String resourceGroupName, String resourceName) {
         final String skipToken = null;
         final String takeToken = null;
         final String filter = null;
-        return new PagedIterable<>(() -> listSinglePage(resourceGroupName, resourceName, skipToken, takeToken, filter),
-            nextLink -> listNextSinglePage(nextLink));
+        return list(resourceGroupName, resourceName, skipToken, takeToken, filter, Context.NONE);
     }
 
-    /**
-     * Gets the list of migration items in the vault.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param resourceName The name of the recovery services vault.
-     * @param skipToken The pagination token.
-     * @param takeToken The page size.
-     * @param filter OData filter options.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the list of migration items in the vault as paginated response with {@link PagedIterable}.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.COLLECTION)
     public PagedIterable<MigrationItemInner> list(String resourceGroupName, String resourceName, String skipToken,
         String takeToken, String filter, Context context) {
@@ -4138,20 +3087,7 @@ public final class ReplicationMigrationItemsClientImpl implements ReplicationMig
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private PagedResponse<MigrationItemInner> listByReplicationProtectionContainersNextSinglePage(String nextLink) {
-        if (nextLink == null) {
-            throw LOGGER.atError()
-                .log(new IllegalArgumentException("Parameter nextLink is required and cannot be null."));
-        }
-        if (this.client.getEndpoint() == null) {
-            throw LOGGER.atError()
-                .log(new IllegalArgumentException(
-                    "Parameter this.client.getEndpoint() is required and cannot be null."));
-        }
-        final String accept = "application/json";
-        Response<MigrationItemCollection> res = service.listByReplicationProtectionContainersNextSync(nextLink,
-            this.client.getEndpoint(), accept, Context.NONE);
-        return new PagedResponseBase<>(res.getRequest(), res.getStatusCode(), res.getHeaders(), res.getValue().value(),
-            res.getValue().nextLink(), null);
+        return listByReplicationProtectionContainersNextSinglePage(nextLink, Context.NONE);
     }
 
     /**
@@ -4228,20 +3164,7 @@ public final class ReplicationMigrationItemsClientImpl implements ReplicationMig
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private PagedResponse<MigrationItemInner> listNextSinglePage(String nextLink) {
-        if (nextLink == null) {
-            throw LOGGER.atError()
-                .log(new IllegalArgumentException("Parameter nextLink is required and cannot be null."));
-        }
-        if (this.client.getEndpoint() == null) {
-            throw LOGGER.atError()
-                .log(new IllegalArgumentException(
-                    "Parameter this.client.getEndpoint() is required and cannot be null."));
-        }
-        final String accept = "application/json";
-        Response<MigrationItemCollection> res
-            = service.listNextSync(nextLink, this.client.getEndpoint(), accept, Context.NONE);
-        return new PagedResponseBase<>(res.getRequest(), res.getStatusCode(), res.getHeaders(), res.getValue().value(),
-            res.getValue().nextLink(), null);
+        return listNextSinglePage(nextLink, Context.NONE);
     }
 
     /**

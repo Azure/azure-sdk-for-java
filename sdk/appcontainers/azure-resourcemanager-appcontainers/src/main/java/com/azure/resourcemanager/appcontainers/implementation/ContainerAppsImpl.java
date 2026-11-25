@@ -51,7 +51,7 @@ public final class ContainerAppsImpl implements ContainerApps {
     }
 
     public void deleteByResourceGroup(String resourceGroupName, String containerAppName) {
-        this.serviceClient().delete(resourceGroupName, containerAppName);
+        this.delete(resourceGroupName, containerAppName, Context.NONE);
     }
 
     public void delete(String resourceGroupName, String containerAppName, Context context) {
@@ -59,8 +59,7 @@ public final class ContainerAppsImpl implements ContainerApps {
     }
 
     public PagedIterable<ContainerApp> listByResourceGroup(String resourceGroupName) {
-        PagedIterable<ContainerAppInner> inner = this.serviceClient().listByResourceGroup(resourceGroupName);
-        return ResourceManagerUtils.mapPage(inner, inner1 -> new ContainerAppImpl(inner1, this.manager()));
+        return this.listByResourceGroup(resourceGroupName, Context.NONE);
     }
 
     public PagedIterable<ContainerApp> listByResourceGroup(String resourceGroupName, Context context) {
@@ -69,8 +68,7 @@ public final class ContainerAppsImpl implements ContainerApps {
     }
 
     public PagedIterable<ContainerApp> list() {
-        PagedIterable<ContainerAppInner> inner = this.serviceClient().list();
-        return ResourceManagerUtils.mapPage(inner, inner1 -> new ContainerAppImpl(inner1, this.manager()));
+        return this.list(Context.NONE);
     }
 
     public PagedIterable<ContainerApp> list(Context context) {
@@ -131,12 +129,7 @@ public final class ContainerAppsImpl implements ContainerApps {
     }
 
     public ContainerApp start(String resourceGroupName, String containerAppName) {
-        ContainerAppInner inner = this.serviceClient().start(resourceGroupName, containerAppName);
-        if (inner != null) {
-            return new ContainerAppImpl(inner, this.manager());
-        } else {
-            return null;
-        }
+        return this.start(resourceGroupName, containerAppName, Context.NONE);
     }
 
     public ContainerApp start(String resourceGroupName, String containerAppName, Context context) {
@@ -149,12 +142,7 @@ public final class ContainerAppsImpl implements ContainerApps {
     }
 
     public ContainerApp stop(String resourceGroupName, String containerAppName) {
-        ContainerAppInner inner = this.serviceClient().stop(resourceGroupName, containerAppName);
-        if (inner != null) {
-            return new ContainerAppImpl(inner, this.manager());
-        } else {
-            return null;
-        }
+        return this.stop(resourceGroupName, containerAppName, Context.NONE);
     }
 
     public ContainerApp stop(String resourceGroupName, String containerAppName, Context context) {
@@ -167,74 +155,30 @@ public final class ContainerAppsImpl implements ContainerApps {
     }
 
     public ContainerApp getById(String id) {
-        String resourceGroupName = ResourceManagerUtils.getValueFromIdByParameterName(id,
-            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.App/containerApps/{containerAppName}",
-            "resourceGroupName");
-        if (resourceGroupName == null) {
-            throw LOGGER.logExceptionAsError(new IllegalArgumentException(
-                String.format("The resource ID '%s' is not valid. Missing path segment 'resourceGroups'.", id)));
-        }
-        String containerAppName = ResourceManagerUtils.getValueFromIdByParameterName(id,
-            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.App/containerApps/{containerAppName}",
-            "containerAppName");
-        if (containerAppName == null) {
-            throw LOGGER.logExceptionAsError(new IllegalArgumentException(
-                String.format("The resource ID '%s' is not valid. Missing path segment 'containerApps'.", id)));
-        }
-        return this.getByResourceGroupWithResponse(resourceGroupName, containerAppName, Context.NONE).getValue();
+        return this.getByIdWithResponse(id, Context.NONE).getValue();
     }
 
     public Response<ContainerApp> getByIdWithResponse(String id, Context context) {
-        String resourceGroupName = ResourceManagerUtils.getValueFromIdByParameterName(id,
+        String resourceGroupName = ResourceManagerUtils.getRequiredValueFromIdByParameterName(id,
             "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.App/containerApps/{containerAppName}",
-            "resourceGroupName");
-        if (resourceGroupName == null) {
-            throw LOGGER.logExceptionAsError(new IllegalArgumentException(
-                String.format("The resource ID '%s' is not valid. Missing path segment 'resourceGroups'.", id)));
-        }
-        String containerAppName = ResourceManagerUtils.getValueFromIdByParameterName(id,
+            "resourceGroupName", "resourceGroups", LOGGER);
+        String containerAppName = ResourceManagerUtils.getRequiredValueFromIdByParameterName(id,
             "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.App/containerApps/{containerAppName}",
-            "containerAppName");
-        if (containerAppName == null) {
-            throw LOGGER.logExceptionAsError(new IllegalArgumentException(
-                String.format("The resource ID '%s' is not valid. Missing path segment 'containerApps'.", id)));
-        }
+            "containerAppName", "containerApps", LOGGER);
         return this.getByResourceGroupWithResponse(resourceGroupName, containerAppName, context);
     }
 
     public void deleteById(String id) {
-        String resourceGroupName = ResourceManagerUtils.getValueFromIdByParameterName(id,
-            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.App/containerApps/{containerAppName}",
-            "resourceGroupName");
-        if (resourceGroupName == null) {
-            throw LOGGER.logExceptionAsError(new IllegalArgumentException(
-                String.format("The resource ID '%s' is not valid. Missing path segment 'resourceGroups'.", id)));
-        }
-        String containerAppName = ResourceManagerUtils.getValueFromIdByParameterName(id,
-            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.App/containerApps/{containerAppName}",
-            "containerAppName");
-        if (containerAppName == null) {
-            throw LOGGER.logExceptionAsError(new IllegalArgumentException(
-                String.format("The resource ID '%s' is not valid. Missing path segment 'containerApps'.", id)));
-        }
-        this.delete(resourceGroupName, containerAppName, Context.NONE);
+        this.deleteByIdWithResponse(id, Context.NONE);
     }
 
     public void deleteByIdWithResponse(String id, Context context) {
-        String resourceGroupName = ResourceManagerUtils.getValueFromIdByParameterName(id,
+        String resourceGroupName = ResourceManagerUtils.getRequiredValueFromIdByParameterName(id,
             "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.App/containerApps/{containerAppName}",
-            "resourceGroupName");
-        if (resourceGroupName == null) {
-            throw LOGGER.logExceptionAsError(new IllegalArgumentException(
-                String.format("The resource ID '%s' is not valid. Missing path segment 'resourceGroups'.", id)));
-        }
-        String containerAppName = ResourceManagerUtils.getValueFromIdByParameterName(id,
+            "resourceGroupName", "resourceGroups", LOGGER);
+        String containerAppName = ResourceManagerUtils.getRequiredValueFromIdByParameterName(id,
             "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.App/containerApps/{containerAppName}",
-            "containerAppName");
-        if (containerAppName == null) {
-            throw LOGGER.logExceptionAsError(new IllegalArgumentException(
-                String.format("The resource ID '%s' is not valid. Missing path segment 'containerApps'.", id)));
-        }
+            "containerAppName", "containerApps", LOGGER);
         this.delete(resourceGroupName, containerAppName, context);
     }
 

@@ -267,17 +267,7 @@ public final class KubernetesVersionsClientImpl implements KubernetesVersionsCli
             .flatMap(res -> Mono.justOrEmpty(res.getValue()));
     }
 
-    /**
-     * Retrieve the Kubernetes version resource that describes the available Kubernetes versions for deployment.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param kubernetesVersionName The name of the Kubernetes version resource.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return kubernetesVersion represents the available Kubernetes versions for a cluster along with {@link Response}.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Response<KubernetesVersionInner> getByResourceGroupWithResponse(String resourceGroupName,
         String kubernetesVersionName, Context context) {
@@ -286,16 +276,7 @@ public final class KubernetesVersionsClientImpl implements KubernetesVersionsCli
             this.client.getSubscriptionId(), resourceGroupName, kubernetesVersionName, accept, context);
     }
 
-    /**
-     * Retrieve the Kubernetes version resource that describes the available Kubernetes versions for deployment.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param kubernetesVersionName The name of the Kubernetes version resource.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return kubernetesVersion represents the available Kubernetes versions for a cluster.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public KubernetesVersionInner getByResourceGroup(String resourceGroupName, String kubernetesVersionName) {
         return getByResourceGroupWithResponse(resourceGroupName, kubernetesVersionName, Context.NONE).getValue();
@@ -350,11 +331,8 @@ public final class KubernetesVersionsClientImpl implements KubernetesVersionsCli
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Response<BinaryData> createOrUpdateWithResponse(String resourceGroupName, String kubernetesVersionName,
         KubernetesVersionInner kubernetesVersionParameters, String ifMatch, String ifNoneMatch) {
-        final String contentType = "application/json";
-        final String accept = "application/json";
-        return service.createOrUpdateSync(this.client.getEndpoint(), this.client.getApiVersion(),
-            this.client.getSubscriptionId(), resourceGroupName, kubernetesVersionName, ifMatch, ifNoneMatch,
-            contentType, accept, kubernetesVersionParameters, Context.NONE);
+        return createOrUpdateWithResponse(resourceGroupName, kubernetesVersionName, kubernetesVersionParameters,
+            ifMatch, ifNoneMatch, Context.NONE);
     }
 
     /**
@@ -458,54 +436,21 @@ public final class KubernetesVersionsClientImpl implements KubernetesVersionsCli
     private SyncPoller<PollResult<KubernetesVersionInner>, KubernetesVersionInner> beginCreateOrUpdate(
         String resourceGroupName, String kubernetesVersionName, KubernetesVersionInner kubernetesVersionParameters,
         String ifMatch, String ifNoneMatch) {
-        Response<BinaryData> response = createOrUpdateWithResponse(resourceGroupName, kubernetesVersionName,
-            kubernetesVersionParameters, ifMatch, ifNoneMatch);
-        return this.client.<KubernetesVersionInner, KubernetesVersionInner>getLroResult(response,
-            KubernetesVersionInner.class, KubernetesVersionInner.class, Context.NONE);
+        return beginCreateOrUpdate(resourceGroupName, kubernetesVersionName, kubernetesVersionParameters, ifMatch,
+            ifNoneMatch, Context.NONE);
     }
 
-    /**
-     * Create the Kubernetes version resource or update its tags. This resource is system managed and should only be
-     * created with the name "default".
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param kubernetesVersionName The name of the Kubernetes version resource.
-     * @param kubernetesVersionParameters The request body.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the {@link SyncPoller} for polling of kubernetesVersion represents the available Kubernetes versions for
-     * a cluster.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public SyncPoller<PollResult<KubernetesVersionInner>, KubernetesVersionInner> beginCreateOrUpdate(
         String resourceGroupName, String kubernetesVersionName, KubernetesVersionInner kubernetesVersionParameters) {
         final String ifMatch = null;
         final String ifNoneMatch = null;
-        Response<BinaryData> response = createOrUpdateWithResponse(resourceGroupName, kubernetesVersionName,
-            kubernetesVersionParameters, ifMatch, ifNoneMatch);
-        return this.client.<KubernetesVersionInner, KubernetesVersionInner>getLroResult(response,
-            KubernetesVersionInner.class, KubernetesVersionInner.class, Context.NONE);
+        return beginCreateOrUpdate(resourceGroupName, kubernetesVersionName, kubernetesVersionParameters, ifMatch,
+            ifNoneMatch, Context.NONE);
     }
 
-    /**
-     * Create the Kubernetes version resource or update its tags. This resource is system managed and should only be
-     * created with the name "default".
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param kubernetesVersionName The name of the Kubernetes version resource.
-     * @param kubernetesVersionParameters The request body.
-     * @param ifMatch The ETag of the transformation. Omit this value to always overwrite the current resource. Specify
-     * the last-seen ETag value to prevent accidentally overwriting concurrent changes.
-     * @param ifNoneMatch Set to '*' to allow a new record set to be created, but to prevent updating an existing
-     * resource. Other values will result in error from server as they are not supported.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the {@link SyncPoller} for polling of kubernetesVersion represents the available Kubernetes versions for
-     * a cluster.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public SyncPoller<PollResult<KubernetesVersionInner>, KubernetesVersionInner> beginCreateOrUpdate(
         String resourceGroupName, String kubernetesVersionName, KubernetesVersionInner kubernetesVersionParameters,
@@ -562,49 +507,22 @@ public final class KubernetesVersionsClientImpl implements KubernetesVersionsCli
             ifNoneMatch).last().flatMap(this.client::getLroFinalResultOrError);
     }
 
-    /**
-     * Create the Kubernetes version resource or update its tags. This resource is system managed and should only be
-     * created with the name "default".
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param kubernetesVersionName The name of the Kubernetes version resource.
-     * @param kubernetesVersionParameters The request body.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return kubernetesVersion represents the available Kubernetes versions for a cluster.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public KubernetesVersionInner createOrUpdate(String resourceGroupName, String kubernetesVersionName,
         KubernetesVersionInner kubernetesVersionParameters) {
         final String ifMatch = null;
         final String ifNoneMatch = null;
-        return beginCreateOrUpdate(resourceGroupName, kubernetesVersionName, kubernetesVersionParameters, ifMatch,
-            ifNoneMatch).getFinalResult();
+        return createOrUpdate(resourceGroupName, kubernetesVersionName, kubernetesVersionParameters, ifMatch,
+            ifNoneMatch, Context.NONE);
     }
 
-    /**
-     * Create the Kubernetes version resource or update its tags. This resource is system managed and should only be
-     * created with the name "default".
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param kubernetesVersionName The name of the Kubernetes version resource.
-     * @param kubernetesVersionParameters The request body.
-     * @param ifMatch The ETag of the transformation. Omit this value to always overwrite the current resource. Specify
-     * the last-seen ETag value to prevent accidentally overwriting concurrent changes.
-     * @param ifNoneMatch Set to '*' to allow a new record set to be created, but to prevent updating an existing
-     * resource. Other values will result in error from server as they are not supported.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return kubernetesVersion represents the available Kubernetes versions for a cluster.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public KubernetesVersionInner createOrUpdate(String resourceGroupName, String kubernetesVersionName,
         KubernetesVersionInner kubernetesVersionParameters, String ifMatch, String ifNoneMatch, Context context) {
-        return beginCreateOrUpdate(resourceGroupName, kubernetesVersionName, kubernetesVersionParameters, ifMatch,
-            ifNoneMatch, context).getFinalResult();
+        return this.client.getLroFinalResultOrError(beginCreateOrUpdate(resourceGroupName, kubernetesVersionName,
+            kubernetesVersionParameters, ifMatch, ifNoneMatch, context));
     }
 
     /**
@@ -653,9 +571,7 @@ public final class KubernetesVersionsClientImpl implements KubernetesVersionsCli
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Response<BinaryData> updateWithResponse(String resourceGroupName, String kubernetesVersionName,
         String ifMatch, String ifNoneMatch, KubernetesVersionPatchParameters kubernetesVersionPatchParameters) {
-        final String accept = "application/json";
-        return service.updateSync(this.client.getEndpoint(), this.client.getApiVersion(),
-            this.client.getSubscriptionId(), resourceGroupName, kubernetesVersionName, ifMatch, ifNoneMatch, accept,
+        return updateWithResponse(resourceGroupName, kubernetesVersionName, ifMatch, ifNoneMatch,
             kubernetesVersionPatchParameters, Context.NONE);
     }
 
@@ -756,52 +672,22 @@ public final class KubernetesVersionsClientImpl implements KubernetesVersionsCli
     private SyncPoller<PollResult<KubernetesVersionInner>, KubernetesVersionInner> beginUpdate(String resourceGroupName,
         String kubernetesVersionName, String ifMatch, String ifNoneMatch,
         KubernetesVersionPatchParameters kubernetesVersionPatchParameters) {
-        Response<BinaryData> response = updateWithResponse(resourceGroupName, kubernetesVersionName, ifMatch,
-            ifNoneMatch, kubernetesVersionPatchParameters);
-        return this.client.<KubernetesVersionInner, KubernetesVersionInner>getLroResult(response,
-            KubernetesVersionInner.class, KubernetesVersionInner.class, Context.NONE);
+        return beginUpdate(resourceGroupName, kubernetesVersionName, ifMatch, ifNoneMatch,
+            kubernetesVersionPatchParameters, Context.NONE);
     }
 
-    /**
-     * Update tags associated with the Kubernetes version resource. No other properties are supported for update.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param kubernetesVersionName The name of the Kubernetes version resource.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the {@link SyncPoller} for polling of kubernetesVersion represents the available Kubernetes versions for
-     * a cluster.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public SyncPoller<PollResult<KubernetesVersionInner>, KubernetesVersionInner> beginUpdate(String resourceGroupName,
         String kubernetesVersionName) {
         final String ifMatch = null;
         final String ifNoneMatch = null;
         final KubernetesVersionPatchParameters kubernetesVersionPatchParameters = null;
-        Response<BinaryData> response = updateWithResponse(resourceGroupName, kubernetesVersionName, ifMatch,
-            ifNoneMatch, kubernetesVersionPatchParameters);
-        return this.client.<KubernetesVersionInner, KubernetesVersionInner>getLroResult(response,
-            KubernetesVersionInner.class, KubernetesVersionInner.class, Context.NONE);
+        return beginUpdate(resourceGroupName, kubernetesVersionName, ifMatch, ifNoneMatch,
+            kubernetesVersionPatchParameters, Context.NONE);
     }
 
-    /**
-     * Update tags associated with the Kubernetes version resource. No other properties are supported for update.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param kubernetesVersionName The name of the Kubernetes version resource.
-     * @param ifMatch The ETag of the transformation. Omit this value to always overwrite the current resource. Specify
-     * the last-seen ETag value to prevent accidentally overwriting concurrent changes.
-     * @param ifNoneMatch Set to '*' to allow a new record set to be created, but to prevent updating an existing
-     * resource. Other values will result in error from server as they are not supported.
-     * @param kubernetesVersionPatchParameters The request body.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the {@link SyncPoller} for polling of kubernetesVersion represents the available Kubernetes versions for
-     * a cluster.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public SyncPoller<PollResult<KubernetesVersionInner>, KubernetesVersionInner> beginUpdate(String resourceGroupName,
         String kubernetesVersionName, String ifMatch, String ifNoneMatch,
@@ -855,46 +741,22 @@ public final class KubernetesVersionsClientImpl implements KubernetesVersionsCli
             kubernetesVersionPatchParameters).last().flatMap(this.client::getLroFinalResultOrError);
     }
 
-    /**
-     * Update tags associated with the Kubernetes version resource. No other properties are supported for update.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param kubernetesVersionName The name of the Kubernetes version resource.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return kubernetesVersion represents the available Kubernetes versions for a cluster.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public KubernetesVersionInner update(String resourceGroupName, String kubernetesVersionName) {
         final String ifMatch = null;
         final String ifNoneMatch = null;
         final KubernetesVersionPatchParameters kubernetesVersionPatchParameters = null;
-        return beginUpdate(resourceGroupName, kubernetesVersionName, ifMatch, ifNoneMatch,
-            kubernetesVersionPatchParameters).getFinalResult();
+        return update(resourceGroupName, kubernetesVersionName, ifMatch, ifNoneMatch, kubernetesVersionPatchParameters,
+            Context.NONE);
     }
 
-    /**
-     * Update tags associated with the Kubernetes version resource. No other properties are supported for update.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param kubernetesVersionName The name of the Kubernetes version resource.
-     * @param ifMatch The ETag of the transformation. Omit this value to always overwrite the current resource. Specify
-     * the last-seen ETag value to prevent accidentally overwriting concurrent changes.
-     * @param ifNoneMatch Set to '*' to allow a new record set to be created, but to prevent updating an existing
-     * resource. Other values will result in error from server as they are not supported.
-     * @param kubernetesVersionPatchParameters The request body.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return kubernetesVersion represents the available Kubernetes versions for a cluster.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public KubernetesVersionInner update(String resourceGroupName, String kubernetesVersionName, String ifMatch,
         String ifNoneMatch, KubernetesVersionPatchParameters kubernetesVersionPatchParameters, Context context) {
-        return beginUpdate(resourceGroupName, kubernetesVersionName, ifMatch, ifNoneMatch,
-            kubernetesVersionPatchParameters, context).getFinalResult();
+        return this.client.getLroFinalResultOrError(beginUpdate(resourceGroupName, kubernetesVersionName, ifMatch,
+            ifNoneMatch, kubernetesVersionPatchParameters, context));
     }
 
     /**
@@ -936,9 +798,7 @@ public final class KubernetesVersionsClientImpl implements KubernetesVersionsCli
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Response<BinaryData> deleteWithResponse(String resourceGroupName, String kubernetesVersionName,
         String ifMatch, String ifNoneMatch) {
-        return service.deleteSync(this.client.getEndpoint(), this.client.getApiVersion(),
-            this.client.getSubscriptionId(), resourceGroupName, kubernetesVersionName, ifMatch, ifNoneMatch,
-            Context.NONE);
+        return deleteWithResponse(resourceGroupName, kubernetesVersionName, ifMatch, ifNoneMatch, Context.NONE);
     }
 
     /**
@@ -1024,45 +884,18 @@ public final class KubernetesVersionsClientImpl implements KubernetesVersionsCli
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     private SyncPoller<PollResult<Void>, Void> beginDelete(String resourceGroupName, String kubernetesVersionName,
         String ifMatch, String ifNoneMatch) {
-        Response<BinaryData> response
-            = deleteWithResponse(resourceGroupName, kubernetesVersionName, ifMatch, ifNoneMatch);
-        return this.client.<Void, Void>getLroResult(response, Void.class, Void.class, Context.NONE);
+        return beginDelete(resourceGroupName, kubernetesVersionName, ifMatch, ifNoneMatch, Context.NONE);
     }
 
-    /**
-     * Delete the specified Kubernetes version resource.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param kubernetesVersionName The name of the Kubernetes version resource.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the {@link SyncPoller} for polling of long-running operation.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public SyncPoller<PollResult<Void>, Void> beginDelete(String resourceGroupName, String kubernetesVersionName) {
         final String ifMatch = null;
         final String ifNoneMatch = null;
-        Response<BinaryData> response
-            = deleteWithResponse(resourceGroupName, kubernetesVersionName, ifMatch, ifNoneMatch);
-        return this.client.<Void, Void>getLroResult(response, Void.class, Void.class, Context.NONE);
+        return beginDelete(resourceGroupName, kubernetesVersionName, ifMatch, ifNoneMatch, Context.NONE);
     }
 
-    /**
-     * Delete the specified Kubernetes version resource.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param kubernetesVersionName The name of the Kubernetes version resource.
-     * @param ifMatch The ETag of the transformation. Omit this value to always overwrite the current resource. Specify
-     * the last-seen ETag value to prevent accidentally overwriting concurrent changes.
-     * @param ifNoneMatch Set to '*' to allow a new record set to be created, but to prevent updating an existing
-     * resource. Other values will result in error from server as they are not supported.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the {@link SyncPoller} for polling of long-running operation.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public SyncPoller<PollResult<Void>, Void> beginDelete(String resourceGroupName, String kubernetesVersionName,
         String ifMatch, String ifNoneMatch, Context context) {
@@ -1110,40 +943,20 @@ public final class KubernetesVersionsClientImpl implements KubernetesVersionsCli
             .flatMap(this.client::getLroFinalResultOrError);
     }
 
-    /**
-     * Delete the specified Kubernetes version resource.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param kubernetesVersionName The name of the Kubernetes version resource.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public void delete(String resourceGroupName, String kubernetesVersionName) {
         final String ifMatch = null;
         final String ifNoneMatch = null;
-        beginDelete(resourceGroupName, kubernetesVersionName, ifMatch, ifNoneMatch).getFinalResult();
+        delete(resourceGroupName, kubernetesVersionName, ifMatch, ifNoneMatch, Context.NONE);
     }
 
-    /**
-     * Delete the specified Kubernetes version resource.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param kubernetesVersionName The name of the Kubernetes version resource.
-     * @param ifMatch The ETag of the transformation. Omit this value to always overwrite the current resource. Specify
-     * the last-seen ETag value to prevent accidentally overwriting concurrent changes.
-     * @param ifNoneMatch Set to '*' to allow a new record set to be created, but to prevent updating an existing
-     * resource. Other values will result in error from server as they are not supported.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public void delete(String resourceGroupName, String kubernetesVersionName, String ifMatch, String ifNoneMatch,
         Context context) {
-        beginDelete(resourceGroupName, kubernetesVersionName, ifMatch, ifNoneMatch, context).getFinalResult();
+        this.client.getLroFinalResultOrError(
+            beginDelete(resourceGroupName, kubernetesVersionName, ifMatch, ifNoneMatch, context));
     }
 
     /**
@@ -1224,12 +1037,7 @@ public final class KubernetesVersionsClientImpl implements KubernetesVersionsCli
     @ServiceMethod(returns = ReturnType.SINGLE)
     private PagedResponse<KubernetesVersionInner> listByResourceGroupSinglePage(String resourceGroupName, Integer top,
         String skipToken) {
-        final String accept = "application/json";
-        Response<KubernetesVersionList> res
-            = service.listByResourceGroupSync(this.client.getEndpoint(), this.client.getApiVersion(),
-                this.client.getSubscriptionId(), resourceGroupName, top, skipToken, accept, Context.NONE);
-        return new PagedResponseBase<>(res.getRequest(), res.getStatusCode(), res.getHeaders(), res.getValue().value(),
-            res.getValue().nextLink(), null);
+        return listByResourceGroupSinglePage(resourceGroupName, top, skipToken, Context.NONE);
     }
 
     /**
@@ -1256,38 +1064,15 @@ public final class KubernetesVersionsClientImpl implements KubernetesVersionsCli
             res.getValue().nextLink(), null);
     }
 
-    /**
-     * Get a list of Kubernetes version resources in the provided resource group.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return a list of Kubernetes version resources in the provided resource group as paginated response with
-     * {@link PagedIterable}.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.COLLECTION)
     public PagedIterable<KubernetesVersionInner> listByResourceGroup(String resourceGroupName) {
         final Integer top = null;
         final String skipToken = null;
-        return new PagedIterable<>(() -> listByResourceGroupSinglePage(resourceGroupName, top, skipToken),
-            nextLink -> listByResourceGroupNextSinglePage(nextLink));
+        return listByResourceGroup(resourceGroupName, top, skipToken, Context.NONE);
     }
 
-    /**
-     * Get a list of Kubernetes version resources in the provided resource group.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param top The maximum number of resources to return from the operation. Example: '$top=10'.
-     * @param skipToken The opaque token that the server returns to indicate where to continue listing resources from.
-     * This is used for paging through large result sets.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return a list of Kubernetes version resources in the provided resource group as paginated response with
-     * {@link PagedIterable}.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.COLLECTION)
     public PagedIterable<KubernetesVersionInner> listByResourceGroup(String resourceGroupName, Integer top,
         String skipToken, Context context) {
@@ -1365,11 +1150,7 @@ public final class KubernetesVersionsClientImpl implements KubernetesVersionsCli
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private PagedResponse<KubernetesVersionInner> listSinglePage(Integer top, String skipToken) {
-        final String accept = "application/json";
-        Response<KubernetesVersionList> res = service.listSync(this.client.getEndpoint(), this.client.getApiVersion(),
-            this.client.getSubscriptionId(), top, skipToken, accept, Context.NONE);
-        return new PagedResponseBase<>(res.getRequest(), res.getStatusCode(), res.getHeaders(), res.getValue().value(),
-            res.getValue().nextLink(), null);
+        return listSinglePage(top, skipToken, Context.NONE);
     }
 
     /**
@@ -1393,35 +1174,15 @@ public final class KubernetesVersionsClientImpl implements KubernetesVersionsCli
             res.getValue().nextLink(), null);
     }
 
-    /**
-     * Get a list of Kubernetes version resources in the provided subscription.
-     * 
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return a list of Kubernetes version resources in the provided subscription as paginated response with
-     * {@link PagedIterable}.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.COLLECTION)
     public PagedIterable<KubernetesVersionInner> list() {
         final Integer top = null;
         final String skipToken = null;
-        return new PagedIterable<>(() -> listSinglePage(top, skipToken),
-            nextLink -> listBySubscriptionNextSinglePage(nextLink));
+        return list(top, skipToken, Context.NONE);
     }
 
-    /**
-     * Get a list of Kubernetes version resources in the provided subscription.
-     * 
-     * @param top The maximum number of resources to return from the operation. Example: '$top=10'.
-     * @param skipToken The opaque token that the server returns to indicate where to continue listing resources from.
-     * This is used for paging through large result sets.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return a list of Kubernetes version resources in the provided subscription as paginated response with
-     * {@link PagedIterable}.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.COLLECTION)
     public PagedIterable<KubernetesVersionInner> list(Integer top, String skipToken, Context context) {
         return new PagedIterable<>(() -> listSinglePage(top, skipToken, context),
@@ -1460,11 +1221,7 @@ public final class KubernetesVersionsClientImpl implements KubernetesVersionsCli
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private PagedResponse<KubernetesVersionInner> listByResourceGroupNextSinglePage(String nextLink) {
-        final String accept = "application/json";
-        Response<KubernetesVersionList> res
-            = service.listByResourceGroupNextSync(nextLink, this.client.getEndpoint(), accept, Context.NONE);
-        return new PagedResponseBase<>(res.getRequest(), res.getStatusCode(), res.getHeaders(), res.getValue().value(),
-            res.getValue().nextLink(), null);
+        return listByResourceGroupNextSinglePage(nextLink, Context.NONE);
     }
 
     /**
@@ -1518,11 +1275,7 @@ public final class KubernetesVersionsClientImpl implements KubernetesVersionsCli
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private PagedResponse<KubernetesVersionInner> listBySubscriptionNextSinglePage(String nextLink) {
-        final String accept = "application/json";
-        Response<KubernetesVersionList> res
-            = service.listBySubscriptionNextSync(nextLink, this.client.getEndpoint(), accept, Context.NONE);
-        return new PagedResponseBase<>(res.getRequest(), res.getStatusCode(), res.getHeaders(), res.getValue().value(),
-            res.getValue().nextLink(), null);
+        return listBySubscriptionNextSinglePage(nextLink, Context.NONE);
     }
 
     /**

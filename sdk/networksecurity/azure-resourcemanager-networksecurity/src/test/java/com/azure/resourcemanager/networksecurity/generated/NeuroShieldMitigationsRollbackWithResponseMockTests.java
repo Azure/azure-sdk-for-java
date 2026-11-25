@@ -20,7 +20,7 @@ public final class NeuroShieldMitigationsRollbackWithResponseMockTests {
     @Test
     public void testRollbackWithResponse() throws Exception {
         String responseStr
-            = "{\"properties\":{\"provisioningState\":\"Succeeded\",\"findingId\":\"tlmngu\",\"cveId\":\"aw\",\"virtualMachineArmId\":\"aldsy\",\"rank\":590697552,\"commandsSummary\":\"ximerqfobwyznk\",\"isRollbackable\":false,\"status\":\"Succeeded\",\"statusDetails\":\"t\",\"appliedTime\":\"2021-09-04T21:24:09Z\"},\"id\":\"pagmhrskdsnf\",\"name\":\"sd\",\"type\":\"akgtdlmkkzevdlh\"}";
+            = "{\"properties\":{\"provisioningState\":\"Succeeded\",\"findingId\":\"wtzolbaemwmdxmeb\",\"cveId\":\"jscjpahl\",\"virtualMachineArmId\":\"veabfqxnmwmqtib\",\"rank\":1106837235,\"commandsSummary\":\"ijddtvqc\",\"isRollbackable\":false,\"status\":\"Queued\",\"statusDetails\":\"ijaeukm\",\"appliedTime\":\"2021-09-19T03:27:42Z\"},\"id\":\"ekpndzaapmudq\",\"name\":\"eqw\",\"type\":\"gp\"}";
 
         HttpClient httpClient
             = response -> Mono.just(new MockHttpResponse(response, 200, responseStr.getBytes(StandardCharsets.UTF_8)));
@@ -30,7 +30,7 @@ public final class NeuroShieldMitigationsRollbackWithResponseMockTests {
                 new AzureProfile("", "", AzureCloud.AZURE_PUBLIC_CLOUD));
 
         NeuroShieldMitigation response = manager.neuroShieldMitigations()
-            .rollbackWithResponse("khnzbonlw", "toego", "dwbwhkszzcmrvexz", "vbtqgsfraoyzk",
+            .rollbackWithResponse("opteecj", "eislstvasylwx", "zaum", "eoohguufuzboyj",
                 com.azure.core.util.Context.NONE)
             .getValue();
 

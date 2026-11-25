@@ -149,11 +149,7 @@ public final class OrganizationsClientImpl implements OrganizationsClient {
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private PagedResponse<OrganizationResourceInner> listSinglePage(String userEmail, String location) {
-        final String accept = "application/json";
-        Response<OrganizationsListResponse> res = service.listSync(this.client.getEndpoint(),
-            this.client.getApiVersion(), this.client.getSubscriptionId(), userEmail, location, accept, Context.NONE);
-        return new PagedResponseBase<>(res.getRequest(), res.getStatusCode(), res.getHeaders(), res.getValue().value(),
-            res.getValue().nextLink(), null);
+        return listSinglePage(userEmail, location, Context.NONE);
     }
 
     /**
@@ -178,34 +174,13 @@ public final class OrganizationsClientImpl implements OrganizationsClient {
             res.getValue().nextLink(), null);
     }
 
-    /**
-     * Lists all the New Relic organizations linked to your email address, helping you understand the existing
-     * organizations that have been created.
-     * 
-     * @param userEmail User Email.
-     * @param location Location for NewRelic.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return response of get all organizations Operation as paginated response with {@link PagedIterable}.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.COLLECTION)
     public PagedIterable<OrganizationResourceInner> list(String userEmail, String location) {
-        return new PagedIterable<>(() -> listSinglePage(userEmail, location), nextLink -> listNextSinglePage(nextLink));
+        return list(userEmail, location, Context.NONE);
     }
 
-    /**
-     * Lists all the New Relic organizations linked to your email address, helping you understand the existing
-     * organizations that have been created.
-     * 
-     * @param userEmail User Email.
-     * @param location Location for NewRelic.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return response of get all organizations Operation as paginated response with {@link PagedIterable}.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.COLLECTION)
     public PagedIterable<OrganizationResourceInner> list(String userEmail, String location, Context context) {
         return new PagedIterable<>(() -> listSinglePage(userEmail, location, context),
@@ -242,11 +217,7 @@ public final class OrganizationsClientImpl implements OrganizationsClient {
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private PagedResponse<OrganizationResourceInner> listNextSinglePage(String nextLink) {
-        final String accept = "application/json";
-        Response<OrganizationsListResponse> res
-            = service.listNextSync(nextLink, this.client.getEndpoint(), accept, Context.NONE);
-        return new PagedResponseBase<>(res.getRequest(), res.getStatusCode(), res.getHeaders(), res.getValue().value(),
-            res.getValue().nextLink(), null);
+        return listNextSinglePage(nextLink, Context.NONE);
     }
 
     /**

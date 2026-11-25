@@ -189,19 +189,7 @@ public final class IntegrationRuntimeNodesClientImpl implements IntegrationRunti
             .flatMap(res -> Mono.justOrEmpty(res.getValue()));
     }
 
-    /**
-     * Gets a self-hosted integration runtime node.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param factoryName The factoryName parameter.
-     * @param integrationRuntimeName The integrationRuntimeName parameter.
-     * @param nodeName The integration runtime node name.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return a self-hosted integration runtime node along with {@link Response}.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Response<SelfHostedIntegrationRuntimeNodeInner> getWithResponse(String resourceGroupName, String factoryName,
         String integrationRuntimeName, String nodeName, Context context) {
@@ -210,18 +198,7 @@ public final class IntegrationRuntimeNodesClientImpl implements IntegrationRunti
             resourceGroupName, factoryName, integrationRuntimeName, nodeName, accept, context);
     }
 
-    /**
-     * Gets a self-hosted integration runtime node.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param factoryName The factoryName parameter.
-     * @param integrationRuntimeName The integrationRuntimeName parameter.
-     * @param nodeName The integration runtime node name.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return a self-hosted integration runtime node.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public SelfHostedIntegrationRuntimeNodeInner get(String resourceGroupName, String factoryName,
         String integrationRuntimeName, String nodeName) {
@@ -268,19 +245,7 @@ public final class IntegrationRuntimeNodesClientImpl implements IntegrationRunti
             .flatMap(ignored -> Mono.empty());
     }
 
-    /**
-     * Deletes a self-hosted integration runtime node.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param factoryName The factoryName parameter.
-     * @param integrationRuntimeName The integrationRuntimeName parameter.
-     * @param nodeName The integration runtime node name.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the {@link Response}.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Response<Void> deleteWithResponse(String resourceGroupName, String factoryName,
         String integrationRuntimeName, String nodeName, Context context) {
@@ -288,17 +253,7 @@ public final class IntegrationRuntimeNodesClientImpl implements IntegrationRunti
             this.client.getSubscriptionId(), resourceGroupName, factoryName, integrationRuntimeName, nodeName, context);
     }
 
-    /**
-     * Deletes a self-hosted integration runtime node.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param factoryName The factoryName parameter.
-     * @param integrationRuntimeName The integrationRuntimeName parameter.
-     * @param nodeName The integration runtime node name.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public void delete(String resourceGroupName, String factoryName, String integrationRuntimeName, String nodeName) {
         deleteWithResponse(resourceGroupName, factoryName, integrationRuntimeName, nodeName, Context.NONE);
@@ -352,20 +307,7 @@ public final class IntegrationRuntimeNodesClientImpl implements IntegrationRunti
             updateIntegrationRuntimeNodeRequest).flatMap(res -> Mono.justOrEmpty(res.getValue()));
     }
 
-    /**
-     * Updates a self-hosted integration runtime node.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param factoryName The factoryName parameter.
-     * @param integrationRuntimeName The integrationRuntimeName parameter.
-     * @param nodeName The integration runtime node name.
-     * @param updateIntegrationRuntimeNodeRequest The parameters for updating an integration runtime node.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return properties of Self-hosted integration runtime node along with {@link Response}.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Response<SelfHostedIntegrationRuntimeNodeInner> updateWithResponse(String resourceGroupName,
         String factoryName, String integrationRuntimeName, String nodeName,
@@ -377,19 +319,7 @@ public final class IntegrationRuntimeNodesClientImpl implements IntegrationRunti
             contentType, accept, updateIntegrationRuntimeNodeRequest, context);
     }
 
-    /**
-     * Updates a self-hosted integration runtime node.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param factoryName The factoryName parameter.
-     * @param integrationRuntimeName The integrationRuntimeName parameter.
-     * @param nodeName The integration runtime node name.
-     * @param updateIntegrationRuntimeNodeRequest The parameters for updating an integration runtime node.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return properties of Self-hosted integration runtime node.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public SelfHostedIntegrationRuntimeNodeInner update(String resourceGroupName, String factoryName,
         String integrationRuntimeName, String nodeName,
@@ -441,19 +371,7 @@ public final class IntegrationRuntimeNodesClientImpl implements IntegrationRunti
             .flatMap(res -> Mono.justOrEmpty(res.getValue()));
     }
 
-    /**
-     * Get the IP address of self-hosted integration runtime node.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param factoryName The factoryName parameter.
-     * @param integrationRuntimeName The integrationRuntimeName parameter.
-     * @param nodeName The integration runtime node name.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the IP address of self-hosted integration runtime node along with {@link Response}.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Response<IntegrationRuntimeNodeIpAddressInner> getIpAddressWithResponse(String resourceGroupName,
         String factoryName, String integrationRuntimeName, String nodeName, Context context) {
@@ -463,18 +381,7 @@ public final class IntegrationRuntimeNodesClientImpl implements IntegrationRunti
             context);
     }
 
-    /**
-     * Get the IP address of self-hosted integration runtime node.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param factoryName The factoryName parameter.
-     * @param integrationRuntimeName The integrationRuntimeName parameter.
-     * @param nodeName The integration runtime node name.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the IP address of self-hosted integration runtime node.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public IntegrationRuntimeNodeIpAddressInner getIpAddress(String resourceGroupName, String factoryName,
         String integrationRuntimeName, String nodeName) {

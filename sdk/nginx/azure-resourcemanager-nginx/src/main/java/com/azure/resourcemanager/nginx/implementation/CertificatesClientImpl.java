@@ -208,18 +208,7 @@ public final class CertificatesClientImpl implements CertificatesClient {
             .flatMap(res -> Mono.justOrEmpty(res.getValue()));
     }
 
-    /**
-     * Get a certificate of given NGINX deployment.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param deploymentName The name of targeted NGINX deployment.
-     * @param certificateName The name of certificate.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return a certificate of given NGINX deployment along with {@link Response}.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Response<NginxCertificateInner> getWithResponse(String resourceGroupName, String deploymentName,
         String certificateName, Context context) {
@@ -228,17 +217,7 @@ public final class CertificatesClientImpl implements CertificatesClient {
             resourceGroupName, deploymentName, certificateName, accept, context);
     }
 
-    /**
-     * Get a certificate of given NGINX deployment.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param deploymentName The name of targeted NGINX deployment.
-     * @param certificateName The name of certificate.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return a certificate of given NGINX deployment.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public NginxCertificateInner get(String resourceGroupName, String deploymentName, String certificateName) {
         return getWithResponse(resourceGroupName, deploymentName, certificateName, Context.NONE).getValue();
@@ -282,10 +261,7 @@ public final class CertificatesClientImpl implements CertificatesClient {
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Response<BinaryData> createOrUpdateWithResponse(String resourceGroupName, String deploymentName,
         String certificateName, NginxCertificateInner body) {
-        final String accept = "application/json";
-        return service.createOrUpdateSync(this.client.getEndpoint(), this.client.getApiVersion(),
-            this.client.getSubscriptionId(), resourceGroupName, deploymentName, certificateName, accept, body,
-            Context.NONE);
+        return createOrUpdateWithResponse(resourceGroupName, deploymentName, certificateName, body, Context.NONE);
     }
 
     /**
@@ -368,46 +344,18 @@ public final class CertificatesClientImpl implements CertificatesClient {
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     private SyncPoller<PollResult<NginxCertificateInner>, NginxCertificateInner> beginCreateOrUpdate(
         String resourceGroupName, String deploymentName, String certificateName, NginxCertificateInner body) {
-        Response<BinaryData> response
-            = createOrUpdateWithResponse(resourceGroupName, deploymentName, certificateName, body);
-        return this.client.<NginxCertificateInner, NginxCertificateInner>getLroResult(response,
-            NginxCertificateInner.class, NginxCertificateInner.class, Context.NONE);
+        return beginCreateOrUpdate(resourceGroupName, deploymentName, certificateName, body, Context.NONE);
     }
 
-    /**
-     * Create or update the NGINX certificates for given NGINX deployment.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param deploymentName The name of targeted NGINX deployment.
-     * @param certificateName The name of certificate.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the {@link SyncPoller} for polling of nginx Certificate.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public SyncPoller<PollResult<NginxCertificateInner>, NginxCertificateInner>
         beginCreateOrUpdate(String resourceGroupName, String deploymentName, String certificateName) {
         final NginxCertificateInner body = null;
-        Response<BinaryData> response
-            = createOrUpdateWithResponse(resourceGroupName, deploymentName, certificateName, body);
-        return this.client.<NginxCertificateInner, NginxCertificateInner>getLroResult(response,
-            NginxCertificateInner.class, NginxCertificateInner.class, Context.NONE);
+        return beginCreateOrUpdate(resourceGroupName, deploymentName, certificateName, body, Context.NONE);
     }
 
-    /**
-     * Create or update the NGINX certificates for given NGINX deployment.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param deploymentName The name of targeted NGINX deployment.
-     * @param certificateName The name of certificate.
-     * @param body The certificate.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the {@link SyncPoller} for polling of nginx Certificate.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public SyncPoller<PollResult<NginxCertificateInner>, NginxCertificateInner> beginCreateOrUpdate(
         String resourceGroupName, String deploymentName, String certificateName, NginxCertificateInner body,
@@ -456,41 +404,20 @@ public final class CertificatesClientImpl implements CertificatesClient {
             .flatMap(this.client::getLroFinalResultOrError);
     }
 
-    /**
-     * Create or update the NGINX certificates for given NGINX deployment.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param deploymentName The name of targeted NGINX deployment.
-     * @param certificateName The name of certificate.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return nginx Certificate.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public NginxCertificateInner createOrUpdate(String resourceGroupName, String deploymentName,
         String certificateName) {
         final NginxCertificateInner body = null;
-        return beginCreateOrUpdate(resourceGroupName, deploymentName, certificateName, body).getFinalResult();
+        return createOrUpdate(resourceGroupName, deploymentName, certificateName, body, Context.NONE);
     }
 
-    /**
-     * Create or update the NGINX certificates for given NGINX deployment.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param deploymentName The name of targeted NGINX deployment.
-     * @param certificateName The name of certificate.
-     * @param body The certificate.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return nginx Certificate.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public NginxCertificateInner createOrUpdate(String resourceGroupName, String deploymentName, String certificateName,
         NginxCertificateInner body, Context context) {
-        return beginCreateOrUpdate(resourceGroupName, deploymentName, certificateName, body, context).getFinalResult();
+        return this.client.getLroFinalResultOrError(
+            beginCreateOrUpdate(resourceGroupName, deploymentName, certificateName, body, context));
     }
 
     /**
@@ -527,8 +454,7 @@ public final class CertificatesClientImpl implements CertificatesClient {
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Response<BinaryData> deleteWithResponse(String resourceGroupName, String deploymentName,
         String certificateName) {
-        return service.deleteSync(this.client.getEndpoint(), this.client.getApiVersion(),
-            this.client.getSubscriptionId(), resourceGroupName, deploymentName, certificateName, Context.NONE);
+        return deleteWithResponse(resourceGroupName, deploymentName, certificateName, Context.NONE);
     }
 
     /**
@@ -570,36 +496,14 @@ public final class CertificatesClientImpl implements CertificatesClient {
             this.client.getContext());
     }
 
-    /**
-     * Deletes a certificate from the NGINX deployment.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param deploymentName The name of targeted NGINX deployment.
-     * @param certificateName The name of certificate.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the {@link SyncPoller} for polling of long-running operation.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public SyncPoller<PollResult<Void>, Void> beginDelete(String resourceGroupName, String deploymentName,
         String certificateName) {
-        Response<BinaryData> response = deleteWithResponse(resourceGroupName, deploymentName, certificateName);
-        return this.client.<Void, Void>getLroResult(response, Void.class, Void.class, Context.NONE);
+        return beginDelete(resourceGroupName, deploymentName, certificateName, Context.NONE);
     }
 
-    /**
-     * Deletes a certificate from the NGINX deployment.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param deploymentName The name of targeted NGINX deployment.
-     * @param certificateName The name of certificate.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the {@link SyncPoller} for polling of long-running operation.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public SyncPoller<PollResult<Void>, Void> beginDelete(String resourceGroupName, String deploymentName,
         String certificateName, Context context) {
@@ -624,35 +528,16 @@ public final class CertificatesClientImpl implements CertificatesClient {
             .flatMap(this.client::getLroFinalResultOrError);
     }
 
-    /**
-     * Deletes a certificate from the NGINX deployment.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param deploymentName The name of targeted NGINX deployment.
-     * @param certificateName The name of certificate.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public void delete(String resourceGroupName, String deploymentName, String certificateName) {
-        beginDelete(resourceGroupName, deploymentName, certificateName).getFinalResult();
+        delete(resourceGroupName, deploymentName, certificateName, Context.NONE);
     }
 
-    /**
-     * Deletes a certificate from the NGINX deployment.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param deploymentName The name of targeted NGINX deployment.
-     * @param certificateName The name of certificate.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public void delete(String resourceGroupName, String deploymentName, String certificateName, Context context) {
-        beginDelete(resourceGroupName, deploymentName, certificateName, context).getFinalResult();
+        this.client.getLroFinalResultOrError(beginDelete(resourceGroupName, deploymentName, certificateName, context));
     }
 
     /**
@@ -706,12 +591,7 @@ public final class CertificatesClientImpl implements CertificatesClient {
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private PagedResponse<NginxCertificateInner> listSinglePage(String resourceGroupName, String deploymentName) {
-        final String accept = "application/json";
-        Response<NginxCertificateListResponse> res
-            = service.listSync(this.client.getEndpoint(), this.client.getApiVersion(), this.client.getSubscriptionId(),
-                resourceGroupName, deploymentName, accept, Context.NONE);
-        return new PagedResponseBase<>(res.getRequest(), res.getStatusCode(), res.getHeaders(), res.getValue().value(),
-            res.getValue().nextLink(), null);
+        return listSinglePage(resourceGroupName, deploymentName, Context.NONE);
     }
 
     /**
@@ -736,33 +616,13 @@ public final class CertificatesClientImpl implements CertificatesClient {
             res.getValue().nextLink(), null);
     }
 
-    /**
-     * List all certificates of given NGINX deployment.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param deploymentName The name of targeted NGINX deployment.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return nginx Certificate List Response as paginated response with {@link PagedIterable}.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.COLLECTION)
     public PagedIterable<NginxCertificateInner> list(String resourceGroupName, String deploymentName) {
-        return new PagedIterable<>(() -> listSinglePage(resourceGroupName, deploymentName),
-            nextLink -> listNextSinglePage(nextLink));
+        return list(resourceGroupName, deploymentName, Context.NONE);
     }
 
-    /**
-     * List all certificates of given NGINX deployment.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param deploymentName The name of targeted NGINX deployment.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return nginx Certificate List Response as paginated response with {@link PagedIterable}.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.COLLECTION)
     public PagedIterable<NginxCertificateInner> list(String resourceGroupName, String deploymentName, Context context) {
         return new PagedIterable<>(() -> listSinglePage(resourceGroupName, deploymentName, context),
@@ -799,11 +659,7 @@ public final class CertificatesClientImpl implements CertificatesClient {
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private PagedResponse<NginxCertificateInner> listNextSinglePage(String nextLink) {
-        final String accept = "application/json";
-        Response<NginxCertificateListResponse> res
-            = service.listNextSync(nextLink, this.client.getEndpoint(), accept, Context.NONE);
-        return new PagedResponseBase<>(res.getRequest(), res.getStatusCode(), res.getHeaders(), res.getValue().value(),
-            res.getValue().nextLink(), null);
+        return listNextSinglePage(nextLink, Context.NONE);
     }
 
     /**
