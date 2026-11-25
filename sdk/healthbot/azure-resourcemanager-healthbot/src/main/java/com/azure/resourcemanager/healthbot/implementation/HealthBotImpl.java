@@ -97,10 +97,7 @@ public final class HealthBotImpl implements HealthBot, HealthBot.Definition, Hea
     }
 
     public HealthBot create() {
-        this.innerObject = serviceManager.serviceClient()
-            .getBots()
-            .create(resourceGroupName, botName, this.innerModel(), Context.NONE);
-        return this;
+        return this.create(Context.NONE);
     }
 
     public HealthBot create(Context context) {
@@ -121,10 +118,7 @@ public final class HealthBotImpl implements HealthBot, HealthBot.Definition, Hea
     }
 
     public HealthBot apply() {
-        this.innerObject = serviceManager.serviceClient()
-            .getBots()
-            .update(resourceGroupName, botName, updateParameters, Context.NONE);
-        return this;
+        return this.apply(Context.NONE);
     }
 
     public HealthBot apply(Context context) {
@@ -145,11 +139,7 @@ public final class HealthBotImpl implements HealthBot, HealthBot.Definition, Hea
     }
 
     public HealthBot refresh() {
-        this.innerObject = serviceManager.serviceClient()
-            .getBots()
-            .getByResourceGroupWithResponse(resourceGroupName, botName, Context.NONE)
-            .getValue();
-        return this;
+        return this.refresh(Context.NONE);
     }
 
     public HealthBot refresh(Context context) {

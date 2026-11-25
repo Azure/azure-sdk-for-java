@@ -11,7 +11,7 @@ public final class NodeInnerTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
         NodeInner model = BinaryData.fromString(
-            "{\"properties\":{\"role\":\"ReadOnly\",\"availabilityZone\":\"acizsjqlhkrr\"},\"id\":\"deibqip\",\"name\":\"kghv\",\"type\":\"ndzwmkrefa\"}")
+            "{\"properties\":{\"role\":\"ReadWrite\",\"availabilityZone\":\"wiithtywub\"},\"id\":\"bihwqknfdnt\",\"name\":\"jchrdgoihxumw\",\"type\":\"ton\"}")
             .toObject(NodeInner.class);
     }
 }

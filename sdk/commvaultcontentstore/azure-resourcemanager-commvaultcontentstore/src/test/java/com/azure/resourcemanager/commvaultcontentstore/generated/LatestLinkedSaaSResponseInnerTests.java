@@ -12,9 +12,9 @@ public final class LatestLinkedSaaSResponseInnerTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
         LatestLinkedSaaSResponseInner model
-            = BinaryData.fromString("{\"saaSResourceId\":\"ajzyul\",\"isHiddenSaaS\":false}")
+            = BinaryData.fromString("{\"saaSResourceId\":\"yktz\",\"isHiddenSaaS\":false}")
                 .toObject(LatestLinkedSaaSResponseInner.class);
-        Assertions.assertEquals("ajzyul", model.saaSResourceId());
+        Assertions.assertEquals("yktz", model.saaSResourceId());
         Assertions.assertFalse(model.isHiddenSaaS());
     }
 }

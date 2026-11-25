@@ -230,37 +230,14 @@ public final class AzureDevOpsProjectsClientImpl implements AzureDevOpsProjectsC
             .flatMap(res -> Mono.justOrEmpty(res.getValue()));
     }
 
-    /**
-     * Returns a monitored Azure DevOps project resource.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param securityConnectorName The security connector name.
-     * @param orgName The orgName parameter.
-     * @param projectName The projectName parameter.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return azure DevOps Project resource along with {@link Response}.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Response<AzureDevOpsProjectInner> getWithResponse(String resourceGroupName, String securityConnectorName,
         String orgName, String projectName, Context context) {
         return getWithResponseAsync(resourceGroupName, securityConnectorName, orgName, projectName, context).block();
     }
 
-    /**
-     * Returns a monitored Azure DevOps project resource.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param securityConnectorName The security connector name.
-     * @param orgName The orgName parameter.
-     * @param projectName The projectName parameter.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return azure DevOps Project resource.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public AzureDevOpsProjectInner get(String resourceGroupName, String securityConnectorName, String orgName,
         String projectName) {
@@ -425,19 +402,7 @@ public final class AzureDevOpsProjectsClientImpl implements AzureDevOpsProjectsC
             this.client.getHttpPipeline(), AzureDevOpsProjectInner.class, AzureDevOpsProjectInner.class, context);
     }
 
-    /**
-     * Creates or updates a monitored Azure DevOps project resource.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param securityConnectorName The security connector name.
-     * @param orgName The orgName parameter.
-     * @param projectName The projectName parameter.
-     * @param azureDevOpsProject The Azure DevOps project resource payload.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the {@link SyncPoller} for polling of azure DevOps Project resource.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public SyncPoller<PollResult<AzureDevOpsProjectInner>, AzureDevOpsProjectInner> beginCreateOrUpdate(
         String resourceGroupName, String securityConnectorName, String orgName, String projectName,
@@ -448,20 +413,7 @@ public final class AzureDevOpsProjectsClientImpl implements AzureDevOpsProjectsC
             .getSyncPoller();
     }
 
-    /**
-     * Creates or updates a monitored Azure DevOps project resource.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param securityConnectorName The security connector name.
-     * @param orgName The orgName parameter.
-     * @param projectName The projectName parameter.
-     * @param azureDevOpsProject The Azure DevOps project resource payload.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the {@link SyncPoller} for polling of azure DevOps Project resource.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public SyncPoller<PollResult<AzureDevOpsProjectInner>, AzureDevOpsProjectInner> beginCreateOrUpdate(
         String resourceGroupName, String securityConnectorName, String orgName, String projectName,
@@ -513,19 +465,7 @@ public final class AzureDevOpsProjectsClientImpl implements AzureDevOpsProjectsC
             azureDevOpsProject, context).last().flatMap(this.client::getLroFinalResultOrError);
     }
 
-    /**
-     * Creates or updates a monitored Azure DevOps project resource.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param securityConnectorName The security connector name.
-     * @param orgName The orgName parameter.
-     * @param projectName The projectName parameter.
-     * @param azureDevOpsProject The Azure DevOps project resource payload.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return azure DevOps Project resource.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public AzureDevOpsProjectInner createOrUpdate(String resourceGroupName, String securityConnectorName,
         String orgName, String projectName, AzureDevOpsProjectInner azureDevOpsProject) {
@@ -533,20 +473,7 @@ public final class AzureDevOpsProjectsClientImpl implements AzureDevOpsProjectsC
             .block();
     }
 
-    /**
-     * Creates or updates a monitored Azure DevOps project resource.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param securityConnectorName The security connector name.
-     * @param orgName The orgName parameter.
-     * @param projectName The projectName parameter.
-     * @param azureDevOpsProject The Azure DevOps project resource payload.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return azure DevOps Project resource.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public AzureDevOpsProjectInner createOrUpdate(String resourceGroupName, String securityConnectorName,
         String orgName, String projectName, AzureDevOpsProjectInner azureDevOpsProject, Context context) {
@@ -711,19 +638,7 @@ public final class AzureDevOpsProjectsClientImpl implements AzureDevOpsProjectsC
             this.client.getHttpPipeline(), AzureDevOpsProjectInner.class, AzureDevOpsProjectInner.class, context);
     }
 
-    /**
-     * Updates a monitored Azure DevOps project resource.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param securityConnectorName The security connector name.
-     * @param orgName The orgName parameter.
-     * @param projectName The projectName parameter.
-     * @param azureDevOpsProject The Azure DevOps project resource payload.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the {@link SyncPoller} for polling of azure DevOps Project resource.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public SyncPoller<PollResult<AzureDevOpsProjectInner>, AzureDevOpsProjectInner> beginUpdate(
         String resourceGroupName, String securityConnectorName, String orgName, String projectName,
@@ -732,20 +647,7 @@ public final class AzureDevOpsProjectsClientImpl implements AzureDevOpsProjectsC
             .getSyncPoller();
     }
 
-    /**
-     * Updates a monitored Azure DevOps project resource.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param securityConnectorName The security connector name.
-     * @param orgName The orgName parameter.
-     * @param projectName The projectName parameter.
-     * @param azureDevOpsProject The Azure DevOps project resource payload.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the {@link SyncPoller} for polling of azure DevOps Project resource.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public SyncPoller<PollResult<AzureDevOpsProjectInner>, AzureDevOpsProjectInner> beginUpdate(
         String resourceGroupName, String securityConnectorName, String orgName, String projectName,
@@ -798,39 +700,14 @@ public final class AzureDevOpsProjectsClientImpl implements AzureDevOpsProjectsC
             context).last().flatMap(this.client::getLroFinalResultOrError);
     }
 
-    /**
-     * Updates a monitored Azure DevOps project resource.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param securityConnectorName The security connector name.
-     * @param orgName The orgName parameter.
-     * @param projectName The projectName parameter.
-     * @param azureDevOpsProject The Azure DevOps project resource payload.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return azure DevOps Project resource.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public AzureDevOpsProjectInner update(String resourceGroupName, String securityConnectorName, String orgName,
         String projectName, AzureDevOpsProjectInner azureDevOpsProject) {
         return updateAsync(resourceGroupName, securityConnectorName, orgName, projectName, azureDevOpsProject).block();
     }
 
-    /**
-     * Updates a monitored Azure DevOps project resource.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param securityConnectorName The security connector name.
-     * @param orgName The orgName parameter.
-     * @param projectName The projectName parameter.
-     * @param azureDevOpsProject The Azure DevOps project resource payload.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return azure DevOps Project resource.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public AzureDevOpsProjectInner update(String resourceGroupName, String securityConnectorName, String orgName,
         String projectName, AzureDevOpsProjectInner azureDevOpsProject, Context context) {
@@ -964,35 +841,14 @@ public final class AzureDevOpsProjectsClientImpl implements AzureDevOpsProjectsC
             nextLink -> listNextSinglePageAsync(nextLink, context));
     }
 
-    /**
-     * Returns a list of Azure DevOps projects onboarded to the connector.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param securityConnectorName The security connector name.
-     * @param orgName The orgName parameter.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return list of RP resources which supports pagination as paginated response with {@link PagedIterable}.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.COLLECTION)
     public PagedIterable<AzureDevOpsProjectInner> list(String resourceGroupName, String securityConnectorName,
         String orgName) {
         return new PagedIterable<>(listAsync(resourceGroupName, securityConnectorName, orgName));
     }
 
-    /**
-     * Returns a list of Azure DevOps projects onboarded to the connector.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param securityConnectorName The security connector name.
-     * @param orgName The orgName parameter.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return list of RP resources which supports pagination as paginated response with {@link PagedIterable}.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.COLLECTION)
     public PagedIterable<AzureDevOpsProjectInner> list(String resourceGroupName, String securityConnectorName,
         String orgName, Context context) {

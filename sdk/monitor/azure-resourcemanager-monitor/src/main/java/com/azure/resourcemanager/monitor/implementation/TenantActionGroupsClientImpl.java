@@ -125,17 +125,7 @@ public final class TenantActionGroupsClientImpl implements TenantActionGroupsCli
             Context context);
     }
 
-    /**
-     * Get a tenant action group.
-     * 
-     * @param managementGroupId The management group ID.
-     * @param tenantActionGroupName The name of the action group.
-     * @param xMsClientTenantId The tenant ID of the client making the request.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return a tenant action group along with {@link Response} on successful completion of {@link Mono}.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Response<TenantActionGroupResourceInner>> getWithResponseAsync(String managementGroupId,
         String tenantActionGroupName, String xMsClientTenantId) {
@@ -201,17 +191,7 @@ public final class TenantActionGroupsClientImpl implements TenantActionGroupsCli
             xMsClientTenantId, accept, context);
     }
 
-    /**
-     * Get a tenant action group.
-     * 
-     * @param managementGroupId The management group ID.
-     * @param tenantActionGroupName The name of the action group.
-     * @param xMsClientTenantId The tenant ID of the client making the request.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return a tenant action group on successful completion of {@link Mono}.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<TenantActionGroupResourceInner> getAsync(String managementGroupId, String tenantActionGroupName,
         String xMsClientTenantId) {
@@ -219,53 +199,21 @@ public final class TenantActionGroupsClientImpl implements TenantActionGroupsCli
             .flatMap(res -> Mono.justOrEmpty(res.getValue()));
     }
 
-    /**
-     * Get a tenant action group.
-     * 
-     * @param managementGroupId The management group ID.
-     * @param tenantActionGroupName The name of the action group.
-     * @param xMsClientTenantId The tenant ID of the client making the request.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return a tenant action group along with {@link Response}.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Response<TenantActionGroupResourceInner> getWithResponse(String managementGroupId,
         String tenantActionGroupName, String xMsClientTenantId, Context context) {
         return getWithResponseAsync(managementGroupId, tenantActionGroupName, xMsClientTenantId, context).block();
     }
 
-    /**
-     * Get a tenant action group.
-     * 
-     * @param managementGroupId The management group ID.
-     * @param tenantActionGroupName The name of the action group.
-     * @param xMsClientTenantId The tenant ID of the client making the request.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return a tenant action group.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public TenantActionGroupResourceInner get(String managementGroupId, String tenantActionGroupName,
         String xMsClientTenantId) {
         return getWithResponse(managementGroupId, tenantActionGroupName, xMsClientTenantId, Context.NONE).getValue();
     }
 
-    /**
-     * Create a new tenant action group or update an existing one.
-     * 
-     * @param managementGroupId The management group ID.
-     * @param tenantActionGroupName The name of the action group.
-     * @param xMsClientTenantId The tenant ID of the client making the request.
-     * @param actionGroup The tenant action group to create or use for the update.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return a tenant action group resource along with {@link Response} on successful completion of {@link Mono}.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Response<TenantActionGroupResourceInner>> createOrUpdateWithResponseAsync(String managementGroupId,
         String tenantActionGroupName, String xMsClientTenantId, TenantActionGroupResourceInner actionGroup) {
@@ -345,18 +293,7 @@ public final class TenantActionGroupsClientImpl implements TenantActionGroupsCli
             xMsClientTenantId, contentType, accept, actionGroup, context);
     }
 
-    /**
-     * Create a new tenant action group or update an existing one.
-     * 
-     * @param managementGroupId The management group ID.
-     * @param tenantActionGroupName The name of the action group.
-     * @param xMsClientTenantId The tenant ID of the client making the request.
-     * @param actionGroup The tenant action group to create or use for the update.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return a tenant action group resource on successful completion of {@link Mono}.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<TenantActionGroupResourceInner> createOrUpdateAsync(String managementGroupId,
         String tenantActionGroupName, String xMsClientTenantId, TenantActionGroupResourceInner actionGroup) {
@@ -364,19 +301,7 @@ public final class TenantActionGroupsClientImpl implements TenantActionGroupsCli
             .flatMap(res -> Mono.justOrEmpty(res.getValue()));
     }
 
-    /**
-     * Create a new tenant action group or update an existing one.
-     * 
-     * @param managementGroupId The management group ID.
-     * @param tenantActionGroupName The name of the action group.
-     * @param xMsClientTenantId The tenant ID of the client making the request.
-     * @param actionGroup The tenant action group to create or use for the update.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return a tenant action group resource along with {@link Response}.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Response<TenantActionGroupResourceInner> createOrUpdateWithResponse(String managementGroupId,
         String tenantActionGroupName, String xMsClientTenantId, TenantActionGroupResourceInner actionGroup,
@@ -385,18 +310,7 @@ public final class TenantActionGroupsClientImpl implements TenantActionGroupsCli
             context).block();
     }
 
-    /**
-     * Create a new tenant action group or update an existing one.
-     * 
-     * @param managementGroupId The management group ID.
-     * @param tenantActionGroupName The name of the action group.
-     * @param xMsClientTenantId The tenant ID of the client making the request.
-     * @param actionGroup The tenant action group to create or use for the update.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return a tenant action group resource.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public TenantActionGroupResourceInner createOrUpdate(String managementGroupId, String tenantActionGroupName,
         String xMsClientTenantId, TenantActionGroupResourceInner actionGroup) {
@@ -404,18 +318,7 @@ public final class TenantActionGroupsClientImpl implements TenantActionGroupsCli
             Context.NONE).getValue();
     }
 
-    /**
-     * Updates an existing tenant action group's tags. To update other fields use the CreateOrUpdate method.
-     * 
-     * @param managementGroupId The management group ID.
-     * @param tenantActionGroupName The name of the action group.
-     * @param xMsClientTenantId The tenant ID of the client making the request.
-     * @param tenantActionGroupPatch Parameters supplied to the operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return a tenant action group resource along with {@link Response} on successful completion of {@link Mono}.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Response<TenantActionGroupResourceInner>> updateWithResponseAsync(String managementGroupId,
         String tenantActionGroupName, String xMsClientTenantId, TenantActionGroupPatchBody tenantActionGroupPatch) {
@@ -497,18 +400,7 @@ public final class TenantActionGroupsClientImpl implements TenantActionGroupsCli
             xMsClientTenantId, contentType, accept, tenantActionGroupPatch, context);
     }
 
-    /**
-     * Updates an existing tenant action group's tags. To update other fields use the CreateOrUpdate method.
-     * 
-     * @param managementGroupId The management group ID.
-     * @param tenantActionGroupName The name of the action group.
-     * @param xMsClientTenantId The tenant ID of the client making the request.
-     * @param tenantActionGroupPatch Parameters supplied to the operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return a tenant action group resource on successful completion of {@link Mono}.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<TenantActionGroupResourceInner> updateAsync(String managementGroupId, String tenantActionGroupName,
         String xMsClientTenantId, TenantActionGroupPatchBody tenantActionGroupPatch) {
@@ -516,19 +408,7 @@ public final class TenantActionGroupsClientImpl implements TenantActionGroupsCli
             tenantActionGroupPatch).flatMap(res -> Mono.justOrEmpty(res.getValue()));
     }
 
-    /**
-     * Updates an existing tenant action group's tags. To update other fields use the CreateOrUpdate method.
-     * 
-     * @param managementGroupId The management group ID.
-     * @param tenantActionGroupName The name of the action group.
-     * @param xMsClientTenantId The tenant ID of the client making the request.
-     * @param tenantActionGroupPatch Parameters supplied to the operation.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return a tenant action group resource along with {@link Response}.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Response<TenantActionGroupResourceInner> updateWithResponse(String managementGroupId,
         String tenantActionGroupName, String xMsClientTenantId, TenantActionGroupPatchBody tenantActionGroupPatch,
@@ -537,18 +417,7 @@ public final class TenantActionGroupsClientImpl implements TenantActionGroupsCli
             tenantActionGroupPatch, context).block();
     }
 
-    /**
-     * Updates an existing tenant action group's tags. To update other fields use the CreateOrUpdate method.
-     * 
-     * @param managementGroupId The management group ID.
-     * @param tenantActionGroupName The name of the action group.
-     * @param xMsClientTenantId The tenant ID of the client making the request.
-     * @param tenantActionGroupPatch Parameters supplied to the operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return a tenant action group resource.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public TenantActionGroupResourceInner update(String managementGroupId, String tenantActionGroupName,
         String xMsClientTenantId, TenantActionGroupPatchBody tenantActionGroupPatch) {
@@ -556,17 +425,7 @@ public final class TenantActionGroupsClientImpl implements TenantActionGroupsCli
             Context.NONE).getValue();
     }
 
-    /**
-     * Delete a tenant action group.
-     * 
-     * @param managementGroupId The management group ID.
-     * @param tenantActionGroupName The name of the action group.
-     * @param xMsClientTenantId The tenant ID of the client making the request.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the {@link Response} on successful completion of {@link Mono}.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Response<Void>> deleteWithResponseAsync(String managementGroupId, String tenantActionGroupName,
         String xMsClientTenantId) {
@@ -630,51 +489,21 @@ public final class TenantActionGroupsClientImpl implements TenantActionGroupsCli
             xMsClientTenantId, context);
     }
 
-    /**
-     * Delete a tenant action group.
-     * 
-     * @param managementGroupId The management group ID.
-     * @param tenantActionGroupName The name of the action group.
-     * @param xMsClientTenantId The tenant ID of the client making the request.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return A {@link Mono} that completes when a successful response is received.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Void> deleteAsync(String managementGroupId, String tenantActionGroupName, String xMsClientTenantId) {
         return deleteWithResponseAsync(managementGroupId, tenantActionGroupName, xMsClientTenantId)
             .flatMap(ignored -> Mono.empty());
     }
 
-    /**
-     * Delete a tenant action group.
-     * 
-     * @param managementGroupId The management group ID.
-     * @param tenantActionGroupName The name of the action group.
-     * @param xMsClientTenantId The tenant ID of the client making the request.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the {@link Response}.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Response<Void> deleteWithResponse(String managementGroupId, String tenantActionGroupName,
         String xMsClientTenantId, Context context) {
         return deleteWithResponseAsync(managementGroupId, tenantActionGroupName, xMsClientTenantId, context).block();
     }
 
-    /**
-     * Delete a tenant action group.
-     * 
-     * @param managementGroupId The management group ID.
-     * @param tenantActionGroupName The name of the action group.
-     * @param xMsClientTenantId The tenant ID of the client making the request.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public void delete(String managementGroupId, String tenantActionGroupName, String xMsClientTenantId) {
         deleteWithResponse(managementGroupId, tenantActionGroupName, xMsClientTenantId, Context.NONE);
@@ -753,16 +582,7 @@ public final class TenantActionGroupsClientImpl implements TenantActionGroupsCli
                 res.getValue().value(), res.getValue().nextLink(), null));
     }
 
-    /**
-     * Get a list of all tenant action groups in a management group.
-     * 
-     * @param managementGroupId The management group ID.
-     * @param xMsClientTenantId The tenant ID of the client making the request.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return a list of all tenant action groups in a management group as paginated response with {@link PagedFlux}.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.COLLECTION)
     public PagedFlux<TenantActionGroupResourceInner> listByManagementGroupIdAsync(String managementGroupId,
         String xMsClientTenantId) {
@@ -789,35 +609,14 @@ public final class TenantActionGroupsClientImpl implements TenantActionGroupsCli
             nextLink -> listByManagementGroupIdNextSinglePageAsync(nextLink, xMsClientTenantId, context));
     }
 
-    /**
-     * Get a list of all tenant action groups in a management group.
-     * 
-     * @param managementGroupId The management group ID.
-     * @param xMsClientTenantId The tenant ID of the client making the request.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return a list of all tenant action groups in a management group as paginated response with
-     * {@link PagedIterable}.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.COLLECTION)
     public PagedIterable<TenantActionGroupResourceInner> listByManagementGroupId(String managementGroupId,
         String xMsClientTenantId) {
         return new PagedIterable<>(listByManagementGroupIdAsync(managementGroupId, xMsClientTenantId));
     }
 
-    /**
-     * Get a list of all tenant action groups in a management group.
-     * 
-     * @param managementGroupId The management group ID.
-     * @param xMsClientTenantId The tenant ID of the client making the request.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return a list of all tenant action groups in a management group as paginated response with
-     * {@link PagedIterable}.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.COLLECTION)
     public PagedIterable<TenantActionGroupResourceInner> listByManagementGroupId(String managementGroupId,
         String xMsClientTenantId, Context context) {

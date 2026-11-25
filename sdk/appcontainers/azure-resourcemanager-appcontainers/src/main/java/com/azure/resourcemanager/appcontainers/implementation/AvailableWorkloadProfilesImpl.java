@@ -26,8 +26,7 @@ public final class AvailableWorkloadProfilesImpl implements AvailableWorkloadPro
     }
 
     public PagedIterable<AvailableWorkloadProfile> get(String location) {
-        PagedIterable<AvailableWorkloadProfileInner> inner = this.serviceClient().get(location);
-        return ResourceManagerUtils.mapPage(inner, inner1 -> new AvailableWorkloadProfileImpl(inner1, this.manager()));
+        return this.get(location, Context.NONE);
     }
 
     public PagedIterable<AvailableWorkloadProfile> get(String location, Context context) {

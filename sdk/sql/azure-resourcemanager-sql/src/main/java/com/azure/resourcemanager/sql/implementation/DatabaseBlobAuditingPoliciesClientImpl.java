@@ -105,18 +105,7 @@ public final class DatabaseBlobAuditingPoliciesClientImpl implements DatabaseBlo
             @HeaderParam("Accept") String accept, Context context);
     }
 
-    /**
-     * Gets a database's blob auditing policy.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param serverName The name of the server.
-     * @param databaseName The name of the database.
-     * @param blobAuditingPolicyName The name of the blob auditing policy.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return a database's blob auditing policy along with {@link Response} on successful completion of {@link Mono}.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Response<DatabaseBlobAuditingPolicyInner>> getWithResponseAsync(String resourceGroupName,
         String serverName, String databaseName, BlobAuditingPolicyName blobAuditingPolicyName) {
@@ -194,18 +183,7 @@ public final class DatabaseBlobAuditingPoliciesClientImpl implements DatabaseBlo
             resourceGroupName, serverName, databaseName, blobAuditingPolicyName, accept, context);
     }
 
-    /**
-     * Gets a database's blob auditing policy.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param serverName The name of the server.
-     * @param databaseName The name of the database.
-     * @param blobAuditingPolicyName The name of the blob auditing policy.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return a database's blob auditing policy on successful completion of {@link Mono}.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<DatabaseBlobAuditingPolicyInner> getAsync(String resourceGroupName, String serverName,
         String databaseName, BlobAuditingPolicyName blobAuditingPolicyName) {
@@ -213,19 +191,7 @@ public final class DatabaseBlobAuditingPoliciesClientImpl implements DatabaseBlo
             .flatMap(res -> Mono.justOrEmpty(res.getValue()));
     }
 
-    /**
-     * Gets a database's blob auditing policy.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param serverName The name of the server.
-     * @param databaseName The name of the database.
-     * @param blobAuditingPolicyName The name of the blob auditing policy.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return a database's blob auditing policy along with {@link Response}.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Response<DatabaseBlobAuditingPolicyInner> getWithResponse(String resourceGroupName, String serverName,
         String databaseName, BlobAuditingPolicyName blobAuditingPolicyName, Context context) {
@@ -233,18 +199,7 @@ public final class DatabaseBlobAuditingPoliciesClientImpl implements DatabaseBlo
             .block();
     }
 
-    /**
-     * Gets a database's blob auditing policy.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param serverName The name of the server.
-     * @param databaseName The name of the database.
-     * @param blobAuditingPolicyName The name of the blob auditing policy.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return a database's blob auditing policy.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public DatabaseBlobAuditingPolicyInner get(String resourceGroupName, String serverName, String databaseName,
         BlobAuditingPolicyName blobAuditingPolicyName) {
@@ -252,19 +207,7 @@ public final class DatabaseBlobAuditingPoliciesClientImpl implements DatabaseBlo
             .getValue();
     }
 
-    /**
-     * Creates or updates a database's blob auditing policy.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param serverName The name of the server.
-     * @param databaseName The name of the database.
-     * @param blobAuditingPolicyName The name of the blob auditing policy.
-     * @param parameters The database blob auditing policy.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return a database blob auditing policy along with {@link Response} on successful completion of {@link Mono}.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Response<DatabaseBlobAuditingPolicyInner>> createOrUpdateWithResponseAsync(String resourceGroupName,
         String serverName, String databaseName, BlobAuditingPolicyName blobAuditingPolicyName,
@@ -358,19 +301,7 @@ public final class DatabaseBlobAuditingPoliciesClientImpl implements DatabaseBlo
             contentType, accept, parameters, context);
     }
 
-    /**
-     * Creates or updates a database's blob auditing policy.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param serverName The name of the server.
-     * @param databaseName The name of the database.
-     * @param blobAuditingPolicyName The name of the blob auditing policy.
-     * @param parameters The database blob auditing policy.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return a database blob auditing policy on successful completion of {@link Mono}.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<DatabaseBlobAuditingPolicyInner> createOrUpdateAsync(String resourceGroupName, String serverName,
         String databaseName, BlobAuditingPolicyName blobAuditingPolicyName,
@@ -379,20 +310,7 @@ public final class DatabaseBlobAuditingPoliciesClientImpl implements DatabaseBlo
             parameters).flatMap(res -> Mono.justOrEmpty(res.getValue()));
     }
 
-    /**
-     * Creates or updates a database's blob auditing policy.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param serverName The name of the server.
-     * @param databaseName The name of the database.
-     * @param blobAuditingPolicyName The name of the blob auditing policy.
-     * @param parameters The database blob auditing policy.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return a database blob auditing policy along with {@link Response}.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Response<DatabaseBlobAuditingPolicyInner> createOrUpdateWithResponse(String resourceGroupName,
         String serverName, String databaseName, BlobAuditingPolicyName blobAuditingPolicyName,
@@ -401,19 +319,7 @@ public final class DatabaseBlobAuditingPoliciesClientImpl implements DatabaseBlo
             parameters, context).block();
     }
 
-    /**
-     * Creates or updates a database's blob auditing policy.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param serverName The name of the server.
-     * @param databaseName The name of the database.
-     * @param blobAuditingPolicyName The name of the blob auditing policy.
-     * @param parameters The database blob auditing policy.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return a database blob auditing policy.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public DatabaseBlobAuditingPolicyInner createOrUpdate(String resourceGroupName, String serverName,
         String databaseName, BlobAuditingPolicyName blobAuditingPolicyName,
@@ -507,17 +413,7 @@ public final class DatabaseBlobAuditingPoliciesClientImpl implements DatabaseBlo
                 res.getValue().value(), res.getValue().nextLink(), null));
     }
 
-    /**
-     * Lists auditing settings of a database.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param serverName The name of the server.
-     * @param databaseName The name of the database.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the response of a DatabaseBlobAuditingPolicy list operation as paginated response with {@link PagedFlux}.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.COLLECTION)
     public PagedFlux<DatabaseBlobAuditingPolicyInner> listByDatabaseAsync(String resourceGroupName, String serverName,
         String databaseName) {
@@ -545,37 +441,14 @@ public final class DatabaseBlobAuditingPoliciesClientImpl implements DatabaseBlo
             nextLink -> listByDatabaseNextSinglePageAsync(nextLink, context));
     }
 
-    /**
-     * Lists auditing settings of a database.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param serverName The name of the server.
-     * @param databaseName The name of the database.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the response of a DatabaseBlobAuditingPolicy list operation as paginated response with
-     * {@link PagedIterable}.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.COLLECTION)
     public PagedIterable<DatabaseBlobAuditingPolicyInner> listByDatabase(String resourceGroupName, String serverName,
         String databaseName) {
         return new PagedIterable<>(listByDatabaseAsync(resourceGroupName, serverName, databaseName));
     }
 
-    /**
-     * Lists auditing settings of a database.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param serverName The name of the server.
-     * @param databaseName The name of the database.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the response of a DatabaseBlobAuditingPolicy list operation as paginated response with
-     * {@link PagedIterable}.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.COLLECTION)
     public PagedIterable<DatabaseBlobAuditingPolicyInner> listByDatabase(String resourceGroupName, String serverName,
         String databaseName, Context context) {

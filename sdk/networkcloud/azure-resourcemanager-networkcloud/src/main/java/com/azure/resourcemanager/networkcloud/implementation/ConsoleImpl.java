@@ -137,11 +137,7 @@ public final class ConsoleImpl implements Console, Console.Definition, Console.U
     }
 
     public Console create() {
-        this.innerObject = serviceManager.serviceClient()
-            .getConsoles()
-            .createOrUpdate(resourceGroupName, virtualMachineName, consoleName, this.innerModel(), createIfMatch,
-                createIfNoneMatch, Context.NONE);
-        return this;
+        return this.create(Context.NONE);
     }
 
     public Console create(Context context) {
@@ -168,11 +164,7 @@ public final class ConsoleImpl implements Console, Console.Definition, Console.U
     }
 
     public Console apply() {
-        this.innerObject = serviceManager.serviceClient()
-            .getConsoles()
-            .update(resourceGroupName, virtualMachineName, consoleName, updateIfMatch, updateIfNoneMatch,
-                updateConsoleUpdateParameters, Context.NONE);
-        return this;
+        return this.apply(Context.NONE);
     }
 
     public Console apply(Context context) {
@@ -198,11 +190,7 @@ public final class ConsoleImpl implements Console, Console.Definition, Console.U
     }
 
     public Console refresh() {
-        this.innerObject = serviceManager.serviceClient()
-            .getConsoles()
-            .getWithResponse(resourceGroupName, virtualMachineName, consoleName, Context.NONE)
-            .getValue();
-        return this;
+        return this.refresh(Context.NONE);
     }
 
     public Console refresh(Context context) {

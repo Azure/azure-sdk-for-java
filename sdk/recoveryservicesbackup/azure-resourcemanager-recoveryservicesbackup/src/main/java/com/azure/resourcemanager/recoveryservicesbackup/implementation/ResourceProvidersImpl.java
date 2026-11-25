@@ -30,7 +30,7 @@ public final class ResourceProvidersImpl implements ResourceProviders {
     }
 
     public void bmsPrepareDataMove(String vaultName, String resourceGroupName, PrepareDataMoveRequest parameters) {
-        this.serviceClient().bmsPrepareDataMove(vaultName, resourceGroupName, parameters);
+        this.bmsPrepareDataMove(vaultName, resourceGroupName, parameters, Context.NONE);
     }
 
     public void bmsPrepareDataMove(String vaultName, String resourceGroupName, PrepareDataMoveRequest parameters,
@@ -39,7 +39,7 @@ public final class ResourceProvidersImpl implements ResourceProviders {
     }
 
     public void bmsTriggerDataMove(String vaultName, String resourceGroupName, TriggerDataMoveRequest parameters) {
-        this.serviceClient().bmsTriggerDataMove(vaultName, resourceGroupName, parameters);
+        this.bmsTriggerDataMove(vaultName, resourceGroupName, parameters, Context.NONE);
     }
 
     public void bmsTriggerDataMove(String vaultName, String resourceGroupName, TriggerDataMoveRequest parameters,
@@ -66,9 +66,8 @@ public final class ResourceProvidersImpl implements ResourceProviders {
 
     public void moveRecoveryPoint(String vaultName, String resourceGroupName, String fabricName, String containerName,
         String protectedItemName, String recoveryPointId, MoveRPAcrossTiersRequest parameters) {
-        this.serviceClient()
-            .moveRecoveryPoint(vaultName, resourceGroupName, fabricName, containerName, protectedItemName,
-                recoveryPointId, parameters);
+        this.moveRecoveryPoint(vaultName, resourceGroupName, fabricName, containerName, protectedItemName,
+            recoveryPointId, parameters, Context.NONE);
     }
 
     public void moveRecoveryPoint(String vaultName, String resourceGroupName, String fabricName, String containerName,

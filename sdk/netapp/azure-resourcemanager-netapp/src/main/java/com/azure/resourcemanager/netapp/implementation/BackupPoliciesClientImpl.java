@@ -242,18 +242,7 @@ public final class BackupPoliciesClientImpl implements BackupPoliciesClient {
             .flatMap(res -> Mono.justOrEmpty(res.getValue()));
     }
 
-    /**
-     * Get a particular backup Policy.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param accountName The name of the NetApp account.
-     * @param backupPolicyName Backup policy Name which uniquely identify backup policy.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return a particular backup Policy along with {@link Response}.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Response<BackupPolicyInner> getWithResponse(String resourceGroupName, String accountName,
         String backupPolicyName, Context context) {
@@ -284,17 +273,7 @@ public final class BackupPoliciesClientImpl implements BackupPoliciesClient {
             resourceGroupName, accountName, backupPolicyName, accept, context);
     }
 
-    /**
-     * Get a particular backup Policy.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param accountName The name of the NetApp account.
-     * @param backupPolicyName Backup policy Name which uniquely identify backup policy.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return a particular backup Policy.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public BackupPolicyInner get(String resourceGroupName, String accountName, String backupPolicyName) {
         return getWithResponse(resourceGroupName, accountName, backupPolicyName, Context.NONE).getValue();
@@ -363,38 +342,7 @@ public final class BackupPoliciesClientImpl implements BackupPoliciesClient {
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Response<BinaryData> createWithResponse(String resourceGroupName, String accountName,
         String backupPolicyName, BackupPolicyInner body) {
-        if (this.client.getEndpoint() == null) {
-            throw LOGGER.atError()
-                .log(new IllegalArgumentException(
-                    "Parameter this.client.getEndpoint() is required and cannot be null."));
-        }
-        if (this.client.getSubscriptionId() == null) {
-            throw LOGGER.atError()
-                .log(new IllegalArgumentException(
-                    "Parameter this.client.getSubscriptionId() is required and cannot be null."));
-        }
-        if (resourceGroupName == null) {
-            throw LOGGER.atError()
-                .log(new IllegalArgumentException("Parameter resourceGroupName is required and cannot be null."));
-        }
-        if (accountName == null) {
-            throw LOGGER.atError()
-                .log(new IllegalArgumentException("Parameter accountName is required and cannot be null."));
-        }
-        if (backupPolicyName == null) {
-            throw LOGGER.atError()
-                .log(new IllegalArgumentException("Parameter backupPolicyName is required and cannot be null."));
-        }
-        if (body == null) {
-            throw LOGGER.atError().log(new IllegalArgumentException("Parameter body is required and cannot be null."));
-        } else {
-            body.validate();
-        }
-        final String contentType = "application/json";
-        final String accept = "application/json";
-        return service.createSync(this.client.getEndpoint(), this.client.getApiVersion(),
-            this.client.getSubscriptionId(), resourceGroupName, accountName, backupPolicyName, contentType, accept,
-            body, Context.NONE);
+        return createWithResponse(resourceGroupName, accountName, backupPolicyName, body, Context.NONE);
     }
 
     /**
@@ -468,39 +416,14 @@ public final class BackupPoliciesClientImpl implements BackupPoliciesClient {
             BackupPolicyInner.class, BackupPolicyInner.class, this.client.getContext());
     }
 
-    /**
-     * Create a backup policy for Netapp Account.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param accountName The name of the NetApp account.
-     * @param backupPolicyName Backup policy Name which uniquely identify backup policy.
-     * @param body Backup policy object supplied in the body of the operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the {@link SyncPoller} for polling of backup policy information.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public SyncPoller<PollResult<BackupPolicyInner>, BackupPolicyInner> beginCreate(String resourceGroupName,
         String accountName, String backupPolicyName, BackupPolicyInner body) {
-        Response<BinaryData> response = createWithResponse(resourceGroupName, accountName, backupPolicyName, body);
-        return this.client.<BackupPolicyInner, BackupPolicyInner>getLroResult(response, BackupPolicyInner.class,
-            BackupPolicyInner.class, Context.NONE);
+        return beginCreate(resourceGroupName, accountName, backupPolicyName, body, Context.NONE);
     }
 
-    /**
-     * Create a backup policy for Netapp Account.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param accountName The name of the NetApp account.
-     * @param backupPolicyName Backup policy Name which uniquely identify backup policy.
-     * @param body Backup policy object supplied in the body of the operation.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the {@link SyncPoller} for polling of backup policy information.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public SyncPoller<PollResult<BackupPolicyInner>, BackupPolicyInner> beginCreate(String resourceGroupName,
         String accountName, String backupPolicyName, BackupPolicyInner body, Context context) {
@@ -529,41 +452,19 @@ public final class BackupPoliciesClientImpl implements BackupPoliciesClient {
             .flatMap(this.client::getLroFinalResultOrError);
     }
 
-    /**
-     * Create a backup policy for Netapp Account.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param accountName The name of the NetApp account.
-     * @param backupPolicyName Backup policy Name which uniquely identify backup policy.
-     * @param body Backup policy object supplied in the body of the operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return backup policy information.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public BackupPolicyInner create(String resourceGroupName, String accountName, String backupPolicyName,
         BackupPolicyInner body) {
-        return beginCreate(resourceGroupName, accountName, backupPolicyName, body).getFinalResult();
+        return create(resourceGroupName, accountName, backupPolicyName, body, Context.NONE);
     }
 
-    /**
-     * Create a backup policy for Netapp Account.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param accountName The name of the NetApp account.
-     * @param backupPolicyName Backup policy Name which uniquely identify backup policy.
-     * @param body Backup policy object supplied in the body of the operation.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return backup policy information.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public BackupPolicyInner create(String resourceGroupName, String accountName, String backupPolicyName,
         BackupPolicyInner body, Context context) {
-        return beginCreate(resourceGroupName, accountName, backupPolicyName, body, context).getFinalResult();
+        return this.client
+            .getLroFinalResultOrError(beginCreate(resourceGroupName, accountName, backupPolicyName, body, context));
     }
 
     /**
@@ -629,38 +530,7 @@ public final class BackupPoliciesClientImpl implements BackupPoliciesClient {
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Response<BinaryData> updateWithResponse(String resourceGroupName, String accountName,
         String backupPolicyName, BackupPolicyPatch body) {
-        if (this.client.getEndpoint() == null) {
-            throw LOGGER.atError()
-                .log(new IllegalArgumentException(
-                    "Parameter this.client.getEndpoint() is required and cannot be null."));
-        }
-        if (this.client.getSubscriptionId() == null) {
-            throw LOGGER.atError()
-                .log(new IllegalArgumentException(
-                    "Parameter this.client.getSubscriptionId() is required and cannot be null."));
-        }
-        if (resourceGroupName == null) {
-            throw LOGGER.atError()
-                .log(new IllegalArgumentException("Parameter resourceGroupName is required and cannot be null."));
-        }
-        if (accountName == null) {
-            throw LOGGER.atError()
-                .log(new IllegalArgumentException("Parameter accountName is required and cannot be null."));
-        }
-        if (backupPolicyName == null) {
-            throw LOGGER.atError()
-                .log(new IllegalArgumentException("Parameter backupPolicyName is required and cannot be null."));
-        }
-        if (body == null) {
-            throw LOGGER.atError().log(new IllegalArgumentException("Parameter body is required and cannot be null."));
-        } else {
-            body.validate();
-        }
-        final String contentType = "application/json";
-        final String accept = "application/json";
-        return service.updateSync(this.client.getEndpoint(), this.client.getApiVersion(),
-            this.client.getSubscriptionId(), resourceGroupName, accountName, backupPolicyName, contentType, accept,
-            body, Context.NONE);
+        return updateWithResponse(resourceGroupName, accountName, backupPolicyName, body, Context.NONE);
     }
 
     /**
@@ -734,39 +604,14 @@ public final class BackupPoliciesClientImpl implements BackupPoliciesClient {
             BackupPolicyInner.class, BackupPolicyInner.class, this.client.getContext());
     }
 
-    /**
-     * Patch a backup policy for Netapp Account.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param accountName The name of the NetApp account.
-     * @param backupPolicyName Backup policy Name which uniquely identify backup policy.
-     * @param body Backup policy object supplied in the body of the operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the {@link SyncPoller} for polling of backup policy information.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public SyncPoller<PollResult<BackupPolicyInner>, BackupPolicyInner> beginUpdate(String resourceGroupName,
         String accountName, String backupPolicyName, BackupPolicyPatch body) {
-        Response<BinaryData> response = updateWithResponse(resourceGroupName, accountName, backupPolicyName, body);
-        return this.client.<BackupPolicyInner, BackupPolicyInner>getLroResult(response, BackupPolicyInner.class,
-            BackupPolicyInner.class, Context.NONE);
+        return beginUpdate(resourceGroupName, accountName, backupPolicyName, body, Context.NONE);
     }
 
-    /**
-     * Patch a backup policy for Netapp Account.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param accountName The name of the NetApp account.
-     * @param backupPolicyName Backup policy Name which uniquely identify backup policy.
-     * @param body Backup policy object supplied in the body of the operation.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the {@link SyncPoller} for polling of backup policy information.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public SyncPoller<PollResult<BackupPolicyInner>, BackupPolicyInner> beginUpdate(String resourceGroupName,
         String accountName, String backupPolicyName, BackupPolicyPatch body, Context context) {
@@ -795,41 +640,19 @@ public final class BackupPoliciesClientImpl implements BackupPoliciesClient {
             .flatMap(this.client::getLroFinalResultOrError);
     }
 
-    /**
-     * Patch a backup policy for Netapp Account.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param accountName The name of the NetApp account.
-     * @param backupPolicyName Backup policy Name which uniquely identify backup policy.
-     * @param body Backup policy object supplied in the body of the operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return backup policy information.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public BackupPolicyInner update(String resourceGroupName, String accountName, String backupPolicyName,
         BackupPolicyPatch body) {
-        return beginUpdate(resourceGroupName, accountName, backupPolicyName, body).getFinalResult();
+        return update(resourceGroupName, accountName, backupPolicyName, body, Context.NONE);
     }
 
-    /**
-     * Patch a backup policy for Netapp Account.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param accountName The name of the NetApp account.
-     * @param backupPolicyName Backup policy Name which uniquely identify backup policy.
-     * @param body Backup policy object supplied in the body of the operation.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return backup policy information.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public BackupPolicyInner update(String resourceGroupName, String accountName, String backupPolicyName,
         BackupPolicyPatch body, Context context) {
-        return beginUpdate(resourceGroupName, accountName, backupPolicyName, body, context).getFinalResult();
+        return this.client
+            .getLroFinalResultOrError(beginUpdate(resourceGroupName, accountName, backupPolicyName, body, context));
     }
 
     /**
@@ -885,30 +708,7 @@ public final class BackupPoliciesClientImpl implements BackupPoliciesClient {
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Response<BinaryData> deleteWithResponse(String resourceGroupName, String accountName,
         String backupPolicyName) {
-        if (this.client.getEndpoint() == null) {
-            throw LOGGER.atError()
-                .log(new IllegalArgumentException(
-                    "Parameter this.client.getEndpoint() is required and cannot be null."));
-        }
-        if (this.client.getSubscriptionId() == null) {
-            throw LOGGER.atError()
-                .log(new IllegalArgumentException(
-                    "Parameter this.client.getSubscriptionId() is required and cannot be null."));
-        }
-        if (resourceGroupName == null) {
-            throw LOGGER.atError()
-                .log(new IllegalArgumentException("Parameter resourceGroupName is required and cannot be null."));
-        }
-        if (accountName == null) {
-            throw LOGGER.atError()
-                .log(new IllegalArgumentException("Parameter accountName is required and cannot be null."));
-        }
-        if (backupPolicyName == null) {
-            throw LOGGER.atError()
-                .log(new IllegalArgumentException("Parameter backupPolicyName is required and cannot be null."));
-        }
-        return service.deleteSync(this.client.getEndpoint(), this.client.getApiVersion(),
-            this.client.getSubscriptionId(), resourceGroupName, accountName, backupPolicyName, Context.NONE);
+        return deleteWithResponse(resourceGroupName, accountName, backupPolicyName, Context.NONE);
     }
 
     /**
@@ -972,36 +772,14 @@ public final class BackupPoliciesClientImpl implements BackupPoliciesClient {
             this.client.getContext());
     }
 
-    /**
-     * Delete backup policy.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param accountName The name of the NetApp account.
-     * @param backupPolicyName Backup policy Name which uniquely identify backup policy.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the {@link SyncPoller} for polling of long-running operation.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public SyncPoller<PollResult<Void>, Void> beginDelete(String resourceGroupName, String accountName,
         String backupPolicyName) {
-        Response<BinaryData> response = deleteWithResponse(resourceGroupName, accountName, backupPolicyName);
-        return this.client.<Void, Void>getLroResult(response, Void.class, Void.class, Context.NONE);
+        return beginDelete(resourceGroupName, accountName, backupPolicyName, Context.NONE);
     }
 
-    /**
-     * Delete backup policy.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param accountName The name of the NetApp account.
-     * @param backupPolicyName Backup policy Name which uniquely identify backup policy.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the {@link SyncPoller} for polling of long-running operation.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public SyncPoller<PollResult<Void>, Void> beginDelete(String resourceGroupName, String accountName,
         String backupPolicyName, Context context) {
@@ -1026,35 +804,16 @@ public final class BackupPoliciesClientImpl implements BackupPoliciesClient {
             .flatMap(this.client::getLroFinalResultOrError);
     }
 
-    /**
-     * Delete backup policy.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param accountName The name of the NetApp account.
-     * @param backupPolicyName Backup policy Name which uniquely identify backup policy.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public void delete(String resourceGroupName, String accountName, String backupPolicyName) {
-        beginDelete(resourceGroupName, accountName, backupPolicyName).getFinalResult();
+        delete(resourceGroupName, accountName, backupPolicyName, Context.NONE);
     }
 
-    /**
-     * Delete backup policy.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param accountName The name of the NetApp account.
-     * @param backupPolicyName Backup policy Name which uniquely identify backup policy.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public void delete(String resourceGroupName, String accountName, String backupPolicyName, Context context) {
-        beginDelete(resourceGroupName, accountName, backupPolicyName, context).getFinalResult();
+        this.client.getLroFinalResultOrError(beginDelete(resourceGroupName, accountName, backupPolicyName, context));
     }
 
     /**
@@ -1121,29 +880,7 @@ public final class BackupPoliciesClientImpl implements BackupPoliciesClient {
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private PagedResponse<BackupPolicyInner> listSinglePage(String resourceGroupName, String accountName) {
-        if (this.client.getEndpoint() == null) {
-            throw LOGGER.atError()
-                .log(new IllegalArgumentException(
-                    "Parameter this.client.getEndpoint() is required and cannot be null."));
-        }
-        if (this.client.getSubscriptionId() == null) {
-            throw LOGGER.atError()
-                .log(new IllegalArgumentException(
-                    "Parameter this.client.getSubscriptionId() is required and cannot be null."));
-        }
-        if (resourceGroupName == null) {
-            throw LOGGER.atError()
-                .log(new IllegalArgumentException("Parameter resourceGroupName is required and cannot be null."));
-        }
-        if (accountName == null) {
-            throw LOGGER.atError()
-                .log(new IllegalArgumentException("Parameter accountName is required and cannot be null."));
-        }
-        final String accept = "application/json";
-        Response<BackupPoliciesList> res = service.listSync(this.client.getEndpoint(), this.client.getApiVersion(),
-            this.client.getSubscriptionId(), resourceGroupName, accountName, accept, Context.NONE);
-        return new PagedResponseBase<>(res.getRequest(), res.getStatusCode(), res.getHeaders(), res.getValue().value(),
-            res.getValue().nextLink(), null);
+        return listSinglePage(resourceGroupName, accountName, Context.NONE);
     }
 
     /**
@@ -1185,33 +922,13 @@ public final class BackupPoliciesClientImpl implements BackupPoliciesClient {
             res.getValue().nextLink(), null);
     }
 
-    /**
-     * List backup policies for Netapp Account.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param accountName The name of the NetApp account.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return list of Backup Policies as paginated response with {@link PagedIterable}.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.COLLECTION)
     public PagedIterable<BackupPolicyInner> list(String resourceGroupName, String accountName) {
-        return new PagedIterable<>(() -> listSinglePage(resourceGroupName, accountName),
-            nextLink -> listNextSinglePage(nextLink));
+        return list(resourceGroupName, accountName, Context.NONE);
     }
 
-    /**
-     * List backup policies for Netapp Account.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param accountName The name of the NetApp account.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return list of Backup Policies as paginated response with {@link PagedIterable}.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.COLLECTION)
     public PagedIterable<BackupPolicyInner> list(String resourceGroupName, String accountName, Context context) {
         return new PagedIterable<>(() -> listSinglePage(resourceGroupName, accountName, context),
@@ -1254,20 +971,7 @@ public final class BackupPoliciesClientImpl implements BackupPoliciesClient {
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private PagedResponse<BackupPolicyInner> listNextSinglePage(String nextLink) {
-        if (nextLink == null) {
-            throw LOGGER.atError()
-                .log(new IllegalArgumentException("Parameter nextLink is required and cannot be null."));
-        }
-        if (this.client.getEndpoint() == null) {
-            throw LOGGER.atError()
-                .log(new IllegalArgumentException(
-                    "Parameter this.client.getEndpoint() is required and cannot be null."));
-        }
-        final String accept = "application/json";
-        Response<BackupPoliciesList> res
-            = service.listNextSync(nextLink, this.client.getEndpoint(), accept, Context.NONE);
-        return new PagedResponseBase<>(res.getRequest(), res.getStatusCode(), res.getHeaders(), res.getValue().value(),
-            res.getValue().nextLink(), null);
+        return listNextSinglePage(nextLink, Context.NONE);
     }
 
     /**

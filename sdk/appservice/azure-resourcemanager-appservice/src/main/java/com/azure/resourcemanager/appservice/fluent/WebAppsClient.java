@@ -4305,7 +4305,7 @@ public interface WebAppsClient
      * {@link Response} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    Mono<Response<String>> listPublishingProfileXmlWithSecretsSlotWithResponseAsync(String resourceGroupName,
+    Mono<Response<BinaryData>> listPublishingProfileXmlWithSecretsSlotWithResponseAsync(String resourceGroupName,
         String name, String slot, CsmPublishingProfileOptions publishingProfileOptions);
 
     /**
@@ -4328,7 +4328,7 @@ public interface WebAppsClient
      * completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    Mono<String> listPublishingProfileXmlWithSecretsSlotAsync(String resourceGroupName, String name, String slot,
+    Mono<BinaryData> listPublishingProfileXmlWithSecretsSlotAsync(String resourceGroupName, String name, String slot,
         CsmPublishingProfileOptions publishingProfileOptions);
 
     /**
@@ -4352,7 +4352,7 @@ public interface WebAppsClient
      * {@link Response}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    Response<String> listPublishingProfileXmlWithSecretsSlotWithResponse(String resourceGroupName, String name,
+    Response<BinaryData> listPublishingProfileXmlWithSecretsSlotWithResponse(String resourceGroupName, String name,
         String slot, CsmPublishingProfileOptions publishingProfileOptions, Context context);
 
     /**
@@ -4374,7 +4374,7 @@ public interface WebAppsClient
      * Description for Gets the publishing profile for an app (or deployment slot, if specified).
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    String listPublishingProfileXmlWithSecretsSlot(String resourceGroupName, String name, String slot,
+    BinaryData listPublishingProfileXmlWithSecretsSlot(String resourceGroupName, String name, String slot,
         CsmPublishingProfileOptions publishingProfileOptions);
 
     /**
@@ -13306,8 +13306,8 @@ public interface WebAppsClient
      * {@link Response} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    Mono<Response<String>> listPublishingProfileXmlWithSecretsWithResponseAsync(String resourceGroupName, String name,
-        CsmPublishingProfileOptions publishingProfileOptions);
+    Mono<Response<BinaryData>> listPublishingProfileXmlWithSecretsWithResponseAsync(String resourceGroupName,
+        String name, CsmPublishingProfileOptions publishingProfileOptions);
 
     /**
      * Gets the publishing profile for an app (or deployment slot, if specified).
@@ -13328,7 +13328,7 @@ public interface WebAppsClient
      * completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    Mono<String> listPublishingProfileXmlWithSecretsAsync(String resourceGroupName, String name,
+    Mono<BinaryData> listPublishingProfileXmlWithSecretsAsync(String resourceGroupName, String name,
         CsmPublishingProfileOptions publishingProfileOptions);
 
     /**
@@ -13351,7 +13351,7 @@ public interface WebAppsClient
      * {@link Response}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    Response<String> listPublishingProfileXmlWithSecretsWithResponse(String resourceGroupName, String name,
+    Response<BinaryData> listPublishingProfileXmlWithSecretsWithResponse(String resourceGroupName, String name,
         CsmPublishingProfileOptions publishingProfileOptions, Context context);
 
     /**
@@ -13372,7 +13372,7 @@ public interface WebAppsClient
      * Description for Gets the publishing profile for an app (or deployment slot, if specified).
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    String listPublishingProfileXmlWithSecrets(String resourceGroupName, String name,
+    BinaryData listPublishingProfileXmlWithSecrets(String resourceGroupName, String name,
         CsmPublishingProfileOptions publishingProfileOptions);
 
     /**

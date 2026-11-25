@@ -121,19 +121,7 @@ public final class FunctionsExtensionsClientImpl implements FunctionsExtensionsC
             .flatMap(res -> Mono.justOrEmpty(res.getValue()));
     }
 
-    /**
-     * Proxies a Functions host call to the function app backed by the container app.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param containerAppName Name of the Container App.
-     * @param revisionName Name of the Container App Revision.
-     * @param functionAppName Name of the Function.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws DefaultErrorResponseErrorException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return a sequence of textual characters along with {@link Response}.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Response<String> invokeFunctionsHostWithResponse(String resourceGroupName, String containerAppName,
         String revisionName, String functionAppName, Context context) {
@@ -143,18 +131,7 @@ public final class FunctionsExtensionsClientImpl implements FunctionsExtensionsC
             context);
     }
 
-    /**
-     * Proxies a Functions host call to the function app backed by the container app.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param containerAppName Name of the Container App.
-     * @param revisionName Name of the Container App Revision.
-     * @param functionAppName Name of the Function.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws DefaultErrorResponseErrorException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return a sequence of textual characters.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public String invokeFunctionsHost(String resourceGroupName, String containerAppName, String revisionName,
         String functionAppName) {

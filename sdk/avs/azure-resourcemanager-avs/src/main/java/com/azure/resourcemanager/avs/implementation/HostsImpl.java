@@ -28,9 +28,7 @@ public final class HostsImpl implements Hosts {
     }
 
     public PagedIterable<HostModel> list(String resourceGroupName, String privateCloudName, String clusterName) {
-        PagedIterable<HostModelInner> inner
-            = this.serviceClient().list(resourceGroupName, privateCloudName, clusterName);
-        return ResourceManagerUtils.mapPage(inner, inner1 -> new HostModelImpl(inner1, this.manager()));
+        return this.list(resourceGroupName, privateCloudName, clusterName, Context.NONE);
     }
 
     public PagedIterable<HostModel> list(String resourceGroupName, String privateCloudName, String clusterName,

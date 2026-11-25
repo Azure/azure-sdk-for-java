@@ -293,17 +293,7 @@ public final class PrivateLinkScopesClientImpl implements PrivateLinkScopesClien
             .flatMap(res -> Mono.justOrEmpty(res.getValue()));
     }
 
-    /**
-     * Returns a Azure Arc PrivateLinkScope's validation details for a given machine.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param machineName The name of the hybrid machine.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the response body along with {@link Response}.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Response<PrivateLinkScopeValidationDetailsInner>
         getValidationDetailsForMachineWithResponse(String resourceGroupName, String machineName, Context context) {
@@ -312,16 +302,7 @@ public final class PrivateLinkScopesClientImpl implements PrivateLinkScopesClien
             this.client.getSubscriptionId(), resourceGroupName, machineName, accept, context);
     }
 
-    /**
-     * Returns a Azure Arc PrivateLinkScope's validation details for a given machine.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param machineName The name of the hybrid machine.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the response.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public PrivateLinkScopeValidationDetailsInner getValidationDetailsForMachine(String resourceGroupName,
         String machineName) {
@@ -366,17 +347,7 @@ public final class PrivateLinkScopesClientImpl implements PrivateLinkScopesClien
             .flatMap(res -> Mono.justOrEmpty(res.getValue()));
     }
 
-    /**
-     * Returns a Azure Arc PrivateLinkScope.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param scopeName The name of the Azure Arc PrivateLinkScope resource.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return an Azure Arc PrivateLinkScope definition along with {@link Response}.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Response<HybridComputePrivateLinkScopeInner> getByResourceGroupWithResponse(String resourceGroupName,
         String scopeName, Context context) {
@@ -385,16 +356,7 @@ public final class PrivateLinkScopesClientImpl implements PrivateLinkScopesClien
             this.client.getSubscriptionId(), resourceGroupName, scopeName, accept, context);
     }
 
-    /**
-     * Returns a Azure Arc PrivateLinkScope.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param scopeName The name of the Azure Arc PrivateLinkScope resource.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return an Azure Arc PrivateLinkScope definition.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public HybridComputePrivateLinkScopeInner getByResourceGroup(String resourceGroupName, String scopeName) {
         return getByResourceGroupWithResponse(resourceGroupName, scopeName, Context.NONE).getValue();
@@ -446,20 +408,7 @@ public final class PrivateLinkScopesClientImpl implements PrivateLinkScopesClien
             .flatMap(res -> Mono.justOrEmpty(res.getValue()));
     }
 
-    /**
-     * Creates (or updates) a Azure Arc PrivateLinkScope. Note: You cannot specify a different value for
-     * InstrumentationKey nor AppId in the Put operation.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param scopeName The name of the Azure Arc PrivateLinkScope resource.
-     * @param parameters Properties that need to be specified to create or update a Azure Arc for Servers and Clusters
-     * PrivateLinkScope.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return an Azure Arc PrivateLinkScope definition along with {@link Response}.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Response<HybridComputePrivateLinkScopeInner> createOrUpdateWithResponse(String resourceGroupName,
         String scopeName, HybridComputePrivateLinkScopeInner parameters, Context context) {
@@ -469,19 +418,7 @@ public final class PrivateLinkScopesClientImpl implements PrivateLinkScopesClien
             this.client.getSubscriptionId(), resourceGroupName, scopeName, contentType, accept, parameters, context);
     }
 
-    /**
-     * Creates (or updates) a Azure Arc PrivateLinkScope. Note: You cannot specify a different value for
-     * InstrumentationKey nor AppId in the Put operation.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param scopeName The name of the Azure Arc PrivateLinkScope resource.
-     * @param parameters Properties that need to be specified to create or update a Azure Arc for Servers and Clusters
-     * PrivateLinkScope.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return an Azure Arc PrivateLinkScope definition.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public HybridComputePrivateLinkScopeInner createOrUpdate(String resourceGroupName, String scopeName,
         HybridComputePrivateLinkScopeInner parameters) {
@@ -530,18 +467,7 @@ public final class PrivateLinkScopesClientImpl implements PrivateLinkScopesClien
             .flatMap(res -> Mono.justOrEmpty(res.getValue()));
     }
 
-    /**
-     * Updates an existing PrivateLinkScope's tags. To update other fields use the CreateOrUpdate method.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param scopeName The name of the Azure Arc PrivateLinkScope resource.
-     * @param privateLinkScopeTags Updated tag information to set into the PrivateLinkScope instance.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return an Azure Arc PrivateLinkScope definition along with {@link Response}.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Response<HybridComputePrivateLinkScopeInner> updateTagsWithResponse(String resourceGroupName,
         String scopeName, TagsResource privateLinkScopeTags, Context context) {
@@ -552,17 +478,7 @@ public final class PrivateLinkScopesClientImpl implements PrivateLinkScopesClien
             context);
     }
 
-    /**
-     * Updates an existing PrivateLinkScope's tags. To update other fields use the CreateOrUpdate method.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param scopeName The name of the Azure Arc PrivateLinkScope resource.
-     * @param privateLinkScopeTags Updated tag information to set into the PrivateLinkScope instance.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return an Azure Arc PrivateLinkScope definition.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public HybridComputePrivateLinkScopeInner updateTags(String resourceGroupName, String scopeName,
         TagsResource privateLinkScopeTags) {
@@ -599,8 +515,7 @@ public final class PrivateLinkScopesClientImpl implements PrivateLinkScopesClien
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Response<BinaryData> deleteWithResponse(String resourceGroupName, String scopeName) {
-        return service.deleteSync(this.client.getEndpoint(), this.client.getApiVersion(),
-            this.client.getSubscriptionId(), resourceGroupName, scopeName, Context.NONE);
+        return deleteWithResponse(resourceGroupName, scopeName, Context.NONE);
     }
 
     /**
@@ -637,33 +552,13 @@ public final class PrivateLinkScopesClientImpl implements PrivateLinkScopesClien
             this.client.getContext());
     }
 
-    /**
-     * Deletes a Azure Arc PrivateLinkScope.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param scopeName The name of the Azure Arc PrivateLinkScope resource.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the {@link SyncPoller} for polling of long-running operation.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public SyncPoller<PollResult<Void>, Void> beginDelete(String resourceGroupName, String scopeName) {
-        Response<BinaryData> response = deleteWithResponse(resourceGroupName, scopeName);
-        return this.client.<Void, Void>getLroResult(response, Void.class, Void.class, Context.NONE);
+        return beginDelete(resourceGroupName, scopeName, Context.NONE);
     }
 
-    /**
-     * Deletes a Azure Arc PrivateLinkScope.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param scopeName The name of the Azure Arc PrivateLinkScope resource.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the {@link SyncPoller} for polling of long-running operation.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public SyncPoller<PollResult<Void>, Void> beginDelete(String resourceGroupName, String scopeName, Context context) {
         Response<BinaryData> response = deleteWithResponse(resourceGroupName, scopeName, context);
@@ -685,33 +580,16 @@ public final class PrivateLinkScopesClientImpl implements PrivateLinkScopesClien
         return beginDeleteAsync(resourceGroupName, scopeName).last().flatMap(this.client::getLroFinalResultOrError);
     }
 
-    /**
-     * Deletes a Azure Arc PrivateLinkScope.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param scopeName The name of the Azure Arc PrivateLinkScope resource.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public void delete(String resourceGroupName, String scopeName) {
-        beginDelete(resourceGroupName, scopeName).getFinalResult();
+        delete(resourceGroupName, scopeName, Context.NONE);
     }
 
-    /**
-     * Deletes a Azure Arc PrivateLinkScope.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param scopeName The name of the Azure Arc PrivateLinkScope resource.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public void delete(String resourceGroupName, String scopeName, Context context) {
-        beginDelete(resourceGroupName, scopeName, context).getFinalResult();
+        this.client.getLroFinalResultOrError(beginDelete(resourceGroupName, scopeName, context));
     }
 
     /**
@@ -763,12 +641,7 @@ public final class PrivateLinkScopesClientImpl implements PrivateLinkScopesClien
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private PagedResponse<HybridComputePrivateLinkScopeInner> listByResourceGroupSinglePage(String resourceGroupName) {
-        final String accept = "application/json";
-        Response<HybridComputePrivateLinkScopeListResult> res
-            = service.listByResourceGroupSync(this.client.getEndpoint(), this.client.getApiVersion(),
-                this.client.getSubscriptionId(), resourceGroupName, accept, Context.NONE);
-        return new PagedResponseBase<>(res.getRequest(), res.getStatusCode(), res.getHeaders(), res.getValue().value(),
-            res.getValue().nextLink(), null);
+        return listByResourceGroupSinglePage(resourceGroupName, Context.NONE);
     }
 
     /**
@@ -792,33 +665,13 @@ public final class PrivateLinkScopesClientImpl implements PrivateLinkScopesClien
             res.getValue().nextLink(), null);
     }
 
-    /**
-     * Gets a list of Azure Arc PrivateLinkScopes within a resource group.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return a list of Azure Arc PrivateLinkScopes within a resource group as paginated response with
-     * {@link PagedIterable}.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.COLLECTION)
     public PagedIterable<HybridComputePrivateLinkScopeInner> listByResourceGroup(String resourceGroupName) {
-        return new PagedIterable<>(() -> listByResourceGroupSinglePage(resourceGroupName),
-            nextLink -> listByResourceGroupNextSinglePage(nextLink));
+        return listByResourceGroup(resourceGroupName, Context.NONE);
     }
 
-    /**
-     * Gets a list of Azure Arc PrivateLinkScopes within a resource group.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return a list of Azure Arc PrivateLinkScopes within a resource group as paginated response with
-     * {@link PagedIterable}.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.COLLECTION)
     public PagedIterable<HybridComputePrivateLinkScopeInner> listByResourceGroup(String resourceGroupName,
         Context context) {
@@ -867,11 +720,7 @@ public final class PrivateLinkScopesClientImpl implements PrivateLinkScopesClien
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private PagedResponse<HybridComputePrivateLinkScopeInner> listSinglePage() {
-        final String accept = "application/json";
-        Response<HybridComputePrivateLinkScopeListResult> res = service.listSync(this.client.getEndpoint(),
-            this.client.getApiVersion(), this.client.getSubscriptionId(), accept, Context.NONE);
-        return new PagedResponseBase<>(res.getRequest(), res.getStatusCode(), res.getHeaders(), res.getValue().value(),
-            res.getValue().nextLink(), null);
+        return listSinglePage(Context.NONE);
     }
 
     /**
@@ -892,29 +741,13 @@ public final class PrivateLinkScopesClientImpl implements PrivateLinkScopesClien
             res.getValue().nextLink(), null);
     }
 
-    /**
-     * Gets a list of all Azure Arc PrivateLinkScopes within a subscription.
-     * 
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return a list of all Azure Arc PrivateLinkScopes within a subscription as paginated response with
-     * {@link PagedIterable}.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.COLLECTION)
     public PagedIterable<HybridComputePrivateLinkScopeInner> list() {
-        return new PagedIterable<>(() -> listSinglePage(), nextLink -> listNextSinglePage(nextLink));
+        return list(Context.NONE);
     }
 
-    /**
-     * Gets a list of all Azure Arc PrivateLinkScopes within a subscription.
-     * 
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return a list of all Azure Arc PrivateLinkScopes within a subscription as paginated response with
-     * {@link PagedIterable}.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.COLLECTION)
     public PagedIterable<HybridComputePrivateLinkScopeInner> list(Context context) {
         return new PagedIterable<>(() -> listSinglePage(context), nextLink -> listNextSinglePage(nextLink, context));
@@ -957,17 +790,7 @@ public final class PrivateLinkScopesClientImpl implements PrivateLinkScopesClien
             .flatMap(res -> Mono.justOrEmpty(res.getValue()));
     }
 
-    /**
-     * Returns a Azure Arc PrivateLinkScope's validation details.
-     * 
-     * @param location The name of the Azure region.
-     * @param privateLinkScopeId The id (Guid) of the Azure Arc PrivateLinkScope resource.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the response body along with {@link Response}.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Response<PrivateLinkScopeValidationDetailsInner> getValidationDetailsWithResponse(String location,
         String privateLinkScopeId, Context context) {
@@ -976,16 +799,7 @@ public final class PrivateLinkScopesClientImpl implements PrivateLinkScopesClien
             this.client.getSubscriptionId(), privateLinkScopeId, accept, context);
     }
 
-    /**
-     * Returns a Azure Arc PrivateLinkScope's validation details.
-     * 
-     * @param location The name of the Azure region.
-     * @param privateLinkScopeId The id (Guid) of the Azure Arc PrivateLinkScope resource.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the response.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public PrivateLinkScopeValidationDetailsInner getValidationDetails(String location, String privateLinkScopeId) {
         return getValidationDetailsWithResponse(location, privateLinkScopeId, Context.NONE).getValue();
@@ -1024,11 +838,7 @@ public final class PrivateLinkScopesClientImpl implements PrivateLinkScopesClien
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private PagedResponse<HybridComputePrivateLinkScopeInner> listByResourceGroupNextSinglePage(String nextLink) {
-        final String accept = "application/json";
-        Response<HybridComputePrivateLinkScopeListResult> res
-            = service.listByResourceGroupNextSync(nextLink, this.client.getEndpoint(), accept, Context.NONE);
-        return new PagedResponseBase<>(res.getRequest(), res.getStatusCode(), res.getHeaders(), res.getValue().value(),
-            res.getValue().nextLink(), null);
+        return listByResourceGroupNextSinglePage(nextLink, Context.NONE);
     }
 
     /**
@@ -1081,11 +891,7 @@ public final class PrivateLinkScopesClientImpl implements PrivateLinkScopesClien
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private PagedResponse<HybridComputePrivateLinkScopeInner> listNextSinglePage(String nextLink) {
-        final String accept = "application/json";
-        Response<HybridComputePrivateLinkScopeListResult> res
-            = service.listNextSync(nextLink, this.client.getEndpoint(), accept, Context.NONE);
-        return new PagedResponseBase<>(res.getRequest(), res.getStatusCode(), res.getHeaders(), res.getValue().value(),
-            res.getValue().nextLink(), null);
+        return listNextSinglePage(nextLink, Context.NONE);
     }
 
     /**

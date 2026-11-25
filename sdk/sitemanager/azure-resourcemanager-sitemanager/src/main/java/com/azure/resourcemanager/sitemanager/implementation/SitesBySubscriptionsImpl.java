@@ -29,8 +29,7 @@ public final class SitesBySubscriptionsImpl implements SitesBySubscriptions {
     }
 
     public PagedIterable<Site> list() {
-        PagedIterable<SiteInner> inner = this.serviceClient().list();
-        return ResourceManagerUtils.mapPage(inner, inner1 -> new SiteImpl(inner1, this.manager()));
+        return this.list(Context.NONE);
     }
 
     public PagedIterable<Site> list(Context context) {
@@ -54,12 +53,7 @@ public final class SitesBySubscriptionsImpl implements SitesBySubscriptions {
     }
 
     public Site createOrUpdate(String siteName, SiteInner resource) {
-        SiteInner inner = this.serviceClient().createOrUpdate(siteName, resource);
-        if (inner != null) {
-            return new SiteImpl(inner, this.manager());
-        } else {
-            return null;
-        }
+        return this.createOrUpdate(siteName, resource, Context.NONE);
     }
 
     public Site createOrUpdate(String siteName, SiteInner resource, Context context) {
@@ -91,7 +85,7 @@ public final class SitesBySubscriptionsImpl implements SitesBySubscriptions {
     }
 
     public void delete(String siteName) {
-        this.serviceClient().delete(siteName);
+        this.deleteWithResponse(siteName, Context.NONE);
     }
 
     private SitesBySubscriptionsClient serviceClient() {

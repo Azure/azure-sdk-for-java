@@ -116,8 +116,7 @@ public final class MonitorOperationsClientImpl implements MonitorOperationsClien
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Response<BinaryData> upgradeWithResponse(String resourceGroupName, String monitorName,
         ElasticMonitorUpgrade body) {
-        return service.upgradeSync(this.client.getEndpoint(), this.client.getApiVersion(),
-            this.client.getSubscriptionId(), resourceGroupName, monitorName, body, Context.NONE);
+        return upgradeWithResponse(resourceGroupName, monitorName, body, Context.NONE);
     }
 
     /**
@@ -188,41 +187,19 @@ public final class MonitorOperationsClientImpl implements MonitorOperationsClien
      * @return the {@link SyncPoller} for polling of long-running operation.
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
-    public SyncPoller<PollResult<Void>, Void> beginUpgrade(String resourceGroupName, String monitorName,
+    private SyncPoller<PollResult<Void>, Void> beginUpgrade(String resourceGroupName, String monitorName,
         ElasticMonitorUpgrade body) {
-        Response<BinaryData> response = upgradeWithResponse(resourceGroupName, monitorName, body);
-        return this.client.<Void, Void>getLroResult(response, Void.class, Void.class, Context.NONE);
+        return beginUpgrade(resourceGroupName, monitorName, body, Context.NONE);
     }
 
-    /**
-     * Upgrade the Elastic monitor resource to a newer version, ensuring optimal observability and performance.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param monitorName Monitor resource name.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the {@link SyncPoller} for polling of long-running operation.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public SyncPoller<PollResult<Void>, Void> beginUpgrade(String resourceGroupName, String monitorName) {
         final ElasticMonitorUpgrade body = null;
-        Response<BinaryData> response = upgradeWithResponse(resourceGroupName, monitorName, body);
-        return this.client.<Void, Void>getLroResult(response, Void.class, Void.class, Context.NONE);
+        return beginUpgrade(resourceGroupName, monitorName, body, Context.NONE);
     }
 
-    /**
-     * Upgrade the Elastic monitor resource to a newer version, ensuring optimal observability and performance.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param monitorName Monitor resource name.
-     * @param body Elastic Monitor Upgrade Parameters.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the {@link SyncPoller} for polling of long-running operation.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public SyncPoller<PollResult<Void>, Void> beginUpgrade(String resourceGroupName, String monitorName,
         ElasticMonitorUpgrade body, Context context) {
@@ -264,34 +241,16 @@ public final class MonitorOperationsClientImpl implements MonitorOperationsClien
             .flatMap(this.client::getLroFinalResultOrError);
     }
 
-    /**
-     * Upgrade the Elastic monitor resource to a newer version, ensuring optimal observability and performance.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param monitorName Monitor resource name.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public void upgrade(String resourceGroupName, String monitorName) {
         final ElasticMonitorUpgrade body = null;
-        beginUpgrade(resourceGroupName, monitorName, body).getFinalResult();
+        upgrade(resourceGroupName, monitorName, body, Context.NONE);
     }
 
-    /**
-     * Upgrade the Elastic monitor resource to a newer version, ensuring optimal observability and performance.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param monitorName Monitor resource name.
-     * @param body Elastic Monitor Upgrade Parameters.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public void upgrade(String resourceGroupName, String monitorName, ElasticMonitorUpgrade body, Context context) {
-        beginUpgrade(resourceGroupName, monitorName, body, context).getFinalResult();
+        this.client.getLroFinalResultOrError(beginUpgrade(resourceGroupName, monitorName, body, context));
     }
 }

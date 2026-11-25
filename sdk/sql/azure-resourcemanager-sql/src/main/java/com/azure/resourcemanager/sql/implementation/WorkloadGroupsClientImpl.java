@@ -118,18 +118,7 @@ public final class WorkloadGroupsClientImpl implements WorkloadGroupsClient {
             @HeaderParam("Accept") String accept, Context context);
     }
 
-    /**
-     * Gets a workload group.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param serverName The name of the server.
-     * @param databaseName The name of the database.
-     * @param workloadGroupName The name of the workload group.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return a workload group along with {@link Response} on successful completion of {@link Mono}.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Response<WorkloadGroupInner>> getWithResponseAsync(String resourceGroupName, String serverName,
         String databaseName, String workloadGroupName) {
@@ -207,18 +196,7 @@ public final class WorkloadGroupsClientImpl implements WorkloadGroupsClient {
             resourceGroupName, serverName, databaseName, workloadGroupName, accept, context);
     }
 
-    /**
-     * Gets a workload group.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param serverName The name of the server.
-     * @param databaseName The name of the database.
-     * @param workloadGroupName The name of the workload group.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return a workload group on successful completion of {@link Mono}.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<WorkloadGroupInner> getAsync(String resourceGroupName, String serverName, String databaseName,
         String workloadGroupName) {
@@ -226,57 +204,21 @@ public final class WorkloadGroupsClientImpl implements WorkloadGroupsClient {
             .flatMap(res -> Mono.justOrEmpty(res.getValue()));
     }
 
-    /**
-     * Gets a workload group.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param serverName The name of the server.
-     * @param databaseName The name of the database.
-     * @param workloadGroupName The name of the workload group.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return a workload group along with {@link Response}.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Response<WorkloadGroupInner> getWithResponse(String resourceGroupName, String serverName,
         String databaseName, String workloadGroupName, Context context) {
         return getWithResponseAsync(resourceGroupName, serverName, databaseName, workloadGroupName, context).block();
     }
 
-    /**
-     * Gets a workload group.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param serverName The name of the server.
-     * @param databaseName The name of the database.
-     * @param workloadGroupName The name of the workload group.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return a workload group.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public WorkloadGroupInner get(String resourceGroupName, String serverName, String databaseName,
         String workloadGroupName) {
         return getWithResponse(resourceGroupName, serverName, databaseName, workloadGroupName, Context.NONE).getValue();
     }
 
-    /**
-     * Creates or updates a workload group.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param serverName The name of the server.
-     * @param databaseName The name of the database.
-     * @param workloadGroupName The name of the workload group.
-     * @param parameters The requested workload group state.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return workload group operations for a data warehouse along with {@link Response} on successful completion of
-     * {@link Mono}.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Response<Flux<ByteBuffer>>> createOrUpdateWithResponseAsync(String resourceGroupName, String serverName,
         String databaseName, String workloadGroupName, WorkloadGroupInner parameters) {
@@ -370,19 +312,7 @@ public final class WorkloadGroupsClientImpl implements WorkloadGroupsClient {
             contentType, accept, parameters, context);
     }
 
-    /**
-     * Creates or updates a workload group.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param serverName The name of the server.
-     * @param databaseName The name of the database.
-     * @param workloadGroupName The name of the workload group.
-     * @param parameters The requested workload group state.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the {@link PollerFlux} for polling of workload group operations for a data warehouse.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public PollerFlux<PollResult<WorkloadGroupInner>, WorkloadGroupInner> beginCreateOrUpdateAsync(
         String resourceGroupName, String serverName, String databaseName, String workloadGroupName,
@@ -418,19 +348,7 @@ public final class WorkloadGroupsClientImpl implements WorkloadGroupsClient {
             WorkloadGroupInner.class, WorkloadGroupInner.class, context);
     }
 
-    /**
-     * Creates or updates a workload group.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param serverName The name of the server.
-     * @param databaseName The name of the database.
-     * @param workloadGroupName The name of the workload group.
-     * @param parameters The requested workload group state.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the {@link SyncPoller} for polling of workload group operations for a data warehouse.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public SyncPoller<PollResult<WorkloadGroupInner>, WorkloadGroupInner> beginCreateOrUpdate(String resourceGroupName,
         String serverName, String databaseName, String workloadGroupName, WorkloadGroupInner parameters) {
@@ -438,20 +356,7 @@ public final class WorkloadGroupsClientImpl implements WorkloadGroupsClient {
             .getSyncPoller();
     }
 
-    /**
-     * Creates or updates a workload group.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param serverName The name of the server.
-     * @param databaseName The name of the database.
-     * @param workloadGroupName The name of the workload group.
-     * @param parameters The requested workload group state.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the {@link SyncPoller} for polling of workload group operations for a data warehouse.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public SyncPoller<PollResult<WorkloadGroupInner>, WorkloadGroupInner> beginCreateOrUpdate(String resourceGroupName,
         String serverName, String databaseName, String workloadGroupName, WorkloadGroupInner parameters,
@@ -462,19 +367,7 @@ public final class WorkloadGroupsClientImpl implements WorkloadGroupsClient {
             .getSyncPoller();
     }
 
-    /**
-     * Creates or updates a workload group.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param serverName The name of the server.
-     * @param databaseName The name of the database.
-     * @param workloadGroupName The name of the workload group.
-     * @param parameters The requested workload group state.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return workload group operations for a data warehouse on successful completion of {@link Mono}.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<WorkloadGroupInner> createOrUpdateAsync(String resourceGroupName, String serverName,
         String databaseName, String workloadGroupName, WorkloadGroupInner parameters) {
@@ -504,39 +397,14 @@ public final class WorkloadGroupsClientImpl implements WorkloadGroupsClient {
             context).last().flatMap(this.client::getLroFinalResultOrError);
     }
 
-    /**
-     * Creates or updates a workload group.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param serverName The name of the server.
-     * @param databaseName The name of the database.
-     * @param workloadGroupName The name of the workload group.
-     * @param parameters The requested workload group state.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return workload group operations for a data warehouse.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public WorkloadGroupInner createOrUpdate(String resourceGroupName, String serverName, String databaseName,
         String workloadGroupName, WorkloadGroupInner parameters) {
         return createOrUpdateAsync(resourceGroupName, serverName, databaseName, workloadGroupName, parameters).block();
     }
 
-    /**
-     * Creates or updates a workload group.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param serverName The name of the server.
-     * @param databaseName The name of the database.
-     * @param workloadGroupName The name of the workload group.
-     * @param parameters The requested workload group state.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return workload group operations for a data warehouse.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public WorkloadGroupInner createOrUpdate(String resourceGroupName, String serverName, String databaseName,
         String workloadGroupName, WorkloadGroupInner parameters, Context context) {
@@ -544,18 +412,7 @@ public final class WorkloadGroupsClientImpl implements WorkloadGroupsClient {
             .block();
     }
 
-    /**
-     * Deletes a workload group.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param serverName The name of the server.
-     * @param databaseName The name of the database.
-     * @param workloadGroupName The name of the workload group.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the {@link Response} on successful completion of {@link Mono}.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Response<Flux<ByteBuffer>>> deleteWithResponseAsync(String resourceGroupName, String serverName,
         String databaseName, String workloadGroupName) {
@@ -629,18 +486,7 @@ public final class WorkloadGroupsClientImpl implements WorkloadGroupsClient {
             resourceGroupName, serverName, databaseName, workloadGroupName, context);
     }
 
-    /**
-     * Deletes a workload group.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param serverName The name of the server.
-     * @param databaseName The name of the database.
-     * @param workloadGroupName The name of the workload group.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the {@link PollerFlux} for polling of long-running operation.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public PollerFlux<PollResult<Void>, Void> beginDeleteAsync(String resourceGroupName, String serverName,
         String databaseName, String workloadGroupName) {
@@ -673,37 +519,14 @@ public final class WorkloadGroupsClientImpl implements WorkloadGroupsClient {
             context);
     }
 
-    /**
-     * Deletes a workload group.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param serverName The name of the server.
-     * @param databaseName The name of the database.
-     * @param workloadGroupName The name of the workload group.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the {@link SyncPoller} for polling of long-running operation.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public SyncPoller<PollResult<Void>, Void> beginDelete(String resourceGroupName, String serverName,
         String databaseName, String workloadGroupName) {
         return this.beginDeleteAsync(resourceGroupName, serverName, databaseName, workloadGroupName).getSyncPoller();
     }
 
-    /**
-     * Deletes a workload group.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param serverName The name of the server.
-     * @param databaseName The name of the database.
-     * @param workloadGroupName The name of the workload group.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the {@link SyncPoller} for polling of long-running operation.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public SyncPoller<PollResult<Void>, Void> beginDelete(String resourceGroupName, String serverName,
         String databaseName, String workloadGroupName, Context context) {
@@ -711,18 +534,7 @@ public final class WorkloadGroupsClientImpl implements WorkloadGroupsClient {
             .getSyncPoller();
     }
 
-    /**
-     * Deletes a workload group.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param serverName The name of the server.
-     * @param databaseName The name of the database.
-     * @param workloadGroupName The name of the workload group.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return A {@link Mono} that completes when a successful response is received.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Void> deleteAsync(String resourceGroupName, String serverName, String databaseName,
         String workloadGroupName) {
@@ -750,34 +562,13 @@ public final class WorkloadGroupsClientImpl implements WorkloadGroupsClient {
             .flatMap(this.client::getLroFinalResultOrError);
     }
 
-    /**
-     * Deletes a workload group.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param serverName The name of the server.
-     * @param databaseName The name of the database.
-     * @param workloadGroupName The name of the workload group.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public void delete(String resourceGroupName, String serverName, String databaseName, String workloadGroupName) {
         deleteAsync(resourceGroupName, serverName, databaseName, workloadGroupName).block();
     }
 
-    /**
-     * Deletes a workload group.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param serverName The name of the server.
-     * @param databaseName The name of the database.
-     * @param workloadGroupName The name of the workload group.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public void delete(String resourceGroupName, String serverName, String databaseName, String workloadGroupName,
         Context context) {
@@ -867,17 +658,7 @@ public final class WorkloadGroupsClientImpl implements WorkloadGroupsClient {
                 res.getValue().value(), res.getValue().nextLink(), null));
     }
 
-    /**
-     * Gets the list of workload groups.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param serverName The name of the server.
-     * @param databaseName The name of the database.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the list of workload groups as paginated response with {@link PagedFlux}.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.COLLECTION)
     public PagedFlux<WorkloadGroupInner> listByDatabaseAsync(String resourceGroupName, String serverName,
         String databaseName) {
@@ -905,35 +686,14 @@ public final class WorkloadGroupsClientImpl implements WorkloadGroupsClient {
             nextLink -> listByDatabaseNextSinglePageAsync(nextLink, context));
     }
 
-    /**
-     * Gets the list of workload groups.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param serverName The name of the server.
-     * @param databaseName The name of the database.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the list of workload groups as paginated response with {@link PagedIterable}.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.COLLECTION)
     public PagedIterable<WorkloadGroupInner> listByDatabase(String resourceGroupName, String serverName,
         String databaseName) {
         return new PagedIterable<>(listByDatabaseAsync(resourceGroupName, serverName, databaseName));
     }
 
-    /**
-     * Gets the list of workload groups.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param serverName The name of the server.
-     * @param databaseName The name of the database.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the list of workload groups as paginated response with {@link PagedIterable}.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.COLLECTION)
     public PagedIterable<WorkloadGroupInner> listByDatabase(String resourceGroupName, String serverName,
         String databaseName, Context context) {

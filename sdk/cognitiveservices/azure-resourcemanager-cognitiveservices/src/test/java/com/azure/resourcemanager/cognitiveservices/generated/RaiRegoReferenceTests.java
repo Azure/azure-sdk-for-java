@@ -11,15 +11,14 @@ import org.junit.jupiter.api.Assertions;
 public final class RaiRegoReferenceTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
-        RaiRegoReference model
-            = BinaryData.fromString("{\"regoName\":\"wlyxgncxyk\"}").toObject(RaiRegoReference.class);
-        Assertions.assertEquals("wlyxgncxyk", model.regoName());
+        RaiRegoReference model = BinaryData.fromString("{\"regoName\":\"lkhhu\"}").toObject(RaiRegoReference.class);
+        Assertions.assertEquals("lkhhu", model.regoName());
     }
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
-        RaiRegoReference model = new RaiRegoReference().withRegoName("wlyxgncxyk");
+        RaiRegoReference model = new RaiRegoReference().withRegoName("lkhhu");
         model = BinaryData.fromObject(model).toObject(RaiRegoReference.class);
-        Assertions.assertEquals("wlyxgncxyk", model.regoName());
+        Assertions.assertEquals("lkhhu", model.regoName());
     }
 }

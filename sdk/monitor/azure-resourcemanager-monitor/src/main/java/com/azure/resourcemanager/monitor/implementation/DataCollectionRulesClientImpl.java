@@ -145,17 +145,7 @@ public final class DataCollectionRulesClientImpl implements InnerSupportsGet<Dat
             @HeaderParam("Accept") String accept, Context context);
     }
 
-    /**
-     * Returns the specified data collection rule.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param dataCollectionRuleName The name of the data collection rule. The name is case insensitive.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return definition of ARM tracked top level resource along with {@link Response} on successful completion of
-     * {@link Mono}.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Response<DataCollectionRuleResourceInner>> getByResourceGroupWithResponseAsync(String resourceGroupName,
         String dataCollectionRuleName) {
@@ -221,16 +211,7 @@ public final class DataCollectionRulesClientImpl implements InnerSupportsGet<Dat
             resourceGroupName, dataCollectionRuleName, accept, context);
     }
 
-    /**
-     * Returns the specified data collection rule.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param dataCollectionRuleName The name of the data collection rule. The name is case insensitive.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return definition of ARM tracked top level resource on successful completion of {@link Mono}.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<DataCollectionRuleResourceInner> getByResourceGroupAsync(String resourceGroupName,
         String dataCollectionRuleName) {
@@ -238,50 +219,20 @@ public final class DataCollectionRulesClientImpl implements InnerSupportsGet<Dat
             .flatMap(res -> Mono.justOrEmpty(res.getValue()));
     }
 
-    /**
-     * Returns the specified data collection rule.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param dataCollectionRuleName The name of the data collection rule. The name is case insensitive.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return definition of ARM tracked top level resource along with {@link Response}.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Response<DataCollectionRuleResourceInner> getByResourceGroupWithResponse(String resourceGroupName,
         String dataCollectionRuleName, Context context) {
         return getByResourceGroupWithResponseAsync(resourceGroupName, dataCollectionRuleName, context).block();
     }
 
-    /**
-     * Returns the specified data collection rule.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param dataCollectionRuleName The name of the data collection rule. The name is case insensitive.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return definition of ARM tracked top level resource.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public DataCollectionRuleResourceInner getByResourceGroup(String resourceGroupName, String dataCollectionRuleName) {
         return getByResourceGroupWithResponse(resourceGroupName, dataCollectionRuleName, Context.NONE).getValue();
     }
 
-    /**
-     * Creates or updates a data collection rule.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param dataCollectionRuleName The name of the data collection rule. The name is case insensitive.
-     * @param body The payload.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return definition of ARM tracked top level resource along with {@link Response} on successful completion of
-     * {@link Mono}.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Response<DataCollectionRuleResourceInner>> createWithResponseAsync(String resourceGroupName,
         String dataCollectionRuleName, DataCollectionRuleResourceInner body) {
@@ -354,16 +305,7 @@ public final class DataCollectionRulesClientImpl implements InnerSupportsGet<Dat
             dataCollectionRuleName, accept, body, context);
     }
 
-    /**
-     * Creates or updates a data collection rule.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param dataCollectionRuleName The name of the data collection rule. The name is case insensitive.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return definition of ARM tracked top level resource on successful completion of {@link Mono}.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<DataCollectionRuleResourceInner> createAsync(String resourceGroupName, String dataCollectionRuleName) {
         final DataCollectionRuleResourceInner body = null;
@@ -371,52 +313,21 @@ public final class DataCollectionRulesClientImpl implements InnerSupportsGet<Dat
             .flatMap(res -> Mono.justOrEmpty(res.getValue()));
     }
 
-    /**
-     * Creates or updates a data collection rule.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param dataCollectionRuleName The name of the data collection rule. The name is case insensitive.
-     * @param body The payload.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return definition of ARM tracked top level resource along with {@link Response}.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Response<DataCollectionRuleResourceInner> createWithResponse(String resourceGroupName,
         String dataCollectionRuleName, DataCollectionRuleResourceInner body, Context context) {
         return createWithResponseAsync(resourceGroupName, dataCollectionRuleName, body, context).block();
     }
 
-    /**
-     * Creates or updates a data collection rule.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param dataCollectionRuleName The name of the data collection rule. The name is case insensitive.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return definition of ARM tracked top level resource.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public DataCollectionRuleResourceInner create(String resourceGroupName, String dataCollectionRuleName) {
         final DataCollectionRuleResourceInner body = null;
         return createWithResponse(resourceGroupName, dataCollectionRuleName, body, Context.NONE).getValue();
     }
 
-    /**
-     * Updates part of a data collection rule.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param dataCollectionRuleName The name of the data collection rule. The name is case insensitive.
-     * @param body The payload.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return definition of ARM tracked top level resource along with {@link Response} on successful completion of
-     * {@link Mono}.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Response<DataCollectionRuleResourceInner>> updateWithResponseAsync(String resourceGroupName,
         String dataCollectionRuleName, ResourceForUpdate body) {
@@ -489,16 +400,7 @@ public final class DataCollectionRulesClientImpl implements InnerSupportsGet<Dat
             dataCollectionRuleName, accept, body, context);
     }
 
-    /**
-     * Updates part of a data collection rule.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param dataCollectionRuleName The name of the data collection rule. The name is case insensitive.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return definition of ARM tracked top level resource on successful completion of {@link Mono}.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<DataCollectionRuleResourceInner> updateAsync(String resourceGroupName, String dataCollectionRuleName) {
         final ResourceForUpdate body = null;
@@ -506,52 +408,21 @@ public final class DataCollectionRulesClientImpl implements InnerSupportsGet<Dat
             .flatMap(res -> Mono.justOrEmpty(res.getValue()));
     }
 
-    /**
-     * Updates part of a data collection rule.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param dataCollectionRuleName The name of the data collection rule. The name is case insensitive.
-     * @param body The payload.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return definition of ARM tracked top level resource along with {@link Response}.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Response<DataCollectionRuleResourceInner> updateWithResponse(String resourceGroupName,
         String dataCollectionRuleName, ResourceForUpdate body, Context context) {
         return updateWithResponseAsync(resourceGroupName, dataCollectionRuleName, body, context).block();
     }
 
-    /**
-     * Updates part of a data collection rule.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param dataCollectionRuleName The name of the data collection rule. The name is case insensitive.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return definition of ARM tracked top level resource.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public DataCollectionRuleResourceInner update(String resourceGroupName, String dataCollectionRuleName) {
         final ResourceForUpdate body = null;
         return updateWithResponse(resourceGroupName, dataCollectionRuleName, body, Context.NONE).getValue();
     }
 
-    /**
-     * Deletes a data collection rule.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param dataCollectionRuleName The name of the data collection rule. The name is case insensitive.
-     * @param deleteAssociations If set to 'true' then all associations of this data collection rule will also be
-     * deleted.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the {@link Response} on successful completion of {@link Mono}.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Response<Void>> deleteWithResponseAsync(String resourceGroupName, String dataCollectionRuleName,
         Boolean deleteAssociations) {
@@ -617,16 +488,7 @@ public final class DataCollectionRulesClientImpl implements InnerSupportsGet<Dat
             dataCollectionRuleName, deleteAssociations, context);
     }
 
-    /**
-     * Deletes a data collection rule.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param dataCollectionRuleName The name of the data collection rule. The name is case insensitive.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return A {@link Mono} that completes when a successful response is received.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Void> deleteAsync(String resourceGroupName, String dataCollectionRuleName) {
         final Boolean deleteAssociations = null;
@@ -634,34 +496,14 @@ public final class DataCollectionRulesClientImpl implements InnerSupportsGet<Dat
             .flatMap(ignored -> Mono.empty());
     }
 
-    /**
-     * Deletes a data collection rule.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param dataCollectionRuleName The name of the data collection rule. The name is case insensitive.
-     * @param deleteAssociations If set to 'true' then all associations of this data collection rule will also be
-     * deleted.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the {@link Response}.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Response<Void> deleteWithResponse(String resourceGroupName, String dataCollectionRuleName,
         Boolean deleteAssociations, Context context) {
         return deleteWithResponseAsync(resourceGroupName, dataCollectionRuleName, deleteAssociations, context).block();
     }
 
-    /**
-     * Deletes a data collection rule.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param dataCollectionRuleName The name of the data collection rule. The name is case insensitive.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public void delete(String resourceGroupName, String dataCollectionRuleName) {
         final Boolean deleteAssociations = null;
@@ -739,15 +581,7 @@ public final class DataCollectionRulesClientImpl implements InnerSupportsGet<Dat
                 res.getValue().value(), res.getValue().nextLink(), null));
     }
 
-    /**
-     * Lists all data collection rules in the specified resource group.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the response of a DataCollectionRuleResource list operation as paginated response with {@link PagedFlux}.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.COLLECTION)
     public PagedFlux<DataCollectionRuleResourceInner> listByResourceGroupAsync(String resourceGroupName) {
         return new PagedFlux<>(() -> listByResourceGroupSinglePageAsync(resourceGroupName),
@@ -771,32 +605,13 @@ public final class DataCollectionRulesClientImpl implements InnerSupportsGet<Dat
             nextLink -> listByResourceGroupNextSinglePageAsync(nextLink, context));
     }
 
-    /**
-     * Lists all data collection rules in the specified resource group.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the response of a DataCollectionRuleResource list operation as paginated response with
-     * {@link PagedIterable}.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.COLLECTION)
     public PagedIterable<DataCollectionRuleResourceInner> listByResourceGroup(String resourceGroupName) {
         return new PagedIterable<>(listByResourceGroupAsync(resourceGroupName));
     }
 
-    /**
-     * Lists all data collection rules in the specified resource group.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the response of a DataCollectionRuleResource list operation as paginated response with
-     * {@link PagedIterable}.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.COLLECTION)
     public PagedIterable<DataCollectionRuleResourceInner> listByResourceGroup(String resourceGroupName,
         Context context) {
@@ -859,13 +674,7 @@ public final class DataCollectionRulesClientImpl implements InnerSupportsGet<Dat
                 res.getValue().value(), res.getValue().nextLink(), null));
     }
 
-    /**
-     * Lists all data collection rules in the specified subscription.
-     * 
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the response of a DataCollectionRuleResource list operation as paginated response with {@link PagedFlux}.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.COLLECTION)
     public PagedFlux<DataCollectionRuleResourceInner> listAsync() {
         return new PagedFlux<>(() -> listSinglePageAsync(),
@@ -887,29 +696,13 @@ public final class DataCollectionRulesClientImpl implements InnerSupportsGet<Dat
             nextLink -> listBySubscriptionNextSinglePageAsync(nextLink, context));
     }
 
-    /**
-     * Lists all data collection rules in the specified subscription.
-     * 
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the response of a DataCollectionRuleResource list operation as paginated response with
-     * {@link PagedIterable}.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.COLLECTION)
     public PagedIterable<DataCollectionRuleResourceInner> list() {
         return new PagedIterable<>(listAsync());
     }
 
-    /**
-     * Lists all data collection rules in the specified subscription.
-     * 
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the response of a DataCollectionRuleResource list operation as paginated response with
-     * {@link PagedIterable}.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.COLLECTION)
     public PagedIterable<DataCollectionRuleResourceInner> list(Context context) {
         return new PagedIterable<>(listAsync(context));

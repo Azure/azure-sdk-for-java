@@ -4,6 +4,7 @@
 package com.azure.storage.blob;
 
 import com.azure.core.http.rest.Response;
+import com.azure.core.http.HttpClient;
 import com.azure.core.util.Context;
 import com.azure.storage.blob.models.BlobAnalyticsLogging;
 import com.azure.storage.blob.models.BlobContainerListDetails;
@@ -13,6 +14,7 @@ import com.azure.storage.blob.models.BlobServiceProperties;
 import com.azure.storage.blob.models.ListBlobContainersOptions;
 import com.azure.storage.blob.models.PublicAccessType;
 import com.azure.storage.blob.models.StorageAccountInfo;
+import com.azure.core.credential.TokenCredential;
 import com.azure.storage.blob.options.BlobContainerCreateOptions;
 import com.azure.storage.blob.options.FindBlobsOptions;
 import com.azure.storage.blob.options.UndeleteBlobContainerOptions;
@@ -33,6 +35,24 @@ import java.util.Map;
 public class BlobServiceClientJavaDocCodeSnippets {
     private final BlobServiceClient client = JavaDocCodeSnippetsHelpers.getBlobServiceClient();
     private final Duration timeout = Duration.ofSeconds(30);
+
+    /**
+     * Shares session authentication across independently built clients using a session context.
+     * @param credential The OAuth credential.
+     * @param httpClient The HTTP transport configured for session acquisition and blob requests.
+     */
+    public void configureSessionContext(TokenCredential credential, HttpClient httpClient) {
+        // BEGIN: com.azure.storage.blob.SessionContext.create
+        String endpoint = "https://account.blob.core.windows.net";
+        SessionContext sessionContext = new SessionContext(endpoint, credential)
+            .setSessionMode(SessionContext.SessionMode.ENABLED);
+
+        BlobServiceClient firstClient = new BlobServiceClientBuilder().endpoint(endpoint).credential(credential)
+            .httpClient(httpClient).sessionContext(sessionContext).buildClient();
+        BlobServiceClient secondClient = new BlobServiceClientBuilder().endpoint(endpoint).credential(credential)
+            .httpClient(httpClient).sessionContext(sessionContext).buildClient();
+        // END: com.azure.storage.blob.SessionContext.create
+    }
 
     /**
      * Code snippet for {@link BlobServiceClient#getBlobContainerClient(String)}

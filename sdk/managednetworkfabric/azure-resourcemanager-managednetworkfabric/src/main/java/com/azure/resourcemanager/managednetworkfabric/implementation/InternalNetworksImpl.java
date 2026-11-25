@@ -55,7 +55,7 @@ public final class InternalNetworksImpl implements InternalNetworks {
     }
 
     public void delete(String resourceGroupName, String l3IsolationDomainName, String internalNetworkName) {
-        this.serviceClient().delete(resourceGroupName, l3IsolationDomainName, internalNetworkName);
+        this.delete(resourceGroupName, l3IsolationDomainName, internalNetworkName, Context.NONE);
     }
 
     public void delete(String resourceGroupName, String l3IsolationDomainName, String internalNetworkName,
@@ -65,9 +65,7 @@ public final class InternalNetworksImpl implements InternalNetworks {
 
     public PagedIterable<InternalNetwork> listByL3IsolationDomain(String resourceGroupName,
         String l3IsolationDomainName) {
-        PagedIterable<InternalNetworkInner> inner
-            = this.serviceClient().listByL3IsolationDomain(resourceGroupName, l3IsolationDomainName);
-        return ResourceManagerUtils.mapPage(inner, inner1 -> new InternalNetworkImpl(inner1, this.manager()));
+        return this.listByL3IsolationDomain(resourceGroupName, l3IsolationDomainName, Context.NONE);
     }
 
     public PagedIterable<InternalNetwork> listByL3IsolationDomain(String resourceGroupName,
@@ -79,13 +77,8 @@ public final class InternalNetworksImpl implements InternalNetworks {
 
     public UpdateAdministrativeStateResponse updateAdministrativeState(String resourceGroupName,
         String l3IsolationDomainName, String internalNetworkName, UpdateAdministrativeState body) {
-        UpdateAdministrativeStateResponseInner inner = this.serviceClient()
-            .updateAdministrativeState(resourceGroupName, l3IsolationDomainName, internalNetworkName, body);
-        if (inner != null) {
-            return new UpdateAdministrativeStateResponseImpl(inner, this.manager());
-        } else {
-            return null;
-        }
+        return this.updateAdministrativeState(resourceGroupName, l3IsolationDomainName, internalNetworkName, body,
+            Context.NONE);
     }
 
     public UpdateAdministrativeStateResponse updateAdministrativeState(String resourceGroupName,
@@ -102,13 +95,8 @@ public final class InternalNetworksImpl implements InternalNetworks {
     public InternalNetworkUpdateBgpAdministrativeStateResponse updateBgpAdministrativeState(String resourceGroupName,
         String l3IsolationDomainName, String internalNetworkName,
         InternalNetworkUpdateBgpAdministrativeStateRequest body) {
-        InternalNetworkUpdateBgpAdministrativeStateResponseInner inner = this.serviceClient()
-            .updateBgpAdministrativeState(resourceGroupName, l3IsolationDomainName, internalNetworkName, body);
-        if (inner != null) {
-            return new InternalNetworkUpdateBgpAdministrativeStateResponseImpl(inner, this.manager());
-        } else {
-            return null;
-        }
+        return this.updateBgpAdministrativeState(resourceGroupName, l3IsolationDomainName, internalNetworkName, body,
+            Context.NONE);
     }
 
     public InternalNetworkUpdateBgpAdministrativeStateResponse updateBgpAdministrativeState(String resourceGroupName,
@@ -125,14 +113,8 @@ public final class InternalNetworksImpl implements InternalNetworks {
 
     public UpdateAdministrativeStateResponse updateStaticRouteBfdAdministrativeState(String resourceGroupName,
         String l3IsolationDomainName, String internalNetworkName, UpdateAdministrativeState body) {
-        UpdateAdministrativeStateResponseInner inner = this.serviceClient()
-            .updateStaticRouteBfdAdministrativeState(resourceGroupName, l3IsolationDomainName, internalNetworkName,
-                body);
-        if (inner != null) {
-            return new UpdateAdministrativeStateResponseImpl(inner, this.manager());
-        } else {
-            return null;
-        }
+        return this.updateStaticRouteBfdAdministrativeState(resourceGroupName, l3IsolationDomainName,
+            internalNetworkName, body, Context.NONE);
     }
 
     public UpdateAdministrativeStateResponse updateStaticRouteBfdAdministrativeState(String resourceGroupName,
@@ -150,13 +132,8 @@ public final class InternalNetworksImpl implements InternalNetworks {
     public InternalNetworkUpdateBfdAdministrativeStateResponse updateBfdAdministrativeState(String resourceGroupName,
         String l3IsolationDomainName, String internalNetworkName,
         InternalNetworkUpdateBfdAdministrativeStateRequest body) {
-        InternalNetworkUpdateBfdAdministrativeStateResponseInner inner = this.serviceClient()
-            .updateBfdAdministrativeState(resourceGroupName, l3IsolationDomainName, internalNetworkName, body);
-        if (inner != null) {
-            return new InternalNetworkUpdateBfdAdministrativeStateResponseImpl(inner, this.manager());
-        } else {
-            return null;
-        }
+        return this.updateBfdAdministrativeState(resourceGroupName, l3IsolationDomainName, internalNetworkName, body,
+            Context.NONE);
     }
 
     public InternalNetworkUpdateBfdAdministrativeStateResponse updateBfdAdministrativeState(String resourceGroupName,
@@ -172,103 +149,36 @@ public final class InternalNetworksImpl implements InternalNetworks {
     }
 
     public InternalNetwork getById(String id) {
-        String resourceGroupName = ResourceManagerUtils.getValueFromIdByParameterName(id,
-            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.ManagedNetworkFabric/l3IsolationDomains/{l3IsolationDomainName}/internalNetworks/{internalNetworkName}",
-            "resourceGroupName");
-        if (resourceGroupName == null) {
-            throw LOGGER.logExceptionAsError(new IllegalArgumentException(
-                String.format("The resource ID '%s' is not valid. Missing path segment 'resourceGroups'.", id)));
-        }
-        String l3IsolationDomainName = ResourceManagerUtils.getValueFromIdByParameterName(id,
-            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.ManagedNetworkFabric/l3IsolationDomains/{l3IsolationDomainName}/internalNetworks/{internalNetworkName}",
-            "l3IsolationDomainName");
-        if (l3IsolationDomainName == null) {
-            throw LOGGER.logExceptionAsError(new IllegalArgumentException(
-                String.format("The resource ID '%s' is not valid. Missing path segment 'l3IsolationDomains'.", id)));
-        }
-        String internalNetworkName = ResourceManagerUtils.getValueFromIdByParameterName(id,
-            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.ManagedNetworkFabric/l3IsolationDomains/{l3IsolationDomainName}/internalNetworks/{internalNetworkName}",
-            "internalNetworkName");
-        if (internalNetworkName == null) {
-            throw LOGGER.logExceptionAsError(new IllegalArgumentException(
-                String.format("The resource ID '%s' is not valid. Missing path segment 'internalNetworks'.", id)));
-        }
-        return this.getWithResponse(resourceGroupName, l3IsolationDomainName, internalNetworkName, Context.NONE)
-            .getValue();
+        return this.getByIdWithResponse(id, Context.NONE).getValue();
     }
 
     public Response<InternalNetwork> getByIdWithResponse(String id, Context context) {
-        String resourceGroupName = ResourceManagerUtils.getValueFromIdByParameterName(id,
+        String resourceGroupName = ResourceManagerUtils.getRequiredValueFromIdByParameterName(id,
             "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.ManagedNetworkFabric/l3IsolationDomains/{l3IsolationDomainName}/internalNetworks/{internalNetworkName}",
-            "resourceGroupName");
-        if (resourceGroupName == null) {
-            throw LOGGER.logExceptionAsError(new IllegalArgumentException(
-                String.format("The resource ID '%s' is not valid. Missing path segment 'resourceGroups'.", id)));
-        }
-        String l3IsolationDomainName = ResourceManagerUtils.getValueFromIdByParameterName(id,
+            "resourceGroupName", "resourceGroups", LOGGER);
+        String l3IsolationDomainName = ResourceManagerUtils.getRequiredValueFromIdByParameterName(id,
             "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.ManagedNetworkFabric/l3IsolationDomains/{l3IsolationDomainName}/internalNetworks/{internalNetworkName}",
-            "l3IsolationDomainName");
-        if (l3IsolationDomainName == null) {
-            throw LOGGER.logExceptionAsError(new IllegalArgumentException(
-                String.format("The resource ID '%s' is not valid. Missing path segment 'l3IsolationDomains'.", id)));
-        }
-        String internalNetworkName = ResourceManagerUtils.getValueFromIdByParameterName(id,
+            "l3IsolationDomainName", "l3IsolationDomains", LOGGER);
+        String internalNetworkName = ResourceManagerUtils.getRequiredValueFromIdByParameterName(id,
             "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.ManagedNetworkFabric/l3IsolationDomains/{l3IsolationDomainName}/internalNetworks/{internalNetworkName}",
-            "internalNetworkName");
-        if (internalNetworkName == null) {
-            throw LOGGER.logExceptionAsError(new IllegalArgumentException(
-                String.format("The resource ID '%s' is not valid. Missing path segment 'internalNetworks'.", id)));
-        }
+            "internalNetworkName", "internalNetworks", LOGGER);
         return this.getWithResponse(resourceGroupName, l3IsolationDomainName, internalNetworkName, context);
     }
 
     public void deleteById(String id) {
-        String resourceGroupName = ResourceManagerUtils.getValueFromIdByParameterName(id,
-            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.ManagedNetworkFabric/l3IsolationDomains/{l3IsolationDomainName}/internalNetworks/{internalNetworkName}",
-            "resourceGroupName");
-        if (resourceGroupName == null) {
-            throw LOGGER.logExceptionAsError(new IllegalArgumentException(
-                String.format("The resource ID '%s' is not valid. Missing path segment 'resourceGroups'.", id)));
-        }
-        String l3IsolationDomainName = ResourceManagerUtils.getValueFromIdByParameterName(id,
-            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.ManagedNetworkFabric/l3IsolationDomains/{l3IsolationDomainName}/internalNetworks/{internalNetworkName}",
-            "l3IsolationDomainName");
-        if (l3IsolationDomainName == null) {
-            throw LOGGER.logExceptionAsError(new IllegalArgumentException(
-                String.format("The resource ID '%s' is not valid. Missing path segment 'l3IsolationDomains'.", id)));
-        }
-        String internalNetworkName = ResourceManagerUtils.getValueFromIdByParameterName(id,
-            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.ManagedNetworkFabric/l3IsolationDomains/{l3IsolationDomainName}/internalNetworks/{internalNetworkName}",
-            "internalNetworkName");
-        if (internalNetworkName == null) {
-            throw LOGGER.logExceptionAsError(new IllegalArgumentException(
-                String.format("The resource ID '%s' is not valid. Missing path segment 'internalNetworks'.", id)));
-        }
-        this.delete(resourceGroupName, l3IsolationDomainName, internalNetworkName, Context.NONE);
+        this.deleteByIdWithResponse(id, Context.NONE);
     }
 
     public void deleteByIdWithResponse(String id, Context context) {
-        String resourceGroupName = ResourceManagerUtils.getValueFromIdByParameterName(id,
+        String resourceGroupName = ResourceManagerUtils.getRequiredValueFromIdByParameterName(id,
             "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.ManagedNetworkFabric/l3IsolationDomains/{l3IsolationDomainName}/internalNetworks/{internalNetworkName}",
-            "resourceGroupName");
-        if (resourceGroupName == null) {
-            throw LOGGER.logExceptionAsError(new IllegalArgumentException(
-                String.format("The resource ID '%s' is not valid. Missing path segment 'resourceGroups'.", id)));
-        }
-        String l3IsolationDomainName = ResourceManagerUtils.getValueFromIdByParameterName(id,
+            "resourceGroupName", "resourceGroups", LOGGER);
+        String l3IsolationDomainName = ResourceManagerUtils.getRequiredValueFromIdByParameterName(id,
             "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.ManagedNetworkFabric/l3IsolationDomains/{l3IsolationDomainName}/internalNetworks/{internalNetworkName}",
-            "l3IsolationDomainName");
-        if (l3IsolationDomainName == null) {
-            throw LOGGER.logExceptionAsError(new IllegalArgumentException(
-                String.format("The resource ID '%s' is not valid. Missing path segment 'l3IsolationDomains'.", id)));
-        }
-        String internalNetworkName = ResourceManagerUtils.getValueFromIdByParameterName(id,
+            "l3IsolationDomainName", "l3IsolationDomains", LOGGER);
+        String internalNetworkName = ResourceManagerUtils.getRequiredValueFromIdByParameterName(id,
             "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.ManagedNetworkFabric/l3IsolationDomains/{l3IsolationDomainName}/internalNetworks/{internalNetworkName}",
-            "internalNetworkName");
-        if (internalNetworkName == null) {
-            throw LOGGER.logExceptionAsError(new IllegalArgumentException(
-                String.format("The resource ID '%s' is not valid. Missing path segment 'internalNetworks'.", id)));
-        }
+            "internalNetworkName", "internalNetworks", LOGGER);
         this.delete(resourceGroupName, l3IsolationDomainName, internalNetworkName, context);
     }
 

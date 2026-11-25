@@ -465,7 +465,7 @@ public final class ContainerServiceManagementClientImpl extends AzureServiceClie
         this.defaultPollInterval = defaultPollInterval;
         this.endpoint = endpoint;
         this.subscriptionId = subscriptionId;
-        this.apiVersion = "2026-08-02-preview";
+        this.apiVersion = "2026-09-02-preview";
         this.agentPools = new AgentPoolsClientImpl(this);
         this.managedClusters = new ManagedClustersClientImpl(this);
         this.maintenanceConfigurations = new MaintenanceConfigurationsClientImpl(this);

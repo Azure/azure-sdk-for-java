@@ -267,18 +267,7 @@ public final class TableResourcesClientImpl implements TableResourcesClient {
             @HeaderParam("Accept") String accept, Context context);
     }
 
-    /**
-     * Gets the RUs per second of the Table under an existing Azure Cosmos DB database account with the provided name.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param accountName Cosmos DB database account name.
-     * @param tableName Cosmos DB table name.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the RUs per second of the Table under an existing Azure Cosmos DB database account with the provided name
-     * along with {@link Response} on successful completion of {@link Mono}.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Response<ThroughputSettingsGetResultsInner>>
         getTableThroughputWithResponseAsync(String resourceGroupName, String accountName, String tableName) {
@@ -347,18 +336,7 @@ public final class TableResourcesClientImpl implements TableResourcesClient {
             this.client.getSubscriptionId(), resourceGroupName, accountName, tableName, accept, context);
     }
 
-    /**
-     * Gets the RUs per second of the Table under an existing Azure Cosmos DB database account with the provided name.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param accountName Cosmos DB database account name.
-     * @param tableName Cosmos DB table name.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the RUs per second of the Table under an existing Azure Cosmos DB database account with the provided name
-     * on successful completion of {@link Mono}.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<ThroughputSettingsGetResultsInner> getTableThroughputAsync(String resourceGroupName, String accountName,
         String tableName) {
@@ -366,56 +344,21 @@ public final class TableResourcesClientImpl implements TableResourcesClient {
             .flatMap(res -> Mono.justOrEmpty(res.getValue()));
     }
 
-    /**
-     * Gets the RUs per second of the Table under an existing Azure Cosmos DB database account with the provided name.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param accountName Cosmos DB database account name.
-     * @param tableName Cosmos DB table name.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the RUs per second of the Table under an existing Azure Cosmos DB database account with the provided name
-     * along with {@link Response}.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Response<ThroughputSettingsGetResultsInner> getTableThroughputWithResponse(String resourceGroupName,
         String accountName, String tableName, Context context) {
         return getTableThroughputWithResponseAsync(resourceGroupName, accountName, tableName, context).block();
     }
 
-    /**
-     * Gets the RUs per second of the Table under an existing Azure Cosmos DB database account with the provided name.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param accountName Cosmos DB database account name.
-     * @param tableName Cosmos DB table name.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the RUs per second of the Table under an existing Azure Cosmos DB database account with the provided
-     * name.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public ThroughputSettingsGetResultsInner getTableThroughput(String resourceGroupName, String accountName,
         String tableName) {
         return getTableThroughputWithResponse(resourceGroupName, accountName, tableName, Context.NONE).getValue();
     }
 
-    /**
-     * Update RUs per second of an Azure Cosmos DB Table.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param accountName Cosmos DB database account name.
-     * @param tableName Cosmos DB table name.
-     * @param updateThroughputParameters The parameters to provide for the RUs per second of the current Table.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return an Azure Cosmos DB resource throughput along with {@link Response} on successful completion of
-     * {@link Mono}.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Response<Flux<ByteBuffer>>> updateTableThroughputWithResponseAsync(String resourceGroupName,
         String accountName, String tableName, ThroughputSettingsUpdateParameters updateThroughputParameters) {
@@ -502,18 +445,7 @@ public final class TableResourcesClientImpl implements TableResourcesClient {
             updateThroughputParameters, context);
     }
 
-    /**
-     * Update RUs per second of an Azure Cosmos DB Table.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param accountName Cosmos DB database account name.
-     * @param tableName Cosmos DB table name.
-     * @param updateThroughputParameters The parameters to provide for the RUs per second of the current Table.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the {@link PollerFlux} for polling of an Azure Cosmos DB resource throughput.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public PollerFlux<PollResult<ThroughputSettingsGetResultsInner>, ThroughputSettingsGetResultsInner>
         beginUpdateTableThroughputAsync(String resourceGroupName, String accountName, String tableName,
@@ -550,18 +482,7 @@ public final class TableResourcesClientImpl implements TableResourcesClient {
             ThroughputSettingsGetResultsInner.class, context);
     }
 
-    /**
-     * Update RUs per second of an Azure Cosmos DB Table.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param accountName Cosmos DB database account name.
-     * @param tableName Cosmos DB table name.
-     * @param updateThroughputParameters The parameters to provide for the RUs per second of the current Table.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the {@link SyncPoller} for polling of an Azure Cosmos DB resource throughput.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public SyncPoller<PollResult<ThroughputSettingsGetResultsInner>, ThroughputSettingsGetResultsInner>
         beginUpdateTableThroughput(String resourceGroupName, String accountName, String tableName,
@@ -571,19 +492,7 @@ public final class TableResourcesClientImpl implements TableResourcesClient {
             .getSyncPoller();
     }
 
-    /**
-     * Update RUs per second of an Azure Cosmos DB Table.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param accountName Cosmos DB database account name.
-     * @param tableName Cosmos DB table name.
-     * @param updateThroughputParameters The parameters to provide for the RUs per second of the current Table.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the {@link SyncPoller} for polling of an Azure Cosmos DB resource throughput.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public SyncPoller<PollResult<ThroughputSettingsGetResultsInner>, ThroughputSettingsGetResultsInner>
         beginUpdateTableThroughput(String resourceGroupName, String accountName, String tableName,
@@ -594,18 +503,7 @@ public final class TableResourcesClientImpl implements TableResourcesClient {
             .getSyncPoller();
     }
 
-    /**
-     * Update RUs per second of an Azure Cosmos DB Table.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param accountName Cosmos DB database account name.
-     * @param tableName Cosmos DB table name.
-     * @param updateThroughputParameters The parameters to provide for the RUs per second of the current Table.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return an Azure Cosmos DB resource throughput on successful completion of {@link Mono}.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<ThroughputSettingsGetResultsInner> updateTableThroughputAsync(String resourceGroupName,
         String accountName, String tableName, ThroughputSettingsUpdateParameters updateThroughputParameters) {
@@ -635,18 +533,7 @@ public final class TableResourcesClientImpl implements TableResourcesClient {
             context).last().flatMap(this.client::getLroFinalResultOrError);
     }
 
-    /**
-     * Update RUs per second of an Azure Cosmos DB Table.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param accountName Cosmos DB database account name.
-     * @param tableName Cosmos DB table name.
-     * @param updateThroughputParameters The parameters to provide for the RUs per second of the current Table.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return an Azure Cosmos DB resource throughput.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public ThroughputSettingsGetResultsInner updateTableThroughput(String resourceGroupName, String accountName,
         String tableName, ThroughputSettingsUpdateParameters updateThroughputParameters) {
@@ -654,19 +541,7 @@ public final class TableResourcesClientImpl implements TableResourcesClient {
             .block();
     }
 
-    /**
-     * Update RUs per second of an Azure Cosmos DB Table.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param accountName Cosmos DB database account name.
-     * @param tableName Cosmos DB table name.
-     * @param updateThroughputParameters The parameters to provide for the RUs per second of the current Table.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return an Azure Cosmos DB resource throughput.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public ThroughputSettingsGetResultsInner updateTableThroughput(String resourceGroupName, String accountName,
         String tableName, ThroughputSettingsUpdateParameters updateThroughputParameters, Context context) {
@@ -674,18 +549,7 @@ public final class TableResourcesClientImpl implements TableResourcesClient {
             context).block();
     }
 
-    /**
-     * Migrate an Azure Cosmos DB Table from manual throughput to autoscale.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param accountName Cosmos DB database account name.
-     * @param tableName Cosmos DB table name.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return an Azure Cosmos DB resource throughput along with {@link Response} on successful completion of
-     * {@link Mono}.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Response<Flux<ByteBuffer>>> migrateTableToAutoscaleWithResponseAsync(String resourceGroupName,
         String accountName, String tableName) {
@@ -755,17 +619,7 @@ public final class TableResourcesClientImpl implements TableResourcesClient {
             this.client.getSubscriptionId(), resourceGroupName, accountName, tableName, accept, context);
     }
 
-    /**
-     * Migrate an Azure Cosmos DB Table from manual throughput to autoscale.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param accountName Cosmos DB database account name.
-     * @param tableName Cosmos DB table name.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the {@link PollerFlux} for polling of an Azure Cosmos DB resource throughput.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public PollerFlux<PollResult<ThroughputSettingsGetResultsInner>, ThroughputSettingsGetResultsInner>
         beginMigrateTableToAutoscaleAsync(String resourceGroupName, String accountName, String tableName) {
@@ -800,35 +654,14 @@ public final class TableResourcesClientImpl implements TableResourcesClient {
             ThroughputSettingsGetResultsInner.class, context);
     }
 
-    /**
-     * Migrate an Azure Cosmos DB Table from manual throughput to autoscale.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param accountName Cosmos DB database account name.
-     * @param tableName Cosmos DB table name.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the {@link SyncPoller} for polling of an Azure Cosmos DB resource throughput.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public SyncPoller<PollResult<ThroughputSettingsGetResultsInner>, ThroughputSettingsGetResultsInner>
         beginMigrateTableToAutoscale(String resourceGroupName, String accountName, String tableName) {
         return this.beginMigrateTableToAutoscaleAsync(resourceGroupName, accountName, tableName).getSyncPoller();
     }
 
-    /**
-     * Migrate an Azure Cosmos DB Table from manual throughput to autoscale.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param accountName Cosmos DB database account name.
-     * @param tableName Cosmos DB table name.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the {@link SyncPoller} for polling of an Azure Cosmos DB resource throughput.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public SyncPoller<PollResult<ThroughputSettingsGetResultsInner>, ThroughputSettingsGetResultsInner>
         beginMigrateTableToAutoscale(String resourceGroupName, String accountName, String tableName, Context context) {
@@ -836,17 +669,7 @@ public final class TableResourcesClientImpl implements TableResourcesClient {
             .getSyncPoller();
     }
 
-    /**
-     * Migrate an Azure Cosmos DB Table from manual throughput to autoscale.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param accountName Cosmos DB database account name.
-     * @param tableName Cosmos DB table name.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return an Azure Cosmos DB resource throughput on successful completion of {@link Mono}.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<ThroughputSettingsGetResultsInner> migrateTableToAutoscaleAsync(String resourceGroupName,
         String accountName, String tableName) {
@@ -873,53 +696,21 @@ public final class TableResourcesClientImpl implements TableResourcesClient {
             .flatMap(this.client::getLroFinalResultOrError);
     }
 
-    /**
-     * Migrate an Azure Cosmos DB Table from manual throughput to autoscale.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param accountName Cosmos DB database account name.
-     * @param tableName Cosmos DB table name.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return an Azure Cosmos DB resource throughput.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public ThroughputSettingsGetResultsInner migrateTableToAutoscale(String resourceGroupName, String accountName,
         String tableName) {
         return migrateTableToAutoscaleAsync(resourceGroupName, accountName, tableName).block();
     }
 
-    /**
-     * Migrate an Azure Cosmos DB Table from manual throughput to autoscale.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param accountName Cosmos DB database account name.
-     * @param tableName Cosmos DB table name.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return an Azure Cosmos DB resource throughput.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public ThroughputSettingsGetResultsInner migrateTableToAutoscale(String resourceGroupName, String accountName,
         String tableName, Context context) {
         return migrateTableToAutoscaleAsync(resourceGroupName, accountName, tableName, context).block();
     }
 
-    /**
-     * Migrate an Azure Cosmos DB Table from autoscale to manual throughput.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param accountName Cosmos DB database account name.
-     * @param tableName Cosmos DB table name.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return an Azure Cosmos DB resource throughput along with {@link Response} on successful completion of
-     * {@link Mono}.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Response<Flux<ByteBuffer>>> migrateTableToManualThroughputWithResponseAsync(String resourceGroupName,
         String accountName, String tableName) {
@@ -989,17 +780,7 @@ public final class TableResourcesClientImpl implements TableResourcesClient {
             this.client.getSubscriptionId(), resourceGroupName, accountName, tableName, accept, context);
     }
 
-    /**
-     * Migrate an Azure Cosmos DB Table from autoscale to manual throughput.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param accountName Cosmos DB database account name.
-     * @param tableName Cosmos DB table name.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the {@link PollerFlux} for polling of an Azure Cosmos DB resource throughput.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public PollerFlux<PollResult<ThroughputSettingsGetResultsInner>, ThroughputSettingsGetResultsInner>
         beginMigrateTableToManualThroughputAsync(String resourceGroupName, String accountName, String tableName) {
@@ -1034,35 +815,14 @@ public final class TableResourcesClientImpl implements TableResourcesClient {
             ThroughputSettingsGetResultsInner.class, context);
     }
 
-    /**
-     * Migrate an Azure Cosmos DB Table from autoscale to manual throughput.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param accountName Cosmos DB database account name.
-     * @param tableName Cosmos DB table name.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the {@link SyncPoller} for polling of an Azure Cosmos DB resource throughput.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public SyncPoller<PollResult<ThroughputSettingsGetResultsInner>, ThroughputSettingsGetResultsInner>
         beginMigrateTableToManualThroughput(String resourceGroupName, String accountName, String tableName) {
         return this.beginMigrateTableToManualThroughputAsync(resourceGroupName, accountName, tableName).getSyncPoller();
     }
 
-    /**
-     * Migrate an Azure Cosmos DB Table from autoscale to manual throughput.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param accountName Cosmos DB database account name.
-     * @param tableName Cosmos DB table name.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the {@link SyncPoller} for polling of an Azure Cosmos DB resource throughput.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public SyncPoller<PollResult<ThroughputSettingsGetResultsInner>, ThroughputSettingsGetResultsInner>
         beginMigrateTableToManualThroughput(String resourceGroupName, String accountName, String tableName,
@@ -1071,17 +831,7 @@ public final class TableResourcesClientImpl implements TableResourcesClient {
             .getSyncPoller();
     }
 
-    /**
-     * Migrate an Azure Cosmos DB Table from autoscale to manual throughput.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param accountName Cosmos DB database account name.
-     * @param tableName Cosmos DB table name.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return an Azure Cosmos DB resource throughput on successful completion of {@link Mono}.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<ThroughputSettingsGetResultsInner> migrateTableToManualThroughputAsync(String resourceGroupName,
         String accountName, String tableName) {
@@ -1108,53 +858,21 @@ public final class TableResourcesClientImpl implements TableResourcesClient {
             .flatMap(this.client::getLroFinalResultOrError);
     }
 
-    /**
-     * Migrate an Azure Cosmos DB Table from autoscale to manual throughput.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param accountName Cosmos DB database account name.
-     * @param tableName Cosmos DB table name.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return an Azure Cosmos DB resource throughput.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public ThroughputSettingsGetResultsInner migrateTableToManualThroughput(String resourceGroupName,
         String accountName, String tableName) {
         return migrateTableToManualThroughputAsync(resourceGroupName, accountName, tableName).block();
     }
 
-    /**
-     * Migrate an Azure Cosmos DB Table from autoscale to manual throughput.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param accountName Cosmos DB database account name.
-     * @param tableName Cosmos DB table name.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return an Azure Cosmos DB resource throughput.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public ThroughputSettingsGetResultsInner migrateTableToManualThroughput(String resourceGroupName,
         String accountName, String tableName, Context context) {
         return migrateTableToManualThroughputAsync(resourceGroupName, accountName, tableName, context).block();
     }
 
-    /**
-     * Gets the Tables under an existing Azure Cosmos DB database account with the provided name.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param accountName Cosmos DB database account name.
-     * @param tableName Cosmos DB table name.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the Tables under an existing Azure Cosmos DB database account with the provided name along with
-     * {@link Response} on successful completion of {@link Mono}.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Response<TableGetResultsInner>> getTableWithResponseAsync(String resourceGroupName, String accountName,
         String tableName) {
@@ -1223,71 +941,27 @@ public final class TableResourcesClientImpl implements TableResourcesClient {
             resourceGroupName, accountName, tableName, accept, context);
     }
 
-    /**
-     * Gets the Tables under an existing Azure Cosmos DB database account with the provided name.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param accountName Cosmos DB database account name.
-     * @param tableName Cosmos DB table name.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the Tables under an existing Azure Cosmos DB database account with the provided name on successful
-     * completion of {@link Mono}.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<TableGetResultsInner> getTableAsync(String resourceGroupName, String accountName, String tableName) {
         return getTableWithResponseAsync(resourceGroupName, accountName, tableName)
             .flatMap(res -> Mono.justOrEmpty(res.getValue()));
     }
 
-    /**
-     * Gets the Tables under an existing Azure Cosmos DB database account with the provided name.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param accountName Cosmos DB database account name.
-     * @param tableName Cosmos DB table name.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the Tables under an existing Azure Cosmos DB database account with the provided name along with
-     * {@link Response}.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Response<TableGetResultsInner> getTableWithResponse(String resourceGroupName, String accountName,
         String tableName, Context context) {
         return getTableWithResponseAsync(resourceGroupName, accountName, tableName, context).block();
     }
 
-    /**
-     * Gets the Tables under an existing Azure Cosmos DB database account with the provided name.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param accountName Cosmos DB database account name.
-     * @param tableName Cosmos DB table name.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the Tables under an existing Azure Cosmos DB database account with the provided name.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public TableGetResultsInner getTable(String resourceGroupName, String accountName, String tableName) {
         return getTableWithResponse(resourceGroupName, accountName, tableName, Context.NONE).getValue();
     }
 
-    /**
-     * Create or update an Azure Cosmos DB Table.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param accountName Cosmos DB database account name.
-     * @param tableName Cosmos DB table name.
-     * @param createUpdateTableParameters The parameters to provide for the current Table.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return an Azure Cosmos DB Table along with {@link Response} on successful completion of {@link Mono}.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Response<Flux<ByteBuffer>>> createUpdateTableWithResponseAsync(String resourceGroupName,
         String accountName, String tableName, TableCreateUpdateParameters createUpdateTableParameters) {
@@ -1373,18 +1047,7 @@ public final class TableResourcesClientImpl implements TableResourcesClient {
             createUpdateTableParameters, context);
     }
 
-    /**
-     * Create or update an Azure Cosmos DB Table.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param accountName Cosmos DB database account name.
-     * @param tableName Cosmos DB table name.
-     * @param createUpdateTableParameters The parameters to provide for the current Table.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the {@link PollerFlux} for polling of an Azure Cosmos DB Table.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public PollerFlux<PollResult<TableGetResultsInner>, TableGetResultsInner> beginCreateUpdateTableAsync(
         String resourceGroupName, String accountName, String tableName,
@@ -1419,18 +1082,7 @@ public final class TableResourcesClientImpl implements TableResourcesClient {
             TableGetResultsInner.class, TableGetResultsInner.class, context);
     }
 
-    /**
-     * Create or update an Azure Cosmos DB Table.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param accountName Cosmos DB database account name.
-     * @param tableName Cosmos DB table name.
-     * @param createUpdateTableParameters The parameters to provide for the current Table.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the {@link SyncPoller} for polling of an Azure Cosmos DB Table.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public SyncPoller<PollResult<TableGetResultsInner>, TableGetResultsInner> beginCreateUpdateTable(
         String resourceGroupName, String accountName, String tableName,
@@ -1439,19 +1091,7 @@ public final class TableResourcesClientImpl implements TableResourcesClient {
             .getSyncPoller();
     }
 
-    /**
-     * Create or update an Azure Cosmos DB Table.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param accountName Cosmos DB database account name.
-     * @param tableName Cosmos DB table name.
-     * @param createUpdateTableParameters The parameters to provide for the current Table.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the {@link SyncPoller} for polling of an Azure Cosmos DB Table.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public SyncPoller<PollResult<TableGetResultsInner>, TableGetResultsInner> beginCreateUpdateTable(
         String resourceGroupName, String accountName, String tableName,
@@ -1462,18 +1102,7 @@ public final class TableResourcesClientImpl implements TableResourcesClient {
             .getSyncPoller();
     }
 
-    /**
-     * Create or update an Azure Cosmos DB Table.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param accountName Cosmos DB database account name.
-     * @param tableName Cosmos DB table name.
-     * @param createUpdateTableParameters The parameters to provide for the current Table.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return an Azure Cosmos DB Table on successful completion of {@link Mono}.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<TableGetResultsInner> createUpdateTableAsync(String resourceGroupName, String accountName,
         String tableName, TableCreateUpdateParameters createUpdateTableParameters) {
@@ -1502,37 +1131,14 @@ public final class TableResourcesClientImpl implements TableResourcesClient {
             context).last().flatMap(this.client::getLroFinalResultOrError);
     }
 
-    /**
-     * Create or update an Azure Cosmos DB Table.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param accountName Cosmos DB database account name.
-     * @param tableName Cosmos DB table name.
-     * @param createUpdateTableParameters The parameters to provide for the current Table.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return an Azure Cosmos DB Table.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public TableGetResultsInner createUpdateTable(String resourceGroupName, String accountName, String tableName,
         TableCreateUpdateParameters createUpdateTableParameters) {
         return createUpdateTableAsync(resourceGroupName, accountName, tableName, createUpdateTableParameters).block();
     }
 
-    /**
-     * Create or update an Azure Cosmos DB Table.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param accountName Cosmos DB database account name.
-     * @param tableName Cosmos DB table name.
-     * @param createUpdateTableParameters The parameters to provide for the current Table.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return an Azure Cosmos DB Table.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public TableGetResultsInner createUpdateTable(String resourceGroupName, String accountName, String tableName,
         TableCreateUpdateParameters createUpdateTableParameters, Context context) {
@@ -1540,17 +1146,7 @@ public final class TableResourcesClientImpl implements TableResourcesClient {
             .block();
     }
 
-    /**
-     * Deletes an existing Azure Cosmos DB Table.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param accountName Cosmos DB database account name.
-     * @param tableName Cosmos DB table name.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the {@link Response} on successful completion of {@link Mono}.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Response<Flux<ByteBuffer>>> deleteTableWithResponseAsync(String resourceGroupName, String accountName,
         String tableName) {
@@ -1616,17 +1212,7 @@ public final class TableResourcesClientImpl implements TableResourcesClient {
             this.client.getSubscriptionId(), resourceGroupName, accountName, tableName, context);
     }
 
-    /**
-     * Deletes an existing Azure Cosmos DB Table.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param accountName Cosmos DB database account name.
-     * @param tableName Cosmos DB table name.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the {@link PollerFlux} for polling of long-running operation.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public PollerFlux<PollResult<Void>, Void> beginDeleteTableAsync(String resourceGroupName, String accountName,
         String tableName) {
@@ -1657,52 +1243,21 @@ public final class TableResourcesClientImpl implements TableResourcesClient {
             context);
     }
 
-    /**
-     * Deletes an existing Azure Cosmos DB Table.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param accountName Cosmos DB database account name.
-     * @param tableName Cosmos DB table name.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the {@link SyncPoller} for polling of long-running operation.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public SyncPoller<PollResult<Void>, Void> beginDeleteTable(String resourceGroupName, String accountName,
         String tableName) {
         return this.beginDeleteTableAsync(resourceGroupName, accountName, tableName).getSyncPoller();
     }
 
-    /**
-     * Deletes an existing Azure Cosmos DB Table.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param accountName Cosmos DB database account name.
-     * @param tableName Cosmos DB table name.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the {@link SyncPoller} for polling of long-running operation.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public SyncPoller<PollResult<Void>, Void> beginDeleteTable(String resourceGroupName, String accountName,
         String tableName, Context context) {
         return this.beginDeleteTableAsync(resourceGroupName, accountName, tableName, context).getSyncPoller();
     }
 
-    /**
-     * Deletes an existing Azure Cosmos DB Table.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param accountName Cosmos DB database account name.
-     * @param tableName Cosmos DB table name.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return A {@link Mono} that completes when a successful response is received.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Void> deleteTableAsync(String resourceGroupName, String accountName, String tableName) {
         return beginDeleteTableAsync(resourceGroupName, accountName, tableName).last()
@@ -1728,32 +1283,13 @@ public final class TableResourcesClientImpl implements TableResourcesClient {
             .flatMap(this.client::getLroFinalResultOrError);
     }
 
-    /**
-     * Deletes an existing Azure Cosmos DB Table.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param accountName Cosmos DB database account name.
-     * @param tableName Cosmos DB table name.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public void deleteTable(String resourceGroupName, String accountName, String tableName) {
         deleteTableAsync(resourceGroupName, accountName, tableName).block();
     }
 
-    /**
-     * Deletes an existing Azure Cosmos DB Table.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param accountName Cosmos DB database account name.
-     * @param tableName Cosmos DB table name.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public void deleteTable(String resourceGroupName, String accountName, String tableName, Context context) {
         deleteTableAsync(resourceGroupName, accountName, tableName, context).block();
@@ -1836,17 +1372,7 @@ public final class TableResourcesClientImpl implements TableResourcesClient {
                 res.getValue().value(), res.getValue().nextLink(), null));
     }
 
-    /**
-     * Lists the Tables under an existing Azure Cosmos DB database account.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param accountName Cosmos DB database account name.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the List operation response, that contains the Table and their properties as paginated response with
-     * {@link PagedFlux}.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.COLLECTION)
     public PagedFlux<TableGetResultsInner> listTablesAsync(String resourceGroupName, String accountName) {
         return new PagedFlux<>(() -> listTablesSinglePageAsync(resourceGroupName, accountName),
@@ -1872,52 +1398,20 @@ public final class TableResourcesClientImpl implements TableResourcesClient {
             nextLink -> listTablesNextSinglePageAsync(nextLink, context));
     }
 
-    /**
-     * Lists the Tables under an existing Azure Cosmos DB database account.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param accountName Cosmos DB database account name.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the List operation response, that contains the Table and their properties as paginated response with
-     * {@link PagedIterable}.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.COLLECTION)
     public PagedIterable<TableGetResultsInner> listTables(String resourceGroupName, String accountName) {
         return new PagedIterable<>(listTablesAsync(resourceGroupName, accountName));
     }
 
-    /**
-     * Lists the Tables under an existing Azure Cosmos DB database account.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param accountName Cosmos DB database account name.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the List operation response, that contains the Table and their properties as paginated response with
-     * {@link PagedIterable}.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.COLLECTION)
     public PagedIterable<TableGetResultsInner> listTables(String resourceGroupName, String accountName,
         Context context) {
         return new PagedIterable<>(listTablesAsync(resourceGroupName, accountName, context));
     }
 
-    /**
-     * Retrieves continuous backup information for a table.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param accountName Cosmos DB database account name.
-     * @param tableName Cosmos DB table name.
-     * @param location The name of the continuous backup restore location.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return backup information of a resource along with {@link Response} on successful completion of {@link Mono}.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Response<Flux<ByteBuffer>>> retrieveContinuousBackupInformationWithResponseAsync(
         String resourceGroupName, String accountName, String tableName, ContinuousBackupRestoreLocation location) {
@@ -2001,18 +1495,7 @@ public final class TableResourcesClientImpl implements TableResourcesClient {
             context);
     }
 
-    /**
-     * Retrieves continuous backup information for a table.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param accountName Cosmos DB database account name.
-     * @param tableName Cosmos DB table name.
-     * @param location The name of the continuous backup restore location.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the {@link PollerFlux} for polling of backup information of a resource.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public PollerFlux<PollResult<BackupInformationInner>, BackupInformationInner>
         beginRetrieveContinuousBackupInformationAsync(String resourceGroupName, String accountName, String tableName,
@@ -2048,18 +1531,7 @@ public final class TableResourcesClientImpl implements TableResourcesClient {
             this.client.getHttpPipeline(), BackupInformationInner.class, BackupInformationInner.class, context);
     }
 
-    /**
-     * Retrieves continuous backup information for a table.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param accountName Cosmos DB database account name.
-     * @param tableName Cosmos DB table name.
-     * @param location The name of the continuous backup restore location.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the {@link SyncPoller} for polling of backup information of a resource.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public SyncPoller<PollResult<BackupInformationInner>, BackupInformationInner>
         beginRetrieveContinuousBackupInformation(String resourceGroupName, String accountName, String tableName,
@@ -2068,19 +1540,7 @@ public final class TableResourcesClientImpl implements TableResourcesClient {
             .getSyncPoller();
     }
 
-    /**
-     * Retrieves continuous backup information for a table.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param accountName Cosmos DB database account name.
-     * @param tableName Cosmos DB table name.
-     * @param location The name of the continuous backup restore location.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the {@link SyncPoller} for polling of backup information of a resource.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public SyncPoller<PollResult<BackupInformationInner>, BackupInformationInner>
         beginRetrieveContinuousBackupInformation(String resourceGroupName, String accountName, String tableName,
@@ -2090,18 +1550,7 @@ public final class TableResourcesClientImpl implements TableResourcesClient {
             .getSyncPoller();
     }
 
-    /**
-     * Retrieves continuous backup information for a table.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param accountName Cosmos DB database account name.
-     * @param tableName Cosmos DB table name.
-     * @param location The name of the continuous backup restore location.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return backup information of a resource on successful completion of {@link Mono}.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<BackupInformationInner> retrieveContinuousBackupInformationAsync(String resourceGroupName,
         String accountName, String tableName, ContinuousBackupRestoreLocation location) {
@@ -2129,37 +1578,14 @@ public final class TableResourcesClientImpl implements TableResourcesClient {
             context).last().flatMap(this.client::getLroFinalResultOrError);
     }
 
-    /**
-     * Retrieves continuous backup information for a table.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param accountName Cosmos DB database account name.
-     * @param tableName Cosmos DB table name.
-     * @param location The name of the continuous backup restore location.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return backup information of a resource.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public BackupInformationInner retrieveContinuousBackupInformation(String resourceGroupName, String accountName,
         String tableName, ContinuousBackupRestoreLocation location) {
         return retrieveContinuousBackupInformationAsync(resourceGroupName, accountName, tableName, location).block();
     }
 
-    /**
-     * Retrieves continuous backup information for a table.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param accountName Cosmos DB database account name.
-     * @param tableName Cosmos DB table name.
-     * @param location The name of the continuous backup restore location.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return backup information of a resource.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public BackupInformationInner retrieveContinuousBackupInformation(String resourceGroupName, String accountName,
         String tableName, ContinuousBackupRestoreLocation location, Context context) {
@@ -2167,18 +1593,7 @@ public final class TableResourcesClientImpl implements TableResourcesClient {
             .block();
     }
 
-    /**
-     * Retrieves the properties of an existing Azure Cosmos DB Table Role Definition with the given Id.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param accountName Cosmos DB database account name.
-     * @param roleDefinitionId The GUID for the Role Definition.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return parameters to create and update an Azure Cosmos DB Table Role Definition along with {@link Response} on
-     * successful completion of {@link Mono}.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Response<TableRoleDefinitionResourceInner>>
         getTableRoleDefinitionWithResponseAsync(String resourceGroupName, String accountName, String roleDefinitionId) {
@@ -2250,18 +1665,7 @@ public final class TableResourcesClientImpl implements TableResourcesClient {
             this.client.getSubscriptionId(), resourceGroupName, accountName, roleDefinitionId, accept, context);
     }
 
-    /**
-     * Retrieves the properties of an existing Azure Cosmos DB Table Role Definition with the given Id.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param accountName Cosmos DB database account name.
-     * @param roleDefinitionId The GUID for the Role Definition.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return parameters to create and update an Azure Cosmos DB Table Role Definition on successful completion of
-     * {@link Mono}.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<TableRoleDefinitionResourceInner> getTableRoleDefinitionAsync(String resourceGroupName,
         String accountName, String roleDefinitionId) {
@@ -2269,18 +1673,7 @@ public final class TableResourcesClientImpl implements TableResourcesClient {
             .flatMap(res -> Mono.justOrEmpty(res.getValue()));
     }
 
-    /**
-     * Retrieves the properties of an existing Azure Cosmos DB Table Role Definition with the given Id.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param accountName Cosmos DB database account name.
-     * @param roleDefinitionId The GUID for the Role Definition.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return parameters to create and update an Azure Cosmos DB Table Role Definition along with {@link Response}.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Response<TableRoleDefinitionResourceInner> getTableRoleDefinitionWithResponse(String resourceGroupName,
         String accountName, String roleDefinitionId, Context context) {
@@ -2288,17 +1681,7 @@ public final class TableResourcesClientImpl implements TableResourcesClient {
             .block();
     }
 
-    /**
-     * Retrieves the properties of an existing Azure Cosmos DB Table Role Definition with the given Id.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param accountName Cosmos DB database account name.
-     * @param roleDefinitionId The GUID for the Role Definition.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return parameters to create and update an Azure Cosmos DB Table Role Definition.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public TableRoleDefinitionResourceInner getTableRoleDefinition(String resourceGroupName, String accountName,
         String roleDefinitionId) {
@@ -2306,19 +1689,7 @@ public final class TableResourcesClientImpl implements TableResourcesClient {
             .getValue();
     }
 
-    /**
-     * Creates or updates an Azure Cosmos DB Table Role Definition.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param accountName Cosmos DB database account name.
-     * @param roleDefinitionId The GUID for the Role Definition.
-     * @param createUpdateTableRoleDefinitionParameters The properties required to create or update a Role Definition.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return parameters to create and update an Azure Cosmos DB Table Role Definition along with {@link Response} on
-     * successful completion of {@link Mono}.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Response<Flux<ByteBuffer>>> createUpdateTableRoleDefinitionWithResponseAsync(String resourceGroupName,
         String accountName, String roleDefinitionId,
@@ -2408,19 +1779,7 @@ public final class TableResourcesClientImpl implements TableResourcesClient {
             createUpdateTableRoleDefinitionParameters, context);
     }
 
-    /**
-     * Creates or updates an Azure Cosmos DB Table Role Definition.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param accountName Cosmos DB database account name.
-     * @param roleDefinitionId The GUID for the Role Definition.
-     * @param createUpdateTableRoleDefinitionParameters The properties required to create or update a Role Definition.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the {@link PollerFlux} for polling of parameters to create and update an Azure Cosmos DB Table Role
-     * Definition.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public PollerFlux<PollResult<TableRoleDefinitionResourceInner>, TableRoleDefinitionResourceInner>
         beginCreateUpdateTableRoleDefinitionAsync(String resourceGroupName, String accountName, String roleDefinitionId,
@@ -2458,19 +1817,7 @@ public final class TableResourcesClientImpl implements TableResourcesClient {
             TableRoleDefinitionResourceInner.class, context);
     }
 
-    /**
-     * Creates or updates an Azure Cosmos DB Table Role Definition.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param accountName Cosmos DB database account name.
-     * @param roleDefinitionId The GUID for the Role Definition.
-     * @param createUpdateTableRoleDefinitionParameters The properties required to create or update a Role Definition.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the {@link SyncPoller} for polling of parameters to create and update an Azure Cosmos DB Table Role
-     * Definition.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public SyncPoller<PollResult<TableRoleDefinitionResourceInner>, TableRoleDefinitionResourceInner>
         beginCreateUpdateTableRoleDefinition(String resourceGroupName, String accountName, String roleDefinitionId,
@@ -2481,20 +1828,7 @@ public final class TableResourcesClientImpl implements TableResourcesClient {
             .getSyncPoller();
     }
 
-    /**
-     * Creates or updates an Azure Cosmos DB Table Role Definition.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param accountName Cosmos DB database account name.
-     * @param roleDefinitionId The GUID for the Role Definition.
-     * @param createUpdateTableRoleDefinitionParameters The properties required to create or update a Role Definition.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the {@link SyncPoller} for polling of parameters to create and update an Azure Cosmos DB Table Role
-     * Definition.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public SyncPoller<PollResult<TableRoleDefinitionResourceInner>, TableRoleDefinitionResourceInner>
         beginCreateUpdateTableRoleDefinition(String resourceGroupName, String accountName, String roleDefinitionId,
@@ -2505,19 +1839,7 @@ public final class TableResourcesClientImpl implements TableResourcesClient {
             .getSyncPoller();
     }
 
-    /**
-     * Creates or updates an Azure Cosmos DB Table Role Definition.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param accountName Cosmos DB database account name.
-     * @param roleDefinitionId The GUID for the Role Definition.
-     * @param createUpdateTableRoleDefinitionParameters The properties required to create or update a Role Definition.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return parameters to create and update an Azure Cosmos DB Table Role Definition on successful completion of
-     * {@link Mono}.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<TableRoleDefinitionResourceInner> createUpdateTableRoleDefinitionAsync(String resourceGroupName,
         String accountName, String roleDefinitionId,
@@ -2548,18 +1870,7 @@ public final class TableResourcesClientImpl implements TableResourcesClient {
             createUpdateTableRoleDefinitionParameters, context).last().flatMap(this.client::getLroFinalResultOrError);
     }
 
-    /**
-     * Creates or updates an Azure Cosmos DB Table Role Definition.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param accountName Cosmos DB database account name.
-     * @param roleDefinitionId The GUID for the Role Definition.
-     * @param createUpdateTableRoleDefinitionParameters The properties required to create or update a Role Definition.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return parameters to create and update an Azure Cosmos DB Table Role Definition.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public TableRoleDefinitionResourceInner createUpdateTableRoleDefinition(String resourceGroupName,
         String accountName, String roleDefinitionId,
@@ -2568,19 +1879,7 @@ public final class TableResourcesClientImpl implements TableResourcesClient {
             createUpdateTableRoleDefinitionParameters).block();
     }
 
-    /**
-     * Creates or updates an Azure Cosmos DB Table Role Definition.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param accountName Cosmos DB database account name.
-     * @param roleDefinitionId The GUID for the Role Definition.
-     * @param createUpdateTableRoleDefinitionParameters The properties required to create or update a Role Definition.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return parameters to create and update an Azure Cosmos DB Table Role Definition.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public TableRoleDefinitionResourceInner createUpdateTableRoleDefinition(String resourceGroupName,
         String accountName, String roleDefinitionId,
@@ -2589,17 +1888,7 @@ public final class TableResourcesClientImpl implements TableResourcesClient {
             createUpdateTableRoleDefinitionParameters, context).block();
     }
 
-    /**
-     * Deletes an existing Azure Cosmos DB Table Role Definition.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param accountName Cosmos DB database account name.
-     * @param roleDefinitionId The GUID for the Role Definition.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the {@link Response} on successful completion of {@link Mono}.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Response<Flux<ByteBuffer>>> deleteTableRoleDefinitionWithResponseAsync(String resourceGroupName,
         String accountName, String roleDefinitionId) {
@@ -2668,17 +1957,7 @@ public final class TableResourcesClientImpl implements TableResourcesClient {
             this.client.getSubscriptionId(), resourceGroupName, accountName, roleDefinitionId, context);
     }
 
-    /**
-     * Deletes an existing Azure Cosmos DB Table Role Definition.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param accountName Cosmos DB database account name.
-     * @param roleDefinitionId The GUID for the Role Definition.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the {@link PollerFlux} for polling of long-running operation.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public PollerFlux<PollResult<Void>, Void> beginDeleteTableRoleDefinitionAsync(String resourceGroupName,
         String accountName, String roleDefinitionId) {
@@ -2710,17 +1989,7 @@ public final class TableResourcesClientImpl implements TableResourcesClient {
             context);
     }
 
-    /**
-     * Deletes an existing Azure Cosmos DB Table Role Definition.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param accountName Cosmos DB database account name.
-     * @param roleDefinitionId The GUID for the Role Definition.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the {@link SyncPoller} for polling of long-running operation.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public SyncPoller<PollResult<Void>, Void> beginDeleteTableRoleDefinition(String resourceGroupName,
         String accountName, String roleDefinitionId) {
@@ -2728,18 +1997,7 @@ public final class TableResourcesClientImpl implements TableResourcesClient {
             .getSyncPoller();
     }
 
-    /**
-     * Deletes an existing Azure Cosmos DB Table Role Definition.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param accountName Cosmos DB database account name.
-     * @param roleDefinitionId The GUID for the Role Definition.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the {@link SyncPoller} for polling of long-running operation.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public SyncPoller<PollResult<Void>, Void> beginDeleteTableRoleDefinition(String resourceGroupName,
         String accountName, String roleDefinitionId, Context context) {
@@ -2747,17 +2005,7 @@ public final class TableResourcesClientImpl implements TableResourcesClient {
             .getSyncPoller();
     }
 
-    /**
-     * Deletes an existing Azure Cosmos DB Table Role Definition.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param accountName Cosmos DB database account name.
-     * @param roleDefinitionId The GUID for the Role Definition.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return A {@link Mono} that completes when a successful response is received.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Void> deleteTableRoleDefinitionAsync(String resourceGroupName, String accountName,
         String roleDefinitionId) {
@@ -2784,32 +2032,13 @@ public final class TableResourcesClientImpl implements TableResourcesClient {
             .flatMap(this.client::getLroFinalResultOrError);
     }
 
-    /**
-     * Deletes an existing Azure Cosmos DB Table Role Definition.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param accountName Cosmos DB database account name.
-     * @param roleDefinitionId The GUID for the Role Definition.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public void deleteTableRoleDefinition(String resourceGroupName, String accountName, String roleDefinitionId) {
         deleteTableRoleDefinitionAsync(resourceGroupName, accountName, roleDefinitionId).block();
     }
 
-    /**
-     * Deletes an existing Azure Cosmos DB Table Role Definition.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param accountName Cosmos DB database account name.
-     * @param roleDefinitionId The GUID for the Role Definition.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public void deleteTableRoleDefinition(String resourceGroupName, String accountName, String roleDefinitionId,
         Context context) {
@@ -2894,17 +2123,7 @@ public final class TableResourcesClientImpl implements TableResourcesClient {
                 res.getValue().value(), res.getValue().nextLink(), null));
     }
 
-    /**
-     * Retrieves the list of all Azure Cosmos DB Table Role Definitions.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param accountName Cosmos DB database account name.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the response of a TableRoleDefinitionResource list operation as paginated response with
-     * {@link PagedFlux}.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.COLLECTION)
     public PagedFlux<TableRoleDefinitionResourceInner> listTableRoleDefinitionsAsync(String resourceGroupName,
         String accountName) {
@@ -2931,53 +2150,21 @@ public final class TableResourcesClientImpl implements TableResourcesClient {
             nextLink -> listTableRoleDefinitionsNextSinglePageAsync(nextLink, context));
     }
 
-    /**
-     * Retrieves the list of all Azure Cosmos DB Table Role Definitions.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param accountName Cosmos DB database account name.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the response of a TableRoleDefinitionResource list operation as paginated response with
-     * {@link PagedIterable}.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.COLLECTION)
     public PagedIterable<TableRoleDefinitionResourceInner> listTableRoleDefinitions(String resourceGroupName,
         String accountName) {
         return new PagedIterable<>(listTableRoleDefinitionsAsync(resourceGroupName, accountName));
     }
 
-    /**
-     * Retrieves the list of all Azure Cosmos DB Table Role Definitions.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param accountName Cosmos DB database account name.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the response of a TableRoleDefinitionResource list operation as paginated response with
-     * {@link PagedIterable}.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.COLLECTION)
     public PagedIterable<TableRoleDefinitionResourceInner> listTableRoleDefinitions(String resourceGroupName,
         String accountName, Context context) {
         return new PagedIterable<>(listTableRoleDefinitionsAsync(resourceGroupName, accountName, context));
     }
 
-    /**
-     * Retrieves the properties of an existing Azure Cosmos DB Table Role Assignment with the given Id.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param accountName Cosmos DB database account name.
-     * @param roleAssignmentId The GUID for the Role Assignment.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return parameters to create and update an Azure Cosmos DB Table Role Assignment along with {@link Response} on
-     * successful completion of {@link Mono}.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Response<TableRoleAssignmentResourceInner>>
         getTableRoleAssignmentWithResponseAsync(String resourceGroupName, String accountName, String roleAssignmentId) {
@@ -3049,18 +2236,7 @@ public final class TableResourcesClientImpl implements TableResourcesClient {
             this.client.getSubscriptionId(), resourceGroupName, accountName, roleAssignmentId, accept, context);
     }
 
-    /**
-     * Retrieves the properties of an existing Azure Cosmos DB Table Role Assignment with the given Id.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param accountName Cosmos DB database account name.
-     * @param roleAssignmentId The GUID for the Role Assignment.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return parameters to create and update an Azure Cosmos DB Table Role Assignment on successful completion of
-     * {@link Mono}.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<TableRoleAssignmentResourceInner> getTableRoleAssignmentAsync(String resourceGroupName,
         String accountName, String roleAssignmentId) {
@@ -3068,18 +2244,7 @@ public final class TableResourcesClientImpl implements TableResourcesClient {
             .flatMap(res -> Mono.justOrEmpty(res.getValue()));
     }
 
-    /**
-     * Retrieves the properties of an existing Azure Cosmos DB Table Role Assignment with the given Id.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param accountName Cosmos DB database account name.
-     * @param roleAssignmentId The GUID for the Role Assignment.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return parameters to create and update an Azure Cosmos DB Table Role Assignment along with {@link Response}.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Response<TableRoleAssignmentResourceInner> getTableRoleAssignmentWithResponse(String resourceGroupName,
         String accountName, String roleAssignmentId, Context context) {
@@ -3087,17 +2252,7 @@ public final class TableResourcesClientImpl implements TableResourcesClient {
             .block();
     }
 
-    /**
-     * Retrieves the properties of an existing Azure Cosmos DB Table Role Assignment with the given Id.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param accountName Cosmos DB database account name.
-     * @param roleAssignmentId The GUID for the Role Assignment.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return parameters to create and update an Azure Cosmos DB Table Role Assignment.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public TableRoleAssignmentResourceInner getTableRoleAssignment(String resourceGroupName, String accountName,
         String roleAssignmentId) {
@@ -3105,19 +2260,7 @@ public final class TableResourcesClientImpl implements TableResourcesClient {
             .getValue();
     }
 
-    /**
-     * Creates or updates an Azure Cosmos DB Table Role Assignment.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param accountName Cosmos DB database account name.
-     * @param roleAssignmentId The GUID for the Role Assignment.
-     * @param createUpdateTableRoleAssignmentParameters The properties required to create or update a Role Assignment.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return parameters to create and update an Azure Cosmos DB Table Role Assignment along with {@link Response} on
-     * successful completion of {@link Mono}.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Response<Flux<ByteBuffer>>> createUpdateTableRoleAssignmentWithResponseAsync(String resourceGroupName,
         String accountName, String roleAssignmentId,
@@ -3207,19 +2350,7 @@ public final class TableResourcesClientImpl implements TableResourcesClient {
             createUpdateTableRoleAssignmentParameters, context);
     }
 
-    /**
-     * Creates or updates an Azure Cosmos DB Table Role Assignment.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param accountName Cosmos DB database account name.
-     * @param roleAssignmentId The GUID for the Role Assignment.
-     * @param createUpdateTableRoleAssignmentParameters The properties required to create or update a Role Assignment.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the {@link PollerFlux} for polling of parameters to create and update an Azure Cosmos DB Table Role
-     * Assignment.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public PollerFlux<PollResult<TableRoleAssignmentResourceInner>, TableRoleAssignmentResourceInner>
         beginCreateUpdateTableRoleAssignmentAsync(String resourceGroupName, String accountName, String roleAssignmentId,
@@ -3257,19 +2388,7 @@ public final class TableResourcesClientImpl implements TableResourcesClient {
             TableRoleAssignmentResourceInner.class, context);
     }
 
-    /**
-     * Creates or updates an Azure Cosmos DB Table Role Assignment.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param accountName Cosmos DB database account name.
-     * @param roleAssignmentId The GUID for the Role Assignment.
-     * @param createUpdateTableRoleAssignmentParameters The properties required to create or update a Role Assignment.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the {@link SyncPoller} for polling of parameters to create and update an Azure Cosmos DB Table Role
-     * Assignment.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public SyncPoller<PollResult<TableRoleAssignmentResourceInner>, TableRoleAssignmentResourceInner>
         beginCreateUpdateTableRoleAssignment(String resourceGroupName, String accountName, String roleAssignmentId,
@@ -3280,20 +2399,7 @@ public final class TableResourcesClientImpl implements TableResourcesClient {
             .getSyncPoller();
     }
 
-    /**
-     * Creates or updates an Azure Cosmos DB Table Role Assignment.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param accountName Cosmos DB database account name.
-     * @param roleAssignmentId The GUID for the Role Assignment.
-     * @param createUpdateTableRoleAssignmentParameters The properties required to create or update a Role Assignment.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the {@link SyncPoller} for polling of parameters to create and update an Azure Cosmos DB Table Role
-     * Assignment.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public SyncPoller<PollResult<TableRoleAssignmentResourceInner>, TableRoleAssignmentResourceInner>
         beginCreateUpdateTableRoleAssignment(String resourceGroupName, String accountName, String roleAssignmentId,
@@ -3304,19 +2410,7 @@ public final class TableResourcesClientImpl implements TableResourcesClient {
             .getSyncPoller();
     }
 
-    /**
-     * Creates or updates an Azure Cosmos DB Table Role Assignment.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param accountName Cosmos DB database account name.
-     * @param roleAssignmentId The GUID for the Role Assignment.
-     * @param createUpdateTableRoleAssignmentParameters The properties required to create or update a Role Assignment.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return parameters to create and update an Azure Cosmos DB Table Role Assignment on successful completion of
-     * {@link Mono}.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<TableRoleAssignmentResourceInner> createUpdateTableRoleAssignmentAsync(String resourceGroupName,
         String accountName, String roleAssignmentId,
@@ -3347,18 +2441,7 @@ public final class TableResourcesClientImpl implements TableResourcesClient {
             createUpdateTableRoleAssignmentParameters, context).last().flatMap(this.client::getLroFinalResultOrError);
     }
 
-    /**
-     * Creates or updates an Azure Cosmos DB Table Role Assignment.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param accountName Cosmos DB database account name.
-     * @param roleAssignmentId The GUID for the Role Assignment.
-     * @param createUpdateTableRoleAssignmentParameters The properties required to create or update a Role Assignment.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return parameters to create and update an Azure Cosmos DB Table Role Assignment.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public TableRoleAssignmentResourceInner createUpdateTableRoleAssignment(String resourceGroupName,
         String accountName, String roleAssignmentId,
@@ -3367,19 +2450,7 @@ public final class TableResourcesClientImpl implements TableResourcesClient {
             createUpdateTableRoleAssignmentParameters).block();
     }
 
-    /**
-     * Creates or updates an Azure Cosmos DB Table Role Assignment.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param accountName Cosmos DB database account name.
-     * @param roleAssignmentId The GUID for the Role Assignment.
-     * @param createUpdateTableRoleAssignmentParameters The properties required to create or update a Role Assignment.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return parameters to create and update an Azure Cosmos DB Table Role Assignment.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public TableRoleAssignmentResourceInner createUpdateTableRoleAssignment(String resourceGroupName,
         String accountName, String roleAssignmentId,
@@ -3388,17 +2459,7 @@ public final class TableResourcesClientImpl implements TableResourcesClient {
             createUpdateTableRoleAssignmentParameters, context).block();
     }
 
-    /**
-     * Deletes an existing Azure Cosmos DB Table Role Assignment.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param accountName Cosmos DB database account name.
-     * @param roleAssignmentId The GUID for the Role Assignment.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the {@link Response} on successful completion of {@link Mono}.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Response<Flux<ByteBuffer>>> deleteTableRoleAssignmentWithResponseAsync(String resourceGroupName,
         String accountName, String roleAssignmentId) {
@@ -3467,17 +2528,7 @@ public final class TableResourcesClientImpl implements TableResourcesClient {
             this.client.getSubscriptionId(), resourceGroupName, accountName, roleAssignmentId, context);
     }
 
-    /**
-     * Deletes an existing Azure Cosmos DB Table Role Assignment.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param accountName Cosmos DB database account name.
-     * @param roleAssignmentId The GUID for the Role Assignment.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the {@link PollerFlux} for polling of long-running operation.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public PollerFlux<PollResult<Void>, Void> beginDeleteTableRoleAssignmentAsync(String resourceGroupName,
         String accountName, String roleAssignmentId) {
@@ -3509,17 +2560,7 @@ public final class TableResourcesClientImpl implements TableResourcesClient {
             context);
     }
 
-    /**
-     * Deletes an existing Azure Cosmos DB Table Role Assignment.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param accountName Cosmos DB database account name.
-     * @param roleAssignmentId The GUID for the Role Assignment.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the {@link SyncPoller} for polling of long-running operation.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public SyncPoller<PollResult<Void>, Void> beginDeleteTableRoleAssignment(String resourceGroupName,
         String accountName, String roleAssignmentId) {
@@ -3527,18 +2568,7 @@ public final class TableResourcesClientImpl implements TableResourcesClient {
             .getSyncPoller();
     }
 
-    /**
-     * Deletes an existing Azure Cosmos DB Table Role Assignment.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param accountName Cosmos DB database account name.
-     * @param roleAssignmentId The GUID for the Role Assignment.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the {@link SyncPoller} for polling of long-running operation.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public SyncPoller<PollResult<Void>, Void> beginDeleteTableRoleAssignment(String resourceGroupName,
         String accountName, String roleAssignmentId, Context context) {
@@ -3546,17 +2576,7 @@ public final class TableResourcesClientImpl implements TableResourcesClient {
             .getSyncPoller();
     }
 
-    /**
-     * Deletes an existing Azure Cosmos DB Table Role Assignment.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param accountName Cosmos DB database account name.
-     * @param roleAssignmentId The GUID for the Role Assignment.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return A {@link Mono} that completes when a successful response is received.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Void> deleteTableRoleAssignmentAsync(String resourceGroupName, String accountName,
         String roleAssignmentId) {
@@ -3583,32 +2603,13 @@ public final class TableResourcesClientImpl implements TableResourcesClient {
             .flatMap(this.client::getLroFinalResultOrError);
     }
 
-    /**
-     * Deletes an existing Azure Cosmos DB Table Role Assignment.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param accountName Cosmos DB database account name.
-     * @param roleAssignmentId The GUID for the Role Assignment.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public void deleteTableRoleAssignment(String resourceGroupName, String accountName, String roleAssignmentId) {
         deleteTableRoleAssignmentAsync(resourceGroupName, accountName, roleAssignmentId).block();
     }
 
-    /**
-     * Deletes an existing Azure Cosmos DB Table Role Assignment.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param accountName Cosmos DB database account name.
-     * @param roleAssignmentId The GUID for the Role Assignment.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public void deleteTableRoleAssignment(String resourceGroupName, String accountName, String roleAssignmentId,
         Context context) {
@@ -3693,17 +2694,7 @@ public final class TableResourcesClientImpl implements TableResourcesClient {
                 res.getValue().value(), res.getValue().nextLink(), null));
     }
 
-    /**
-     * Retrieves the list of all Azure Cosmos DB Table Role Assignments.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param accountName Cosmos DB database account name.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the response of a TableRoleAssignmentResource list operation as paginated response with
-     * {@link PagedFlux}.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.COLLECTION)
     public PagedFlux<TableRoleAssignmentResourceInner> listTableRoleAssignmentsAsync(String resourceGroupName,
         String accountName) {
@@ -3730,35 +2721,14 @@ public final class TableResourcesClientImpl implements TableResourcesClient {
             nextLink -> listTableRoleAssignmentsNextSinglePageAsync(nextLink, context));
     }
 
-    /**
-     * Retrieves the list of all Azure Cosmos DB Table Role Assignments.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param accountName Cosmos DB database account name.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the response of a TableRoleAssignmentResource list operation as paginated response with
-     * {@link PagedIterable}.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.COLLECTION)
     public PagedIterable<TableRoleAssignmentResourceInner> listTableRoleAssignments(String resourceGroupName,
         String accountName) {
         return new PagedIterable<>(listTableRoleAssignmentsAsync(resourceGroupName, accountName));
     }
 
-    /**
-     * Retrieves the list of all Azure Cosmos DB Table Role Assignments.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param accountName Cosmos DB database account name.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the response of a TableRoleAssignmentResource list operation as paginated response with
-     * {@link PagedIterable}.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.COLLECTION)
     public PagedIterable<TableRoleAssignmentResourceInner> listTableRoleAssignments(String resourceGroupName,
         String accountName, Context context) {

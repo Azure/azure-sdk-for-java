@@ -46,12 +46,7 @@ public final class EdgeDevicesImpl implements EdgeDevices {
     }
 
     public EdgeDevice createOrUpdate(String resourceUri, String edgeDeviceName, EdgeDeviceInner resource) {
-        EdgeDeviceInner inner = this.serviceClient().createOrUpdate(resourceUri, edgeDeviceName, resource);
-        if (inner != null) {
-            return new EdgeDeviceImpl(inner, this.manager());
-        } else {
-            return null;
-        }
+        return this.createOrUpdate(resourceUri, edgeDeviceName, resource, Context.NONE);
     }
 
     public EdgeDevice createOrUpdate(String resourceUri, String edgeDeviceName, EdgeDeviceInner resource,
@@ -65,7 +60,7 @@ public final class EdgeDevicesImpl implements EdgeDevices {
     }
 
     public void deleteByResourceGroup(String resourceUri, String edgeDeviceName) {
-        this.serviceClient().delete(resourceUri, edgeDeviceName);
+        this.delete(resourceUri, edgeDeviceName, Context.NONE);
     }
 
     public void delete(String resourceUri, String edgeDeviceName, Context context) {
@@ -73,8 +68,7 @@ public final class EdgeDevicesImpl implements EdgeDevices {
     }
 
     public PagedIterable<EdgeDevice> list(String resourceUri) {
-        PagedIterable<EdgeDeviceInner> inner = this.serviceClient().list(resourceUri);
-        return ResourceManagerUtils.mapPage(inner, inner1 -> new EdgeDeviceImpl(inner1, this.manager()));
+        return this.list(resourceUri, Context.NONE);
     }
 
     public PagedIterable<EdgeDevice> list(String resourceUri, Context context) {
@@ -83,12 +77,7 @@ public final class EdgeDevicesImpl implements EdgeDevices {
     }
 
     public ValidateResponse validate(String resourceUri, String edgeDeviceName, ValidateRequest validateRequest) {
-        ValidateResponseInner inner = this.serviceClient().validate(resourceUri, edgeDeviceName, validateRequest);
-        if (inner != null) {
-            return new ValidateResponseImpl(inner, this.manager());
-        } else {
-            return null;
-        }
+        return this.validate(resourceUri, edgeDeviceName, validateRequest, Context.NONE);
     }
 
     public ValidateResponse validate(String resourceUri, String edgeDeviceName, ValidateRequest validateRequest,

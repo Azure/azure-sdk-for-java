@@ -154,21 +154,7 @@ public final class OpenShiftVersionsClientImpl implements OpenShiftVersionsClien
         return getWithResponseAsync(location, openShiftVersion).flatMap(res -> Mono.justOrEmpty(res.getValue()));
     }
 
-    /**
-     * Gets an available OpenShift version to install in the specified location.
-     * 
-     * This operation returns installable OpenShift version as a string.
-     * 
-     * @param location The name of the Azure region.
-     * @param openShiftVersion The desired version value of the OpenShiftVersion resource.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return an available OpenShift version to install in the specified location.
-     * 
-     * This operation returns installable OpenShift version as a string along with {@link Response}.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Response<OpenShiftVersionInner> getWithResponse(String location, String openShiftVersion, Context context) {
         final String accept = "application/json";
@@ -176,20 +162,7 @@ public final class OpenShiftVersionsClientImpl implements OpenShiftVersionsClien
             location, openShiftVersion, accept, context);
     }
 
-    /**
-     * Gets an available OpenShift version to install in the specified location.
-     * 
-     * This operation returns installable OpenShift version as a string.
-     * 
-     * @param location The name of the Azure region.
-     * @param openShiftVersion The desired version value of the OpenShiftVersion resource.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return an available OpenShift version to install in the specified location.
-     * 
-     * This operation returns installable OpenShift version as a string.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public OpenShiftVersionInner get(String location, String openShiftVersion) {
         return getWithResponse(location, openShiftVersion, Context.NONE).getValue();
@@ -248,11 +221,7 @@ public final class OpenShiftVersionsClientImpl implements OpenShiftVersionsClien
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private PagedResponse<OpenShiftVersionInner> listSinglePage(String location) {
-        final String accept = "application/json";
-        Response<OpenShiftVersionList> res = service.listSync(this.client.getEndpoint(), this.client.getApiVersion(),
-            this.client.getSubscriptionId(), location, accept, Context.NONE);
-        return new PagedResponseBase<>(res.getRequest(), res.getStatusCode(), res.getHeaders(), res.getValue().value(),
-            res.getValue().nextLink(), null);
+        return listSinglePage(location, Context.NONE);
     }
 
     /**
@@ -276,36 +245,13 @@ public final class OpenShiftVersionsClientImpl implements OpenShiftVersionsClien
             res.getValue().nextLink(), null);
     }
 
-    /**
-     * Lists all OpenShift versions available to install in the specified location.
-     * 
-     * The operation returns the installable OpenShift versions as a string.
-     * 
-     * @param location The name of the Azure region.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return openShiftVersionList represents a List of available versions as paginated response with
-     * {@link PagedIterable}.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.COLLECTION)
     public PagedIterable<OpenShiftVersionInner> list(String location) {
-        return new PagedIterable<>(() -> listSinglePage(location), nextLink -> listNextSinglePage(nextLink));
+        return list(location, Context.NONE);
     }
 
-    /**
-     * Lists all OpenShift versions available to install in the specified location.
-     * 
-     * The operation returns the installable OpenShift versions as a string.
-     * 
-     * @param location The name of the Azure region.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return openShiftVersionList represents a List of available versions as paginated response with
-     * {@link PagedIterable}.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.COLLECTION)
     public PagedIterable<OpenShiftVersionInner> list(String location, Context context) {
         return new PagedIterable<>(() -> listSinglePage(location, context),
@@ -346,11 +292,7 @@ public final class OpenShiftVersionsClientImpl implements OpenShiftVersionsClien
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private PagedResponse<OpenShiftVersionInner> listNextSinglePage(String nextLink) {
-        final String accept = "application/json";
-        Response<OpenShiftVersionList> res
-            = service.listNextSync(nextLink, this.client.getEndpoint(), accept, Context.NONE);
-        return new PagedResponseBase<>(res.getRequest(), res.getStatusCode(), res.getHeaders(), res.getValue().value(),
-            res.getValue().nextLink(), null);
+        return listNextSinglePage(nextLink, Context.NONE);
     }
 
     /**

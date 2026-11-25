@@ -224,21 +224,7 @@ public final class ProtectedItemsClientImpl implements ProtectedItemsClient {
             .flatMap(res -> Mono.justOrEmpty(res.getValue()));
     }
 
-    /**
-     * Get a ProtectedItem.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param cloudAccountName Name of the Cloud Account resource.
-     * @param protectionGroupName Name of the ProtectionGroup resource.
-     * @param protectedItemName The protectedItem Id, name of 2 protected items can be same under a PG if they belong to
-     * different resource group or even different data source types VM/DB/AKS, etc; and name is mandatory in Azure
-     * Typespec, hence using name parameter for id in Commvault In case of Vm it will be vmGuid.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return a ProtectedItem along with {@link Response}.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Response<ProtectedItemInner> getWithResponse(String resourceGroupName, String cloudAccountName,
         String protectionGroupName, String protectedItemName, Context context) {
@@ -247,20 +233,7 @@ public final class ProtectedItemsClientImpl implements ProtectedItemsClient {
             resourceGroupName, cloudAccountName, protectionGroupName, protectedItemName, accept, context);
     }
 
-    /**
-     * Get a ProtectedItem.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param cloudAccountName Name of the Cloud Account resource.
-     * @param protectionGroupName Name of the ProtectionGroup resource.
-     * @param protectedItemName The protectedItem Id, name of 2 protected items can be same under a PG if they belong to
-     * different resource group or even different data source types VM/DB/AKS, etc; and name is mandatory in Azure
-     * Typespec, hence using name parameter for id in Commvault In case of Vm it will be vmGuid.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return a ProtectedItem.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public ProtectedItemInner get(String resourceGroupName, String cloudAccountName, String protectionGroupName,
         String protectedItemName) {
@@ -326,12 +299,7 @@ public final class ProtectedItemsClientImpl implements ProtectedItemsClient {
     @ServiceMethod(returns = ReturnType.SINGLE)
     private PagedResponse<ProtectedItemInner> listByProtectionGroupSinglePage(String resourceGroupName,
         String cloudAccountName, String protectionGroupName) {
-        final String accept = "application/json";
-        Response<ProtectedItemListResult> res = service.listByProtectionGroupSync(this.client.getEndpoint(),
-            this.client.getApiVersion(), this.client.getSubscriptionId(), resourceGroupName, cloudAccountName,
-            protectionGroupName, accept, Context.NONE);
-        return new PagedResponseBase<>(res.getRequest(), res.getStatusCode(), res.getHeaders(), res.getValue().value(),
-            res.getValue().nextLink(), null);
+        return listByProtectionGroupSinglePage(resourceGroupName, cloudAccountName, protectionGroupName, Context.NONE);
     }
 
     /**
@@ -357,37 +325,14 @@ public final class ProtectedItemsClientImpl implements ProtectedItemsClient {
             res.getValue().nextLink(), null);
     }
 
-    /**
-     * List ProtectedItem resources by ProtectionGroup.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param cloudAccountName Name of the Cloud Account resource.
-     * @param protectionGroupName Name of the ProtectionGroup resource.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the response of a ProtectedItem list operation as paginated response with {@link PagedIterable}.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.COLLECTION)
     public PagedIterable<ProtectedItemInner> listByProtectionGroup(String resourceGroupName, String cloudAccountName,
         String protectionGroupName) {
-        return new PagedIterable<>(
-            () -> listByProtectionGroupSinglePage(resourceGroupName, cloudAccountName, protectionGroupName),
-            nextLink -> listByProtectionGroupNextSinglePage(nextLink));
+        return listByProtectionGroup(resourceGroupName, cloudAccountName, protectionGroupName, Context.NONE);
     }
 
-    /**
-     * List ProtectedItem resources by ProtectionGroup.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param cloudAccountName Name of the Cloud Account resource.
-     * @param protectionGroupName Name of the ProtectionGroup resource.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the response of a ProtectedItem list operation as paginated response with {@link PagedIterable}.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.COLLECTION)
     public PagedIterable<ProtectedItemInner> listByProtectionGroup(String resourceGroupName, String cloudAccountName,
         String protectionGroupName, Context context) {
@@ -442,21 +387,7 @@ public final class ProtectedItemsClientImpl implements ProtectedItemsClient {
             protectedItemName).flatMap(res -> Mono.justOrEmpty(res.getValue()));
     }
 
-    /**
-     * Limits used for creation of resources.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param cloudAccountName Name of the Cloud Account resource.
-     * @param protectionGroupName Name of the ProtectionGroup resource.
-     * @param protectedItemName The protectedItem Id, name of 2 protected items can be same under a PG if they belong to
-     * different resource group or even different data source types VM/DB/AKS, etc; and name is mandatory in Azure
-     * Typespec, hence using name parameter for id in Commvault In case of Vm it will be vmGuid.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return restore points of a Protected Item along with {@link Response}.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Response<RestorePointsInner> getRestorePointsWithResponse(String resourceGroupName, String cloudAccountName,
         String protectionGroupName, String protectedItemName, Context context) {
@@ -466,20 +397,7 @@ public final class ProtectedItemsClientImpl implements ProtectedItemsClient {
             protectedItemName, accept, context);
     }
 
-    /**
-     * Limits used for creation of resources.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param cloudAccountName Name of the Cloud Account resource.
-     * @param protectionGroupName Name of the ProtectionGroup resource.
-     * @param protectedItemName The protectedItem Id, name of 2 protected items can be same under a PG if they belong to
-     * different resource group or even different data source types VM/DB/AKS, etc; and name is mandatory in Azure
-     * Typespec, hence using name parameter for id in Commvault In case of Vm it will be vmGuid.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return restore points of a Protected Item.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public RestorePointsInner getRestorePoints(String resourceGroupName, String cloudAccountName,
         String protectionGroupName, String protectedItemName) {
@@ -538,22 +456,7 @@ public final class ProtectedItemsClientImpl implements ProtectedItemsClient {
             request).flatMap(res -> Mono.justOrEmpty(res.getValue()));
     }
 
-    /**
-     * Restore resource for a protected item.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param cloudAccountName Name of the Cloud Account resource.
-     * @param protectionGroupName Name of the ProtectionGroup resource.
-     * @param protectedItemName The protectedItem Id, name of 2 protected items can be same under a PG if they belong to
-     * different resource group or even different data source types VM/DB/AKS, etc; and name is mandatory in Azure
-     * Typespec, hence using name parameter for id in Commvault In case of Vm it will be vmGuid.
-     * @param request The body type of the operation request.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return restore resource response for a Protected Item along with {@link Response}.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Response<RestoreProtectionItemResponseInner> restoreWithResponse(String resourceGroupName,
         String cloudAccountName, String protectionGroupName, String protectedItemName,
@@ -565,21 +468,7 @@ public final class ProtectedItemsClientImpl implements ProtectedItemsClient {
             protectedItemName, contentType, accept, request, context);
     }
 
-    /**
-     * Restore resource for a protected item.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param cloudAccountName Name of the Cloud Account resource.
-     * @param protectionGroupName Name of the ProtectionGroup resource.
-     * @param protectedItemName The protectedItem Id, name of 2 protected items can be same under a PG if they belong to
-     * different resource group or even different data source types VM/DB/AKS, etc; and name is mandatory in Azure
-     * Typespec, hence using name parameter for id in Commvault In case of Vm it will be vmGuid.
-     * @param request The body type of the operation request.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return restore resource response for a Protected Item.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public RestoreProtectionItemResponseInner restore(String resourceGroupName, String cloudAccountName,
         String protectionGroupName, String protectedItemName, RestoreProtectionItemRequest request) {
@@ -619,11 +508,7 @@ public final class ProtectedItemsClientImpl implements ProtectedItemsClient {
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private PagedResponse<ProtectedItemInner> listByProtectionGroupNextSinglePage(String nextLink) {
-        final String accept = "application/json";
-        Response<ProtectedItemListResult> res
-            = service.listByProtectionGroupNextSync(nextLink, this.client.getEndpoint(), accept, Context.NONE);
-        return new PagedResponseBase<>(res.getRequest(), res.getStatusCode(), res.getHeaders(), res.getValue().value(),
-            res.getValue().nextLink(), null);
+        return listByProtectionGroupNextSinglePage(nextLink, Context.NONE);
     }
 
     /**

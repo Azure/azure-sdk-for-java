@@ -84,12 +84,7 @@ public final class AuthorizationRuleImpl
     }
 
     public AuthorizationRule create() {
-        this.innerObject = serviceManager.serviceClient()
-            .getNamespaces()
-            .createOrUpdateAuthorizationRuleWithResponse(resourceGroupName, namespaceName, authorizationRuleName,
-                this.innerModel(), Context.NONE)
-            .getValue();
-        return this;
+        return this.create(Context.NONE);
     }
 
     public AuthorizationRule create(Context context) {
@@ -112,12 +107,7 @@ public final class AuthorizationRuleImpl
     }
 
     public AuthorizationRule apply() {
-        this.innerObject = serviceManager.serviceClient()
-            .getNamespaces()
-            .createOrUpdateAuthorizationRuleWithResponse(resourceGroupName, namespaceName, authorizationRuleName,
-                this.innerModel(), Context.NONE)
-            .getValue();
-        return this;
+        return this.apply(Context.NONE);
     }
 
     public AuthorizationRule apply(Context context) {
@@ -136,20 +126,46 @@ public final class AuthorizationRuleImpl
         this.resourceGroupName = ResourceManagerUtils.getValueFromIdByParameterName(innerObject.id(),
             "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Relay/namespaces/{namespaceName}/authorizationRules/{authorizationRuleName}",
             "resourceGroupName");
+        if (this.resourceGroupName == null) {
+            this.resourceGroupName = ResourceManagerUtils.getValueFromIdByParameterName(innerObject.id(),
+                "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Relay/namespaces/{namespaceName}/hybridConnections/{hybridConnectionName}/authorizationRules/{authorizationRuleName}",
+                "resourceGroupName");
+        }
+        if (this.resourceGroupName == null) {
+            this.resourceGroupName = ResourceManagerUtils.getValueFromIdByParameterName(innerObject.id(),
+                "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Relay/namespaces/{namespaceName}/wcfRelays/{relayName}/authorizationRules/{authorizationRuleName}",
+                "resourceGroupName");
+        }
         this.namespaceName = ResourceManagerUtils.getValueFromIdByParameterName(innerObject.id(),
             "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Relay/namespaces/{namespaceName}/authorizationRules/{authorizationRuleName}",
             "namespaceName");
+        if (this.namespaceName == null) {
+            this.namespaceName = ResourceManagerUtils.getValueFromIdByParameterName(innerObject.id(),
+                "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Relay/namespaces/{namespaceName}/hybridConnections/{hybridConnectionName}/authorizationRules/{authorizationRuleName}",
+                "namespaceName");
+        }
+        if (this.namespaceName == null) {
+            this.namespaceName = ResourceManagerUtils.getValueFromIdByParameterName(innerObject.id(),
+                "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Relay/namespaces/{namespaceName}/wcfRelays/{relayName}/authorizationRules/{authorizationRuleName}",
+                "namespaceName");
+        }
         this.authorizationRuleName = ResourceManagerUtils.getValueFromIdByParameterName(innerObject.id(),
             "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Relay/namespaces/{namespaceName}/authorizationRules/{authorizationRuleName}",
             "authorizationRuleName");
+        if (this.authorizationRuleName == null) {
+            this.authorizationRuleName = ResourceManagerUtils.getValueFromIdByParameterName(innerObject.id(),
+                "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Relay/namespaces/{namespaceName}/hybridConnections/{hybridConnectionName}/authorizationRules/{authorizationRuleName}",
+                "authorizationRuleName");
+        }
+        if (this.authorizationRuleName == null) {
+            this.authorizationRuleName = ResourceManagerUtils.getValueFromIdByParameterName(innerObject.id(),
+                "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Relay/namespaces/{namespaceName}/wcfRelays/{relayName}/authorizationRules/{authorizationRuleName}",
+                "authorizationRuleName");
+        }
     }
 
     public AuthorizationRule refresh() {
-        this.innerObject = serviceManager.serviceClient()
-            .getNamespaces()
-            .getAuthorizationRuleWithResponse(resourceGroupName, namespaceName, authorizationRuleName, Context.NONE)
-            .getValue();
-        return this;
+        return this.refresh(Context.NONE);
     }
 
     public AuthorizationRule refresh(Context context) {

@@ -82,10 +82,7 @@ public final class DeploymentStacksWhatIfResultImpl implements DeploymentStacksW
     }
 
     public DeploymentStacksWhatIfResult create() {
-        this.innerObject = serviceManager.serviceClient()
-            .getDeploymentStacksWhatIfResultsAtResourceGroups()
-            .createOrUpdate(resourceGroupName, deploymentStacksWhatIfResultName, this.innerModel(), Context.NONE);
-        return this;
+        return this.create(Context.NONE);
     }
 
     public DeploymentStacksWhatIfResult create(Context context) {
@@ -107,10 +104,7 @@ public final class DeploymentStacksWhatIfResultImpl implements DeploymentStacksW
     }
 
     public DeploymentStacksWhatIfResult apply() {
-        this.innerObject = serviceManager.serviceClient()
-            .getDeploymentStacksWhatIfResultsAtResourceGroups()
-            .createOrUpdate(resourceGroupName, deploymentStacksWhatIfResultName, this.innerModel(), Context.NONE);
-        return this;
+        return this.apply(Context.NONE);
     }
 
     public DeploymentStacksWhatIfResult apply(Context context) {
@@ -130,14 +124,20 @@ public final class DeploymentStacksWhatIfResultImpl implements DeploymentStacksW
         this.deploymentStacksWhatIfResultName = ResourceManagerUtils.getValueFromIdByParameterName(innerObject.id(),
             "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Resources/deploymentStacksWhatIfResults/{deploymentStacksWhatIfResultName}",
             "deploymentStacksWhatIfResultName");
+        if (this.deploymentStacksWhatIfResultName == null) {
+            this.deploymentStacksWhatIfResultName = ResourceManagerUtils.getValueFromIdByParameterName(innerObject.id(),
+                "/subscriptions/{subscriptionId}/providers/Microsoft.Resources/deploymentStacksWhatIfResults/{deploymentStacksWhatIfResultName}",
+                "deploymentStacksWhatIfResultName");
+        }
+        if (this.deploymentStacksWhatIfResultName == null) {
+            this.deploymentStacksWhatIfResultName = ResourceManagerUtils.getValueFromIdByParameterName(innerObject.id(),
+                "/providers/Microsoft.Management/managementGroups/{managementGroupId}/providers/Microsoft.Resources/deploymentStacksWhatIfResults/{deploymentStacksWhatIfResultName}",
+                "deploymentStacksWhatIfResultName");
+        }
     }
 
     public DeploymentStacksWhatIfResult refresh() {
-        this.innerObject = serviceManager.serviceClient()
-            .getDeploymentStacksWhatIfResultsAtResourceGroups()
-            .getByResourceGroupWithResponse(resourceGroupName, deploymentStacksWhatIfResultName, Context.NONE)
-            .getValue();
-        return this;
+        return this.refresh(Context.NONE);
     }
 
     public DeploymentStacksWhatIfResult refresh(Context context) {

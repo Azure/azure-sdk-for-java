@@ -80,11 +80,7 @@ public final class GovernanceAssignmentImpl
     }
 
     public GovernanceAssignment create() {
-        this.innerObject = serviceManager.serviceClient()
-            .getGovernanceAssignments()
-            .createOrUpdateWithResponse(scope, assessmentName, assignmentKey, this.innerModel(), Context.NONE)
-            .getValue();
-        return this;
+        return this.create(Context.NONE);
     }
 
     public GovernanceAssignment create(Context context) {
@@ -106,11 +102,7 @@ public final class GovernanceAssignmentImpl
     }
 
     public GovernanceAssignment apply() {
-        this.innerObject = serviceManager.serviceClient()
-            .getGovernanceAssignments()
-            .createOrUpdateWithResponse(scope, assessmentName, assignmentKey, this.innerModel(), Context.NONE)
-            .getValue();
-        return this;
+        return this.apply(Context.NONE);
     }
 
     public GovernanceAssignment apply(Context context) {
@@ -137,11 +129,7 @@ public final class GovernanceAssignmentImpl
     }
 
     public GovernanceAssignment refresh() {
-        this.innerObject = serviceManager.serviceClient()
-            .getGovernanceAssignments()
-            .getWithResponse(scope, assessmentName, assignmentKey, Context.NONE)
-            .getValue();
-        return this;
+        return this.refresh(Context.NONE);
     }
 
     public GovernanceAssignment refresh(Context context) {

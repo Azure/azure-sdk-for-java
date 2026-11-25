@@ -62,12 +62,14 @@ public interface ArcDeployments {
      * @param accountName The name of Cognitive Services account.
      * @param deploymentName The name of the Arc deployment associated with the Cognitive Services Account. The name
      * must be unique within the account across deployments, managedComputeDeployments, and arcDeployments.
+     * @param force Whether to delete the Arc deployment even when its associated extension is disconnected. Defaults to
+     * false.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      */
-    void delete(String resourceGroupName, String accountName, String deploymentName, Context context);
+    void delete(String resourceGroupName, String accountName, String deploymentName, Boolean force, Context context);
 
     /**
      * Gets the Arc deployments associated with the Cognitive Services account.
@@ -133,12 +135,14 @@ public interface ArcDeployments {
      * Deletes the specified Arc deployment associated with the Cognitive Services account.
      * 
      * @param id the resource ID.
+     * @param force Whether to delete the Arc deployment even when its associated extension is disconnected. Defaults to
+     * false.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      */
-    void deleteByIdWithResponse(String id, Context context);
+    void deleteByIdWithResponse(String id, Boolean force, Context context);
 
     /**
      * Begins definition for a new ArcDeployment resource.

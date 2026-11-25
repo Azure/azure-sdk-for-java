@@ -146,17 +146,7 @@ public final class UnsupportedVmSizesClientImpl implements UnsupportedVmSizesCli
         return getWithResponseAsync(location, vmSize).flatMap(res -> Mono.justOrEmpty(res.getValue()));
     }
 
-    /**
-     * Get unsupported vm size for Service Fabric Clusters.
-     * 
-     * @param location The name of the Azure region.
-     * @param vmSize VM Size name.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return unsupported vm size for Service Fabric Clusters along with {@link Response}.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Response<VMSizeResourceInner> getWithResponse(String location, String vmSize, Context context) {
         final String accept = "application/json";
@@ -164,16 +154,7 @@ public final class UnsupportedVmSizesClientImpl implements UnsupportedVmSizesCli
             location, vmSize, accept, context);
     }
 
-    /**
-     * Get unsupported vm size for Service Fabric Clusters.
-     * 
-     * @param location The name of the Azure region.
-     * @param vmSize VM Size name.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return unsupported vm size for Service Fabric Clusters.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public VMSizeResourceInner get(String location, String vmSize) {
         return getWithResponse(location, vmSize, Context.NONE).getValue();
@@ -226,11 +207,7 @@ public final class UnsupportedVmSizesClientImpl implements UnsupportedVmSizesCli
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private PagedResponse<VMSizeResourceInner> listSinglePage(String location) {
-        final String accept = "application/json";
-        Response<VMSizesResult> res = service.listSync(this.client.getEndpoint(), this.client.getApiVersion(),
-            this.client.getSubscriptionId(), location, accept, Context.NONE);
-        return new PagedResponseBase<>(res.getRequest(), res.getStatusCode(), res.getHeaders(), res.getValue().value(),
-            res.getValue().nextLink(), null);
+        return listSinglePage(location, Context.NONE);
     }
 
     /**
@@ -252,32 +229,13 @@ public final class UnsupportedVmSizesClientImpl implements UnsupportedVmSizesCli
             res.getValue().nextLink(), null);
     }
 
-    /**
-     * Get the lists of unsupported vm sizes for Service Fabric Clusters.
-     * 
-     * @param location The name of the Azure region.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the lists of unsupported vm sizes for Service Fabric Clusters as paginated response with
-     * {@link PagedIterable}.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.COLLECTION)
     public PagedIterable<VMSizeResourceInner> list(String location) {
-        return new PagedIterable<>(() -> listSinglePage(location), nextLink -> listNextSinglePage(nextLink));
+        return list(location, Context.NONE);
     }
 
-    /**
-     * Get the lists of unsupported vm sizes for Service Fabric Clusters.
-     * 
-     * @param location The name of the Azure region.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the lists of unsupported vm sizes for Service Fabric Clusters as paginated response with
-     * {@link PagedIterable}.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.COLLECTION)
     public PagedIterable<VMSizeResourceInner> list(String location, Context context) {
         return new PagedIterable<>(() -> listSinglePage(location, context),
@@ -318,10 +276,7 @@ public final class UnsupportedVmSizesClientImpl implements UnsupportedVmSizesCli
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private PagedResponse<VMSizeResourceInner> listNextSinglePage(String nextLink) {
-        final String accept = "application/json";
-        Response<VMSizesResult> res = service.listNextSync(nextLink, this.client.getEndpoint(), accept, Context.NONE);
-        return new PagedResponseBase<>(res.getRequest(), res.getStatusCode(), res.getHeaders(), res.getValue().value(),
-            res.getValue().nextLink(), null);
+        return listNextSinglePage(nextLink, Context.NONE);
     }
 
     /**

@@ -16,9 +16,12 @@ public interface AppConfigurationRefresh extends ApplicationEventPublisherAware 
     /**
      * Checks configurations to see if configurations should be reloaded. If the refresh interval has passed and a
      * trigger has been updated configuration are reloaded.
+     * The returned Mono must be subscribed to initiate the check. The default implementation performs the check
+     * asynchronously without blocking the subscribing thread. Use {@code block()} to wait for completion when needed.
      *
      * @return Mono with a boolean of if a RefreshEvent was published. If refreshConfigurations is currently being run
-     * elsewhere this method will return right away as <b>false</b>.
+     * elsewhere the Mono completes with <b>false</b> without performing another check. Refresh failures are signaled
+     * through the Mono.
      */
     Mono<Boolean> refreshConfigurations();
 

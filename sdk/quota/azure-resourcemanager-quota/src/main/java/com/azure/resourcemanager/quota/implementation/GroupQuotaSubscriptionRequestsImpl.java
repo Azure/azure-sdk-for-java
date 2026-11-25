@@ -46,10 +46,7 @@ public final class GroupQuotaSubscriptionRequestsImpl implements GroupQuotaSubsc
     }
 
     public PagedIterable<GroupQuotaSubscriptionRequestStatus> list(String managementGroupId, String groupQuotaName) {
-        PagedIterable<GroupQuotaSubscriptionRequestStatusInner> inner
-            = this.serviceClient().list(managementGroupId, groupQuotaName);
-        return ResourceManagerUtils.mapPage(inner,
-            inner1 -> new GroupQuotaSubscriptionRequestStatusImpl(inner1, this.manager()));
+        return this.list(managementGroupId, groupQuotaName, Context.NONE);
     }
 
     public PagedIterable<GroupQuotaSubscriptionRequestStatus> list(String managementGroupId, String groupQuotaName,

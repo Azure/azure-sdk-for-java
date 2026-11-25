@@ -125,22 +125,7 @@ public final class GroupQuotaLimitsClientImpl implements GroupQuotaLimitsClient 
             .flatMap(res -> Mono.justOrEmpty(res.getValue()));
     }
 
-    /**
-     * Gets the GroupQuotaLimits for the specified resource provider and location for resource names passed in
-     * $filter=resourceName eq {SKU}.
-     * 
-     * @param managementGroupId The management group ID.
-     * @param groupQuotaName The GroupQuota name. The name should be unique for the provided context tenantId/MgId.
-     * @param resourceProviderName The resource provider name, such as - Microsoft.Compute. Currently only
-     * Microsoft.Compute resource provider supports this API.
-     * @param location The name of the Azure region.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the GroupQuotaLimits for the specified resource provider and location for resource names passed in
-     * $filter=resourceName eq {SKU} along with {@link Response}.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Response<GroupQuotaLimitListInner> listWithResponse(String managementGroupId, String groupQuotaName,
         String resourceProviderName, String location, Context context) {
@@ -149,21 +134,7 @@ public final class GroupQuotaLimitsClientImpl implements GroupQuotaLimitsClient 
             groupQuotaName, resourceProviderName, location, accept, context);
     }
 
-    /**
-     * Gets the GroupQuotaLimits for the specified resource provider and location for resource names passed in
-     * $filter=resourceName eq {SKU}.
-     * 
-     * @param managementGroupId The management group ID.
-     * @param groupQuotaName The GroupQuota name. The name should be unique for the provided context tenantId/MgId.
-     * @param resourceProviderName The resource provider name, such as - Microsoft.Compute. Currently only
-     * Microsoft.Compute resource provider supports this API.
-     * @param location The name of the Azure region.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the GroupQuotaLimits for the specified resource provider and location for resource names passed in
-     * $filter=resourceName eq {SKU}.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public GroupQuotaLimitListInner list(String managementGroupId, String groupQuotaName, String resourceProviderName,
         String location) {

@@ -12,18 +12,18 @@ import org.junit.jupiter.api.Assertions;
 public final class RaiAcsRegoPolicyDefinitionTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
-        RaiAcsRegoPolicyDefinition model
-            = BinaryData.fromString("{\"type\":\"rego\",\"query\":\"r\"}").toObject(RaiAcsRegoPolicyDefinition.class);
+        RaiAcsRegoPolicyDefinition model = BinaryData.fromString("{\"type\":\"rego\",\"query\":\"awjmjsmw\"}")
+            .toObject(RaiAcsRegoPolicyDefinition.class);
         Assertions.assertEquals(RaiAcsPolicyDefinitionType.REGO, model.type());
-        Assertions.assertEquals("r", model.query());
+        Assertions.assertEquals("awjmjsmw", model.query());
     }
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
         RaiAcsRegoPolicyDefinition model
-            = new RaiAcsRegoPolicyDefinition().withType(RaiAcsPolicyDefinitionType.REGO).withQuery("r");
+            = new RaiAcsRegoPolicyDefinition().withType(RaiAcsPolicyDefinitionType.REGO).withQuery("awjmjsmw");
         model = BinaryData.fromObject(model).toObject(RaiAcsRegoPolicyDefinition.class);
         Assertions.assertEquals(RaiAcsPolicyDefinitionType.REGO, model.type());
-        Assertions.assertEquals("r", model.query());
+        Assertions.assertEquals("awjmjsmw", model.query());
     }
 }

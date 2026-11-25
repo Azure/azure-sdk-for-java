@@ -104,18 +104,7 @@ public final class EndpointsClientImpl implements EndpointsClient {
             @HeaderParam("Accept") String accept, Context context);
     }
 
-    /**
-     * Gets a Traffic Manager endpoint.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param profileName The name of the Traffic Manager profile.
-     * @param endpointType The type of the Traffic Manager endpoint.
-     * @param endpointName The name of the Traffic Manager endpoint.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return a Traffic Manager endpoint along with {@link Response} on successful completion of {@link Mono}.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Response<EndpointInner>> getWithResponseAsync(String resourceGroupName, String profileName,
         EndpointTypes endpointType, String endpointName) {
@@ -191,18 +180,7 @@ public final class EndpointsClientImpl implements EndpointsClient {
             resourceGroupName, profileName, endpointType, endpointName, accept, context);
     }
 
-    /**
-     * Gets a Traffic Manager endpoint.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param profileName The name of the Traffic Manager profile.
-     * @param endpointType The type of the Traffic Manager endpoint.
-     * @param endpointName The name of the Traffic Manager endpoint.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return a Traffic Manager endpoint on successful completion of {@link Mono}.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<EndpointInner> getAsync(String resourceGroupName, String profileName, EndpointTypes endpointType,
         String endpointName) {
@@ -210,57 +188,21 @@ public final class EndpointsClientImpl implements EndpointsClient {
             .flatMap(res -> Mono.justOrEmpty(res.getValue()));
     }
 
-    /**
-     * Gets a Traffic Manager endpoint.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param profileName The name of the Traffic Manager profile.
-     * @param endpointType The type of the Traffic Manager endpoint.
-     * @param endpointName The name of the Traffic Manager endpoint.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return a Traffic Manager endpoint along with {@link Response}.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Response<EndpointInner> getWithResponse(String resourceGroupName, String profileName,
         EndpointTypes endpointType, String endpointName, Context context) {
         return getWithResponseAsync(resourceGroupName, profileName, endpointType, endpointName, context).block();
     }
 
-    /**
-     * Gets a Traffic Manager endpoint.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param profileName The name of the Traffic Manager profile.
-     * @param endpointType The type of the Traffic Manager endpoint.
-     * @param endpointName The name of the Traffic Manager endpoint.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return a Traffic Manager endpoint.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public EndpointInner get(String resourceGroupName, String profileName, EndpointTypes endpointType,
         String endpointName) {
         return getWithResponse(resourceGroupName, profileName, endpointType, endpointName, Context.NONE).getValue();
     }
 
-    /**
-     * Create or update a Traffic Manager endpoint.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param profileName The name of the Traffic Manager profile.
-     * @param endpointType The type of the Traffic Manager endpoint.
-     * @param endpointName The name of the Traffic Manager endpoint.
-     * @param parameters The Traffic Manager endpoint parameters supplied to the CreateOrUpdate operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return class representing a Traffic Manager endpoint along with {@link Response} on successful completion of
-     * {@link Mono}.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Response<EndpointInner>> createOrUpdateWithResponseAsync(String resourceGroupName, String profileName,
         EndpointTypes endpointType, String endpointName, EndpointInner parameters) {
@@ -351,19 +293,7 @@ public final class EndpointsClientImpl implements EndpointsClient {
             accept, parameters, context);
     }
 
-    /**
-     * Create or update a Traffic Manager endpoint.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param profileName The name of the Traffic Manager profile.
-     * @param endpointType The type of the Traffic Manager endpoint.
-     * @param endpointName The name of the Traffic Manager endpoint.
-     * @param parameters The Traffic Manager endpoint parameters supplied to the CreateOrUpdate operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return class representing a Traffic Manager endpoint on successful completion of {@link Mono}.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<EndpointInner> createOrUpdateAsync(String resourceGroupName, String profileName,
         EndpointTypes endpointType, String endpointName, EndpointInner parameters) {
@@ -371,20 +301,7 @@ public final class EndpointsClientImpl implements EndpointsClient {
             .flatMap(res -> Mono.justOrEmpty(res.getValue()));
     }
 
-    /**
-     * Create or update a Traffic Manager endpoint.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param profileName The name of the Traffic Manager profile.
-     * @param endpointType The type of the Traffic Manager endpoint.
-     * @param endpointName The name of the Traffic Manager endpoint.
-     * @param parameters The Traffic Manager endpoint parameters supplied to the CreateOrUpdate operation.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return class representing a Traffic Manager endpoint along with {@link Response}.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Response<EndpointInner> createOrUpdateWithResponse(String resourceGroupName, String profileName,
         EndpointTypes endpointType, String endpointName, EndpointInner parameters, Context context) {
@@ -392,19 +309,7 @@ public final class EndpointsClientImpl implements EndpointsClient {
             context).block();
     }
 
-    /**
-     * Create or update a Traffic Manager endpoint.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param profileName The name of the Traffic Manager profile.
-     * @param endpointType The type of the Traffic Manager endpoint.
-     * @param endpointName The name of the Traffic Manager endpoint.
-     * @param parameters The Traffic Manager endpoint parameters supplied to the CreateOrUpdate operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return class representing a Traffic Manager endpoint.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public EndpointInner createOrUpdate(String resourceGroupName, String profileName, EndpointTypes endpointType,
         String endpointName, EndpointInner parameters) {
@@ -412,20 +317,7 @@ public final class EndpointsClientImpl implements EndpointsClient {
             Context.NONE).getValue();
     }
 
-    /**
-     * Update a Traffic Manager endpoint.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param profileName The name of the Traffic Manager profile.
-     * @param endpointType The type of the Traffic Manager endpoint.
-     * @param endpointName The name of the Traffic Manager endpoint.
-     * @param parameters The Traffic Manager endpoint parameters supplied to the Update operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return class representing a Traffic Manager endpoint along with {@link Response} on successful completion of
-     * {@link Mono}.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Response<EndpointInner>> updateWithResponseAsync(String resourceGroupName, String profileName,
         EndpointTypes endpointType, String endpointName, EndpointInner parameters) {
@@ -515,19 +407,7 @@ public final class EndpointsClientImpl implements EndpointsClient {
             resourceGroupName, profileName, endpointType, endpointName, contentType, accept, parameters, context);
     }
 
-    /**
-     * Update a Traffic Manager endpoint.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param profileName The name of the Traffic Manager profile.
-     * @param endpointType The type of the Traffic Manager endpoint.
-     * @param endpointName The name of the Traffic Manager endpoint.
-     * @param parameters The Traffic Manager endpoint parameters supplied to the Update operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return class representing a Traffic Manager endpoint on successful completion of {@link Mono}.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<EndpointInner> updateAsync(String resourceGroupName, String profileName, EndpointTypes endpointType,
         String endpointName, EndpointInner parameters) {
@@ -535,20 +415,7 @@ public final class EndpointsClientImpl implements EndpointsClient {
             .flatMap(res -> Mono.justOrEmpty(res.getValue()));
     }
 
-    /**
-     * Update a Traffic Manager endpoint.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param profileName The name of the Traffic Manager profile.
-     * @param endpointType The type of the Traffic Manager endpoint.
-     * @param endpointName The name of the Traffic Manager endpoint.
-     * @param parameters The Traffic Manager endpoint parameters supplied to the Update operation.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return class representing a Traffic Manager endpoint along with {@link Response}.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Response<EndpointInner> updateWithResponse(String resourceGroupName, String profileName,
         EndpointTypes endpointType, String endpointName, EndpointInner parameters, Context context) {
@@ -556,19 +423,7 @@ public final class EndpointsClientImpl implements EndpointsClient {
             .block();
     }
 
-    /**
-     * Update a Traffic Manager endpoint.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param profileName The name of the Traffic Manager profile.
-     * @param endpointType The type of the Traffic Manager endpoint.
-     * @param endpointName The name of the Traffic Manager endpoint.
-     * @param parameters The Traffic Manager endpoint parameters supplied to the Update operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return class representing a Traffic Manager endpoint.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public EndpointInner update(String resourceGroupName, String profileName, EndpointTypes endpointType,
         String endpointName, EndpointInner parameters) {
@@ -576,19 +431,7 @@ public final class EndpointsClientImpl implements EndpointsClient {
             .getValue();
     }
 
-    /**
-     * Deletes a Traffic Manager endpoint.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param profileName The name of the Traffic Manager profile.
-     * @param endpointType The type of the Traffic Manager endpoint.
-     * @param endpointName The name of the Traffic Manager endpoint.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the result of the request or operation along with {@link Response} on successful completion of
-     * {@link Mono}.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Response<DeleteOperationResultInner>> deleteWithResponseAsync(String resourceGroupName,
         String profileName, EndpointTypes endpointType, String endpointName) {
@@ -665,18 +508,7 @@ public final class EndpointsClientImpl implements EndpointsClient {
             resourceGroupName, profileName, endpointType, endpointName, accept, context);
     }
 
-    /**
-     * Deletes a Traffic Manager endpoint.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param profileName The name of the Traffic Manager profile.
-     * @param endpointType The type of the Traffic Manager endpoint.
-     * @param endpointName The name of the Traffic Manager endpoint.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the result of the request or operation on successful completion of {@link Mono}.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<DeleteOperationResultInner> deleteAsync(String resourceGroupName, String profileName,
         EndpointTypes endpointType, String endpointName) {
@@ -684,37 +516,14 @@ public final class EndpointsClientImpl implements EndpointsClient {
             .flatMap(res -> Mono.justOrEmpty(res.getValue()));
     }
 
-    /**
-     * Deletes a Traffic Manager endpoint.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param profileName The name of the Traffic Manager profile.
-     * @param endpointType The type of the Traffic Manager endpoint.
-     * @param endpointName The name of the Traffic Manager endpoint.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the result of the request or operation along with {@link Response}.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Response<DeleteOperationResultInner> deleteWithResponse(String resourceGroupName, String profileName,
         EndpointTypes endpointType, String endpointName, Context context) {
         return deleteWithResponseAsync(resourceGroupName, profileName, endpointType, endpointName, context).block();
     }
 
-    /**
-     * Deletes a Traffic Manager endpoint.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param profileName The name of the Traffic Manager profile.
-     * @param endpointType The type of the Traffic Manager endpoint.
-     * @param endpointName The name of the Traffic Manager endpoint.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the result of the request or operation.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public DeleteOperationResultInner delete(String resourceGroupName, String profileName, EndpointTypes endpointType,
         String endpointName) {

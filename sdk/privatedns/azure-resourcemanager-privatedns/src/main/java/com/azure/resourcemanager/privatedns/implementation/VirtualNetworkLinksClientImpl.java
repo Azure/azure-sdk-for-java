@@ -135,18 +135,7 @@ public final class VirtualNetworkLinksClientImpl implements VirtualNetworkLinksC
             @HeaderParam("Accept") String accept, Context context);
     }
 
-    /**
-     * Gets a virtual network link to the specified Private DNS zone.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param privateZoneName The name of the Private DNS zone (without a terminating dot).
-     * @param virtualNetworkLinkName The name of the virtual network link.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return a virtual network link to the specified Private DNS zone along with {@link Response} on successful
-     * completion of {@link Mono}.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Response<VirtualNetworkLinkInner>> getWithResponseAsync(String resourceGroupName,
         String privateZoneName, String virtualNetworkLinkName) {
@@ -220,17 +209,7 @@ public final class VirtualNetworkLinksClientImpl implements VirtualNetworkLinksC
             resourceGroupName, privateZoneName, virtualNetworkLinkName, accept, context);
     }
 
-    /**
-     * Gets a virtual network link to the specified Private DNS zone.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param privateZoneName The name of the Private DNS zone (without a terminating dot).
-     * @param virtualNetworkLinkName The name of the virtual network link.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return a virtual network link to the specified Private DNS zone on successful completion of {@link Mono}.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<VirtualNetworkLinkInner> getAsync(String resourceGroupName, String privateZoneName,
         String virtualNetworkLinkName) {
@@ -238,59 +217,21 @@ public final class VirtualNetworkLinksClientImpl implements VirtualNetworkLinksC
             .flatMap(res -> Mono.justOrEmpty(res.getValue()));
     }
 
-    /**
-     * Gets a virtual network link to the specified Private DNS zone.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param privateZoneName The name of the Private DNS zone (without a terminating dot).
-     * @param virtualNetworkLinkName The name of the virtual network link.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return a virtual network link to the specified Private DNS zone along with {@link Response}.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Response<VirtualNetworkLinkInner> getWithResponse(String resourceGroupName, String privateZoneName,
         String virtualNetworkLinkName, Context context) {
         return getWithResponseAsync(resourceGroupName, privateZoneName, virtualNetworkLinkName, context).block();
     }
 
-    /**
-     * Gets a virtual network link to the specified Private DNS zone.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param privateZoneName The name of the Private DNS zone (without a terminating dot).
-     * @param virtualNetworkLinkName The name of the virtual network link.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return a virtual network link to the specified Private DNS zone.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public VirtualNetworkLinkInner get(String resourceGroupName, String privateZoneName,
         String virtualNetworkLinkName) {
         return getWithResponse(resourceGroupName, privateZoneName, virtualNetworkLinkName, Context.NONE).getValue();
     }
 
-    /**
-     * Creates or updates a virtual network link to the specified Private DNS zone.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param privateZoneName The name of the Private DNS zone (without a terminating dot).
-     * @param virtualNetworkLinkName The name of the virtual network link.
-     * @param parameters Parameters supplied to the CreateOrUpdate operation.
-     * @param ifMatch The ETag of the virtual network link to the Private DNS zone. Omit this value to always overwrite
-     * the current virtual network link. Specify the last-seen ETag value to prevent accidentally overwriting any
-     * concurrent changes.
-     * @param ifNoneMatch Set to '*' to allow a new virtual network link to the Private DNS zone to be created, but to
-     * prevent updating an existing link. Other values will be ignored.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return describes a link to virtual network for a Private DNS zone along with {@link Response} on successful
-     * completion of {@link Mono}.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Response<Flux<ByteBuffer>>> createOrUpdateWithResponseAsync(String resourceGroupName,
         String privateZoneName, String virtualNetworkLinkName, VirtualNetworkLinkInner parameters, String ifMatch,
@@ -385,23 +326,7 @@ public final class VirtualNetworkLinksClientImpl implements VirtualNetworkLinksC
             ifNoneMatch, contentType, accept, parameters, context);
     }
 
-    /**
-     * Creates or updates a virtual network link to the specified Private DNS zone.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param privateZoneName The name of the Private DNS zone (without a terminating dot).
-     * @param virtualNetworkLinkName The name of the virtual network link.
-     * @param parameters Parameters supplied to the CreateOrUpdate operation.
-     * @param ifMatch The ETag of the virtual network link to the Private DNS zone. Omit this value to always overwrite
-     * the current virtual network link. Specify the last-seen ETag value to prevent accidentally overwriting any
-     * concurrent changes.
-     * @param ifNoneMatch Set to '*' to allow a new virtual network link to the Private DNS zone to be created, but to
-     * prevent updating an existing link. Other values will be ignored.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the {@link PollerFlux} for polling of describes a link to virtual network for a Private DNS zone.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public PollerFlux<PollResult<VirtualNetworkLinkInner>, VirtualNetworkLinkInner> beginCreateOrUpdateAsync(
         String resourceGroupName, String privateZoneName, String virtualNetworkLinkName,
@@ -413,18 +338,7 @@ public final class VirtualNetworkLinksClientImpl implements VirtualNetworkLinksC
             this.client.getContext());
     }
 
-    /**
-     * Creates or updates a virtual network link to the specified Private DNS zone.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param privateZoneName The name of the Private DNS zone (without a terminating dot).
-     * @param virtualNetworkLinkName The name of the virtual network link.
-     * @param parameters Parameters supplied to the CreateOrUpdate operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the {@link PollerFlux} for polling of describes a link to virtual network for a Private DNS zone.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public PollerFlux<PollResult<VirtualNetworkLinkInner>, VirtualNetworkLinkInner> beginCreateOrUpdateAsync(
         String resourceGroupName, String privateZoneName, String virtualNetworkLinkName,
@@ -467,18 +381,7 @@ public final class VirtualNetworkLinksClientImpl implements VirtualNetworkLinksC
             this.client.getHttpPipeline(), VirtualNetworkLinkInner.class, VirtualNetworkLinkInner.class, context);
     }
 
-    /**
-     * Creates or updates a virtual network link to the specified Private DNS zone.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param privateZoneName The name of the Private DNS zone (without a terminating dot).
-     * @param virtualNetworkLinkName The name of the virtual network link.
-     * @param parameters Parameters supplied to the CreateOrUpdate operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the {@link SyncPoller} for polling of describes a link to virtual network for a Private DNS zone.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public SyncPoller<PollResult<VirtualNetworkLinkInner>, VirtualNetworkLinkInner> beginCreateOrUpdate(
         String resourceGroupName, String privateZoneName, String virtualNetworkLinkName,
@@ -491,24 +394,7 @@ public final class VirtualNetworkLinksClientImpl implements VirtualNetworkLinksC
             .getSyncPoller();
     }
 
-    /**
-     * Creates or updates a virtual network link to the specified Private DNS zone.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param privateZoneName The name of the Private DNS zone (without a terminating dot).
-     * @param virtualNetworkLinkName The name of the virtual network link.
-     * @param parameters Parameters supplied to the CreateOrUpdate operation.
-     * @param ifMatch The ETag of the virtual network link to the Private DNS zone. Omit this value to always overwrite
-     * the current virtual network link. Specify the last-seen ETag value to prevent accidentally overwriting any
-     * concurrent changes.
-     * @param ifNoneMatch Set to '*' to allow a new virtual network link to the Private DNS zone to be created, but to
-     * prevent updating an existing link. Other values will be ignored.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the {@link SyncPoller} for polling of describes a link to virtual network for a Private DNS zone.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public SyncPoller<PollResult<VirtualNetworkLinkInner>, VirtualNetworkLinkInner> beginCreateOrUpdate(
         String resourceGroupName, String privateZoneName, String virtualNetworkLinkName,
@@ -519,23 +405,7 @@ public final class VirtualNetworkLinksClientImpl implements VirtualNetworkLinksC
             .getSyncPoller();
     }
 
-    /**
-     * Creates or updates a virtual network link to the specified Private DNS zone.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param privateZoneName The name of the Private DNS zone (without a terminating dot).
-     * @param virtualNetworkLinkName The name of the virtual network link.
-     * @param parameters Parameters supplied to the CreateOrUpdate operation.
-     * @param ifMatch The ETag of the virtual network link to the Private DNS zone. Omit this value to always overwrite
-     * the current virtual network link. Specify the last-seen ETag value to prevent accidentally overwriting any
-     * concurrent changes.
-     * @param ifNoneMatch Set to '*' to allow a new virtual network link to the Private DNS zone to be created, but to
-     * prevent updating an existing link. Other values will be ignored.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return describes a link to virtual network for a Private DNS zone on successful completion of {@link Mono}.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<VirtualNetworkLinkInner> createOrUpdateAsync(String resourceGroupName, String privateZoneName,
         String virtualNetworkLinkName, VirtualNetworkLinkInner parameters, String ifMatch, String ifNoneMatch) {
@@ -543,18 +413,7 @@ public final class VirtualNetworkLinksClientImpl implements VirtualNetworkLinksC
             ifNoneMatch).last().flatMap(this.client::getLroFinalResultOrError);
     }
 
-    /**
-     * Creates or updates a virtual network link to the specified Private DNS zone.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param privateZoneName The name of the Private DNS zone (without a terminating dot).
-     * @param virtualNetworkLinkName The name of the virtual network link.
-     * @param parameters Parameters supplied to the CreateOrUpdate operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return describes a link to virtual network for a Private DNS zone on successful completion of {@link Mono}.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<VirtualNetworkLinkInner> createOrUpdateAsync(String resourceGroupName, String privateZoneName,
         String virtualNetworkLinkName, VirtualNetworkLinkInner parameters) {
@@ -590,18 +449,7 @@ public final class VirtualNetworkLinksClientImpl implements VirtualNetworkLinksC
             ifNoneMatch, context).last().flatMap(this.client::getLroFinalResultOrError);
     }
 
-    /**
-     * Creates or updates a virtual network link to the specified Private DNS zone.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param privateZoneName The name of the Private DNS zone (without a terminating dot).
-     * @param virtualNetworkLinkName The name of the virtual network link.
-     * @param parameters Parameters supplied to the CreateOrUpdate operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return describes a link to virtual network for a Private DNS zone.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public VirtualNetworkLinkInner createOrUpdate(String resourceGroupName, String privateZoneName,
         String virtualNetworkLinkName, VirtualNetworkLinkInner parameters) {
@@ -611,24 +459,7 @@ public final class VirtualNetworkLinksClientImpl implements VirtualNetworkLinksC
             ifNoneMatch).block();
     }
 
-    /**
-     * Creates or updates a virtual network link to the specified Private DNS zone.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param privateZoneName The name of the Private DNS zone (without a terminating dot).
-     * @param virtualNetworkLinkName The name of the virtual network link.
-     * @param parameters Parameters supplied to the CreateOrUpdate operation.
-     * @param ifMatch The ETag of the virtual network link to the Private DNS zone. Omit this value to always overwrite
-     * the current virtual network link. Specify the last-seen ETag value to prevent accidentally overwriting any
-     * concurrent changes.
-     * @param ifNoneMatch Set to '*' to allow a new virtual network link to the Private DNS zone to be created, but to
-     * prevent updating an existing link. Other values will be ignored.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return describes a link to virtual network for a Private DNS zone.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public VirtualNetworkLinkInner createOrUpdate(String resourceGroupName, String privateZoneName,
         String virtualNetworkLinkName, VirtualNetworkLinkInner parameters, String ifMatch, String ifNoneMatch,
@@ -637,22 +468,7 @@ public final class VirtualNetworkLinksClientImpl implements VirtualNetworkLinksC
             ifNoneMatch, context).block();
     }
 
-    /**
-     * Updates a virtual network link to the specified Private DNS zone.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param privateZoneName The name of the Private DNS zone (without a terminating dot).
-     * @param virtualNetworkLinkName The name of the virtual network link.
-     * @param parameters Parameters supplied to the Update operation.
-     * @param ifMatch The ETag of the virtual network link to the Private DNS zone. Omit this value to always overwrite
-     * the current virtual network link. Specify the last-seen ETag value to prevent accidentally overwriting any
-     * concurrent changes.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return describes a link to virtual network for a Private DNS zone along with {@link Response} on successful
-     * completion of {@link Mono}.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Response<Flux<ByteBuffer>>> updateWithResponseAsync(String resourceGroupName, String privateZoneName,
         String virtualNetworkLinkName, VirtualNetworkLinkInner parameters, String ifMatch) {
@@ -743,21 +559,7 @@ public final class VirtualNetworkLinksClientImpl implements VirtualNetworkLinksC
             context);
     }
 
-    /**
-     * Updates a virtual network link to the specified Private DNS zone.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param privateZoneName The name of the Private DNS zone (without a terminating dot).
-     * @param virtualNetworkLinkName The name of the virtual network link.
-     * @param parameters Parameters supplied to the Update operation.
-     * @param ifMatch The ETag of the virtual network link to the Private DNS zone. Omit this value to always overwrite
-     * the current virtual network link. Specify the last-seen ETag value to prevent accidentally overwriting any
-     * concurrent changes.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the {@link PollerFlux} for polling of describes a link to virtual network for a Private DNS zone.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public PollerFlux<PollResult<VirtualNetworkLinkInner>, VirtualNetworkLinkInner> beginUpdateAsync(
         String resourceGroupName, String privateZoneName, String virtualNetworkLinkName,
@@ -769,18 +571,7 @@ public final class VirtualNetworkLinksClientImpl implements VirtualNetworkLinksC
             this.client.getContext());
     }
 
-    /**
-     * Updates a virtual network link to the specified Private DNS zone.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param privateZoneName The name of the Private DNS zone (without a terminating dot).
-     * @param virtualNetworkLinkName The name of the virtual network link.
-     * @param parameters Parameters supplied to the Update operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the {@link PollerFlux} for polling of describes a link to virtual network for a Private DNS zone.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public PollerFlux<PollResult<VirtualNetworkLinkInner>, VirtualNetworkLinkInner> beginUpdateAsync(
         String resourceGroupName, String privateZoneName, String virtualNetworkLinkName,
@@ -820,18 +611,7 @@ public final class VirtualNetworkLinksClientImpl implements VirtualNetworkLinksC
             this.client.getHttpPipeline(), VirtualNetworkLinkInner.class, VirtualNetworkLinkInner.class, context);
     }
 
-    /**
-     * Updates a virtual network link to the specified Private DNS zone.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param privateZoneName The name of the Private DNS zone (without a terminating dot).
-     * @param virtualNetworkLinkName The name of the virtual network link.
-     * @param parameters Parameters supplied to the Update operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the {@link SyncPoller} for polling of describes a link to virtual network for a Private DNS zone.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public SyncPoller<PollResult<VirtualNetworkLinkInner>, VirtualNetworkLinkInner> beginUpdate(
         String resourceGroupName, String privateZoneName, String virtualNetworkLinkName,
@@ -841,22 +621,7 @@ public final class VirtualNetworkLinksClientImpl implements VirtualNetworkLinksC
             .getSyncPoller();
     }
 
-    /**
-     * Updates a virtual network link to the specified Private DNS zone.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param privateZoneName The name of the Private DNS zone (without a terminating dot).
-     * @param virtualNetworkLinkName The name of the virtual network link.
-     * @param parameters Parameters supplied to the Update operation.
-     * @param ifMatch The ETag of the virtual network link to the Private DNS zone. Omit this value to always overwrite
-     * the current virtual network link. Specify the last-seen ETag value to prevent accidentally overwriting any
-     * concurrent changes.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the {@link SyncPoller} for polling of describes a link to virtual network for a Private DNS zone.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public SyncPoller<PollResult<VirtualNetworkLinkInner>, VirtualNetworkLinkInner> beginUpdate(
         String resourceGroupName, String privateZoneName, String virtualNetworkLinkName,
@@ -866,21 +631,7 @@ public final class VirtualNetworkLinksClientImpl implements VirtualNetworkLinksC
             .getSyncPoller();
     }
 
-    /**
-     * Updates a virtual network link to the specified Private DNS zone.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param privateZoneName The name of the Private DNS zone (without a terminating dot).
-     * @param virtualNetworkLinkName The name of the virtual network link.
-     * @param parameters Parameters supplied to the Update operation.
-     * @param ifMatch The ETag of the virtual network link to the Private DNS zone. Omit this value to always overwrite
-     * the current virtual network link. Specify the last-seen ETag value to prevent accidentally overwriting any
-     * concurrent changes.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return describes a link to virtual network for a Private DNS zone on successful completion of {@link Mono}.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<VirtualNetworkLinkInner> updateAsync(String resourceGroupName, String privateZoneName,
         String virtualNetworkLinkName, VirtualNetworkLinkInner parameters, String ifMatch) {
@@ -888,18 +639,7 @@ public final class VirtualNetworkLinksClientImpl implements VirtualNetworkLinksC
             .flatMap(this.client::getLroFinalResultOrError);
     }
 
-    /**
-     * Updates a virtual network link to the specified Private DNS zone.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param privateZoneName The name of the Private DNS zone (without a terminating dot).
-     * @param virtualNetworkLinkName The name of the virtual network link.
-     * @param parameters Parameters supplied to the Update operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return describes a link to virtual network for a Private DNS zone on successful completion of {@link Mono}.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<VirtualNetworkLinkInner> updateAsync(String resourceGroupName, String privateZoneName,
         String virtualNetworkLinkName, VirtualNetworkLinkInner parameters) {
@@ -931,18 +671,7 @@ public final class VirtualNetworkLinksClientImpl implements VirtualNetworkLinksC
             context).last().flatMap(this.client::getLroFinalResultOrError);
     }
 
-    /**
-     * Updates a virtual network link to the specified Private DNS zone.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param privateZoneName The name of the Private DNS zone (without a terminating dot).
-     * @param virtualNetworkLinkName The name of the virtual network link.
-     * @param parameters Parameters supplied to the Update operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return describes a link to virtual network for a Private DNS zone.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public VirtualNetworkLinkInner update(String resourceGroupName, String privateZoneName,
         String virtualNetworkLinkName, VirtualNetworkLinkInner parameters) {
@@ -950,22 +679,7 @@ public final class VirtualNetworkLinksClientImpl implements VirtualNetworkLinksC
         return updateAsync(resourceGroupName, privateZoneName, virtualNetworkLinkName, parameters, ifMatch).block();
     }
 
-    /**
-     * Updates a virtual network link to the specified Private DNS zone.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param privateZoneName The name of the Private DNS zone (without a terminating dot).
-     * @param virtualNetworkLinkName The name of the virtual network link.
-     * @param parameters Parameters supplied to the Update operation.
-     * @param ifMatch The ETag of the virtual network link to the Private DNS zone. Omit this value to always overwrite
-     * the current virtual network link. Specify the last-seen ETag value to prevent accidentally overwriting any
-     * concurrent changes.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return describes a link to virtual network for a Private DNS zone.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public VirtualNetworkLinkInner update(String resourceGroupName, String privateZoneName,
         String virtualNetworkLinkName, VirtualNetworkLinkInner parameters, String ifMatch, Context context) {
@@ -973,21 +687,7 @@ public final class VirtualNetworkLinksClientImpl implements VirtualNetworkLinksC
             .block();
     }
 
-    /**
-     * Deletes a virtual network link to the specified Private DNS zone. WARNING: In case of a registration virtual
-     * network, all auto-registered DNS records in the zone for the virtual network will also be deleted. This operation
-     * cannot be undone.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param privateZoneName The name of the Private DNS zone (without a terminating dot).
-     * @param virtualNetworkLinkName The name of the virtual network link.
-     * @param ifMatch The ETag of the virtual network link to the Private DNS zone. Omit this value to always delete the
-     * current zone. Specify the last-seen ETag value to prevent accidentally deleting any concurrent changes.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the {@link Response} on successful completion of {@link Mono}.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Response<Flux<ByteBuffer>>> deleteWithResponseAsync(String resourceGroupName, String privateZoneName,
         String virtualNetworkLinkName, String ifMatch) {
@@ -1062,21 +762,7 @@ public final class VirtualNetworkLinksClientImpl implements VirtualNetworkLinksC
             resourceGroupName, privateZoneName, virtualNetworkLinkName, ifMatch, context);
     }
 
-    /**
-     * Deletes a virtual network link to the specified Private DNS zone. WARNING: In case of a registration virtual
-     * network, all auto-registered DNS records in the zone for the virtual network will also be deleted. This operation
-     * cannot be undone.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param privateZoneName The name of the Private DNS zone (without a terminating dot).
-     * @param virtualNetworkLinkName The name of the virtual network link.
-     * @param ifMatch The ETag of the virtual network link to the Private DNS zone. Omit this value to always delete the
-     * current zone. Specify the last-seen ETag value to prevent accidentally deleting any concurrent changes.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the {@link PollerFlux} for polling of long-running operation.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public PollerFlux<PollResult<Void>, Void> beginDeleteAsync(String resourceGroupName, String privateZoneName,
         String virtualNetworkLinkName, String ifMatch) {
@@ -1086,19 +772,7 @@ public final class VirtualNetworkLinksClientImpl implements VirtualNetworkLinksC
             this.client.getContext());
     }
 
-    /**
-     * Deletes a virtual network link to the specified Private DNS zone. WARNING: In case of a registration virtual
-     * network, all auto-registered DNS records in the zone for the virtual network will also be deleted. This operation
-     * cannot be undone.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param privateZoneName The name of the Private DNS zone (without a terminating dot).
-     * @param virtualNetworkLinkName The name of the virtual network link.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the {@link PollerFlux} for polling of long-running operation.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public PollerFlux<PollResult<Void>, Void> beginDeleteAsync(String resourceGroupName, String privateZoneName,
         String virtualNetworkLinkName) {
@@ -1135,19 +809,7 @@ public final class VirtualNetworkLinksClientImpl implements VirtualNetworkLinksC
             context);
     }
 
-    /**
-     * Deletes a virtual network link to the specified Private DNS zone. WARNING: In case of a registration virtual
-     * network, all auto-registered DNS records in the zone for the virtual network will also be deleted. This operation
-     * cannot be undone.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param privateZoneName The name of the Private DNS zone (without a terminating dot).
-     * @param virtualNetworkLinkName The name of the virtual network link.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the {@link SyncPoller} for polling of long-running operation.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public SyncPoller<PollResult<Void>, Void> beginDelete(String resourceGroupName, String privateZoneName,
         String virtualNetworkLinkName) {
@@ -1156,22 +818,7 @@ public final class VirtualNetworkLinksClientImpl implements VirtualNetworkLinksC
             .getSyncPoller();
     }
 
-    /**
-     * Deletes a virtual network link to the specified Private DNS zone. WARNING: In case of a registration virtual
-     * network, all auto-registered DNS records in the zone for the virtual network will also be deleted. This operation
-     * cannot be undone.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param privateZoneName The name of the Private DNS zone (without a terminating dot).
-     * @param virtualNetworkLinkName The name of the virtual network link.
-     * @param ifMatch The ETag of the virtual network link to the Private DNS zone. Omit this value to always delete the
-     * current zone. Specify the last-seen ETag value to prevent accidentally deleting any concurrent changes.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the {@link SyncPoller} for polling of long-running operation.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public SyncPoller<PollResult<Void>, Void> beginDelete(String resourceGroupName, String privateZoneName,
         String virtualNetworkLinkName, String ifMatch, Context context) {
@@ -1179,21 +826,7 @@ public final class VirtualNetworkLinksClientImpl implements VirtualNetworkLinksC
             .getSyncPoller();
     }
 
-    /**
-     * Deletes a virtual network link to the specified Private DNS zone. WARNING: In case of a registration virtual
-     * network, all auto-registered DNS records in the zone for the virtual network will also be deleted. This operation
-     * cannot be undone.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param privateZoneName The name of the Private DNS zone (without a terminating dot).
-     * @param virtualNetworkLinkName The name of the virtual network link.
-     * @param ifMatch The ETag of the virtual network link to the Private DNS zone. Omit this value to always delete the
-     * current zone. Specify the last-seen ETag value to prevent accidentally deleting any concurrent changes.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return A {@link Mono} that completes when a successful response is received.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Void> deleteAsync(String resourceGroupName, String privateZoneName, String virtualNetworkLinkName,
         String ifMatch) {
@@ -1201,19 +834,7 @@ public final class VirtualNetworkLinksClientImpl implements VirtualNetworkLinksC
             .flatMap(this.client::getLroFinalResultOrError);
     }
 
-    /**
-     * Deletes a virtual network link to the specified Private DNS zone. WARNING: In case of a registration virtual
-     * network, all auto-registered DNS records in the zone for the virtual network will also be deleted. This operation
-     * cannot be undone.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param privateZoneName The name of the Private DNS zone (without a terminating dot).
-     * @param virtualNetworkLinkName The name of the virtual network link.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return A {@link Mono} that completes when a successful response is received.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Void> deleteAsync(String resourceGroupName, String privateZoneName, String virtualNetworkLinkName) {
         final String ifMatch = null;
@@ -1244,39 +865,14 @@ public final class VirtualNetworkLinksClientImpl implements VirtualNetworkLinksC
             .flatMap(this.client::getLroFinalResultOrError);
     }
 
-    /**
-     * Deletes a virtual network link to the specified Private DNS zone. WARNING: In case of a registration virtual
-     * network, all auto-registered DNS records in the zone for the virtual network will also be deleted. This operation
-     * cannot be undone.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param privateZoneName The name of the Private DNS zone (without a terminating dot).
-     * @param virtualNetworkLinkName The name of the virtual network link.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public void delete(String resourceGroupName, String privateZoneName, String virtualNetworkLinkName) {
         final String ifMatch = null;
         deleteAsync(resourceGroupName, privateZoneName, virtualNetworkLinkName, ifMatch).block();
     }
 
-    /**
-     * Deletes a virtual network link to the specified Private DNS zone. WARNING: In case of a registration virtual
-     * network, all auto-registered DNS records in the zone for the virtual network will also be deleted. This operation
-     * cannot be undone.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param privateZoneName The name of the Private DNS zone (without a terminating dot).
-     * @param virtualNetworkLinkName The name of the virtual network link.
-     * @param ifMatch The ETag of the virtual network link to the Private DNS zone. Omit this value to always delete the
-     * current zone. Specify the last-seen ETag value to prevent accidentally deleting any concurrent changes.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public void delete(String resourceGroupName, String privateZoneName, String virtualNetworkLinkName, String ifMatch,
         Context context) {
@@ -1366,34 +962,14 @@ public final class VirtualNetworkLinksClientImpl implements VirtualNetworkLinksC
                 res.getValue().value(), res.getValue().nextLink(), null));
     }
 
-    /**
-     * Lists the virtual network links to the specified Private DNS zone.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param privateZoneName The name of the Private DNS zone (without a terminating dot).
-     * @param top The maximum number of virtual network links to return. If not specified, returns up to 100 virtual
-     * network links.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the response of a VirtualNetworkLink list operation as paginated response with {@link PagedFlux}.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.COLLECTION)
     public PagedFlux<VirtualNetworkLinkInner> listAsync(String resourceGroupName, String privateZoneName, Integer top) {
         return new PagedFlux<>(() -> listSinglePageAsync(resourceGroupName, privateZoneName, top),
             nextLink -> listNextSinglePageAsync(nextLink));
     }
 
-    /**
-     * Lists the virtual network links to the specified Private DNS zone.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param privateZoneName The name of the Private DNS zone (without a terminating dot).
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the response of a VirtualNetworkLink list operation as paginated response with {@link PagedFlux}.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.COLLECTION)
     public PagedFlux<VirtualNetworkLinkInner> listAsync(String resourceGroupName, String privateZoneName) {
         final Integer top = null;
@@ -1421,35 +997,14 @@ public final class VirtualNetworkLinksClientImpl implements VirtualNetworkLinksC
             nextLink -> listNextSinglePageAsync(nextLink, context));
     }
 
-    /**
-     * Lists the virtual network links to the specified Private DNS zone.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param privateZoneName The name of the Private DNS zone (without a terminating dot).
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the response of a VirtualNetworkLink list operation as paginated response with {@link PagedIterable}.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.COLLECTION)
     public PagedIterable<VirtualNetworkLinkInner> list(String resourceGroupName, String privateZoneName) {
         final Integer top = null;
         return new PagedIterable<>(listAsync(resourceGroupName, privateZoneName, top));
     }
 
-    /**
-     * Lists the virtual network links to the specified Private DNS zone.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param privateZoneName The name of the Private DNS zone (without a terminating dot).
-     * @param top The maximum number of virtual network links to return. If not specified, returns up to 100 virtual
-     * network links.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the response of a VirtualNetworkLink list operation as paginated response with {@link PagedIterable}.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.COLLECTION)
     public PagedIterable<VirtualNetworkLinkInner> list(String resourceGroupName, String privateZoneName, Integer top,
         Context context) {

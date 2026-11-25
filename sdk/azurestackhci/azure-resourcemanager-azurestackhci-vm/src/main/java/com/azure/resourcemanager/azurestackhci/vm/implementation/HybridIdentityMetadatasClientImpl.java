@@ -147,31 +147,14 @@ public final class HybridIdentityMetadatasClientImpl implements HybridIdentityMe
         return getWithResponseAsync(resourceUri).flatMap(res -> Mono.justOrEmpty(res.getValue()));
     }
 
-    /**
-     * Implements HybridIdentityMetadata GET method.
-     * 
-     * @param resourceUri The fully qualified Azure Resource manager identifier of the resource.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return defines the HybridIdentityMetadata along with {@link Response}.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Response<HybridIdentityMetadataInner> getWithResponse(String resourceUri, Context context) {
         final String accept = "application/json";
         return service.getSync(this.client.getEndpoint(), this.client.getApiVersion(), resourceUri, accept, context);
     }
 
-    /**
-     * Implements HybridIdentityMetadata GET method.
-     * 
-     * @param resourceUri The fully qualified Azure Resource manager identifier of the resource.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return defines the HybridIdentityMetadata.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public HybridIdentityMetadataInner get(String resourceUri) {
         return getWithResponse(resourceUri, Context.NONE).getValue();
@@ -225,11 +208,7 @@ public final class HybridIdentityMetadatasClientImpl implements HybridIdentityMe
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private PagedResponse<HybridIdentityMetadataInner> listByVirtualMachineInstanceSinglePage(String resourceUri) {
-        final String accept = "application/json";
-        Response<HybridIdentityMetadataListResult> res = service.listByVirtualMachineInstanceSync(
-            this.client.getEndpoint(), this.client.getApiVersion(), resourceUri, accept, Context.NONE);
-        return new PagedResponseBase<>(res.getRequest(), res.getStatusCode(), res.getHeaders(), res.getValue().value(),
-            res.getValue().nextLink(), null);
+        return listByVirtualMachineInstanceSinglePage(resourceUri, Context.NONE);
     }
 
     /**
@@ -252,31 +231,13 @@ public final class HybridIdentityMetadatasClientImpl implements HybridIdentityMe
             res.getValue().nextLink(), null);
     }
 
-    /**
-     * Returns the list of HybridIdentityMetadata of the given vm.
-     * 
-     * @param resourceUri The fully qualified Azure Resource manager identifier of the resource.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the response of a HybridIdentityMetadata list operation as paginated response with {@link PagedIterable}.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.COLLECTION)
     public PagedIterable<HybridIdentityMetadataInner> listByVirtualMachineInstance(String resourceUri) {
-        return new PagedIterable<>(() -> listByVirtualMachineInstanceSinglePage(resourceUri),
-            nextLink -> listByVirtualMachineInstanceNextSinglePage(nextLink));
+        return listByVirtualMachineInstance(resourceUri, Context.NONE);
     }
 
-    /**
-     * Returns the list of HybridIdentityMetadata of the given vm.
-     * 
-     * @param resourceUri The fully qualified Azure Resource manager identifier of the resource.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the response of a HybridIdentityMetadata list operation as paginated response with {@link PagedIterable}.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.COLLECTION)
     public PagedIterable<HybridIdentityMetadataInner> listByVirtualMachineInstance(String resourceUri,
         Context context) {
@@ -316,11 +277,7 @@ public final class HybridIdentityMetadatasClientImpl implements HybridIdentityMe
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private PagedResponse<HybridIdentityMetadataInner> listByVirtualMachineInstanceNextSinglePage(String nextLink) {
-        final String accept = "application/json";
-        Response<HybridIdentityMetadataListResult> res
-            = service.listByVirtualMachineInstanceNextSync(nextLink, this.client.getEndpoint(), accept, Context.NONE);
-        return new PagedResponseBase<>(res.getRequest(), res.getStatusCode(), res.getHeaders(), res.getValue().value(),
-            res.getValue().nextLink(), null);
+        return listByVirtualMachineInstanceNextSinglePage(nextLink, Context.NONE);
     }
 
     /**

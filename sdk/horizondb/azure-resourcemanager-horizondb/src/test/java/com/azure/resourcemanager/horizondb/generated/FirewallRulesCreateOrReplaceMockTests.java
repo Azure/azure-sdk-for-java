@@ -22,7 +22,7 @@ public final class FirewallRulesCreateOrReplaceMockTests {
     @Test
     public void testCreateOrReplace() throws Exception {
         String responseStr
-            = "{\"properties\":{\"startIpAddress\":\"iml\",\"endIpAddress\":\"oljxkcgx\",\"description\":\"xsffgcviz\",\"provisioningState\":\"Succeeded\"},\"id\":\"l\",\"name\":\"w\",\"type\":\"youpfgfbkj\"}";
+            = "{\"properties\":{\"startIpAddress\":\"qvldspastjbkkd\",\"endIpAddress\":\"flvestmjlxrrilo\",\"description\":\"peewchpxlkt\",\"provisioningState\":\"Succeeded\"},\"id\":\"iycslevuf\",\"name\":\"ztcktyh\",\"type\":\"tqedcgzulwm\"}";
 
         HttpClient httpClient
             = response -> Mono.just(new MockHttpResponse(response, 200, responseStr.getBytes(StandardCharsets.UTF_8)));
@@ -32,15 +32,15 @@ public final class FirewallRulesCreateOrReplaceMockTests {
                 new AzureProfile("", "", AzureCloud.AZURE_PUBLIC_CLOUD));
 
         FirewallRule response = manager.firewallRules()
-            .define("vcimpev")
-            .withExistingPool("qonmacj", "k", "izsh")
-            .withProperties(new FirewallRuleProperties().withStartIpAddress("mblrrilbywd")
-                .withEndIpAddress("smiccwrwfscj")
-                .withDescription("ynszquji"))
+            .define("uajlyj")
+            .withExistingPool("y", "pgogtqxepny", "b")
+            .withProperties(new FirewallRuleProperties().withStartIpAddress("vofqzhvfc")
+                .withEndIpAddress("byfmowuxr")
+                .withDescription("pvdwxf"))
             .create();
 
-        Assertions.assertEquals("iml", response.properties().startIpAddress());
-        Assertions.assertEquals("oljxkcgx", response.properties().endIpAddress());
-        Assertions.assertEquals("xsffgcviz", response.properties().description());
+        Assertions.assertEquals("qvldspastjbkkd", response.properties().startIpAddress());
+        Assertions.assertEquals("flvestmjlxrrilo", response.properties().endIpAddress());
+        Assertions.assertEquals("peewchpxlkt", response.properties().description());
     }
 }

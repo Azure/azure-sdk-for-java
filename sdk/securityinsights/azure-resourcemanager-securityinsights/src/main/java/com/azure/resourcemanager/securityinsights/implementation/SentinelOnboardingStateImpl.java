@@ -18,6 +18,15 @@ public final class SentinelOnboardingStateImpl implements SentinelOnboardingStat
         com.azure.resourcemanager.securityinsights.SecurityInsightsManager serviceManager) {
         this.innerObject = innerObject;
         this.serviceManager = serviceManager;
+        this.resourceGroupName = ResourceManagerUtils.getValueFromIdByParameterName(innerObject.id(),
+            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.OperationalInsights/workspaces/{workspaceName}/providers/Microsoft.SecurityInsights/onboardingStates/{sentinelOnboardingStateName}",
+            "resourceGroupName");
+        this.workspaceName = ResourceManagerUtils.getValueFromIdByParameterName(innerObject.id(),
+            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.OperationalInsights/workspaces/{workspaceName}/providers/Microsoft.SecurityInsights/onboardingStates/{sentinelOnboardingStateName}",
+            "workspaceName");
+        this.sentinelOnboardingStateName = ResourceManagerUtils.getValueFromIdByParameterName(innerObject.id(),
+            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.OperationalInsights/workspaces/{workspaceName}/providers/Microsoft.SecurityInsights/onboardingStates/{sentinelOnboardingStateName}",
+            "sentinelOnboardingStateName");
     }
 
     public String id() {
@@ -65,12 +74,7 @@ public final class SentinelOnboardingStateImpl implements SentinelOnboardingStat
     }
 
     public SentinelOnboardingState create() {
-        this.innerObject = serviceManager.serviceClient()
-            .getSentinelOnboardingStates()
-            .createWithResponse(resourceGroupName, workspaceName, sentinelOnboardingStateName, this.innerModel(),
-                Context.NONE)
-            .getValue();
-        return this;
+        return this.create(Context.NONE);
     }
 
     public SentinelOnboardingState create(Context context) {
@@ -90,11 +94,7 @@ public final class SentinelOnboardingStateImpl implements SentinelOnboardingStat
     }
 
     public SentinelOnboardingState refresh() {
-        this.innerObject = serviceManager.serviceClient()
-            .getSentinelOnboardingStates()
-            .getWithResponse(resourceGroupName, workspaceName, sentinelOnboardingStateName, Context.NONE)
-            .getValue();
-        return this;
+        return this.refresh(Context.NONE);
     }
 
     public SentinelOnboardingState refresh(Context context) {

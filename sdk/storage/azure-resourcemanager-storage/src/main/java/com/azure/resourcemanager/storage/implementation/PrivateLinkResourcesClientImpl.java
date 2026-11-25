@@ -67,18 +67,7 @@ public final class PrivateLinkResourcesClientImpl implements PrivateLinkResource
             @HeaderParam("Accept") String accept, Context context);
     }
 
-    /**
-     * Gets the private link resources that need to be created for a storage account.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param accountName The name of the storage account within the specified resource group. Storage account names
-     * must be between 3 and 24 characters in length and use numbers and lower-case letters only.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the private link resources that need to be created for a storage account along with {@link Response} on
-     * successful completion of {@link Mono}.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Response<PrivateLinkResourceListResultInner>>
         listByStorageAccountWithResponseAsync(String resourceGroupName, String accountName) {
@@ -141,18 +130,7 @@ public final class PrivateLinkResourcesClientImpl implements PrivateLinkResource
             this.client.getSubscriptionId(), resourceGroupName, accountName, accept, context);
     }
 
-    /**
-     * Gets the private link resources that need to be created for a storage account.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param accountName The name of the storage account within the specified resource group. Storage account names
-     * must be between 3 and 24 characters in length and use numbers and lower-case letters only.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the private link resources that need to be created for a storage account on successful completion of
-     * {@link Mono}.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<PrivateLinkResourceListResultInner> listByStorageAccountAsync(String resourceGroupName,
         String accountName) {
@@ -160,35 +138,14 @@ public final class PrivateLinkResourcesClientImpl implements PrivateLinkResource
             .flatMap(res -> Mono.justOrEmpty(res.getValue()));
     }
 
-    /**
-     * Gets the private link resources that need to be created for a storage account.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param accountName The name of the storage account within the specified resource group. Storage account names
-     * must be between 3 and 24 characters in length and use numbers and lower-case letters only.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the private link resources that need to be created for a storage account along with {@link Response}.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Response<PrivateLinkResourceListResultInner> listByStorageAccountWithResponse(String resourceGroupName,
         String accountName, Context context) {
         return listByStorageAccountWithResponseAsync(resourceGroupName, accountName, context).block();
     }
 
-    /**
-     * Gets the private link resources that need to be created for a storage account.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param accountName The name of the storage account within the specified resource group. Storage account names
-     * must be between 3 and 24 characters in length and use numbers and lower-case letters only.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the private link resources that need to be created for a storage account.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public PrivateLinkResourceListResultInner listByStorageAccount(String resourceGroupName, String accountName) {
         return listByStorageAccountWithResponse(resourceGroupName, accountName, Context.NONE).getValue();

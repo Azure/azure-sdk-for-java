@@ -8,7 +8,7 @@ import com.azure.core.util.ExpandableStringEnum;
 import java.util.Collection;
 
 /**
- * The network bypass mode for the Mongo cluster.
+ * The network bypass mode for the DocumentDB cluster.
  */
 public final class NetworkBypassMode extends ExpandableStringEnum<NetworkBypassMode> {
     /**
@@ -17,7 +17,7 @@ public final class NetworkBypassMode extends ExpandableStringEnum<NetworkBypassM
     public static final NetworkBypassMode NONE = fromString("None");
 
     /**
-     * Allows Azure Cosmos DB service to bypass network restrictions.
+     * Allows the Azure Cosmos DB service to bypass network restrictions.
      */
     public static final NetworkBypassMode AZURE_COSMOS_DB = fromString("AzureCosmosDB");
 

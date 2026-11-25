@@ -200,28 +200,7 @@ public final class ScenarioRunsClientImpl implements ScenarioRunsClient {
             .flatMap(res -> Mono.justOrEmpty(res.getValue()));
     }
 
-    /**
-     * Get a scenario run.
-     * 
-     * This endpoint is also the polling target for ScenarioConfigurations.execute
-     * and ScenarioRuns.cancel (final-state-via: location). While the run is in
-     * progress the service returns 202 with a Location header pointing back to
-     * this URL; clients must keep polling until they receive 200, which carries
-     * the final ScenarioRun body.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param workspaceName String that represents a Workspace resource name.
-     * @param scenarioName Name of the scenario.
-     * @param runId The name of the ScenarioRun.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return a scenario run.
-     * 
-     * This endpoint is also the polling target for ScenarioConfigurations.execute
-     * and ScenarioRuns.cancel (final-state-via: location).
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public ScenarioRunsGetResponse getWithResponse(String resourceGroupName, String workspaceName, String scenarioName,
         String runId, Context context) {
@@ -230,27 +209,7 @@ public final class ScenarioRunsClientImpl implements ScenarioRunsClient {
             resourceGroupName, workspaceName, scenarioName, runId, accept, context);
     }
 
-    /**
-     * Get a scenario run.
-     * 
-     * This endpoint is also the polling target for ScenarioConfigurations.execute
-     * and ScenarioRuns.cancel (final-state-via: location). While the run is in
-     * progress the service returns 202 with a Location header pointing back to
-     * this URL; clients must keep polling until they receive 200, which carries
-     * the final ScenarioRun body.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param workspaceName String that represents a Workspace resource name.
-     * @param scenarioName Name of the scenario.
-     * @param runId The name of the ScenarioRun.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return a scenario run.
-     * 
-     * This endpoint is also the polling target for ScenarioConfigurations.execute
-     * and ScenarioRuns.cancel (final-state-via: location).
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public ScenarioRunInner get(String resourceGroupName, String workspaceName, String scenarioName, String runId) {
         return getWithResponse(resourceGroupName, workspaceName, scenarioName, runId, Context.NONE).getValue();
@@ -311,12 +270,7 @@ public final class ScenarioRunsClientImpl implements ScenarioRunsClient {
     @ServiceMethod(returns = ReturnType.SINGLE)
     private PagedResponse<ScenarioRunInner> listAllSinglePage(String resourceGroupName, String workspaceName,
         String scenarioName) {
-        final String accept = "application/json";
-        Response<ScenarioRunListResult> res
-            = service.listAllSync(this.client.getEndpoint(), this.client.getApiVersion(),
-                this.client.getSubscriptionId(), resourceGroupName, workspaceName, scenarioName, accept, Context.NONE);
-        return new PagedResponseBase<>(res.getRequest(), res.getStatusCode(), res.getHeaders(), res.getValue().value(),
-            res.getValue().nextLink(), null);
+        return listAllSinglePage(resourceGroupName, workspaceName, scenarioName, Context.NONE);
     }
 
     /**
@@ -342,36 +296,14 @@ public final class ScenarioRunsClientImpl implements ScenarioRunsClient {
             res.getValue().nextLink(), null);
     }
 
-    /**
-     * Get a list of scenario runs.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param workspaceName String that represents a Workspace resource name.
-     * @param scenarioName Name of the scenario.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return a list of scenario runs as paginated response with {@link PagedIterable}.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.COLLECTION)
     public PagedIterable<ScenarioRunInner> listAll(String resourceGroupName, String workspaceName,
         String scenarioName) {
-        return new PagedIterable<>(() -> listAllSinglePage(resourceGroupName, workspaceName, scenarioName),
-            nextLink -> listAllNextSinglePage(nextLink));
+        return listAll(resourceGroupName, workspaceName, scenarioName, Context.NONE);
     }
 
-    /**
-     * Get a list of scenario runs.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param workspaceName String that represents a Workspace resource name.
-     * @param scenarioName Name of the scenario.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return a list of scenario runs as paginated response with {@link PagedIterable}.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.COLLECTION)
     public PagedIterable<ScenarioRunInner> listAll(String resourceGroupName, String workspaceName, String scenarioName,
         Context context) {
@@ -415,8 +347,7 @@ public final class ScenarioRunsClientImpl implements ScenarioRunsClient {
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Response<BinaryData> cancelWithResponse(String resourceGroupName, String workspaceName, String scenarioName,
         String runId) {
-        return service.cancelSync(this.client.getEndpoint(), this.client.getApiVersion(),
-            this.client.getSubscriptionId(), resourceGroupName, workspaceName, scenarioName, runId, Context.NONE);
+        return cancelWithResponse(resourceGroupName, workspaceName, scenarioName, runId, Context.NONE);
     }
 
     /**
@@ -460,39 +391,14 @@ public final class ScenarioRunsClientImpl implements ScenarioRunsClient {
             ScenarioRunInner.class, ScenarioRunInner.class, this.client.getContext());
     }
 
-    /**
-     * Cancel the currently running scenario execution.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param workspaceName String that represents a Workspace resource name.
-     * @param scenarioName Name of the scenario.
-     * @param runId The name of the ScenarioRun.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the {@link SyncPoller} for polling of long-running operation.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public SyncPoller<PollResult<ScenarioRunInner>, ScenarioRunInner> beginCancel(String resourceGroupName,
         String workspaceName, String scenarioName, String runId) {
-        Response<BinaryData> response = cancelWithResponse(resourceGroupName, workspaceName, scenarioName, runId);
-        return this.client.<ScenarioRunInner, ScenarioRunInner>getLroResult(response, ScenarioRunInner.class,
-            ScenarioRunInner.class, Context.NONE);
+        return beginCancel(resourceGroupName, workspaceName, scenarioName, runId, Context.NONE);
     }
 
-    /**
-     * Cancel the currently running scenario execution.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param workspaceName String that represents a Workspace resource name.
-     * @param scenarioName Name of the scenario.
-     * @param runId The name of the ScenarioRun.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the {@link SyncPoller} for polling of long-running operation.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public SyncPoller<PollResult<ScenarioRunInner>, ScenarioRunInner> beginCancel(String resourceGroupName,
         String workspaceName, String scenarioName, String runId, Context context) {
@@ -521,40 +427,18 @@ public final class ScenarioRunsClientImpl implements ScenarioRunsClient {
             .flatMap(this.client::getLroFinalResultOrError);
     }
 
-    /**
-     * Cancel the currently running scenario execution.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param workspaceName String that represents a Workspace resource name.
-     * @param scenarioName Name of the scenario.
-     * @param runId The name of the ScenarioRun.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the response.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public ScenarioRunInner cancel(String resourceGroupName, String workspaceName, String scenarioName, String runId) {
-        return beginCancel(resourceGroupName, workspaceName, scenarioName, runId).getFinalResult();
+        return cancel(resourceGroupName, workspaceName, scenarioName, runId, Context.NONE);
     }
 
-    /**
-     * Cancel the currently running scenario execution.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param workspaceName String that represents a Workspace resource name.
-     * @param scenarioName Name of the scenario.
-     * @param runId The name of the ScenarioRun.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the response.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public ScenarioRunInner cancel(String resourceGroupName, String workspaceName, String scenarioName, String runId,
         Context context) {
-        return beginCancel(resourceGroupName, workspaceName, scenarioName, runId, context).getFinalResult();
+        return this.client
+            .getLroFinalResultOrError(beginCancel(resourceGroupName, workspaceName, scenarioName, runId, context));
     }
 
     /**
@@ -587,11 +471,7 @@ public final class ScenarioRunsClientImpl implements ScenarioRunsClient {
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private PagedResponse<ScenarioRunInner> listAllNextSinglePage(String nextLink) {
-        final String accept = "application/json";
-        Response<ScenarioRunListResult> res
-            = service.listAllNextSync(nextLink, this.client.getEndpoint(), accept, Context.NONE);
-        return new PagedResponseBase<>(res.getRequest(), res.getStatusCode(), res.getHeaders(), res.getValue().value(),
-            res.getValue().nextLink(), null);
+        return listAllNextSinglePage(nextLink, Context.NONE);
     }
 
     /**

@@ -66,11 +66,7 @@ public final class TaskQueueImpl implements TaskQueue, TaskQueue.Definition, Tas
     }
 
     public TaskQueue create() {
-        this.innerObject = serviceManager.serviceClient()
-            .getTaskQueues()
-            .createOrUpdate(resourceGroupName, schedulerName, taskHubName, taskQueueName, this.innerModel(),
-                Context.NONE);
-        return this;
+        return this.create(Context.NONE);
     }
 
     public TaskQueue create(Context context) {
@@ -92,10 +88,7 @@ public final class TaskQueueImpl implements TaskQueue, TaskQueue.Definition, Tas
     }
 
     public TaskQueue apply() {
-        this.innerObject = serviceManager.serviceClient()
-            .getTaskQueues()
-            .update(resourceGroupName, schedulerName, taskHubName, taskQueueName, updateProperties, Context.NONE);
-        return this;
+        return this.apply(Context.NONE);
     }
 
     public TaskQueue apply(Context context) {
@@ -123,11 +116,7 @@ public final class TaskQueueImpl implements TaskQueue, TaskQueue.Definition, Tas
     }
 
     public TaskQueue refresh() {
-        this.innerObject = serviceManager.serviceClient()
-            .getTaskQueues()
-            .getWithResponse(resourceGroupName, schedulerName, taskHubName, taskQueueName, Context.NONE)
-            .getValue();
-        return this;
+        return this.refresh(Context.NONE);
     }
 
     public TaskQueue refresh(Context context) {

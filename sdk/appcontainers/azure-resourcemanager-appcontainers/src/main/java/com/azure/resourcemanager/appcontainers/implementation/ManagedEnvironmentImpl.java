@@ -212,10 +212,7 @@ public final class ManagedEnvironmentImpl
     }
 
     public ManagedEnvironment create() {
-        this.innerObject = serviceManager.serviceClient()
-            .getManagedEnvironments()
-            .createOrUpdate(resourceGroupName, environmentName, this.innerModel(), Context.NONE);
-        return this;
+        return this.create(Context.NONE);
     }
 
     public ManagedEnvironment create(Context context) {
@@ -237,10 +234,7 @@ public final class ManagedEnvironmentImpl
     }
 
     public ManagedEnvironment apply() {
-        this.innerObject = serviceManager.serviceClient()
-            .getManagedEnvironments()
-            .update(resourceGroupName, environmentName, this.innerModel(), Context.NONE);
-        return this;
+        return this.apply(Context.NONE);
     }
 
     public ManagedEnvironment apply(Context context) {
@@ -263,11 +257,7 @@ public final class ManagedEnvironmentImpl
     }
 
     public ManagedEnvironment refresh() {
-        this.innerObject = serviceManager.serviceClient()
-            .getManagedEnvironments()
-            .getByResourceGroupWithResponse(resourceGroupName, environmentName, Context.NONE)
-            .getValue();
-        return this;
+        return this.refresh(Context.NONE);
     }
 
     public ManagedEnvironment refresh(Context context) {

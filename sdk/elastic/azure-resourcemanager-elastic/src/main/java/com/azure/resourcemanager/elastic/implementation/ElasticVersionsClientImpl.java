@@ -144,11 +144,7 @@ public final class ElasticVersionsClientImpl implements ElasticVersionsClient {
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private PagedResponse<ElasticVersionListFormatInner> listSinglePage(String region) {
-        final String accept = "application/json";
-        Response<ElasticVersionsListResponse> res = service.listSync(this.client.getEndpoint(),
-            this.client.getApiVersion(), this.client.getSubscriptionId(), region, accept, Context.NONE);
-        return new PagedResponseBase<>(res.getRequest(), res.getStatusCode(), res.getHeaders(), res.getValue().value(),
-            res.getValue().nextLink(), null);
+        return listSinglePage(region, Context.NONE);
     }
 
     /**
@@ -171,32 +167,13 @@ public final class ElasticVersionsClientImpl implements ElasticVersionsClient {
             res.getValue().nextLink(), null);
     }
 
-    /**
-     * Retrieve a list of all available Elastic versions for a specified region, helping you choose the best version for
-     * your deployment.
-     * 
-     * @param region Region where elastic deployment will take place.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return list of elastic versions available in a region as paginated response with {@link PagedIterable}.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.COLLECTION)
     public PagedIterable<ElasticVersionListFormatInner> list(String region) {
-        return new PagedIterable<>(() -> listSinglePage(region), nextLink -> listNextSinglePage(nextLink));
+        return list(region, Context.NONE);
     }
 
-    /**
-     * Retrieve a list of all available Elastic versions for a specified region, helping you choose the best version for
-     * your deployment.
-     * 
-     * @param region Region where elastic deployment will take place.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return list of elastic versions available in a region as paginated response with {@link PagedIterable}.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.COLLECTION)
     public PagedIterable<ElasticVersionListFormatInner> list(String region, Context context) {
         return new PagedIterable<>(() -> listSinglePage(region, context),
@@ -239,11 +216,7 @@ public final class ElasticVersionsClientImpl implements ElasticVersionsClient {
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private PagedResponse<ElasticVersionListFormatInner> listNextSinglePage(String nextLink) {
-        final String accept = "application/json";
-        Response<ElasticVersionsListResponse> res
-            = service.listNextSync(nextLink, this.client.getEndpoint(), accept, Context.NONE);
-        return new PagedResponseBase<>(res.getRequest(), res.getStatusCode(), res.getHeaders(), res.getValue().value(),
-            res.getValue().nextLink(), null);
+        return listNextSinglePage(nextLink, Context.NONE);
     }
 
     /**

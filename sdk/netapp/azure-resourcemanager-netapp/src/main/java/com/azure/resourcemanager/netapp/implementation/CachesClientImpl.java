@@ -308,19 +308,7 @@ public final class CachesClientImpl implements CachesClient {
             .flatMap(res -> Mono.justOrEmpty(res.getValue()));
     }
 
-    /**
-     * Get the details of the specified Cache.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param accountName The name of the NetApp account.
-     * @param poolName The name of the capacity pool.
-     * @param cacheName The name of the cache resource.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the details of the specified Cache along with {@link Response}.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Response<CacheInner> getWithResponse(String resourceGroupName, String accountName, String poolName,
         String cacheName, Context context) {
@@ -355,18 +343,7 @@ public final class CachesClientImpl implements CachesClient {
             resourceGroupName, accountName, poolName, cacheName, accept, context);
     }
 
-    /**
-     * Get the details of the specified Cache.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param accountName The name of the NetApp account.
-     * @param poolName The name of the capacity pool.
-     * @param cacheName The name of the cache resource.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the details of the specified Cache.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public CacheInner get(String resourceGroupName, String accountName, String poolName, String cacheName) {
         return getWithResponse(resourceGroupName, accountName, poolName, cacheName, Context.NONE).getValue();
@@ -439,42 +416,7 @@ public final class CachesClientImpl implements CachesClient {
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Response<BinaryData> createOrUpdateWithResponse(String resourceGroupName, String accountName,
         String poolName, String cacheName, CacheInner body) {
-        if (this.client.getEndpoint() == null) {
-            throw LOGGER.atError()
-                .log(new IllegalArgumentException(
-                    "Parameter this.client.getEndpoint() is required and cannot be null."));
-        }
-        if (this.client.getSubscriptionId() == null) {
-            throw LOGGER.atError()
-                .log(new IllegalArgumentException(
-                    "Parameter this.client.getSubscriptionId() is required and cannot be null."));
-        }
-        if (resourceGroupName == null) {
-            throw LOGGER.atError()
-                .log(new IllegalArgumentException("Parameter resourceGroupName is required and cannot be null."));
-        }
-        if (accountName == null) {
-            throw LOGGER.atError()
-                .log(new IllegalArgumentException("Parameter accountName is required and cannot be null."));
-        }
-        if (poolName == null) {
-            throw LOGGER.atError()
-                .log(new IllegalArgumentException("Parameter poolName is required and cannot be null."));
-        }
-        if (cacheName == null) {
-            throw LOGGER.atError()
-                .log(new IllegalArgumentException("Parameter cacheName is required and cannot be null."));
-        }
-        if (body == null) {
-            throw LOGGER.atError().log(new IllegalArgumentException("Parameter body is required and cannot be null."));
-        } else {
-            body.validate();
-        }
-        final String contentType = "application/json";
-        final String accept = "application/json";
-        return service.createOrUpdateSync(this.client.getEndpoint(), this.client.getApiVersion(),
-            this.client.getSubscriptionId(), resourceGroupName, accountName, poolName, cacheName, contentType, accept,
-            body, Context.NONE);
+        return createOrUpdateWithResponse(resourceGroupName, accountName, poolName, cacheName, body, Context.NONE);
     }
 
     /**
@@ -554,42 +496,14 @@ public final class CachesClientImpl implements CachesClient {
             CacheInner.class, this.client.getContext());
     }
 
-    /**
-     * Create or update the specified Cache within the Capacity Pool.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param accountName The name of the NetApp account.
-     * @param poolName The name of the capacity pool.
-     * @param cacheName The name of the cache resource.
-     * @param body Resource create parameters.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the {@link SyncPoller} for polling of cache resource.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public SyncPoller<PollResult<CacheInner>, CacheInner> beginCreateOrUpdate(String resourceGroupName,
         String accountName, String poolName, String cacheName, CacheInner body) {
-        Response<BinaryData> response
-            = createOrUpdateWithResponse(resourceGroupName, accountName, poolName, cacheName, body);
-        return this.client.<CacheInner, CacheInner>getLroResult(response, CacheInner.class, CacheInner.class,
-            Context.NONE);
+        return beginCreateOrUpdate(resourceGroupName, accountName, poolName, cacheName, body, Context.NONE);
     }
 
-    /**
-     * Create or update the specified Cache within the Capacity Pool.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param accountName The name of the NetApp account.
-     * @param poolName The name of the capacity pool.
-     * @param cacheName The name of the cache resource.
-     * @param body Resource create parameters.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the {@link SyncPoller} for polling of cache resource.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public SyncPoller<PollResult<CacheInner>, CacheInner> beginCreateOrUpdate(String resourceGroupName,
         String accountName, String poolName, String cacheName, CacheInner body, Context context) {
@@ -618,43 +532,19 @@ public final class CachesClientImpl implements CachesClient {
             .flatMap(this.client::getLroFinalResultOrError);
     }
 
-    /**
-     * Create or update the specified Cache within the Capacity Pool.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param accountName The name of the NetApp account.
-     * @param poolName The name of the capacity pool.
-     * @param cacheName The name of the cache resource.
-     * @param body Resource create parameters.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return cache resource.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public CacheInner createOrUpdate(String resourceGroupName, String accountName, String poolName, String cacheName,
         CacheInner body) {
-        return beginCreateOrUpdate(resourceGroupName, accountName, poolName, cacheName, body).getFinalResult();
+        return createOrUpdate(resourceGroupName, accountName, poolName, cacheName, body, Context.NONE);
     }
 
-    /**
-     * Create or update the specified Cache within the Capacity Pool.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param accountName The name of the NetApp account.
-     * @param poolName The name of the capacity pool.
-     * @param cacheName The name of the cache resource.
-     * @param body Resource create parameters.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return cache resource.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public CacheInner createOrUpdate(String resourceGroupName, String accountName, String poolName, String cacheName,
         CacheInner body, Context context) {
-        return beginCreateOrUpdate(resourceGroupName, accountName, poolName, cacheName, body, context).getFinalResult();
+        return this.client.getLroFinalResultOrError(
+            beginCreateOrUpdate(resourceGroupName, accountName, poolName, cacheName, body, context));
     }
 
     /**
@@ -724,42 +614,7 @@ public final class CachesClientImpl implements CachesClient {
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Response<BinaryData> updateWithResponse(String resourceGroupName, String accountName, String poolName,
         String cacheName, CacheUpdate body) {
-        if (this.client.getEndpoint() == null) {
-            throw LOGGER.atError()
-                .log(new IllegalArgumentException(
-                    "Parameter this.client.getEndpoint() is required and cannot be null."));
-        }
-        if (this.client.getSubscriptionId() == null) {
-            throw LOGGER.atError()
-                .log(new IllegalArgumentException(
-                    "Parameter this.client.getSubscriptionId() is required and cannot be null."));
-        }
-        if (resourceGroupName == null) {
-            throw LOGGER.atError()
-                .log(new IllegalArgumentException("Parameter resourceGroupName is required and cannot be null."));
-        }
-        if (accountName == null) {
-            throw LOGGER.atError()
-                .log(new IllegalArgumentException("Parameter accountName is required and cannot be null."));
-        }
-        if (poolName == null) {
-            throw LOGGER.atError()
-                .log(new IllegalArgumentException("Parameter poolName is required and cannot be null."));
-        }
-        if (cacheName == null) {
-            throw LOGGER.atError()
-                .log(new IllegalArgumentException("Parameter cacheName is required and cannot be null."));
-        }
-        if (body == null) {
-            throw LOGGER.atError().log(new IllegalArgumentException("Parameter body is required and cannot be null."));
-        } else {
-            body.validate();
-        }
-        final String contentType = "application/json";
-        final String accept = "application/json";
-        return service.updateSync(this.client.getEndpoint(), this.client.getApiVersion(),
-            this.client.getSubscriptionId(), resourceGroupName, accountName, poolName, cacheName, contentType, accept,
-            body, Context.NONE);
+        return updateWithResponse(resourceGroupName, accountName, poolName, cacheName, body, Context.NONE);
     }
 
     /**
@@ -839,41 +694,14 @@ public final class CachesClientImpl implements CachesClient {
             CacheInner.class, this.client.getContext());
     }
 
-    /**
-     * Patch the specified Cache.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param accountName The name of the NetApp account.
-     * @param poolName The name of the capacity pool.
-     * @param cacheName The name of the cache resource.
-     * @param body The resource properties to be updated.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the {@link SyncPoller} for polling of cache resource.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public SyncPoller<PollResult<CacheInner>, CacheInner> beginUpdate(String resourceGroupName, String accountName,
         String poolName, String cacheName, CacheUpdate body) {
-        Response<BinaryData> response = updateWithResponse(resourceGroupName, accountName, poolName, cacheName, body);
-        return this.client.<CacheInner, CacheInner>getLroResult(response, CacheInner.class, CacheInner.class,
-            Context.NONE);
+        return beginUpdate(resourceGroupName, accountName, poolName, cacheName, body, Context.NONE);
     }
 
-    /**
-     * Patch the specified Cache.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param accountName The name of the NetApp account.
-     * @param poolName The name of the capacity pool.
-     * @param cacheName The name of the cache resource.
-     * @param body The resource properties to be updated.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the {@link SyncPoller} for polling of cache resource.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public SyncPoller<PollResult<CacheInner>, CacheInner> beginUpdate(String resourceGroupName, String accountName,
         String poolName, String cacheName, CacheUpdate body, Context context) {
@@ -902,43 +730,19 @@ public final class CachesClientImpl implements CachesClient {
             .flatMap(this.client::getLroFinalResultOrError);
     }
 
-    /**
-     * Patch the specified Cache.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param accountName The name of the NetApp account.
-     * @param poolName The name of the capacity pool.
-     * @param cacheName The name of the cache resource.
-     * @param body The resource properties to be updated.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return cache resource.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public CacheInner update(String resourceGroupName, String accountName, String poolName, String cacheName,
         CacheUpdate body) {
-        return beginUpdate(resourceGroupName, accountName, poolName, cacheName, body).getFinalResult();
+        return update(resourceGroupName, accountName, poolName, cacheName, body, Context.NONE);
     }
 
-    /**
-     * Patch the specified Cache.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param accountName The name of the NetApp account.
-     * @param poolName The name of the capacity pool.
-     * @param cacheName The name of the cache resource.
-     * @param body The resource properties to be updated.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return cache resource.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public CacheInner update(String resourceGroupName, String accountName, String poolName, String cacheName,
         CacheUpdate body, Context context) {
-        return beginUpdate(resourceGroupName, accountName, poolName, cacheName, body, context).getFinalResult();
+        return this.client
+            .getLroFinalResultOrError(beginUpdate(resourceGroupName, accountName, poolName, cacheName, body, context));
     }
 
     /**
@@ -998,34 +802,7 @@ public final class CachesClientImpl implements CachesClient {
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Response<BinaryData> deleteWithResponse(String resourceGroupName, String accountName, String poolName,
         String cacheName) {
-        if (this.client.getEndpoint() == null) {
-            throw LOGGER.atError()
-                .log(new IllegalArgumentException(
-                    "Parameter this.client.getEndpoint() is required and cannot be null."));
-        }
-        if (this.client.getSubscriptionId() == null) {
-            throw LOGGER.atError()
-                .log(new IllegalArgumentException(
-                    "Parameter this.client.getSubscriptionId() is required and cannot be null."));
-        }
-        if (resourceGroupName == null) {
-            throw LOGGER.atError()
-                .log(new IllegalArgumentException("Parameter resourceGroupName is required and cannot be null."));
-        }
-        if (accountName == null) {
-            throw LOGGER.atError()
-                .log(new IllegalArgumentException("Parameter accountName is required and cannot be null."));
-        }
-        if (poolName == null) {
-            throw LOGGER.atError()
-                .log(new IllegalArgumentException("Parameter poolName is required and cannot be null."));
-        }
-        if (cacheName == null) {
-            throw LOGGER.atError()
-                .log(new IllegalArgumentException("Parameter cacheName is required and cannot be null."));
-        }
-        return service.deleteSync(this.client.getEndpoint(), this.client.getApiVersion(),
-            this.client.getSubscriptionId(), resourceGroupName, accountName, poolName, cacheName, Context.NONE);
+        return deleteWithResponse(resourceGroupName, accountName, poolName, cacheName, Context.NONE);
     }
 
     /**
@@ -1095,38 +872,14 @@ public final class CachesClientImpl implements CachesClient {
             this.client.getContext());
     }
 
-    /**
-     * Delete the specified cache.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param accountName The name of the NetApp account.
-     * @param poolName The name of the capacity pool.
-     * @param cacheName The name of the cache resource.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the {@link SyncPoller} for polling of long-running operation.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public SyncPoller<PollResult<Void>, Void> beginDelete(String resourceGroupName, String accountName, String poolName,
         String cacheName) {
-        Response<BinaryData> response = deleteWithResponse(resourceGroupName, accountName, poolName, cacheName);
-        return this.client.<Void, Void>getLroResult(response, Void.class, Void.class, Context.NONE);
+        return beginDelete(resourceGroupName, accountName, poolName, cacheName, Context.NONE);
     }
 
-    /**
-     * Delete the specified cache.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param accountName The name of the NetApp account.
-     * @param poolName The name of the capacity pool.
-     * @param cacheName The name of the cache resource.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the {@link SyncPoller} for polling of long-running operation.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public SyncPoller<PollResult<Void>, Void> beginDelete(String resourceGroupName, String accountName, String poolName,
         String cacheName, Context context) {
@@ -1153,38 +906,17 @@ public final class CachesClientImpl implements CachesClient {
             .flatMap(this.client::getLroFinalResultOrError);
     }
 
-    /**
-     * Delete the specified cache.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param accountName The name of the NetApp account.
-     * @param poolName The name of the capacity pool.
-     * @param cacheName The name of the cache resource.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public void delete(String resourceGroupName, String accountName, String poolName, String cacheName) {
-        beginDelete(resourceGroupName, accountName, poolName, cacheName).getFinalResult();
+        delete(resourceGroupName, accountName, poolName, cacheName, Context.NONE);
     }
 
-    /**
-     * Delete the specified cache.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param accountName The name of the NetApp account.
-     * @param poolName The name of the capacity pool.
-     * @param cacheName The name of the cache resource.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public void delete(String resourceGroupName, String accountName, String poolName, String cacheName,
         Context context) {
-        beginDelete(resourceGroupName, accountName, poolName, cacheName, context).getFinalResult();
+        this.client.getLroFinalResultOrError(beginDelete(resourceGroupName, accountName, poolName, cacheName, context));
     }
 
     /**
@@ -1258,33 +990,7 @@ public final class CachesClientImpl implements CachesClient {
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private PagedResponse<CacheInner> listSinglePage(String resourceGroupName, String accountName, String poolName) {
-        if (this.client.getEndpoint() == null) {
-            throw LOGGER.atError()
-                .log(new IllegalArgumentException(
-                    "Parameter this.client.getEndpoint() is required and cannot be null."));
-        }
-        if (this.client.getSubscriptionId() == null) {
-            throw LOGGER.atError()
-                .log(new IllegalArgumentException(
-                    "Parameter this.client.getSubscriptionId() is required and cannot be null."));
-        }
-        if (resourceGroupName == null) {
-            throw LOGGER.atError()
-                .log(new IllegalArgumentException("Parameter resourceGroupName is required and cannot be null."));
-        }
-        if (accountName == null) {
-            throw LOGGER.atError()
-                .log(new IllegalArgumentException("Parameter accountName is required and cannot be null."));
-        }
-        if (poolName == null) {
-            throw LOGGER.atError()
-                .log(new IllegalArgumentException("Parameter poolName is required and cannot be null."));
-        }
-        final String accept = "application/json";
-        Response<CacheList> res = service.listSync(this.client.getEndpoint(), this.client.getApiVersion(),
-            this.client.getSubscriptionId(), resourceGroupName, accountName, poolName, accept, Context.NONE);
-        return new PagedResponseBase<>(res.getRequest(), res.getStatusCode(), res.getHeaders(), res.getValue().value(),
-            res.getValue().nextLink(), null);
+        return listSinglePage(resourceGroupName, accountName, poolName, Context.NONE);
     }
 
     /**
@@ -1331,35 +1037,13 @@ public final class CachesClientImpl implements CachesClient {
             res.getValue().nextLink(), null);
     }
 
-    /**
-     * List all Caches within the Capacity Pool.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param accountName The name of the NetApp account.
-     * @param poolName The name of the capacity pool.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return list of Cache resources as paginated response with {@link PagedIterable}.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.COLLECTION)
     public PagedIterable<CacheInner> list(String resourceGroupName, String accountName, String poolName) {
-        return new PagedIterable<>(() -> listSinglePage(resourceGroupName, accountName, poolName),
-            nextLink -> listNextSinglePage(nextLink));
+        return list(resourceGroupName, accountName, poolName, Context.NONE);
     }
 
-    /**
-     * List all Caches within the Capacity Pool.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param accountName The name of the NetApp account.
-     * @param poolName The name of the capacity pool.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return list of Cache resources as paginated response with {@link PagedIterable}.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.COLLECTION)
     public PagedIterable<CacheInner> list(String resourceGroupName, String accountName, String poolName,
         Context context) {
@@ -1432,20 +1116,7 @@ public final class CachesClientImpl implements CachesClient {
             .flatMap(res -> Mono.justOrEmpty(res.getValue()));
     }
 
-    /**
-     * This operation will list the cluster peering command, cluster peering passphrase and the vserver peering command.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param accountName The name of the NetApp account.
-     * @param poolName The name of the capacity pool.
-     * @param cacheName The name of the cache resource.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the response containing peering passphrases and commands for cluster and vserver peering along with
-     * {@link Response}.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Response<PeeringPassphrasesInner> listPeeringPassphrasesWithResponse(String resourceGroupName,
         String accountName, String poolName, String cacheName, Context context) {
@@ -1480,18 +1151,7 @@ public final class CachesClientImpl implements CachesClient {
             this.client.getSubscriptionId(), resourceGroupName, accountName, poolName, cacheName, accept, context);
     }
 
-    /**
-     * This operation will list the cluster peering command, cluster peering passphrase and the vserver peering command.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param accountName The name of the NetApp account.
-     * @param poolName The name of the capacity pool.
-     * @param cacheName The name of the cache resource.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the response containing peering passphrases and commands for cluster and vserver peering.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public PeeringPassphrasesInner listPeeringPassphrases(String resourceGroupName, String accountName, String poolName,
         String cacheName) {
@@ -1566,42 +1226,7 @@ public final class CachesClientImpl implements CachesClient {
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Response<BinaryData> poolChangeWithResponse(String resourceGroupName, String accountName, String poolName,
         String cacheName, PoolChangeRequest body) {
-        if (this.client.getEndpoint() == null) {
-            throw LOGGER.atError()
-                .log(new IllegalArgumentException(
-                    "Parameter this.client.getEndpoint() is required and cannot be null."));
-        }
-        if (this.client.getSubscriptionId() == null) {
-            throw LOGGER.atError()
-                .log(new IllegalArgumentException(
-                    "Parameter this.client.getSubscriptionId() is required and cannot be null."));
-        }
-        if (resourceGroupName == null) {
-            throw LOGGER.atError()
-                .log(new IllegalArgumentException("Parameter resourceGroupName is required and cannot be null."));
-        }
-        if (accountName == null) {
-            throw LOGGER.atError()
-                .log(new IllegalArgumentException("Parameter accountName is required and cannot be null."));
-        }
-        if (poolName == null) {
-            throw LOGGER.atError()
-                .log(new IllegalArgumentException("Parameter poolName is required and cannot be null."));
-        }
-        if (cacheName == null) {
-            throw LOGGER.atError()
-                .log(new IllegalArgumentException("Parameter cacheName is required and cannot be null."));
-        }
-        if (body == null) {
-            throw LOGGER.atError().log(new IllegalArgumentException("Parameter body is required and cannot be null."));
-        } else {
-            body.validate();
-        }
-        final String contentType = "application/json";
-        final String accept = "application/json";
-        return service.poolChangeSync(this.client.getEndpoint(), this.client.getApiVersion(),
-            this.client.getSubscriptionId(), resourceGroupName, accountName, poolName, cacheName, contentType, accept,
-            body, Context.NONE);
+        return poolChangeWithResponse(resourceGroupName, accountName, poolName, cacheName, body, Context.NONE);
     }
 
     /**
@@ -1681,42 +1306,14 @@ public final class CachesClientImpl implements CachesClient {
             CacheInner.class, this.client.getContext());
     }
 
-    /**
-     * Moves Cache to another Capacity Pool.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param accountName The name of the NetApp account.
-     * @param poolName The name of the capacity pool.
-     * @param cacheName The name of the cache resource.
-     * @param body Move cache to the pool supplied in the body of the operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the {@link SyncPoller} for polling of cache resource.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public SyncPoller<PollResult<CacheInner>, CacheInner> beginPoolChange(String resourceGroupName, String accountName,
         String poolName, String cacheName, PoolChangeRequest body) {
-        Response<BinaryData> response
-            = poolChangeWithResponse(resourceGroupName, accountName, poolName, cacheName, body);
-        return this.client.<CacheInner, CacheInner>getLroResult(response, CacheInner.class, CacheInner.class,
-            Context.NONE);
+        return beginPoolChange(resourceGroupName, accountName, poolName, cacheName, body, Context.NONE);
     }
 
-    /**
-     * Moves Cache to another Capacity Pool.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param accountName The name of the NetApp account.
-     * @param poolName The name of the capacity pool.
-     * @param cacheName The name of the cache resource.
-     * @param body Move cache to the pool supplied in the body of the operation.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the {@link SyncPoller} for polling of cache resource.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public SyncPoller<PollResult<CacheInner>, CacheInner> beginPoolChange(String resourceGroupName, String accountName,
         String poolName, String cacheName, PoolChangeRequest body, Context context) {
@@ -1745,43 +1342,19 @@ public final class CachesClientImpl implements CachesClient {
             .flatMap(this.client::getLroFinalResultOrError);
     }
 
-    /**
-     * Moves Cache to another Capacity Pool.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param accountName The name of the NetApp account.
-     * @param poolName The name of the capacity pool.
-     * @param cacheName The name of the cache resource.
-     * @param body Move cache to the pool supplied in the body of the operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return cache resource.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public CacheInner poolChange(String resourceGroupName, String accountName, String poolName, String cacheName,
         PoolChangeRequest body) {
-        return beginPoolChange(resourceGroupName, accountName, poolName, cacheName, body).getFinalResult();
+        return poolChange(resourceGroupName, accountName, poolName, cacheName, body, Context.NONE);
     }
 
-    /**
-     * Moves Cache to another Capacity Pool.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param accountName The name of the NetApp account.
-     * @param poolName The name of the capacity pool.
-     * @param cacheName The name of the cache resource.
-     * @param body Move cache to the pool supplied in the body of the operation.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return cache resource.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public CacheInner poolChange(String resourceGroupName, String accountName, String poolName, String cacheName,
         PoolChangeRequest body, Context context) {
-        return beginPoolChange(resourceGroupName, accountName, poolName, cacheName, body, context).getFinalResult();
+        return this.client.getLroFinalResultOrError(
+            beginPoolChange(resourceGroupName, accountName, poolName, cacheName, body, context));
     }
 
     /**
@@ -1842,35 +1415,7 @@ public final class CachesClientImpl implements CachesClient {
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Response<BinaryData> resetSmbPasswordWithResponse(String resourceGroupName, String accountName,
         String poolName, String cacheName) {
-        if (this.client.getEndpoint() == null) {
-            throw LOGGER.atError()
-                .log(new IllegalArgumentException(
-                    "Parameter this.client.getEndpoint() is required and cannot be null."));
-        }
-        if (this.client.getSubscriptionId() == null) {
-            throw LOGGER.atError()
-                .log(new IllegalArgumentException(
-                    "Parameter this.client.getSubscriptionId() is required and cannot be null."));
-        }
-        if (resourceGroupName == null) {
-            throw LOGGER.atError()
-                .log(new IllegalArgumentException("Parameter resourceGroupName is required and cannot be null."));
-        }
-        if (accountName == null) {
-            throw LOGGER.atError()
-                .log(new IllegalArgumentException("Parameter accountName is required and cannot be null."));
-        }
-        if (poolName == null) {
-            throw LOGGER.atError()
-                .log(new IllegalArgumentException("Parameter poolName is required and cannot be null."));
-        }
-        if (cacheName == null) {
-            throw LOGGER.atError()
-                .log(new IllegalArgumentException("Parameter cacheName is required and cannot be null."));
-        }
-        final String accept = "application/json";
-        return service.resetSmbPasswordSync(this.client.getEndpoint(), this.client.getApiVersion(),
-            this.client.getSubscriptionId(), resourceGroupName, accountName, poolName, cacheName, accept, Context.NONE);
+        return resetSmbPasswordWithResponse(resourceGroupName, accountName, poolName, cacheName, Context.NONE);
     }
 
     /**
@@ -1941,40 +1486,14 @@ public final class CachesClientImpl implements CachesClient {
             CacheInner.class, this.client.getContext());
     }
 
-    /**
-     * Resets the SMB password for the cache.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param accountName The name of the NetApp account.
-     * @param poolName The name of the capacity pool.
-     * @param cacheName The name of the cache resource.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the {@link SyncPoller} for polling of cache resource.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public SyncPoller<PollResult<CacheInner>, CacheInner> beginResetSmbPassword(String resourceGroupName,
         String accountName, String poolName, String cacheName) {
-        Response<BinaryData> response
-            = resetSmbPasswordWithResponse(resourceGroupName, accountName, poolName, cacheName);
-        return this.client.<CacheInner, CacheInner>getLroResult(response, CacheInner.class, CacheInner.class,
-            Context.NONE);
+        return beginResetSmbPassword(resourceGroupName, accountName, poolName, cacheName, Context.NONE);
     }
 
-    /**
-     * Resets the SMB password for the cache.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param accountName The name of the NetApp account.
-     * @param poolName The name of the capacity pool.
-     * @param cacheName The name of the cache resource.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the {@link SyncPoller} for polling of cache resource.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public SyncPoller<PollResult<CacheInner>, CacheInner> beginResetSmbPassword(String resourceGroupName,
         String accountName, String poolName, String cacheName, Context context) {
@@ -2002,41 +1521,19 @@ public final class CachesClientImpl implements CachesClient {
             .flatMap(this.client::getLroFinalResultOrError);
     }
 
-    /**
-     * Resets the SMB password for the cache.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param accountName The name of the NetApp account.
-     * @param poolName The name of the capacity pool.
-     * @param cacheName The name of the cache resource.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return cache resource.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public CacheInner resetSmbPassword(String resourceGroupName, String accountName, String poolName,
         String cacheName) {
-        return beginResetSmbPassword(resourceGroupName, accountName, poolName, cacheName).getFinalResult();
+        return resetSmbPassword(resourceGroupName, accountName, poolName, cacheName, Context.NONE);
     }
 
-    /**
-     * Resets the SMB password for the cache.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param accountName The name of the NetApp account.
-     * @param poolName The name of the capacity pool.
-     * @param cacheName The name of the cache resource.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return cache resource.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public CacheInner resetSmbPassword(String resourceGroupName, String accountName, String poolName, String cacheName,
         Context context) {
-        return beginResetSmbPassword(resourceGroupName, accountName, poolName, cacheName, context).getFinalResult();
+        return this.client.getLroFinalResultOrError(
+            beginResetSmbPassword(resourceGroupName, accountName, poolName, cacheName, context));
     }
 
     /**
@@ -2075,19 +1572,7 @@ public final class CachesClientImpl implements CachesClient {
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private PagedResponse<CacheInner> listNextSinglePage(String nextLink) {
-        if (nextLink == null) {
-            throw LOGGER.atError()
-                .log(new IllegalArgumentException("Parameter nextLink is required and cannot be null."));
-        }
-        if (this.client.getEndpoint() == null) {
-            throw LOGGER.atError()
-                .log(new IllegalArgumentException(
-                    "Parameter this.client.getEndpoint() is required and cannot be null."));
-        }
-        final String accept = "application/json";
-        Response<CacheList> res = service.listNextSync(nextLink, this.client.getEndpoint(), accept, Context.NONE);
-        return new PagedResponseBase<>(res.getRequest(), res.getStatusCode(), res.getHeaders(), res.getValue().value(),
-            res.getValue().nextLink(), null);
+        return listNextSinglePage(nextLink, Context.NONE);
     }
 
     /**

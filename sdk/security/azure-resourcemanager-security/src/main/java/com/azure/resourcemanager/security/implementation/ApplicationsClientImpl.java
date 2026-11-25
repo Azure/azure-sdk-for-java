@@ -182,30 +182,13 @@ public final class ApplicationsClientImpl implements ApplicationsClient {
         return getWithResponseAsync(applicationId).flatMap(res -> Mono.justOrEmpty(res.getValue()));
     }
 
-    /**
-     * Get a specific application for the requested scope by applicationId.
-     * 
-     * @param applicationId The security Application key - unique key for the standard application.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return a specific application for the requested scope by applicationId along with {@link Response}.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Response<ApplicationInner> getWithResponse(String applicationId, Context context) {
         return getWithResponseAsync(applicationId, context).block();
     }
 
-    /**
-     * Get a specific application for the requested scope by applicationId.
-     * 
-     * @param applicationId The security Application key - unique key for the standard application.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return a specific application for the requested scope by applicationId.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public ApplicationInner get(String applicationId) {
         return getWithResponse(applicationId, Context.NONE).getValue();
@@ -305,33 +288,14 @@ public final class ApplicationsClientImpl implements ApplicationsClient {
             .flatMap(res -> Mono.justOrEmpty(res.getValue()));
     }
 
-    /**
-     * Creates or update a security application on the given subscription.
-     * 
-     * @param applicationId The security Application key - unique key for the standard application.
-     * @param application Application over a subscription scope.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return security Application over a given scope along with {@link Response}.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Response<ApplicationInner> createOrUpdateWithResponse(String applicationId, ApplicationInner application,
         Context context) {
         return createOrUpdateWithResponseAsync(applicationId, application, context).block();
     }
 
-    /**
-     * Creates or update a security application on the given subscription.
-     * 
-     * @param applicationId The security Application key - unique key for the standard application.
-     * @param application Application over a subscription scope.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return security Application over a given scope.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public ApplicationInner createOrUpdate(String applicationId, ApplicationInner application) {
         return createOrUpdateWithResponse(applicationId, application, Context.NONE).getValue();
@@ -409,29 +373,13 @@ public final class ApplicationsClientImpl implements ApplicationsClient {
         return deleteWithResponseAsync(applicationId).flatMap(ignored -> Mono.empty());
     }
 
-    /**
-     * Delete an Application over a given scope.
-     * 
-     * @param applicationId The security Application key - unique key for the standard application.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the {@link Response}.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Response<Void> deleteWithResponse(String applicationId, Context context) {
         return deleteWithResponseAsync(applicationId, context).block();
     }
 
-    /**
-     * Delete an Application over a given scope.
-     * 
-     * @param applicationId The security Application key - unique key for the standard application.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public void delete(String applicationId) {
         deleteWithResponse(applicationId, Context.NONE);
@@ -522,29 +470,13 @@ public final class ApplicationsClientImpl implements ApplicationsClient {
             nextLink -> listNextSinglePageAsync(nextLink, context));
     }
 
-    /**
-     * Get a list of all relevant applications over a subscription level scope.
-     * 
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return a list of all relevant applications over a subscription level scope as paginated response with
-     * {@link PagedIterable}.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.COLLECTION)
     public PagedIterable<ApplicationInner> list() {
         return new PagedIterable<>(listAsync());
     }
 
-    /**
-     * Get a list of all relevant applications over a subscription level scope.
-     * 
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return a list of all relevant applications over a subscription level scope as paginated response with
-     * {@link PagedIterable}.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.COLLECTION)
     public PagedIterable<ApplicationInner> list(Context context) {
         return new PagedIterable<>(listAsync(context));

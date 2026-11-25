@@ -78,11 +78,7 @@ public final class FleetUpdateStrategyImpl
     }
 
     public FleetUpdateStrategy create() {
-        this.innerObject = serviceManager.serviceClient()
-            .getFleetUpdateStrategies()
-            .createOrUpdate(resourceGroupName, fleetName, updateStrategyName, this.innerModel(), createIfMatch,
-                createIfNoneMatch, Context.NONE);
-        return this;
+        return this.create(Context.NONE);
     }
 
     public FleetUpdateStrategy create(Context context) {
@@ -109,11 +105,7 @@ public final class FleetUpdateStrategyImpl
     }
 
     public FleetUpdateStrategy apply() {
-        this.innerObject = serviceManager.serviceClient()
-            .getFleetUpdateStrategies()
-            .createOrUpdate(resourceGroupName, fleetName, updateStrategyName, this.innerModel(), updateIfMatch,
-                updateIfNoneMatch, Context.NONE);
-        return this;
+        return this.apply(Context.NONE);
     }
 
     public FleetUpdateStrategy apply(Context context) {
@@ -140,11 +132,7 @@ public final class FleetUpdateStrategyImpl
     }
 
     public FleetUpdateStrategy refresh() {
-        this.innerObject = serviceManager.serviceClient()
-            .getFleetUpdateStrategies()
-            .getWithResponse(resourceGroupName, fleetName, updateStrategyName, Context.NONE)
-            .getValue();
-        return this;
+        return this.refresh(Context.NONE);
     }
 
     public FleetUpdateStrategy refresh(Context context) {

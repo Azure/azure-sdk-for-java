@@ -336,17 +336,7 @@ public final class MapsClientImpl implements MapsClient {
             .flatMap(res -> Mono.justOrEmpty(res.getValue()));
     }
 
-    /**
-     * Get a MapsResource.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param mapName Maps resource name.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return a MapsResource along with {@link Response}.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Response<MapsResourceInner> getByResourceGroupWithResponse(String resourceGroupName, String mapName,
         Context context) {
@@ -355,16 +345,7 @@ public final class MapsClientImpl implements MapsClient {
             this.client.getSubscriptionId(), resourceGroupName, mapName, accept, context);
     }
 
-    /**
-     * Get a MapsResource.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param mapName Maps resource name.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return a MapsResource.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public MapsResourceInner getByResourceGroup(String resourceGroupName, String mapName) {
         return getByResourceGroupWithResponse(resourceGroupName, mapName, Context.NONE).getValue();
@@ -406,10 +387,7 @@ public final class MapsClientImpl implements MapsClient {
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Response<BinaryData> createOrUpdateWithResponse(String resourceGroupName, String mapName,
         MapsResourceInner resource) {
-        final String contentType = "application/json";
-        final String accept = "application/json";
-        return service.createOrUpdateSync(this.client.getEndpoint(), this.client.getApiVersion(),
-            this.client.getSubscriptionId(), resourceGroupName, mapName, contentType, accept, resource, Context.NONE);
+        return createOrUpdateWithResponse(resourceGroupName, mapName, resource, Context.NONE);
     }
 
     /**
@@ -452,37 +430,14 @@ public final class MapsClientImpl implements MapsClient {
             MapsResourceInner.class, MapsResourceInner.class, this.client.getContext());
     }
 
-    /**
-     * Create a MapsResource.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param mapName Maps resource name.
-     * @param resource Resource create parameters.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the {@link SyncPoller} for polling of a Maps resource.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public SyncPoller<PollResult<MapsResourceInner>, MapsResourceInner> beginCreateOrUpdate(String resourceGroupName,
         String mapName, MapsResourceInner resource) {
-        Response<BinaryData> response = createOrUpdateWithResponse(resourceGroupName, mapName, resource);
-        return this.client.<MapsResourceInner, MapsResourceInner>getLroResult(response, MapsResourceInner.class,
-            MapsResourceInner.class, Context.NONE);
+        return beginCreateOrUpdate(resourceGroupName, mapName, resource, Context.NONE);
     }
 
-    /**
-     * Create a MapsResource.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param mapName Maps resource name.
-     * @param resource Resource create parameters.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the {@link SyncPoller} for polling of a Maps resource.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public SyncPoller<PollResult<MapsResourceInner>, MapsResourceInner> beginCreateOrUpdate(String resourceGroupName,
         String mapName, MapsResourceInner resource, Context context) {
@@ -509,38 +464,17 @@ public final class MapsClientImpl implements MapsClient {
             .flatMap(this.client::getLroFinalResultOrError);
     }
 
-    /**
-     * Create a MapsResource.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param mapName Maps resource name.
-     * @param resource Resource create parameters.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return a Maps resource.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public MapsResourceInner createOrUpdate(String resourceGroupName, String mapName, MapsResourceInner resource) {
-        return beginCreateOrUpdate(resourceGroupName, mapName, resource).getFinalResult();
+        return createOrUpdate(resourceGroupName, mapName, resource, Context.NONE);
     }
 
-    /**
-     * Create a MapsResource.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param mapName Maps resource name.
-     * @param resource Resource create parameters.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return a Maps resource.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public MapsResourceInner createOrUpdate(String resourceGroupName, String mapName, MapsResourceInner resource,
         Context context) {
-        return beginCreateOrUpdate(resourceGroupName, mapName, resource, context).getFinalResult();
+        return this.client.getLroFinalResultOrError(beginCreateOrUpdate(resourceGroupName, mapName, resource, context));
     }
 
     /**
@@ -579,10 +513,7 @@ public final class MapsClientImpl implements MapsClient {
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Response<BinaryData> updateWithResponse(String resourceGroupName, String mapName,
         MapsResourceTagsUpdate properties) {
-        final String contentType = "application/json";
-        final String accept = "application/json";
-        return service.updateSync(this.client.getEndpoint(), this.client.getApiVersion(),
-            this.client.getSubscriptionId(), resourceGroupName, mapName, contentType, accept, properties, Context.NONE);
+        return updateWithResponse(resourceGroupName, mapName, properties, Context.NONE);
     }
 
     /**
@@ -625,37 +556,14 @@ public final class MapsClientImpl implements MapsClient {
             MapsResourceInner.class, MapsResourceInner.class, this.client.getContext());
     }
 
-    /**
-     * Update a MapsResource.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param mapName Maps resource name.
-     * @param properties The resource properties to be updated.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the {@link SyncPoller} for polling of a Maps resource.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public SyncPoller<PollResult<MapsResourceInner>, MapsResourceInner> beginUpdate(String resourceGroupName,
         String mapName, MapsResourceTagsUpdate properties) {
-        Response<BinaryData> response = updateWithResponse(resourceGroupName, mapName, properties);
-        return this.client.<MapsResourceInner, MapsResourceInner>getLroResult(response, MapsResourceInner.class,
-            MapsResourceInner.class, Context.NONE);
+        return beginUpdate(resourceGroupName, mapName, properties, Context.NONE);
     }
 
-    /**
-     * Update a MapsResource.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param mapName Maps resource name.
-     * @param properties The resource properties to be updated.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the {@link SyncPoller} for polling of a Maps resource.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public SyncPoller<PollResult<MapsResourceInner>, MapsResourceInner> beginUpdate(String resourceGroupName,
         String mapName, MapsResourceTagsUpdate properties, Context context) {
@@ -682,38 +590,17 @@ public final class MapsClientImpl implements MapsClient {
             .flatMap(this.client::getLroFinalResultOrError);
     }
 
-    /**
-     * Update a MapsResource.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param mapName Maps resource name.
-     * @param properties The resource properties to be updated.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return a Maps resource.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public MapsResourceInner update(String resourceGroupName, String mapName, MapsResourceTagsUpdate properties) {
-        return beginUpdate(resourceGroupName, mapName, properties).getFinalResult();
+        return update(resourceGroupName, mapName, properties, Context.NONE);
     }
 
-    /**
-     * Update a MapsResource.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param mapName Maps resource name.
-     * @param properties The resource properties to be updated.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return a Maps resource.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public MapsResourceInner update(String resourceGroupName, String mapName, MapsResourceTagsUpdate properties,
         Context context) {
-        return beginUpdate(resourceGroupName, mapName, properties, context).getFinalResult();
+        return this.client.getLroFinalResultOrError(beginUpdate(resourceGroupName, mapName, properties, context));
     }
 
     /**
@@ -746,8 +633,7 @@ public final class MapsClientImpl implements MapsClient {
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Response<BinaryData> deleteWithResponse(String resourceGroupName, String mapName) {
-        return service.deleteSync(this.client.getEndpoint(), this.client.getApiVersion(),
-            this.client.getSubscriptionId(), resourceGroupName, mapName, Context.NONE);
+        return deleteWithResponse(resourceGroupName, mapName, Context.NONE);
     }
 
     /**
@@ -784,33 +670,13 @@ public final class MapsClientImpl implements MapsClient {
             this.client.getContext());
     }
 
-    /**
-     * Delete a MapsResource.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param mapName Maps resource name.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the {@link SyncPoller} for polling of long-running operation.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public SyncPoller<PollResult<Void>, Void> beginDelete(String resourceGroupName, String mapName) {
-        Response<BinaryData> response = deleteWithResponse(resourceGroupName, mapName);
-        return this.client.<Void, Void>getLroResult(response, Void.class, Void.class, Context.NONE);
+        return beginDelete(resourceGroupName, mapName, Context.NONE);
     }
 
-    /**
-     * Delete a MapsResource.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param mapName Maps resource name.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the {@link SyncPoller} for polling of long-running operation.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public SyncPoller<PollResult<Void>, Void> beginDelete(String resourceGroupName, String mapName, Context context) {
         Response<BinaryData> response = deleteWithResponse(resourceGroupName, mapName, context);
@@ -832,33 +698,16 @@ public final class MapsClientImpl implements MapsClient {
         return beginDeleteAsync(resourceGroupName, mapName).last().flatMap(this.client::getLroFinalResultOrError);
     }
 
-    /**
-     * Delete a MapsResource.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param mapName Maps resource name.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public void delete(String resourceGroupName, String mapName) {
-        beginDelete(resourceGroupName, mapName).getFinalResult();
+        delete(resourceGroupName, mapName, Context.NONE);
     }
 
-    /**
-     * Delete a MapsResource.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param mapName Maps resource name.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public void delete(String resourceGroupName, String mapName, Context context) {
-        beginDelete(resourceGroupName, mapName, context).getFinalResult();
+        this.client.getLroFinalResultOrError(beginDelete(resourceGroupName, mapName, context));
     }
 
     /**
@@ -908,11 +757,7 @@ public final class MapsClientImpl implements MapsClient {
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private PagedResponse<MapsResourceInner> listByResourceGroupSinglePage(String resourceGroupName) {
-        final String accept = "application/json";
-        Response<MapsResourceListResult> res = service.listByResourceGroupSync(this.client.getEndpoint(),
-            this.client.getApiVersion(), this.client.getSubscriptionId(), resourceGroupName, accept, Context.NONE);
-        return new PagedResponseBase<>(res.getRequest(), res.getStatusCode(), res.getHeaders(), res.getValue().value(),
-            res.getValue().nextLink(), null);
+        return listByResourceGroupSinglePage(resourceGroupName, Context.NONE);
     }
 
     /**
@@ -934,31 +779,13 @@ public final class MapsClientImpl implements MapsClient {
             res.getValue().nextLink(), null);
     }
 
-    /**
-     * List MapsResource resources by resource group.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the response of a MapsResource list operation as paginated response with {@link PagedIterable}.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.COLLECTION)
     public PagedIterable<MapsResourceInner> listByResourceGroup(String resourceGroupName) {
-        return new PagedIterable<>(() -> listByResourceGroupSinglePage(resourceGroupName),
-            nextLink -> listByResourceGroupNextSinglePage(nextLink));
+        return listByResourceGroup(resourceGroupName, Context.NONE);
     }
 
-    /**
-     * List MapsResource resources by resource group.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the response of a MapsResource list operation as paginated response with {@link PagedIterable}.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.COLLECTION)
     public PagedIterable<MapsResourceInner> listByResourceGroup(String resourceGroupName, Context context) {
         return new PagedIterable<>(() -> listByResourceGroupSinglePage(resourceGroupName, context),
@@ -1006,11 +833,7 @@ public final class MapsClientImpl implements MapsClient {
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private PagedResponse<MapsResourceInner> listSinglePage() {
-        final String accept = "application/json";
-        Response<MapsResourceListResult> res = service.listSync(this.client.getEndpoint(), this.client.getApiVersion(),
-            this.client.getSubscriptionId(), accept, Context.NONE);
-        return new PagedResponseBase<>(res.getRequest(), res.getStatusCode(), res.getHeaders(), res.getValue().value(),
-            res.getValue().nextLink(), null);
+        return listSinglePage(Context.NONE);
     }
 
     /**
@@ -1031,27 +854,13 @@ public final class MapsClientImpl implements MapsClient {
             res.getValue().nextLink(), null);
     }
 
-    /**
-     * List MapsResource resources by subscription ID.
-     * 
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the response of a MapsResource list operation as paginated response with {@link PagedIterable}.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.COLLECTION)
     public PagedIterable<MapsResourceInner> list() {
-        return new PagedIterable<>(() -> listSinglePage(), nextLink -> listBySubscriptionNextSinglePage(nextLink));
+        return list(Context.NONE);
     }
 
-    /**
-     * List MapsResource resources by subscription ID.
-     * 
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the response of a MapsResource list operation as paginated response with {@link PagedIterable}.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.COLLECTION)
     public PagedIterable<MapsResourceInner> list(Context context) {
         return new PagedIterable<>(() -> listSinglePage(context),
@@ -1094,9 +903,7 @@ public final class MapsClientImpl implements MapsClient {
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Response<BinaryData> getDependencyViewForFocusedMachineWithResponse(String resourceGroupName,
         String mapName, GetDependencyViewForFocusedMachineRequest body) {
-        final String contentType = "application/json";
-        return service.getDependencyViewForFocusedMachineSync(this.client.getEndpoint(), this.client.getApiVersion(),
-            this.client.getSubscriptionId(), resourceGroupName, mapName, contentType, body, Context.NONE);
+        return getDependencyViewForFocusedMachineWithResponse(resourceGroupName, mapName, body, Context.NONE);
     }
 
     /**
@@ -1139,37 +946,14 @@ public final class MapsClientImpl implements MapsClient {
             this.client.getContext());
     }
 
-    /**
-     * Get dependency map of single machine.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param mapName Maps resource name.
-     * @param body The content of the action request.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the {@link SyncPoller} for polling of dependency map of single machine.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public SyncPoller<PollResult<Void>, Void> beginGetDependencyViewForFocusedMachine(String resourceGroupName,
         String mapName, GetDependencyViewForFocusedMachineRequest body) {
-        Response<BinaryData> response
-            = getDependencyViewForFocusedMachineWithResponse(resourceGroupName, mapName, body);
-        return this.client.<Void, Void>getLroResult(response, Void.class, Void.class, Context.NONE);
+        return beginGetDependencyViewForFocusedMachine(resourceGroupName, mapName, body, Context.NONE);
     }
 
-    /**
-     * Get dependency map of single machine.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param mapName Maps resource name.
-     * @param body The content of the action request.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the {@link SyncPoller} for polling of dependency map of single machine.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public SyncPoller<PollResult<Void>, Void> beginGetDependencyViewForFocusedMachine(String resourceGroupName,
         String mapName, GetDependencyViewForFocusedMachineRequest body, Context context) {
@@ -1196,37 +980,19 @@ public final class MapsClientImpl implements MapsClient {
             .flatMap(this.client::getLroFinalResultOrError);
     }
 
-    /**
-     * Get dependency map of single machine.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param mapName Maps resource name.
-     * @param body The content of the action request.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public void getDependencyViewForFocusedMachine(String resourceGroupName, String mapName,
         GetDependencyViewForFocusedMachineRequest body) {
-        beginGetDependencyViewForFocusedMachine(resourceGroupName, mapName, body).getFinalResult();
+        getDependencyViewForFocusedMachine(resourceGroupName, mapName, body, Context.NONE);
     }
 
-    /**
-     * Get dependency map of single machine.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param mapName Maps resource name.
-     * @param body The content of the action request.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public void getDependencyViewForFocusedMachine(String resourceGroupName, String mapName,
         GetDependencyViewForFocusedMachineRequest body, Context context) {
-        beginGetDependencyViewForFocusedMachine(resourceGroupName, mapName, body, context).getFinalResult();
+        this.client.getLroFinalResultOrError(
+            beginGetDependencyViewForFocusedMachine(resourceGroupName, mapName, body, context));
     }
 
     /**
@@ -1266,9 +1032,7 @@ public final class MapsClientImpl implements MapsClient {
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Response<BinaryData> getConnectionsWithConnectedMachineForFocusedMachineWithResponse(
         String resourceGroupName, String mapName, GetConnectionsWithConnectedMachineForFocusedMachineRequest body) {
-        final String contentType = "application/json";
-        return service.getConnectionsWithConnectedMachineForFocusedMachineSync(this.client.getEndpoint(),
-            this.client.getApiVersion(), this.client.getSubscriptionId(), resourceGroupName, mapName, contentType, body,
+        return getConnectionsWithConnectedMachineForFocusedMachineWithResponse(resourceGroupName, mapName, body,
             Context.NONE);
     }
 
@@ -1314,37 +1078,14 @@ public final class MapsClientImpl implements MapsClient {
             this.client.getContext());
     }
 
-    /**
-     * Get network connections between machines.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param mapName Maps resource name.
-     * @param body The content of the action request.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the {@link SyncPoller} for polling of network connections between machines.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public SyncPoller<PollResult<Void>, Void> beginGetConnectionsWithConnectedMachineForFocusedMachine(
         String resourceGroupName, String mapName, GetConnectionsWithConnectedMachineForFocusedMachineRequest body) {
-        Response<BinaryData> response
-            = getConnectionsWithConnectedMachineForFocusedMachineWithResponse(resourceGroupName, mapName, body);
-        return this.client.<Void, Void>getLroResult(response, Void.class, Void.class, Context.NONE);
+        return beginGetConnectionsWithConnectedMachineForFocusedMachine(resourceGroupName, mapName, body, Context.NONE);
     }
 
-    /**
-     * Get network connections between machines.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param mapName Maps resource name.
-     * @param body The content of the action request.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the {@link SyncPoller} for polling of network connections between machines.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public SyncPoller<PollResult<Void>, Void> beginGetConnectionsWithConnectedMachineForFocusedMachine(
         String resourceGroupName, String mapName, GetConnectionsWithConnectedMachineForFocusedMachineRequest body,
@@ -1372,38 +1113,19 @@ public final class MapsClientImpl implements MapsClient {
             .flatMap(this.client::getLroFinalResultOrError);
     }
 
-    /**
-     * Get network connections between machines.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param mapName Maps resource name.
-     * @param body The content of the action request.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public void getConnectionsWithConnectedMachineForFocusedMachine(String resourceGroupName, String mapName,
         GetConnectionsWithConnectedMachineForFocusedMachineRequest body) {
-        beginGetConnectionsWithConnectedMachineForFocusedMachine(resourceGroupName, mapName, body).getFinalResult();
+        getConnectionsWithConnectedMachineForFocusedMachine(resourceGroupName, mapName, body, Context.NONE);
     }
 
-    /**
-     * Get network connections between machines.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param mapName Maps resource name.
-     * @param body The content of the action request.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public void getConnectionsWithConnectedMachineForFocusedMachine(String resourceGroupName, String mapName,
         GetConnectionsWithConnectedMachineForFocusedMachineRequest body, Context context) {
-        beginGetConnectionsWithConnectedMachineForFocusedMachine(resourceGroupName, mapName, body, context)
-            .getFinalResult();
+        this.client.getLroFinalResultOrError(
+            beginGetConnectionsWithConnectedMachineForFocusedMachine(resourceGroupName, mapName, body, context));
     }
 
     /**
@@ -1442,10 +1164,7 @@ public final class MapsClientImpl implements MapsClient {
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Response<BinaryData> getConnectionsForProcessOnFocusedMachineWithResponse(String resourceGroupName,
         String mapName, GetConnectionsForProcessOnFocusedMachineRequest body) {
-        final String contentType = "application/json";
-        return service.getConnectionsForProcessOnFocusedMachineSync(this.client.getEndpoint(),
-            this.client.getApiVersion(), this.client.getSubscriptionId(), resourceGroupName, mapName, contentType, body,
-            Context.NONE);
+        return getConnectionsForProcessOnFocusedMachineWithResponse(resourceGroupName, mapName, body, Context.NONE);
     }
 
     /**
@@ -1489,37 +1208,14 @@ public final class MapsClientImpl implements MapsClient {
             this.client.getContext());
     }
 
-    /**
-     * Get network connections of a process.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param mapName Maps resource name.
-     * @param body The content of the action request.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the {@link SyncPoller} for polling of network connections of a process.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public SyncPoller<PollResult<Void>, Void> beginGetConnectionsForProcessOnFocusedMachine(String resourceGroupName,
         String mapName, GetConnectionsForProcessOnFocusedMachineRequest body) {
-        Response<BinaryData> response
-            = getConnectionsForProcessOnFocusedMachineWithResponse(resourceGroupName, mapName, body);
-        return this.client.<Void, Void>getLroResult(response, Void.class, Void.class, Context.NONE);
+        return beginGetConnectionsForProcessOnFocusedMachine(resourceGroupName, mapName, body, Context.NONE);
     }
 
-    /**
-     * Get network connections of a process.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param mapName Maps resource name.
-     * @param body The content of the action request.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the {@link SyncPoller} for polling of network connections of a process.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public SyncPoller<PollResult<Void>, Void> beginGetConnectionsForProcessOnFocusedMachine(String resourceGroupName,
         String mapName, GetConnectionsForProcessOnFocusedMachineRequest body, Context context) {
@@ -1546,37 +1242,19 @@ public final class MapsClientImpl implements MapsClient {
             .flatMap(this.client::getLroFinalResultOrError);
     }
 
-    /**
-     * Get network connections of a process.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param mapName Maps resource name.
-     * @param body The content of the action request.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public void getConnectionsForProcessOnFocusedMachine(String resourceGroupName, String mapName,
         GetConnectionsForProcessOnFocusedMachineRequest body) {
-        beginGetConnectionsForProcessOnFocusedMachine(resourceGroupName, mapName, body).getFinalResult();
+        getConnectionsForProcessOnFocusedMachine(resourceGroupName, mapName, body, Context.NONE);
     }
 
-    /**
-     * Get network connections of a process.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param mapName Maps resource name.
-     * @param body The content of the action request.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public void getConnectionsForProcessOnFocusedMachine(String resourceGroupName, String mapName,
         GetConnectionsForProcessOnFocusedMachineRequest body, Context context) {
-        beginGetConnectionsForProcessOnFocusedMachine(resourceGroupName, mapName, body, context).getFinalResult();
+        this.client.getLroFinalResultOrError(
+            beginGetConnectionsForProcessOnFocusedMachine(resourceGroupName, mapName, body, context));
     }
 
     /**
@@ -1617,10 +1295,7 @@ public final class MapsClientImpl implements MapsClient {
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Response<BinaryData> exportDependenciesWithResponse(String resourceGroupName, String mapName,
         ExportDependenciesRequest body) {
-        final String contentType = "application/json";
-        final String accept = "application/json";
-        return service.exportDependenciesSync(this.client.getEndpoint(), this.client.getApiVersion(),
-            this.client.getSubscriptionId(), resourceGroupName, mapName, contentType, accept, body, Context.NONE);
+        return exportDependenciesWithResponse(resourceGroupName, mapName, body, Context.NONE);
     }
 
     /**
@@ -1666,40 +1341,14 @@ public final class MapsClientImpl implements MapsClient {
             ExportDependenciesOperationResultInner.class, this.client.getContext());
     }
 
-    /**
-     * Export dependencies.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param mapName Maps resource name.
-     * @param body The content of the action request.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the {@link SyncPoller} for polling of model representing the result of the export dependencies
-     * asynchronous operation.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public SyncPoller<PollResult<ExportDependenciesOperationResultInner>, ExportDependenciesOperationResultInner>
         beginExportDependencies(String resourceGroupName, String mapName, ExportDependenciesRequest body) {
-        Response<BinaryData> response = exportDependenciesWithResponse(resourceGroupName, mapName, body);
-        return this.client.<ExportDependenciesOperationResultInner, ExportDependenciesOperationResultInner>getLroResult(
-            response, ExportDependenciesOperationResultInner.class, ExportDependenciesOperationResultInner.class,
-            Context.NONE);
+        return beginExportDependencies(resourceGroupName, mapName, body, Context.NONE);
     }
 
-    /**
-     * Export dependencies.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param mapName Maps resource name.
-     * @param body The content of the action request.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the {@link SyncPoller} for polling of model representing the result of the export dependencies
-     * asynchronous operation.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public SyncPoller<PollResult<ExportDependenciesOperationResultInner>, ExportDependenciesOperationResultInner>
         beginExportDependencies(String resourceGroupName, String mapName, ExportDependenciesRequest body,
@@ -1729,39 +1378,18 @@ public final class MapsClientImpl implements MapsClient {
             .flatMap(this.client::getLroFinalResultOrError);
     }
 
-    /**
-     * Export dependencies.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param mapName Maps resource name.
-     * @param body The content of the action request.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return model representing the result of the export dependencies asynchronous operation.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public ExportDependenciesOperationResultInner exportDependencies(String resourceGroupName, String mapName,
         ExportDependenciesRequest body) {
-        return beginExportDependencies(resourceGroupName, mapName, body).getFinalResult();
+        return exportDependencies(resourceGroupName, mapName, body, Context.NONE);
     }
 
-    /**
-     * Export dependencies.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param mapName Maps resource name.
-     * @param body The content of the action request.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return model representing the result of the export dependencies asynchronous operation.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public ExportDependenciesOperationResultInner exportDependencies(String resourceGroupName, String mapName,
         ExportDependenciesRequest body, Context context) {
-        return beginExportDependencies(resourceGroupName, mapName, body, context).getFinalResult();
+        return this.client.getLroFinalResultOrError(beginExportDependencies(resourceGroupName, mapName, body, context));
     }
 
     /**
@@ -1796,11 +1424,7 @@ public final class MapsClientImpl implements MapsClient {
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private PagedResponse<MapsResourceInner> listByResourceGroupNextSinglePage(String nextLink) {
-        final String accept = "application/json";
-        Response<MapsResourceListResult> res
-            = service.listByResourceGroupNextSync(nextLink, this.client.getEndpoint(), accept, Context.NONE);
-        return new PagedResponseBase<>(res.getRequest(), res.getStatusCode(), res.getHeaders(), res.getValue().value(),
-            res.getValue().nextLink(), null);
+        return listByResourceGroupNextSinglePage(nextLink, Context.NONE);
     }
 
     /**
@@ -1854,11 +1478,7 @@ public final class MapsClientImpl implements MapsClient {
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private PagedResponse<MapsResourceInner> listBySubscriptionNextSinglePage(String nextLink) {
-        final String accept = "application/json";
-        Response<MapsResourceListResult> res
-            = service.listBySubscriptionNextSync(nextLink, this.client.getEndpoint(), accept, Context.NONE);
-        return new PagedResponseBase<>(res.getRequest(), res.getStatusCode(), res.getHeaders(), res.getValue().value(),
-            res.getValue().nextLink(), null);
+        return listBySubscriptionNextSinglePage(nextLink, Context.NONE);
     }
 
     /**

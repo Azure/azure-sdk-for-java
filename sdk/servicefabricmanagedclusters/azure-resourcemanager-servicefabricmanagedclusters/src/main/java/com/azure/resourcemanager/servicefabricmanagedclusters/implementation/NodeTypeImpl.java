@@ -385,10 +385,7 @@ public final class NodeTypeImpl implements NodeType, NodeType.Definition, NodeTy
     }
 
     public NodeType create() {
-        this.innerObject = serviceManager.serviceClient()
-            .getNodeTypes()
-            .createOrUpdate(resourceGroupName, clusterName, nodeTypeName, this.innerModel(), Context.NONE);
-        return this;
+        return this.create(Context.NONE);
     }
 
     public NodeType create(Context context) {
@@ -411,10 +408,7 @@ public final class NodeTypeImpl implements NodeType, NodeType.Definition, NodeTy
     }
 
     public NodeType apply() {
-        this.innerObject = serviceManager.serviceClient()
-            .getNodeTypes()
-            .update(resourceGroupName, clusterName, nodeTypeName, updateParameters, Context.NONE);
-        return this;
+        return this.apply(Context.NONE);
     }
 
     public NodeType apply(Context context) {
@@ -440,11 +434,7 @@ public final class NodeTypeImpl implements NodeType, NodeType.Definition, NodeTy
     }
 
     public NodeType refresh() {
-        this.innerObject = serviceManager.serviceClient()
-            .getNodeTypes()
-            .getWithResponse(resourceGroupName, clusterName, nodeTypeName, Context.NONE)
-            .getValue();
-        return this;
+        return this.refresh(Context.NONE);
     }
 
     public NodeType refresh(Context context) {

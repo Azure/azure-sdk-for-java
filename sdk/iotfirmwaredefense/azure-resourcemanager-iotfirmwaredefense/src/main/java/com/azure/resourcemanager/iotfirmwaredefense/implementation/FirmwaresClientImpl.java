@@ -216,18 +216,7 @@ public final class FirmwaresClientImpl implements FirmwaresClient {
             .flatMap(res -> Mono.justOrEmpty(res.getValue()));
     }
 
-    /**
-     * Get firmware.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param workspaceName The name of the firmware analysis workspace.
-     * @param firmwareId The id of the firmware.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return firmware along with {@link Response}.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Response<FirmwareInner> getWithResponse(String resourceGroupName, String workspaceName, String firmwareId,
         Context context) {
@@ -236,17 +225,7 @@ public final class FirmwaresClientImpl implements FirmwaresClient {
             resourceGroupName, workspaceName, firmwareId, accept, context);
     }
 
-    /**
-     * Get firmware.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param workspaceName The name of the firmware analysis workspace.
-     * @param firmwareId The id of the firmware.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return firmware.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public FirmwareInner get(String resourceGroupName, String workspaceName, String firmwareId) {
         return getWithResponse(resourceGroupName, workspaceName, firmwareId, Context.NONE).getValue();
@@ -295,19 +274,7 @@ public final class FirmwaresClientImpl implements FirmwaresClient {
             .flatMap(res -> Mono.justOrEmpty(res.getValue()));
     }
 
-    /**
-     * The operation to create a firmware.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param workspaceName The name of the firmware analysis workspace.
-     * @param firmwareId The id of the firmware.
-     * @param resource Details of the firmware being created or updated.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return firmware definition along with {@link Response}.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Response<FirmwareInner> createWithResponse(String resourceGroupName, String workspaceName, String firmwareId,
         FirmwareInner resource, Context context) {
@@ -318,18 +285,7 @@ public final class FirmwaresClientImpl implements FirmwaresClient {
             resource, context);
     }
 
-    /**
-     * The operation to create a firmware.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param workspaceName The name of the firmware analysis workspace.
-     * @param firmwareId The id of the firmware.
-     * @param resource Details of the firmware being created or updated.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return firmware definition.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public FirmwareInner create(String resourceGroupName, String workspaceName, String firmwareId,
         FirmwareInner resource) {
@@ -379,19 +335,7 @@ public final class FirmwaresClientImpl implements FirmwaresClient {
             .flatMap(res -> Mono.justOrEmpty(res.getValue()));
     }
 
-    /**
-     * The operation to update firmware.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param workspaceName The name of the firmware analysis workspace.
-     * @param firmwareId The id of the firmware.
-     * @param properties Details of the firmware being created or updated.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return firmware definition along with {@link Response}.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Response<FirmwareInner> updateWithResponse(String resourceGroupName, String workspaceName, String firmwareId,
         FirmwareUpdateDefinition properties, Context context) {
@@ -402,18 +346,7 @@ public final class FirmwaresClientImpl implements FirmwaresClient {
             properties, context);
     }
 
-    /**
-     * The operation to update firmware.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param workspaceName The name of the firmware analysis workspace.
-     * @param firmwareId The id of the firmware.
-     * @param properties Details of the firmware being created or updated.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return firmware definition.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public FirmwareInner update(String resourceGroupName, String workspaceName, String firmwareId,
         FirmwareUpdateDefinition properties) {
@@ -456,18 +389,7 @@ public final class FirmwaresClientImpl implements FirmwaresClient {
         return deleteWithResponseAsync(resourceGroupName, workspaceName, firmwareId).flatMap(ignored -> Mono.empty());
     }
 
-    /**
-     * The operation to delete a firmware.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param workspaceName The name of the firmware analysis workspace.
-     * @param firmwareId The id of the firmware.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the {@link Response}.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Response<Void> deleteWithResponse(String resourceGroupName, String workspaceName, String firmwareId,
         Context context) {
@@ -475,16 +397,7 @@ public final class FirmwaresClientImpl implements FirmwaresClient {
             this.client.getSubscriptionId(), resourceGroupName, workspaceName, firmwareId, context);
     }
 
-    /**
-     * The operation to delete a firmware.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param workspaceName The name of the firmware analysis workspace.
-     * @param firmwareId The id of the firmware.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public void delete(String resourceGroupName, String workspaceName, String firmwareId) {
         deleteWithResponse(resourceGroupName, workspaceName, firmwareId, Context.NONE);
@@ -541,12 +454,7 @@ public final class FirmwaresClientImpl implements FirmwaresClient {
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private PagedResponse<FirmwareInner> listByWorkspaceSinglePage(String resourceGroupName, String workspaceName) {
-        final String accept = "application/json";
-        Response<FirmwareListResult> res
-            = service.listByWorkspaceSync(this.client.getEndpoint(), this.client.getApiVersion(),
-                this.client.getSubscriptionId(), resourceGroupName, workspaceName, accept, Context.NONE);
-        return new PagedResponseBase<>(res.getRequest(), res.getStatusCode(), res.getHeaders(), res.getValue().value(),
-            res.getValue().nextLink(), null);
+        return listByWorkspaceSinglePage(resourceGroupName, workspaceName, Context.NONE);
     }
 
     /**
@@ -571,33 +479,13 @@ public final class FirmwaresClientImpl implements FirmwaresClient {
             res.getValue().nextLink(), null);
     }
 
-    /**
-     * Lists all of firmwares inside a workspace.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param workspaceName The name of the firmware analysis workspace.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the response of a Firmware list operation as paginated response with {@link PagedIterable}.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.COLLECTION)
     public PagedIterable<FirmwareInner> listByWorkspace(String resourceGroupName, String workspaceName) {
-        return new PagedIterable<>(() -> listByWorkspaceSinglePage(resourceGroupName, workspaceName),
-            nextLink -> listByWorkspaceNextSinglePage(nextLink));
+        return listByWorkspace(resourceGroupName, workspaceName, Context.NONE);
     }
 
-    /**
-     * Lists all of firmwares inside a workspace.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param workspaceName The name of the firmware analysis workspace.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the response of a Firmware list operation as paginated response with {@link PagedIterable}.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.COLLECTION)
     public PagedIterable<FirmwareInner> listByWorkspace(String resourceGroupName, String workspaceName,
         Context context) {
@@ -636,11 +524,7 @@ public final class FirmwaresClientImpl implements FirmwaresClient {
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private PagedResponse<FirmwareInner> listByWorkspaceNextSinglePage(String nextLink) {
-        final String accept = "application/json";
-        Response<FirmwareListResult> res
-            = service.listByWorkspaceNextSync(nextLink, this.client.getEndpoint(), accept, Context.NONE);
-        return new PagedResponseBase<>(res.getRequest(), res.getStatusCode(), res.getHeaders(), res.getValue().value(),
-            res.getValue().nextLink(), null);
+        return listByWorkspaceNextSinglePage(nextLink, Context.NONE);
     }
 
     /**

@@ -49,12 +49,11 @@ public final class CustomRolloutsImpl implements CustomRollouts {
     }
 
     public void deleteByResourceGroup(String providerNamespace, String rolloutName) {
-        this.serviceClient().delete(providerNamespace, rolloutName);
+        this.deleteByResourceGroupWithResponse(providerNamespace, rolloutName, Context.NONE);
     }
 
     public PagedIterable<CustomRollout> listByProviderRegistration(String providerNamespace) {
-        PagedIterable<CustomRolloutInner> inner = this.serviceClient().listByProviderRegistration(providerNamespace);
-        return ResourceManagerUtils.mapPage(inner, inner1 -> new CustomRolloutImpl(inner1, this.manager()));
+        return this.listByProviderRegistration(providerNamespace, Context.NONE);
     }
 
     public PagedIterable<CustomRollout> listByProviderRegistration(String providerNamespace, Context context) {
@@ -68,78 +67,34 @@ public final class CustomRolloutsImpl implements CustomRollouts {
     }
 
     public void stop(String providerNamespace, String rolloutName) {
-        this.serviceClient().stop(providerNamespace, rolloutName);
+        this.stopWithResponse(providerNamespace, rolloutName, Context.NONE);
     }
 
     public CustomRollout getById(String id) {
-        String providerNamespace = ResourceManagerUtils.getValueFromIdByParameterName(id,
-            "/subscriptions/{subscriptionId}/providers/Microsoft.ProviderHub/providerRegistrations/{providerNamespace}/customRollouts/{rolloutName}",
-            "providerNamespace");
-        if (providerNamespace == null) {
-            throw LOGGER.logExceptionAsError(new IllegalArgumentException(
-                String.format("The resource ID '%s' is not valid. Missing path segment 'providerRegistrations'.", id)));
-        }
-        String rolloutName = ResourceManagerUtils.getValueFromIdByParameterName(id,
-            "/subscriptions/{subscriptionId}/providers/Microsoft.ProviderHub/providerRegistrations/{providerNamespace}/customRollouts/{rolloutName}",
-            "rolloutName");
-        if (rolloutName == null) {
-            throw LOGGER.logExceptionAsError(new IllegalArgumentException(
-                String.format("The resource ID '%s' is not valid. Missing path segment 'customRollouts'.", id)));
-        }
-        return this.getWithResponse(providerNamespace, rolloutName, Context.NONE).getValue();
+        return this.getByIdWithResponse(id, Context.NONE).getValue();
     }
 
     public Response<CustomRollout> getByIdWithResponse(String id, Context context) {
-        String providerNamespace = ResourceManagerUtils.getValueFromIdByParameterName(id,
+        String providerNamespace = ResourceManagerUtils.getRequiredValueFromIdByParameterName(id,
             "/subscriptions/{subscriptionId}/providers/Microsoft.ProviderHub/providerRegistrations/{providerNamespace}/customRollouts/{rolloutName}",
-            "providerNamespace");
-        if (providerNamespace == null) {
-            throw LOGGER.logExceptionAsError(new IllegalArgumentException(
-                String.format("The resource ID '%s' is not valid. Missing path segment 'providerRegistrations'.", id)));
-        }
-        String rolloutName = ResourceManagerUtils.getValueFromIdByParameterName(id,
+            "providerNamespace", "providerRegistrations", LOGGER);
+        String rolloutName = ResourceManagerUtils.getRequiredValueFromIdByParameterName(id,
             "/subscriptions/{subscriptionId}/providers/Microsoft.ProviderHub/providerRegistrations/{providerNamespace}/customRollouts/{rolloutName}",
-            "rolloutName");
-        if (rolloutName == null) {
-            throw LOGGER.logExceptionAsError(new IllegalArgumentException(
-                String.format("The resource ID '%s' is not valid. Missing path segment 'customRollouts'.", id)));
-        }
+            "rolloutName", "customRollouts", LOGGER);
         return this.getWithResponse(providerNamespace, rolloutName, context);
     }
 
     public void deleteById(String id) {
-        String providerNamespace = ResourceManagerUtils.getValueFromIdByParameterName(id,
-            "/subscriptions/{subscriptionId}/providers/Microsoft.ProviderHub/providerRegistrations/{providerNamespace}/customRollouts/{rolloutName}",
-            "providerNamespace");
-        if (providerNamespace == null) {
-            throw LOGGER.logExceptionAsError(new IllegalArgumentException(
-                String.format("The resource ID '%s' is not valid. Missing path segment 'providerRegistrations'.", id)));
-        }
-        String rolloutName = ResourceManagerUtils.getValueFromIdByParameterName(id,
-            "/subscriptions/{subscriptionId}/providers/Microsoft.ProviderHub/providerRegistrations/{providerNamespace}/customRollouts/{rolloutName}",
-            "rolloutName");
-        if (rolloutName == null) {
-            throw LOGGER.logExceptionAsError(new IllegalArgumentException(
-                String.format("The resource ID '%s' is not valid. Missing path segment 'customRollouts'.", id)));
-        }
-        this.deleteByResourceGroupWithResponse(providerNamespace, rolloutName, Context.NONE);
+        this.deleteByIdWithResponse(id, Context.NONE);
     }
 
     public Response<Void> deleteByIdWithResponse(String id, Context context) {
-        String providerNamespace = ResourceManagerUtils.getValueFromIdByParameterName(id,
+        String providerNamespace = ResourceManagerUtils.getRequiredValueFromIdByParameterName(id,
             "/subscriptions/{subscriptionId}/providers/Microsoft.ProviderHub/providerRegistrations/{providerNamespace}/customRollouts/{rolloutName}",
-            "providerNamespace");
-        if (providerNamespace == null) {
-            throw LOGGER.logExceptionAsError(new IllegalArgumentException(
-                String.format("The resource ID '%s' is not valid. Missing path segment 'providerRegistrations'.", id)));
-        }
-        String rolloutName = ResourceManagerUtils.getValueFromIdByParameterName(id,
+            "providerNamespace", "providerRegistrations", LOGGER);
+        String rolloutName = ResourceManagerUtils.getRequiredValueFromIdByParameterName(id,
             "/subscriptions/{subscriptionId}/providers/Microsoft.ProviderHub/providerRegistrations/{providerNamespace}/customRollouts/{rolloutName}",
-            "rolloutName");
-        if (rolloutName == null) {
-            throw LOGGER.logExceptionAsError(new IllegalArgumentException(
-                String.format("The resource ID '%s' is not valid. Missing path segment 'customRollouts'.", id)));
-        }
+            "rolloutName", "customRollouts", LOGGER);
         return this.deleteByResourceGroupWithResponse(providerNamespace, rolloutName, context);
     }
 

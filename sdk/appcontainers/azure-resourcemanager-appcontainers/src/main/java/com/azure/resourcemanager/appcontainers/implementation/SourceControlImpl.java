@@ -73,10 +73,7 @@ public final class SourceControlImpl implements SourceControl, SourceControl.Def
     }
 
     public SourceControl create() {
-        this.innerObject = serviceManager.serviceClient()
-            .getContainerAppsSourceControls()
-            .createOrUpdate(resourceGroupName, containerAppName, sourceControlName, this.innerModel(), Context.NONE);
-        return this;
+        return this.create(Context.NONE);
     }
 
     public SourceControl create(Context context) {
@@ -97,10 +94,7 @@ public final class SourceControlImpl implements SourceControl, SourceControl.Def
     }
 
     public SourceControl apply() {
-        this.innerObject = serviceManager.serviceClient()
-            .getContainerAppsSourceControls()
-            .createOrUpdate(resourceGroupName, containerAppName, sourceControlName, this.innerModel(), Context.NONE);
-        return this;
+        return this.apply(Context.NONE);
     }
 
     public SourceControl apply(Context context) {
@@ -126,11 +120,7 @@ public final class SourceControlImpl implements SourceControl, SourceControl.Def
     }
 
     public SourceControl refresh() {
-        this.innerObject = serviceManager.serviceClient()
-            .getContainerAppsSourceControls()
-            .getWithResponse(resourceGroupName, containerAppName, sourceControlName, Context.NONE)
-            .getValue();
-        return this;
+        return this.refresh(Context.NONE);
     }
 
     public SourceControl refresh(Context context) {

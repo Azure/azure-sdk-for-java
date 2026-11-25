@@ -215,12 +215,7 @@ public final class GroupQuotaLimitsRequestsClientImpl implements GroupQuotaLimit
     @ServiceMethod(returns = ReturnType.SINGLE)
     private PagedResponse<SubmittedResourceRequestStatusInner> listSinglePage(String managementGroupId,
         String groupQuotaName, String resourceProviderName, String filter) {
-        final String accept = "application/json";
-        Response<SubmittedResourceRequestStatusList> res
-            = service.listSync(this.client.getEndpoint(), this.client.getApiVersion(), managementGroupId,
-                groupQuotaName, resourceProviderName, filter, accept, Context.NONE);
-        return new PagedResponseBase<>(res.getRequest(), res.getStatusCode(), res.getHeaders(), res.getValue().value(),
-            res.getValue().nextLink(), null);
+        return listSinglePage(managementGroupId, groupQuotaName, resourceProviderName, filter, Context.NONE);
     }
 
     /**
@@ -249,45 +244,14 @@ public final class GroupQuotaLimitsRequestsClientImpl implements GroupQuotaLimit
             res.getValue().nextLink(), null);
     }
 
-    /**
-     * Get API to check the status of a GroupQuota request by requestId.
-     * 
-     * @param managementGroupId The management group ID.
-     * @param groupQuotaName The GroupQuota name. The name should be unique for the provided context tenantId/MgId.
-     * @param resourceProviderName The resource provider name, such as - Microsoft.Compute. Currently only
-     * Microsoft.Compute resource provider supports this API.
-     * @param filter | Field | Supported operators \r\n|---------------------|------------------------\n\r\n location eq
-     * {location} and resource eq {resourceName}\n Example: $filter=location eq eastus and resourceName eq cores.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return aPI to check the status of a GroupQuota request by requestId as paginated response with
-     * {@link PagedIterable}.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.COLLECTION)
     public PagedIterable<SubmittedResourceRequestStatusInner> list(String managementGroupId, String groupQuotaName,
         String resourceProviderName, String filter) {
-        return new PagedIterable<>(
-            () -> listSinglePage(managementGroupId, groupQuotaName, resourceProviderName, filter),
-            nextLink -> listNextSinglePage(nextLink));
+        return list(managementGroupId, groupQuotaName, resourceProviderName, filter, Context.NONE);
     }
 
-    /**
-     * Get API to check the status of a GroupQuota request by requestId.
-     * 
-     * @param managementGroupId The management group ID.
-     * @param groupQuotaName The GroupQuota name. The name should be unique for the provided context tenantId/MgId.
-     * @param resourceProviderName The resource provider name, such as - Microsoft.Compute. Currently only
-     * Microsoft.Compute resource provider supports this API.
-     * @param filter | Field | Supported operators \r\n|---------------------|------------------------\n\r\n location eq
-     * {location} and resource eq {resourceName}\n Example: $filter=location eq eastus and resourceName eq cores.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return aPI to check the status of a GroupQuota request by requestId as paginated response with
-     * {@link PagedIterable}.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.COLLECTION)
     public PagedIterable<SubmittedResourceRequestStatusInner> list(String managementGroupId, String groupQuotaName,
         String resourceProviderName, String filter, Context context) {
@@ -347,9 +311,8 @@ public final class GroupQuotaLimitsRequestsClientImpl implements GroupQuotaLimit
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Response<BinaryData> updateWithResponse(String managementGroupId, String groupQuotaName,
         String resourceProviderName, String location, GroupQuotaLimitListInner groupQuotaRequest) {
-        final String accept = "application/json";
-        return service.updateSync(this.client.getEndpoint(), this.client.getApiVersion(), managementGroupId,
-            groupQuotaName, resourceProviderName, location, accept, groupQuotaRequest, Context.NONE);
+        return updateWithResponse(managementGroupId, groupQuotaName, resourceProviderName, location, groupQuotaRequest,
+            Context.NONE);
     }
 
     /**
@@ -459,63 +422,23 @@ public final class GroupQuotaLimitsRequestsClientImpl implements GroupQuotaLimit
      * @return the {@link SyncPoller} for polling of list of Group Quota Limit details.
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
-    public SyncPoller<PollResult<GroupQuotaLimitListInner>, GroupQuotaLimitListInner> beginUpdate(
+    private SyncPoller<PollResult<GroupQuotaLimitListInner>, GroupQuotaLimitListInner> beginUpdate(
         String managementGroupId, String groupQuotaName, String resourceProviderName, String location,
         GroupQuotaLimitListInner groupQuotaRequest) {
-        Response<BinaryData> response
-            = updateWithResponse(managementGroupId, groupQuotaName, resourceProviderName, location, groupQuotaRequest);
-        return this.client.<GroupQuotaLimitListInner, GroupQuotaLimitListInner>getLroResult(response,
-            GroupQuotaLimitListInner.class, GroupQuotaLimitListInner.class, Context.NONE);
+        return beginUpdate(managementGroupId, groupQuotaName, resourceProviderName, location, groupQuotaRequest,
+            Context.NONE);
     }
 
-    /**
-     * Create the GroupQuota requests for a specific ResourceProvider/Location/Resource. The resourceName properties are
-     * specified in the request body. Only 1 resource quota can be requested. Please note that patch request creates a
-     * new groupQuota request.
-     * Use the polling API - OperationsStatus URI specified in Azure-AsyncOperation header field, with retry-after
-     * duration in seconds to check the intermediate status. This API provides the finals status with the request
-     * details and status.
-     * 
-     * @param managementGroupId The management group ID.
-     * @param groupQuotaName The GroupQuota name. The name should be unique for the provided context tenantId/MgId.
-     * @param resourceProviderName The resource provider name, such as - Microsoft.Compute. Currently only
-     * Microsoft.Compute resource provider supports this API.
-     * @param location The name of the Azure region.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the {@link SyncPoller} for polling of list of Group Quota Limit details.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public SyncPoller<PollResult<GroupQuotaLimitListInner>, GroupQuotaLimitListInner>
         beginUpdate(String managementGroupId, String groupQuotaName, String resourceProviderName, String location) {
         final GroupQuotaLimitListInner groupQuotaRequest = null;
-        Response<BinaryData> response
-            = updateWithResponse(managementGroupId, groupQuotaName, resourceProviderName, location, groupQuotaRequest);
-        return this.client.<GroupQuotaLimitListInner, GroupQuotaLimitListInner>getLroResult(response,
-            GroupQuotaLimitListInner.class, GroupQuotaLimitListInner.class, Context.NONE);
+        return beginUpdate(managementGroupId, groupQuotaName, resourceProviderName, location, groupQuotaRequest,
+            Context.NONE);
     }
 
-    /**
-     * Create the GroupQuota requests for a specific ResourceProvider/Location/Resource. The resourceName properties are
-     * specified in the request body. Only 1 resource quota can be requested. Please note that patch request creates a
-     * new groupQuota request.
-     * Use the polling API - OperationsStatus URI specified in Azure-AsyncOperation header field, with retry-after
-     * duration in seconds to check the intermediate status. This API provides the finals status with the request
-     * details and status.
-     * 
-     * @param managementGroupId The management group ID.
-     * @param groupQuotaName The GroupQuota name. The name should be unique for the provided context tenantId/MgId.
-     * @param resourceProviderName The resource provider name, such as - Microsoft.Compute. Currently only
-     * Microsoft.Compute resource provider supports this API.
-     * @param location The name of the Azure region.
-     * @param groupQuotaRequest The GroupQuotaRequest body details for specific resourceProvider/location/resources.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the {@link SyncPoller} for polling of list of Group Quota Limit details.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public SyncPoller<PollResult<GroupQuotaLimitListInner>, GroupQuotaLimitListInner> beginUpdate(
         String managementGroupId, String groupQuotaName, String resourceProviderName, String location,
@@ -580,57 +503,21 @@ public final class GroupQuotaLimitsRequestsClientImpl implements GroupQuotaLimit
             .flatMap(this.client::getLroFinalResultOrError);
     }
 
-    /**
-     * Create the GroupQuota requests for a specific ResourceProvider/Location/Resource. The resourceName properties are
-     * specified in the request body. Only 1 resource quota can be requested. Please note that patch request creates a
-     * new groupQuota request.
-     * Use the polling API - OperationsStatus URI specified in Azure-AsyncOperation header field, with retry-after
-     * duration in seconds to check the intermediate status. This API provides the finals status with the request
-     * details and status.
-     * 
-     * @param managementGroupId The management group ID.
-     * @param groupQuotaName The GroupQuota name. The name should be unique for the provided context tenantId/MgId.
-     * @param resourceProviderName The resource provider name, such as - Microsoft.Compute. Currently only
-     * Microsoft.Compute resource provider supports this API.
-     * @param location The name of the Azure region.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return list of Group Quota Limit details.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public GroupQuotaLimitListInner update(String managementGroupId, String groupQuotaName, String resourceProviderName,
         String location) {
         final GroupQuotaLimitListInner groupQuotaRequest = null;
-        return beginUpdate(managementGroupId, groupQuotaName, resourceProviderName, location, groupQuotaRequest)
-            .getFinalResult();
+        return update(managementGroupId, groupQuotaName, resourceProviderName, location, groupQuotaRequest,
+            Context.NONE);
     }
 
-    /**
-     * Create the GroupQuota requests for a specific ResourceProvider/Location/Resource. The resourceName properties are
-     * specified in the request body. Only 1 resource quota can be requested. Please note that patch request creates a
-     * new groupQuota request.
-     * Use the polling API - OperationsStatus URI specified in Azure-AsyncOperation header field, with retry-after
-     * duration in seconds to check the intermediate status. This API provides the finals status with the request
-     * details and status.
-     * 
-     * @param managementGroupId The management group ID.
-     * @param groupQuotaName The GroupQuota name. The name should be unique for the provided context tenantId/MgId.
-     * @param resourceProviderName The resource provider name, such as - Microsoft.Compute. Currently only
-     * Microsoft.Compute resource provider supports this API.
-     * @param location The name of the Azure region.
-     * @param groupQuotaRequest The GroupQuotaRequest body details for specific resourceProvider/location/resources.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return list of Group Quota Limit details.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public GroupQuotaLimitListInner update(String managementGroupId, String groupQuotaName, String resourceProviderName,
         String location, GroupQuotaLimitListInner groupQuotaRequest, Context context) {
-        return beginUpdate(managementGroupId, groupQuotaName, resourceProviderName, location, groupQuotaRequest,
-            context).getFinalResult();
+        return this.client.getLroFinalResultOrError(
+            beginUpdate(managementGroupId, groupQuotaName, resourceProviderName, location, groupQuotaRequest, context));
     }
 
     /**
@@ -673,18 +560,7 @@ public final class GroupQuotaLimitsRequestsClientImpl implements GroupQuotaLimit
             .flatMap(res -> Mono.justOrEmpty(res.getValue()));
     }
 
-    /**
-     * Get API to check the status of a GroupQuota request by requestId.
-     * 
-     * @param managementGroupId The management group ID.
-     * @param groupQuotaName The GroupQuota name. The name should be unique for the provided context tenantId/MgId.
-     * @param requestId Request Id.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return aPI to check the status of a GroupQuota request by requestId along with {@link Response}.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Response<SubmittedResourceRequestStatusInner> getWithResponse(String managementGroupId,
         String groupQuotaName, String requestId, Context context) {
@@ -693,17 +569,7 @@ public final class GroupQuotaLimitsRequestsClientImpl implements GroupQuotaLimit
             groupQuotaName, requestId, accept, context);
     }
 
-    /**
-     * Get API to check the status of a GroupQuota request by requestId.
-     * 
-     * @param managementGroupId The management group ID.
-     * @param groupQuotaName The GroupQuota name. The name should be unique for the provided context tenantId/MgId.
-     * @param requestId Request Id.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return aPI to check the status of a GroupQuota request by requestId.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public SubmittedResourceRequestStatusInner get(String managementGroupId, String groupQuotaName, String requestId) {
         return getWithResponse(managementGroupId, groupQuotaName, requestId, Context.NONE).getValue();
@@ -739,11 +605,7 @@ public final class GroupQuotaLimitsRequestsClientImpl implements GroupQuotaLimit
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private PagedResponse<SubmittedResourceRequestStatusInner> listNextSinglePage(String nextLink) {
-        final String accept = "application/json";
-        Response<SubmittedResourceRequestStatusList> res
-            = service.listNextSync(nextLink, this.client.getEndpoint(), accept, Context.NONE);
-        return new PagedResponseBase<>(res.getRequest(), res.getStatusCode(), res.getHeaders(), res.getValue().value(),
-            res.getValue().nextLink(), null);
+        return listNextSinglePage(nextLink, Context.NONE);
     }
 
     /**

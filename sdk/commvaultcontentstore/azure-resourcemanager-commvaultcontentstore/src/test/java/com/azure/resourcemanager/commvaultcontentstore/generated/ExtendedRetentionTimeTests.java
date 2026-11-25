@@ -13,23 +13,22 @@ import org.junit.jupiter.api.Assertions;
 public final class ExtendedRetentionTimeTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
-        ExtendedRetentionTime model = BinaryData
-            .fromString(
-                "{\"retentionTime\":\"yearly\",\"retentionPeriod\":190317278,\"backupRuleType\":\"YEARLY_FULLS\"}")
+        ExtendedRetentionTime model = BinaryData.fromString(
+            "{\"retentionTime\":\"yearly\",\"retentionPeriod\":1220710831,\"backupRuleType\":\"HALF_YEARLY_FULLS\"}")
             .toObject(ExtendedRetentionTime.class);
         Assertions.assertEquals(RetentionTime.YEARLY, model.retentionTime());
-        Assertions.assertEquals(190317278, model.retentionPeriod());
-        Assertions.assertEquals(BackupRuleType.YEARLY_FULLS, model.backupRuleType());
+        Assertions.assertEquals(1220710831, model.retentionPeriod());
+        Assertions.assertEquals(BackupRuleType.HALF_YEARLY_FULLS, model.backupRuleType());
     }
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
         ExtendedRetentionTime model = new ExtendedRetentionTime().withRetentionTime(RetentionTime.YEARLY)
-            .withRetentionPeriod(190317278)
-            .withBackupRuleType(BackupRuleType.YEARLY_FULLS);
+            .withRetentionPeriod(1220710831)
+            .withBackupRuleType(BackupRuleType.HALF_YEARLY_FULLS);
         model = BinaryData.fromObject(model).toObject(ExtendedRetentionTime.class);
         Assertions.assertEquals(RetentionTime.YEARLY, model.retentionTime());
-        Assertions.assertEquals(190317278, model.retentionPeriod());
-        Assertions.assertEquals(BackupRuleType.YEARLY_FULLS, model.backupRuleType());
+        Assertions.assertEquals(1220710831, model.retentionPeriod());
+        Assertions.assertEquals(BackupRuleType.HALF_YEARLY_FULLS, model.backupRuleType());
     }
 }

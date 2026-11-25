@@ -200,18 +200,7 @@ public final class WorkspaceManagerMembersClientImpl implements WorkspaceManager
             .flatMap(res -> Mono.justOrEmpty(res.getValue()));
     }
 
-    /**
-     * Gets a workspace manager member.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param workspaceName The name of the workspace.
-     * @param workspaceManagerMemberName The name of the workspace manager member.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return a workspace manager member along with {@link Response}.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Response<WorkspaceManagerMemberInner> getWithResponse(String resourceGroupName, String workspaceName,
         String workspaceManagerMemberName, Context context) {
@@ -220,17 +209,7 @@ public final class WorkspaceManagerMembersClientImpl implements WorkspaceManager
             resourceGroupName, workspaceName, workspaceManagerMemberName, accept, context);
     }
 
-    /**
-     * Gets a workspace manager member.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param workspaceName The name of the workspace.
-     * @param workspaceManagerMemberName The name of the workspace manager member.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return a workspace manager member.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public WorkspaceManagerMemberInner get(String resourceGroupName, String workspaceName,
         String workspaceManagerMemberName) {
@@ -280,19 +259,7 @@ public final class WorkspaceManagerMembersClientImpl implements WorkspaceManager
             workspaceManagerMember).flatMap(res -> Mono.justOrEmpty(res.getValue()));
     }
 
-    /**
-     * Creates or updates a workspace manager member.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param workspaceName The name of the workspace.
-     * @param workspaceManagerMemberName The name of the workspace manager member.
-     * @param workspaceManagerMember The workspace manager member object.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the workspace manager member along with {@link Response}.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Response<WorkspaceManagerMemberInner> createOrUpdateWithResponse(String resourceGroupName,
         String workspaceName, String workspaceManagerMemberName, WorkspaceManagerMemberInner workspaceManagerMember,
@@ -304,18 +271,7 @@ public final class WorkspaceManagerMembersClientImpl implements WorkspaceManager
             accept, workspaceManagerMember, context);
     }
 
-    /**
-     * Creates or updates a workspace manager member.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param workspaceName The name of the workspace.
-     * @param workspaceManagerMemberName The name of the workspace manager member.
-     * @param workspaceManagerMember The workspace manager member object.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the workspace manager member.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public WorkspaceManagerMemberInner createOrUpdate(String resourceGroupName, String workspaceName,
         String workspaceManagerMemberName, WorkspaceManagerMemberInner workspaceManagerMember) {
@@ -360,18 +316,7 @@ public final class WorkspaceManagerMembersClientImpl implements WorkspaceManager
             .flatMap(ignored -> Mono.empty());
     }
 
-    /**
-     * Deletes a workspace manager member.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param workspaceName The name of the workspace.
-     * @param workspaceManagerMemberName The name of the workspace manager member.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the {@link Response}.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Response<Void> deleteWithResponse(String resourceGroupName, String workspaceName,
         String workspaceManagerMemberName, Context context) {
@@ -379,16 +324,7 @@ public final class WorkspaceManagerMembersClientImpl implements WorkspaceManager
             this.client.getSubscriptionId(), resourceGroupName, workspaceName, workspaceManagerMemberName, context);
     }
 
-    /**
-     * Deletes a workspace manager member.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param workspaceName The name of the workspace.
-     * @param workspaceManagerMemberName The name of the workspace manager member.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public void delete(String resourceGroupName, String workspaceName, String workspaceManagerMemberName) {
         deleteWithResponse(resourceGroupName, workspaceName, workspaceManagerMemberName, Context.NONE);
@@ -485,12 +421,7 @@ public final class WorkspaceManagerMembersClientImpl implements WorkspaceManager
     @ServiceMethod(returns = ReturnType.SINGLE)
     private PagedResponse<WorkspaceManagerMemberInner> listSinglePage(String resourceGroupName, String workspaceName,
         String orderby, Integer top, String skipToken) {
-        final String accept = "application/json";
-        Response<WorkspaceManagerMembersList> res
-            = service.listSync(this.client.getEndpoint(), this.client.getApiVersion(), this.client.getSubscriptionId(),
-                resourceGroupName, workspaceName, orderby, top, skipToken, accept, Context.NONE);
-        return new PagedResponseBase<>(res.getRequest(), res.getStatusCode(), res.getHeaders(), res.getValue().value(),
-            res.getValue().nextLink(), null);
+        return listSinglePage(resourceGroupName, workspaceName, orderby, top, skipToken, Context.NONE);
     }
 
     /**
@@ -521,43 +452,16 @@ public final class WorkspaceManagerMembersClientImpl implements WorkspaceManager
             res.getValue().nextLink(), null);
     }
 
-    /**
-     * Gets all workspace manager members that exist for the given Sentinel workspace manager.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param workspaceName The name of the workspace.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return all workspace manager members that exist for the given Sentinel workspace manager as paginated response
-     * with {@link PagedIterable}.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.COLLECTION)
     public PagedIterable<WorkspaceManagerMemberInner> list(String resourceGroupName, String workspaceName) {
         final String orderby = null;
         final Integer top = null;
         final String skipToken = null;
-        return new PagedIterable<>(() -> listSinglePage(resourceGroupName, workspaceName, orderby, top, skipToken),
-            nextLink -> listNextSinglePage(nextLink));
+        return list(resourceGroupName, workspaceName, orderby, top, skipToken, Context.NONE);
     }
 
-    /**
-     * Gets all workspace manager members that exist for the given Sentinel workspace manager.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param workspaceName The name of the workspace.
-     * @param orderby Sorts the results. Optional.
-     * @param top Returns only the first n results. Optional.
-     * @param skipToken Skiptoken is only used if a previous operation returned a partial result. If a previous response
-     * contains a nextLink element, the value of the nextLink element will include a skiptoken parameter that specifies
-     * a starting point to use for subsequent calls. Optional.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return all workspace manager members that exist for the given Sentinel workspace manager as paginated response
-     * with {@link PagedIterable}.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.COLLECTION)
     public PagedIterable<WorkspaceManagerMemberInner> list(String resourceGroupName, String workspaceName,
         String orderby, Integer top, String skipToken, Context context) {
@@ -597,11 +501,7 @@ public final class WorkspaceManagerMembersClientImpl implements WorkspaceManager
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private PagedResponse<WorkspaceManagerMemberInner> listNextSinglePage(String nextLink) {
-        final String accept = "application/json";
-        Response<WorkspaceManagerMembersList> res
-            = service.listNextSync(nextLink, this.client.getEndpoint(), accept, Context.NONE);
-        return new PagedResponseBase<>(res.getRequest(), res.getStatusCode(), res.getHeaders(), res.getValue().value(),
-            res.getValue().nextLink(), null);
+        return listNextSinglePage(nextLink, Context.NONE);
     }
 
     /**

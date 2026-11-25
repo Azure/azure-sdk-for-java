@@ -24,6 +24,10 @@ public final class DiagnosticResourceImpl implements DiagnosticResource, Diagnos
         com.azure.resourcemanager.selfhelp.SelfHelpManager serviceManager) {
         this.innerObject = innerObject;
         this.serviceManager = serviceManager;
+        this.scope = ResourceManagerUtils.getValueFromIdByParameterName(innerObject.id(),
+            "/{scope}/providers/Microsoft.Help/diagnostics/{diagnosticsResourceName}", "scope");
+        this.diagnosticsResourceName = ResourceManagerUtils.getValueFromIdByParameterName(innerObject.id(),
+            "/{scope}/providers/Microsoft.Help/diagnostics/{diagnosticsResourceName}", "diagnosticsResourceName");
     }
 
     public String id() {
@@ -95,10 +99,7 @@ public final class DiagnosticResourceImpl implements DiagnosticResource, Diagnos
     }
 
     public DiagnosticResource create() {
-        this.innerObject = serviceManager.serviceClient()
-            .getDiagnostics()
-            .create(scope, diagnosticsResourceName, this.innerModel(), Context.NONE);
-        return this;
+        return this.create(Context.NONE);
     }
 
     public DiagnosticResource create(Context context) {
@@ -115,11 +116,7 @@ public final class DiagnosticResourceImpl implements DiagnosticResource, Diagnos
     }
 
     public DiagnosticResource refresh() {
-        this.innerObject = serviceManager.serviceClient()
-            .getDiagnostics()
-            .getWithResponse(scope, diagnosticsResourceName, Context.NONE)
-            .getValue();
-        return this;
+        return this.refresh(Context.NONE);
     }
 
     public DiagnosticResource refresh(Context context) {

@@ -23,7 +23,7 @@ public final class PrivateEndpointConnectionsListMockTests {
     @Test
     public void testList() throws Exception {
         String responseStr
-            = "{\"value\":[{\"properties\":{\"groupIds\":[\"rb\",\"eoybfhjxakvvjgs\"],\"privateEndpoint\":{\"id\":\"dilmyww\"},\"privateLinkServiceConnectionState\":{\"status\":\"Approved\",\"description\":\"xnyed\",\"actionsRequired\":\"gyvudtjuewbc\"},\"provisioningState\":\"Creating\"},\"id\":\"uwhcjyxccybv\",\"name\":\"ayakkudzpx\",\"type\":\"wjplma\"}]}";
+            = "{\"value\":[{\"properties\":{\"groupIds\":[\"uzzptjazysdz\",\"ezwwv\",\"iqyuvvfo\"],\"privateEndpoint\":{\"id\":\"hhqyi\"},\"privateLinkServiceConnectionState\":{\"status\":\"Pending\",\"description\":\"auy\",\"actionsRequired\":\"luwmncst\"},\"provisioningState\":\"Failed\"},\"id\":\"y\",\"name\":\"vpo\",\"type\":\"krsgsgb\"}]}";
 
         HttpClient httpClient
             = response -> Mono.just(new MockHttpResponse(response, 200, responseStr.getBytes(StandardCharsets.UTF_8)));
@@ -33,13 +33,13 @@ public final class PrivateEndpointConnectionsListMockTests {
                 new AzureProfile("", "", AzureCloud.AZURE_PUBLIC_CLOUD));
 
         PagedIterable<PrivateEndpointConnectionResource> response
-            = manager.privateEndpointConnections().list("igovi", "rxkpmloazuruoc", com.azure.core.util.Context.NONE);
+            = manager.privateEndpointConnections().list("xqvkjlmxhomdyn", "dwdigumb", com.azure.core.util.Context.NONE);
 
-        Assertions.assertEquals(PrivateEndpointServiceConnectionStatus.APPROVED,
+        Assertions.assertEquals(PrivateEndpointServiceConnectionStatus.PENDING,
             response.iterator().next().properties().privateLinkServiceConnectionState().status());
-        Assertions.assertEquals("xnyed",
+        Assertions.assertEquals("auy",
             response.iterator().next().properties().privateLinkServiceConnectionState().description());
-        Assertions.assertEquals("gyvudtjuewbc",
+        Assertions.assertEquals("luwmncst",
             response.iterator().next().properties().privateLinkServiceConnectionState().actionsRequired());
     }
 }

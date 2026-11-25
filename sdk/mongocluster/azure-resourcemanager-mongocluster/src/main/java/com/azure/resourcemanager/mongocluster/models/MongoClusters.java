@@ -13,36 +13,36 @@ import com.azure.core.util.Context;
  */
 public interface MongoClusters {
     /**
-     * Gets information about a mongo cluster.
+     * Gets information about a DocumentDB cluster.
      * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param mongoClusterName The name of the mongo cluster.
+     * @param mongoClusterName The name of the DocumentDB cluster.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return information about a mongo cluster along with {@link Response}.
+     * @return information about a DocumentDB cluster along with {@link Response}.
      */
     Response<MongoCluster> getByResourceGroupWithResponse(String resourceGroupName, String mongoClusterName,
         Context context);
 
     /**
-     * Gets information about a mongo cluster.
+     * Gets information about a DocumentDB cluster.
      * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param mongoClusterName The name of the mongo cluster.
+     * @param mongoClusterName The name of the DocumentDB cluster.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return information about a mongo cluster.
+     * @return information about a DocumentDB cluster.
      */
     MongoCluster getByResourceGroup(String resourceGroupName, String mongoClusterName);
 
     /**
-     * Deletes a mongo cluster.
+     * Deletes a DocumentDB cluster.
      * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param mongoClusterName The name of the mongo cluster.
+     * @param mongoClusterName The name of the DocumentDB cluster.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
@@ -50,10 +50,10 @@ public interface MongoClusters {
     void deleteByResourceGroup(String resourceGroupName, String mongoClusterName);
 
     /**
-     * Deletes a mongo cluster.
+     * Deletes a DocumentDB cluster.
      * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param mongoClusterName The name of the mongo cluster.
+     * @param mongoClusterName The name of the DocumentDB cluster.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
@@ -62,7 +62,7 @@ public interface MongoClusters {
     void delete(String resourceGroupName, String mongoClusterName, Context context);
 
     /**
-     * List all the mongo clusters in a given resource group.
+     * List all the DocumentDB clusters in a given resource group.
      * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -73,7 +73,7 @@ public interface MongoClusters {
     PagedIterable<MongoCluster> listByResourceGroup(String resourceGroupName);
 
     /**
-     * List all the mongo clusters in a given resource group.
+     * List all the DocumentDB clusters in a given resource group.
      * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param context The context to associate with this operation.
@@ -85,7 +85,7 @@ public interface MongoClusters {
     PagedIterable<MongoCluster> listByResourceGroup(String resourceGroupName, Context context);
 
     /**
-     * List all the mongo clusters in a given subscription.
+     * List all the DocumentDB clusters in a given subscription.
      * 
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
@@ -94,7 +94,7 @@ public interface MongoClusters {
     PagedIterable<MongoCluster> list();
 
     /**
-     * List all the mongo clusters in a given subscription.
+     * List all the DocumentDB clusters in a given subscription.
      * 
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -105,35 +105,35 @@ public interface MongoClusters {
     PagedIterable<MongoCluster> list(Context context);
 
     /**
-     * List mongo cluster connection strings. This includes the default connection string using SCRAM-SHA-256, as well
-     * as other connection strings supported by the cluster.
+     * List DocumentDB cluster connection strings. This includes the default connection string using SCRAM-SHA-256, as
+     * well as other connection strings supported by the cluster.
      * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param mongoClusterName The name of the mongo cluster.
+     * @param mongoClusterName The name of the DocumentDB cluster.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the connection strings for the given mongo cluster along with {@link Response}.
+     * @return the connection strings for the given DocumentDB cluster along with {@link Response}.
      */
     Response<ListConnectionStringsResult> listConnectionStringsWithResponse(String resourceGroupName,
         String mongoClusterName, Context context);
 
     /**
-     * List mongo cluster connection strings. This includes the default connection string using SCRAM-SHA-256, as well
-     * as other connection strings supported by the cluster.
+     * List DocumentDB cluster connection strings. This includes the default connection string using SCRAM-SHA-256, as
+     * well as other connection strings supported by the cluster.
      * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param mongoClusterName The name of the mongo cluster.
+     * @param mongoClusterName The name of the DocumentDB cluster.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the connection strings for the given mongo cluster.
+     * @return the connection strings for the given DocumentDB cluster.
      */
     ListConnectionStringsResult listConnectionStrings(String resourceGroupName, String mongoClusterName);
 
     /**
-     * Check if mongo cluster name is available for use.
+     * Check if DocumentDB cluster name is available for use.
      * 
      * @param location The name of the Azure region.
      * @param body The CheckAvailability request.
@@ -147,7 +147,7 @@ public interface MongoClusters {
         CheckNameAvailabilityRequest body, Context context);
 
     /**
-     * Check if mongo cluster name is available for use.
+     * Check if DocumentDB cluster name is available for use.
      * 
      * @param location The name of the Azure region.
      * @param body The CheckAvailability request.
@@ -159,10 +159,10 @@ public interface MongoClusters {
     CheckNameAvailabilityResponse checkNameAvailability(String location, CheckNameAvailabilityRequest body);
 
     /**
-     * Promotes a replica mongo cluster to a primary role.
+     * Promotes a replica DocumentDB cluster to a primary role.
      * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param mongoClusterName The name of the mongo cluster.
+     * @param mongoClusterName The name of the DocumentDB cluster.
      * @param body The content of the action request.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
@@ -171,10 +171,10 @@ public interface MongoClusters {
     void promote(String resourceGroupName, String mongoClusterName, PromoteReplicaRequest body);
 
     /**
-     * Promotes a replica mongo cluster to a primary role.
+     * Promotes a replica DocumentDB cluster to a primary role.
      * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param mongoClusterName The name of the mongo cluster.
+     * @param mongoClusterName The name of the DocumentDB cluster.
      * @param body The content of the action request.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -184,30 +184,30 @@ public interface MongoClusters {
     void promote(String resourceGroupName, String mongoClusterName, PromoteReplicaRequest body, Context context);
 
     /**
-     * Gets information about a mongo cluster.
+     * Gets information about a DocumentDB cluster.
      * 
      * @param id the resource ID.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return information about a mongo cluster along with {@link Response}.
+     * @return information about a DocumentDB cluster along with {@link Response}.
      */
     MongoCluster getById(String id);
 
     /**
-     * Gets information about a mongo cluster.
+     * Gets information about a DocumentDB cluster.
      * 
      * @param id the resource ID.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return information about a mongo cluster along with {@link Response}.
+     * @return information about a DocumentDB cluster along with {@link Response}.
      */
     Response<MongoCluster> getByIdWithResponse(String id, Context context);
 
     /**
-     * Deletes a mongo cluster.
+     * Deletes a DocumentDB cluster.
      * 
      * @param id the resource ID.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -217,7 +217,7 @@ public interface MongoClusters {
     void deleteById(String id);
 
     /**
-     * Deletes a mongo cluster.
+     * Deletes a DocumentDB cluster.
      * 
      * @param id the resource ID.
      * @param context The context to associate with this operation.

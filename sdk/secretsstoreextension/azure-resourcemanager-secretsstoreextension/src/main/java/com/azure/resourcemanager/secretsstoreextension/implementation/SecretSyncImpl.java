@@ -90,10 +90,7 @@ public final class SecretSyncImpl implements SecretSync, SecretSync.Definition, 
     }
 
     public SecretSync create() {
-        this.innerObject = serviceManager.serviceClient()
-            .getSecretSyncs()
-            .createOrUpdate(resourceGroupName, secretSyncName, this.innerModel(), Context.NONE);
-        return this;
+        return this.create(Context.NONE);
     }
 
     public SecretSync create(Context context) {
@@ -116,10 +113,7 @@ public final class SecretSyncImpl implements SecretSync, SecretSync.Definition, 
     }
 
     public SecretSync apply() {
-        this.innerObject = serviceManager.serviceClient()
-            .getSecretSyncs()
-            .update(resourceGroupName, secretSyncName, updateProperties, Context.NONE);
-        return this;
+        return this.apply(Context.NONE);
     }
 
     public SecretSync apply(Context context) {
@@ -142,11 +136,7 @@ public final class SecretSyncImpl implements SecretSync, SecretSync.Definition, 
     }
 
     public SecretSync refresh() {
-        this.innerObject = serviceManager.serviceClient()
-            .getSecretSyncs()
-            .getByResourceGroupWithResponse(resourceGroupName, secretSyncName, Context.NONE)
-            .getValue();
-        return this;
+        return this.refresh(Context.NONE);
     }
 
     public SecretSync refresh(Context context) {

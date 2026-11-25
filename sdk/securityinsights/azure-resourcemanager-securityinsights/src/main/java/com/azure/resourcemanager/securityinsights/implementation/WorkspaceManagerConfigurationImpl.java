@@ -65,12 +65,7 @@ public final class WorkspaceManagerConfigurationImpl implements WorkspaceManager
     }
 
     public WorkspaceManagerConfiguration create() {
-        this.innerObject = serviceManager.serviceClient()
-            .getWorkspaceManagerConfigurations()
-            .createOrUpdateWithResponse(resourceGroupName, workspaceName, workspaceManagerConfigurationName,
-                this.innerModel(), Context.NONE)
-            .getValue();
-        return this;
+        return this.create(Context.NONE);
     }
 
     public WorkspaceManagerConfiguration create(Context context) {
@@ -94,12 +89,7 @@ public final class WorkspaceManagerConfigurationImpl implements WorkspaceManager
     }
 
     public WorkspaceManagerConfiguration apply() {
-        this.innerObject = serviceManager.serviceClient()
-            .getWorkspaceManagerConfigurations()
-            .createOrUpdateWithResponse(resourceGroupName, workspaceName, workspaceManagerConfigurationName,
-                this.innerModel(), Context.NONE)
-            .getValue();
-        return this;
+        return this.apply(Context.NONE);
     }
 
     public WorkspaceManagerConfiguration apply(Context context) {
@@ -127,11 +117,7 @@ public final class WorkspaceManagerConfigurationImpl implements WorkspaceManager
     }
 
     public WorkspaceManagerConfiguration refresh() {
-        this.innerObject = serviceManager.serviceClient()
-            .getWorkspaceManagerConfigurations()
-            .getWithResponse(resourceGroupName, workspaceName, workspaceManagerConfigurationName, Context.NONE)
-            .getValue();
-        return this;
+        return this.refresh(Context.NONE);
     }
 
     public WorkspaceManagerConfiguration refresh(Context context) {

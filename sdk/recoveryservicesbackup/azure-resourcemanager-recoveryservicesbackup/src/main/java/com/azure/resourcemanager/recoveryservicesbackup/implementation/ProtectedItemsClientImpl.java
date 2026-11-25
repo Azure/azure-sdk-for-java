@@ -181,23 +181,7 @@ public final class ProtectedItemsClientImpl implements ProtectedItemsClient {
             .flatMap(res -> Mono.justOrEmpty(res.getValue()));
     }
 
-    /**
-     * Provides the details of the backed up item. This is an asynchronous operation. To know the status of the
-     * operation,
-     * call the GetItemOperationResult API.
-     * 
-     * @param vaultName The name of the VaultResource.
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param fabricName The name of the BackupFabricResource.
-     * @param containerName Name of the container whose details need to be fetched.
-     * @param protectedItemName Backed up item name whose details are to be fetched.
-     * @param filter OData filter options.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return base class for backup items along with {@link Response}.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Response<ProtectedItemResourceInner> getWithResponse(String vaultName, String resourceGroupName,
         String fabricName, String containerName, String protectedItemName, String filter, Context context) {
@@ -206,21 +190,7 @@ public final class ProtectedItemsClientImpl implements ProtectedItemsClient {
             resourceGroupName, vaultName, fabricName, containerName, protectedItemName, filter, accept, context);
     }
 
-    /**
-     * Provides the details of the backed up item. This is an asynchronous operation. To know the status of the
-     * operation,
-     * call the GetItemOperationResult API.
-     * 
-     * @param vaultName The name of the VaultResource.
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param fabricName The name of the BackupFabricResource.
-     * @param containerName Name of the container whose details need to be fetched.
-     * @param protectedItemName Backed up item name whose details are to be fetched.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return base class for backup items.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public ProtectedItemResourceInner get(String vaultName, String resourceGroupName, String fabricName,
         String containerName, String protectedItemName) {
@@ -274,11 +244,8 @@ public final class ProtectedItemsClientImpl implements ProtectedItemsClient {
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Response<BinaryData> createOrUpdateWithResponse(String vaultName, String resourceGroupName,
         String fabricName, String containerName, String protectedItemName, ProtectedItemResourceInner parameters) {
-        final String contentType = "application/json";
-        final String accept = "application/json";
-        return service.createOrUpdateSync(this.client.getEndpoint(), this.client.getApiVersion(),
-            this.client.getSubscriptionId(), resourceGroupName, vaultName, fabricName, containerName, protectedItemName,
-            contentType, accept, parameters, Context.NONE);
+        return createOrUpdateWithResponse(vaultName, resourceGroupName, fabricName, containerName, protectedItemName,
+            parameters, Context.NONE);
     }
 
     /**
@@ -334,47 +301,16 @@ public final class ProtectedItemsClientImpl implements ProtectedItemsClient {
             this.client.getContext());
     }
 
-    /**
-     * Enables backup of an item or to modifies the backup policy information of an already backed up item. This is an
-     * asynchronous operation. To know the status of the operation, call the GetItemOperationResult API.
-     * 
-     * @param vaultName The name of the VaultResource.
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param fabricName The name of the BackupFabricResource.
-     * @param containerName Name of the container whose details need to be fetched.
-     * @param protectedItemName Backed up item name whose details are to be fetched.
-     * @param parameters resource backed up item.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the {@link SyncPoller} for polling of base class for backup items.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public SyncPoller<PollResult<ProtectedItemResourceInner>, ProtectedItemResourceInner> beginCreateOrUpdate(
         String vaultName, String resourceGroupName, String fabricName, String containerName, String protectedItemName,
         ProtectedItemResourceInner parameters) {
-        Response<BinaryData> response = createOrUpdateWithResponse(vaultName, resourceGroupName, fabricName,
-            containerName, protectedItemName, parameters);
-        return this.client.<ProtectedItemResourceInner, ProtectedItemResourceInner>getLroResult(response,
-            ProtectedItemResourceInner.class, ProtectedItemResourceInner.class, Context.NONE);
+        return beginCreateOrUpdate(vaultName, resourceGroupName, fabricName, containerName, protectedItemName,
+            parameters, Context.NONE);
     }
 
-    /**
-     * Enables backup of an item or to modifies the backup policy information of an already backed up item. This is an
-     * asynchronous operation. To know the status of the operation, call the GetItemOperationResult API.
-     * 
-     * @param vaultName The name of the VaultResource.
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param fabricName The name of the BackupFabricResource.
-     * @param containerName Name of the container whose details need to be fetched.
-     * @param protectedItemName Backed up item name whose details are to be fetched.
-     * @param parameters resource backed up item.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the {@link SyncPoller} for polling of base class for backup items.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public SyncPoller<PollResult<ProtectedItemResourceInner>, ProtectedItemResourceInner> beginCreateOrUpdate(
         String vaultName, String resourceGroupName, String fabricName, String containerName, String protectedItemName,
@@ -407,49 +343,20 @@ public final class ProtectedItemsClientImpl implements ProtectedItemsClient {
             parameters).last().flatMap(this.client::getLroFinalResultOrError);
     }
 
-    /**
-     * Enables backup of an item or to modifies the backup policy information of an already backed up item. This is an
-     * asynchronous operation. To know the status of the operation, call the GetItemOperationResult API.
-     * 
-     * @param vaultName The name of the VaultResource.
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param fabricName The name of the BackupFabricResource.
-     * @param containerName Name of the container whose details need to be fetched.
-     * @param protectedItemName Backed up item name whose details are to be fetched.
-     * @param parameters resource backed up item.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return base class for backup items.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public ProtectedItemResourceInner createOrUpdate(String vaultName, String resourceGroupName, String fabricName,
         String containerName, String protectedItemName, ProtectedItemResourceInner parameters) {
-        return beginCreateOrUpdate(vaultName, resourceGroupName, fabricName, containerName, protectedItemName,
-            parameters).getFinalResult();
+        return createOrUpdate(vaultName, resourceGroupName, fabricName, containerName, protectedItemName, parameters,
+            Context.NONE);
     }
 
-    /**
-     * Enables backup of an item or to modifies the backup policy information of an already backed up item. This is an
-     * asynchronous operation. To know the status of the operation, call the GetItemOperationResult API.
-     * 
-     * @param vaultName The name of the VaultResource.
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param fabricName The name of the BackupFabricResource.
-     * @param containerName Name of the container whose details need to be fetched.
-     * @param protectedItemName Backed up item name whose details are to be fetched.
-     * @param parameters resource backed up item.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return base class for backup items.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public ProtectedItemResourceInner createOrUpdate(String vaultName, String resourceGroupName, String fabricName,
         String containerName, String protectedItemName, ProtectedItemResourceInner parameters, Context context) {
-        return beginCreateOrUpdate(vaultName, resourceGroupName, fabricName, containerName, protectedItemName,
-            parameters, context).getFinalResult();
+        return this.client.getLroFinalResultOrError(beginCreateOrUpdate(vaultName, resourceGroupName, fabricName,
+            containerName, protectedItemName, parameters, context));
     }
 
     /**
@@ -499,22 +406,7 @@ public final class ProtectedItemsClientImpl implements ProtectedItemsClient {
             .flatMap(ignored -> Mono.empty());
     }
 
-    /**
-     * Used to disable backup of an item within a container. This is an asynchronous operation. To know the status of
-     * the
-     * request, call the GetItemOperationResult API.
-     * 
-     * @param vaultName The name of the VaultResource.
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param fabricName The name of the BackupFabricResource.
-     * @param containerName Name of the container whose details need to be fetched.
-     * @param protectedItemName Backed up item name whose details are to be fetched.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the {@link Response}.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Response<Void> deleteWithResponse(String vaultName, String resourceGroupName, String fabricName,
         String containerName, String protectedItemName, Context context) {
@@ -523,20 +415,7 @@ public final class ProtectedItemsClientImpl implements ProtectedItemsClient {
             context);
     }
 
-    /**
-     * Used to disable backup of an item within a container. This is an asynchronous operation. To know the status of
-     * the
-     * request, call the GetItemOperationResult API.
-     * 
-     * @param vaultName The name of the VaultResource.
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param fabricName The name of the BackupFabricResource.
-     * @param containerName Name of the container whose details need to be fetched.
-     * @param protectedItemName Backed up item name whose details are to be fetched.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public void delete(String vaultName, String resourceGroupName, String fabricName, String containerName,
         String protectedItemName) {

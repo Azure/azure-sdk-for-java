@@ -53,7 +53,7 @@ public final class WebPubSubsImpl implements WebPubSubs {
     }
 
     public void deleteByResourceGroup(String resourceGroupName, String resourceName) {
-        this.serviceClient().delete(resourceGroupName, resourceName);
+        this.delete(resourceGroupName, resourceName, Context.NONE);
     }
 
     public void delete(String resourceGroupName, String resourceName, Context context) {
@@ -61,8 +61,7 @@ public final class WebPubSubsImpl implements WebPubSubs {
     }
 
     public PagedIterable<WebPubSubResource> listByResourceGroup(String resourceGroupName) {
-        PagedIterable<WebPubSubResourceInner> inner = this.serviceClient().listByResourceGroup(resourceGroupName);
-        return ResourceManagerUtils.mapPage(inner, inner1 -> new WebPubSubResourceImpl(inner1, this.manager()));
+        return this.listByResourceGroup(resourceGroupName, Context.NONE);
     }
 
     public PagedIterable<WebPubSubResource> listByResourceGroup(String resourceGroupName, Context context) {
@@ -72,8 +71,7 @@ public final class WebPubSubsImpl implements WebPubSubs {
     }
 
     public PagedIterable<WebPubSubResource> list() {
-        PagedIterable<WebPubSubResourceInner> inner = this.serviceClient().list();
-        return ResourceManagerUtils.mapPage(inner, inner1 -> new WebPubSubResourceImpl(inner1, this.manager()));
+        return this.list(Context.NONE);
     }
 
     public PagedIterable<WebPubSubResource> list(Context context) {
@@ -100,12 +98,7 @@ public final class WebPubSubsImpl implements WebPubSubs {
 
     public WebPubSubKeys regenerateKey(String resourceGroupName, String resourceName,
         RegenerateKeyParameters parameters) {
-        WebPubSubKeysInner inner = this.serviceClient().regenerateKey(resourceGroupName, resourceName, parameters);
-        if (inner != null) {
-            return new WebPubSubKeysImpl(inner, this.manager());
-        } else {
-            return null;
-        }
+        return this.regenerateKey(resourceGroupName, resourceName, parameters, Context.NONE);
     }
 
     public WebPubSubKeys regenerateKey(String resourceGroupName, String resourceName,
@@ -120,7 +113,7 @@ public final class WebPubSubsImpl implements WebPubSubs {
     }
 
     public void restart(String resourceGroupName, String resourceName) {
-        this.serviceClient().restart(resourceGroupName, resourceName);
+        this.restart(resourceGroupName, resourceName, Context.NONE);
     }
 
     public void restart(String resourceGroupName, String resourceName, Context context) {
@@ -178,74 +171,30 @@ public final class WebPubSubsImpl implements WebPubSubs {
     }
 
     public WebPubSubResource getById(String id) {
-        String resourceGroupName = ResourceManagerUtils.getValueFromIdByParameterName(id,
-            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.SignalRService/webPubSub/{resourceName}",
-            "resourceGroupName");
-        if (resourceGroupName == null) {
-            throw LOGGER.logExceptionAsError(new IllegalArgumentException(
-                String.format("The resource ID '%s' is not valid. Missing path segment 'resourceGroups'.", id)));
-        }
-        String resourceName = ResourceManagerUtils.getValueFromIdByParameterName(id,
-            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.SignalRService/webPubSub/{resourceName}",
-            "resourceName");
-        if (resourceName == null) {
-            throw LOGGER.logExceptionAsError(new IllegalArgumentException(
-                String.format("The resource ID '%s' is not valid. Missing path segment 'webPubSub'.", id)));
-        }
-        return this.getByResourceGroupWithResponse(resourceGroupName, resourceName, Context.NONE).getValue();
+        return this.getByIdWithResponse(id, Context.NONE).getValue();
     }
 
     public Response<WebPubSubResource> getByIdWithResponse(String id, Context context) {
-        String resourceGroupName = ResourceManagerUtils.getValueFromIdByParameterName(id,
+        String resourceGroupName = ResourceManagerUtils.getRequiredValueFromIdByParameterName(id,
             "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.SignalRService/webPubSub/{resourceName}",
-            "resourceGroupName");
-        if (resourceGroupName == null) {
-            throw LOGGER.logExceptionAsError(new IllegalArgumentException(
-                String.format("The resource ID '%s' is not valid. Missing path segment 'resourceGroups'.", id)));
-        }
-        String resourceName = ResourceManagerUtils.getValueFromIdByParameterName(id,
+            "resourceGroupName", "resourceGroups", LOGGER);
+        String resourceName = ResourceManagerUtils.getRequiredValueFromIdByParameterName(id,
             "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.SignalRService/webPubSub/{resourceName}",
-            "resourceName");
-        if (resourceName == null) {
-            throw LOGGER.logExceptionAsError(new IllegalArgumentException(
-                String.format("The resource ID '%s' is not valid. Missing path segment 'webPubSub'.", id)));
-        }
+            "resourceName", "webPubSub", LOGGER);
         return this.getByResourceGroupWithResponse(resourceGroupName, resourceName, context);
     }
 
     public void deleteById(String id) {
-        String resourceGroupName = ResourceManagerUtils.getValueFromIdByParameterName(id,
-            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.SignalRService/webPubSub/{resourceName}",
-            "resourceGroupName");
-        if (resourceGroupName == null) {
-            throw LOGGER.logExceptionAsError(new IllegalArgumentException(
-                String.format("The resource ID '%s' is not valid. Missing path segment 'resourceGroups'.", id)));
-        }
-        String resourceName = ResourceManagerUtils.getValueFromIdByParameterName(id,
-            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.SignalRService/webPubSub/{resourceName}",
-            "resourceName");
-        if (resourceName == null) {
-            throw LOGGER.logExceptionAsError(new IllegalArgumentException(
-                String.format("The resource ID '%s' is not valid. Missing path segment 'webPubSub'.", id)));
-        }
-        this.delete(resourceGroupName, resourceName, Context.NONE);
+        this.deleteByIdWithResponse(id, Context.NONE);
     }
 
     public void deleteByIdWithResponse(String id, Context context) {
-        String resourceGroupName = ResourceManagerUtils.getValueFromIdByParameterName(id,
+        String resourceGroupName = ResourceManagerUtils.getRequiredValueFromIdByParameterName(id,
             "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.SignalRService/webPubSub/{resourceName}",
-            "resourceGroupName");
-        if (resourceGroupName == null) {
-            throw LOGGER.logExceptionAsError(new IllegalArgumentException(
-                String.format("The resource ID '%s' is not valid. Missing path segment 'resourceGroups'.", id)));
-        }
-        String resourceName = ResourceManagerUtils.getValueFromIdByParameterName(id,
+            "resourceGroupName", "resourceGroups", LOGGER);
+        String resourceName = ResourceManagerUtils.getRequiredValueFromIdByParameterName(id,
             "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.SignalRService/webPubSub/{resourceName}",
-            "resourceName");
-        if (resourceName == null) {
-            throw LOGGER.logExceptionAsError(new IllegalArgumentException(
-                String.format("The resource ID '%s' is not valid. Missing path segment 'webPubSub'.", id)));
-        }
+            "resourceName", "webPubSub", LOGGER);
         this.delete(resourceGroupName, resourceName, context);
     }
 

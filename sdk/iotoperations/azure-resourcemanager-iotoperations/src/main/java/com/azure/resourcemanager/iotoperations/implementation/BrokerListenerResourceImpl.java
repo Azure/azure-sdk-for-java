@@ -70,10 +70,7 @@ public final class BrokerListenerResourceImpl
     }
 
     public BrokerListenerResource create() {
-        this.innerObject = serviceManager.serviceClient()
-            .getBrokerListeners()
-            .createOrUpdate(resourceGroupName, instanceName, brokerName, listenerName, this.innerModel(), Context.NONE);
-        return this;
+        return this.create(Context.NONE);
     }
 
     public BrokerListenerResource create(Context context) {
@@ -95,10 +92,7 @@ public final class BrokerListenerResourceImpl
     }
 
     public BrokerListenerResource apply() {
-        this.innerObject = serviceManager.serviceClient()
-            .getBrokerListeners()
-            .createOrUpdate(resourceGroupName, instanceName, brokerName, listenerName, this.innerModel(), Context.NONE);
-        return this;
+        return this.apply(Context.NONE);
     }
 
     public BrokerListenerResource apply(Context context) {
@@ -127,11 +121,7 @@ public final class BrokerListenerResourceImpl
     }
 
     public BrokerListenerResource refresh() {
-        this.innerObject = serviceManager.serviceClient()
-            .getBrokerListeners()
-            .getWithResponse(resourceGroupName, instanceName, brokerName, listenerName, Context.NONE)
-            .getValue();
-        return this;
+        return this.refresh(Context.NONE);
     }
 
     public BrokerListenerResource refresh(Context context) {

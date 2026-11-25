@@ -21,7 +21,7 @@ public final class TuningOptionsOperationsGetWithResponseMockTests {
     @Test
     public void testGetWithResponse() throws Exception {
         String responseStr
-            = "{\"properties\":{\"state\":\"vfkoxml\"},\"id\":\"ktuidvrm\",\"name\":\"zlpdwwex\",\"type\":\"mzvlazipbh\"}";
+            = "{\"properties\":{\"state\":\"nynkbwet\"},\"id\":\"uhpsprkzyaupia\",\"name\":\"cxnafbwqrooh\",\"type\":\"uovmaonurjt\"}";
 
         HttpClient httpClient
             = response -> Mono.just(new MockHttpResponse(response, 200, responseStr.getBytes(StandardCharsets.UTF_8)));
@@ -31,7 +31,8 @@ public final class TuningOptionsOperationsGetWithResponseMockTests {
                 new AzureProfile("", "", AzureCloud.AZURE_PUBLIC_CLOUD));
 
         TuningOptions response = manager.tuningOptionsOperations()
-            .getWithResponse("st", "jeaq", TuningOptionParameterEnum.TABLE, com.azure.core.util.Context.NONE)
+            .getWithResponse("avfqnvhnqoewdogi", "etesypvidbztjhqt", TuningOptionParameterEnum.INDEX,
+                com.azure.core.util.Context.NONE)
             .getValue();
 
     }

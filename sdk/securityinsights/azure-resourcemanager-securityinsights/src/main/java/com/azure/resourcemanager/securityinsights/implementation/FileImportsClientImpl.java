@@ -202,18 +202,7 @@ public final class FileImportsClientImpl implements FileImportsClient {
             .flatMap(res -> Mono.justOrEmpty(res.getValue()));
     }
 
-    /**
-     * Gets a file import.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param workspaceName The name of the workspace.
-     * @param fileImportId File import ID.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return a file import along with {@link Response}.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Response<FileImportInner> getWithResponse(String resourceGroupName, String workspaceName,
         String fileImportId, Context context) {
@@ -222,17 +211,7 @@ public final class FileImportsClientImpl implements FileImportsClient {
             resourceGroupName, workspaceName, fileImportId, accept, context);
     }
 
-    /**
-     * Gets a file import.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param workspaceName The name of the workspace.
-     * @param fileImportId File import ID.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return a file import.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public FileImportInner get(String resourceGroupName, String workspaceName, String fileImportId) {
         return getWithResponse(resourceGroupName, workspaceName, fileImportId, Context.NONE).getValue();
@@ -282,19 +261,7 @@ public final class FileImportsClientImpl implements FileImportsClient {
             .flatMap(res -> Mono.justOrEmpty(res.getValue()));
     }
 
-    /**
-     * Creates the file import.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param workspaceName The name of the workspace.
-     * @param fileImportId File import ID.
-     * @param fileImport The file import.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return represents a file import in Azure Security Insights along with {@link Response}.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Response<FileImportInner> createWithResponse(String resourceGroupName, String workspaceName,
         String fileImportId, FileImportInner fileImport, Context context) {
@@ -305,18 +272,7 @@ public final class FileImportsClientImpl implements FileImportsClient {
             fileImport, context);
     }
 
-    /**
-     * Creates the file import.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param workspaceName The name of the workspace.
-     * @param fileImportId File import ID.
-     * @param fileImport The file import.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return represents a file import in Azure Security Insights.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public FileImportInner create(String resourceGroupName, String workspaceName, String fileImportId,
         FileImportInner fileImport) {
@@ -359,9 +315,7 @@ public final class FileImportsClientImpl implements FileImportsClient {
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Response<BinaryData> deleteWithResponse(String resourceGroupName, String workspaceName,
         String fileImportId) {
-        final String accept = "application/json";
-        return service.deleteSync(this.client.getEndpoint(), this.client.getApiVersion(),
-            this.client.getSubscriptionId(), resourceGroupName, workspaceName, fileImportId, accept, Context.NONE);
+        return deleteWithResponse(resourceGroupName, workspaceName, fileImportId, Context.NONE);
     }
 
     /**
@@ -403,36 +357,14 @@ public final class FileImportsClientImpl implements FileImportsClient {
             this.client.getContext());
     }
 
-    /**
-     * Delete the file import.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param workspaceName The name of the workspace.
-     * @param fileImportId File import ID.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the {@link SyncPoller} for polling of represents a file import in Azure Security Insights.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public SyncPoller<PollResult<Void>, Void> beginDelete(String resourceGroupName, String workspaceName,
         String fileImportId) {
-        Response<BinaryData> response = deleteWithResponse(resourceGroupName, workspaceName, fileImportId);
-        return this.client.<Void, Void>getLroResult(response, Void.class, Void.class, Context.NONE);
+        return beginDelete(resourceGroupName, workspaceName, fileImportId, Context.NONE);
     }
 
-    /**
-     * Delete the file import.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param workspaceName The name of the workspace.
-     * @param fileImportId File import ID.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the {@link SyncPoller} for polling of represents a file import in Azure Security Insights.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public SyncPoller<PollResult<Void>, Void> beginDelete(String resourceGroupName, String workspaceName,
         String fileImportId, Context context) {
@@ -457,35 +389,16 @@ public final class FileImportsClientImpl implements FileImportsClient {
             .flatMap(this.client::getLroFinalResultOrError);
     }
 
-    /**
-     * Delete the file import.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param workspaceName The name of the workspace.
-     * @param fileImportId File import ID.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public void delete(String resourceGroupName, String workspaceName, String fileImportId) {
-        beginDelete(resourceGroupName, workspaceName, fileImportId).getFinalResult();
+        delete(resourceGroupName, workspaceName, fileImportId, Context.NONE);
     }
 
-    /**
-     * Delete the file import.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param workspaceName The name of the workspace.
-     * @param fileImportId File import ID.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public void delete(String resourceGroupName, String workspaceName, String fileImportId, Context context) {
-        beginDelete(resourceGroupName, workspaceName, fileImportId, context).getFinalResult();
+        this.client.getLroFinalResultOrError(beginDelete(resourceGroupName, workspaceName, fileImportId, context));
     }
 
     /**
@@ -581,12 +494,7 @@ public final class FileImportsClientImpl implements FileImportsClient {
     @ServiceMethod(returns = ReturnType.SINGLE)
     private PagedResponse<FileImportInner> listSinglePage(String resourceGroupName, String workspaceName, String filter,
         String orderby, Integer top, String skipToken) {
-        final String accept = "application/json";
-        Response<FileImportList> res
-            = service.listSync(this.client.getEndpoint(), this.client.getApiVersion(), this.client.getSubscriptionId(),
-                resourceGroupName, workspaceName, filter, orderby, top, skipToken, accept, Context.NONE);
-        return new PagedResponseBase<>(res.getRequest(), res.getStatusCode(), res.getHeaders(), res.getValue().value(),
-            res.getValue().nextLink(), null);
+        return listSinglePage(resourceGroupName, workspaceName, filter, orderby, top, skipToken, Context.NONE);
     }
 
     /**
@@ -617,44 +525,17 @@ public final class FileImportsClientImpl implements FileImportsClient {
             res.getValue().nextLink(), null);
     }
 
-    /**
-     * Gets all file imports.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param workspaceName The name of the workspace.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return all file imports as paginated response with {@link PagedIterable}.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.COLLECTION)
     public PagedIterable<FileImportInner> list(String resourceGroupName, String workspaceName) {
         final String filter = null;
         final String orderby = null;
         final Integer top = null;
         final String skipToken = null;
-        return new PagedIterable<>(
-            () -> listSinglePage(resourceGroupName, workspaceName, filter, orderby, top, skipToken),
-            nextLink -> listNextSinglePage(nextLink));
+        return list(resourceGroupName, workspaceName, filter, orderby, top, skipToken, Context.NONE);
     }
 
-    /**
-     * Gets all file imports.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param workspaceName The name of the workspace.
-     * @param filter Filters the results, based on a Boolean condition. Optional.
-     * @param orderby Sorts the results. Optional.
-     * @param top Returns only the first n results. Optional.
-     * @param skipToken Skiptoken is only used if a previous operation returned a partial result. If a previous response
-     * contains a nextLink element, the value of the nextLink element will include a skiptoken parameter that specifies
-     * a starting point to use for subsequent calls. Optional.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return all file imports as paginated response with {@link PagedIterable}.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.COLLECTION)
     public PagedIterable<FileImportInner> list(String resourceGroupName, String workspaceName, String filter,
         String orderby, Integer top, String skipToken, Context context) {
@@ -692,10 +573,7 @@ public final class FileImportsClientImpl implements FileImportsClient {
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private PagedResponse<FileImportInner> listNextSinglePage(String nextLink) {
-        final String accept = "application/json";
-        Response<FileImportList> res = service.listNextSync(nextLink, this.client.getEndpoint(), accept, Context.NONE);
-        return new PagedResponseBase<>(res.getRequest(), res.getStatusCode(), res.getHeaders(), res.getValue().value(),
-            res.getValue().nextLink(), null);
+        return listNextSinglePage(nextLink, Context.NONE);
     }
 
     /**

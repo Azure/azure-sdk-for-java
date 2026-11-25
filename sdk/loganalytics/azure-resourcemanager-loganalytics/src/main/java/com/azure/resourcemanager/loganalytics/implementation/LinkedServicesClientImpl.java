@@ -205,18 +205,7 @@ public final class LinkedServicesClientImpl implements LinkedServicesClient {
             .flatMap(res -> Mono.justOrEmpty(res.getValue()));
     }
 
-    /**
-     * Gets a linked service instance.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param workspaceName The name of the workspace.
-     * @param linkedServiceName Name of the linked service.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return a linked service instance along with {@link Response}.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Response<LinkedServiceInner> getWithResponse(String resourceGroupName, String workspaceName,
         String linkedServiceName, Context context) {
@@ -225,17 +214,7 @@ public final class LinkedServicesClientImpl implements LinkedServicesClient {
             resourceGroupName, workspaceName, linkedServiceName, accept, context);
     }
 
-    /**
-     * Gets a linked service instance.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param workspaceName The name of the workspace.
-     * @param linkedServiceName Name of the linked service.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return a linked service instance.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public LinkedServiceInner get(String resourceGroupName, String workspaceName, String linkedServiceName) {
         return getWithResponse(resourceGroupName, workspaceName, linkedServiceName, Context.NONE).getValue();
@@ -281,11 +260,8 @@ public final class LinkedServicesClientImpl implements LinkedServicesClient {
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Response<BinaryData> createOrUpdateWithResponse(String resourceGroupName, String workspaceName,
         String linkedServiceName, LinkedServiceInner parameters) {
-        final String contentType = "application/json";
-        final String accept = "application/json";
-        return service.createOrUpdateSync(this.client.getEndpoint(), this.client.getApiVersion(),
-            this.client.getSubscriptionId(), resourceGroupName, workspaceName, linkedServiceName, contentType, accept,
-            parameters, Context.NONE);
+        return createOrUpdateWithResponse(resourceGroupName, workspaceName, linkedServiceName, parameters,
+            Context.NONE);
     }
 
     /**
@@ -332,40 +308,14 @@ public final class LinkedServicesClientImpl implements LinkedServicesClient {
             LinkedServiceInner.class, LinkedServiceInner.class, this.client.getContext());
     }
 
-    /**
-     * Create or update a linked service.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param workspaceName The name of the workspace.
-     * @param linkedServiceName Name of the linked service.
-     * @param parameters The parameters required to create or update a linked service.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the {@link SyncPoller} for polling of the top level Linked service resource container.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public SyncPoller<PollResult<LinkedServiceInner>, LinkedServiceInner> beginCreateOrUpdate(String resourceGroupName,
         String workspaceName, String linkedServiceName, LinkedServiceInner parameters) {
-        Response<BinaryData> response
-            = createOrUpdateWithResponse(resourceGroupName, workspaceName, linkedServiceName, parameters);
-        return this.client.<LinkedServiceInner, LinkedServiceInner>getLroResult(response, LinkedServiceInner.class,
-            LinkedServiceInner.class, Context.NONE);
+        return beginCreateOrUpdate(resourceGroupName, workspaceName, linkedServiceName, parameters, Context.NONE);
     }
 
-    /**
-     * Create or update a linked service.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param workspaceName The name of the workspace.
-     * @param linkedServiceName Name of the linked service.
-     * @param parameters The parameters required to create or update a linked service.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the {@link SyncPoller} for polling of the top level Linked service resource container.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public SyncPoller<PollResult<LinkedServiceInner>, LinkedServiceInner> beginCreateOrUpdate(String resourceGroupName,
         String workspaceName, String linkedServiceName, LinkedServiceInner parameters, Context context) {
@@ -394,42 +344,19 @@ public final class LinkedServicesClientImpl implements LinkedServicesClient {
             .flatMap(this.client::getLroFinalResultOrError);
     }
 
-    /**
-     * Create or update a linked service.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param workspaceName The name of the workspace.
-     * @param linkedServiceName Name of the linked service.
-     * @param parameters The parameters required to create or update a linked service.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the top level Linked service resource container.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public LinkedServiceInner createOrUpdate(String resourceGroupName, String workspaceName, String linkedServiceName,
         LinkedServiceInner parameters) {
-        return beginCreateOrUpdate(resourceGroupName, workspaceName, linkedServiceName, parameters).getFinalResult();
+        return createOrUpdate(resourceGroupName, workspaceName, linkedServiceName, parameters, Context.NONE);
     }
 
-    /**
-     * Create or update a linked service.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param workspaceName The name of the workspace.
-     * @param linkedServiceName Name of the linked service.
-     * @param parameters The parameters required to create or update a linked service.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the top level Linked service resource container.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public LinkedServiceInner createOrUpdate(String resourceGroupName, String workspaceName, String linkedServiceName,
         LinkedServiceInner parameters, Context context) {
-        return beginCreateOrUpdate(resourceGroupName, workspaceName, linkedServiceName, parameters, context)
-            .getFinalResult();
+        return this.client.getLroFinalResultOrError(
+            beginCreateOrUpdate(resourceGroupName, workspaceName, linkedServiceName, parameters, context));
     }
 
     /**
@@ -468,9 +395,7 @@ public final class LinkedServicesClientImpl implements LinkedServicesClient {
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Response<BinaryData> deleteWithResponse(String resourceGroupName, String workspaceName,
         String linkedServiceName) {
-        final String accept = "application/json";
-        return service.deleteSync(this.client.getEndpoint(), this.client.getApiVersion(),
-            this.client.getSubscriptionId(), resourceGroupName, workspaceName, linkedServiceName, accept, Context.NONE);
+        return deleteWithResponse(resourceGroupName, workspaceName, linkedServiceName, Context.NONE);
     }
 
     /**
@@ -513,36 +438,14 @@ public final class LinkedServicesClientImpl implements LinkedServicesClient {
             this.client.getContext());
     }
 
-    /**
-     * Deletes a linked service instance.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param workspaceName The name of the workspace.
-     * @param linkedServiceName Name of the linked service.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the {@link SyncPoller} for polling of the top level Linked service resource container.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public SyncPoller<PollResult<Void>, Void> beginDelete(String resourceGroupName, String workspaceName,
         String linkedServiceName) {
-        Response<BinaryData> response = deleteWithResponse(resourceGroupName, workspaceName, linkedServiceName);
-        return this.client.<Void, Void>getLroResult(response, Void.class, Void.class, Context.NONE);
+        return beginDelete(resourceGroupName, workspaceName, linkedServiceName, Context.NONE);
     }
 
-    /**
-     * Deletes a linked service instance.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param workspaceName The name of the workspace.
-     * @param linkedServiceName Name of the linked service.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the {@link SyncPoller} for polling of the top level Linked service resource container.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public SyncPoller<PollResult<Void>, Void> beginDelete(String resourceGroupName, String workspaceName,
         String linkedServiceName, Context context) {
@@ -568,35 +471,16 @@ public final class LinkedServicesClientImpl implements LinkedServicesClient {
             .flatMap(this.client::getLroFinalResultOrError);
     }
 
-    /**
-     * Deletes a linked service instance.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param workspaceName The name of the workspace.
-     * @param linkedServiceName Name of the linked service.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public void delete(String resourceGroupName, String workspaceName, String linkedServiceName) {
-        beginDelete(resourceGroupName, workspaceName, linkedServiceName).getFinalResult();
+        delete(resourceGroupName, workspaceName, linkedServiceName, Context.NONE);
     }
 
-    /**
-     * Deletes a linked service instance.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param workspaceName The name of the workspace.
-     * @param linkedServiceName Name of the linked service.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public void delete(String resourceGroupName, String workspaceName, String linkedServiceName, Context context) {
-        beginDelete(resourceGroupName, workspaceName, linkedServiceName, context).getFinalResult();
+        this.client.getLroFinalResultOrError(beginDelete(resourceGroupName, workspaceName, linkedServiceName, context));
     }
 
     /**
@@ -651,12 +535,7 @@ public final class LinkedServicesClientImpl implements LinkedServicesClient {
     @ServiceMethod(returns = ReturnType.SINGLE)
     private PagedResponse<LinkedServiceInner> listByWorkspaceSinglePage(String resourceGroupName,
         String workspaceName) {
-        final String accept = "application/json";
-        Response<LinkedServiceListResult> res
-            = service.listByWorkspaceSync(this.client.getEndpoint(), this.client.getApiVersion(),
-                this.client.getSubscriptionId(), resourceGroupName, workspaceName, accept, Context.NONE);
-        return new PagedResponseBase<>(res.getRequest(), res.getStatusCode(), res.getHeaders(), res.getValue().value(),
-            res.getValue().nextLink(), null);
+        return listByWorkspaceSinglePage(resourceGroupName, workspaceName, Context.NONE);
     }
 
     /**
@@ -681,33 +560,13 @@ public final class LinkedServicesClientImpl implements LinkedServicesClient {
             res.getValue().nextLink(), null);
     }
 
-    /**
-     * Gets the linked services instances in a workspace.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param workspaceName The name of the workspace.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the linked services instances in a workspace as paginated response with {@link PagedIterable}.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.COLLECTION)
     public PagedIterable<LinkedServiceInner> listByWorkspace(String resourceGroupName, String workspaceName) {
-        return new PagedIterable<>(() -> listByWorkspaceSinglePage(resourceGroupName, workspaceName),
-            nextLink -> listByWorkspaceNextSinglePage(nextLink));
+        return listByWorkspace(resourceGroupName, workspaceName, Context.NONE);
     }
 
-    /**
-     * Gets the linked services instances in a workspace.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param workspaceName The name of the workspace.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the linked services instances in a workspace as paginated response with {@link PagedIterable}.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.COLLECTION)
     public PagedIterable<LinkedServiceInner> listByWorkspace(String resourceGroupName, String workspaceName,
         Context context) {
@@ -746,11 +605,7 @@ public final class LinkedServicesClientImpl implements LinkedServicesClient {
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private PagedResponse<LinkedServiceInner> listByWorkspaceNextSinglePage(String nextLink) {
-        final String accept = "application/json";
-        Response<LinkedServiceListResult> res
-            = service.listByWorkspaceNextSync(nextLink, this.client.getEndpoint(), accept, Context.NONE);
-        return new PagedResponseBase<>(res.getRequest(), res.getStatusCode(), res.getHeaders(), res.getValue().value(),
-            res.getValue().nextLink(), null);
+        return listByWorkspaceNextSinglePage(nextLink, Context.NONE);
     }
 
     /**

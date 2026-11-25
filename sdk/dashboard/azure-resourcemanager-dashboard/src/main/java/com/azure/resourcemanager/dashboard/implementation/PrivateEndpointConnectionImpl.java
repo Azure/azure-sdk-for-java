@@ -82,10 +82,7 @@ public final class PrivateEndpointConnectionImpl
     }
 
     public PrivateEndpointConnection create() {
-        this.innerObject = serviceManager.serviceClient()
-            .getPrivateEndpointConnections()
-            .approve(resourceGroupName, workspaceName, privateEndpointConnectionName, this.innerModel(), Context.NONE);
-        return this;
+        return this.create(Context.NONE);
     }
 
     public PrivateEndpointConnection create(Context context) {
@@ -106,10 +103,7 @@ public final class PrivateEndpointConnectionImpl
     }
 
     public PrivateEndpointConnection apply() {
-        this.innerObject = serviceManager.serviceClient()
-            .getPrivateEndpointConnections()
-            .approve(resourceGroupName, workspaceName, privateEndpointConnectionName, this.innerModel(), Context.NONE);
-        return this;
+        return this.apply(Context.NONE);
     }
 
     public PrivateEndpointConnection apply(Context context) {
@@ -135,11 +129,7 @@ public final class PrivateEndpointConnectionImpl
     }
 
     public PrivateEndpointConnection refresh() {
-        this.innerObject = serviceManager.serviceClient()
-            .getPrivateEndpointConnections()
-            .getWithResponse(resourceGroupName, workspaceName, privateEndpointConnectionName, Context.NONE)
-            .getValue();
-        return this;
+        return this.refresh(Context.NONE);
     }
 
     public PrivateEndpointConnection refresh(Context context) {

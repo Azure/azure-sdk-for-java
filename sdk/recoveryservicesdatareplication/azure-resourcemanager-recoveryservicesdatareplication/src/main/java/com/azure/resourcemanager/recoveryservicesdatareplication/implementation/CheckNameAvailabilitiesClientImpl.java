@@ -118,19 +118,7 @@ public final class CheckNameAvailabilitiesClientImpl implements CheckNameAvailab
         return postWithResponseAsync(location, body).flatMap(res -> Mono.justOrEmpty(res.getValue()));
     }
 
-    /**
-     * Performs the resource name availability check.
-     * 
-     * Checks the resource name availability.
-     * 
-     * @param location The name of the Azure region.
-     * @param body Resource details.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return check name availability response model along with {@link Response}.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Response<CheckNameAvailabilityResponseModelInner> postWithResponse(String location,
         CheckNameAvailabilityModel body, Context context) {
@@ -139,17 +127,7 @@ public final class CheckNameAvailabilitiesClientImpl implements CheckNameAvailab
             location, accept, body, context);
     }
 
-    /**
-     * Performs the resource name availability check.
-     * 
-     * Checks the resource name availability.
-     * 
-     * @param location The name of the Azure region.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return check name availability response model.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public CheckNameAvailabilityResponseModelInner post(String location) {
         final CheckNameAvailabilityModel body = null;

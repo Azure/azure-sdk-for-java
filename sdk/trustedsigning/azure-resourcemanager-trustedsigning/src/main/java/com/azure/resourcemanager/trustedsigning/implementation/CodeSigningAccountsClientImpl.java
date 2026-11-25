@@ -267,17 +267,7 @@ public final class CodeSigningAccountsClientImpl implements CodeSigningAccountsC
             .flatMap(res -> Mono.justOrEmpty(res.getValue()));
     }
 
-    /**
-     * Get a trusted Signing Account.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param accountName Trusted Signing account name.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return a trusted Signing Account along with {@link Response}.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Response<CodeSigningAccountInner> getByResourceGroupWithResponse(String resourceGroupName,
         String accountName, Context context) {
@@ -286,16 +276,7 @@ public final class CodeSigningAccountsClientImpl implements CodeSigningAccountsC
             this.client.getSubscriptionId(), resourceGroupName, accountName, accept, context);
     }
 
-    /**
-     * Get a trusted Signing Account.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param accountName Trusted Signing account name.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return a trusted Signing Account.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public CodeSigningAccountInner getByResourceGroup(String resourceGroupName, String accountName) {
         return getByResourceGroupWithResponse(resourceGroupName, accountName, Context.NONE).getValue();
@@ -336,11 +317,7 @@ public final class CodeSigningAccountsClientImpl implements CodeSigningAccountsC
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Response<BinaryData> createWithResponse(String resourceGroupName, String accountName,
         CodeSigningAccountInner resource) {
-        final String contentType = "application/json";
-        final String accept = "application/json";
-        return service.createSync(this.client.getEndpoint(), this.client.getApiVersion(),
-            this.client.getSubscriptionId(), resourceGroupName, accountName, contentType, accept, resource,
-            Context.NONE);
+        return createWithResponse(resourceGroupName, accountName, resource, Context.NONE);
     }
 
     /**
@@ -384,37 +361,14 @@ public final class CodeSigningAccountsClientImpl implements CodeSigningAccountsC
             this.client.getContext());
     }
 
-    /**
-     * Create a trusted Signing Account.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param accountName Trusted Signing account name.
-     * @param resource Parameters to create the trusted signing account.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the {@link SyncPoller} for polling of trusted signing account resource.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public SyncPoller<PollResult<CodeSigningAccountInner>, CodeSigningAccountInner>
         beginCreate(String resourceGroupName, String accountName, CodeSigningAccountInner resource) {
-        Response<BinaryData> response = createWithResponse(resourceGroupName, accountName, resource);
-        return this.client.<CodeSigningAccountInner, CodeSigningAccountInner>getLroResult(response,
-            CodeSigningAccountInner.class, CodeSigningAccountInner.class, Context.NONE);
+        return beginCreate(resourceGroupName, accountName, resource, Context.NONE);
     }
 
-    /**
-     * Create a trusted Signing Account.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param accountName Trusted Signing account name.
-     * @param resource Parameters to create the trusted signing account.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the {@link SyncPoller} for polling of trusted signing account resource.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public SyncPoller<PollResult<CodeSigningAccountInner>, CodeSigningAccountInner>
         beginCreate(String resourceGroupName, String accountName, CodeSigningAccountInner resource, Context context) {
@@ -441,39 +395,18 @@ public final class CodeSigningAccountsClientImpl implements CodeSigningAccountsC
             .flatMap(this.client::getLroFinalResultOrError);
     }
 
-    /**
-     * Create a trusted Signing Account.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param accountName Trusted Signing account name.
-     * @param resource Parameters to create the trusted signing account.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return trusted signing account resource.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public CodeSigningAccountInner create(String resourceGroupName, String accountName,
         CodeSigningAccountInner resource) {
-        return beginCreate(resourceGroupName, accountName, resource).getFinalResult();
+        return create(resourceGroupName, accountName, resource, Context.NONE);
     }
 
-    /**
-     * Create a trusted Signing Account.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param accountName Trusted Signing account name.
-     * @param resource Parameters to create the trusted signing account.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return trusted signing account resource.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public CodeSigningAccountInner create(String resourceGroupName, String accountName,
         CodeSigningAccountInner resource, Context context) {
-        return beginCreate(resourceGroupName, accountName, resource, context).getFinalResult();
+        return this.client.getLroFinalResultOrError(beginCreate(resourceGroupName, accountName, resource, context));
     }
 
     /**
@@ -511,11 +444,7 @@ public final class CodeSigningAccountsClientImpl implements CodeSigningAccountsC
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Response<BinaryData> updateWithResponse(String resourceGroupName, String accountName,
         CodeSigningAccountPatch properties) {
-        final String contentType = "application/json";
-        final String accept = "application/json";
-        return service.updateSync(this.client.getEndpoint(), this.client.getApiVersion(),
-            this.client.getSubscriptionId(), resourceGroupName, accountName, contentType, accept, properties,
-            Context.NONE);
+        return updateWithResponse(resourceGroupName, accountName, properties, Context.NONE);
     }
 
     /**
@@ -559,37 +488,14 @@ public final class CodeSigningAccountsClientImpl implements CodeSigningAccountsC
             this.client.getContext());
     }
 
-    /**
-     * Update a trusted signing account.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param accountName Trusted Signing account name.
-     * @param properties Parameters supplied to update the trusted signing account.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the {@link SyncPoller} for polling of trusted signing account resource.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public SyncPoller<PollResult<CodeSigningAccountInner>, CodeSigningAccountInner>
         beginUpdate(String resourceGroupName, String accountName, CodeSigningAccountPatch properties) {
-        Response<BinaryData> response = updateWithResponse(resourceGroupName, accountName, properties);
-        return this.client.<CodeSigningAccountInner, CodeSigningAccountInner>getLroResult(response,
-            CodeSigningAccountInner.class, CodeSigningAccountInner.class, Context.NONE);
+        return beginUpdate(resourceGroupName, accountName, properties, Context.NONE);
     }
 
-    /**
-     * Update a trusted signing account.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param accountName Trusted Signing account name.
-     * @param properties Parameters supplied to update the trusted signing account.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the {@link SyncPoller} for polling of trusted signing account resource.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public SyncPoller<PollResult<CodeSigningAccountInner>, CodeSigningAccountInner>
         beginUpdate(String resourceGroupName, String accountName, CodeSigningAccountPatch properties, Context context) {
@@ -616,39 +522,18 @@ public final class CodeSigningAccountsClientImpl implements CodeSigningAccountsC
             .flatMap(this.client::getLroFinalResultOrError);
     }
 
-    /**
-     * Update a trusted signing account.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param accountName Trusted Signing account name.
-     * @param properties Parameters supplied to update the trusted signing account.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return trusted signing account resource.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public CodeSigningAccountInner update(String resourceGroupName, String accountName,
         CodeSigningAccountPatch properties) {
-        return beginUpdate(resourceGroupName, accountName, properties).getFinalResult();
+        return update(resourceGroupName, accountName, properties, Context.NONE);
     }
 
-    /**
-     * Update a trusted signing account.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param accountName Trusted Signing account name.
-     * @param properties Parameters supplied to update the trusted signing account.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return trusted signing account resource.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public CodeSigningAccountInner update(String resourceGroupName, String accountName,
         CodeSigningAccountPatch properties, Context context) {
-        return beginUpdate(resourceGroupName, accountName, properties, context).getFinalResult();
+        return this.client.getLroFinalResultOrError(beginUpdate(resourceGroupName, accountName, properties, context));
     }
 
     /**
@@ -681,8 +566,7 @@ public final class CodeSigningAccountsClientImpl implements CodeSigningAccountsC
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Response<BinaryData> deleteWithResponse(String resourceGroupName, String accountName) {
-        return service.deleteSync(this.client.getEndpoint(), this.client.getApiVersion(),
-            this.client.getSubscriptionId(), resourceGroupName, accountName, Context.NONE);
+        return deleteWithResponse(resourceGroupName, accountName, Context.NONE);
     }
 
     /**
@@ -719,33 +603,13 @@ public final class CodeSigningAccountsClientImpl implements CodeSigningAccountsC
             this.client.getContext());
     }
 
-    /**
-     * Delete a trusted signing account.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param accountName Trusted Signing account name.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the {@link SyncPoller} for polling of long-running operation.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public SyncPoller<PollResult<Void>, Void> beginDelete(String resourceGroupName, String accountName) {
-        Response<BinaryData> response = deleteWithResponse(resourceGroupName, accountName);
-        return this.client.<Void, Void>getLroResult(response, Void.class, Void.class, Context.NONE);
+        return beginDelete(resourceGroupName, accountName, Context.NONE);
     }
 
-    /**
-     * Delete a trusted signing account.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param accountName Trusted Signing account name.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the {@link SyncPoller} for polling of long-running operation.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public SyncPoller<PollResult<Void>, Void> beginDelete(String resourceGroupName, String accountName,
         Context context) {
@@ -768,33 +632,16 @@ public final class CodeSigningAccountsClientImpl implements CodeSigningAccountsC
         return beginDeleteAsync(resourceGroupName, accountName).last().flatMap(this.client::getLroFinalResultOrError);
     }
 
-    /**
-     * Delete a trusted signing account.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param accountName Trusted Signing account name.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public void delete(String resourceGroupName, String accountName) {
-        beginDelete(resourceGroupName, accountName).getFinalResult();
+        delete(resourceGroupName, accountName, Context.NONE);
     }
 
-    /**
-     * Delete a trusted signing account.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param accountName Trusted Signing account name.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public void delete(String resourceGroupName, String accountName, Context context) {
-        beginDelete(resourceGroupName, accountName, context).getFinalResult();
+        this.client.getLroFinalResultOrError(beginDelete(resourceGroupName, accountName, context));
     }
 
     /**
@@ -844,11 +691,7 @@ public final class CodeSigningAccountsClientImpl implements CodeSigningAccountsC
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private PagedResponse<CodeSigningAccountInner> listByResourceGroupSinglePage(String resourceGroupName) {
-        final String accept = "application/json";
-        Response<CodeSigningAccountListResult> res = service.listByResourceGroupSync(this.client.getEndpoint(),
-            this.client.getApiVersion(), this.client.getSubscriptionId(), resourceGroupName, accept, Context.NONE);
-        return new PagedResponseBase<>(res.getRequest(), res.getStatusCode(), res.getHeaders(), res.getValue().value(),
-            res.getValue().nextLink(), null);
+        return listByResourceGroupSinglePage(resourceGroupName, Context.NONE);
     }
 
     /**
@@ -871,31 +714,13 @@ public final class CodeSigningAccountsClientImpl implements CodeSigningAccountsC
             res.getValue().nextLink(), null);
     }
 
-    /**
-     * Lists trusted signing accounts within a resource group.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the response of a CodeSigningAccount list operation as paginated response with {@link PagedIterable}.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.COLLECTION)
     public PagedIterable<CodeSigningAccountInner> listByResourceGroup(String resourceGroupName) {
-        return new PagedIterable<>(() -> listByResourceGroupSinglePage(resourceGroupName),
-            nextLink -> listByResourceGroupNextSinglePage(nextLink));
+        return listByResourceGroup(resourceGroupName, Context.NONE);
     }
 
-    /**
-     * Lists trusted signing accounts within a resource group.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the response of a CodeSigningAccount list operation as paginated response with {@link PagedIterable}.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.COLLECTION)
     public PagedIterable<CodeSigningAccountInner> listByResourceGroup(String resourceGroupName, Context context) {
         return new PagedIterable<>(() -> listByResourceGroupSinglePage(resourceGroupName, context),
@@ -943,11 +768,7 @@ public final class CodeSigningAccountsClientImpl implements CodeSigningAccountsC
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private PagedResponse<CodeSigningAccountInner> listSinglePage() {
-        final String accept = "application/json";
-        Response<CodeSigningAccountListResult> res = service.listSync(this.client.getEndpoint(),
-            this.client.getApiVersion(), this.client.getSubscriptionId(), accept, Context.NONE);
-        return new PagedResponseBase<>(res.getRequest(), res.getStatusCode(), res.getHeaders(), res.getValue().value(),
-            res.getValue().nextLink(), null);
+        return listSinglePage(Context.NONE);
     }
 
     /**
@@ -968,27 +789,13 @@ public final class CodeSigningAccountsClientImpl implements CodeSigningAccountsC
             res.getValue().nextLink(), null);
     }
 
-    /**
-     * Lists trusted signing accounts within a subscription.
-     * 
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the response of a CodeSigningAccount list operation as paginated response with {@link PagedIterable}.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.COLLECTION)
     public PagedIterable<CodeSigningAccountInner> list() {
-        return new PagedIterable<>(() -> listSinglePage(), nextLink -> listBySubscriptionNextSinglePage(nextLink));
+        return list(Context.NONE);
     }
 
-    /**
-     * Lists trusted signing accounts within a subscription.
-     * 
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the response of a CodeSigningAccount list operation as paginated response with {@link PagedIterable}.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.COLLECTION)
     public PagedIterable<CodeSigningAccountInner> list(Context context) {
         return new PagedIterable<>(() -> listSinglePage(context),
@@ -1030,16 +837,7 @@ public final class CodeSigningAccountsClientImpl implements CodeSigningAccountsC
         return checkNameAvailabilityWithResponseAsync(body).flatMap(res -> Mono.justOrEmpty(res.getValue()));
     }
 
-    /**
-     * Checks that the trusted signing account name is valid and is not already in use.
-     * 
-     * @param body The CheckAvailability request.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the CheckNameAvailability operation response along with {@link Response}.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Response<CheckNameAvailabilityResultInner> checkNameAvailabilityWithResponse(CheckNameAvailability body,
         Context context) {
@@ -1049,15 +847,7 @@ public final class CodeSigningAccountsClientImpl implements CodeSigningAccountsC
             this.client.getSubscriptionId(), contentType, accept, body, context);
     }
 
-    /**
-     * Checks that the trusted signing account name is valid and is not already in use.
-     * 
-     * @param body The CheckAvailability request.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the CheckNameAvailability operation response.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public CheckNameAvailabilityResultInner checkNameAvailability(CheckNameAvailability body) {
         return checkNameAvailabilityWithResponse(body, Context.NONE).getValue();
@@ -1095,11 +885,7 @@ public final class CodeSigningAccountsClientImpl implements CodeSigningAccountsC
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private PagedResponse<CodeSigningAccountInner> listByResourceGroupNextSinglePage(String nextLink) {
-        final String accept = "application/json";
-        Response<CodeSigningAccountListResult> res
-            = service.listByResourceGroupNextSync(nextLink, this.client.getEndpoint(), accept, Context.NONE);
-        return new PagedResponseBase<>(res.getRequest(), res.getStatusCode(), res.getHeaders(), res.getValue().value(),
-            res.getValue().nextLink(), null);
+        return listByResourceGroupNextSinglePage(nextLink, Context.NONE);
     }
 
     /**
@@ -1153,11 +939,7 @@ public final class CodeSigningAccountsClientImpl implements CodeSigningAccountsC
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private PagedResponse<CodeSigningAccountInner> listBySubscriptionNextSinglePage(String nextLink) {
-        final String accept = "application/json";
-        Response<CodeSigningAccountListResult> res
-            = service.listBySubscriptionNextSync(nextLink, this.client.getEndpoint(), accept, Context.NONE);
-        return new PagedResponseBase<>(res.getRequest(), res.getStatusCode(), res.getHeaders(), res.getValue().value(),
-            res.getValue().nextLink(), null);
+        return listBySubscriptionNextSinglePage(nextLink, Context.NONE);
     }
 
     /**

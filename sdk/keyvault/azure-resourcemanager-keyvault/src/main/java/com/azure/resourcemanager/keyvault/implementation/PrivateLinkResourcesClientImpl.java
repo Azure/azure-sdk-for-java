@@ -67,17 +67,7 @@ public final class PrivateLinkResourcesClientImpl implements PrivateLinkResource
             @HeaderParam("Accept") String accept, Context context);
     }
 
-    /**
-     * Gets the private link resources supported for the key vault.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param vaultName The name of the vault.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the private link resources supported for the key vault along with {@link Response} on successful
-     * completion of {@link Mono}.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Response<PrivateLinkResourceListResultInner>> listByVaultWithResponseAsync(String resourceGroupName,
         String vaultName) {
@@ -139,49 +129,21 @@ public final class PrivateLinkResourcesClientImpl implements PrivateLinkResource
             this.client.getSubscriptionId(), resourceGroupName, vaultName, accept, context);
     }
 
-    /**
-     * Gets the private link resources supported for the key vault.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param vaultName The name of the vault.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the private link resources supported for the key vault on successful completion of {@link Mono}.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<PrivateLinkResourceListResultInner> listByVaultAsync(String resourceGroupName, String vaultName) {
         return listByVaultWithResponseAsync(resourceGroupName, vaultName)
             .flatMap(res -> Mono.justOrEmpty(res.getValue()));
     }
 
-    /**
-     * Gets the private link resources supported for the key vault.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param vaultName The name of the vault.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the private link resources supported for the key vault along with {@link Response}.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Response<PrivateLinkResourceListResultInner> listByVaultWithResponse(String resourceGroupName,
         String vaultName, Context context) {
         return listByVaultWithResponseAsync(resourceGroupName, vaultName, context).block();
     }
 
-    /**
-     * Gets the private link resources supported for the key vault.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param vaultName The name of the vault.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the private link resources supported for the key vault.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public PrivateLinkResourceListResultInner listByVault(String resourceGroupName, String vaultName) {
         return listByVaultWithResponse(resourceGroupName, vaultName, Context.NONE).getValue();

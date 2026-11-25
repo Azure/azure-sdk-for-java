@@ -28,7 +28,7 @@ public final class RaiBindingsDeleteWithResponseMockTests {
                 new AzureProfile("", "", AzureCloud.AZURE_PUBLIC_CLOUD));
 
         manager.raiBindings()
-            .deleteWithResponse("qvzlbbbajdexqu", "wexizbfzetjizwh", "nbmajvvyxtvvx", "akzixb",
+            .deleteWithResponse("mtykxszdekfxcsqm", "do", "ktkdpcz", "ohplrgcnbvmhvq",
                 com.azure.core.util.Context.NONE);
 
     }

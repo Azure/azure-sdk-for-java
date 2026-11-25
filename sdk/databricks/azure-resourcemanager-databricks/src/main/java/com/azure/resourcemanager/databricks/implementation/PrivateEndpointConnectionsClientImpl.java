@@ -213,22 +213,7 @@ public final class PrivateEndpointConnectionsClientImpl implements PrivateEndpoi
             .flatMap(res -> Mono.justOrEmpty(res.getValue()));
     }
 
-    /**
-     * Get private endpoint connection
-     * 
-     * Get a private endpoint connection properties for a workspace.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param workspaceName The name of the workspace.
-     * @param privateEndpointConnectionName The name of the private endpoint connection.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ErrorInfoException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return private endpoint connection
-     * 
-     * Get a private endpoint connection properties for a workspace along with {@link Response}.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Response<PrivateEndpointConnectionInner> getWithResponse(String resourceGroupName, String workspaceName,
         String privateEndpointConnectionName, Context context) {
@@ -237,21 +222,7 @@ public final class PrivateEndpointConnectionsClientImpl implements PrivateEndpoi
             resourceGroupName, workspaceName, privateEndpointConnectionName, accept, context);
     }
 
-    /**
-     * Get private endpoint connection
-     * 
-     * Get a private endpoint connection properties for a workspace.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param workspaceName The name of the workspace.
-     * @param privateEndpointConnectionName The name of the private endpoint connection.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ErrorInfoException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return private endpoint connection
-     * 
-     * Get a private endpoint connection properties for a workspace.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public PrivateEndpointConnectionInner get(String resourceGroupName, String workspaceName,
         String privateEndpointConnectionName) {
@@ -303,11 +274,8 @@ public final class PrivateEndpointConnectionsClientImpl implements PrivateEndpoi
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Response<BinaryData> createWithResponse(String resourceGroupName, String workspaceName,
         String privateEndpointConnectionName, PrivateEndpointConnectionInner privateEndpointConnection) {
-        final String contentType = "application/json";
-        final String accept = "application/json";
-        return service.createSync(this.client.getEndpoint(), this.client.getApiVersion(),
-            this.client.getSubscriptionId(), resourceGroupName, workspaceName, privateEndpointConnectionName,
-            contentType, accept, privateEndpointConnection, Context.NONE);
+        return createWithResponse(resourceGroupName, workspaceName, privateEndpointConnectionName,
+            privateEndpointConnection, Context.NONE);
     }
 
     /**
@@ -361,45 +329,16 @@ public final class PrivateEndpointConnectionsClientImpl implements PrivateEndpoi
             this.client.getContext());
     }
 
-    /**
-     * Update private endpoint connection status
-     * 
-     * Update the status of a private endpoint connection with the specified name.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param workspaceName The name of the workspace.
-     * @param privateEndpointConnectionName The name of the private endpoint connection.
-     * @param privateEndpointConnection The private endpoint connection with updated properties.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ErrorInfoException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the {@link SyncPoller} for polling of the private endpoint connection of a workspace.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public SyncPoller<PollResult<PrivateEndpointConnectionInner>, PrivateEndpointConnectionInner> beginCreate(
         String resourceGroupName, String workspaceName, String privateEndpointConnectionName,
         PrivateEndpointConnectionInner privateEndpointConnection) {
-        Response<BinaryData> response = createWithResponse(resourceGroupName, workspaceName,
-            privateEndpointConnectionName, privateEndpointConnection);
-        return this.client.<PrivateEndpointConnectionInner, PrivateEndpointConnectionInner>getLroResult(response,
-            PrivateEndpointConnectionInner.class, PrivateEndpointConnectionInner.class, Context.NONE);
+        return beginCreate(resourceGroupName, workspaceName, privateEndpointConnectionName, privateEndpointConnection,
+            Context.NONE);
     }
 
-    /**
-     * Update private endpoint connection status
-     * 
-     * Update the status of a private endpoint connection with the specified name.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param workspaceName The name of the workspace.
-     * @param privateEndpointConnectionName The name of the private endpoint connection.
-     * @param privateEndpointConnection The private endpoint connection with updated properties.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ErrorInfoException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the {@link SyncPoller} for polling of the private endpoint connection of a workspace.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public SyncPoller<PollResult<PrivateEndpointConnectionInner>, PrivateEndpointConnectionInner> beginCreate(
         String resourceGroupName, String workspaceName, String privateEndpointConnectionName,
@@ -431,48 +370,21 @@ public final class PrivateEndpointConnectionsClientImpl implements PrivateEndpoi
             privateEndpointConnection).last().flatMap(this.client::getLroFinalResultOrError);
     }
 
-    /**
-     * Update private endpoint connection status
-     * 
-     * Update the status of a private endpoint connection with the specified name.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param workspaceName The name of the workspace.
-     * @param privateEndpointConnectionName The name of the private endpoint connection.
-     * @param privateEndpointConnection The private endpoint connection with updated properties.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ErrorInfoException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the private endpoint connection of a workspace.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public PrivateEndpointConnectionInner create(String resourceGroupName, String workspaceName,
         String privateEndpointConnectionName, PrivateEndpointConnectionInner privateEndpointConnection) {
-        return beginCreate(resourceGroupName, workspaceName, privateEndpointConnectionName, privateEndpointConnection)
-            .getFinalResult();
+        return create(resourceGroupName, workspaceName, privateEndpointConnectionName, privateEndpointConnection,
+            Context.NONE);
     }
 
-    /**
-     * Update private endpoint connection status
-     * 
-     * Update the status of a private endpoint connection with the specified name.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param workspaceName The name of the workspace.
-     * @param privateEndpointConnectionName The name of the private endpoint connection.
-     * @param privateEndpointConnection The private endpoint connection with updated properties.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ErrorInfoException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the private endpoint connection of a workspace.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public PrivateEndpointConnectionInner create(String resourceGroupName, String workspaceName,
         String privateEndpointConnectionName, PrivateEndpointConnectionInner privateEndpointConnection,
         Context context) {
-        return beginCreate(resourceGroupName, workspaceName, privateEndpointConnectionName, privateEndpointConnection,
-            context).getFinalResult();
+        return this.client.getLroFinalResultOrError(beginCreate(resourceGroupName, workspaceName,
+            privateEndpointConnectionName, privateEndpointConnection, context));
     }
 
     /**
@@ -512,9 +424,7 @@ public final class PrivateEndpointConnectionsClientImpl implements PrivateEndpoi
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Response<BinaryData> deleteWithResponse(String resourceGroupName, String workspaceName,
         String privateEndpointConnectionName) {
-        return service.deleteSync(this.client.getEndpoint(), this.client.getApiVersion(),
-            this.client.getSubscriptionId(), resourceGroupName, workspaceName, privateEndpointConnectionName,
-            Context.NONE);
+        return deleteWithResponse(resourceGroupName, workspaceName, privateEndpointConnectionName, Context.NONE);
     }
 
     /**
@@ -560,41 +470,14 @@ public final class PrivateEndpointConnectionsClientImpl implements PrivateEndpoi
             this.client.getContext());
     }
 
-    /**
-     * Remove private endpoint connection
-     * 
-     * Remove private endpoint connection with the specified name.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param workspaceName The name of the workspace.
-     * @param privateEndpointConnectionName The name of the private endpoint connection.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ErrorInfoException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the {@link SyncPoller} for polling of long-running operation.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public SyncPoller<PollResult<Void>, Void> beginDelete(String resourceGroupName, String workspaceName,
         String privateEndpointConnectionName) {
-        Response<BinaryData> response
-            = deleteWithResponse(resourceGroupName, workspaceName, privateEndpointConnectionName);
-        return this.client.<Void, Void>getLroResult(response, Void.class, Void.class, Context.NONE);
+        return beginDelete(resourceGroupName, workspaceName, privateEndpointConnectionName, Context.NONE);
     }
 
-    /**
-     * Remove private endpoint connection
-     * 
-     * Remove private endpoint connection with the specified name.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param workspaceName The name of the workspace.
-     * @param privateEndpointConnectionName The name of the private endpoint connection.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ErrorInfoException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the {@link SyncPoller} for polling of long-running operation.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public SyncPoller<PollResult<Void>, Void> beginDelete(String resourceGroupName, String workspaceName,
         String privateEndpointConnectionName, Context context) {
@@ -623,40 +506,18 @@ public final class PrivateEndpointConnectionsClientImpl implements PrivateEndpoi
             .flatMap(this.client::getLroFinalResultOrError);
     }
 
-    /**
-     * Remove private endpoint connection
-     * 
-     * Remove private endpoint connection with the specified name.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param workspaceName The name of the workspace.
-     * @param privateEndpointConnectionName The name of the private endpoint connection.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ErrorInfoException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public void delete(String resourceGroupName, String workspaceName, String privateEndpointConnectionName) {
-        beginDelete(resourceGroupName, workspaceName, privateEndpointConnectionName).getFinalResult();
+        delete(resourceGroupName, workspaceName, privateEndpointConnectionName, Context.NONE);
     }
 
-    /**
-     * Remove private endpoint connection
-     * 
-     * Remove private endpoint connection with the specified name.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param workspaceName The name of the workspace.
-     * @param privateEndpointConnectionName The name of the private endpoint connection.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ErrorInfoException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public void delete(String resourceGroupName, String workspaceName, String privateEndpointConnectionName,
         Context context) {
-        beginDelete(resourceGroupName, workspaceName, privateEndpointConnectionName, context).getFinalResult();
+        this.client.getLroFinalResultOrError(
+            beginDelete(resourceGroupName, workspaceName, privateEndpointConnectionName, context));
     }
 
     /**
@@ -717,12 +578,7 @@ public final class PrivateEndpointConnectionsClientImpl implements PrivateEndpoi
     @ServiceMethod(returns = ReturnType.SINGLE)
     private PagedResponse<PrivateEndpointConnectionInner> listSinglePage(String resourceGroupName,
         String workspaceName) {
-        final String accept = "application/json";
-        Response<PrivateEndpointConnectionsList> res
-            = service.listSync(this.client.getEndpoint(), this.client.getApiVersion(), this.client.getSubscriptionId(),
-                resourceGroupName, workspaceName, accept, Context.NONE);
-        return new PagedResponseBase<>(res.getRequest(), res.getStatusCode(), res.getHeaders(), res.getValue().value(),
-            res.getValue().nextLink(), null);
+        return listSinglePage(resourceGroupName, workspaceName, Context.NONE);
     }
 
     /**
@@ -749,37 +605,13 @@ public final class PrivateEndpointConnectionsClientImpl implements PrivateEndpoi
             res.getValue().nextLink(), null);
     }
 
-    /**
-     * List private endpoint connections
-     * 
-     * List private endpoint connections of the workspace.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param workspaceName The name of the workspace.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ErrorInfoException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return list of private link connections as paginated response with {@link PagedIterable}.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.COLLECTION)
     public PagedIterable<PrivateEndpointConnectionInner> list(String resourceGroupName, String workspaceName) {
-        return new PagedIterable<>(() -> listSinglePage(resourceGroupName, workspaceName),
-            nextLink -> listNextSinglePage(nextLink));
+        return list(resourceGroupName, workspaceName, Context.NONE);
     }
 
-    /**
-     * List private endpoint connections
-     * 
-     * List private endpoint connections of the workspace.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param workspaceName The name of the workspace.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ErrorInfoException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return list of private link connections as paginated response with {@link PagedIterable}.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.COLLECTION)
     public PagedIterable<PrivateEndpointConnectionInner> list(String resourceGroupName, String workspaceName,
         Context context) {
@@ -821,11 +653,7 @@ public final class PrivateEndpointConnectionsClientImpl implements PrivateEndpoi
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private PagedResponse<PrivateEndpointConnectionInner> listNextSinglePage(String nextLink) {
-        final String accept = "application/json";
-        Response<PrivateEndpointConnectionsList> res
-            = service.listNextSync(nextLink, this.client.getEndpoint(), accept, Context.NONE);
-        return new PagedResponseBase<>(res.getRequest(), res.getStatusCode(), res.getHeaders(), res.getValue().value(),
-            res.getValue().nextLink(), null);
+        return listNextSinglePage(nextLink, Context.NONE);
     }
 
     /**

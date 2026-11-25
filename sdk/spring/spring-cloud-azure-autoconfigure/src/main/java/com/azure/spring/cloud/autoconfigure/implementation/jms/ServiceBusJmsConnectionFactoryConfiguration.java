@@ -14,6 +14,7 @@ import org.springframework.beans.factory.BeanFactory;
 import org.springframework.beans.factory.BeanFactoryAware;
 import org.springframework.beans.factory.ObjectProvider;
 import org.springframework.beans.factory.support.BeanDefinitionBuilder;
+import org.springframework.beans.factory.support.BeanDefinitionReaderUtils;
 import org.springframework.beans.factory.support.BeanDefinitionRegistry;
 import org.springframework.boot.context.properties.bind.BindResult;
 import org.springframework.boot.context.properties.bind.Binder;
@@ -93,17 +94,11 @@ class ServiceBusJmsConnectionFactoryConfiguration {
         {CACHE, CACHE, SERVICE_BUS} // cache: not set, true, false
     };
 
-    static class Registrar implements BeanFactoryAware, EnvironmentAware, ImportBeanDefinitionRegistrar {
+    static class Registrar implements EnvironmentAware, ImportBeanDefinitionRegistrar {
 
         private Environment environment;
-        private BeanFactory beanFactory;
         private static final String JMS_CONNECTION_FACTORY_BEAN_NAME = "jmsConnectionFactory";
         private static final String JMS_POOL_CONNECTION_FACTORY_BEAN_NAME = "jmsPoolConnectionFactory";
-
-        @Override
-        public void setBeanFactory(BeanFactory beanFactory) throws BeansException {
-            this.beanFactory = beanFactory;
-        }
 
         @Override
         public void setEnvironment(Environment environment) {
@@ -166,37 +161,41 @@ class ServiceBusJmsConnectionFactoryConfiguration {
         }
 
         private void registerServiceBusJmsConnectionFactory(BeanDefinitionRegistry registry) {
-            BeanDefinitionBuilder definitionBuilder = genericBeanDefinition(ServiceBusJmsConnectionFactory.class,
-                this::createServiceBusJmsConnectionFactory);
+            BeanDefinitionBuilder definitionBuilder = genericBeanDefinition(ServiceBusJmsConnectionFactory.class)
+                .setFactoryMethodOnBean("createServiceBusJmsConnectionFactory",
+                    BeanDefinitionReaderUtils.registerWithGeneratedName(
+                        genericBeanDefinition(ConnectionFactoryFactory.class).getBeanDefinition(), registry));
             registry.registerBeanDefinition(JMS_CONNECTION_FACTORY_BEAN_NAME, definitionBuilder.getBeanDefinition());
         }
 
         private void registerJmsCachingConnectionFactory(BeanDefinitionRegistry registry) {
-            BeanDefinitionBuilder definitionBuilder = genericBeanDefinition(CachingConnectionFactory.class,
-                () -> {
-                    CachingConnectionFactory connectionFactory = new CachingConnectionFactory(createServiceBusJmsConnectionFactory());
-                    JmsProperties jmsProperties = beanFactory.getBean(JmsProperties.class);
-                    JmsProperties.Cache cacheProperties = jmsProperties.getCache();
-                    connectionFactory.setCacheConsumers(cacheProperties.isConsumers());
-                    connectionFactory.setCacheProducers(cacheProperties.isProducers());
-                    connectionFactory.setSessionCacheSize(cacheProperties.getSessionCacheSize());
-                    return connectionFactory;
-                });
+            BeanDefinitionBuilder definitionBuilder = genericBeanDefinition(CachingConnectionFactory.class)
+                .setFactoryMethodOnBean("createCachingConnectionFactory",
+                    BeanDefinitionReaderUtils.registerWithGeneratedName(
+                        genericBeanDefinition(CachingConnectionFactoryFactory.class).getBeanDefinition(), registry));
             registry.registerBeanDefinition(JMS_CONNECTION_FACTORY_BEAN_NAME, definitionBuilder.getBeanDefinition());
         }
 
         private void registerJmsPoolConnectionFactory(BeanDefinitionRegistry registry) {
-            BeanDefinitionBuilder definitionBuilder = genericBeanDefinition(JmsPoolConnectionFactory.class,
-                () -> {
-                    AzureServiceBusJmsProperties serviceBusJmsProperties = beanFactory.getBean(AzureServiceBusJmsProperties.class);
-                    return new JmsPoolConnectionFactoryFactory(serviceBusJmsProperties.getPool())
-                        .createPooledConnectionFactory(createServiceBusJmsConnectionFactory());
-                });
+            BeanDefinitionBuilder definitionBuilder = genericBeanDefinition(JmsPoolConnectionFactory.class)
+                .setFactoryMethodOnBean("createPooledConnectionFactory",
+                    BeanDefinitionReaderUtils.registerWithGeneratedName(
+                        genericBeanDefinition(PoolingConnectionFactoryFactory.class).getBeanDefinition(), registry));
             definitionBuilder.setDestroyMethodName("stop");
             registry.registerBeanDefinition(JMS_POOL_CONNECTION_FACTORY_BEAN_NAME, definitionBuilder.getBeanDefinition());
         }
+    }
 
-        private ServiceBusJmsConnectionFactory createServiceBusJmsConnectionFactory() {
+    static class ConnectionFactoryFactory implements BeanFactoryAware {
+
+        protected BeanFactory beanFactory;
+
+        @Override
+        public void setBeanFactory(BeanFactory beanFactory) throws BeansException {
+            this.beanFactory = beanFactory;
+        }
+
+        ServiceBusJmsConnectionFactory createServiceBusJmsConnectionFactory() {
             AzureServiceBusJmsProperties serviceBusJmsProperties = beanFactory.getBean(AzureServiceBusJmsProperties.class);
             AzureServiceBusJmsConnectionFactoryFactory instanceFactory =
                 beanFactory.getBean(AzureServiceBusJmsConnectionFactoryFactory.class);
@@ -205,6 +204,28 @@ class ServiceBusJmsConnectionFactoryConfiguration {
                 serviceBusJmsProperties,
                 factoryCustomizers.orderedStream().collect(Collectors.toList()),
                 instanceFactory);
+        }
+    }
+
+    static class CachingConnectionFactoryFactory extends ConnectionFactoryFactory {
+
+        CachingConnectionFactory createCachingConnectionFactory() {
+            CachingConnectionFactory connectionFactory = new CachingConnectionFactory(createServiceBusJmsConnectionFactory());
+            JmsProperties jmsProperties = beanFactory.getBean(JmsProperties.class);
+            JmsProperties.Cache cacheProperties = jmsProperties.getCache();
+            connectionFactory.setCacheConsumers(cacheProperties.isConsumers());
+            connectionFactory.setCacheProducers(cacheProperties.isProducers());
+            connectionFactory.setSessionCacheSize(cacheProperties.getSessionCacheSize());
+            return connectionFactory;
+        }
+    }
+
+    static class PoolingConnectionFactoryFactory extends ConnectionFactoryFactory {
+
+        JmsPoolConnectionFactory createPooledConnectionFactory() {
+            AzureServiceBusJmsProperties serviceBusJmsProperties = beanFactory.getBean(AzureServiceBusJmsProperties.class);
+            return new JmsPoolConnectionFactoryFactory(serviceBusJmsProperties.getPool())
+                .createPooledConnectionFactory(createServiceBusJmsConnectionFactory());
         }
     }
 }

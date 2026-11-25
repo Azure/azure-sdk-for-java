@@ -9,7 +9,7 @@ package com.azure.resourcemanager.cognitiveservices.generated;
  */
 public final class AdapterDeploymentsDeleteSamples {
     /*
-     * x-ms-original-file: 2026-09-15-preview/DeleteAdapterDeployment.json
+     * x-ms-original-file: 2026-11-15-preview/DeleteAdapterDeployment.json
      */
     /**
      * Sample code: DeleteAdapterDeployment.

@@ -104,10 +104,7 @@ public final class AzureTrafficCollectorImpl
     }
 
     public AzureTrafficCollector create() {
-        this.innerObject = serviceManager.serviceClient()
-            .getAzureTrafficCollectors()
-            .createOrUpdate(resourceGroupName, azureTrafficCollectorName, this.innerModel(), Context.NONE);
-        return this;
+        return this.create(Context.NONE);
     }
 
     public AzureTrafficCollector create(Context context) {
@@ -130,11 +127,7 @@ public final class AzureTrafficCollectorImpl
     }
 
     public AzureTrafficCollector apply() {
-        this.innerObject = serviceManager.serviceClient()
-            .getAzureTrafficCollectors()
-            .updateTagsWithResponse(resourceGroupName, azureTrafficCollectorName, updateParameters, Context.NONE)
-            .getValue();
-        return this;
+        return this.apply(Context.NONE);
     }
 
     public AzureTrafficCollector apply(Context context) {
@@ -158,11 +151,7 @@ public final class AzureTrafficCollectorImpl
     }
 
     public AzureTrafficCollector refresh() {
-        this.innerObject = serviceManager.serviceClient()
-            .getAzureTrafficCollectors()
-            .getByResourceGroupWithResponse(resourceGroupName, azureTrafficCollectorName, Context.NONE)
-            .getValue();
-        return this;
+        return this.refresh(Context.NONE);
     }
 
     public AzureTrafficCollector refresh(Context context) {

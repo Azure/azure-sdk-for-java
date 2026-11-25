@@ -50,10 +50,7 @@ public final class NetworkSecurityPerimeterConfigurationsImpl implements Network
 
     public PagedIterable<NetworkSecurityPerimeterConfiguration> listByPrivateLinkScope(String resourceGroupName,
         String scopeName) {
-        PagedIterable<NetworkSecurityPerimeterConfigurationInner> inner
-            = this.serviceClient().listByPrivateLinkScope(resourceGroupName, scopeName);
-        return ResourceManagerUtils.mapPage(inner,
-            inner1 -> new NetworkSecurityPerimeterConfigurationImpl(inner1, this.manager()));
+        return this.listByPrivateLinkScope(resourceGroupName, scopeName, Context.NONE);
     }
 
     public PagedIterable<NetworkSecurityPerimeterConfiguration> listByPrivateLinkScope(String resourceGroupName,
@@ -66,13 +63,7 @@ public final class NetworkSecurityPerimeterConfigurationsImpl implements Network
 
     public NetworkSecurityPerimeterConfigurationReconcileResult reconcileForPrivateLinkScope(String resourceGroupName,
         String scopeName, String perimeterName) {
-        NetworkSecurityPerimeterConfigurationReconcileResultInner inner
-            = this.serviceClient().reconcileForPrivateLinkScope(resourceGroupName, scopeName, perimeterName);
-        if (inner != null) {
-            return new NetworkSecurityPerimeterConfigurationReconcileResultImpl(inner, this.manager());
-        } else {
-            return null;
-        }
+        return this.reconcileForPrivateLinkScope(resourceGroupName, scopeName, perimeterName, Context.NONE);
     }
 
     public NetworkSecurityPerimeterConfigurationReconcileResult reconcileForPrivateLinkScope(String resourceGroupName,

@@ -83,6 +83,8 @@ public class AgentOptimizationCandidateOutput implements JsonSerializable<AgentO
                     return AgentOptimizationAgentCandidateOutput.fromJson(readerToUse.reset());
                 } else if ("prompt_optimization".equals(discriminatorValue)) {
                     return AgentOptimizationPromptCandidateOutput.fromJson(readerToUse.reset());
+                } else if ("skill_optimization".equals(discriminatorValue)) {
+                    return AgentOptimizationSkillCandidateOutput.fromJson(readerToUse.reset());
                 } else {
                     return fromJsonKnownDiscriminator(readerToUse.reset());
                 }

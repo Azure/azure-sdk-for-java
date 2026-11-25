@@ -102,7 +102,7 @@ public final class AvailableEndpointServicesClientImpl implements AvailableEndpo
         if (location == null) {
             return Mono.error(new IllegalArgumentException("Parameter location is required and cannot be null."));
         }
-        final String apiVersion = "2026-03-01";
+        final String apiVersion = "2026-05-01";
         final String accept = "application/json";
         return FluxUtil
             .withContext(context -> service.list(this.client.getEndpoint(), apiVersion, this.client.getSubscriptionId(),
@@ -136,7 +136,7 @@ public final class AvailableEndpointServicesClientImpl implements AvailableEndpo
         if (location == null) {
             return Mono.error(new IllegalArgumentException("Parameter location is required and cannot be null."));
         }
-        final String apiVersion = "2026-03-01";
+        final String apiVersion = "2026-05-01";
         final String accept = "application/json";
         context = this.client.mergeContext(context);
         return service
@@ -145,15 +145,7 @@ public final class AvailableEndpointServicesClientImpl implements AvailableEndpo
                 res.getValue().value(), res.getValue().nextLink(), null));
     }
 
-    /**
-     * List what values of endpoint services are available for use.
-     * 
-     * @param location The location name.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return paged collection of EndpointServiceResult items as paginated response with {@link PagedFlux}.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.COLLECTION)
     public PagedFlux<EndpointServiceResultInner> listAsync(String location) {
         return new PagedFlux<>(() -> listSinglePageAsync(location), nextLink -> listNextSinglePageAsync(nextLink));
@@ -175,30 +167,13 @@ public final class AvailableEndpointServicesClientImpl implements AvailableEndpo
             nextLink -> listNextSinglePageAsync(nextLink, context));
     }
 
-    /**
-     * List what values of endpoint services are available for use.
-     * 
-     * @param location The location name.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return paged collection of EndpointServiceResult items as paginated response with {@link PagedIterable}.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.COLLECTION)
     public PagedIterable<EndpointServiceResultInner> list(String location) {
         return new PagedIterable<>(listAsync(location));
     }
 
-    /**
-     * List what values of endpoint services are available for use.
-     * 
-     * @param location The location name.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return paged collection of EndpointServiceResult items as paginated response with {@link PagedIterable}.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.COLLECTION)
     public PagedIterable<EndpointServiceResultInner> list(String location, Context context) {
         return new PagedIterable<>(listAsync(location, context));

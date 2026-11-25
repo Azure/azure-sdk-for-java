@@ -45,12 +45,7 @@ public final class AssessmentsImpl implements Assessments {
     }
 
     public Assessment createOrUpdate(String resourceUri, AssessmentInner resource) {
-        AssessmentInner inner = this.serviceClient().createOrUpdate(resourceUri, resource);
-        if (inner != null) {
-            return new AssessmentImpl(inner, this.manager());
-        } else {
-            return null;
-        }
+        return this.createOrUpdate(resourceUri, resource, Context.NONE);
     }
 
     public Assessment createOrUpdate(String resourceUri, AssessmentInner resource, Context context) {
@@ -63,7 +58,7 @@ public final class AssessmentsImpl implements Assessments {
     }
 
     public void delete(String resourceUri) {
-        this.serviceClient().delete(resourceUri);
+        this.delete(resourceUri, Context.NONE);
     }
 
     public void delete(String resourceUri, Context context) {
@@ -71,8 +66,7 @@ public final class AssessmentsImpl implements Assessments {
     }
 
     public PagedIterable<Assessment> list(String resourceUri) {
-        PagedIterable<AssessmentInner> inner = this.serviceClient().list(resourceUri);
-        return ResourceManagerUtils.mapPage(inner, inner1 -> new AssessmentImpl(inner1, this.manager()));
+        return this.list(resourceUri, Context.NONE);
     }
 
     public PagedIterable<Assessment> list(String resourceUri, Context context) {

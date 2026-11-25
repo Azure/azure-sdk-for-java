@@ -14,19 +14,19 @@ public final class LogCaptureConfigurationForPatchUpdateTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
         LogCaptureConfigurationForPatchUpdate model
-            = BinaryData.fromString("{\"properties\":{\"state\":\"Disabled\",\"retentionDays\":1274938421}}")
+            = BinaryData.fromString("{\"properties\":{\"state\":\"Enabled\",\"retentionDays\":1478416411}}")
                 .toObject(LogCaptureConfigurationForPatchUpdate.class);
-        Assertions.assertEquals(LogCaptureState.DISABLED, model.properties().state());
-        Assertions.assertEquals(1274938421, model.properties().retentionDays());
+        Assertions.assertEquals(LogCaptureState.ENABLED, model.properties().state());
+        Assertions.assertEquals(1478416411, model.properties().retentionDays());
     }
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
         LogCaptureConfigurationForPatchUpdate model = new LogCaptureConfigurationForPatchUpdate()
-            .withProperties(new LogCaptureConfigurationPropertiesForPatchUpdate().withState(LogCaptureState.DISABLED)
-                .withRetentionDays(1274938421));
+            .withProperties(new LogCaptureConfigurationPropertiesForPatchUpdate().withState(LogCaptureState.ENABLED)
+                .withRetentionDays(1478416411));
         model = BinaryData.fromObject(model).toObject(LogCaptureConfigurationForPatchUpdate.class);
-        Assertions.assertEquals(LogCaptureState.DISABLED, model.properties().state());
-        Assertions.assertEquals(1274938421, model.properties().retentionDays());
+        Assertions.assertEquals(LogCaptureState.ENABLED, model.properties().state());
+        Assertions.assertEquals(1478416411, model.properties().retentionDays());
     }
 }

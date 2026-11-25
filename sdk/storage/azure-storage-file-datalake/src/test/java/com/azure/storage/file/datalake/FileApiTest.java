@@ -194,6 +194,16 @@ public class FileApiTest extends DataLakeTestBase {
         assertFalse(dataLakeFileSystemClient.getFileClient(generatePathName()).exists());
     }
 
+    @Test
+    public void createIfNotExistsOnPathOfAnotherType() {
+        String pathName = generatePathName();
+        dataLakeFileSystemClient.createDirectory(pathName);
+
+        DataLakeStorageException e = assertThrows(DataLakeStorageException.class,
+            () -> dataLakeFileSystemClient.getFileClient(pathName).createIfNotExists());
+        assertExceptionStatusCodeAndMessage(e, 409, "PathConflict");
+    }
+
     @ParameterizedTest
     @CsvSource(value = { "null,null,null,null,null", "control,disposition,encoding,language,type" })
     public void createHeaders(String cacheControl, String contentDisposition, String contentEncoding,

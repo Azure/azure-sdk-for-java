@@ -156,18 +156,7 @@ public final class RecoveryResourcesClientImpl implements RecoveryResourcesClien
             .flatMap(res -> Mono.justOrEmpty(res.getValue()));
     }
 
-    /**
-     * Get a RecoveryResource.
-     * 
-     * @param serviceGroupName The name of the service group.
-     * @param recoveryPlanName The name of the recovery orchestration plan.
-     * @param recoveryResourceName The unique name (Guid) of the recovery resource.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return a RecoveryResource along with {@link Response}.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Response<RecoveryResourceInner> getWithResponse(String serviceGroupName, String recoveryPlanName,
         String recoveryResourceName, Context context) {
@@ -176,17 +165,7 @@ public final class RecoveryResourcesClientImpl implements RecoveryResourcesClien
             recoveryPlanName, recoveryResourceName, accept, context);
     }
 
-    /**
-     * Get a RecoveryResource.
-     * 
-     * @param serviceGroupName The name of the service group.
-     * @param recoveryPlanName The name of the recovery orchestration plan.
-     * @param recoveryResourceName The unique name (Guid) of the recovery resource.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return a RecoveryResource.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public RecoveryResourceInner get(String serviceGroupName, String recoveryPlanName, String recoveryResourceName) {
         return getWithResponse(serviceGroupName, recoveryPlanName, recoveryResourceName, Context.NONE).getValue();
@@ -243,11 +222,7 @@ public final class RecoveryResourcesClientImpl implements RecoveryResourcesClien
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private PagedResponse<RecoveryResourceInner> listSinglePage(String serviceGroupName, String recoveryPlanName) {
-        final String accept = "application/json";
-        Response<RecoveryResourceListResult> res = service.listSync(this.client.getEndpoint(), serviceGroupName,
-            this.client.getApiVersion(), recoveryPlanName, accept, Context.NONE);
-        return new PagedResponseBase<>(res.getRequest(), res.getStatusCode(), res.getHeaders(), res.getValue().value(),
-            res.getValue().nextLink(), null);
+        return listSinglePage(serviceGroupName, recoveryPlanName, Context.NONE);
     }
 
     /**
@@ -271,33 +246,13 @@ public final class RecoveryResourcesClientImpl implements RecoveryResourcesClien
             res.getValue().nextLink(), null);
     }
 
-    /**
-     * List RecoveryResource resources by RecoveryPlan.
-     * 
-     * @param serviceGroupName The name of the service group.
-     * @param recoveryPlanName The name of the recovery orchestration plan.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the response of a RecoveryResource list operation as paginated response with {@link PagedIterable}.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.COLLECTION)
     public PagedIterable<RecoveryResourceInner> list(String serviceGroupName, String recoveryPlanName) {
-        return new PagedIterable<>(() -> listSinglePage(serviceGroupName, recoveryPlanName),
-            nextLink -> listNextSinglePage(nextLink));
+        return list(serviceGroupName, recoveryPlanName, Context.NONE);
     }
 
-    /**
-     * List RecoveryResource resources by RecoveryPlan.
-     * 
-     * @param serviceGroupName The name of the service group.
-     * @param recoveryPlanName The name of the recovery orchestration plan.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the response of a RecoveryResource list operation as paginated response with {@link PagedIterable}.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.COLLECTION)
     public PagedIterable<RecoveryResourceInner> list(String serviceGroupName, String recoveryPlanName,
         Context context) {
@@ -335,11 +290,7 @@ public final class RecoveryResourcesClientImpl implements RecoveryResourcesClien
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private PagedResponse<RecoveryResourceInner> listNextSinglePage(String nextLink) {
-        final String accept = "application/json";
-        Response<RecoveryResourceListResult> res
-            = service.listNextSync(nextLink, this.client.getEndpoint(), accept, Context.NONE);
-        return new PagedResponseBase<>(res.getRequest(), res.getStatusCode(), res.getHeaders(), res.getValue().value(),
-            res.getValue().nextLink(), null);
+        return listNextSinglePage(nextLink, Context.NONE);
     }
 
     /**
