@@ -132,10 +132,7 @@ public final class JobImpl implements Job, Job.Definition, Job.Update {
     }
 
     public Job create() {
-        this.innerObject = serviceManager.serviceClient()
-            .getJobs()
-            .createOrUpdate(resourceGroupName, jobName, this.innerModel(), Context.NONE);
-        return this;
+        return this.create(Context.NONE);
     }
 
     public Job create(Context context) {
@@ -157,10 +154,7 @@ public final class JobImpl implements Job, Job.Definition, Job.Update {
     }
 
     public Job apply() {
-        this.innerObject = serviceManager.serviceClient()
-            .getJobs()
-            .update(resourceGroupName, jobName, updateJobEnvelope, Context.NONE);
-        return this;
+        return this.apply(Context.NONE);
     }
 
     public Job apply(Context context) {
@@ -181,11 +175,7 @@ public final class JobImpl implements Job, Job.Definition, Job.Update {
     }
 
     public Job refresh() {
-        this.innerObject = serviceManager.serviceClient()
-            .getJobs()
-            .getByResourceGroupWithResponse(resourceGroupName, jobName, Context.NONE)
-            .getValue();
-        return this;
+        return this.refresh(Context.NONE);
     }
 
     public Job refresh(Context context) {

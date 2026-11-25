@@ -45,8 +45,7 @@ public final class NetAppResourceQuotaLimitsAccountsImpl implements NetAppResour
     }
 
     public PagedIterable<SubscriptionQuotaItem> list(String resourceGroupName, String accountName) {
-        PagedIterable<SubscriptionQuotaItemInner> inner = this.serviceClient().list(resourceGroupName, accountName);
-        return ResourceManagerUtils.mapPage(inner, inner1 -> new SubscriptionQuotaItemImpl(inner1, this.manager()));
+        return this.list(resourceGroupName, accountName, Context.NONE);
     }
 
     public PagedIterable<SubscriptionQuotaItem> list(String resourceGroupName, String accountName, Context context) {

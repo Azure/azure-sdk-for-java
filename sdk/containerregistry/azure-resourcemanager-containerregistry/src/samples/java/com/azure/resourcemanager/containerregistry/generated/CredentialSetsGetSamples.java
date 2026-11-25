@@ -9,7 +9,7 @@ package com.azure.resourcemanager.containerregistry.generated;
  */
 public final class CredentialSetsGetSamples {
     /*
-     * x-ms-original-file: 2026-10-15-preview/CredentialSetGet.json
+     * x-ms-original-file: 2026-11-01/CredentialSetGet.json
      */
     /**
      * Sample code: CredentialSetGet.

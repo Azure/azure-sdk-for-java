@@ -27,9 +27,7 @@ public final class CryptoCertificatesImpl implements CryptoCertificates {
 
     public PagedIterable<CryptoCertificateResource> listByFirmware(String resourceGroupName, String workspaceName,
         String firmwareId) {
-        PagedIterable<CryptoCertificateResourceInner> inner
-            = this.serviceClient().listByFirmware(resourceGroupName, workspaceName, firmwareId);
-        return ResourceManagerUtils.mapPage(inner, inner1 -> new CryptoCertificateResourceImpl(inner1, this.manager()));
+        return this.listByFirmware(resourceGroupName, workspaceName, firmwareId, Context.NONE);
     }
 
     public PagedIterable<CryptoCertificateResource> listByFirmware(String resourceGroupName, String workspaceName,

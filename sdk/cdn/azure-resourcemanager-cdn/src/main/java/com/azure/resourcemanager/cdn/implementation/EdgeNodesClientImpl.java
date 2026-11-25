@@ -123,13 +123,7 @@ public final class EdgeNodesClientImpl implements EdgeNodesClient {
                 res.getValue().value(), res.getValue().nextLink(), null));
     }
 
-    /**
-     * Edgenodes are the global Point of Presence (POP) locations used to deliver CDN content to end users.
-     * 
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return result of the request to list CDN edgenodes as paginated response with {@link PagedFlux}.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.COLLECTION)
     public PagedFlux<EdgeNodeInner> listAsync() {
         return new PagedFlux<>(() -> listSinglePageAsync(), nextLink -> listNextSinglePageAsync(nextLink));
@@ -150,27 +144,13 @@ public final class EdgeNodesClientImpl implements EdgeNodesClient {
             nextLink -> listNextSinglePageAsync(nextLink, context));
     }
 
-    /**
-     * Edgenodes are the global Point of Presence (POP) locations used to deliver CDN content to end users.
-     * 
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return result of the request to list CDN edgenodes as paginated response with {@link PagedIterable}.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.COLLECTION)
     public PagedIterable<EdgeNodeInner> list() {
         return new PagedIterable<>(listAsync());
     }
 
-    /**
-     * Edgenodes are the global Point of Presence (POP) locations used to deliver CDN content to end users.
-     * 
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return result of the request to list CDN edgenodes as paginated response with {@link PagedIterable}.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.COLLECTION)
     public PagedIterable<EdgeNodeInner> list(Context context) {
         return new PagedIterable<>(listAsync(context));

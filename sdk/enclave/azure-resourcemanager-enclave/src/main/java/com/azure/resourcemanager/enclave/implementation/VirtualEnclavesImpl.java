@@ -49,7 +49,7 @@ public final class VirtualEnclavesImpl implements VirtualEnclaves {
     }
 
     public void deleteByResourceGroup(String resourceGroupName, String virtualEnclaveName) {
-        this.serviceClient().delete(resourceGroupName, virtualEnclaveName);
+        this.delete(resourceGroupName, virtualEnclaveName, Context.NONE);
     }
 
     public void delete(String resourceGroupName, String virtualEnclaveName, Context context) {
@@ -57,8 +57,7 @@ public final class VirtualEnclavesImpl implements VirtualEnclaves {
     }
 
     public PagedIterable<EnclaveResource> listByResourceGroup(String resourceGroupName) {
-        PagedIterable<EnclaveResourceInner> inner = this.serviceClient().listByResourceGroup(resourceGroupName);
-        return ResourceManagerUtils.mapPage(inner, inner1 -> new EnclaveResourceImpl(inner1, this.manager()));
+        return this.listByResourceGroup(resourceGroupName, Context.NONE);
     }
 
     public PagedIterable<EnclaveResource> listByResourceGroup(String resourceGroupName, Context context) {
@@ -68,8 +67,7 @@ public final class VirtualEnclavesImpl implements VirtualEnclaves {
     }
 
     public PagedIterable<EnclaveResource> list() {
-        PagedIterable<EnclaveResourceInner> inner = this.serviceClient().list();
-        return ResourceManagerUtils.mapPage(inner, inner1 -> new EnclaveResourceImpl(inner1, this.manager()));
+        return this.list(Context.NONE);
     }
 
     public PagedIterable<EnclaveResource> list(Context context) {
@@ -79,13 +77,7 @@ public final class VirtualEnclavesImpl implements VirtualEnclaves {
 
     public ApprovalActionResponse handleApprovalCreation(String resourceGroupName, String virtualEnclaveName,
         ApprovalCallbackRequest body) {
-        ApprovalActionResponseInner inner
-            = this.serviceClient().handleApprovalCreation(resourceGroupName, virtualEnclaveName, body);
-        if (inner != null) {
-            return new ApprovalActionResponseImpl(inner, this.manager());
-        } else {
-            return null;
-        }
+        return this.handleApprovalCreation(resourceGroupName, virtualEnclaveName, body, Context.NONE);
     }
 
     public ApprovalActionResponse handleApprovalCreation(String resourceGroupName, String virtualEnclaveName,
@@ -101,13 +93,7 @@ public final class VirtualEnclavesImpl implements VirtualEnclaves {
 
     public ApprovalActionResponse handleApprovalDeletion(String resourceGroupName, String virtualEnclaveName,
         ApprovalDeletionCallbackRequest body) {
-        ApprovalActionResponseInner inner
-            = this.serviceClient().handleApprovalDeletion(resourceGroupName, virtualEnclaveName, body);
-        if (inner != null) {
-            return new ApprovalActionResponseImpl(inner, this.manager());
-        } else {
-            return null;
-        }
+        return this.handleApprovalDeletion(resourceGroupName, virtualEnclaveName, body, Context.NONE);
     }
 
     public ApprovalActionResponse handleApprovalDeletion(String resourceGroupName, String virtualEnclaveName,
@@ -122,74 +108,30 @@ public final class VirtualEnclavesImpl implements VirtualEnclaves {
     }
 
     public EnclaveResource getById(String id) {
-        String resourceGroupName = ResourceManagerUtils.getValueFromIdByParameterName(id,
-            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Mission/virtualEnclaves/{virtualEnclaveName}",
-            "resourceGroupName");
-        if (resourceGroupName == null) {
-            throw LOGGER.logExceptionAsError(new IllegalArgumentException(
-                String.format("The resource ID '%s' is not valid. Missing path segment 'resourceGroups'.", id)));
-        }
-        String virtualEnclaveName = ResourceManagerUtils.getValueFromIdByParameterName(id,
-            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Mission/virtualEnclaves/{virtualEnclaveName}",
-            "virtualEnclaveName");
-        if (virtualEnclaveName == null) {
-            throw LOGGER.logExceptionAsError(new IllegalArgumentException(
-                String.format("The resource ID '%s' is not valid. Missing path segment 'virtualEnclaves'.", id)));
-        }
-        return this.getByResourceGroupWithResponse(resourceGroupName, virtualEnclaveName, Context.NONE).getValue();
+        return this.getByIdWithResponse(id, Context.NONE).getValue();
     }
 
     public Response<EnclaveResource> getByIdWithResponse(String id, Context context) {
-        String resourceGroupName = ResourceManagerUtils.getValueFromIdByParameterName(id,
+        String resourceGroupName = ResourceManagerUtils.getRequiredValueFromIdByParameterName(id,
             "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Mission/virtualEnclaves/{virtualEnclaveName}",
-            "resourceGroupName");
-        if (resourceGroupName == null) {
-            throw LOGGER.logExceptionAsError(new IllegalArgumentException(
-                String.format("The resource ID '%s' is not valid. Missing path segment 'resourceGroups'.", id)));
-        }
-        String virtualEnclaveName = ResourceManagerUtils.getValueFromIdByParameterName(id,
+            "resourceGroupName", "resourceGroups", LOGGER);
+        String virtualEnclaveName = ResourceManagerUtils.getRequiredValueFromIdByParameterName(id,
             "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Mission/virtualEnclaves/{virtualEnclaveName}",
-            "virtualEnclaveName");
-        if (virtualEnclaveName == null) {
-            throw LOGGER.logExceptionAsError(new IllegalArgumentException(
-                String.format("The resource ID '%s' is not valid. Missing path segment 'virtualEnclaves'.", id)));
-        }
+            "virtualEnclaveName", "virtualEnclaves", LOGGER);
         return this.getByResourceGroupWithResponse(resourceGroupName, virtualEnclaveName, context);
     }
 
     public void deleteById(String id) {
-        String resourceGroupName = ResourceManagerUtils.getValueFromIdByParameterName(id,
-            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Mission/virtualEnclaves/{virtualEnclaveName}",
-            "resourceGroupName");
-        if (resourceGroupName == null) {
-            throw LOGGER.logExceptionAsError(new IllegalArgumentException(
-                String.format("The resource ID '%s' is not valid. Missing path segment 'resourceGroups'.", id)));
-        }
-        String virtualEnclaveName = ResourceManagerUtils.getValueFromIdByParameterName(id,
-            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Mission/virtualEnclaves/{virtualEnclaveName}",
-            "virtualEnclaveName");
-        if (virtualEnclaveName == null) {
-            throw LOGGER.logExceptionAsError(new IllegalArgumentException(
-                String.format("The resource ID '%s' is not valid. Missing path segment 'virtualEnclaves'.", id)));
-        }
-        this.delete(resourceGroupName, virtualEnclaveName, Context.NONE);
+        this.deleteByIdWithResponse(id, Context.NONE);
     }
 
     public void deleteByIdWithResponse(String id, Context context) {
-        String resourceGroupName = ResourceManagerUtils.getValueFromIdByParameterName(id,
+        String resourceGroupName = ResourceManagerUtils.getRequiredValueFromIdByParameterName(id,
             "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Mission/virtualEnclaves/{virtualEnclaveName}",
-            "resourceGroupName");
-        if (resourceGroupName == null) {
-            throw LOGGER.logExceptionAsError(new IllegalArgumentException(
-                String.format("The resource ID '%s' is not valid. Missing path segment 'resourceGroups'.", id)));
-        }
-        String virtualEnclaveName = ResourceManagerUtils.getValueFromIdByParameterName(id,
+            "resourceGroupName", "resourceGroups", LOGGER);
+        String virtualEnclaveName = ResourceManagerUtils.getRequiredValueFromIdByParameterName(id,
             "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Mission/virtualEnclaves/{virtualEnclaveName}",
-            "virtualEnclaveName");
-        if (virtualEnclaveName == null) {
-            throw LOGGER.logExceptionAsError(new IllegalArgumentException(
-                String.format("The resource ID '%s' is not valid. Missing path segment 'virtualEnclaves'.", id)));
-        }
+            "virtualEnclaveName", "virtualEnclaves", LOGGER);
         this.delete(resourceGroupName, virtualEnclaveName, context);
     }
 

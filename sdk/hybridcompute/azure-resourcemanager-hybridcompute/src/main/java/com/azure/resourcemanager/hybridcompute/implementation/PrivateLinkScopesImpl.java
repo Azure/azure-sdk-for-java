@@ -67,7 +67,7 @@ public final class PrivateLinkScopesImpl implements PrivateLinkScopes {
     }
 
     public void deleteByResourceGroup(String resourceGroupName, String scopeName) {
-        this.serviceClient().delete(resourceGroupName, scopeName);
+        this.delete(resourceGroupName, scopeName, Context.NONE);
     }
 
     public void delete(String resourceGroupName, String scopeName, Context context) {
@@ -75,10 +75,7 @@ public final class PrivateLinkScopesImpl implements PrivateLinkScopes {
     }
 
     public PagedIterable<HybridComputePrivateLinkScope> listByResourceGroup(String resourceGroupName) {
-        PagedIterable<HybridComputePrivateLinkScopeInner> inner
-            = this.serviceClient().listByResourceGroup(resourceGroupName);
-        return ResourceManagerUtils.mapPage(inner,
-            inner1 -> new HybridComputePrivateLinkScopeImpl(inner1, this.manager()));
+        return this.listByResourceGroup(resourceGroupName, Context.NONE);
     }
 
     public PagedIterable<HybridComputePrivateLinkScope> listByResourceGroup(String resourceGroupName, Context context) {
@@ -89,9 +86,7 @@ public final class PrivateLinkScopesImpl implements PrivateLinkScopes {
     }
 
     public PagedIterable<HybridComputePrivateLinkScope> list() {
-        PagedIterable<HybridComputePrivateLinkScopeInner> inner = this.serviceClient().list();
-        return ResourceManagerUtils.mapPage(inner,
-            inner1 -> new HybridComputePrivateLinkScopeImpl(inner1, this.manager()));
+        return this.list(Context.NONE);
     }
 
     public PagedIterable<HybridComputePrivateLinkScope> list(Context context) {
@@ -119,74 +114,30 @@ public final class PrivateLinkScopesImpl implements PrivateLinkScopes {
     }
 
     public HybridComputePrivateLinkScope getById(String id) {
-        String resourceGroupName = ResourceManagerUtils.getValueFromIdByParameterName(id,
-            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.HybridCompute/privateLinkScopes/{scopeName}",
-            "resourceGroupName");
-        if (resourceGroupName == null) {
-            throw LOGGER.logExceptionAsError(new IllegalArgumentException(
-                String.format("The resource ID '%s' is not valid. Missing path segment 'resourceGroups'.", id)));
-        }
-        String scopeName = ResourceManagerUtils.getValueFromIdByParameterName(id,
-            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.HybridCompute/privateLinkScopes/{scopeName}",
-            "scopeName");
-        if (scopeName == null) {
-            throw LOGGER.logExceptionAsError(new IllegalArgumentException(
-                String.format("The resource ID '%s' is not valid. Missing path segment 'privateLinkScopes'.", id)));
-        }
-        return this.getByResourceGroupWithResponse(resourceGroupName, scopeName, Context.NONE).getValue();
+        return this.getByIdWithResponse(id, Context.NONE).getValue();
     }
 
     public Response<HybridComputePrivateLinkScope> getByIdWithResponse(String id, Context context) {
-        String resourceGroupName = ResourceManagerUtils.getValueFromIdByParameterName(id,
+        String resourceGroupName = ResourceManagerUtils.getRequiredValueFromIdByParameterName(id,
             "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.HybridCompute/privateLinkScopes/{scopeName}",
-            "resourceGroupName");
-        if (resourceGroupName == null) {
-            throw LOGGER.logExceptionAsError(new IllegalArgumentException(
-                String.format("The resource ID '%s' is not valid. Missing path segment 'resourceGroups'.", id)));
-        }
-        String scopeName = ResourceManagerUtils.getValueFromIdByParameterName(id,
+            "resourceGroupName", "resourceGroups", LOGGER);
+        String scopeName = ResourceManagerUtils.getRequiredValueFromIdByParameterName(id,
             "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.HybridCompute/privateLinkScopes/{scopeName}",
-            "scopeName");
-        if (scopeName == null) {
-            throw LOGGER.logExceptionAsError(new IllegalArgumentException(
-                String.format("The resource ID '%s' is not valid. Missing path segment 'privateLinkScopes'.", id)));
-        }
+            "scopeName", "privateLinkScopes", LOGGER);
         return this.getByResourceGroupWithResponse(resourceGroupName, scopeName, context);
     }
 
     public void deleteById(String id) {
-        String resourceGroupName = ResourceManagerUtils.getValueFromIdByParameterName(id,
-            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.HybridCompute/privateLinkScopes/{scopeName}",
-            "resourceGroupName");
-        if (resourceGroupName == null) {
-            throw LOGGER.logExceptionAsError(new IllegalArgumentException(
-                String.format("The resource ID '%s' is not valid. Missing path segment 'resourceGroups'.", id)));
-        }
-        String scopeName = ResourceManagerUtils.getValueFromIdByParameterName(id,
-            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.HybridCompute/privateLinkScopes/{scopeName}",
-            "scopeName");
-        if (scopeName == null) {
-            throw LOGGER.logExceptionAsError(new IllegalArgumentException(
-                String.format("The resource ID '%s' is not valid. Missing path segment 'privateLinkScopes'.", id)));
-        }
-        this.delete(resourceGroupName, scopeName, Context.NONE);
+        this.deleteByIdWithResponse(id, Context.NONE);
     }
 
     public void deleteByIdWithResponse(String id, Context context) {
-        String resourceGroupName = ResourceManagerUtils.getValueFromIdByParameterName(id,
+        String resourceGroupName = ResourceManagerUtils.getRequiredValueFromIdByParameterName(id,
             "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.HybridCompute/privateLinkScopes/{scopeName}",
-            "resourceGroupName");
-        if (resourceGroupName == null) {
-            throw LOGGER.logExceptionAsError(new IllegalArgumentException(
-                String.format("The resource ID '%s' is not valid. Missing path segment 'resourceGroups'.", id)));
-        }
-        String scopeName = ResourceManagerUtils.getValueFromIdByParameterName(id,
+            "resourceGroupName", "resourceGroups", LOGGER);
+        String scopeName = ResourceManagerUtils.getRequiredValueFromIdByParameterName(id,
             "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.HybridCompute/privateLinkScopes/{scopeName}",
-            "scopeName");
-        if (scopeName == null) {
-            throw LOGGER.logExceptionAsError(new IllegalArgumentException(
-                String.format("The resource ID '%s' is not valid. Missing path segment 'privateLinkScopes'.", id)));
-        }
+            "scopeName", "privateLinkScopes", LOGGER);
         this.delete(resourceGroupName, scopeName, context);
     }
 

@@ -126,11 +126,7 @@ public final class GovernanceRuleImpl implements GovernanceRule, GovernanceRule.
     }
 
     public GovernanceRule create() {
-        this.innerObject = serviceManager.serviceClient()
-            .getGovernanceRules()
-            .createOrUpdateWithResponse(scope, ruleId, this.innerModel(), Context.NONE)
-            .getValue();
-        return this;
+        return this.create(Context.NONE);
     }
 
     public GovernanceRule create(Context context) {
@@ -152,11 +148,7 @@ public final class GovernanceRuleImpl implements GovernanceRule, GovernanceRule.
     }
 
     public GovernanceRule apply() {
-        this.innerObject = serviceManager.serviceClient()
-            .getGovernanceRules()
-            .createOrUpdateWithResponse(scope, ruleId, this.innerModel(), Context.NONE)
-            .getValue();
-        return this;
+        return this.apply(Context.NONE);
     }
 
     public GovernanceRule apply(Context context) {
@@ -178,11 +170,7 @@ public final class GovernanceRuleImpl implements GovernanceRule, GovernanceRule.
     }
 
     public GovernanceRule refresh() {
-        this.innerObject = serviceManager.serviceClient()
-            .getGovernanceRules()
-            .getWithResponse(scope, ruleId, Context.NONE)
-            .getValue();
-        return this;
+        return this.refresh(Context.NONE);
     }
 
     public GovernanceRule refresh(Context context) {

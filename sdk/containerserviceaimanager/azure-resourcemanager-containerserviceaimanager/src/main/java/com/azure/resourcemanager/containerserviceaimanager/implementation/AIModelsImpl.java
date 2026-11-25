@@ -45,8 +45,7 @@ public final class AIModelsImpl implements AIModels {
     }
 
     public PagedIterable<AIModel> list(String location) {
-        PagedIterable<AIModelInner> inner = this.serviceClient().list(location);
-        return ResourceManagerUtils.mapPage(inner, inner1 -> new AIModelImpl(inner1, this.manager()));
+        return this.list(location, Context.NONE);
     }
 
     public PagedIterable<AIModel> list(String location, Context context) {

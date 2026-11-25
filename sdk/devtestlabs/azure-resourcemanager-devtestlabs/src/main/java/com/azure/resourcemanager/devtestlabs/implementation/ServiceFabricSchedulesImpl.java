@@ -93,7 +93,7 @@ public final class ServiceFabricSchedulesImpl implements ServiceFabricSchedules 
 
     public void delete(String resourceGroupName, String labName, String userName, String serviceFabricName,
         String name) {
-        this.serviceClient().delete(resourceGroupName, labName, userName, serviceFabricName, name);
+        this.deleteWithResponse(resourceGroupName, labName, userName, serviceFabricName, name, Context.NONE);
     }
 
     public PagedIterable<Schedule> list(String resourceGroupName, String labName, String userName,
@@ -112,7 +112,7 @@ public final class ServiceFabricSchedulesImpl implements ServiceFabricSchedules 
 
     public void execute(String resourceGroupName, String labName, String userName, String serviceFabricName,
         String name) {
-        this.serviceClient().execute(resourceGroupName, labName, userName, serviceFabricName, name);
+        this.execute(resourceGroupName, labName, userName, serviceFabricName, name, Context.NONE);
     }
 
     public void execute(String resourceGroupName, String labName, String userName, String serviceFabricName,

@@ -70,12 +70,7 @@ public final class CertificateResponseImpl
     }
 
     public CertificateResponse create() {
-        this.innerObject = serviceManager.serviceClient()
-            .getDpsCertificates()
-            .createOrUpdateWithResponse(resourceGroupName, provisioningServiceName, certificateName, this.innerModel(),
-                createIfMatch, Context.NONE)
-            .getValue();
-        return this;
+        return this.create(Context.NONE);
     }
 
     public CertificateResponse create(Context context) {
@@ -101,12 +96,7 @@ public final class CertificateResponseImpl
     }
 
     public CertificateResponse apply() {
-        this.innerObject = serviceManager.serviceClient()
-            .getDpsCertificates()
-            .createOrUpdateWithResponse(resourceGroupName, provisioningServiceName, certificateName, this.innerModel(),
-                updateIfMatch, Context.NONE)
-            .getValue();
-        return this;
+        return this.apply(Context.NONE);
     }
 
     public CertificateResponse apply(Context context) {
@@ -134,12 +124,7 @@ public final class CertificateResponseImpl
     }
 
     public CertificateResponse refresh() {
-        String localIfMatch = null;
-        this.innerObject = serviceManager.serviceClient()
-            .getDpsCertificates()
-            .getWithResponse(certificateName, resourceGroupName, provisioningServiceName, localIfMatch, Context.NONE)
-            .getValue();
-        return this;
+        return this.refresh(Context.NONE);
     }
 
     public CertificateResponse refresh(Context context) {

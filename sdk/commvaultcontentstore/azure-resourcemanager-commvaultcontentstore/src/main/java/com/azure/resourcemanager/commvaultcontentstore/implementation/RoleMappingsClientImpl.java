@@ -193,17 +193,7 @@ public final class RoleMappingsClientImpl implements RoleMappingsClient {
             .flatMap(res -> Mono.justOrEmpty(res.getValue()));
     }
 
-    /**
-     * Get a RoleMapping.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param cloudAccountName Name of the Cloud Account resource.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return a RoleMapping along with {@link Response}.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Response<RoleMappingInner> getWithResponse(String resourceGroupName, String cloudAccountName,
         Context context) {
@@ -212,16 +202,7 @@ public final class RoleMappingsClientImpl implements RoleMappingsClient {
             resourceGroupName, cloudAccountName, accept, context);
     }
 
-    /**
-     * Get a RoleMapping.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param cloudAccountName Name of the Cloud Account resource.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return a RoleMapping.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public RoleMappingInner get(String resourceGroupName, String cloudAccountName) {
         return getWithResponse(resourceGroupName, cloudAccountName, Context.NONE).getValue();
@@ -268,18 +249,7 @@ public final class RoleMappingsClientImpl implements RoleMappingsClient {
             .flatMap(res -> Mono.justOrEmpty(res.getValue()));
     }
 
-    /**
-     * Create a RoleMapping.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param cloudAccountName Name of the Cloud Account resource.
-     * @param resource Resource create parameters.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return a Commvault Role Mapping Resource along with {@link Response}.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Response<RoleMappingInner> createOrUpdateWithResponse(String resourceGroupName, String cloudAccountName,
         RoleMappingInner resource, Context context) {
@@ -290,17 +260,7 @@ public final class RoleMappingsClientImpl implements RoleMappingsClient {
             context);
     }
 
-    /**
-     * Create a RoleMapping.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param cloudAccountName Name of the Cloud Account resource.
-     * @param resource Resource create parameters.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return a Commvault Role Mapping Resource.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public RoleMappingInner createOrUpdate(String resourceGroupName, String cloudAccountName,
         RoleMappingInner resource) {
@@ -340,32 +300,14 @@ public final class RoleMappingsClientImpl implements RoleMappingsClient {
         return deleteWithResponseAsync(resourceGroupName, cloudAccountName).flatMap(ignored -> Mono.empty());
     }
 
-    /**
-     * Delete a RoleMapping.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param cloudAccountName Name of the Cloud Account resource.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the {@link Response}.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Response<Void> deleteWithResponse(String resourceGroupName, String cloudAccountName, Context context) {
         return service.deleteSync(this.client.getEndpoint(), this.client.getApiVersion(),
             this.client.getSubscriptionId(), resourceGroupName, cloudAccountName, context);
     }
 
-    /**
-     * Delete a RoleMapping.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param cloudAccountName Name of the Cloud Account resource.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public void delete(String resourceGroupName, String cloudAccountName) {
         deleteWithResponse(resourceGroupName, cloudAccountName, Context.NONE);
@@ -422,11 +364,7 @@ public final class RoleMappingsClientImpl implements RoleMappingsClient {
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private PagedResponse<RoleMappingInner> listSinglePage(String resourceGroupName, String cloudAccountName) {
-        final String accept = "application/json";
-        Response<RoleMappingListResult> res = service.listSync(this.client.getEndpoint(), this.client.getApiVersion(),
-            this.client.getSubscriptionId(), resourceGroupName, cloudAccountName, accept, Context.NONE);
-        return new PagedResponseBase<>(res.getRequest(), res.getStatusCode(), res.getHeaders(), res.getValue().value(),
-            res.getValue().nextLink(), null);
+        return listSinglePage(resourceGroupName, cloudAccountName, Context.NONE);
     }
 
     /**
@@ -450,33 +388,13 @@ public final class RoleMappingsClientImpl implements RoleMappingsClient {
             res.getValue().nextLink(), null);
     }
 
-    /**
-     * List RoleMapping resources by CloudAccount.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param cloudAccountName Name of the Cloud Account resource.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the response of a RoleMapping list operation as paginated response with {@link PagedIterable}.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.COLLECTION)
     public PagedIterable<RoleMappingInner> list(String resourceGroupName, String cloudAccountName) {
-        return new PagedIterable<>(() -> listSinglePage(resourceGroupName, cloudAccountName),
-            nextLink -> listNextSinglePage(nextLink));
+        return list(resourceGroupName, cloudAccountName, Context.NONE);
     }
 
-    /**
-     * List RoleMapping resources by CloudAccount.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param cloudAccountName Name of the Cloud Account resource.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the response of a RoleMapping list operation as paginated response with {@link PagedIterable}.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.COLLECTION)
     public PagedIterable<RoleMappingInner> list(String resourceGroupName, String cloudAccountName, Context context) {
         return new PagedIterable<>(() -> listSinglePage(resourceGroupName, cloudAccountName, context),
@@ -513,11 +431,7 @@ public final class RoleMappingsClientImpl implements RoleMappingsClient {
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private PagedResponse<RoleMappingInner> listNextSinglePage(String nextLink) {
-        final String accept = "application/json";
-        Response<RoleMappingListResult> res
-            = service.listNextSync(nextLink, this.client.getEndpoint(), accept, Context.NONE);
-        return new PagedResponseBase<>(res.getRequest(), res.getStatusCode(), res.getHeaders(), res.getValue().value(),
-            res.getValue().nextLink(), null);
+        return listNextSinglePage(nextLink, Context.NONE);
     }
 
     /**

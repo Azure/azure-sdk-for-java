@@ -710,18 +710,7 @@ public final class ScheduledActionsClientImpl implements ScheduledActionsClient 
             .flatMap(res -> Mono.justOrEmpty(res.getValue()));
     }
 
-    /**
-     * VirtualMachinesSubmitDeallocate: Schedule deallocate operation for a batch of virtual machines at datetime in
-     * future.
-     * 
-     * @param locationparameter The location name.
-     * @param requestBody The request body.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the response from a deallocate request along with {@link Response}.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Response<DeallocateResourceOperationResponseInner> virtualMachinesSubmitDeallocateWithResponse(
         String locationparameter, SubmitDeallocateRequest requestBody, Context context) {
@@ -731,17 +720,7 @@ public final class ScheduledActionsClientImpl implements ScheduledActionsClient 
             this.client.getSubscriptionId(), locationparameter, contentType, accept, requestBody, context);
     }
 
-    /**
-     * VirtualMachinesSubmitDeallocate: Schedule deallocate operation for a batch of virtual machines at datetime in
-     * future.
-     * 
-     * @param locationparameter The location name.
-     * @param requestBody The request body.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the response from a deallocate request.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public DeallocateResourceOperationResponseInner virtualMachinesSubmitDeallocate(String locationparameter,
         SubmitDeallocateRequest requestBody) {
@@ -790,18 +769,7 @@ public final class ScheduledActionsClientImpl implements ScheduledActionsClient 
             .flatMap(res -> Mono.justOrEmpty(res.getValue()));
     }
 
-    /**
-     * VirtualMachinesSubmitHibernate: Schedule hibernate operation for a batch of virtual machines at datetime in
-     * future.
-     * 
-     * @param locationparameter The location name.
-     * @param requestBody The request body.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the response from a Hibernate request along with {@link Response}.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Response<HibernateResourceOperationResponseInner> virtualMachinesSubmitHibernateWithResponse(
         String locationparameter, SubmitHibernateRequest requestBody, Context context) {
@@ -811,17 +779,7 @@ public final class ScheduledActionsClientImpl implements ScheduledActionsClient 
             this.client.getSubscriptionId(), locationparameter, contentType, accept, requestBody, context);
     }
 
-    /**
-     * VirtualMachinesSubmitHibernate: Schedule hibernate operation for a batch of virtual machines at datetime in
-     * future.
-     * 
-     * @param locationparameter The location name.
-     * @param requestBody The request body.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the response from a Hibernate request.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public HibernateResourceOperationResponseInner virtualMachinesSubmitHibernate(String locationparameter,
         SubmitHibernateRequest requestBody) {
@@ -867,17 +825,7 @@ public final class ScheduledActionsClientImpl implements ScheduledActionsClient 
             .flatMap(res -> Mono.justOrEmpty(res.getValue()));
     }
 
-    /**
-     * VirtualMachinesSubmitStart: Schedule start operation for a batch of virtual machines at datetime in future.
-     * 
-     * @param locationparameter The location name.
-     * @param requestBody The request body.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the response from a start request along with {@link Response}.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Response<StartResourceOperationResponseInner> virtualMachinesSubmitStartWithResponse(
         String locationparameter, SubmitStartRequest requestBody, Context context) {
@@ -887,16 +835,7 @@ public final class ScheduledActionsClientImpl implements ScheduledActionsClient 
             this.client.getSubscriptionId(), locationparameter, contentType, accept, requestBody, context);
     }
 
-    /**
-     * VirtualMachinesSubmitStart: Schedule start operation for a batch of virtual machines at datetime in future.
-     * 
-     * @param locationparameter The location name.
-     * @param requestBody The request body.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the response from a start request.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public StartResourceOperationResponseInner virtualMachinesSubmitStart(String locationparameter,
         SubmitStartRequest requestBody) {
@@ -945,18 +884,7 @@ public final class ScheduledActionsClientImpl implements ScheduledActionsClient 
             .flatMap(res -> Mono.justOrEmpty(res.getValue()));
     }
 
-    /**
-     * VirtualMachinesExecuteDeallocate: Execute deallocate operation for a batch of virtual machines, this operation is
-     * triggered as soon as Computeschedule receives it.
-     * 
-     * @param locationparameter The location name.
-     * @param requestBody The request body.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the response from a deallocate request along with {@link Response}.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Response<DeallocateResourceOperationResponseInner> virtualMachinesExecuteDeallocateWithResponse(
         String locationparameter, ExecuteDeallocateRequest requestBody, Context context) {
@@ -966,17 +894,7 @@ public final class ScheduledActionsClientImpl implements ScheduledActionsClient 
             this.client.getSubscriptionId(), locationparameter, contentType, accept, requestBody, context);
     }
 
-    /**
-     * VirtualMachinesExecuteDeallocate: Execute deallocate operation for a batch of virtual machines, this operation is
-     * triggered as soon as Computeschedule receives it.
-     * 
-     * @param locationparameter The location name.
-     * @param requestBody The request body.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the response from a deallocate request.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public DeallocateResourceOperationResponseInner virtualMachinesExecuteDeallocate(String locationparameter,
         ExecuteDeallocateRequest requestBody) {
@@ -1025,18 +943,7 @@ public final class ScheduledActionsClientImpl implements ScheduledActionsClient 
             .flatMap(res -> Mono.justOrEmpty(res.getValue()));
     }
 
-    /**
-     * VirtualMachinesExecuteHibernate: Execute hibernate operation for a batch of virtual machines, this operation is
-     * triggered as soon as Computeschedule receives it.
-     * 
-     * @param locationparameter The location name.
-     * @param requestBody The request body.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the response from a Hibernate request along with {@link Response}.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Response<HibernateResourceOperationResponseInner> virtualMachinesExecuteHibernateWithResponse(
         String locationparameter, ExecuteHibernateRequest requestBody, Context context) {
@@ -1046,17 +953,7 @@ public final class ScheduledActionsClientImpl implements ScheduledActionsClient 
             this.client.getSubscriptionId(), locationparameter, contentType, accept, requestBody, context);
     }
 
-    /**
-     * VirtualMachinesExecuteHibernate: Execute hibernate operation for a batch of virtual machines, this operation is
-     * triggered as soon as Computeschedule receives it.
-     * 
-     * @param locationparameter The location name.
-     * @param requestBody The request body.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the response from a Hibernate request.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public HibernateResourceOperationResponseInner virtualMachinesExecuteHibernate(String locationparameter,
         ExecuteHibernateRequest requestBody) {
@@ -1104,18 +1001,7 @@ public final class ScheduledActionsClientImpl implements ScheduledActionsClient 
             .flatMap(res -> Mono.justOrEmpty(res.getValue()));
     }
 
-    /**
-     * VirtualMachinesExecuteStart: Execute start operation for a batch of virtual machines, this operation is triggered
-     * as soon as Computeschedule receives it.
-     * 
-     * @param locationparameter The location name.
-     * @param requestBody The request body.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the response from a start request along with {@link Response}.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Response<StartResourceOperationResponseInner> virtualMachinesExecuteStartWithResponse(
         String locationparameter, ExecuteStartRequest requestBody, Context context) {
@@ -1125,17 +1011,7 @@ public final class ScheduledActionsClientImpl implements ScheduledActionsClient 
             this.client.getSubscriptionId(), locationparameter, contentType, accept, requestBody, context);
     }
 
-    /**
-     * VirtualMachinesExecuteStart: Execute start operation for a batch of virtual machines, this operation is triggered
-     * as soon as Computeschedule receives it.
-     * 
-     * @param locationparameter The location name.
-     * @param requestBody The request body.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the response from a start request.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public StartResourceOperationResponseInner virtualMachinesExecuteStart(String locationparameter,
         ExecuteStartRequest requestBody) {
@@ -1184,18 +1060,7 @@ public final class ScheduledActionsClientImpl implements ScheduledActionsClient 
             .flatMap(res -> Mono.justOrEmpty(res.getValue()));
     }
 
-    /**
-     * VirtualMachinesExecuteCreateFlex: Execute create operation for a batch of virtual machines with flex properties,
-     * this operation is triggered as soon as Computeschedule receives it.
-     * 
-     * @param locationparameter The location name.
-     * @param body The request body.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the response from a create flex request along with {@link Response}.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Response<CreateFlexResourceOperationResponseInner> virtualMachinesExecuteCreateFlexWithResponse(
         String locationparameter, ExecuteCreateFlexRequest body, Context context) {
@@ -1205,17 +1070,7 @@ public final class ScheduledActionsClientImpl implements ScheduledActionsClient 
             this.client.getSubscriptionId(), locationparameter, contentType, accept, body, context);
     }
 
-    /**
-     * VirtualMachinesExecuteCreateFlex: Execute create operation for a batch of virtual machines with flex properties,
-     * this operation is triggered as soon as Computeschedule receives it.
-     * 
-     * @param locationparameter The location name.
-     * @param body The request body.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the response from a create flex request.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public CreateFlexResourceOperationResponseInner virtualMachinesExecuteCreateFlex(String locationparameter,
         ExecuteCreateFlexRequest body) {
@@ -1263,18 +1118,7 @@ public final class ScheduledActionsClientImpl implements ScheduledActionsClient 
             .flatMap(res -> Mono.justOrEmpty(res.getValue()));
     }
 
-    /**
-     * [PRIVATE PREVIEW]: VirtualMachinesExecuteCreate: Execute create operation for a batch of virtual machines, this
-     * operation is triggered as soon as Computeschedule receives it.
-     * 
-     * @param locationparameter The location name.
-     * @param requestBody The request body.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the response from a create request along with {@link Response}.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Response<CreateResourceOperationResponseInner> virtualMachinesExecuteCreateWithResponse(
         String locationparameter, ExecuteCreateRequest requestBody, Context context) {
@@ -1284,17 +1128,7 @@ public final class ScheduledActionsClientImpl implements ScheduledActionsClient 
             this.client.getSubscriptionId(), locationparameter, contentType, accept, requestBody, context);
     }
 
-    /**
-     * [PRIVATE PREVIEW]: VirtualMachinesExecuteCreate: Execute create operation for a batch of virtual machines, this
-     * operation is triggered as soon as Computeschedule receives it.
-     * 
-     * @param locationparameter The location name.
-     * @param requestBody The request body.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the response from a create request.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public CreateResourceOperationResponseInner virtualMachinesExecuteCreate(String locationparameter,
         ExecuteCreateRequest requestBody) {
@@ -1342,18 +1176,7 @@ public final class ScheduledActionsClientImpl implements ScheduledActionsClient 
             .flatMap(res -> Mono.justOrEmpty(res.getValue()));
     }
 
-    /**
-     * [PRIVATE PREVIEW]: VirtualMachinesExecuteDelete: Execute delete operation for a batch of virtual machines, this
-     * operation is triggered as soon as Computeschedule receives it.
-     * 
-     * @param locationparameter The location name.
-     * @param requestBody The request body.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the response from a delete request along with {@link Response}.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Response<DeleteResourceOperationResponseInner> virtualMachinesExecuteDeleteWithResponse(
         String locationparameter, ExecuteDeleteRequest requestBody, Context context) {
@@ -1363,17 +1186,7 @@ public final class ScheduledActionsClientImpl implements ScheduledActionsClient 
             this.client.getSubscriptionId(), locationparameter, contentType, accept, requestBody, context);
     }
 
-    /**
-     * [PRIVATE PREVIEW]: VirtualMachinesExecuteDelete: Execute delete operation for a batch of virtual machines, this
-     * operation is triggered as soon as Computeschedule receives it.
-     * 
-     * @param locationparameter The location name.
-     * @param requestBody The request body.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the response from a delete request.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public DeleteResourceOperationResponseInner virtualMachinesExecuteDelete(String locationparameter,
         ExecuteDeleteRequest requestBody) {
@@ -1420,17 +1233,7 @@ public final class ScheduledActionsClientImpl implements ScheduledActionsClient 
             .flatMap(res -> Mono.justOrEmpty(res.getValue()));
     }
 
-    /**
-     * VirtualMachinesGetOperationStatus: Polling endpoint to read status of operations performed on virtual machines.
-     * 
-     * @param locationparameter The location name.
-     * @param requestBody The request body.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return this is the response from a get operations status request along with {@link Response}.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Response<GetOperationStatusResponseInner> virtualMachinesGetOperationStatusWithResponse(
         String locationparameter, GetOperationStatusRequest requestBody, Context context) {
@@ -1440,16 +1243,7 @@ public final class ScheduledActionsClientImpl implements ScheduledActionsClient 
             this.client.getSubscriptionId(), locationparameter, contentType, accept, requestBody, context);
     }
 
-    /**
-     * VirtualMachinesGetOperationStatus: Polling endpoint to read status of operations performed on virtual machines.
-     * 
-     * @param locationparameter The location name.
-     * @param requestBody The request body.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return this is the response from a get operations status request.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public GetOperationStatusResponseInner virtualMachinesGetOperationStatus(String locationparameter,
         GetOperationStatusRequest requestBody) {
@@ -1496,17 +1290,7 @@ public final class ScheduledActionsClientImpl implements ScheduledActionsClient 
             .flatMap(res -> Mono.justOrEmpty(res.getValue()));
     }
 
-    /**
-     * VirtualMachinesCancelOperations: Cancel a previously submitted (start/deallocate/hibernate) request.
-     * 
-     * @param locationparameter The location name.
-     * @param requestBody The request body.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return this is the response from a cancel operations request along with {@link Response}.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Response<CancelOperationsResponseInner> virtualMachinesCancelOperationsWithResponse(String locationparameter,
         CancelOperationsRequest requestBody, Context context) {
@@ -1516,16 +1300,7 @@ public final class ScheduledActionsClientImpl implements ScheduledActionsClient 
             this.client.getSubscriptionId(), locationparameter, contentType, accept, requestBody, context);
     }
 
-    /**
-     * VirtualMachinesCancelOperations: Cancel a previously submitted (start/deallocate/hibernate) request.
-     * 
-     * @param locationparameter The location name.
-     * @param requestBody The request body.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return this is the response from a cancel operations request.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public CancelOperationsResponseInner virtualMachinesCancelOperations(String locationparameter,
         CancelOperationsRequest requestBody) {
@@ -1574,18 +1349,7 @@ public final class ScheduledActionsClientImpl implements ScheduledActionsClient 
             .flatMap(res -> Mono.justOrEmpty(res.getValue()));
     }
 
-    /**
-     * VirtualMachinesGetOperationErrors: Get error details on operation errors (like transient errors encountered,
-     * additional logs) if they exist.
-     * 
-     * @param locationparameter The location name.
-     * @param requestBody The request body.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return this is the response from a get operations errors request along with {@link Response}.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Response<GetOperationErrorsResponseInner> virtualMachinesGetOperationErrorsWithResponse(
         String locationparameter, GetOperationErrorsRequest requestBody, Context context) {
@@ -1595,17 +1359,7 @@ public final class ScheduledActionsClientImpl implements ScheduledActionsClient 
             this.client.getSubscriptionId(), locationparameter, contentType, accept, requestBody, context);
     }
 
-    /**
-     * VirtualMachinesGetOperationErrors: Get error details on operation errors (like transient errors encountered,
-     * additional logs) if they exist.
-     * 
-     * @param locationparameter The location name.
-     * @param requestBody The request body.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return this is the response from a get operations errors request.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public GetOperationErrorsResponseInner virtualMachinesGetOperationErrors(String locationparameter,
         GetOperationErrorsRequest requestBody) {
@@ -1648,17 +1402,7 @@ public final class ScheduledActionsClientImpl implements ScheduledActionsClient 
             .flatMap(res -> Mono.justOrEmpty(res.getValue()));
     }
 
-    /**
-     * Get a ScheduledAction.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param scheduledActionName The name of the ScheduledAction.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return a ScheduledAction along with {@link Response}.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Response<ScheduledActionInner> getByResourceGroupWithResponse(String resourceGroupName,
         String scheduledActionName, Context context) {
@@ -1667,16 +1411,7 @@ public final class ScheduledActionsClientImpl implements ScheduledActionsClient 
             this.client.getSubscriptionId(), resourceGroupName, scheduledActionName, accept, context);
     }
 
-    /**
-     * Get a ScheduledAction.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param scheduledActionName The name of the ScheduledAction.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return a ScheduledAction.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public ScheduledActionInner getByResourceGroup(String resourceGroupName, String scheduledActionName) {
         return getByResourceGroupWithResponse(resourceGroupName, scheduledActionName, Context.NONE).getValue();
@@ -1719,11 +1454,7 @@ public final class ScheduledActionsClientImpl implements ScheduledActionsClient 
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Response<BinaryData> createOrUpdateWithResponse(String resourceGroupName, String scheduledActionName,
         ScheduledActionInner resource) {
-        final String contentType = "application/json";
-        final String accept = "application/json";
-        return service.createOrUpdateSync(this.client.getEndpoint(), this.client.getApiVersion(),
-            this.client.getSubscriptionId(), resourceGroupName, scheduledActionName, contentType, accept, resource,
-            Context.NONE);
+        return createOrUpdateWithResponse(resourceGroupName, scheduledActionName, resource, Context.NONE);
     }
 
     /**
@@ -1768,37 +1499,14 @@ public final class ScheduledActionsClientImpl implements ScheduledActionsClient 
             ScheduledActionInner.class, ScheduledActionInner.class, this.client.getContext());
     }
 
-    /**
-     * Create a ScheduledAction.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param scheduledActionName The name of the ScheduledAction.
-     * @param resource Resource create parameters.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the {@link SyncPoller} for polling of the scheduled action resource.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public SyncPoller<PollResult<ScheduledActionInner>, ScheduledActionInner>
         beginCreateOrUpdate(String resourceGroupName, String scheduledActionName, ScheduledActionInner resource) {
-        Response<BinaryData> response = createOrUpdateWithResponse(resourceGroupName, scheduledActionName, resource);
-        return this.client.<ScheduledActionInner, ScheduledActionInner>getLroResult(response,
-            ScheduledActionInner.class, ScheduledActionInner.class, Context.NONE);
+        return beginCreateOrUpdate(resourceGroupName, scheduledActionName, resource, Context.NONE);
     }
 
-    /**
-     * Create a ScheduledAction.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param scheduledActionName The name of the ScheduledAction.
-     * @param resource Resource create parameters.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the {@link SyncPoller} for polling of the scheduled action resource.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public SyncPoller<PollResult<ScheduledActionInner>, ScheduledActionInner> beginCreateOrUpdate(
         String resourceGroupName, String scheduledActionName, ScheduledActionInner resource, Context context) {
@@ -1826,39 +1534,19 @@ public final class ScheduledActionsClientImpl implements ScheduledActionsClient 
             .flatMap(this.client::getLroFinalResultOrError);
     }
 
-    /**
-     * Create a ScheduledAction.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param scheduledActionName The name of the ScheduledAction.
-     * @param resource Resource create parameters.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the scheduled action resource.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public ScheduledActionInner createOrUpdate(String resourceGroupName, String scheduledActionName,
         ScheduledActionInner resource) {
-        return beginCreateOrUpdate(resourceGroupName, scheduledActionName, resource).getFinalResult();
+        return createOrUpdate(resourceGroupName, scheduledActionName, resource, Context.NONE);
     }
 
-    /**
-     * Create a ScheduledAction.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param scheduledActionName The name of the ScheduledAction.
-     * @param resource Resource create parameters.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the scheduled action resource.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public ScheduledActionInner createOrUpdate(String resourceGroupName, String scheduledActionName,
         ScheduledActionInner resource, Context context) {
-        return beginCreateOrUpdate(resourceGroupName, scheduledActionName, resource, context).getFinalResult();
+        return this.client
+            .getLroFinalResultOrError(beginCreateOrUpdate(resourceGroupName, scheduledActionName, resource, context));
     }
 
     /**
@@ -1902,18 +1590,7 @@ public final class ScheduledActionsClientImpl implements ScheduledActionsClient 
             .flatMap(res -> Mono.justOrEmpty(res.getValue()));
     }
 
-    /**
-     * Update a ScheduledAction.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param scheduledActionName The name of the ScheduledAction.
-     * @param properties The resource properties to be updated.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the scheduled action resource along with {@link Response}.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Response<ScheduledActionInner> updateWithResponse(String resourceGroupName, String scheduledActionName,
         ScheduledActionUpdate properties, Context context) {
@@ -1924,17 +1601,7 @@ public final class ScheduledActionsClientImpl implements ScheduledActionsClient 
             context);
     }
 
-    /**
-     * Update a ScheduledAction.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param scheduledActionName The name of the ScheduledAction.
-     * @param properties The resource properties to be updated.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the scheduled action resource.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public ScheduledActionInner update(String resourceGroupName, String scheduledActionName,
         ScheduledActionUpdate properties) {
@@ -1972,8 +1639,7 @@ public final class ScheduledActionsClientImpl implements ScheduledActionsClient 
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Response<BinaryData> deleteWithResponse(String resourceGroupName, String scheduledActionName) {
-        return service.deleteSync(this.client.getEndpoint(), this.client.getApiVersion(),
-            this.client.getSubscriptionId(), resourceGroupName, scheduledActionName, Context.NONE);
+        return deleteWithResponse(resourceGroupName, scheduledActionName, Context.NONE);
     }
 
     /**
@@ -2011,33 +1677,13 @@ public final class ScheduledActionsClientImpl implements ScheduledActionsClient 
             this.client.getContext());
     }
 
-    /**
-     * Delete a ScheduledAction.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param scheduledActionName The name of the ScheduledAction.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the {@link SyncPoller} for polling of long-running operation.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public SyncPoller<PollResult<Void>, Void> beginDelete(String resourceGroupName, String scheduledActionName) {
-        Response<BinaryData> response = deleteWithResponse(resourceGroupName, scheduledActionName);
-        return this.client.<Void, Void>getLroResult(response, Void.class, Void.class, Context.NONE);
+        return beginDelete(resourceGroupName, scheduledActionName, Context.NONE);
     }
 
-    /**
-     * Delete a ScheduledAction.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param scheduledActionName The name of the ScheduledAction.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the {@link SyncPoller} for polling of long-running operation.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public SyncPoller<PollResult<Void>, Void> beginDelete(String resourceGroupName, String scheduledActionName,
         Context context) {
@@ -2061,33 +1707,16 @@ public final class ScheduledActionsClientImpl implements ScheduledActionsClient 
             .flatMap(this.client::getLroFinalResultOrError);
     }
 
-    /**
-     * Delete a ScheduledAction.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param scheduledActionName The name of the ScheduledAction.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public void delete(String resourceGroupName, String scheduledActionName) {
-        beginDelete(resourceGroupName, scheduledActionName).getFinalResult();
+        delete(resourceGroupName, scheduledActionName, Context.NONE);
     }
 
-    /**
-     * Delete a ScheduledAction.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param scheduledActionName The name of the ScheduledAction.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public void delete(String resourceGroupName, String scheduledActionName, Context context) {
-        beginDelete(resourceGroupName, scheduledActionName, context).getFinalResult();
+        this.client.getLroFinalResultOrError(beginDelete(resourceGroupName, scheduledActionName, context));
     }
 
     /**
@@ -2137,11 +1766,7 @@ public final class ScheduledActionsClientImpl implements ScheduledActionsClient 
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private PagedResponse<ScheduledActionInner> listByResourceGroupSinglePage(String resourceGroupName) {
-        final String accept = "application/json";
-        Response<ScheduledActionListResult> res = service.listByResourceGroupSync(this.client.getEndpoint(),
-            this.client.getApiVersion(), this.client.getSubscriptionId(), resourceGroupName, accept, Context.NONE);
-        return new PagedResponseBase<>(res.getRequest(), res.getStatusCode(), res.getHeaders(), res.getValue().value(),
-            res.getValue().nextLink(), null);
+        return listByResourceGroupSinglePage(resourceGroupName, Context.NONE);
     }
 
     /**
@@ -2164,31 +1789,13 @@ public final class ScheduledActionsClientImpl implements ScheduledActionsClient 
             res.getValue().nextLink(), null);
     }
 
-    /**
-     * List ScheduledAction resources by resource group.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the response of a ScheduledAction list operation as paginated response with {@link PagedIterable}.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.COLLECTION)
     public PagedIterable<ScheduledActionInner> listByResourceGroup(String resourceGroupName) {
-        return new PagedIterable<>(() -> listByResourceGroupSinglePage(resourceGroupName),
-            nextLink -> listByResourceGroupNextSinglePage(nextLink));
+        return listByResourceGroup(resourceGroupName, Context.NONE);
     }
 
-    /**
-     * List ScheduledAction resources by resource group.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the response of a ScheduledAction list operation as paginated response with {@link PagedIterable}.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.COLLECTION)
     public PagedIterable<ScheduledActionInner> listByResourceGroup(String resourceGroupName, Context context) {
         return new PagedIterable<>(() -> listByResourceGroupSinglePage(resourceGroupName, context),
@@ -2236,11 +1843,7 @@ public final class ScheduledActionsClientImpl implements ScheduledActionsClient 
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private PagedResponse<ScheduledActionInner> listSinglePage() {
-        final String accept = "application/json";
-        Response<ScheduledActionListResult> res = service.listSync(this.client.getEndpoint(),
-            this.client.getApiVersion(), this.client.getSubscriptionId(), accept, Context.NONE);
-        return new PagedResponseBase<>(res.getRequest(), res.getStatusCode(), res.getHeaders(), res.getValue().value(),
-            res.getValue().nextLink(), null);
+        return listSinglePage(Context.NONE);
     }
 
     /**
@@ -2261,27 +1864,13 @@ public final class ScheduledActionsClientImpl implements ScheduledActionsClient 
             res.getValue().nextLink(), null);
     }
 
-    /**
-     * List ScheduledAction resources by subscription ID.
-     * 
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the response of a ScheduledAction list operation as paginated response with {@link PagedIterable}.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.COLLECTION)
     public PagedIterable<ScheduledActionInner> list() {
-        return new PagedIterable<>(() -> listSinglePage(), nextLink -> listBySubscriptionNextSinglePage(nextLink));
+        return list(Context.NONE);
     }
 
-    /**
-     * List ScheduledAction resources by subscription ID.
-     * 
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the response of a ScheduledAction list operation as paginated response with {@link PagedIterable}.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.COLLECTION)
     public PagedIterable<ScheduledActionInner> list(Context context) {
         return new PagedIterable<>(() -> listSinglePage(context),
@@ -2341,12 +1930,7 @@ public final class ScheduledActionsClientImpl implements ScheduledActionsClient 
     @ServiceMethod(returns = ReturnType.SINGLE)
     private PagedResponse<ScheduledActionResourceInner> listResourcesSinglePage(String resourceGroupName,
         String scheduledActionName) {
-        final String accept = "application/json";
-        Response<ResourceListResponse> res
-            = service.listResourcesSync(this.client.getEndpoint(), this.client.getApiVersion(),
-                this.client.getSubscriptionId(), resourceGroupName, scheduledActionName, accept, Context.NONE);
-        return new PagedResponseBase<>(res.getRequest(), res.getStatusCode(), res.getHeaders(), res.getValue().value(),
-            res.getValue().nextLink(), null);
+        return listResourcesSinglePage(resourceGroupName, scheduledActionName, Context.NONE);
     }
 
     /**
@@ -2371,34 +1955,14 @@ public final class ScheduledActionsClientImpl implements ScheduledActionsClient 
             res.getValue().nextLink(), null);
     }
 
-    /**
-     * List resources attached to Scheduled Actions.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param scheduledActionName The name of the ScheduledAction.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return paged collection of ScheduledActionResource items as paginated response with {@link PagedIterable}.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.COLLECTION)
     public PagedIterable<ScheduledActionResourceInner> listResources(String resourceGroupName,
         String scheduledActionName) {
-        return new PagedIterable<>(() -> listResourcesSinglePage(resourceGroupName, scheduledActionName),
-            nextLink -> listResourcesNextSinglePage(nextLink));
+        return listResources(resourceGroupName, scheduledActionName, Context.NONE);
     }
 
-    /**
-     * List resources attached to Scheduled Actions.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param scheduledActionName The name of the ScheduledAction.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return paged collection of ScheduledActionResource items as paginated response with {@link PagedIterable}.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.COLLECTION)
     public PagedIterable<ScheduledActionResourceInner> listResources(String resourceGroupName,
         String scheduledActionName, Context context) {
@@ -2449,19 +2013,7 @@ public final class ScheduledActionsClientImpl implements ScheduledActionsClient 
             .flatMap(res -> Mono.justOrEmpty(res.getValue()));
     }
 
-    /**
-     * A synchronous resource action.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param scheduledActionName The name of the ScheduledAction.
-     * @param body The content of the action request.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the response from scheduled action resource requests, which contains the status of each resource along
-     * with {@link Response}.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Response<RecurringActionsResourceOperationResultInner> attachResourcesWithResponse(String resourceGroupName,
         String scheduledActionName, ResourceAttachRequest body, Context context) {
@@ -2472,17 +2024,7 @@ public final class ScheduledActionsClientImpl implements ScheduledActionsClient 
             context);
     }
 
-    /**
-     * A synchronous resource action.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param scheduledActionName The name of the ScheduledAction.
-     * @param body The content of the action request.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the response from scheduled action resource requests, which contains the status of each resource.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public RecurringActionsResourceOperationResultInner attachResources(String resourceGroupName,
         String scheduledActionName, ResourceAttachRequest body) {
@@ -2532,19 +2074,7 @@ public final class ScheduledActionsClientImpl implements ScheduledActionsClient 
             .flatMap(res -> Mono.justOrEmpty(res.getValue()));
     }
 
-    /**
-     * A synchronous resource action.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param scheduledActionName The name of the ScheduledAction.
-     * @param body The content of the action request.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the response from scheduled action resource requests, which contains the status of each resource along
-     * with {@link Response}.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Response<RecurringActionsResourceOperationResultInner> detachResourcesWithResponse(String resourceGroupName,
         String scheduledActionName, ResourceDetachRequest body, Context context) {
@@ -2555,17 +2085,7 @@ public final class ScheduledActionsClientImpl implements ScheduledActionsClient 
             context);
     }
 
-    /**
-     * A synchronous resource action.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param scheduledActionName The name of the ScheduledAction.
-     * @param body The content of the action request.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the response from scheduled action resource requests, which contains the status of each resource.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public RecurringActionsResourceOperationResultInner detachResources(String resourceGroupName,
         String scheduledActionName, ResourceDetachRequest body) {
@@ -2615,19 +2135,7 @@ public final class ScheduledActionsClientImpl implements ScheduledActionsClient 
             .flatMap(res -> Mono.justOrEmpty(res.getValue()));
     }
 
-    /**
-     * A synchronous resource action.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param scheduledActionName The name of the ScheduledAction.
-     * @param body The content of the action request.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the response from scheduled action resource requests, which contains the status of each resource along
-     * with {@link Response}.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Response<RecurringActionsResourceOperationResultInner> patchResourcesWithResponse(String resourceGroupName,
         String scheduledActionName, ResourcePatchRequest body, Context context) {
@@ -2638,17 +2146,7 @@ public final class ScheduledActionsClientImpl implements ScheduledActionsClient 
             context);
     }
 
-    /**
-     * A synchronous resource action.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param scheduledActionName The name of the ScheduledAction.
-     * @param body The content of the action request.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the response from scheduled action resource requests, which contains the status of each resource.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public RecurringActionsResourceOperationResultInner patchResources(String resourceGroupName,
         String scheduledActionName, ResourcePatchRequest body) {
@@ -2688,32 +2186,14 @@ public final class ScheduledActionsClientImpl implements ScheduledActionsClient 
         return disableWithResponseAsync(resourceGroupName, scheduledActionName).flatMap(ignored -> Mono.empty());
     }
 
-    /**
-     * A synchronous resource action.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param scheduledActionName The name of the ScheduledAction.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the {@link Response}.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Response<Void> disableWithResponse(String resourceGroupName, String scheduledActionName, Context context) {
         return service.disableSync(this.client.getEndpoint(), this.client.getApiVersion(),
             this.client.getSubscriptionId(), resourceGroupName, scheduledActionName, context);
     }
 
-    /**
-     * A synchronous resource action.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param scheduledActionName The name of the ScheduledAction.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public void disable(String resourceGroupName, String scheduledActionName) {
         disableWithResponse(resourceGroupName, scheduledActionName, Context.NONE);
@@ -2752,32 +2232,14 @@ public final class ScheduledActionsClientImpl implements ScheduledActionsClient 
         return enableWithResponseAsync(resourceGroupName, scheduledActionName).flatMap(ignored -> Mono.empty());
     }
 
-    /**
-     * A synchronous resource action.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param scheduledActionName The name of the ScheduledAction.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the {@link Response}.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Response<Void> enableWithResponse(String resourceGroupName, String scheduledActionName, Context context) {
         return service.enableSync(this.client.getEndpoint(), this.client.getApiVersion(),
             this.client.getSubscriptionId(), resourceGroupName, scheduledActionName, context);
     }
 
-    /**
-     * A synchronous resource action.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param scheduledActionName The name of the ScheduledAction.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public void enable(String resourceGroupName, String scheduledActionName) {
         enableWithResponse(resourceGroupName, scheduledActionName, Context.NONE);
@@ -2826,19 +2288,7 @@ public final class ScheduledActionsClientImpl implements ScheduledActionsClient 
             .flatMap(res -> Mono.justOrEmpty(res.getValue()));
     }
 
-    /**
-     * A synchronous resource action.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param scheduledActionName The name of the ScheduledAction.
-     * @param body The content of the action request.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the response from scheduled action resource requests, which contains the status of each resource along
-     * with {@link Response}.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Response<RecurringActionsResourceOperationResultInner> cancelNextOccurrenceWithResponse(
         String resourceGroupName, String scheduledActionName, CancelOccurrenceRequest body, Context context) {
@@ -2849,17 +2299,7 @@ public final class ScheduledActionsClientImpl implements ScheduledActionsClient 
             context);
     }
 
-    /**
-     * A synchronous resource action.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param scheduledActionName The name of the ScheduledAction.
-     * @param body The content of the action request.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the response from scheduled action resource requests, which contains the status of each resource.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public RecurringActionsResourceOperationResultInner cancelNextOccurrence(String resourceGroupName,
         String scheduledActionName, CancelOccurrenceRequest body) {
@@ -2905,18 +2345,7 @@ public final class ScheduledActionsClientImpl implements ScheduledActionsClient 
             .flatMap(res -> Mono.justOrEmpty(res.getValue()));
     }
 
-    /**
-     * A synchronous resource action.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param scheduledActionName The name of the ScheduledAction.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return concrete proxy resource types can be created by aliasing this type using a specific property type along
-     * with {@link Response}.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Response<OccurrenceInner> triggerManualOccurrenceWithResponse(String resourceGroupName,
         String scheduledActionName, Context context) {
@@ -2925,16 +2354,7 @@ public final class ScheduledActionsClientImpl implements ScheduledActionsClient 
             this.client.getSubscriptionId(), resourceGroupName, scheduledActionName, accept, context);
     }
 
-    /**
-     * A synchronous resource action.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param scheduledActionName The name of the ScheduledAction.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return concrete proxy resource types can be created by aliasing this type using a specific property type.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public OccurrenceInner triggerManualOccurrence(String resourceGroupName, String scheduledActionName) {
         return triggerManualOccurrenceWithResponse(resourceGroupName, scheduledActionName, Context.NONE).getValue();
@@ -2972,11 +2392,7 @@ public final class ScheduledActionsClientImpl implements ScheduledActionsClient 
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private PagedResponse<ScheduledActionInner> listByResourceGroupNextSinglePage(String nextLink) {
-        final String accept = "application/json";
-        Response<ScheduledActionListResult> res
-            = service.listByResourceGroupNextSync(nextLink, this.client.getEndpoint(), accept, Context.NONE);
-        return new PagedResponseBase<>(res.getRequest(), res.getStatusCode(), res.getHeaders(), res.getValue().value(),
-            res.getValue().nextLink(), null);
+        return listByResourceGroupNextSinglePage(nextLink, Context.NONE);
     }
 
     /**
@@ -3030,11 +2446,7 @@ public final class ScheduledActionsClientImpl implements ScheduledActionsClient 
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private PagedResponse<ScheduledActionInner> listBySubscriptionNextSinglePage(String nextLink) {
-        final String accept = "application/json";
-        Response<ScheduledActionListResult> res
-            = service.listBySubscriptionNextSync(nextLink, this.client.getEndpoint(), accept, Context.NONE);
-        return new PagedResponseBase<>(res.getRequest(), res.getStatusCode(), res.getHeaders(), res.getValue().value(),
-            res.getValue().nextLink(), null);
+        return listBySubscriptionNextSinglePage(nextLink, Context.NONE);
     }
 
     /**
@@ -3087,11 +2499,7 @@ public final class ScheduledActionsClientImpl implements ScheduledActionsClient 
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private PagedResponse<ScheduledActionResourceInner> listResourcesNextSinglePage(String nextLink) {
-        final String accept = "application/json";
-        Response<ResourceListResponse> res
-            = service.listResourcesNextSync(nextLink, this.client.getEndpoint(), accept, Context.NONE);
-        return new PagedResponseBase<>(res.getRequest(), res.getStatusCode(), res.getHeaders(), res.getValue().value(),
-            res.getValue().nextLink(), null);
+        return listResourcesNextSinglePage(nextLink, Context.NONE);
     }
 
     /**

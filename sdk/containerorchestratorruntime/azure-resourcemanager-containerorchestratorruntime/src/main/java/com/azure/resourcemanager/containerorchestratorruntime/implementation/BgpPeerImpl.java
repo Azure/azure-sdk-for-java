@@ -53,10 +53,7 @@ public final class BgpPeerImpl implements BgpPeer, BgpPeer.Definition, BgpPeer.U
     }
 
     public BgpPeer create() {
-        this.innerObject = serviceManager.serviceClient()
-            .getBgpPeers()
-            .createOrUpdate(resourceUri, bgpPeerName, this.innerModel(), Context.NONE);
-        return this;
+        return this.create(Context.NONE);
     }
 
     public BgpPeer create(Context context) {
@@ -78,10 +75,7 @@ public final class BgpPeerImpl implements BgpPeer, BgpPeer.Definition, BgpPeer.U
     }
 
     public BgpPeer apply() {
-        this.innerObject = serviceManager.serviceClient()
-            .getBgpPeers()
-            .createOrUpdate(resourceUri, bgpPeerName, this.innerModel(), Context.NONE);
-        return this;
+        return this.apply(Context.NONE);
     }
 
     public BgpPeer apply(Context context) {
@@ -102,11 +96,7 @@ public final class BgpPeerImpl implements BgpPeer, BgpPeer.Definition, BgpPeer.U
     }
 
     public BgpPeer refresh() {
-        this.innerObject = serviceManager.serviceClient()
-            .getBgpPeers()
-            .getWithResponse(resourceUri, bgpPeerName, Context.NONE)
-            .getValue();
-        return this;
+        return this.refresh(Context.NONE);
     }
 
     public BgpPeer refresh(Context context) {

@@ -63,12 +63,11 @@ public final class SlisImpl implements Slis {
     }
 
     public void deleteByResourceGroup(String serviceGroupName, String sliName) {
-        this.serviceClient().delete(serviceGroupName, sliName);
+        this.deleteByResourceGroupWithResponse(serviceGroupName, sliName, Context.NONE);
     }
 
     public PagedIterable<Sli> listByParent(String serviceGroupName) {
-        PagedIterable<SliInner> inner = this.serviceClient().listByParent(serviceGroupName);
-        return ResourceManagerUtils.mapPage(inner, inner1 -> new SliImpl(inner1, this.manager()));
+        return this.listByParent(serviceGroupName, Context.NONE);
     }
 
     public PagedIterable<Sli> listByParent(String serviceGroupName, Context context) {

@@ -170,11 +170,7 @@ public final class OperationsClientImpl implements OperationsClient {
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private PagedResponse<OperationInner> listSinglePage() {
-        final String accept = "application/json";
-        Response<OperationListResult> res
-            = service.listSync(this.client.getEndpoint(), this.client.getApiVersion(), accept, Context.NONE);
-        return new PagedResponseBase<>(res.getRequest(), res.getStatusCode(), res.getHeaders(), res.getValue().value(),
-            res.getValue().nextLink(), null);
+        return listSinglePage(Context.NONE);
     }
 
     /**
@@ -195,29 +191,13 @@ public final class OperationsClientImpl implements OperationsClient {
             res.getValue().nextLink(), null);
     }
 
-    /**
-     * List the operations for the provider.
-     * 
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return a list of REST API operations supported by an Azure Resource Provider as paginated response with
-     * {@link PagedIterable}.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.COLLECTION)
     public PagedIterable<OperationInner> list() {
-        return new PagedIterable<>(() -> listSinglePage(), nextLink -> listNextSinglePage(nextLink));
+        return list(Context.NONE);
     }
 
-    /**
-     * List the operations for the provider.
-     * 
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return a list of REST API operations supported by an Azure Resource Provider as paginated response with
-     * {@link PagedIterable}.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.COLLECTION)
     public PagedIterable<OperationInner> list(Context context) {
         return new PagedIterable<>(() -> listSinglePage(context), nextLink -> listNextSinglePage(nextLink, context));
@@ -257,16 +237,7 @@ public final class OperationsClientImpl implements OperationsClient {
         return checkNameAvailabilityWithResponseAsync(body).flatMap(res -> Mono.justOrEmpty(res.getValue()));
     }
 
-    /**
-     * Implements global CheckNameAvailability operations.
-     * 
-     * @param body The CheckAvailability request.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the check availability result along with {@link Response}.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Response<CheckNameAvailabilityResponseInner>
         checkNameAvailabilityWithResponse(CheckNameAvailabilityRequest body, Context context) {
@@ -276,15 +247,7 @@ public final class OperationsClientImpl implements OperationsClient {
             this.client.getSubscriptionId(), contentType, accept, body, context);
     }
 
-    /**
-     * Implements global CheckNameAvailability operations.
-     * 
-     * @param body The CheckAvailability request.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the check availability result.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public CheckNameAvailabilityResponseInner checkNameAvailability(CheckNameAvailabilityRequest body) {
         return checkNameAvailabilityWithResponse(body, Context.NONE).getValue();
@@ -329,17 +292,7 @@ public final class OperationsClientImpl implements OperationsClient {
             .flatMap(res -> Mono.justOrEmpty(res.getValue()));
     }
 
-    /**
-     * Implements local CheckNameAvailability operations.
-     * 
-     * @param location The name of the Azure region.
-     * @param body The CheckAvailability request.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the check availability result along with {@link Response}.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Response<CheckNameAvailabilityResponseInner> checkNameAvailabilityLocalWithResponse(String location,
         CheckNameAvailabilityRequest body, Context context) {
@@ -349,16 +302,7 @@ public final class OperationsClientImpl implements OperationsClient {
             this.client.getSubscriptionId(), location, contentType, accept, body, context);
     }
 
-    /**
-     * Implements local CheckNameAvailability operations.
-     * 
-     * @param location The name of the Azure region.
-     * @param body The CheckAvailability request.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the check availability result.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public CheckNameAvailabilityResponseInner checkNameAvailabilityLocal(String location,
         CheckNameAvailabilityRequest body) {
@@ -395,11 +339,7 @@ public final class OperationsClientImpl implements OperationsClient {
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private PagedResponse<OperationInner> listNextSinglePage(String nextLink) {
-        final String accept = "application/json";
-        Response<OperationListResult> res
-            = service.listNextSync(nextLink, this.client.getEndpoint(), accept, Context.NONE);
-        return new PagedResponseBase<>(res.getRequest(), res.getStatusCode(), res.getHeaders(), res.getValue().value(),
-            res.getValue().nextLink(), null);
+        return listNextSinglePage(nextLink, Context.NONE);
     }
 
     /**

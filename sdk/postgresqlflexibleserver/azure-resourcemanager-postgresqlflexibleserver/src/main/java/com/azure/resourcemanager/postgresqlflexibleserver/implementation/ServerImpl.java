@@ -216,10 +216,7 @@ public final class ServerImpl implements Server, Server.Definition, Server.Updat
     }
 
     public Server create() {
-        this.innerObject = serviceManager.serviceClient()
-            .getServers()
-            .createOrUpdate(resourceGroupName, serverName, this.innerModel(), Context.NONE);
-        return this;
+        return this.create(Context.NONE);
     }
 
     public Server create(Context context) {
@@ -241,10 +238,7 @@ public final class ServerImpl implements Server, Server.Definition, Server.Updat
     }
 
     public Server apply() {
-        this.innerObject = serviceManager.serviceClient()
-            .getServers()
-            .update(resourceGroupName, serverName, updateParameters, Context.NONE);
-        return this;
+        return this.apply(Context.NONE);
     }
 
     public Server apply(Context context) {
@@ -267,11 +261,7 @@ public final class ServerImpl implements Server, Server.Definition, Server.Updat
     }
 
     public Server refresh() {
-        this.innerObject = serviceManager.serviceClient()
-            .getServers()
-            .getByResourceGroupWithResponse(resourceGroupName, serverName, Context.NONE)
-            .getValue();
-        return this;
+        return this.refresh(Context.NONE);
     }
 
     public Server refresh(Context context) {

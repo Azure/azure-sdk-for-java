@@ -51,9 +51,7 @@ public final class DeploymentStacksWhatIfResultsAtSubscriptionsImpl
     }
 
     public PagedIterable<DeploymentStacksWhatIfResult> list() {
-        PagedIterable<DeploymentStacksWhatIfResultInner> inner = this.serviceClient().list();
-        return ResourceManagerUtils.mapPage(inner,
-            inner1 -> new DeploymentStacksWhatIfResultImpl(inner1, this.manager()));
+        return this.list(Context.NONE);
     }
 
     public PagedIterable<DeploymentStacksWhatIfResult> list(Context context) {
@@ -64,13 +62,7 @@ public final class DeploymentStacksWhatIfResultsAtSubscriptionsImpl
 
     public DeploymentStacksWhatIfResult createOrUpdate(String deploymentStacksWhatIfResultName,
         DeploymentStacksWhatIfResultInner resource) {
-        DeploymentStacksWhatIfResultInner inner
-            = this.serviceClient().createOrUpdate(deploymentStacksWhatIfResultName, resource);
-        if (inner != null) {
-            return new DeploymentStacksWhatIfResultImpl(inner, this.manager());
-        } else {
-            return null;
-        }
+        return this.createOrUpdate(deploymentStacksWhatIfResultName, resource, Context.NONE);
     }
 
     public DeploymentStacksWhatIfResult createOrUpdate(String deploymentStacksWhatIfResultName,
@@ -101,12 +93,7 @@ public final class DeploymentStacksWhatIfResultsAtSubscriptionsImpl
     }
 
     public DeploymentStacksWhatIfResult whatIf(String deploymentStacksWhatIfResultName) {
-        DeploymentStacksWhatIfResultInner inner = this.serviceClient().whatIf(deploymentStacksWhatIfResultName);
-        if (inner != null) {
-            return new DeploymentStacksWhatIfResultImpl(inner, this.manager());
-        } else {
-            return null;
-        }
+        return this.whatIf(deploymentStacksWhatIfResultName, Context.NONE);
     }
 
     public DeploymentStacksWhatIfResult whatIf(String deploymentStacksWhatIfResultName, Context context) {

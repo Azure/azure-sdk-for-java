@@ -115,18 +115,7 @@ public final class VMIngestionsClientImpl implements VMIngestionsClient {
             .flatMap(res -> Mono.justOrEmpty(res.getValue()));
     }
 
-    /**
-     * List detailed information about VM ingestion that will be monitored by the Elastic monitor resource, ensuring
-     * optimal observability and performance.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param monitorName Monitor resource name.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the vm ingestion details to install an agent along with {@link Response}.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Response<VMIngestionDetailsResponseInner> detailsWithResponse(String resourceGroupName, String monitorName,
         Context context) {
@@ -135,17 +124,7 @@ public final class VMIngestionsClientImpl implements VMIngestionsClient {
             this.client.getSubscriptionId(), resourceGroupName, monitorName, accept, context);
     }
 
-    /**
-     * List detailed information about VM ingestion that will be monitored by the Elastic monitor resource, ensuring
-     * optimal observability and performance.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param monitorName Monitor resource name.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the vm ingestion details to install an agent.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public VMIngestionDetailsResponseInner details(String resourceGroupName, String monitorName) {
         return detailsWithResponse(resourceGroupName, monitorName, Context.NONE).getValue();

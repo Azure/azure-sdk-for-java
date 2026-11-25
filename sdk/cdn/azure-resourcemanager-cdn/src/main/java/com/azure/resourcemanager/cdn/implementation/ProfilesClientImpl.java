@@ -244,20 +244,7 @@ public final class ProfilesClientImpl implements InnerSupportsGet<ProfileInner>,
             @HeaderParam("Accept") String accept, Context context);
     }
 
-    /**
-     * Gets an Azure Front Door Standard or Azure Front Door Premium or CDN profile with the specified profile name
-     * under the specified subscription and resource group.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param profileName Name of the Azure Front Door Standard or Azure Front Door Premium or CDN profile which is
-     * unique within the resource group.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return an Azure Front Door Standard or Azure Front Door Premium or CDN profile with the specified profile name
-     * under the specified subscription and resource group along with {@link Response} on successful completion of
-     * {@link Mono}.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Response<ProfileInner>> getByResourceGroupWithResponseAsync(String resourceGroupName,
         String profileName) {
@@ -322,77 +309,27 @@ public final class ProfilesClientImpl implements InnerSupportsGet<ProfileInner>,
             this.client.getSubscriptionId(), resourceGroupName, profileName, accept, context);
     }
 
-    /**
-     * Gets an Azure Front Door Standard or Azure Front Door Premium or CDN profile with the specified profile name
-     * under the specified subscription and resource group.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param profileName Name of the Azure Front Door Standard or Azure Front Door Premium or CDN profile which is
-     * unique within the resource group.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return an Azure Front Door Standard or Azure Front Door Premium or CDN profile with the specified profile name
-     * under the specified subscription and resource group on successful completion of {@link Mono}.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<ProfileInner> getByResourceGroupAsync(String resourceGroupName, String profileName) {
         return getByResourceGroupWithResponseAsync(resourceGroupName, profileName)
             .flatMap(res -> Mono.justOrEmpty(res.getValue()));
     }
 
-    /**
-     * Gets an Azure Front Door Standard or Azure Front Door Premium or CDN profile with the specified profile name
-     * under the specified subscription and resource group.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param profileName Name of the Azure Front Door Standard or Azure Front Door Premium or CDN profile which is
-     * unique within the resource group.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return an Azure Front Door Standard or Azure Front Door Premium or CDN profile with the specified profile name
-     * under the specified subscription and resource group along with {@link Response}.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Response<ProfileInner> getByResourceGroupWithResponse(String resourceGroupName, String profileName,
         Context context) {
         return getByResourceGroupWithResponseAsync(resourceGroupName, profileName, context).block();
     }
 
-    /**
-     * Gets an Azure Front Door Standard or Azure Front Door Premium or CDN profile with the specified profile name
-     * under the specified subscription and resource group.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param profileName Name of the Azure Front Door Standard or Azure Front Door Premium or CDN profile which is
-     * unique within the resource group.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return an Azure Front Door Standard or Azure Front Door Premium or CDN profile with the specified profile name
-     * under the specified subscription and resource group.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public ProfileInner getByResourceGroup(String resourceGroupName, String profileName) {
         return getByResourceGroupWithResponse(resourceGroupName, profileName, Context.NONE).getValue();
     }
 
-    /**
-     * Creates a new Azure Front Door Standard or Azure Front Door Premium or CDN profile with a profile name under the
-     * specified subscription and resource group.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param profileName Name of the Azure Front Door Standard or Azure Front Door Premium or CDN profile which is
-     * unique within the resource group.
-     * @param profile Profile properties needed to create a new profile.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return a profile is a logical grouping of endpoints that share the same settings along with {@link Response} on
-     * successful completion of {@link Mono}.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Response<Flux<ByteBuffer>>> createWithResponseAsync(String resourceGroupName, String profileName,
         ProfileInner profile) {
@@ -469,20 +406,7 @@ public final class ProfilesClientImpl implements InnerSupportsGet<ProfileInner>,
             resourceGroupName, profileName, contentType, accept, profile, context);
     }
 
-    /**
-     * Creates a new Azure Front Door Standard or Azure Front Door Premium or CDN profile with a profile name under the
-     * specified subscription and resource group.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param profileName Name of the Azure Front Door Standard or Azure Front Door Premium or CDN profile which is
-     * unique within the resource group.
-     * @param profile Profile properties needed to create a new profile.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the {@link PollerFlux} for polling of a profile is a logical grouping of endpoints that share the same
-     * settings.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public PollerFlux<PollResult<ProfileInner>, ProfileInner> beginCreateAsync(String resourceGroupName,
         String profileName, ProfileInner profile) {
@@ -516,61 +440,21 @@ public final class ProfilesClientImpl implements InnerSupportsGet<ProfileInner>,
             ProfileInner.class, ProfileInner.class, context);
     }
 
-    /**
-     * Creates a new Azure Front Door Standard or Azure Front Door Premium or CDN profile with a profile name under the
-     * specified subscription and resource group.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param profileName Name of the Azure Front Door Standard or Azure Front Door Premium or CDN profile which is
-     * unique within the resource group.
-     * @param profile Profile properties needed to create a new profile.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the {@link SyncPoller} for polling of a profile is a logical grouping of endpoints that share the same
-     * settings.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public SyncPoller<PollResult<ProfileInner>, ProfileInner> beginCreate(String resourceGroupName, String profileName,
         ProfileInner profile) {
         return this.beginCreateAsync(resourceGroupName, profileName, profile).getSyncPoller();
     }
 
-    /**
-     * Creates a new Azure Front Door Standard or Azure Front Door Premium or CDN profile with a profile name under the
-     * specified subscription and resource group.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param profileName Name of the Azure Front Door Standard or Azure Front Door Premium or CDN profile which is
-     * unique within the resource group.
-     * @param profile Profile properties needed to create a new profile.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the {@link SyncPoller} for polling of a profile is a logical grouping of endpoints that share the same
-     * settings.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public SyncPoller<PollResult<ProfileInner>, ProfileInner> beginCreate(String resourceGroupName, String profileName,
         ProfileInner profile, Context context) {
         return this.beginCreateAsync(resourceGroupName, profileName, profile, context).getSyncPoller();
     }
 
-    /**
-     * Creates a new Azure Front Door Standard or Azure Front Door Premium or CDN profile with a profile name under the
-     * specified subscription and resource group.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param profileName Name of the Azure Front Door Standard or Azure Front Door Premium or CDN profile which is
-     * unique within the resource group.
-     * @param profile Profile properties needed to create a new profile.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return a profile is a logical grouping of endpoints that share the same settings on successful completion of
-     * {@link Mono}.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<ProfileInner> createAsync(String resourceGroupName, String profileName, ProfileInner profile) {
         return beginCreateAsync(resourceGroupName, profileName, profile).last()
@@ -599,57 +483,19 @@ public final class ProfilesClientImpl implements InnerSupportsGet<ProfileInner>,
             .flatMap(this.client::getLroFinalResultOrError);
     }
 
-    /**
-     * Creates a new Azure Front Door Standard or Azure Front Door Premium or CDN profile with a profile name under the
-     * specified subscription and resource group.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param profileName Name of the Azure Front Door Standard or Azure Front Door Premium or CDN profile which is
-     * unique within the resource group.
-     * @param profile Profile properties needed to create a new profile.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return a profile is a logical grouping of endpoints that share the same settings.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public ProfileInner create(String resourceGroupName, String profileName, ProfileInner profile) {
         return createAsync(resourceGroupName, profileName, profile).block();
     }
 
-    /**
-     * Creates a new Azure Front Door Standard or Azure Front Door Premium or CDN profile with a profile name under the
-     * specified subscription and resource group.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param profileName Name of the Azure Front Door Standard or Azure Front Door Premium or CDN profile which is
-     * unique within the resource group.
-     * @param profile Profile properties needed to create a new profile.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return a profile is a logical grouping of endpoints that share the same settings.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public ProfileInner create(String resourceGroupName, String profileName, ProfileInner profile, Context context) {
         return createAsync(resourceGroupName, profileName, profile, context).block();
     }
 
-    /**
-     * Updates an existing Azure Front Door Standard or Azure Front Door Premium or CDN profile with the specified
-     * profile name under the specified subscription and resource group.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param profileName Name of the Azure Front Door Standard or Azure Front Door Premium or CDN profile which is
-     * unique within the resource group.
-     * @param profileUpdateParameters Profile properties needed to update an existing profile.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return a profile is a logical grouping of endpoints that share the same settings along with {@link Response} on
-     * successful completion of {@link Mono}.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Response<Flux<ByteBuffer>>> updateWithResponseAsync(String resourceGroupName, String profileName,
         ProfileUpdateParameters profileUpdateParameters) {
@@ -729,20 +575,7 @@ public final class ProfilesClientImpl implements InnerSupportsGet<ProfileInner>,
             resourceGroupName, profileName, contentType, accept, profileUpdateParameters, context);
     }
 
-    /**
-     * Updates an existing Azure Front Door Standard or Azure Front Door Premium or CDN profile with the specified
-     * profile name under the specified subscription and resource group.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param profileName Name of the Azure Front Door Standard or Azure Front Door Premium or CDN profile which is
-     * unique within the resource group.
-     * @param profileUpdateParameters Profile properties needed to update an existing profile.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the {@link PollerFlux} for polling of a profile is a logical grouping of endpoints that share the same
-     * settings.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public PollerFlux<PollResult<ProfileInner>, ProfileInner> beginUpdateAsync(String resourceGroupName,
         String profileName, ProfileUpdateParameters profileUpdateParameters) {
@@ -777,61 +610,21 @@ public final class ProfilesClientImpl implements InnerSupportsGet<ProfileInner>,
             ProfileInner.class, ProfileInner.class, context);
     }
 
-    /**
-     * Updates an existing Azure Front Door Standard or Azure Front Door Premium or CDN profile with the specified
-     * profile name under the specified subscription and resource group.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param profileName Name of the Azure Front Door Standard or Azure Front Door Premium or CDN profile which is
-     * unique within the resource group.
-     * @param profileUpdateParameters Profile properties needed to update an existing profile.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the {@link SyncPoller} for polling of a profile is a logical grouping of endpoints that share the same
-     * settings.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public SyncPoller<PollResult<ProfileInner>, ProfileInner> beginUpdate(String resourceGroupName, String profileName,
         ProfileUpdateParameters profileUpdateParameters) {
         return this.beginUpdateAsync(resourceGroupName, profileName, profileUpdateParameters).getSyncPoller();
     }
 
-    /**
-     * Updates an existing Azure Front Door Standard or Azure Front Door Premium or CDN profile with the specified
-     * profile name under the specified subscription and resource group.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param profileName Name of the Azure Front Door Standard or Azure Front Door Premium or CDN profile which is
-     * unique within the resource group.
-     * @param profileUpdateParameters Profile properties needed to update an existing profile.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the {@link SyncPoller} for polling of a profile is a logical grouping of endpoints that share the same
-     * settings.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public SyncPoller<PollResult<ProfileInner>, ProfileInner> beginUpdate(String resourceGroupName, String profileName,
         ProfileUpdateParameters profileUpdateParameters, Context context) {
         return this.beginUpdateAsync(resourceGroupName, profileName, profileUpdateParameters, context).getSyncPoller();
     }
 
-    /**
-     * Updates an existing Azure Front Door Standard or Azure Front Door Premium or CDN profile with the specified
-     * profile name under the specified subscription and resource group.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param profileName Name of the Azure Front Door Standard or Azure Front Door Premium or CDN profile which is
-     * unique within the resource group.
-     * @param profileUpdateParameters Profile properties needed to update an existing profile.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return a profile is a logical grouping of endpoints that share the same settings on successful completion of
-     * {@link Mono}.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<ProfileInner> updateAsync(String resourceGroupName, String profileName,
         ProfileUpdateParameters profileUpdateParameters) {
@@ -861,58 +654,21 @@ public final class ProfilesClientImpl implements InnerSupportsGet<ProfileInner>,
             .flatMap(this.client::getLroFinalResultOrError);
     }
 
-    /**
-     * Updates an existing Azure Front Door Standard or Azure Front Door Premium or CDN profile with the specified
-     * profile name under the specified subscription and resource group.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param profileName Name of the Azure Front Door Standard or Azure Front Door Premium or CDN profile which is
-     * unique within the resource group.
-     * @param profileUpdateParameters Profile properties needed to update an existing profile.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return a profile is a logical grouping of endpoints that share the same settings.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public ProfileInner update(String resourceGroupName, String profileName,
         ProfileUpdateParameters profileUpdateParameters) {
         return updateAsync(resourceGroupName, profileName, profileUpdateParameters).block();
     }
 
-    /**
-     * Updates an existing Azure Front Door Standard or Azure Front Door Premium or CDN profile with the specified
-     * profile name under the specified subscription and resource group.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param profileName Name of the Azure Front Door Standard or Azure Front Door Premium or CDN profile which is
-     * unique within the resource group.
-     * @param profileUpdateParameters Profile properties needed to update an existing profile.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return a profile is a logical grouping of endpoints that share the same settings.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public ProfileInner update(String resourceGroupName, String profileName,
         ProfileUpdateParameters profileUpdateParameters, Context context) {
         return updateAsync(resourceGroupName, profileName, profileUpdateParameters, context).block();
     }
 
-    /**
-     * Deletes an existing Azure Front Door Standard or Azure Front Door Premium or CDN profile with the specified
-     * parameters. Deleting a profile will result in the deletion of all of the sub-resources including endpoints,
-     * origins and custom domains.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param profileName Name of the Azure Front Door Standard or Azure Front Door Premium or CDN profile which is
-     * unique within the resource group.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the {@link Response} on successful completion of {@link Mono}.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Response<Flux<ByteBuffer>>> deleteWithResponseAsync(String resourceGroupName, String profileName) {
         if (this.client.getEndpoint() == null) {
@@ -973,19 +729,7 @@ public final class ProfilesClientImpl implements InnerSupportsGet<ProfileInner>,
             resourceGroupName, profileName, context);
     }
 
-    /**
-     * Deletes an existing Azure Front Door Standard or Azure Front Door Premium or CDN profile with the specified
-     * parameters. Deleting a profile will result in the deletion of all of the sub-resources including endpoints,
-     * origins and custom domains.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param profileName Name of the Azure Front Door Standard or Azure Front Door Premium or CDN profile which is
-     * unique within the resource group.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the {@link PollerFlux} for polling of long-running operation.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public PollerFlux<PollResult<Void>, Void> beginDeleteAsync(String resourceGroupName, String profileName) {
         Mono<Response<Flux<ByteBuffer>>> mono = deleteWithResponseAsync(resourceGroupName, profileName);
@@ -1016,57 +760,20 @@ public final class ProfilesClientImpl implements InnerSupportsGet<ProfileInner>,
             context);
     }
 
-    /**
-     * Deletes an existing Azure Front Door Standard or Azure Front Door Premium or CDN profile with the specified
-     * parameters. Deleting a profile will result in the deletion of all of the sub-resources including endpoints,
-     * origins and custom domains.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param profileName Name of the Azure Front Door Standard or Azure Front Door Premium or CDN profile which is
-     * unique within the resource group.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the {@link SyncPoller} for polling of long-running operation.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public SyncPoller<PollResult<Void>, Void> beginDelete(String resourceGroupName, String profileName) {
         return this.beginDeleteAsync(resourceGroupName, profileName).getSyncPoller();
     }
 
-    /**
-     * Deletes an existing Azure Front Door Standard or Azure Front Door Premium or CDN profile with the specified
-     * parameters. Deleting a profile will result in the deletion of all of the sub-resources including endpoints,
-     * origins and custom domains.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param profileName Name of the Azure Front Door Standard or Azure Front Door Premium or CDN profile which is
-     * unique within the resource group.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the {@link SyncPoller} for polling of long-running operation.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public SyncPoller<PollResult<Void>, Void> beginDelete(String resourceGroupName, String profileName,
         Context context) {
         return this.beginDeleteAsync(resourceGroupName, profileName, context).getSyncPoller();
     }
 
-    /**
-     * Deletes an existing Azure Front Door Standard or Azure Front Door Premium or CDN profile with the specified
-     * parameters. Deleting a profile will result in the deletion of all of the sub-resources including endpoints,
-     * origins and custom domains.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param profileName Name of the Azure Front Door Standard or Azure Front Door Premium or CDN profile which is
-     * unique within the resource group.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return A {@link Mono} that completes when a successful response is received.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Void> deleteAsync(String resourceGroupName, String profileName) {
         return beginDeleteAsync(resourceGroupName, profileName).last().flatMap(this.client::getLroFinalResultOrError);
@@ -1092,36 +799,13 @@ public final class ProfilesClientImpl implements InnerSupportsGet<ProfileInner>,
             .flatMap(this.client::getLroFinalResultOrError);
     }
 
-    /**
-     * Deletes an existing Azure Front Door Standard or Azure Front Door Premium or CDN profile with the specified
-     * parameters. Deleting a profile will result in the deletion of all of the sub-resources including endpoints,
-     * origins and custom domains.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param profileName Name of the Azure Front Door Standard or Azure Front Door Premium or CDN profile which is
-     * unique within the resource group.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public void delete(String resourceGroupName, String profileName) {
         deleteAsync(resourceGroupName, profileName).block();
     }
 
-    /**
-     * Deletes an existing Azure Front Door Standard or Azure Front Door Premium or CDN profile with the specified
-     * parameters. Deleting a profile will result in the deletion of all of the sub-resources including endpoints,
-     * origins and custom domains.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param profileName Name of the Azure Front Door Standard or Azure Front Door Premium or CDN profile which is
-     * unique within the resource group.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public void delete(String resourceGroupName, String profileName, Context context) {
         deleteAsync(resourceGroupName, profileName, context).block();
@@ -1195,15 +879,7 @@ public final class ProfilesClientImpl implements InnerSupportsGet<ProfileInner>,
                 res.getValue().value(), res.getValue().nextLink(), null));
     }
 
-    /**
-     * Lists all of the Azure Front Door Standard, Azure Front Door Premium, and CDN profiles within a resource group.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the response of a Profile list operation as paginated response with {@link PagedFlux}.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.COLLECTION)
     public PagedFlux<ProfileInner> listByResourceGroupAsync(String resourceGroupName) {
         return new PagedFlux<>(() -> listByResourceGroupSinglePageAsync(resourceGroupName),
@@ -1226,30 +902,13 @@ public final class ProfilesClientImpl implements InnerSupportsGet<ProfileInner>,
             nextLink -> listByResourceGroupNextSinglePageAsync(nextLink, context));
     }
 
-    /**
-     * Lists all of the Azure Front Door Standard, Azure Front Door Premium, and CDN profiles within a resource group.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the response of a Profile list operation as paginated response with {@link PagedIterable}.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.COLLECTION)
     public PagedIterable<ProfileInner> listByResourceGroup(String resourceGroupName) {
         return new PagedIterable<>(listByResourceGroupAsync(resourceGroupName));
     }
 
-    /**
-     * Lists all of the Azure Front Door Standard, Azure Front Door Premium, and CDN profiles within a resource group.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the response of a Profile list operation as paginated response with {@link PagedIterable}.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.COLLECTION)
     public PagedIterable<ProfileInner> listByResourceGroup(String resourceGroupName, Context context) {
         return new PagedIterable<>(listByResourceGroupAsync(resourceGroupName, context));
@@ -1313,14 +972,7 @@ public final class ProfilesClientImpl implements InnerSupportsGet<ProfileInner>,
                 res.getValue().value(), res.getValue().nextLink(), null));
     }
 
-    /**
-     * Lists all of the Azure Front Door Standard, Azure Front Door Premium, and CDN profiles within an Azure
-     * subscription.
-     * 
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the response of a Profile list operation as paginated response with {@link PagedFlux}.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.COLLECTION)
     public PagedFlux<ProfileInner> listAsync() {
         return new PagedFlux<>(() -> listSinglePageAsync(), nextLink -> listNextSinglePageAsync(nextLink));
@@ -1342,45 +994,19 @@ public final class ProfilesClientImpl implements InnerSupportsGet<ProfileInner>,
             nextLink -> listNextSinglePageAsync(nextLink, context));
     }
 
-    /**
-     * Lists all of the Azure Front Door Standard, Azure Front Door Premium, and CDN profiles within an Azure
-     * subscription.
-     * 
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the response of a Profile list operation as paginated response with {@link PagedIterable}.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.COLLECTION)
     public PagedIterable<ProfileInner> list() {
         return new PagedIterable<>(listAsync());
     }
 
-    /**
-     * Lists all of the Azure Front Door Standard, Azure Front Door Premium, and CDN profiles within an Azure
-     * subscription.
-     * 
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the response of a Profile list operation as paginated response with {@link PagedIterable}.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.COLLECTION)
     public PagedIterable<ProfileInner> list(Context context) {
         return new PagedIterable<>(listAsync(context));
     }
 
-    /**
-     * Commit the migrated Azure Frontdoor(Standard/Premium) profile.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param profileName Name of the Azure Front Door Standard or Azure Front Door Premium or CDN profile which is
-     * unique within the resource group.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the {@link Response} on successful completion of {@link Mono}.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Response<Flux<ByteBuffer>>> migrationCommitWithResponseAsync(String resourceGroupName,
         String profileName) {
@@ -1440,17 +1066,7 @@ public final class ProfilesClientImpl implements InnerSupportsGet<ProfileInner>,
             this.client.getSubscriptionId(), resourceGroupName, profileName, context);
     }
 
-    /**
-     * Commit the migrated Azure Frontdoor(Standard/Premium) profile.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param profileName Name of the Azure Front Door Standard or Azure Front Door Premium or CDN profile which is
-     * unique within the resource group.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the {@link PollerFlux} for polling of long-running operation.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public PollerFlux<PollResult<Void>, Void> beginMigrationCommitAsync(String resourceGroupName, String profileName) {
         Mono<Response<Flux<ByteBuffer>>> mono = migrationCommitWithResponseAsync(resourceGroupName, profileName);
@@ -1480,51 +1096,20 @@ public final class ProfilesClientImpl implements InnerSupportsGet<ProfileInner>,
             context);
     }
 
-    /**
-     * Commit the migrated Azure Frontdoor(Standard/Premium) profile.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param profileName Name of the Azure Front Door Standard or Azure Front Door Premium or CDN profile which is
-     * unique within the resource group.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the {@link SyncPoller} for polling of long-running operation.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public SyncPoller<PollResult<Void>, Void> beginMigrationCommit(String resourceGroupName, String profileName) {
         return this.beginMigrationCommitAsync(resourceGroupName, profileName).getSyncPoller();
     }
 
-    /**
-     * Commit the migrated Azure Frontdoor(Standard/Premium) profile.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param profileName Name of the Azure Front Door Standard or Azure Front Door Premium or CDN profile which is
-     * unique within the resource group.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the {@link SyncPoller} for polling of long-running operation.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public SyncPoller<PollResult<Void>, Void> beginMigrationCommit(String resourceGroupName, String profileName,
         Context context) {
         return this.beginMigrationCommitAsync(resourceGroupName, profileName, context).getSyncPoller();
     }
 
-    /**
-     * Commit the migrated Azure Frontdoor(Standard/Premium) profile.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param profileName Name of the Azure Front Door Standard or Azure Front Door Premium or CDN profile which is
-     * unique within the resource group.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return A {@link Mono} that completes when a successful response is received.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Void> migrationCommitAsync(String resourceGroupName, String profileName) {
         return beginMigrationCommitAsync(resourceGroupName, profileName).last()
@@ -1549,52 +1134,19 @@ public final class ProfilesClientImpl implements InnerSupportsGet<ProfileInner>,
             .flatMap(this.client::getLroFinalResultOrError);
     }
 
-    /**
-     * Commit the migrated Azure Frontdoor(Standard/Premium) profile.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param profileName Name of the Azure Front Door Standard or Azure Front Door Premium or CDN profile which is
-     * unique within the resource group.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public void migrationCommit(String resourceGroupName, String profileName) {
         migrationCommitAsync(resourceGroupName, profileName).block();
     }
 
-    /**
-     * Commit the migrated Azure Frontdoor(Standard/Premium) profile.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param profileName Name of the Azure Front Door Standard or Azure Front Door Premium or CDN profile which is
-     * unique within the resource group.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public void migrationCommit(String resourceGroupName, String profileName, Context context) {
         migrationCommitAsync(resourceGroupName, profileName, context).block();
     }
 
-    /**
-     * Generates a dynamic SSO URI used to sign in to the CDN supplemental portal. Supplemental portal is used to
-     * configure advanced feature capabilities that are not yet available in the Azure portal, such as core reports in a
-     * standard profile; rules engine, advanced HTTP reports, and real-time stats and alerts in a premium profile. The
-     * SSO URI changes approximately every 10 minutes.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param profileName Name of the Azure Front Door Standard or Azure Front Door Premium or CDN profile which is
-     * unique within the resource group.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the URI required to login to the supplemental portal from the Azure portal along with {@link Response} on
-     * successful completion of {@link Mono}.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Response<SsoUriInner>> generateSsoUriWithResponseAsync(String resourceGroupName, String profileName) {
         if (this.client.getEndpoint() == null) {
@@ -1659,80 +1211,27 @@ public final class ProfilesClientImpl implements InnerSupportsGet<ProfileInner>,
             this.client.getSubscriptionId(), resourceGroupName, profileName, accept, context);
     }
 
-    /**
-     * Generates a dynamic SSO URI used to sign in to the CDN supplemental portal. Supplemental portal is used to
-     * configure advanced feature capabilities that are not yet available in the Azure portal, such as core reports in a
-     * standard profile; rules engine, advanced HTTP reports, and real-time stats and alerts in a premium profile. The
-     * SSO URI changes approximately every 10 minutes.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param profileName Name of the Azure Front Door Standard or Azure Front Door Premium or CDN profile which is
-     * unique within the resource group.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the URI required to login to the supplemental portal from the Azure portal on successful completion of
-     * {@link Mono}.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<SsoUriInner> generateSsoUriAsync(String resourceGroupName, String profileName) {
         return generateSsoUriWithResponseAsync(resourceGroupName, profileName)
             .flatMap(res -> Mono.justOrEmpty(res.getValue()));
     }
 
-    /**
-     * Generates a dynamic SSO URI used to sign in to the CDN supplemental portal. Supplemental portal is used to
-     * configure advanced feature capabilities that are not yet available in the Azure portal, such as core reports in a
-     * standard profile; rules engine, advanced HTTP reports, and real-time stats and alerts in a premium profile. The
-     * SSO URI changes approximately every 10 minutes.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param profileName Name of the Azure Front Door Standard or Azure Front Door Premium or CDN profile which is
-     * unique within the resource group.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the URI required to login to the supplemental portal from the Azure portal along with {@link Response}.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Response<SsoUriInner> generateSsoUriWithResponse(String resourceGroupName, String profileName,
         Context context) {
         return generateSsoUriWithResponseAsync(resourceGroupName, profileName, context).block();
     }
 
-    /**
-     * Generates a dynamic SSO URI used to sign in to the CDN supplemental portal. Supplemental portal is used to
-     * configure advanced feature capabilities that are not yet available in the Azure portal, such as core reports in a
-     * standard profile; rules engine, advanced HTTP reports, and real-time stats and alerts in a premium profile. The
-     * SSO URI changes approximately every 10 minutes.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param profileName Name of the Azure Front Door Standard or Azure Front Door Premium or CDN profile which is
-     * unique within the resource group.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the URI required to login to the supplemental portal from the Azure portal.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public SsoUriInner generateSsoUri(String resourceGroupName, String profileName) {
         return generateSsoUriWithResponse(resourceGroupName, profileName, Context.NONE).getValue();
     }
 
-    /**
-     * Gets the supported optimization types for the current profile. A user can create an endpoint with an optimization
-     * type from the listed values.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param profileName Name of the Azure Front Door Standard or Azure Front Door Premium or CDN profile which is
-     * unique within the resource group.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the supported optimization types for the current profile along with {@link Response} on successful
-     * completion of {@link Mono}.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Response<SupportedOptimizationTypesListResultInner>>
         listSupportedOptimizationTypesWithResponseAsync(String resourceGroupName, String profileName) {
@@ -1797,18 +1296,7 @@ public final class ProfilesClientImpl implements InnerSupportsGet<ProfileInner>,
             this.client.getSubscriptionId(), resourceGroupName, profileName, accept, context);
     }
 
-    /**
-     * Gets the supported optimization types for the current profile. A user can create an endpoint with an optimization
-     * type from the listed values.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param profileName Name of the Azure Front Door Standard or Azure Front Door Premium or CDN profile which is
-     * unique within the resource group.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the supported optimization types for the current profile on successful completion of {@link Mono}.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<SupportedOptimizationTypesListResultInner> listSupportedOptimizationTypesAsync(String resourceGroupName,
         String profileName) {
@@ -1816,37 +1304,14 @@ public final class ProfilesClientImpl implements InnerSupportsGet<ProfileInner>,
             .flatMap(res -> Mono.justOrEmpty(res.getValue()));
     }
 
-    /**
-     * Gets the supported optimization types for the current profile. A user can create an endpoint with an optimization
-     * type from the listed values.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param profileName Name of the Azure Front Door Standard or Azure Front Door Premium or CDN profile which is
-     * unique within the resource group.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the supported optimization types for the current profile along with {@link Response}.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Response<SupportedOptimizationTypesListResultInner>
         listSupportedOptimizationTypesWithResponse(String resourceGroupName, String profileName, Context context) {
         return listSupportedOptimizationTypesWithResponseAsync(resourceGroupName, profileName, context).block();
     }
 
-    /**
-     * Gets the supported optimization types for the current profile. A user can create an endpoint with an optimization
-     * type from the listed values.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param profileName Name of the Azure Front Door Standard or Azure Front Door Premium or CDN profile which is
-     * unique within the resource group.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the supported optimization types for the current profile.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public SupportedOptimizationTypesListResultInner listSupportedOptimizationTypes(String resourceGroupName,
         String profileName) {
@@ -1934,18 +1399,7 @@ public final class ProfilesClientImpl implements InnerSupportsGet<ProfileInner>,
                 res.getValue().value(), res.getValue().nextLink(), null));
     }
 
-    /**
-     * Checks the quota and actual usage of endpoints under the given Azure Front Door Standard or Azure Front Door
-     * Premium or CDN profile.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param profileName Name of the Azure Front Door Standard or Azure Front Door Premium or CDN profile which is
-     * unique within the resource group.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return output of check resource usage API as paginated response with {@link PagedFlux}.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.COLLECTION)
     public PagedFlux<ResourceUsageInner> listResourceUsageAsync(String resourceGroupName, String profileName) {
         return new PagedFlux<>(() -> listResourceUsageSinglePageAsync(resourceGroupName, profileName),
@@ -1972,53 +1426,20 @@ public final class ProfilesClientImpl implements InnerSupportsGet<ProfileInner>,
             nextLink -> listResourceUsageNextSinglePageAsync(nextLink, context));
     }
 
-    /**
-     * Checks the quota and actual usage of endpoints under the given Azure Front Door Standard or Azure Front Door
-     * Premium or CDN profile.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param profileName Name of the Azure Front Door Standard or Azure Front Door Premium or CDN profile which is
-     * unique within the resource group.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return output of check resource usage API as paginated response with {@link PagedIterable}.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.COLLECTION)
     public PagedIterable<ResourceUsageInner> listResourceUsage(String resourceGroupName, String profileName) {
         return new PagedIterable<>(listResourceUsageAsync(resourceGroupName, profileName));
     }
 
-    /**
-     * Checks the quota and actual usage of endpoints under the given Azure Front Door Standard or Azure Front Door
-     * Premium or CDN profile.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param profileName Name of the Azure Front Door Standard or Azure Front Door Premium or CDN profile which is
-     * unique within the resource group.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return output of check resource usage API as paginated response with {@link PagedIterable}.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.COLLECTION)
     public PagedIterable<ResourceUsageInner> listResourceUsage(String resourceGroupName, String profileName,
         Context context) {
         return new PagedIterable<>(listResourceUsageAsync(resourceGroupName, profileName, context));
     }
 
-    /**
-     * Checks if CDN profile can be migrated to Azure Frontdoor(Standard/Premium) profile.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param profileName Name of the Azure Front Door Standard or Azure Front Door Premium or CDN profile which is
-     * unique within the resource group.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return result for canMigrate operation along with {@link Response} on successful completion of {@link Mono}.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Response<Flux<ByteBuffer>>> cdnCanMigrateToAfdWithResponseAsync(String resourceGroupName,
         String profileName) {
@@ -2080,17 +1501,7 @@ public final class ProfilesClientImpl implements InnerSupportsGet<ProfileInner>,
             this.client.getSubscriptionId(), resourceGroupName, profileName, accept, context);
     }
 
-    /**
-     * Checks if CDN profile can be migrated to Azure Frontdoor(Standard/Premium) profile.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param profileName Name of the Azure Front Door Standard or Azure Front Door Premium or CDN profile which is
-     * unique within the resource group.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the {@link PollerFlux} for polling of result for canMigrate operation.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public PollerFlux<PollResult<CanMigrateResultInner>, CanMigrateResultInner>
         beginCdnCanMigrateToAfdAsync(String resourceGroupName, String profileName) {
@@ -2122,52 +1533,21 @@ public final class ProfilesClientImpl implements InnerSupportsGet<ProfileInner>,
             this.client.getHttpPipeline(), CanMigrateResultInner.class, CanMigrateResultInner.class, context);
     }
 
-    /**
-     * Checks if CDN profile can be migrated to Azure Frontdoor(Standard/Premium) profile.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param profileName Name of the Azure Front Door Standard or Azure Front Door Premium or CDN profile which is
-     * unique within the resource group.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the {@link SyncPoller} for polling of result for canMigrate operation.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public SyncPoller<PollResult<CanMigrateResultInner>, CanMigrateResultInner>
         beginCdnCanMigrateToAfd(String resourceGroupName, String profileName) {
         return this.beginCdnCanMigrateToAfdAsync(resourceGroupName, profileName).getSyncPoller();
     }
 
-    /**
-     * Checks if CDN profile can be migrated to Azure Frontdoor(Standard/Premium) profile.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param profileName Name of the Azure Front Door Standard or Azure Front Door Premium or CDN profile which is
-     * unique within the resource group.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the {@link SyncPoller} for polling of result for canMigrate operation.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public SyncPoller<PollResult<CanMigrateResultInner>, CanMigrateResultInner>
         beginCdnCanMigrateToAfd(String resourceGroupName, String profileName, Context context) {
         return this.beginCdnCanMigrateToAfdAsync(resourceGroupName, profileName, context).getSyncPoller();
     }
 
-    /**
-     * Checks if CDN profile can be migrated to Azure Frontdoor(Standard/Premium) profile.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param profileName Name of the Azure Front Door Standard or Azure Front Door Premium or CDN profile which is
-     * unique within the resource group.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return result for canMigrate operation on successful completion of {@link Mono}.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<CanMigrateResultInner> cdnCanMigrateToAfdAsync(String resourceGroupName, String profileName) {
         return beginCdnCanMigrateToAfdAsync(resourceGroupName, profileName).last()
@@ -2193,52 +1573,19 @@ public final class ProfilesClientImpl implements InnerSupportsGet<ProfileInner>,
             .flatMap(this.client::getLroFinalResultOrError);
     }
 
-    /**
-     * Checks if CDN profile can be migrated to Azure Frontdoor(Standard/Premium) profile.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param profileName Name of the Azure Front Door Standard or Azure Front Door Premium or CDN profile which is
-     * unique within the resource group.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return result for canMigrate operation.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public CanMigrateResultInner cdnCanMigrateToAfd(String resourceGroupName, String profileName) {
         return cdnCanMigrateToAfdAsync(resourceGroupName, profileName).block();
     }
 
-    /**
-     * Checks if CDN profile can be migrated to Azure Frontdoor(Standard/Premium) profile.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param profileName Name of the Azure Front Door Standard or Azure Front Door Premium or CDN profile which is
-     * unique within the resource group.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return result for canMigrate operation.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public CanMigrateResultInner cdnCanMigrateToAfd(String resourceGroupName, String profileName, Context context) {
         return cdnCanMigrateToAfdAsync(resourceGroupName, profileName, context).block();
     }
 
-    /**
-     * Migrate the CDN profile to Azure Frontdoor(Standard/Premium) profile. This step prepares the profile for
-     * migration and will be followed by Commit to finalize the migration.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param profileName Name of the Azure Front Door Standard or Azure Front Door Premium or CDN profile which is
-     * unique within the resource group.
-     * @param migrationParameters Properties needed to migrate the profile.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return result for migrate operation along with {@link Response} on successful completion of {@link Mono}.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Response<Flux<ByteBuffer>>> cdnMigrateToAfdWithResponseAsync(String resourceGroupName,
         String profileName, CdnMigrationToAfdParameters migrationParameters) {
@@ -2318,19 +1665,7 @@ public final class ProfilesClientImpl implements InnerSupportsGet<ProfileInner>,
             context);
     }
 
-    /**
-     * Migrate the CDN profile to Azure Frontdoor(Standard/Premium) profile. This step prepares the profile for
-     * migration and will be followed by Commit to finalize the migration.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param profileName Name of the Azure Front Door Standard or Azure Front Door Premium or CDN profile which is
-     * unique within the resource group.
-     * @param migrationParameters Properties needed to migrate the profile.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the {@link PollerFlux} for polling of result for migrate operation.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public PollerFlux<PollResult<MigrateResultInner>, MigrateResultInner> beginCdnMigrateToAfdAsync(
         String resourceGroupName, String profileName, CdnMigrationToAfdParameters migrationParameters) {
@@ -2365,39 +1700,14 @@ public final class ProfilesClientImpl implements InnerSupportsGet<ProfileInner>,
             MigrateResultInner.class, MigrateResultInner.class, context);
     }
 
-    /**
-     * Migrate the CDN profile to Azure Frontdoor(Standard/Premium) profile. This step prepares the profile for
-     * migration and will be followed by Commit to finalize the migration.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param profileName Name of the Azure Front Door Standard or Azure Front Door Premium or CDN profile which is
-     * unique within the resource group.
-     * @param migrationParameters Properties needed to migrate the profile.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the {@link SyncPoller} for polling of result for migrate operation.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public SyncPoller<PollResult<MigrateResultInner>, MigrateResultInner> beginCdnMigrateToAfd(String resourceGroupName,
         String profileName, CdnMigrationToAfdParameters migrationParameters) {
         return this.beginCdnMigrateToAfdAsync(resourceGroupName, profileName, migrationParameters).getSyncPoller();
     }
 
-    /**
-     * Migrate the CDN profile to Azure Frontdoor(Standard/Premium) profile. This step prepares the profile for
-     * migration and will be followed by Commit to finalize the migration.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param profileName Name of the Azure Front Door Standard or Azure Front Door Premium or CDN profile which is
-     * unique within the resource group.
-     * @param migrationParameters Properties needed to migrate the profile.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the {@link SyncPoller} for polling of result for migrate operation.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public SyncPoller<PollResult<MigrateResultInner>, MigrateResultInner> beginCdnMigrateToAfd(String resourceGroupName,
         String profileName, CdnMigrationToAfdParameters migrationParameters, Context context) {
@@ -2405,19 +1715,7 @@ public final class ProfilesClientImpl implements InnerSupportsGet<ProfileInner>,
             .getSyncPoller();
     }
 
-    /**
-     * Migrate the CDN profile to Azure Frontdoor(Standard/Premium) profile. This step prepares the profile for
-     * migration and will be followed by Commit to finalize the migration.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param profileName Name of the Azure Front Door Standard or Azure Front Door Premium or CDN profile which is
-     * unique within the resource group.
-     * @param migrationParameters Properties needed to migrate the profile.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return result for migrate operation on successful completion of {@link Mono}.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<MigrateResultInner> cdnMigrateToAfdAsync(String resourceGroupName, String profileName,
         CdnMigrationToAfdParameters migrationParameters) {
@@ -2446,56 +1744,21 @@ public final class ProfilesClientImpl implements InnerSupportsGet<ProfileInner>,
             .flatMap(this.client::getLroFinalResultOrError);
     }
 
-    /**
-     * Migrate the CDN profile to Azure Frontdoor(Standard/Premium) profile. This step prepares the profile for
-     * migration and will be followed by Commit to finalize the migration.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param profileName Name of the Azure Front Door Standard or Azure Front Door Premium or CDN profile which is
-     * unique within the resource group.
-     * @param migrationParameters Properties needed to migrate the profile.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return result for migrate operation.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public MigrateResultInner cdnMigrateToAfd(String resourceGroupName, String profileName,
         CdnMigrationToAfdParameters migrationParameters) {
         return cdnMigrateToAfdAsync(resourceGroupName, profileName, migrationParameters).block();
     }
 
-    /**
-     * Migrate the CDN profile to Azure Frontdoor(Standard/Premium) profile. This step prepares the profile for
-     * migration and will be followed by Commit to finalize the migration.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param profileName Name of the Azure Front Door Standard or Azure Front Door Premium or CDN profile which is
-     * unique within the resource group.
-     * @param migrationParameters Properties needed to migrate the profile.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return result for migrate operation.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public MigrateResultInner cdnMigrateToAfd(String resourceGroupName, String profileName,
         CdnMigrationToAfdParameters migrationParameters, Context context) {
         return cdnMigrateToAfdAsync(resourceGroupName, profileName, migrationParameters, context).block();
     }
 
-    /**
-     * Abort the migration to Azure Frontdoor Premium/Standard.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param profileName Name of the Azure Front Door Standard or Azure Front Door Premium or CDN profile which is
-     * unique within the resource group.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the {@link Response} on successful completion of {@link Mono}.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Response<Flux<ByteBuffer>>> migrationAbortWithResponseAsync(String resourceGroupName,
         String profileName) {
@@ -2555,17 +1818,7 @@ public final class ProfilesClientImpl implements InnerSupportsGet<ProfileInner>,
             this.client.getSubscriptionId(), resourceGroupName, profileName, context);
     }
 
-    /**
-     * Abort the migration to Azure Frontdoor Premium/Standard.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param profileName Name of the Azure Front Door Standard or Azure Front Door Premium or CDN profile which is
-     * unique within the resource group.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the {@link PollerFlux} for polling of long-running operation.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public PollerFlux<PollResult<Void>, Void> beginMigrationAbortAsync(String resourceGroupName, String profileName) {
         Mono<Response<Flux<ByteBuffer>>> mono = migrationAbortWithResponseAsync(resourceGroupName, profileName);
@@ -2595,51 +1848,20 @@ public final class ProfilesClientImpl implements InnerSupportsGet<ProfileInner>,
             context);
     }
 
-    /**
-     * Abort the migration to Azure Frontdoor Premium/Standard.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param profileName Name of the Azure Front Door Standard or Azure Front Door Premium or CDN profile which is
-     * unique within the resource group.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the {@link SyncPoller} for polling of long-running operation.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public SyncPoller<PollResult<Void>, Void> beginMigrationAbort(String resourceGroupName, String profileName) {
         return this.beginMigrationAbortAsync(resourceGroupName, profileName).getSyncPoller();
     }
 
-    /**
-     * Abort the migration to Azure Frontdoor Premium/Standard.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param profileName Name of the Azure Front Door Standard or Azure Front Door Premium or CDN profile which is
-     * unique within the resource group.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the {@link SyncPoller} for polling of long-running operation.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public SyncPoller<PollResult<Void>, Void> beginMigrationAbort(String resourceGroupName, String profileName,
         Context context) {
         return this.beginMigrationAbortAsync(resourceGroupName, profileName, context).getSyncPoller();
     }
 
-    /**
-     * Abort the migration to Azure Frontdoor Premium/Standard.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param profileName Name of the Azure Front Door Standard or Azure Front Door Premium or CDN profile which is
-     * unique within the resource group.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return A {@link Mono} that completes when a successful response is received.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Void> migrationAbortAsync(String resourceGroupName, String profileName) {
         return beginMigrationAbortAsync(resourceGroupName, profileName).last()
@@ -2664,47 +1886,19 @@ public final class ProfilesClientImpl implements InnerSupportsGet<ProfileInner>,
             .flatMap(this.client::getLroFinalResultOrError);
     }
 
-    /**
-     * Abort the migration to Azure Frontdoor Premium/Standard.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param profileName Name of the Azure Front Door Standard or Azure Front Door Premium or CDN profile which is
-     * unique within the resource group.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public void migrationAbort(String resourceGroupName, String profileName) {
         migrationAbortAsync(resourceGroupName, profileName).block();
     }
 
-    /**
-     * Abort the migration to Azure Frontdoor Premium/Standard.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param profileName Name of the Azure Front Door Standard or Azure Front Door Premium or CDN profile which is
-     * unique within the resource group.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public void migrationAbort(String resourceGroupName, String profileName, Context context) {
         migrationAbortAsync(resourceGroupName, profileName, context).block();
     }
 
-    /**
-     * Checks if CDN profile can be migrated to Azure Frontdoor(Standard/Premium) profile.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param canMigrateParameters Properties needed to check if cdn profile or classic frontdoor can be migrated.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return result for canMigrate operation along with {@link Response} on successful completion of {@link Mono}.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Response<Flux<ByteBuffer>>> canMigrateWithResponseAsync(String resourceGroupName,
         CanMigrateParameters canMigrateParameters) {
@@ -2773,16 +1967,7 @@ public final class ProfilesClientImpl implements InnerSupportsGet<ProfileInner>,
             this.client.getSubscriptionId(), contentType, accept, canMigrateParameters, context);
     }
 
-    /**
-     * Checks if CDN profile can be migrated to Azure Frontdoor(Standard/Premium) profile.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param canMigrateParameters Properties needed to check if cdn profile or classic frontdoor can be migrated.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the {@link PollerFlux} for polling of result for canMigrate operation.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public PollerFlux<PollResult<CanMigrateResultInner>, CanMigrateResultInner>
         beginCanMigrateAsync(String resourceGroupName, CanMigrateParameters canMigrateParameters) {
@@ -2813,49 +1998,21 @@ public final class ProfilesClientImpl implements InnerSupportsGet<ProfileInner>,
             this.client.getHttpPipeline(), CanMigrateResultInner.class, CanMigrateResultInner.class, context);
     }
 
-    /**
-     * Checks if CDN profile can be migrated to Azure Frontdoor(Standard/Premium) profile.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param canMigrateParameters Properties needed to check if cdn profile or classic frontdoor can be migrated.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the {@link SyncPoller} for polling of result for canMigrate operation.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public SyncPoller<PollResult<CanMigrateResultInner>, CanMigrateResultInner>
         beginCanMigrate(String resourceGroupName, CanMigrateParameters canMigrateParameters) {
         return this.beginCanMigrateAsync(resourceGroupName, canMigrateParameters).getSyncPoller();
     }
 
-    /**
-     * Checks if CDN profile can be migrated to Azure Frontdoor(Standard/Premium) profile.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param canMigrateParameters Properties needed to check if cdn profile or classic frontdoor can be migrated.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the {@link SyncPoller} for polling of result for canMigrate operation.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public SyncPoller<PollResult<CanMigrateResultInner>, CanMigrateResultInner>
         beginCanMigrate(String resourceGroupName, CanMigrateParameters canMigrateParameters, Context context) {
         return this.beginCanMigrateAsync(resourceGroupName, canMigrateParameters, context).getSyncPoller();
     }
 
-    /**
-     * Checks if CDN profile can be migrated to Azure Frontdoor(Standard/Premium) profile.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param canMigrateParameters Properties needed to check if cdn profile or classic frontdoor can be migrated.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return result for canMigrate operation on successful completion of {@link Mono}.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<CanMigrateResultInner> canMigrateAsync(String resourceGroupName,
         CanMigrateParameters canMigrateParameters) {
@@ -2881,48 +2038,20 @@ public final class ProfilesClientImpl implements InnerSupportsGet<ProfileInner>,
             .flatMap(this.client::getLroFinalResultOrError);
     }
 
-    /**
-     * Checks if CDN profile can be migrated to Azure Frontdoor(Standard/Premium) profile.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param canMigrateParameters Properties needed to check if cdn profile or classic frontdoor can be migrated.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return result for canMigrate operation.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public CanMigrateResultInner canMigrate(String resourceGroupName, CanMigrateParameters canMigrateParameters) {
         return canMigrateAsync(resourceGroupName, canMigrateParameters).block();
     }
 
-    /**
-     * Checks if CDN profile can be migrated to Azure Frontdoor(Standard/Premium) profile.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param canMigrateParameters Properties needed to check if cdn profile or classic frontdoor can be migrated.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return result for canMigrate operation.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public CanMigrateResultInner canMigrate(String resourceGroupName, CanMigrateParameters canMigrateParameters,
         Context context) {
         return canMigrateAsync(resourceGroupName, canMigrateParameters, context).block();
     }
 
-    /**
-     * Migrate the CDN profile to Azure Frontdoor(Standard/Premium) profile. The change need to be committed after this.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param migrationParameters Properties needed to migrate the profile.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return result for migrate operation along with {@link Response} on successful completion of {@link Mono}.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Response<Flux<ByteBuffer>>> migrateWithResponseAsync(String resourceGroupName,
         MigrationParameters migrationParameters) {
@@ -2991,16 +2120,7 @@ public final class ProfilesClientImpl implements InnerSupportsGet<ProfileInner>,
             this.client.getSubscriptionId(), contentType, accept, migrationParameters, context);
     }
 
-    /**
-     * Migrate the CDN profile to Azure Frontdoor(Standard/Premium) profile. The change need to be committed after this.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param migrationParameters Properties needed to migrate the profile.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the {@link PollerFlux} for polling of result for migrate operation.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public PollerFlux<PollResult<MigrateResultInner>, MigrateResultInner> beginMigrateAsync(String resourceGroupName,
         MigrationParameters migrationParameters) {
@@ -3030,49 +2150,21 @@ public final class ProfilesClientImpl implements InnerSupportsGet<ProfileInner>,
             MigrateResultInner.class, MigrateResultInner.class, context);
     }
 
-    /**
-     * Migrate the CDN profile to Azure Frontdoor(Standard/Premium) profile. The change need to be committed after this.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param migrationParameters Properties needed to migrate the profile.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the {@link SyncPoller} for polling of result for migrate operation.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public SyncPoller<PollResult<MigrateResultInner>, MigrateResultInner> beginMigrate(String resourceGroupName,
         MigrationParameters migrationParameters) {
         return this.beginMigrateAsync(resourceGroupName, migrationParameters).getSyncPoller();
     }
 
-    /**
-     * Migrate the CDN profile to Azure Frontdoor(Standard/Premium) profile. The change need to be committed after this.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param migrationParameters Properties needed to migrate the profile.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the {@link SyncPoller} for polling of result for migrate operation.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public SyncPoller<PollResult<MigrateResultInner>, MigrateResultInner> beginMigrate(String resourceGroupName,
         MigrationParameters migrationParameters, Context context) {
         return this.beginMigrateAsync(resourceGroupName, migrationParameters, context).getSyncPoller();
     }
 
-    /**
-     * Migrate the CDN profile to Azure Frontdoor(Standard/Premium) profile. The change need to be committed after this.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param migrationParameters Properties needed to migrate the profile.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return result for migrate operation on successful completion of {@link Mono}.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<MigrateResultInner> migrateAsync(String resourceGroupName, MigrationParameters migrationParameters) {
         return beginMigrateAsync(resourceGroupName, migrationParameters).last()
@@ -3097,32 +2189,13 @@ public final class ProfilesClientImpl implements InnerSupportsGet<ProfileInner>,
             .flatMap(this.client::getLroFinalResultOrError);
     }
 
-    /**
-     * Migrate the CDN profile to Azure Frontdoor(Standard/Premium) profile. The change need to be committed after this.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param migrationParameters Properties needed to migrate the profile.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return result for migrate operation.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public MigrateResultInner migrate(String resourceGroupName, MigrationParameters migrationParameters) {
         return migrateAsync(resourceGroupName, migrationParameters).block();
     }
 
-    /**
-     * Migrate the CDN profile to Azure Frontdoor(Standard/Premium) profile. The change need to be committed after this.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param migrationParameters Properties needed to migrate the profile.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return result for migrate operation.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public MigrateResultInner migrate(String resourceGroupName, MigrationParameters migrationParameters,
         Context context) {

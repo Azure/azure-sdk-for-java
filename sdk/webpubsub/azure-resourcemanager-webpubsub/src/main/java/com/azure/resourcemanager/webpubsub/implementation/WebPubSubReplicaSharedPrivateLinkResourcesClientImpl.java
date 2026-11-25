@@ -194,19 +194,7 @@ public final class WebPubSubReplicaSharedPrivateLinkResourcesClientImpl
             .flatMap(res -> Mono.justOrEmpty(res.getValue()));
     }
 
-    /**
-     * Get the specified shared private link resource.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param resourceName The name of the resource.
-     * @param replicaName The name of the replica.
-     * @param sharedPrivateLinkResourceName The name of the shared private link resource.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the specified shared private link resource along with {@link Response}.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Response<SharedPrivateLinkResourceInner> getWithResponse(String resourceGroupName, String resourceName,
         String replicaName, String sharedPrivateLinkResourceName, Context context) {
@@ -215,18 +203,7 @@ public final class WebPubSubReplicaSharedPrivateLinkResourcesClientImpl
             resourceGroupName, resourceName, replicaName, sharedPrivateLinkResourceName, accept, context);
     }
 
-    /**
-     * Get the specified shared private link resource.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param resourceName The name of the resource.
-     * @param replicaName The name of the replica.
-     * @param sharedPrivateLinkResourceName The name of the shared private link resource.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the specified shared private link resource.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public SharedPrivateLinkResourceInner get(String resourceGroupName, String resourceName, String replicaName,
         String sharedPrivateLinkResourceName) {
@@ -277,11 +254,8 @@ public final class WebPubSubReplicaSharedPrivateLinkResourcesClientImpl
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Response<BinaryData> createOrUpdateWithResponse(String resourceGroupName, String resourceName,
         String replicaName, String sharedPrivateLinkResourceName, SharedPrivateLinkResourceInner parameters) {
-        final String contentType = "application/json";
-        final String accept = "application/json";
-        return service.createOrUpdateSync(this.client.getEndpoint(), this.client.getApiVersion(),
-            this.client.getSubscriptionId(), resourceGroupName, resourceName, replicaName,
-            sharedPrivateLinkResourceName, contentType, accept, parameters, Context.NONE);
+        return createOrUpdateWithResponse(resourceGroupName, resourceName, replicaName, sharedPrivateLinkResourceName,
+            parameters, Context.NONE);
     }
 
     /**
@@ -333,43 +307,16 @@ public final class WebPubSubReplicaSharedPrivateLinkResourcesClientImpl
             this.client.getContext());
     }
 
-    /**
-     * Create or update a shared private link resource.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param resourceName The name of the resource.
-     * @param replicaName The name of the replica.
-     * @param sharedPrivateLinkResourceName The name of the shared private link resource.
-     * @param parameters The shared private link resource.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the {@link SyncPoller} for polling of describes a Shared Private Link Resource.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public SyncPoller<PollResult<SharedPrivateLinkResourceInner>, SharedPrivateLinkResourceInner> beginCreateOrUpdate(
         String resourceGroupName, String resourceName, String replicaName, String sharedPrivateLinkResourceName,
         SharedPrivateLinkResourceInner parameters) {
-        Response<BinaryData> response = createOrUpdateWithResponse(resourceGroupName, resourceName, replicaName,
-            sharedPrivateLinkResourceName, parameters);
-        return this.client.<SharedPrivateLinkResourceInner, SharedPrivateLinkResourceInner>getLroResult(response,
-            SharedPrivateLinkResourceInner.class, SharedPrivateLinkResourceInner.class, Context.NONE);
+        return beginCreateOrUpdate(resourceGroupName, resourceName, replicaName, sharedPrivateLinkResourceName,
+            parameters, Context.NONE);
     }
 
-    /**
-     * Create or update a shared private link resource.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param resourceName The name of the resource.
-     * @param replicaName The name of the replica.
-     * @param sharedPrivateLinkResourceName The name of the shared private link resource.
-     * @param parameters The shared private link resource.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the {@link SyncPoller} for polling of describes a Shared Private Link Resource.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public SyncPoller<PollResult<SharedPrivateLinkResourceInner>, SharedPrivateLinkResourceInner> beginCreateOrUpdate(
         String resourceGroupName, String resourceName, String replicaName, String sharedPrivateLinkResourceName,
@@ -400,46 +347,21 @@ public final class WebPubSubReplicaSharedPrivateLinkResourcesClientImpl
             parameters).last().flatMap(this.client::getLroFinalResultOrError);
     }
 
-    /**
-     * Create or update a shared private link resource.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param resourceName The name of the resource.
-     * @param replicaName The name of the replica.
-     * @param sharedPrivateLinkResourceName The name of the shared private link resource.
-     * @param parameters The shared private link resource.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return describes a Shared Private Link Resource.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public SharedPrivateLinkResourceInner createOrUpdate(String resourceGroupName, String resourceName,
         String replicaName, String sharedPrivateLinkResourceName, SharedPrivateLinkResourceInner parameters) {
-        return beginCreateOrUpdate(resourceGroupName, resourceName, replicaName, sharedPrivateLinkResourceName,
-            parameters).getFinalResult();
+        return createOrUpdate(resourceGroupName, resourceName, replicaName, sharedPrivateLinkResourceName, parameters,
+            Context.NONE);
     }
 
-    /**
-     * Create or update a shared private link resource.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param resourceName The name of the resource.
-     * @param replicaName The name of the replica.
-     * @param sharedPrivateLinkResourceName The name of the shared private link resource.
-     * @param parameters The shared private link resource.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return describes a Shared Private Link Resource.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public SharedPrivateLinkResourceInner createOrUpdate(String resourceGroupName, String resourceName,
         String replicaName, String sharedPrivateLinkResourceName, SharedPrivateLinkResourceInner parameters,
         Context context) {
-        return beginCreateOrUpdate(resourceGroupName, resourceName, replicaName, sharedPrivateLinkResourceName,
-            parameters, context).getFinalResult();
+        return this.client.getLroFinalResultOrError(beginCreateOrUpdate(resourceGroupName, resourceName, replicaName,
+            sharedPrivateLinkResourceName, parameters, context));
     }
 
     /**
@@ -498,12 +420,7 @@ public final class WebPubSubReplicaSharedPrivateLinkResourcesClientImpl
     @ServiceMethod(returns = ReturnType.SINGLE)
     private PagedResponse<SharedPrivateLinkResourceInner> listSinglePage(String resourceGroupName, String resourceName,
         String replicaName) {
-        final String accept = "application/json";
-        Response<SharedPrivateLinkResourceList> res
-            = service.listSync(this.client.getEndpoint(), this.client.getApiVersion(), this.client.getSubscriptionId(),
-                resourceGroupName, resourceName, replicaName, accept, Context.NONE);
-        return new PagedResponseBase<>(res.getRequest(), res.getStatusCode(), res.getHeaders(), res.getValue().value(),
-            res.getValue().nextLink(), null);
+        return listSinglePage(resourceGroupName, resourceName, replicaName, Context.NONE);
     }
 
     /**
@@ -529,36 +446,14 @@ public final class WebPubSubReplicaSharedPrivateLinkResourcesClientImpl
             res.getValue().nextLink(), null);
     }
 
-    /**
-     * List shared private link resources.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param resourceName The name of the resource.
-     * @param replicaName The name of the replica.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return a list of shared private link resources as paginated response with {@link PagedIterable}.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.COLLECTION)
     public PagedIterable<SharedPrivateLinkResourceInner> list(String resourceGroupName, String resourceName,
         String replicaName) {
-        return new PagedIterable<>(() -> listSinglePage(resourceGroupName, resourceName, replicaName),
-            nextLink -> listNextSinglePage(nextLink));
+        return list(resourceGroupName, resourceName, replicaName, Context.NONE);
     }
 
-    /**
-     * List shared private link resources.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param resourceName The name of the resource.
-     * @param replicaName The name of the replica.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return a list of shared private link resources as paginated response with {@link PagedIterable}.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.COLLECTION)
     public PagedIterable<SharedPrivateLinkResourceInner> list(String resourceGroupName, String resourceName,
         String replicaName, Context context) {
@@ -596,11 +491,7 @@ public final class WebPubSubReplicaSharedPrivateLinkResourcesClientImpl
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private PagedResponse<SharedPrivateLinkResourceInner> listNextSinglePage(String nextLink) {
-        final String accept = "application/json";
-        Response<SharedPrivateLinkResourceList> res
-            = service.listNextSync(nextLink, this.client.getEndpoint(), accept, Context.NONE);
-        return new PagedResponseBase<>(res.getRequest(), res.getStatusCode(), res.getHeaders(), res.getValue().value(),
-            res.getValue().nextLink(), null);
+        return listNextSinglePage(nextLink, Context.NONE);
     }
 
     /**

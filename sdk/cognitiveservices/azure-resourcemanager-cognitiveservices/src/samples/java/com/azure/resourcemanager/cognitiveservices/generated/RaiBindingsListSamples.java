@@ -9,7 +9,7 @@ package com.azure.resourcemanager.cognitiveservices.generated;
  */
 public final class RaiBindingsListSamples {
     /*
-     * x-ms-original-file: 2026-09-15-preview/ListRaiBindings.json
+     * x-ms-original-file: 2026-11-15-preview/ListRaiBindings.json
      */
     /**
      * Sample code: List RAI bindings.

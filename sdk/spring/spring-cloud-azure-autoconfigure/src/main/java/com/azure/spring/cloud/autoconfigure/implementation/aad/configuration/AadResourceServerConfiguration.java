@@ -147,7 +147,8 @@ class AadResourceServerConfiguration {
         @Bean
         @ConditionalOnBean(AadResourceServerProperties.class)
         SecurityFilterChain defaultAadResourceServerFilterChain(HttpSecurity http) throws Exception {
-            http.with(aadResourceServer(), Customizer.withDefaults());
+            http.with(aadResourceServer(), Customizer.withDefaults())
+                .authorizeHttpRequests(authorize -> authorize.anyRequest().authenticated());
             return http.build();
         }
     }

@@ -365,18 +365,7 @@ public final class ContainerAppsClientImpl implements ContainerAppsClient {
             .flatMap(res -> Mono.justOrEmpty(res.getValue()));
     }
 
-    /**
-     * Get the properties of a Container App.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param containerAppName Name of the Container App.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws ManagementException thrown if the request is rejected by server on status code 404.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the properties of a Container App along with {@link Response}.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Response<ContainerAppInner> getByResourceGroupWithResponse(String resourceGroupName, String containerAppName,
         Context context) {
@@ -385,17 +374,7 @@ public final class ContainerAppsClientImpl implements ContainerAppsClient {
             this.client.getSubscriptionId(), resourceGroupName, containerAppName, accept, context);
     }
 
-    /**
-     * Get the properties of a Container App.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param containerAppName Name of the Container App.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws ManagementException thrown if the request is rejected by server on status code 404.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the properties of a Container App.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public ContainerAppInner getByResourceGroup(String resourceGroupName, String containerAppName) {
         return getByResourceGroupWithResponse(resourceGroupName, containerAppName, Context.NONE).getValue();
@@ -438,11 +417,7 @@ public final class ContainerAppsClientImpl implements ContainerAppsClient {
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Response<BinaryData> createOrUpdateWithResponse(String resourceGroupName, String containerAppName,
         ContainerAppInner containerAppEnvelope) {
-        final String contentType = "application/json";
-        final String accept = "application/json";
-        return service.createOrUpdateSync(this.client.getEndpoint(), this.client.getApiVersion(),
-            this.client.getSubscriptionId(), resourceGroupName, containerAppName, contentType, accept,
-            containerAppEnvelope, Context.NONE);
+        return createOrUpdateWithResponse(resourceGroupName, containerAppName, containerAppEnvelope, Context.NONE);
     }
 
     /**
@@ -487,38 +462,14 @@ public final class ContainerAppsClientImpl implements ContainerAppsClient {
             ContainerAppInner.class, ContainerAppInner.class, this.client.getContext());
     }
 
-    /**
-     * Create or update a Container App.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param containerAppName Name of the Container App.
-     * @param containerAppEnvelope Properties used to create a container app.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the {@link SyncPoller} for polling of container App.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public SyncPoller<PollResult<ContainerAppInner>, ContainerAppInner> beginCreateOrUpdate(String resourceGroupName,
         String containerAppName, ContainerAppInner containerAppEnvelope) {
-        Response<BinaryData> response
-            = createOrUpdateWithResponse(resourceGroupName, containerAppName, containerAppEnvelope);
-        return this.client.<ContainerAppInner, ContainerAppInner>getLroResult(response, ContainerAppInner.class,
-            ContainerAppInner.class, Context.NONE);
+        return beginCreateOrUpdate(resourceGroupName, containerAppName, containerAppEnvelope, Context.NONE);
     }
 
-    /**
-     * Create or update a Container App.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param containerAppName Name of the Container App.
-     * @param containerAppEnvelope Properties used to create a container app.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the {@link SyncPoller} for polling of container App.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public SyncPoller<PollResult<ContainerAppInner>, ContainerAppInner> beginCreateOrUpdate(String resourceGroupName,
         String containerAppName, ContainerAppInner containerAppEnvelope, Context context) {
@@ -546,39 +497,19 @@ public final class ContainerAppsClientImpl implements ContainerAppsClient {
             .flatMap(this.client::getLroFinalResultOrError);
     }
 
-    /**
-     * Create or update a Container App.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param containerAppName Name of the Container App.
-     * @param containerAppEnvelope Properties used to create a container app.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return container App.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public ContainerAppInner createOrUpdate(String resourceGroupName, String containerAppName,
         ContainerAppInner containerAppEnvelope) {
-        return beginCreateOrUpdate(resourceGroupName, containerAppName, containerAppEnvelope).getFinalResult();
+        return createOrUpdate(resourceGroupName, containerAppName, containerAppEnvelope, Context.NONE);
     }
 
-    /**
-     * Create or update a Container App.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param containerAppName Name of the Container App.
-     * @param containerAppEnvelope Properties used to create a container app.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return container App.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public ContainerAppInner createOrUpdate(String resourceGroupName, String containerAppName,
         ContainerAppInner containerAppEnvelope, Context context) {
-        return beginCreateOrUpdate(resourceGroupName, containerAppName, containerAppEnvelope, context).getFinalResult();
+        return this.client.getLroFinalResultOrError(
+            beginCreateOrUpdate(resourceGroupName, containerAppName, containerAppEnvelope, context));
     }
 
     /**
@@ -622,11 +553,7 @@ public final class ContainerAppsClientImpl implements ContainerAppsClient {
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Response<BinaryData> updateWithResponse(String resourceGroupName, String containerAppName,
         ContainerAppInner containerAppEnvelope) {
-        final String contentType = "application/json";
-        final String accept = "application/json";
-        return service.updateSync(this.client.getEndpoint(), this.client.getApiVersion(),
-            this.client.getSubscriptionId(), resourceGroupName, containerAppName, contentType, accept,
-            containerAppEnvelope, Context.NONE);
+        return updateWithResponse(resourceGroupName, containerAppName, containerAppEnvelope, Context.NONE);
     }
 
     /**
@@ -675,41 +602,14 @@ public final class ContainerAppsClientImpl implements ContainerAppsClient {
             ContainerAppInner.class, ContainerAppInner.class, this.client.getContext());
     }
 
-    /**
-     * Update properties of a Container App
-     * 
-     * Patches a Container App using JSON Merge Patch.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param containerAppName Name of the Container App.
-     * @param containerAppEnvelope Properties of a Container App that need to be updated.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the {@link SyncPoller} for polling of container App.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public SyncPoller<PollResult<ContainerAppInner>, ContainerAppInner> beginUpdate(String resourceGroupName,
         String containerAppName, ContainerAppInner containerAppEnvelope) {
-        Response<BinaryData> response = updateWithResponse(resourceGroupName, containerAppName, containerAppEnvelope);
-        return this.client.<ContainerAppInner, ContainerAppInner>getLroResult(response, ContainerAppInner.class,
-            ContainerAppInner.class, Context.NONE);
+        return beginUpdate(resourceGroupName, containerAppName, containerAppEnvelope, Context.NONE);
     }
 
-    /**
-     * Update properties of a Container App
-     * 
-     * Patches a Container App using JSON Merge Patch.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param containerAppName Name of the Container App.
-     * @param containerAppEnvelope Properties of a Container App that need to be updated.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the {@link SyncPoller} for polling of container App.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public SyncPoller<PollResult<ContainerAppInner>, ContainerAppInner> beginUpdate(String resourceGroupName,
         String containerAppName, ContainerAppInner containerAppEnvelope, Context context) {
@@ -739,43 +639,19 @@ public final class ContainerAppsClientImpl implements ContainerAppsClient {
             .flatMap(this.client::getLroFinalResultOrError);
     }
 
-    /**
-     * Update properties of a Container App
-     * 
-     * Patches a Container App using JSON Merge Patch.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param containerAppName Name of the Container App.
-     * @param containerAppEnvelope Properties of a Container App that need to be updated.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return container App.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public ContainerAppInner update(String resourceGroupName, String containerAppName,
         ContainerAppInner containerAppEnvelope) {
-        return beginUpdate(resourceGroupName, containerAppName, containerAppEnvelope).getFinalResult();
+        return update(resourceGroupName, containerAppName, containerAppEnvelope, Context.NONE);
     }
 
-    /**
-     * Update properties of a Container App
-     * 
-     * Patches a Container App using JSON Merge Patch.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param containerAppName Name of the Container App.
-     * @param containerAppEnvelope Properties of a Container App that need to be updated.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return container App.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public ContainerAppInner update(String resourceGroupName, String containerAppName,
         ContainerAppInner containerAppEnvelope, Context context) {
-        return beginUpdate(resourceGroupName, containerAppName, containerAppEnvelope, context).getFinalResult();
+        return this.client
+            .getLroFinalResultOrError(beginUpdate(resourceGroupName, containerAppName, containerAppEnvelope, context));
     }
 
     /**
@@ -809,8 +685,7 @@ public final class ContainerAppsClientImpl implements ContainerAppsClient {
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Response<BinaryData> deleteWithResponse(String resourceGroupName, String containerAppName) {
-        return service.deleteSync(this.client.getEndpoint(), this.client.getApiVersion(),
-            this.client.getSubscriptionId(), resourceGroupName, containerAppName, Context.NONE);
+        return deleteWithResponse(resourceGroupName, containerAppName, Context.NONE);
     }
 
     /**
@@ -848,33 +723,13 @@ public final class ContainerAppsClientImpl implements ContainerAppsClient {
             this.client.getContext());
     }
 
-    /**
-     * Delete a Container App.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param containerAppName Name of the Container App.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the {@link SyncPoller} for polling of long-running operation.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public SyncPoller<PollResult<Void>, Void> beginDelete(String resourceGroupName, String containerAppName) {
-        Response<BinaryData> response = deleteWithResponse(resourceGroupName, containerAppName);
-        return this.client.<Void, Void>getLroResult(response, Void.class, Void.class, Context.NONE);
+        return beginDelete(resourceGroupName, containerAppName, Context.NONE);
     }
 
-    /**
-     * Delete a Container App.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param containerAppName Name of the Container App.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the {@link SyncPoller} for polling of long-running operation.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public SyncPoller<PollResult<Void>, Void> beginDelete(String resourceGroupName, String containerAppName,
         Context context) {
@@ -898,33 +753,16 @@ public final class ContainerAppsClientImpl implements ContainerAppsClient {
             .flatMap(this.client::getLroFinalResultOrError);
     }
 
-    /**
-     * Delete a Container App.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param containerAppName Name of the Container App.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public void delete(String resourceGroupName, String containerAppName) {
-        beginDelete(resourceGroupName, containerAppName).getFinalResult();
+        delete(resourceGroupName, containerAppName, Context.NONE);
     }
 
-    /**
-     * Delete a Container App.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param containerAppName Name of the Container App.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public void delete(String resourceGroupName, String containerAppName, Context context) {
-        beginDelete(resourceGroupName, containerAppName, context).getFinalResult();
+        this.client.getLroFinalResultOrError(beginDelete(resourceGroupName, containerAppName, context));
     }
 
     /**
@@ -974,11 +812,7 @@ public final class ContainerAppsClientImpl implements ContainerAppsClient {
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private PagedResponse<ContainerAppInner> listByResourceGroupSinglePage(String resourceGroupName) {
-        final String accept = "application/json";
-        Response<ContainerAppCollection> res = service.listByResourceGroupSync(this.client.getEndpoint(),
-            this.client.getApiVersion(), this.client.getSubscriptionId(), resourceGroupName, accept, Context.NONE);
-        return new PagedResponseBase<>(res.getRequest(), res.getStatusCode(), res.getHeaders(), res.getValue().value(),
-            res.getValue().nextLink(), null);
+        return listByResourceGroupSinglePage(resourceGroupName, Context.NONE);
     }
 
     /**
@@ -1000,31 +834,13 @@ public final class ContainerAppsClientImpl implements ContainerAppsClient {
             res.getValue().nextLink(), null);
     }
 
-    /**
-     * Get the Container Apps in a given resource group.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the Container Apps in a given resource group as paginated response with {@link PagedIterable}.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.COLLECTION)
     public PagedIterable<ContainerAppInner> listByResourceGroup(String resourceGroupName) {
-        return new PagedIterable<>(() -> listByResourceGroupSinglePage(resourceGroupName),
-            nextLink -> listByResourceGroupNextSinglePage(nextLink));
+        return listByResourceGroup(resourceGroupName, Context.NONE);
     }
 
-    /**
-     * Get the Container Apps in a given resource group.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the Container Apps in a given resource group as paginated response with {@link PagedIterable}.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.COLLECTION)
     public PagedIterable<ContainerAppInner> listByResourceGroup(String resourceGroupName, Context context) {
         return new PagedIterable<>(() -> listByResourceGroupSinglePage(resourceGroupName, context),
@@ -1072,11 +888,7 @@ public final class ContainerAppsClientImpl implements ContainerAppsClient {
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private PagedResponse<ContainerAppInner> listSinglePage() {
-        final String accept = "application/json";
-        Response<ContainerAppCollection> res = service.listSync(this.client.getEndpoint(), this.client.getApiVersion(),
-            this.client.getSubscriptionId(), accept, Context.NONE);
-        return new PagedResponseBase<>(res.getRequest(), res.getStatusCode(), res.getHeaders(), res.getValue().value(),
-            res.getValue().nextLink(), null);
+        return listSinglePage(Context.NONE);
     }
 
     /**
@@ -1097,27 +909,13 @@ public final class ContainerAppsClientImpl implements ContainerAppsClient {
             res.getValue().nextLink(), null);
     }
 
-    /**
-     * Get the Container Apps in a given subscription.
-     * 
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the Container Apps in a given subscription as paginated response with {@link PagedIterable}.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.COLLECTION)
     public PagedIterable<ContainerAppInner> list() {
-        return new PagedIterable<>(() -> listSinglePage(), nextLink -> listBySubscriptionNextSinglePage(nextLink));
+        return list(Context.NONE);
     }
 
-    /**
-     * Get the Container Apps in a given subscription.
-     * 
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the Container Apps in a given subscription as paginated response with {@link PagedIterable}.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.COLLECTION)
     public PagedIterable<ContainerAppInner> list(Context context) {
         return new PagedIterable<>(() -> listSinglePage(context),
@@ -1164,18 +962,7 @@ public final class ContainerAppsClientImpl implements ContainerAppsClient {
             .flatMap(res -> Mono.justOrEmpty(res.getValue()));
     }
 
-    /**
-     * Analyzes a custom hostname for a Container App.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param containerAppName Name of the Container App.
-     * @param customHostname Custom hostname.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return custom domain analysis along with {@link Response}.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Response<CustomHostnameAnalysisResultInner> listCustomHostnameAnalysisWithResponse(String resourceGroupName,
         String containerAppName, String customHostname, Context context) {
@@ -1184,16 +971,7 @@ public final class ContainerAppsClientImpl implements ContainerAppsClient {
             this.client.getSubscriptionId(), resourceGroupName, containerAppName, customHostname, accept, context);
     }
 
-    /**
-     * Analyzes a custom hostname for a Container App.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param containerAppName Name of the Container App.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return custom domain analysis.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public CustomHostnameAnalysisResultInner listCustomHostnameAnalysis(String resourceGroupName,
         String containerAppName) {
@@ -1239,17 +1017,7 @@ public final class ContainerAppsClientImpl implements ContainerAppsClient {
             .flatMap(res -> Mono.justOrEmpty(res.getValue()));
     }
 
-    /**
-     * List secrets for a container app.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param containerAppName Name of the Container App.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return container App Secrets Collection ARM resource along with {@link Response}.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Response<SecretsCollectionInner> listSecretsWithResponse(String resourceGroupName, String containerAppName,
         Context context) {
@@ -1258,16 +1026,7 @@ public final class ContainerAppsClientImpl implements ContainerAppsClient {
             this.client.getSubscriptionId(), resourceGroupName, containerAppName, accept, context);
     }
 
-    /**
-     * List secrets for a container app.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param containerAppName Name of the Container App.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return container App Secrets Collection ARM resource.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public SecretsCollectionInner listSecrets(String resourceGroupName, String containerAppName) {
         return listSecretsWithResponse(resourceGroupName, containerAppName, Context.NONE).getValue();
@@ -1311,18 +1070,7 @@ public final class ContainerAppsClientImpl implements ContainerAppsClient {
             .flatMap(res -> Mono.justOrEmpty(res.getValue()));
     }
 
-    /**
-     * Get auth token for a container app.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param containerAppName Name of the Container App.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws ManagementException thrown if the request is rejected by server on status code 404.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return auth token for a container app along with {@link Response}.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Response<ContainerAppAuthTokenInner> getAuthTokenWithResponse(String resourceGroupName,
         String containerAppName, Context context) {
@@ -1331,17 +1079,7 @@ public final class ContainerAppsClientImpl implements ContainerAppsClient {
             this.client.getSubscriptionId(), resourceGroupName, containerAppName, accept, context);
     }
 
-    /**
-     * Get auth token for a container app.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param containerAppName Name of the Container App.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws ManagementException thrown if the request is rejected by server on status code 404.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return auth token for a container app.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public ContainerAppAuthTokenInner getAuthToken(String resourceGroupName, String containerAppName) {
         return getAuthTokenWithResponse(resourceGroupName, containerAppName, Context.NONE).getValue();
@@ -1378,9 +1116,7 @@ public final class ContainerAppsClientImpl implements ContainerAppsClient {
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Response<BinaryData> startWithResponse(String resourceGroupName, String containerAppName) {
-        final String accept = "application/json";
-        return service.startSync(this.client.getEndpoint(), this.client.getApiVersion(),
-            this.client.getSubscriptionId(), resourceGroupName, containerAppName, accept, Context.NONE);
+        return startWithResponse(resourceGroupName, containerAppName, Context.NONE);
     }
 
     /**
@@ -1419,35 +1155,14 @@ public final class ContainerAppsClientImpl implements ContainerAppsClient {
             ContainerAppInner.class, ContainerAppInner.class, this.client.getContext());
     }
 
-    /**
-     * Start a container app.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param containerAppName Name of the Container App.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the {@link SyncPoller} for polling of container App.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public SyncPoller<PollResult<ContainerAppInner>, ContainerAppInner> beginStart(String resourceGroupName,
         String containerAppName) {
-        Response<BinaryData> response = startWithResponse(resourceGroupName, containerAppName);
-        return this.client.<ContainerAppInner, ContainerAppInner>getLroResult(response, ContainerAppInner.class,
-            ContainerAppInner.class, Context.NONE);
+        return beginStart(resourceGroupName, containerAppName, Context.NONE);
     }
 
-    /**
-     * Start a container app.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param containerAppName Name of the Container App.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the {@link SyncPoller} for polling of container App.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public SyncPoller<PollResult<ContainerAppInner>, ContainerAppInner> beginStart(String resourceGroupName,
         String containerAppName, Context context) {
@@ -1472,35 +1187,16 @@ public final class ContainerAppsClientImpl implements ContainerAppsClient {
             .flatMap(this.client::getLroFinalResultOrError);
     }
 
-    /**
-     * Start a container app.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param containerAppName Name of the Container App.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return container App.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public ContainerAppInner start(String resourceGroupName, String containerAppName) {
-        return beginStart(resourceGroupName, containerAppName).getFinalResult();
+        return start(resourceGroupName, containerAppName, Context.NONE);
     }
 
-    /**
-     * Start a container app.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param containerAppName Name of the Container App.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return container App.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public ContainerAppInner start(String resourceGroupName, String containerAppName, Context context) {
-        return beginStart(resourceGroupName, containerAppName, context).getFinalResult();
+        return this.client.getLroFinalResultOrError(beginStart(resourceGroupName, containerAppName, context));
     }
 
     /**
@@ -1534,9 +1230,7 @@ public final class ContainerAppsClientImpl implements ContainerAppsClient {
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Response<BinaryData> stopWithResponse(String resourceGroupName, String containerAppName) {
-        final String accept = "application/json";
-        return service.stopSync(this.client.getEndpoint(), this.client.getApiVersion(), this.client.getSubscriptionId(),
-            resourceGroupName, containerAppName, accept, Context.NONE);
+        return stopWithResponse(resourceGroupName, containerAppName, Context.NONE);
     }
 
     /**
@@ -1575,35 +1269,14 @@ public final class ContainerAppsClientImpl implements ContainerAppsClient {
             ContainerAppInner.class, ContainerAppInner.class, this.client.getContext());
     }
 
-    /**
-     * Stop a container app.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param containerAppName Name of the Container App.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the {@link SyncPoller} for polling of container App.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public SyncPoller<PollResult<ContainerAppInner>, ContainerAppInner> beginStop(String resourceGroupName,
         String containerAppName) {
-        Response<BinaryData> response = stopWithResponse(resourceGroupName, containerAppName);
-        return this.client.<ContainerAppInner, ContainerAppInner>getLroResult(response, ContainerAppInner.class,
-            ContainerAppInner.class, Context.NONE);
+        return beginStop(resourceGroupName, containerAppName, Context.NONE);
     }
 
-    /**
-     * Stop a container app.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param containerAppName Name of the Container App.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the {@link SyncPoller} for polling of container App.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public SyncPoller<PollResult<ContainerAppInner>, ContainerAppInner> beginStop(String resourceGroupName,
         String containerAppName, Context context) {
@@ -1628,35 +1301,16 @@ public final class ContainerAppsClientImpl implements ContainerAppsClient {
             .flatMap(this.client::getLroFinalResultOrError);
     }
 
-    /**
-     * Stop a container app.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param containerAppName Name of the Container App.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return container App.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public ContainerAppInner stop(String resourceGroupName, String containerAppName) {
-        return beginStop(resourceGroupName, containerAppName).getFinalResult();
+        return stop(resourceGroupName, containerAppName, Context.NONE);
     }
 
-    /**
-     * Stop a container app.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param containerAppName Name of the Container App.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return container App.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public ContainerAppInner stop(String resourceGroupName, String containerAppName, Context context) {
-        return beginStop(resourceGroupName, containerAppName, context).getFinalResult();
+        return this.client.getLroFinalResultOrError(beginStop(resourceGroupName, containerAppName, context));
     }
 
     /**
@@ -1695,11 +1349,7 @@ public final class ContainerAppsClientImpl implements ContainerAppsClient {
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private PagedResponse<ContainerAppInner> listByResourceGroupNextSinglePage(String nextLink) {
-        final String accept = "application/json";
-        Response<ContainerAppCollection> res
-            = service.listByResourceGroupNextSync(nextLink, this.client.getEndpoint(), accept, Context.NONE);
-        return new PagedResponseBase<>(res.getRequest(), res.getStatusCode(), res.getHeaders(), res.getValue().value(),
-            res.getValue().nextLink(), null);
+        return listByResourceGroupNextSinglePage(nextLink, Context.NONE);
     }
 
     /**
@@ -1759,11 +1409,7 @@ public final class ContainerAppsClientImpl implements ContainerAppsClient {
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private PagedResponse<ContainerAppInner> listBySubscriptionNextSinglePage(String nextLink) {
-        final String accept = "application/json";
-        Response<ContainerAppCollection> res
-            = service.listBySubscriptionNextSync(nextLink, this.client.getEndpoint(), accept, Context.NONE);
-        return new PagedResponseBase<>(res.getRequest(), res.getStatusCode(), res.getHeaders(), res.getValue().value(),
-            res.getValue().nextLink(), null);
+        return listBySubscriptionNextSinglePage(nextLink, Context.NONE);
     }
 
     /**

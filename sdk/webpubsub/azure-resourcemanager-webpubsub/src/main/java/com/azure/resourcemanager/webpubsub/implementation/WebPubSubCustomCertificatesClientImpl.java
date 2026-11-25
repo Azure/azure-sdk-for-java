@@ -201,18 +201,7 @@ public final class WebPubSubCustomCertificatesClientImpl implements WebPubSubCus
             .flatMap(res -> Mono.justOrEmpty(res.getValue()));
     }
 
-    /**
-     * Get a custom certificate.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param resourceName The name of the resource.
-     * @param certificateName Custom certificate name.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return a custom certificate along with {@link Response}.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Response<CustomCertificateInner> getWithResponse(String resourceGroupName, String resourceName,
         String certificateName, Context context) {
@@ -221,17 +210,7 @@ public final class WebPubSubCustomCertificatesClientImpl implements WebPubSubCus
             resourceGroupName, resourceName, certificateName, accept, context);
     }
 
-    /**
-     * Get a custom certificate.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param resourceName The name of the resource.
-     * @param certificateName Custom certificate name.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return a custom certificate.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public CustomCertificateInner get(String resourceGroupName, String resourceName, String certificateName) {
         return getWithResponse(resourceGroupName, resourceName, certificateName, Context.NONE).getValue();
@@ -276,11 +255,7 @@ public final class WebPubSubCustomCertificatesClientImpl implements WebPubSubCus
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Response<BinaryData> createOrUpdateWithResponse(String resourceGroupName, String resourceName,
         String certificateName, CustomCertificateInner parameters) {
-        final String contentType = "application/json";
-        final String accept = "application/json";
-        return service.createOrUpdateSync(this.client.getEndpoint(), this.client.getApiVersion(),
-            this.client.getSubscriptionId(), resourceGroupName, resourceName, certificateName, contentType, accept,
-            parameters, Context.NONE);
+        return createOrUpdateWithResponse(resourceGroupName, resourceName, certificateName, parameters, Context.NONE);
     }
 
     /**
@@ -328,40 +303,14 @@ public final class WebPubSubCustomCertificatesClientImpl implements WebPubSubCus
             this.client.getContext());
     }
 
-    /**
-     * Create or update a custom certificate.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param resourceName The name of the resource.
-     * @param certificateName Custom certificate name.
-     * @param parameters The parameters parameter.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the {@link SyncPoller} for polling of a custom certificate.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public SyncPoller<PollResult<CustomCertificateInner>, CustomCertificateInner> beginCreateOrUpdate(
         String resourceGroupName, String resourceName, String certificateName, CustomCertificateInner parameters) {
-        Response<BinaryData> response
-            = createOrUpdateWithResponse(resourceGroupName, resourceName, certificateName, parameters);
-        return this.client.<CustomCertificateInner, CustomCertificateInner>getLroResult(response,
-            CustomCertificateInner.class, CustomCertificateInner.class, Context.NONE);
+        return beginCreateOrUpdate(resourceGroupName, resourceName, certificateName, parameters, Context.NONE);
     }
 
-    /**
-     * Create or update a custom certificate.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param resourceName The name of the resource.
-     * @param certificateName Custom certificate name.
-     * @param parameters The parameters parameter.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the {@link SyncPoller} for polling of a custom certificate.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public SyncPoller<PollResult<CustomCertificateInner>, CustomCertificateInner> beginCreateOrUpdate(
         String resourceGroupName, String resourceName, String certificateName, CustomCertificateInner parameters,
@@ -391,42 +340,19 @@ public final class WebPubSubCustomCertificatesClientImpl implements WebPubSubCus
             .flatMap(this.client::getLroFinalResultOrError);
     }
 
-    /**
-     * Create or update a custom certificate.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param resourceName The name of the resource.
-     * @param certificateName Custom certificate name.
-     * @param parameters The parameters parameter.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return a custom certificate.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public CustomCertificateInner createOrUpdate(String resourceGroupName, String resourceName, String certificateName,
         CustomCertificateInner parameters) {
-        return beginCreateOrUpdate(resourceGroupName, resourceName, certificateName, parameters).getFinalResult();
+        return createOrUpdate(resourceGroupName, resourceName, certificateName, parameters, Context.NONE);
     }
 
-    /**
-     * Create or update a custom certificate.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param resourceName The name of the resource.
-     * @param certificateName Custom certificate name.
-     * @param parameters The parameters parameter.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return a custom certificate.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public CustomCertificateInner createOrUpdate(String resourceGroupName, String resourceName, String certificateName,
         CustomCertificateInner parameters, Context context) {
-        return beginCreateOrUpdate(resourceGroupName, resourceName, certificateName, parameters, context)
-            .getFinalResult();
+        return this.client.getLroFinalResultOrError(
+            beginCreateOrUpdate(resourceGroupName, resourceName, certificateName, parameters, context));
     }
 
     /**
@@ -466,18 +392,7 @@ public final class WebPubSubCustomCertificatesClientImpl implements WebPubSubCus
             .flatMap(ignored -> Mono.empty());
     }
 
-    /**
-     * Delete a custom certificate.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param resourceName The name of the resource.
-     * @param certificateName Custom certificate name.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the {@link Response}.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Response<Void> deleteWithResponse(String resourceGroupName, String resourceName, String certificateName,
         Context context) {
@@ -485,16 +400,7 @@ public final class WebPubSubCustomCertificatesClientImpl implements WebPubSubCus
             this.client.getSubscriptionId(), resourceGroupName, resourceName, certificateName, context);
     }
 
-    /**
-     * Delete a custom certificate.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param resourceName The name of the resource.
-     * @param certificateName Custom certificate name.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public void delete(String resourceGroupName, String resourceName, String certificateName) {
         deleteWithResponse(resourceGroupName, resourceName, certificateName, Context.NONE);
@@ -550,11 +456,7 @@ public final class WebPubSubCustomCertificatesClientImpl implements WebPubSubCus
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private PagedResponse<CustomCertificateInner> listSinglePage(String resourceGroupName, String resourceName) {
-        final String accept = "application/json";
-        Response<CustomCertificateList> res = service.listSync(this.client.getEndpoint(), this.client.getApiVersion(),
-            this.client.getSubscriptionId(), resourceGroupName, resourceName, accept, Context.NONE);
-        return new PagedResponseBase<>(res.getRequest(), res.getStatusCode(), res.getHeaders(), res.getValue().value(),
-            res.getValue().nextLink(), null);
+        return listSinglePage(resourceGroupName, resourceName, Context.NONE);
     }
 
     /**
@@ -578,33 +480,13 @@ public final class WebPubSubCustomCertificatesClientImpl implements WebPubSubCus
             res.getValue().nextLink(), null);
     }
 
-    /**
-     * List all custom certificates.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param resourceName The name of the resource.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return custom certificates list as paginated response with {@link PagedIterable}.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.COLLECTION)
     public PagedIterable<CustomCertificateInner> list(String resourceGroupName, String resourceName) {
-        return new PagedIterable<>(() -> listSinglePage(resourceGroupName, resourceName),
-            nextLink -> listNextSinglePage(nextLink));
+        return list(resourceGroupName, resourceName, Context.NONE);
     }
 
-    /**
-     * List all custom certificates.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param resourceName The name of the resource.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return custom certificates list as paginated response with {@link PagedIterable}.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.COLLECTION)
     public PagedIterable<CustomCertificateInner> list(String resourceGroupName, String resourceName, Context context) {
         return new PagedIterable<>(() -> listSinglePage(resourceGroupName, resourceName, context),
@@ -640,11 +522,7 @@ public final class WebPubSubCustomCertificatesClientImpl implements WebPubSubCus
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private PagedResponse<CustomCertificateInner> listNextSinglePage(String nextLink) {
-        final String accept = "application/json";
-        Response<CustomCertificateList> res
-            = service.listNextSync(nextLink, this.client.getEndpoint(), accept, Context.NONE);
-        return new PagedResponseBase<>(res.getRequest(), res.getStatusCode(), res.getHeaders(), res.getValue().value(),
-            res.getValue().nextLink(), null);
+        return listNextSinglePage(nextLink, Context.NONE);
     }
 
     /**

@@ -23,6 +23,18 @@ public final class RecoveryServicesProviderImpl
         com.azure.resourcemanager.recoveryservicessiterecovery.SiteRecoveryManager serviceManager) {
         this.innerObject = innerObject;
         this.serviceManager = serviceManager;
+        this.resourceGroupName = ResourceManagerUtils.getValueFromIdByParameterName(innerObject.id(),
+            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.RecoveryServices/vaults/{resourceName}/replicationFabrics/{fabricName}/replicationRecoveryServicesProviders/{providerName}",
+            "resourceGroupName");
+        this.resourceName = ResourceManagerUtils.getValueFromIdByParameterName(innerObject.id(),
+            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.RecoveryServices/vaults/{resourceName}/replicationFabrics/{fabricName}/replicationRecoveryServicesProviders/{providerName}",
+            "resourceName");
+        this.fabricName = ResourceManagerUtils.getValueFromIdByParameterName(innerObject.id(),
+            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.RecoveryServices/vaults/{resourceName}/replicationFabrics/{fabricName}/replicationRecoveryServicesProviders/{providerName}",
+            "fabricName");
+        this.providerName = ResourceManagerUtils.getValueFromIdByParameterName(innerObject.id(),
+            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.RecoveryServices/vaults/{resourceName}/replicationFabrics/{fabricName}/replicationRecoveryServicesProviders/{providerName}",
+            "providerName");
     }
 
     public String id() {
@@ -84,10 +96,7 @@ public final class RecoveryServicesProviderImpl
     }
 
     public RecoveryServicesProvider create() {
-        this.innerObject = serviceManager.serviceClient()
-            .getReplicationRecoveryServicesProviders()
-            .create(resourceGroupName, resourceName, fabricName, providerName, createAddProviderInput, Context.NONE);
-        return this;
+        return this.create(Context.NONE);
     }
 
     public RecoveryServicesProvider create(Context context) {
@@ -105,11 +114,7 @@ public final class RecoveryServicesProviderImpl
     }
 
     public RecoveryServicesProvider refresh() {
-        this.innerObject = serviceManager.serviceClient()
-            .getReplicationRecoveryServicesProviders()
-            .getWithResponse(resourceGroupName, resourceName, fabricName, providerName, Context.NONE)
-            .getValue();
-        return this;
+        return this.refresh(Context.NONE);
     }
 
     public RecoveryServicesProvider refresh(Context context) {

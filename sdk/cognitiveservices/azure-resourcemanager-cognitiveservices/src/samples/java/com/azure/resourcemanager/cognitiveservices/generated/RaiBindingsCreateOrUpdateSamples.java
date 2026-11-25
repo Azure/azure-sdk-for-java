@@ -12,7 +12,7 @@ import com.azure.resourcemanager.cognitiveservices.models.RaiBindingProperties;
  */
 public final class RaiBindingsCreateOrUpdateSamples {
     /*
-     * x-ms-original-file: 2026-09-15-preview/PutRaiBinding.json
+     * x-ms-original-file: 2026-11-15-preview/PutRaiBinding.json
      */
     /**
      * Sample code: Bind an Azure OpenAI deployment to an ACS policy.
@@ -32,7 +32,7 @@ public final class RaiBindingsCreateOrUpdateSamples {
     }
 
     /*
-     * x-ms-original-file: 2026-09-15-preview/UpdateRaiBinding.json
+     * x-ms-original-file: 2026-11-15-preview/UpdateRaiBinding.json
      */
     /**
      * Sample code: Update a RAI binding target conditionally across subscriptions.

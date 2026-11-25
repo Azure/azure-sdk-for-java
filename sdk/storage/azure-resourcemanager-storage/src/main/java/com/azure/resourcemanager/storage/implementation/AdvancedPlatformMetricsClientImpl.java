@@ -114,19 +114,7 @@ public final class AdvancedPlatformMetricsClientImpl implements AdvancedPlatform
             @HeaderParam("Accept") String accept, Context context);
     }
 
-    /**
-     * Get the advanced platform metrics rule for the storage account by rule type.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param accountName The name of the storage account within the specified resource group. Storage account names
-     * must be between 3 and 24 characters in length and use numbers and lower-case letters only.
-     * @param advancedPlatformMetricsRuleType The type of the advanced platform metrics rule.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the advanced platform metrics rule for the storage account by rule type along with {@link Response} on
-     * successful completion of {@link Mono}.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Response<AdvancedPlatformMetricsRuleInner>> getWithResponseAsync(String resourceGroupName,
         String accountName, AdvancedPlatformMetricsRuleType advancedPlatformMetricsRuleType) {
@@ -199,19 +187,7 @@ public final class AdvancedPlatformMetricsClientImpl implements AdvancedPlatform
             resourceGroupName, accountName, advancedPlatformMetricsRuleType, accept, context);
     }
 
-    /**
-     * Get the advanced platform metrics rule for the storage account by rule type.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param accountName The name of the storage account within the specified resource group. Storage account names
-     * must be between 3 and 24 characters in length and use numbers and lower-case letters only.
-     * @param advancedPlatformMetricsRuleType The type of the advanced platform metrics rule.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the advanced platform metrics rule for the storage account by rule type on successful completion of
-     * {@link Mono}.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<AdvancedPlatformMetricsRuleInner> getAsync(String resourceGroupName, String accountName,
         AdvancedPlatformMetricsRuleType advancedPlatformMetricsRuleType) {
@@ -219,37 +195,14 @@ public final class AdvancedPlatformMetricsClientImpl implements AdvancedPlatform
             .flatMap(res -> Mono.justOrEmpty(res.getValue()));
     }
 
-    /**
-     * Get the advanced platform metrics rule for the storage account by rule type.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param accountName The name of the storage account within the specified resource group. Storage account names
-     * must be between 3 and 24 characters in length and use numbers and lower-case letters only.
-     * @param advancedPlatformMetricsRuleType The type of the advanced platform metrics rule.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the advanced platform metrics rule for the storage account by rule type along with {@link Response}.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Response<AdvancedPlatformMetricsRuleInner> getWithResponse(String resourceGroupName, String accountName,
         AdvancedPlatformMetricsRuleType advancedPlatformMetricsRuleType, Context context) {
         return getWithResponseAsync(resourceGroupName, accountName, advancedPlatformMetricsRuleType, context).block();
     }
 
-    /**
-     * Get the advanced platform metrics rule for the storage account by rule type.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param accountName The name of the storage account within the specified resource group. Storage account names
-     * must be between 3 and 24 characters in length and use numbers and lower-case letters only.
-     * @param advancedPlatformMetricsRuleType The type of the advanced platform metrics rule.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the advanced platform metrics rule for the storage account by rule type.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public AdvancedPlatformMetricsRuleInner get(String resourceGroupName, String accountName,
         AdvancedPlatformMetricsRuleType advancedPlatformMetricsRuleType) {
@@ -257,20 +210,7 @@ public final class AdvancedPlatformMetricsClientImpl implements AdvancedPlatform
             .getValue();
     }
 
-    /**
-     * Create or update the advanced platform metrics rule for the storage account.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param accountName The name of the storage account within the specified resource group. Storage account names
-     * must be between 3 and 24 characters in length and use numbers and lower-case letters only.
-     * @param advancedPlatformMetricsRuleType The type of the advanced platform metrics rule.
-     * @param resource Resource create parameters.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the advanced platform metrics rule for the storage account along with {@link Response} on successful
-     * completion of {@link Mono}.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Response<AdvancedPlatformMetricsRuleInner>> createOrUpdateWithResponseAsync(String resourceGroupName,
         String accountName, AdvancedPlatformMetricsRuleType advancedPlatformMetricsRuleType,
@@ -359,19 +299,7 @@ public final class AdvancedPlatformMetricsClientImpl implements AdvancedPlatform
             contentType, accept, resource, context);
     }
 
-    /**
-     * Create or update the advanced platform metrics rule for the storage account.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param accountName The name of the storage account within the specified resource group. Storage account names
-     * must be between 3 and 24 characters in length and use numbers and lower-case letters only.
-     * @param advancedPlatformMetricsRuleType The type of the advanced platform metrics rule.
-     * @param resource Resource create parameters.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the advanced platform metrics rule for the storage account on successful completion of {@link Mono}.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<AdvancedPlatformMetricsRuleInner> createOrUpdateAsync(String resourceGroupName, String accountName,
         AdvancedPlatformMetricsRuleType advancedPlatformMetricsRuleType, AdvancedPlatformMetricsRuleInner resource) {
@@ -379,20 +307,7 @@ public final class AdvancedPlatformMetricsClientImpl implements AdvancedPlatform
             resource).flatMap(res -> Mono.justOrEmpty(res.getValue()));
     }
 
-    /**
-     * Create or update the advanced platform metrics rule for the storage account.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param accountName The name of the storage account within the specified resource group. Storage account names
-     * must be between 3 and 24 characters in length and use numbers and lower-case letters only.
-     * @param advancedPlatformMetricsRuleType The type of the advanced platform metrics rule.
-     * @param resource Resource create parameters.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the advanced platform metrics rule for the storage account along with {@link Response}.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Response<AdvancedPlatformMetricsRuleInner> createOrUpdateWithResponse(String resourceGroupName,
         String accountName, AdvancedPlatformMetricsRuleType advancedPlatformMetricsRuleType,
@@ -401,19 +316,7 @@ public final class AdvancedPlatformMetricsClientImpl implements AdvancedPlatform
             resource, context).block();
     }
 
-    /**
-     * Create or update the advanced platform metrics rule for the storage account.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param accountName The name of the storage account within the specified resource group. Storage account names
-     * must be between 3 and 24 characters in length and use numbers and lower-case letters only.
-     * @param advancedPlatformMetricsRuleType The type of the advanced platform metrics rule.
-     * @param resource Resource create parameters.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the advanced platform metrics rule for the storage account.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public AdvancedPlatformMetricsRuleInner createOrUpdate(String resourceGroupName, String accountName,
         AdvancedPlatformMetricsRuleType advancedPlatformMetricsRuleType, AdvancedPlatformMetricsRuleInner resource) {
@@ -421,18 +324,7 @@ public final class AdvancedPlatformMetricsClientImpl implements AdvancedPlatform
             Context.NONE).getValue();
     }
 
-    /**
-     * Delete the advanced platform metrics rule for the storage account by rule type.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param accountName The name of the storage account within the specified resource group. Storage account names
-     * must be between 3 and 24 characters in length and use numbers and lower-case letters only.
-     * @param advancedPlatformMetricsRuleType The type of the advanced platform metrics rule.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the {@link Response} on successful completion of {@link Mono}.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Response<Void>> deleteWithResponseAsync(String resourceGroupName, String accountName,
         AdvancedPlatformMetricsRuleType advancedPlatformMetricsRuleType) {
@@ -500,18 +392,7 @@ public final class AdvancedPlatformMetricsClientImpl implements AdvancedPlatform
             resourceGroupName, accountName, advancedPlatformMetricsRuleType, context);
     }
 
-    /**
-     * Delete the advanced platform metrics rule for the storage account by rule type.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param accountName The name of the storage account within the specified resource group. Storage account names
-     * must be between 3 and 24 characters in length and use numbers and lower-case letters only.
-     * @param advancedPlatformMetricsRuleType The type of the advanced platform metrics rule.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return A {@link Mono} that completes when a successful response is received.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Void> deleteAsync(String resourceGroupName, String accountName,
         AdvancedPlatformMetricsRuleType advancedPlatformMetricsRuleType) {
@@ -519,19 +400,7 @@ public final class AdvancedPlatformMetricsClientImpl implements AdvancedPlatform
             .flatMap(ignored -> Mono.empty());
     }
 
-    /**
-     * Delete the advanced platform metrics rule for the storage account by rule type.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param accountName The name of the storage account within the specified resource group. Storage account names
-     * must be between 3 and 24 characters in length and use numbers and lower-case letters only.
-     * @param advancedPlatformMetricsRuleType The type of the advanced platform metrics rule.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the {@link Response}.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Response<Void> deleteWithResponse(String resourceGroupName, String accountName,
         AdvancedPlatformMetricsRuleType advancedPlatformMetricsRuleType, Context context) {
@@ -539,17 +408,7 @@ public final class AdvancedPlatformMetricsClientImpl implements AdvancedPlatform
             .block();
     }
 
-    /**
-     * Delete the advanced platform metrics rule for the storage account by rule type.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param accountName The name of the storage account within the specified resource group. Storage account names
-     * must be between 3 and 24 characters in length and use numbers and lower-case letters only.
-     * @param advancedPlatformMetricsRuleType The type of the advanced platform metrics rule.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public void delete(String resourceGroupName, String accountName,
         AdvancedPlatformMetricsRuleType advancedPlatformMetricsRuleType) {
@@ -635,18 +494,7 @@ public final class AdvancedPlatformMetricsClientImpl implements AdvancedPlatform
                 res.getValue().value(), res.getValue().nextLink(), null));
     }
 
-    /**
-     * List the advanced platform metrics rules associated with the storage account.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param accountName The name of the storage account within the specified resource group. Storage account names
-     * must be between 3 and 24 characters in length and use numbers and lower-case letters only.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the response of a AdvancedPlatformMetricsRule list operation as paginated response with
-     * {@link PagedFlux}.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.COLLECTION)
     public PagedFlux<AdvancedPlatformMetricsRuleInner> listAsync(String resourceGroupName, String accountName) {
         return new PagedFlux<>(() -> listSinglePageAsync(resourceGroupName, accountName),
@@ -673,36 +521,13 @@ public final class AdvancedPlatformMetricsClientImpl implements AdvancedPlatform
             nextLink -> listNextSinglePageAsync(nextLink, context));
     }
 
-    /**
-     * List the advanced platform metrics rules associated with the storage account.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param accountName The name of the storage account within the specified resource group. Storage account names
-     * must be between 3 and 24 characters in length and use numbers and lower-case letters only.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the response of a AdvancedPlatformMetricsRule list operation as paginated response with
-     * {@link PagedIterable}.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.COLLECTION)
     public PagedIterable<AdvancedPlatformMetricsRuleInner> list(String resourceGroupName, String accountName) {
         return new PagedIterable<>(listAsync(resourceGroupName, accountName));
     }
 
-    /**
-     * List the advanced platform metrics rules associated with the storage account.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param accountName The name of the storage account within the specified resource group. Storage account names
-     * must be between 3 and 24 characters in length and use numbers and lower-case letters only.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the response of a AdvancedPlatformMetricsRule list operation as paginated response with
-     * {@link PagedIterable}.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.COLLECTION)
     public PagedIterable<AdvancedPlatformMetricsRuleInner> list(String resourceGroupName, String accountName,
         Context context) {

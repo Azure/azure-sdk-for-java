@@ -43,8 +43,7 @@ public final class ManagedUnsupportedVMSizesImpl implements ManagedUnsupportedVM
     }
 
     public PagedIterable<ManagedVMSize> list(String location) {
-        PagedIterable<ManagedVMSizeInner> inner = this.serviceClient().list(location);
-        return ResourceManagerUtils.mapPage(inner, inner1 -> new ManagedVMSizeImpl(inner1, this.manager()));
+        return this.list(location, Context.NONE);
     }
 
     public PagedIterable<ManagedVMSize> list(String location, Context context) {

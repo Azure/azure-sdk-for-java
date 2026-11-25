@@ -202,19 +202,7 @@ public final class WatchlistItemsClientImpl implements WatchlistItemsClient {
             .flatMap(res -> Mono.justOrEmpty(res.getValue()));
     }
 
-    /**
-     * Get a watchlist item.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param workspaceName The name of the monitor workspace.
-     * @param watchlistAlias The watchlist alias.
-     * @param watchlistItemId The watchlist item id (GUID).
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return a watchlist item along with {@link Response}.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Response<WatchlistItemInner> getWithResponse(String resourceGroupName, String workspaceName,
         String watchlistAlias, String watchlistItemId, Context context) {
@@ -223,18 +211,7 @@ public final class WatchlistItemsClientImpl implements WatchlistItemsClient {
             resourceGroupName, workspaceName, watchlistAlias, watchlistItemId, accept, context);
     }
 
-    /**
-     * Get a watchlist item.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param workspaceName The name of the monitor workspace.
-     * @param watchlistAlias The watchlist alias.
-     * @param watchlistItemId The watchlist item id (GUID).
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return a watchlist item.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public WatchlistItemInner get(String resourceGroupName, String workspaceName, String watchlistAlias,
         String watchlistItemId) {
@@ -288,20 +265,7 @@ public final class WatchlistItemsClientImpl implements WatchlistItemsClient {
             watchlistItem).flatMap(res -> Mono.justOrEmpty(res.getValue()));
     }
 
-    /**
-     * Create or update a watchlist item.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param workspaceName The name of the monitor workspace.
-     * @param watchlistAlias The watchlist alias.
-     * @param watchlistItemId The watchlist item id (GUID).
-     * @param watchlistItem The watchlist item.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return represents a Watchlist Item in Azure Security Insights along with {@link Response}.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Response<WatchlistItemInner> createOrUpdateWithResponse(String resourceGroupName, String workspaceName,
         String watchlistAlias, String watchlistItemId, WatchlistItemInner watchlistItem, Context context) {
@@ -312,19 +276,7 @@ public final class WatchlistItemsClientImpl implements WatchlistItemsClient {
             contentType, accept, watchlistItem, context);
     }
 
-    /**
-     * Create or update a watchlist item.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param workspaceName The name of the monitor workspace.
-     * @param watchlistAlias The watchlist alias.
-     * @param watchlistItemId The watchlist item id (GUID).
-     * @param watchlistItem The watchlist item.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return represents a Watchlist Item in Azure Security Insights.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public WatchlistItemInner createOrUpdate(String resourceGroupName, String workspaceName, String watchlistAlias,
         String watchlistItemId, WatchlistItemInner watchlistItem) {
@@ -373,19 +325,7 @@ public final class WatchlistItemsClientImpl implements WatchlistItemsClient {
             .flatMap(ignored -> Mono.empty());
     }
 
-    /**
-     * Delete a watchlist item.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param workspaceName The name of the monitor workspace.
-     * @param watchlistAlias The watchlist alias.
-     * @param watchlistItemId The watchlist item id (GUID).
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the {@link Response}.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Response<Void> deleteWithResponse(String resourceGroupName, String workspaceName, String watchlistAlias,
         String watchlistItemId, Context context) {
@@ -394,17 +334,7 @@ public final class WatchlistItemsClientImpl implements WatchlistItemsClient {
             context);
     }
 
-    /**
-     * Delete a watchlist item.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param workspaceName The name of the monitor workspace.
-     * @param watchlistAlias The watchlist alias.
-     * @param watchlistItemId The watchlist item id (GUID).
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public void delete(String resourceGroupName, String workspaceName, String watchlistAlias, String watchlistItemId) {
         deleteWithResponse(resourceGroupName, workspaceName, watchlistAlias, watchlistItemId, Context.NONE);
@@ -494,12 +424,7 @@ public final class WatchlistItemsClientImpl implements WatchlistItemsClient {
     @ServiceMethod(returns = ReturnType.SINGLE)
     private PagedResponse<WatchlistItemInner> listSinglePage(String resourceGroupName, String workspaceName,
         String watchlistAlias, String skipToken) {
-        final String accept = "application/json";
-        Response<WatchlistItemList> res
-            = service.listSync(this.client.getEndpoint(), this.client.getApiVersion(), this.client.getSubscriptionId(),
-                resourceGroupName, workspaceName, watchlistAlias, skipToken, accept, Context.NONE);
-        return new PagedResponseBase<>(res.getRequest(), res.getStatusCode(), res.getHeaders(), res.getValue().value(),
-            res.getValue().nextLink(), null);
+        return listSinglePage(resourceGroupName, workspaceName, watchlistAlias, skipToken, Context.NONE);
     }
 
     /**
@@ -528,40 +453,15 @@ public final class WatchlistItemsClientImpl implements WatchlistItemsClient {
             res.getValue().nextLink(), null);
     }
 
-    /**
-     * Get all watchlist Items.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param workspaceName The name of the monitor workspace.
-     * @param watchlistAlias The watchlist alias.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return all watchlist Items as paginated response with {@link PagedIterable}.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.COLLECTION)
     public PagedIterable<WatchlistItemInner> list(String resourceGroupName, String workspaceName,
         String watchlistAlias) {
         final String skipToken = null;
-        return new PagedIterable<>(() -> listSinglePage(resourceGroupName, workspaceName, watchlistAlias, skipToken),
-            nextLink -> listNextSinglePage(nextLink));
+        return list(resourceGroupName, workspaceName, watchlistAlias, skipToken, Context.NONE);
     }
 
-    /**
-     * Get all watchlist Items.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param workspaceName The name of the monitor workspace.
-     * @param watchlistAlias The watchlist alias.
-     * @param skipToken Skiptoken is only used if a previous operation returned a partial result. If a previous response
-     * contains a nextLink element, the value of the nextLink element will include a skiptoken parameter that specifies
-     * a starting point to use for subsequent calls. Optional.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return all watchlist Items as paginated response with {@link PagedIterable}.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.COLLECTION)
     public PagedIterable<WatchlistItemInner> list(String resourceGroupName, String workspaceName, String watchlistAlias,
         String skipToken, Context context) {
@@ -599,11 +499,7 @@ public final class WatchlistItemsClientImpl implements WatchlistItemsClient {
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private PagedResponse<WatchlistItemInner> listNextSinglePage(String nextLink) {
-        final String accept = "application/json";
-        Response<WatchlistItemList> res
-            = service.listNextSync(nextLink, this.client.getEndpoint(), accept, Context.NONE);
-        return new PagedResponseBase<>(res.getRequest(), res.getStatusCode(), res.getHeaders(), res.getValue().value(),
-            res.getValue().nextLink(), null);
+        return listNextSinglePage(nextLink, Context.NONE);
     }
 
     /**

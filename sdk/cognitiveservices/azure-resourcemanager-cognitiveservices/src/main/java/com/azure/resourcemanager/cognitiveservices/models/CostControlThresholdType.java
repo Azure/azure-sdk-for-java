@@ -8,16 +8,16 @@ import com.azure.core.util.ExpandableStringEnum;
 import java.util.Collection;
 
 /**
- * The supported threshold value interpretations.
+ * The interpretation of a notification or blocking-action threshold.
  */
 public final class CostControlThresholdType extends ExpandableStringEnum<CostControlThresholdType> {
     /**
-     * The value is a percentage of the configured rule amount.
+     * The threshold is a percentage of the configured budget amount.
      */
     public static final CostControlThresholdType PERCENTAGE = fromString("Percentage");
 
     /**
-     * The value is expressed in the rule's unit.
+     * The threshold is expressed in United States dollars or tokens, according to the budget category.
      */
     public static final CostControlThresholdType ABSOLUTE = fromString("Absolute");
 

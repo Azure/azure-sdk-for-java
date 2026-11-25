@@ -243,6 +243,8 @@ public final class SplitSkill extends SearchIndexerSkill {
         jsonWriter.writeNumberField("maximumPageLength", this.maximumPageLength);
         jsonWriter.writeNumberField("pageOverlapLength", this.pageOverlapLength);
         jsonWriter.writeNumberField("maximumPagesToTake", this.maximumPagesToTake);
+        jsonWriter.writeStringField("unit", this.unit == null ? null : this.unit.toString());
+        jsonWriter.writeJsonField("azureOpenAITokenizerParameters", this.azureOpenAITokenizerParameters);
         return jsonWriter.writeEndObject();
     }
 
@@ -269,6 +271,8 @@ public final class SplitSkill extends SearchIndexerSkill {
             Integer maximumPageLength = null;
             Integer pageOverlapLength = null;
             Integer maximumPagesToTake = null;
+            SplitSkillUnit unit = null;
+            AzureOpenAITokenizerParameters azureOpenAITokenizerParameters = null;
             while (reader.nextToken() != JsonToken.END_OBJECT) {
                 String fieldName = reader.getFieldName();
                 reader.nextToken();
@@ -294,6 +298,10 @@ public final class SplitSkill extends SearchIndexerSkill {
                     pageOverlapLength = reader.getNullable(JsonReader::getInt);
                 } else if ("maximumPagesToTake".equals(fieldName)) {
                     maximumPagesToTake = reader.getNullable(JsonReader::getInt);
+                } else if ("unit".equals(fieldName)) {
+                    unit = SplitSkillUnit.fromString(reader.getString());
+                } else if ("azureOpenAITokenizerParameters".equals(fieldName)) {
+                    azureOpenAITokenizerParameters = AzureOpenAITokenizerParameters.fromJson(reader);
                 } else {
                     reader.skipChildren();
                 }
@@ -308,7 +316,77 @@ public final class SplitSkill extends SearchIndexerSkill {
             deserializedSplitSkill.maximumPageLength = maximumPageLength;
             deserializedSplitSkill.pageOverlapLength = pageOverlapLength;
             deserializedSplitSkill.maximumPagesToTake = maximumPagesToTake;
+            deserializedSplitSkill.unit = unit;
+            deserializedSplitSkill.azureOpenAITokenizerParameters = azureOpenAITokenizerParameters;
             return deserializedSplitSkill;
         });
+    }
+
+    /*
+     * Only applies if textSplitMode is set to pages. There are two possible values. The choice of the values will
+     * decide the length (maximumPageLength and pageOverlapLength) measurement. The default is 'characters', which means
+     * the length will be measured by character.
+     */
+    @Generated
+    private SplitSkillUnit unit;
+
+    /*
+     * Only applies if the unit is set to azureOpenAITokens. If specified, the splitSkill will use these parameters when
+     * performing the tokenization. The parameters are a valid 'encoderModelName' and an optional 'allowedSpecialTokens'
+     * property.
+     */
+    @Generated
+    private AzureOpenAITokenizerParameters azureOpenAITokenizerParameters;
+
+    /**
+     * Get the unit property: Only applies if textSplitMode is set to pages. There are two possible values. The choice
+     * of the values will decide the length (maximumPageLength and pageOverlapLength) measurement. The default is
+     * 'characters', which means the length will be measured by character.
+     *
+     * @return the unit value.
+     */
+    @Generated
+    public SplitSkillUnit getUnit() {
+        return this.unit;
+    }
+
+    /**
+     * Set the unit property: Only applies if textSplitMode is set to pages. There are two possible values. The choice
+     * of the values will decide the length (maximumPageLength and pageOverlapLength) measurement. The default is
+     * 'characters', which means the length will be measured by character.
+     *
+     * @param unit the unit value to set.
+     * @return the SplitSkill object itself.
+     */
+    @Generated
+    public SplitSkill setUnit(SplitSkillUnit unit) {
+        this.unit = unit;
+        return this;
+    }
+
+    /**
+     * Get the azureOpenAITokenizerParameters property: Only applies if the unit is set to azureOpenAITokens. If
+     * specified, the splitSkill will use these parameters when performing the tokenization. The parameters are a valid
+     * 'encoderModelName' and an optional 'allowedSpecialTokens' property.
+     *
+     * @return the azureOpenAITokenizerParameters value.
+     */
+    @Generated
+    public AzureOpenAITokenizerParameters getAzureOpenAITokenizerParameters() {
+        return this.azureOpenAITokenizerParameters;
+    }
+
+    /**
+     * Set the azureOpenAITokenizerParameters property: Only applies if the unit is set to azureOpenAITokens. If
+     * specified, the splitSkill will use these parameters when performing the tokenization. The parameters are a valid
+     * 'encoderModelName' and an optional 'allowedSpecialTokens' property.
+     *
+     * @param azureOpenAITokenizerParameters the azureOpenAITokenizerParameters value to set.
+     * @return the SplitSkill object itself.
+     */
+    @Generated
+    public SplitSkill setAzureOpenAITokenizerParameters(AzureOpenAITokenizerParameters azureOpenAITokenizerParameters) {
+        this.azureOpenAITokenizerParameters = azureOpenAITokenizerParameters;
+        return this;
     }
 }

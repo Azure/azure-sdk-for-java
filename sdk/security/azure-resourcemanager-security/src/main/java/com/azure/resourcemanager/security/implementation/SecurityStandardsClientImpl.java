@@ -184,32 +184,13 @@ public final class SecurityStandardsClientImpl implements SecurityStandardsClien
         return getWithResponseAsync(scope, standardId).flatMap(res -> Mono.justOrEmpty(res.getValue()));
     }
 
-    /**
-     * Get a specific security standard for the requested scope by standardId.
-     * 
-     * @param scope The fully qualified Azure Resource manager identifier of the resource.
-     * @param standardId The Security Standard key - unique key for the standard type.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return a specific security standard for the requested scope by standardId along with {@link Response}.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Response<SecurityStandardInner> getWithResponse(String scope, String standardId, Context context) {
         return getWithResponseAsync(scope, standardId, context).block();
     }
 
-    /**
-     * Get a specific security standard for the requested scope by standardId.
-     * 
-     * @param scope The fully qualified Azure Resource manager identifier of the resource.
-     * @param standardId The Security Standard key - unique key for the standard type.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return a specific security standard for the requested scope by standardId.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public SecurityStandardInner get(String scope, String standardId) {
         return getWithResponse(scope, standardId, Context.NONE).getValue();
@@ -309,35 +290,14 @@ public final class SecurityStandardsClientImpl implements SecurityStandardsClien
             .flatMap(res -> Mono.justOrEmpty(res.getValue()));
     }
 
-    /**
-     * Creates or updates a security standard over a given scope.
-     * 
-     * @param scope The fully qualified Azure Resource manager identifier of the resource.
-     * @param standardId The Security Standard key - unique key for the standard type.
-     * @param standard Custom security standard over a pre-defined scope.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return security Standard on a resource along with {@link Response}.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Response<SecurityStandardInner> createOrUpdateWithResponse(String scope, String standardId,
         SecurityStandardInner standard, Context context) {
         return createOrUpdateWithResponseAsync(scope, standardId, standard, context).block();
     }
 
-    /**
-     * Creates or updates a security standard over a given scope.
-     * 
-     * @param scope The fully qualified Azure Resource manager identifier of the resource.
-     * @param standardId The Security Standard key - unique key for the standard type.
-     * @param standard Custom security standard over a pre-defined scope.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return security Standard on a resource.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public SecurityStandardInner createOrUpdate(String scope, String standardId, SecurityStandardInner standard) {
         return createOrUpdateWithResponse(scope, standardId, standard, Context.NONE).getValue();
@@ -414,31 +374,13 @@ public final class SecurityStandardsClientImpl implements SecurityStandardsClien
         return deleteWithResponseAsync(scope, standardId).flatMap(ignored -> Mono.empty());
     }
 
-    /**
-     * Delete a security standard over a given scope.
-     * 
-     * @param scope The fully qualified Azure Resource manager identifier of the resource.
-     * @param standardId The Security Standard key - unique key for the standard type.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the {@link Response}.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Response<Void> deleteWithResponse(String scope, String standardId, Context context) {
         return deleteWithResponseAsync(scope, standardId, context).block();
     }
 
-    /**
-     * Delete a security standard over a given scope.
-     * 
-     * @param scope The fully qualified Azure Resource manager identifier of the resource.
-     * @param standardId The Security Standard key - unique key for the standard type.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public void delete(String scope, String standardId) {
         deleteWithResponse(scope, standardId, Context.NONE);
@@ -530,30 +472,13 @@ public final class SecurityStandardsClientImpl implements SecurityStandardsClien
             nextLink -> listNextSinglePageAsync(nextLink, context));
     }
 
-    /**
-     * Get a list of all relevant security standards over a scope.
-     * 
-     * @param scope The fully qualified Azure Resource manager identifier of the resource.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return a list of all relevant security standards over a scope as paginated response with {@link PagedIterable}.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.COLLECTION)
     public PagedIterable<SecurityStandardInner> list(String scope) {
         return new PagedIterable<>(listAsync(scope));
     }
 
-    /**
-     * Get a list of all relevant security standards over a scope.
-     * 
-     * @param scope The fully qualified Azure Resource manager identifier of the resource.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return a list of all relevant security standards over a scope as paginated response with {@link PagedIterable}.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.COLLECTION)
     public PagedIterable<SecurityStandardInner> list(String scope, Context context) {
         return new PagedIterable<>(listAsync(scope, context));

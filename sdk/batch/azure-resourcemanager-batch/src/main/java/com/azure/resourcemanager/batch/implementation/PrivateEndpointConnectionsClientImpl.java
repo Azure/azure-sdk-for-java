@@ -235,22 +235,7 @@ public final class PrivateEndpointConnectionsClientImpl implements PrivateEndpoi
             .flatMap(res -> Mono.justOrEmpty(res.getValue()));
     }
 
-    /**
-     * Gets information about the specified private endpoint connection.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param accountName A name for the Batch account which must be unique within the region. Batch account names must
-     * be between 3 and 24 characters in length and must use only numbers and lowercase letters. This name is used as
-     * part of the DNS name that is used to access the Batch service in the region in which the account is created. For
-     * example: http://accountname.region.batch.azure.com/.
-     * @param privateEndpointConnectionName The private endpoint connection name. This must be unique within the
-     * account.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return information about the specified private endpoint connection along with {@link Response}.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Response<PrivateEndpointConnectionInner> getWithResponse(String resourceGroupName, String accountName,
         String privateEndpointConnectionName, Context context) {
@@ -282,21 +267,7 @@ public final class PrivateEndpointConnectionsClientImpl implements PrivateEndpoi
             resourceGroupName, accountName, privateEndpointConnectionName, accept, context);
     }
 
-    /**
-     * Gets information about the specified private endpoint connection.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param accountName A name for the Batch account which must be unique within the region. Batch account names must
-     * be between 3 and 24 characters in length and must use only numbers and lowercase letters. This name is used as
-     * part of the DNS name that is used to access the Batch service in the region in which the account is created. For
-     * example: http://accountname.region.batch.azure.com/.
-     * @param privateEndpointConnectionName The private endpoint connection name. This must be unique within the
-     * account.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return information about the specified private endpoint connection.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public PrivateEndpointConnectionInner get(String resourceGroupName, String accountName,
         String privateEndpointConnectionName) {
@@ -381,40 +352,8 @@ public final class PrivateEndpointConnectionsClientImpl implements PrivateEndpoi
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Response<BinaryData> updateWithResponse(String resourceGroupName, String accountName,
         String privateEndpointConnectionName, PrivateEndpointConnectionInner parameters, String ifMatch) {
-        if (this.client.getEndpoint() == null) {
-            throw LOGGER.atError()
-                .log(new IllegalArgumentException(
-                    "Parameter this.client.getEndpoint() is required and cannot be null."));
-        }
-        if (this.client.getSubscriptionId() == null) {
-            throw LOGGER.atError()
-                .log(new IllegalArgumentException(
-                    "Parameter this.client.getSubscriptionId() is required and cannot be null."));
-        }
-        if (resourceGroupName == null) {
-            throw LOGGER.atError()
-                .log(new IllegalArgumentException("Parameter resourceGroupName is required and cannot be null."));
-        }
-        if (accountName == null) {
-            throw LOGGER.atError()
-                .log(new IllegalArgumentException("Parameter accountName is required and cannot be null."));
-        }
-        if (privateEndpointConnectionName == null) {
-            throw LOGGER.atError()
-                .log(new IllegalArgumentException(
-                    "Parameter privateEndpointConnectionName is required and cannot be null."));
-        }
-        if (parameters == null) {
-            throw LOGGER.atError()
-                .log(new IllegalArgumentException("Parameter parameters is required and cannot be null."));
-        } else {
-            parameters.validate();
-        }
-        final String contentType = "application/json";
-        final String accept = "application/json";
-        return service.updateSync(this.client.getEndpoint(), this.client.getApiVersion(),
-            this.client.getSubscriptionId(), resourceGroupName, accountName, privateEndpointConnectionName, ifMatch,
-            contentType, accept, parameters, Context.NONE);
+        return updateWithResponse(resourceGroupName, accountName, privateEndpointConnectionName, parameters, ifMatch,
+            Context.NONE);
     }
 
     /**
@@ -559,60 +498,21 @@ public final class PrivateEndpointConnectionsClientImpl implements PrivateEndpoi
     private SyncPoller<PollResult<PrivateEndpointConnectionInner>, PrivateEndpointConnectionInner> beginUpdate(
         String resourceGroupName, String accountName, String privateEndpointConnectionName,
         PrivateEndpointConnectionInner parameters, String ifMatch) {
-        Response<BinaryData> response
-            = updateWithResponse(resourceGroupName, accountName, privateEndpointConnectionName, parameters, ifMatch);
-        return this.client.<PrivateEndpointConnectionInner, PrivateEndpointConnectionInner>getLroResult(response,
-            PrivateEndpointConnectionInner.class, PrivateEndpointConnectionInner.class, Context.NONE);
+        return beginUpdate(resourceGroupName, accountName, privateEndpointConnectionName, parameters, ifMatch,
+            Context.NONE);
     }
 
-    /**
-     * Updates the properties of an existing private endpoint connection.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param accountName A name for the Batch account which must be unique within the region. Batch account names must
-     * be between 3 and 24 characters in length and must use only numbers and lowercase letters. This name is used as
-     * part of the DNS name that is used to access the Batch service in the region in which the account is created. For
-     * example: http://accountname.region.batch.azure.com/.
-     * @param privateEndpointConnectionName The private endpoint connection name. This must be unique within the
-     * account.
-     * @param parameters PrivateEndpointConnection properties that should be updated. Properties that are supplied will
-     * be updated, any property not supplied will be unchanged.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the {@link SyncPoller} for polling of contains information about a private link resource.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public SyncPoller<PollResult<PrivateEndpointConnectionInner>, PrivateEndpointConnectionInner> beginUpdate(
         String resourceGroupName, String accountName, String privateEndpointConnectionName,
         PrivateEndpointConnectionInner parameters) {
         final String ifMatch = null;
-        Response<BinaryData> response
-            = updateWithResponse(resourceGroupName, accountName, privateEndpointConnectionName, parameters, ifMatch);
-        return this.client.<PrivateEndpointConnectionInner, PrivateEndpointConnectionInner>getLroResult(response,
-            PrivateEndpointConnectionInner.class, PrivateEndpointConnectionInner.class, Context.NONE);
+        return beginUpdate(resourceGroupName, accountName, privateEndpointConnectionName, parameters, ifMatch,
+            Context.NONE);
     }
 
-    /**
-     * Updates the properties of an existing private endpoint connection.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param accountName A name for the Batch account which must be unique within the region. Batch account names must
-     * be between 3 and 24 characters in length and must use only numbers and lowercase letters. This name is used as
-     * part of the DNS name that is used to access the Batch service in the region in which the account is created. For
-     * example: http://accountname.region.batch.azure.com/.
-     * @param privateEndpointConnectionName The private endpoint connection name. This must be unique within the
-     * account.
-     * @param parameters PrivateEndpointConnection properties that should be updated. Properties that are supplied will
-     * be updated, any property not supplied will be unchanged.
-     * @param ifMatch The state (ETag) version of the private endpoint connection to update. This value can be omitted
-     * or set to "*" to apply the operation unconditionally.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the {@link SyncPoller} for polling of contains information about a private link resource.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public SyncPoller<PollResult<PrivateEndpointConnectionInner>, PrivateEndpointConnectionInner> beginUpdate(
         String resourceGroupName, String accountName, String privateEndpointConnectionName,
@@ -676,57 +576,21 @@ public final class PrivateEndpointConnectionsClientImpl implements PrivateEndpoi
             .flatMap(this.client::getLroFinalResultOrError);
     }
 
-    /**
-     * Updates the properties of an existing private endpoint connection.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param accountName A name for the Batch account which must be unique within the region. Batch account names must
-     * be between 3 and 24 characters in length and must use only numbers and lowercase letters. This name is used as
-     * part of the DNS name that is used to access the Batch service in the region in which the account is created. For
-     * example: http://accountname.region.batch.azure.com/.
-     * @param privateEndpointConnectionName The private endpoint connection name. This must be unique within the
-     * account.
-     * @param parameters PrivateEndpointConnection properties that should be updated. Properties that are supplied will
-     * be updated, any property not supplied will be unchanged.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return contains information about a private link resource.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public PrivateEndpointConnectionInner update(String resourceGroupName, String accountName,
         String privateEndpointConnectionName, PrivateEndpointConnectionInner parameters) {
         final String ifMatch = null;
-        return beginUpdate(resourceGroupName, accountName, privateEndpointConnectionName, parameters, ifMatch)
-            .getFinalResult();
+        return update(resourceGroupName, accountName, privateEndpointConnectionName, parameters, ifMatch, Context.NONE);
     }
 
-    /**
-     * Updates the properties of an existing private endpoint connection.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param accountName A name for the Batch account which must be unique within the region. Batch account names must
-     * be between 3 and 24 characters in length and must use only numbers and lowercase letters. This name is used as
-     * part of the DNS name that is used to access the Batch service in the region in which the account is created. For
-     * example: http://accountname.region.batch.azure.com/.
-     * @param privateEndpointConnectionName The private endpoint connection name. This must be unique within the
-     * account.
-     * @param parameters PrivateEndpointConnection properties that should be updated. Properties that are supplied will
-     * be updated, any property not supplied will be unchanged.
-     * @param ifMatch The state (ETag) version of the private endpoint connection to update. This value can be omitted
-     * or set to "*" to apply the operation unconditionally.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return contains information about a private link resource.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public PrivateEndpointConnectionInner update(String resourceGroupName, String accountName,
         String privateEndpointConnectionName, PrivateEndpointConnectionInner parameters, String ifMatch,
         Context context) {
-        return beginUpdate(resourceGroupName, accountName, privateEndpointConnectionName, parameters, ifMatch, context)
-            .getFinalResult();
+        return this.client.getLroFinalResultOrError(
+            beginUpdate(resourceGroupName, accountName, privateEndpointConnectionName, parameters, ifMatch, context));
     }
 
     /**
@@ -789,32 +653,7 @@ public final class PrivateEndpointConnectionsClientImpl implements PrivateEndpoi
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Response<BinaryData> deleteWithResponse(String resourceGroupName, String accountName,
         String privateEndpointConnectionName) {
-        if (this.client.getEndpoint() == null) {
-            throw LOGGER.atError()
-                .log(new IllegalArgumentException(
-                    "Parameter this.client.getEndpoint() is required and cannot be null."));
-        }
-        if (this.client.getSubscriptionId() == null) {
-            throw LOGGER.atError()
-                .log(new IllegalArgumentException(
-                    "Parameter this.client.getSubscriptionId() is required and cannot be null."));
-        }
-        if (resourceGroupName == null) {
-            throw LOGGER.atError()
-                .log(new IllegalArgumentException("Parameter resourceGroupName is required and cannot be null."));
-        }
-        if (accountName == null) {
-            throw LOGGER.atError()
-                .log(new IllegalArgumentException("Parameter accountName is required and cannot be null."));
-        }
-        if (privateEndpointConnectionName == null) {
-            throw LOGGER.atError()
-                .log(new IllegalArgumentException(
-                    "Parameter privateEndpointConnectionName is required and cannot be null."));
-        }
-        return service.deleteSync(this.client.getEndpoint(), this.client.getApiVersion(),
-            this.client.getSubscriptionId(), resourceGroupName, accountName, privateEndpointConnectionName,
-            Context.NONE);
+        return deleteWithResponse(resourceGroupName, accountName, privateEndpointConnectionName, Context.NONE);
     }
 
     /**
@@ -887,45 +726,14 @@ public final class PrivateEndpointConnectionsClientImpl implements PrivateEndpoi
             this.client.getContext());
     }
 
-    /**
-     * Deletes the specified private endpoint connection.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param accountName A name for the Batch account which must be unique within the region. Batch account names must
-     * be between 3 and 24 characters in length and must use only numbers and lowercase letters. This name is used as
-     * part of the DNS name that is used to access the Batch service in the region in which the account is created. For
-     * example: http://accountname.region.batch.azure.com/.
-     * @param privateEndpointConnectionName The private endpoint connection name. This must be unique within the
-     * account.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the {@link SyncPoller} for polling of long-running operation.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public SyncPoller<PollResult<Void>, Void> beginDelete(String resourceGroupName, String accountName,
         String privateEndpointConnectionName) {
-        Response<BinaryData> response
-            = deleteWithResponse(resourceGroupName, accountName, privateEndpointConnectionName);
-        return this.client.<Void, Void>getLroResult(response, Void.class, Void.class, Context.NONE);
+        return beginDelete(resourceGroupName, accountName, privateEndpointConnectionName, Context.NONE);
     }
 
-    /**
-     * Deletes the specified private endpoint connection.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param accountName A name for the Batch account which must be unique within the region. Batch account names must
-     * be between 3 and 24 characters in length and must use only numbers and lowercase letters. This name is used as
-     * part of the DNS name that is used to access the Batch service in the region in which the account is created. For
-     * example: http://accountname.region.batch.azure.com/.
-     * @param privateEndpointConnectionName The private endpoint connection name. This must be unique within the
-     * account.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the {@link SyncPoller} for polling of long-running operation.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public SyncPoller<PollResult<Void>, Void> beginDelete(String resourceGroupName, String accountName,
         String privateEndpointConnectionName, Context context) {
@@ -955,44 +763,18 @@ public final class PrivateEndpointConnectionsClientImpl implements PrivateEndpoi
             .flatMap(this.client::getLroFinalResultOrError);
     }
 
-    /**
-     * Deletes the specified private endpoint connection.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param accountName A name for the Batch account which must be unique within the region. Batch account names must
-     * be between 3 and 24 characters in length and must use only numbers and lowercase letters. This name is used as
-     * part of the DNS name that is used to access the Batch service in the region in which the account is created. For
-     * example: http://accountname.region.batch.azure.com/.
-     * @param privateEndpointConnectionName The private endpoint connection name. This must be unique within the
-     * account.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public void delete(String resourceGroupName, String accountName, String privateEndpointConnectionName) {
-        beginDelete(resourceGroupName, accountName, privateEndpointConnectionName).getFinalResult();
+        delete(resourceGroupName, accountName, privateEndpointConnectionName, Context.NONE);
     }
 
-    /**
-     * Deletes the specified private endpoint connection.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param accountName A name for the Batch account which must be unique within the region. Batch account names must
-     * be between 3 and 24 characters in length and must use only numbers and lowercase letters. This name is used as
-     * part of the DNS name that is used to access the Batch service in the region in which the account is created. For
-     * example: http://accountname.region.batch.azure.com/.
-     * @param privateEndpointConnectionName The private endpoint connection name. This must be unique within the
-     * account.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public void delete(String resourceGroupName, String accountName, String privateEndpointConnectionName,
         Context context) {
-        beginDelete(resourceGroupName, accountName, privateEndpointConnectionName, context).getFinalResult();
+        this.client.getLroFinalResultOrError(
+            beginDelete(resourceGroupName, accountName, privateEndpointConnectionName, context));
     }
 
     /**
@@ -1096,30 +878,7 @@ public final class PrivateEndpointConnectionsClientImpl implements PrivateEndpoi
     @ServiceMethod(returns = ReturnType.SINGLE)
     private PagedResponse<PrivateEndpointConnectionInner> listByBatchAccountSinglePage(String resourceGroupName,
         String accountName, Integer maxresults) {
-        if (this.client.getEndpoint() == null) {
-            throw LOGGER.atError()
-                .log(new IllegalArgumentException(
-                    "Parameter this.client.getEndpoint() is required and cannot be null."));
-        }
-        if (this.client.getSubscriptionId() == null) {
-            throw LOGGER.atError()
-                .log(new IllegalArgumentException(
-                    "Parameter this.client.getSubscriptionId() is required and cannot be null."));
-        }
-        if (resourceGroupName == null) {
-            throw LOGGER.atError()
-                .log(new IllegalArgumentException("Parameter resourceGroupName is required and cannot be null."));
-        }
-        if (accountName == null) {
-            throw LOGGER.atError()
-                .log(new IllegalArgumentException("Parameter accountName is required and cannot be null."));
-        }
-        final String accept = "application/json";
-        Response<ListPrivateEndpointConnectionsResult> res
-            = service.listByBatchAccountSync(this.client.getEndpoint(), this.client.getApiVersion(),
-                this.client.getSubscriptionId(), resourceGroupName, accountName, maxresults, accept, Context.NONE);
-        return new PagedResponseBase<>(res.getRequest(), res.getStatusCode(), res.getHeaders(), res.getValue().value(),
-            res.getValue().nextLink(), null);
+        return listByBatchAccountSinglePage(resourceGroupName, accountName, maxresults, Context.NONE);
     }
 
     /**
@@ -1166,42 +925,15 @@ public final class PrivateEndpointConnectionsClientImpl implements PrivateEndpoi
             res.getValue().nextLink(), null);
     }
 
-    /**
-     * Lists all of the private endpoint connections in the specified account.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param accountName A name for the Batch account which must be unique within the region. Batch account names must
-     * be between 3 and 24 characters in length and must use only numbers and lowercase letters. This name is used as
-     * part of the DNS name that is used to access the Batch service in the region in which the account is created. For
-     * example: http://accountname.region.batch.azure.com/.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return values returned by the List operation as paginated response with {@link PagedIterable}.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.COLLECTION)
     public PagedIterable<PrivateEndpointConnectionInner> listByBatchAccount(String resourceGroupName,
         String accountName) {
         final Integer maxresults = null;
-        return new PagedIterable<>(() -> listByBatchAccountSinglePage(resourceGroupName, accountName, maxresults),
-            nextLink -> listByBatchAccountNextSinglePage(nextLink));
+        return listByBatchAccount(resourceGroupName, accountName, maxresults, Context.NONE);
     }
 
-    /**
-     * Lists all of the private endpoint connections in the specified account.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param accountName A name for the Batch account which must be unique within the region. Batch account names must
-     * be between 3 and 24 characters in length and must use only numbers and lowercase letters. This name is used as
-     * part of the DNS name that is used to access the Batch service in the region in which the account is created. For
-     * example: http://accountname.region.batch.azure.com/.
-     * @param maxresults The maximum number of items to return in the response.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return values returned by the List operation as paginated response with {@link PagedIterable}.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.COLLECTION)
     public PagedIterable<PrivateEndpointConnectionInner> listByBatchAccount(String resourceGroupName,
         String accountName, Integer maxresults, Context context) {
@@ -1249,20 +981,7 @@ public final class PrivateEndpointConnectionsClientImpl implements PrivateEndpoi
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private PagedResponse<PrivateEndpointConnectionInner> listByBatchAccountNextSinglePage(String nextLink) {
-        if (nextLink == null) {
-            throw LOGGER.atError()
-                .log(new IllegalArgumentException("Parameter nextLink is required and cannot be null."));
-        }
-        if (this.client.getEndpoint() == null) {
-            throw LOGGER.atError()
-                .log(new IllegalArgumentException(
-                    "Parameter this.client.getEndpoint() is required and cannot be null."));
-        }
-        final String accept = "application/json";
-        Response<ListPrivateEndpointConnectionsResult> res
-            = service.listByBatchAccountNextSync(nextLink, this.client.getEndpoint(), accept, Context.NONE);
-        return new PagedResponseBase<>(res.getRequest(), res.getStatusCode(), res.getHeaders(), res.getValue().value(),
-            res.getValue().nextLink(), null);
+        return listByBatchAccountNextSinglePage(nextLink, Context.NONE);
     }
 
     /**

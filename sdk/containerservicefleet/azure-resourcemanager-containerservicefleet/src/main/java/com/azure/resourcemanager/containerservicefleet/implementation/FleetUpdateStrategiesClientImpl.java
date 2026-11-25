@@ -209,18 +209,7 @@ public final class FleetUpdateStrategiesClientImpl implements FleetUpdateStrateg
             .flatMap(res -> Mono.justOrEmpty(res.getValue()));
     }
 
-    /**
-     * Get a FleetUpdateStrategy.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param fleetName The name of the Fleet resource.
-     * @param updateStrategyName The name of the UpdateStrategy resource.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return a FleetUpdateStrategy along with {@link Response}.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Response<FleetUpdateStrategyInner> getWithResponse(String resourceGroupName, String fleetName,
         String updateStrategyName, Context context) {
@@ -229,17 +218,7 @@ public final class FleetUpdateStrategiesClientImpl implements FleetUpdateStrateg
             resourceGroupName, fleetName, updateStrategyName, accept, context);
     }
 
-    /**
-     * Get a FleetUpdateStrategy.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param fleetName The name of the Fleet resource.
-     * @param updateStrategyName The name of the UpdateStrategy resource.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return a FleetUpdateStrategy.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public FleetUpdateStrategyInner get(String resourceGroupName, String fleetName, String updateStrategyName) {
         return getWithResponse(resourceGroupName, fleetName, updateStrategyName, Context.NONE).getValue();
@@ -290,11 +269,8 @@ public final class FleetUpdateStrategiesClientImpl implements FleetUpdateStrateg
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Response<BinaryData> createOrUpdateWithResponse(String resourceGroupName, String fleetName,
         String updateStrategyName, FleetUpdateStrategyInner resource, String ifMatch, String ifNoneMatch) {
-        final String contentType = "application/json";
-        final String accept = "application/json";
-        return service.createOrUpdateSync(this.client.getEndpoint(), this.client.getApiVersion(),
-            this.client.getSubscriptionId(), resourceGroupName, ifMatch, ifNoneMatch, fleetName, updateStrategyName,
-            contentType, accept, resource, Context.NONE);
+        return createOrUpdateWithResponse(resourceGroupName, fleetName, updateStrategyName, resource, ifMatch,
+            ifNoneMatch, Context.NONE);
     }
 
     /**
@@ -394,52 +370,21 @@ public final class FleetUpdateStrategiesClientImpl implements FleetUpdateStrateg
     private SyncPoller<PollResult<FleetUpdateStrategyInner>, FleetUpdateStrategyInner> beginCreateOrUpdate(
         String resourceGroupName, String fleetName, String updateStrategyName, FleetUpdateStrategyInner resource,
         String ifMatch, String ifNoneMatch) {
-        Response<BinaryData> response = createOrUpdateWithResponse(resourceGroupName, fleetName, updateStrategyName,
-            resource, ifMatch, ifNoneMatch);
-        return this.client.<FleetUpdateStrategyInner, FleetUpdateStrategyInner>getLroResult(response,
-            FleetUpdateStrategyInner.class, FleetUpdateStrategyInner.class, Context.NONE);
+        return beginCreateOrUpdate(resourceGroupName, fleetName, updateStrategyName, resource, ifMatch, ifNoneMatch,
+            Context.NONE);
     }
 
-    /**
-     * Create a FleetUpdateStrategy.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param fleetName The name of the Fleet resource.
-     * @param updateStrategyName The name of the UpdateStrategy resource.
-     * @param resource Resource create parameters.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the {@link SyncPoller} for polling of defines a multi-stage process to perform update operations across
-     * members of a Fleet.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public SyncPoller<PollResult<FleetUpdateStrategyInner>, FleetUpdateStrategyInner> beginCreateOrUpdate(
         String resourceGroupName, String fleetName, String updateStrategyName, FleetUpdateStrategyInner resource) {
         final String ifMatch = null;
         final String ifNoneMatch = null;
-        Response<BinaryData> response = createOrUpdateWithResponse(resourceGroupName, fleetName, updateStrategyName,
-            resource, ifMatch, ifNoneMatch);
-        return this.client.<FleetUpdateStrategyInner, FleetUpdateStrategyInner>getLroResult(response,
-            FleetUpdateStrategyInner.class, FleetUpdateStrategyInner.class, Context.NONE);
+        return beginCreateOrUpdate(resourceGroupName, fleetName, updateStrategyName, resource, ifMatch, ifNoneMatch,
+            Context.NONE);
     }
 
-    /**
-     * Create a FleetUpdateStrategy.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param fleetName The name of the Fleet resource.
-     * @param updateStrategyName The name of the UpdateStrategy resource.
-     * @param resource Resource create parameters.
-     * @param ifMatch The request should only proceed if an entity matches this string.
-     * @param ifNoneMatch The request should only proceed if no entity matches this string.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the {@link SyncPoller} for polling of defines a multi-stage process to perform update operations across
-     * members of a Fleet.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public SyncPoller<PollResult<FleetUpdateStrategyInner>, FleetUpdateStrategyInner> beginCreateOrUpdate(
         String resourceGroupName, String fleetName, String updateStrategyName, FleetUpdateStrategyInner resource,
@@ -494,48 +439,23 @@ public final class FleetUpdateStrategiesClientImpl implements FleetUpdateStrateg
             ifNoneMatch).last().flatMap(this.client::getLroFinalResultOrError);
     }
 
-    /**
-     * Create a FleetUpdateStrategy.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param fleetName The name of the Fleet resource.
-     * @param updateStrategyName The name of the UpdateStrategy resource.
-     * @param resource Resource create parameters.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return defines a multi-stage process to perform update operations across members of a Fleet.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public FleetUpdateStrategyInner createOrUpdate(String resourceGroupName, String fleetName,
         String updateStrategyName, FleetUpdateStrategyInner resource) {
         final String ifMatch = null;
         final String ifNoneMatch = null;
-        return beginCreateOrUpdate(resourceGroupName, fleetName, updateStrategyName, resource, ifMatch, ifNoneMatch)
-            .getFinalResult();
+        return createOrUpdate(resourceGroupName, fleetName, updateStrategyName, resource, ifMatch, ifNoneMatch,
+            Context.NONE);
     }
 
-    /**
-     * Create a FleetUpdateStrategy.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param fleetName The name of the Fleet resource.
-     * @param updateStrategyName The name of the UpdateStrategy resource.
-     * @param resource Resource create parameters.
-     * @param ifMatch The request should only proceed if an entity matches this string.
-     * @param ifNoneMatch The request should only proceed if no entity matches this string.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return defines a multi-stage process to perform update operations across members of a Fleet.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public FleetUpdateStrategyInner createOrUpdate(String resourceGroupName, String fleetName,
         String updateStrategyName, FleetUpdateStrategyInner resource, String ifMatch, String ifNoneMatch,
         Context context) {
-        return beginCreateOrUpdate(resourceGroupName, fleetName, updateStrategyName, resource, ifMatch, ifNoneMatch,
-            context).getFinalResult();
+        return this.client.getLroFinalResultOrError(beginCreateOrUpdate(resourceGroupName, fleetName,
+            updateStrategyName, resource, ifMatch, ifNoneMatch, context));
     }
 
     /**
@@ -574,8 +494,7 @@ public final class FleetUpdateStrategiesClientImpl implements FleetUpdateStrateg
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Response<BinaryData> deleteWithResponse(String resourceGroupName, String fleetName,
         String updateStrategyName, String ifMatch) {
-        return service.deleteSync(this.client.getEndpoint(), this.client.getApiVersion(),
-            this.client.getSubscriptionId(), resourceGroupName, ifMatch, fleetName, updateStrategyName, Context.NONE);
+        return deleteWithResponse(resourceGroupName, fleetName, updateStrategyName, ifMatch, Context.NONE);
     }
 
     /**
@@ -655,42 +574,18 @@ public final class FleetUpdateStrategiesClientImpl implements FleetUpdateStrateg
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     private SyncPoller<PollResult<Void>, Void> beginDelete(String resourceGroupName, String fleetName,
         String updateStrategyName, String ifMatch) {
-        Response<BinaryData> response = deleteWithResponse(resourceGroupName, fleetName, updateStrategyName, ifMatch);
-        return this.client.<Void, Void>getLroResult(response, Void.class, Void.class, Context.NONE);
+        return beginDelete(resourceGroupName, fleetName, updateStrategyName, ifMatch, Context.NONE);
     }
 
-    /**
-     * Delete a FleetUpdateStrategy.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param fleetName The name of the Fleet resource.
-     * @param updateStrategyName The name of the UpdateStrategy resource.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the {@link SyncPoller} for polling of long-running operation.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public SyncPoller<PollResult<Void>, Void> beginDelete(String resourceGroupName, String fleetName,
         String updateStrategyName) {
         final String ifMatch = null;
-        Response<BinaryData> response = deleteWithResponse(resourceGroupName, fleetName, updateStrategyName, ifMatch);
-        return this.client.<Void, Void>getLroResult(response, Void.class, Void.class, Context.NONE);
+        return beginDelete(resourceGroupName, fleetName, updateStrategyName, ifMatch, Context.NONE);
     }
 
-    /**
-     * Delete a FleetUpdateStrategy.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param fleetName The name of the Fleet resource.
-     * @param updateStrategyName The name of the UpdateStrategy resource.
-     * @param ifMatch The request should only proceed if an entity matches this string.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the {@link SyncPoller} for polling of long-running operation.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public SyncPoller<PollResult<Void>, Void> beginDelete(String resourceGroupName, String fleetName,
         String updateStrategyName, String ifMatch, Context context) {
@@ -736,38 +631,19 @@ public final class FleetUpdateStrategiesClientImpl implements FleetUpdateStrateg
             .flatMap(this.client::getLroFinalResultOrError);
     }
 
-    /**
-     * Delete a FleetUpdateStrategy.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param fleetName The name of the Fleet resource.
-     * @param updateStrategyName The name of the UpdateStrategy resource.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public void delete(String resourceGroupName, String fleetName, String updateStrategyName) {
         final String ifMatch = null;
-        beginDelete(resourceGroupName, fleetName, updateStrategyName, ifMatch).getFinalResult();
+        delete(resourceGroupName, fleetName, updateStrategyName, ifMatch, Context.NONE);
     }
 
-    /**
-     * Delete a FleetUpdateStrategy.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param fleetName The name of the Fleet resource.
-     * @param updateStrategyName The name of the UpdateStrategy resource.
-     * @param ifMatch The request should only proceed if an entity matches this string.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public void delete(String resourceGroupName, String fleetName, String updateStrategyName, String ifMatch,
         Context context) {
-        beginDelete(resourceGroupName, fleetName, updateStrategyName, ifMatch, context).getFinalResult();
+        this.client
+            .getLroFinalResultOrError(beginDelete(resourceGroupName, fleetName, updateStrategyName, ifMatch, context));
     }
 
     /**
@@ -847,12 +723,7 @@ public final class FleetUpdateStrategiesClientImpl implements FleetUpdateStrateg
     @ServiceMethod(returns = ReturnType.SINGLE)
     private PagedResponse<FleetUpdateStrategyInner> listByFleetSinglePage(String resourceGroupName, String fleetName,
         Integer top, String skipToken) {
-        final String accept = "application/json";
-        Response<FleetUpdateStrategyListResult> res
-            = service.listByFleetSync(this.client.getEndpoint(), this.client.getApiVersion(),
-                this.client.getSubscriptionId(), resourceGroupName, fleetName, top, skipToken, accept, Context.NONE);
-        return new PagedResponseBase<>(res.getRequest(), res.getStatusCode(), res.getHeaders(), res.getValue().value(),
-            res.getValue().nextLink(), null);
+        return listByFleetSinglePage(resourceGroupName, fleetName, top, skipToken, Context.NONE);
     }
 
     /**
@@ -879,37 +750,15 @@ public final class FleetUpdateStrategiesClientImpl implements FleetUpdateStrateg
             res.getValue().nextLink(), null);
     }
 
-    /**
-     * List FleetUpdateStrategy resources by Fleet.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param fleetName The name of the Fleet resource.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the response of a FleetUpdateStrategy list operation as paginated response with {@link PagedIterable}.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.COLLECTION)
     public PagedIterable<FleetUpdateStrategyInner> listByFleet(String resourceGroupName, String fleetName) {
         final Integer top = null;
         final String skipToken = null;
-        return new PagedIterable<>(() -> listByFleetSinglePage(resourceGroupName, fleetName, top, skipToken),
-            nextLink -> listByFleetNextSinglePage(nextLink));
+        return listByFleet(resourceGroupName, fleetName, top, skipToken, Context.NONE);
     }
 
-    /**
-     * List FleetUpdateStrategy resources by Fleet.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param fleetName The name of the Fleet resource.
-     * @param top The number of result items to return.
-     * @param skipToken The page-continuation token to use with a paged version of this API.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the response of a FleetUpdateStrategy list operation as paginated response with {@link PagedIterable}.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.COLLECTION)
     public PagedIterable<FleetUpdateStrategyInner> listByFleet(String resourceGroupName, String fleetName, Integer top,
         String skipToken, Context context) {
@@ -948,11 +797,7 @@ public final class FleetUpdateStrategiesClientImpl implements FleetUpdateStrateg
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private PagedResponse<FleetUpdateStrategyInner> listByFleetNextSinglePage(String nextLink) {
-        final String accept = "application/json";
-        Response<FleetUpdateStrategyListResult> res
-            = service.listByFleetNextSync(nextLink, this.client.getEndpoint(), accept, Context.NONE);
-        return new PagedResponseBase<>(res.getRequest(), res.getStatusCode(), res.getHeaders(), res.getValue().value(),
-            res.getValue().nextLink(), null);
+        return listByFleetNextSinglePage(nextLink, Context.NONE);
     }
 
     /**

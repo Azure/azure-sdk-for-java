@@ -118,15 +118,7 @@ public final class AccessReviewScheduleDefinitionsClientImpl implements AccessRe
             @HeaderParam("Accept") String accept, Context context);
     }
 
-    /**
-     * Get single access review definition.
-     * 
-     * @param scheduleDefinitionId The id of the access review schedule definition.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return single access review definition along with {@link Response} on successful completion of {@link Mono}.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Response<AccessReviewScheduleDefinitionInner>> getByIdWithResponseAsync(String scheduleDefinitionId) {
         if (this.client.getEndpoint() == null) {
@@ -181,60 +173,26 @@ public final class AccessReviewScheduleDefinitionsClientImpl implements AccessRe
             scheduleDefinitionId, accept, context);
     }
 
-    /**
-     * Get single access review definition.
-     * 
-     * @param scheduleDefinitionId The id of the access review schedule definition.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return single access review definition on successful completion of {@link Mono}.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<AccessReviewScheduleDefinitionInner> getByIdAsync(String scheduleDefinitionId) {
         return getByIdWithResponseAsync(scheduleDefinitionId).flatMap(res -> Mono.justOrEmpty(res.getValue()));
     }
 
-    /**
-     * Get single access review definition.
-     * 
-     * @param scheduleDefinitionId The id of the access review schedule definition.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return single access review definition along with {@link Response}.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Response<AccessReviewScheduleDefinitionInner> getByIdWithResponse(String scheduleDefinitionId,
         Context context) {
         return getByIdWithResponseAsync(scheduleDefinitionId, context).block();
     }
 
-    /**
-     * Get single access review definition.
-     * 
-     * @param scheduleDefinitionId The id of the access review schedule definition.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return single access review definition.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public AccessReviewScheduleDefinitionInner getById(String scheduleDefinitionId) {
         return getByIdWithResponse(scheduleDefinitionId, Context.NONE).getValue();
     }
 
-    /**
-     * Create or Update access review schedule definition.
-     * 
-     * @param scheduleDefinitionId The id of the access review schedule definition.
-     * @param properties Access review schedule definition properties.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return access Review Schedule Definition along with {@link Response} on successful completion of {@link Mono}.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Response<AccessReviewScheduleDefinitionInner>> createOrUpdateByIdWithResponseAsync(
         String scheduleDefinitionId, AccessReviewScheduleDefinitionProperties properties) {
@@ -303,16 +261,7 @@ public final class AccessReviewScheduleDefinitionsClientImpl implements AccessRe
             scheduleDefinitionId, contentType, accept, properties, context);
     }
 
-    /**
-     * Create or Update access review schedule definition.
-     * 
-     * @param scheduleDefinitionId The id of the access review schedule definition.
-     * @param properties Access review schedule definition properties.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return access Review Schedule Definition on successful completion of {@link Mono}.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<AccessReviewScheduleDefinitionInner> createOrUpdateByIdAsync(String scheduleDefinitionId,
         AccessReviewScheduleDefinitionProperties properties) {
@@ -320,48 +269,21 @@ public final class AccessReviewScheduleDefinitionsClientImpl implements AccessRe
             .flatMap(res -> Mono.justOrEmpty(res.getValue()));
     }
 
-    /**
-     * Create or Update access review schedule definition.
-     * 
-     * @param scheduleDefinitionId The id of the access review schedule definition.
-     * @param properties Access review schedule definition properties.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return access Review Schedule Definition along with {@link Response}.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Response<AccessReviewScheduleDefinitionInner> createOrUpdateByIdWithResponse(String scheduleDefinitionId,
         AccessReviewScheduleDefinitionProperties properties, Context context) {
         return createOrUpdateByIdWithResponseAsync(scheduleDefinitionId, properties, context).block();
     }
 
-    /**
-     * Create or Update access review schedule definition.
-     * 
-     * @param scheduleDefinitionId The id of the access review schedule definition.
-     * @param properties Access review schedule definition properties.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return access Review Schedule Definition.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public AccessReviewScheduleDefinitionInner createOrUpdateById(String scheduleDefinitionId,
         AccessReviewScheduleDefinitionProperties properties) {
         return createOrUpdateByIdWithResponse(scheduleDefinitionId, properties, Context.NONE).getValue();
     }
 
-    /**
-     * Delete access review schedule definition.
-     * 
-     * @param scheduleDefinitionId The id of the access review schedule definition.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the {@link Response} on successful completion of {@link Mono}.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Response<Void>> deleteByIdWithResponseAsync(String scheduleDefinitionId) {
         if (this.client.getEndpoint() == null) {
@@ -413,43 +335,19 @@ public final class AccessReviewScheduleDefinitionsClientImpl implements AccessRe
             scheduleDefinitionId, context);
     }
 
-    /**
-     * Delete access review schedule definition.
-     * 
-     * @param scheduleDefinitionId The id of the access review schedule definition.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return A {@link Mono} that completes when a successful response is received.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Void> deleteByIdAsync(String scheduleDefinitionId) {
         return deleteByIdWithResponseAsync(scheduleDefinitionId).flatMap(ignored -> Mono.empty());
     }
 
-    /**
-     * Delete access review schedule definition.
-     * 
-     * @param scheduleDefinitionId The id of the access review schedule definition.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the {@link Response}.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Response<Void> deleteByIdWithResponse(String scheduleDefinitionId, Context context) {
         return deleteByIdWithResponseAsync(scheduleDefinitionId, context).block();
     }
 
-    /**
-     * Delete access review schedule definition.
-     * 
-     * @param scheduleDefinitionId The id of the access review schedule definition.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public void deleteById(String scheduleDefinitionId) {
         deleteByIdWithResponse(scheduleDefinitionId, Context.NONE);
@@ -520,29 +418,13 @@ public final class AccessReviewScheduleDefinitionsClientImpl implements AccessRe
                 res.getValue().value(), res.getValue().nextLink(), null));
     }
 
-    /**
-     * Get access review schedule definitions.
-     * 
-     * @param filter The filter to apply on the operation. Other than standard filters, one custom filter option is
-     * supported : 'assignedToMeToReview()'. When one specified $filter=assignedToMeToReview(), only items that are
-     * assigned to the calling user to review are returned.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return access review schedule definitions as paginated response with {@link PagedFlux}.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.COLLECTION)
     public PagedFlux<AccessReviewScheduleDefinitionInner> listAsync(String filter) {
         return new PagedFlux<>(() -> listSinglePageAsync(filter), nextLink -> listNextSinglePageAsync(nextLink));
     }
 
-    /**
-     * Get access review schedule definitions.
-     * 
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return access review schedule definitions as paginated response with {@link PagedFlux}.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.COLLECTION)
     public PagedFlux<AccessReviewScheduleDefinitionInner> listAsync() {
         final String filter = null;
@@ -567,45 +449,20 @@ public final class AccessReviewScheduleDefinitionsClientImpl implements AccessRe
             nextLink -> listNextSinglePageAsync(nextLink, context));
     }
 
-    /**
-     * Get access review schedule definitions.
-     * 
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return access review schedule definitions as paginated response with {@link PagedIterable}.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.COLLECTION)
     public PagedIterable<AccessReviewScheduleDefinitionInner> list() {
         final String filter = null;
         return new PagedIterable<>(listAsync(filter));
     }
 
-    /**
-     * Get access review schedule definitions.
-     * 
-     * @param filter The filter to apply on the operation. Other than standard filters, one custom filter option is
-     * supported : 'assignedToMeToReview()'. When one specified $filter=assignedToMeToReview(), only items that are
-     * assigned to the calling user to review are returned.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return access review schedule definitions as paginated response with {@link PagedIterable}.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.COLLECTION)
     public PagedIterable<AccessReviewScheduleDefinitionInner> list(String filter, Context context) {
         return new PagedIterable<>(listAsync(filter, context));
     }
 
-    /**
-     * Stop access review definition.
-     * 
-     * @param scheduleDefinitionId The id of the access review schedule definition.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the {@link Response} on successful completion of {@link Mono}.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Response<Void>> stopWithResponseAsync(String scheduleDefinitionId) {
         if (this.client.getEndpoint() == null) {
@@ -657,43 +514,19 @@ public final class AccessReviewScheduleDefinitionsClientImpl implements AccessRe
             scheduleDefinitionId, context);
     }
 
-    /**
-     * Stop access review definition.
-     * 
-     * @param scheduleDefinitionId The id of the access review schedule definition.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return A {@link Mono} that completes when a successful response is received.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Void> stopAsync(String scheduleDefinitionId) {
         return stopWithResponseAsync(scheduleDefinitionId).flatMap(ignored -> Mono.empty());
     }
 
-    /**
-     * Stop access review definition.
-     * 
-     * @param scheduleDefinitionId The id of the access review schedule definition.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the {@link Response}.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Response<Void> stopWithResponse(String scheduleDefinitionId, Context context) {
         return stopWithResponseAsync(scheduleDefinitionId, context).block();
     }
 
-    /**
-     * Stop access review definition.
-     * 
-     * @param scheduleDefinitionId The id of the access review schedule definition.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public void stop(String scheduleDefinitionId) {
         stopWithResponse(scheduleDefinitionId, Context.NONE);

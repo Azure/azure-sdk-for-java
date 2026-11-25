@@ -45,8 +45,7 @@ public final class ServersImpl implements Servers {
     }
 
     public PagedIterable<ClusterServer> listByCluster(String resourceGroupName, String clusterName) {
-        PagedIterable<ClusterServerInner> inner = this.serviceClient().listByCluster(resourceGroupName, clusterName);
-        return ResourceManagerUtils.mapPage(inner, inner1 -> new ClusterServerImpl(inner1, this.manager()));
+        return this.listByCluster(resourceGroupName, clusterName, Context.NONE);
     }
 
     public PagedIterable<ClusterServer> listByCluster(String resourceGroupName, String clusterName, Context context) {

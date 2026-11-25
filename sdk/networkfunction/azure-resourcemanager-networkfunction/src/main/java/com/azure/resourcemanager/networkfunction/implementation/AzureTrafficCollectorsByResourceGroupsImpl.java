@@ -26,8 +26,7 @@ public final class AzureTrafficCollectorsByResourceGroupsImpl implements AzureTr
     }
 
     public PagedIterable<AzureTrafficCollector> listByResourceGroup(String resourceGroupName) {
-        PagedIterable<AzureTrafficCollectorInner> inner = this.serviceClient().listByResourceGroup(resourceGroupName);
-        return ResourceManagerUtils.mapPage(inner, inner1 -> new AzureTrafficCollectorImpl(inner1, this.manager()));
+        return this.listByResourceGroup(resourceGroupName, Context.NONE);
     }
 
     public PagedIterable<AzureTrafficCollector> listByResourceGroup(String resourceGroupName, Context context) {

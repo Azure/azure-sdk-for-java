@@ -60,10 +60,7 @@ public final class TriggerImpl implements Trigger, Trigger.Definition, Trigger.U
     }
 
     public Trigger create() {
-        this.innerObject = serviceManager.serviceClient()
-            .getTriggers()
-            .createOrUpdate(resourceGroupName, imageTemplateName, triggerName, this.innerModel(), Context.NONE);
-        return this;
+        return this.create(Context.NONE);
     }
 
     public Trigger create(Context context) {
@@ -84,10 +81,7 @@ public final class TriggerImpl implements Trigger, Trigger.Definition, Trigger.U
     }
 
     public Trigger apply() {
-        this.innerObject = serviceManager.serviceClient()
-            .getTriggers()
-            .createOrUpdate(resourceGroupName, imageTemplateName, triggerName, this.innerModel(), Context.NONE);
-        return this;
+        return this.apply(Context.NONE);
     }
 
     public Trigger apply(Context context) {
@@ -112,11 +106,7 @@ public final class TriggerImpl implements Trigger, Trigger.Definition, Trigger.U
     }
 
     public Trigger refresh() {
-        this.innerObject = serviceManager.serviceClient()
-            .getTriggers()
-            .getWithResponse(resourceGroupName, imageTemplateName, triggerName, Context.NONE)
-            .getValue();
-        return this;
+        return this.refresh(Context.NONE);
     }
 
     public Trigger refresh(Context context) {

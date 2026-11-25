@@ -226,22 +226,7 @@ public final class ContainerAppPrivateEndpointConnectionsClientImpl
             .flatMap(res -> Mono.justOrEmpty(res.getValue()));
     }
 
-    /**
-     * Get a private endpoint connection for a given Container App.
-     * 
-     * Gets the details of a private endpoint connection associated with a Container App.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param containerAppName Name of the Container App.
-     * @param privateEndpointConnectionName Name of the Private Endpoint Connection.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return a private endpoint connection for a given Container App.
-     * 
-     * Gets the details of a private endpoint connection associated with a Container App along with {@link Response}.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Response<PrivateEndpointConnectionInner> getWithResponse(String resourceGroupName, String containerAppName,
         String privateEndpointConnectionName, Context context) {
@@ -250,21 +235,7 @@ public final class ContainerAppPrivateEndpointConnectionsClientImpl
             resourceGroupName, containerAppName, privateEndpointConnectionName, accept, context);
     }
 
-    /**
-     * Get a private endpoint connection for a given Container App.
-     * 
-     * Gets the details of a private endpoint connection associated with a Container App.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param containerAppName Name of the Container App.
-     * @param privateEndpointConnectionName Name of the Private Endpoint Connection.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return a private endpoint connection for a given Container App.
-     * 
-     * Gets the details of a private endpoint connection associated with a Container App.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public PrivateEndpointConnectionInner get(String resourceGroupName, String containerAppName,
         String privateEndpointConnectionName) {
@@ -317,11 +288,8 @@ public final class ContainerAppPrivateEndpointConnectionsClientImpl
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Response<BinaryData> createOrUpdateWithResponse(String resourceGroupName, String containerAppName,
         String privateEndpointConnectionName, PrivateEndpointConnectionInner privateEndpointConnectionEnvelope) {
-        final String contentType = "application/json";
-        final String accept = "application/json";
-        return service.createOrUpdateSync(this.client.getEndpoint(), this.client.getApiVersion(),
-            this.client.getSubscriptionId(), resourceGroupName, containerAppName, privateEndpointConnectionName,
-            contentType, accept, privateEndpointConnectionEnvelope, Context.NONE);
+        return createOrUpdateWithResponse(resourceGroupName, containerAppName, privateEndpointConnectionName,
+            privateEndpointConnectionEnvelope, Context.NONE);
     }
 
     /**
@@ -375,45 +343,16 @@ public final class ContainerAppPrivateEndpointConnectionsClientImpl
             this.client.getContext());
     }
 
-    /**
-     * Update the state of a private endpoint connection for a given Container App.
-     * 
-     * Creates a private endpoint connection or updates its connection state for a Container App.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param containerAppName Name of the Container App.
-     * @param privateEndpointConnectionName Name of the Private Endpoint Connection.
-     * @param privateEndpointConnectionEnvelope The resource of private endpoint and its properties.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the {@link SyncPoller} for polling of the Private Endpoint Connection resource.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public SyncPoller<PollResult<PrivateEndpointConnectionInner>, PrivateEndpointConnectionInner> beginCreateOrUpdate(
         String resourceGroupName, String containerAppName, String privateEndpointConnectionName,
         PrivateEndpointConnectionInner privateEndpointConnectionEnvelope) {
-        Response<BinaryData> response = createOrUpdateWithResponse(resourceGroupName, containerAppName,
-            privateEndpointConnectionName, privateEndpointConnectionEnvelope);
-        return this.client.<PrivateEndpointConnectionInner, PrivateEndpointConnectionInner>getLroResult(response,
-            PrivateEndpointConnectionInner.class, PrivateEndpointConnectionInner.class, Context.NONE);
+        return beginCreateOrUpdate(resourceGroupName, containerAppName, privateEndpointConnectionName,
+            privateEndpointConnectionEnvelope, Context.NONE);
     }
 
-    /**
-     * Update the state of a private endpoint connection for a given Container App.
-     * 
-     * Creates a private endpoint connection or updates its connection state for a Container App.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param containerAppName Name of the Container App.
-     * @param privateEndpointConnectionName Name of the Private Endpoint Connection.
-     * @param privateEndpointConnectionEnvelope The resource of private endpoint and its properties.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the {@link SyncPoller} for polling of the Private Endpoint Connection resource.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public SyncPoller<PollResult<PrivateEndpointConnectionInner>, PrivateEndpointConnectionInner> beginCreateOrUpdate(
         String resourceGroupName, String containerAppName, String privateEndpointConnectionName,
@@ -445,48 +384,21 @@ public final class ContainerAppPrivateEndpointConnectionsClientImpl
             privateEndpointConnectionEnvelope).last().flatMap(this.client::getLroFinalResultOrError);
     }
 
-    /**
-     * Update the state of a private endpoint connection for a given Container App.
-     * 
-     * Creates a private endpoint connection or updates its connection state for a Container App.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param containerAppName Name of the Container App.
-     * @param privateEndpointConnectionName Name of the Private Endpoint Connection.
-     * @param privateEndpointConnectionEnvelope The resource of private endpoint and its properties.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the Private Endpoint Connection resource.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public PrivateEndpointConnectionInner createOrUpdate(String resourceGroupName, String containerAppName,
         String privateEndpointConnectionName, PrivateEndpointConnectionInner privateEndpointConnectionEnvelope) {
-        return beginCreateOrUpdate(resourceGroupName, containerAppName, privateEndpointConnectionName,
-            privateEndpointConnectionEnvelope).getFinalResult();
+        return createOrUpdate(resourceGroupName, containerAppName, privateEndpointConnectionName,
+            privateEndpointConnectionEnvelope, Context.NONE);
     }
 
-    /**
-     * Update the state of a private endpoint connection for a given Container App.
-     * 
-     * Creates a private endpoint connection or updates its connection state for a Container App.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param containerAppName Name of the Container App.
-     * @param privateEndpointConnectionName Name of the Private Endpoint Connection.
-     * @param privateEndpointConnectionEnvelope The resource of private endpoint and its properties.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the Private Endpoint Connection resource.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public PrivateEndpointConnectionInner createOrUpdate(String resourceGroupName, String containerAppName,
         String privateEndpointConnectionName, PrivateEndpointConnectionInner privateEndpointConnectionEnvelope,
         Context context) {
-        return beginCreateOrUpdate(resourceGroupName, containerAppName, privateEndpointConnectionName,
-            privateEndpointConnectionEnvelope, context).getFinalResult();
+        return this.client.getLroFinalResultOrError(beginCreateOrUpdate(resourceGroupName, containerAppName,
+            privateEndpointConnectionName, privateEndpointConnectionEnvelope, context));
     }
 
     /**
@@ -528,9 +440,7 @@ public final class ContainerAppPrivateEndpointConnectionsClientImpl
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Response<BinaryData> deleteWithResponse(String resourceGroupName, String containerAppName,
         String privateEndpointConnectionName) {
-        return service.deleteSync(this.client.getEndpoint(), this.client.getApiVersion(),
-            this.client.getSubscriptionId(), resourceGroupName, containerAppName, privateEndpointConnectionName,
-            Context.NONE);
+        return deleteWithResponse(resourceGroupName, containerAppName, privateEndpointConnectionName, Context.NONE);
     }
 
     /**
@@ -577,41 +487,14 @@ public final class ContainerAppPrivateEndpointConnectionsClientImpl
             this.client.getContext());
     }
 
-    /**
-     * Delete a private endpoint connection for a given Container App.
-     * 
-     * Deletes the specified private endpoint connection associated with a Container App.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param containerAppName Name of the Container App.
-     * @param privateEndpointConnectionName Name of the Private Endpoint Connection.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the {@link SyncPoller} for polling of long-running operation.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public SyncPoller<PollResult<Void>, Void> beginDelete(String resourceGroupName, String containerAppName,
         String privateEndpointConnectionName) {
-        Response<BinaryData> response
-            = deleteWithResponse(resourceGroupName, containerAppName, privateEndpointConnectionName);
-        return this.client.<Void, Void>getLroResult(response, Void.class, Void.class, Context.NONE);
+        return beginDelete(resourceGroupName, containerAppName, privateEndpointConnectionName, Context.NONE);
     }
 
-    /**
-     * Delete a private endpoint connection for a given Container App.
-     * 
-     * Deletes the specified private endpoint connection associated with a Container App.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param containerAppName Name of the Container App.
-     * @param privateEndpointConnectionName Name of the Private Endpoint Connection.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the {@link SyncPoller} for polling of long-running operation.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public SyncPoller<PollResult<Void>, Void> beginDelete(String resourceGroupName, String containerAppName,
         String privateEndpointConnectionName, Context context) {
@@ -640,40 +523,18 @@ public final class ContainerAppPrivateEndpointConnectionsClientImpl
             .flatMap(this.client::getLroFinalResultOrError);
     }
 
-    /**
-     * Delete a private endpoint connection for a given Container App.
-     * 
-     * Deletes the specified private endpoint connection associated with a Container App.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param containerAppName Name of the Container App.
-     * @param privateEndpointConnectionName Name of the Private Endpoint Connection.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public void delete(String resourceGroupName, String containerAppName, String privateEndpointConnectionName) {
-        beginDelete(resourceGroupName, containerAppName, privateEndpointConnectionName).getFinalResult();
+        delete(resourceGroupName, containerAppName, privateEndpointConnectionName, Context.NONE);
     }
 
-    /**
-     * Delete a private endpoint connection for a given Container App.
-     * 
-     * Deletes the specified private endpoint connection associated with a Container App.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param containerAppName Name of the Container App.
-     * @param privateEndpointConnectionName Name of the Private Endpoint Connection.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public void delete(String resourceGroupName, String containerAppName, String privateEndpointConnectionName,
         Context context) {
-        beginDelete(resourceGroupName, containerAppName, privateEndpointConnectionName, context).getFinalResult();
+        this.client.getLroFinalResultOrError(
+            beginDelete(resourceGroupName, containerAppName, privateEndpointConnectionName, context));
     }
 
     /**
@@ -734,12 +595,7 @@ public final class ContainerAppPrivateEndpointConnectionsClientImpl
     @ServiceMethod(returns = ReturnType.SINGLE)
     private PagedResponse<PrivateEndpointConnectionInner> listSinglePage(String resourceGroupName,
         String containerAppName) {
-        final String accept = "application/json";
-        Response<PrivateEndpointConnectionListResult> res
-            = service.listSync(this.client.getEndpoint(), this.client.getApiVersion(), this.client.getSubscriptionId(),
-                resourceGroupName, containerAppName, accept, Context.NONE);
-        return new PagedResponseBase<>(res.getRequest(), res.getStatusCode(), res.getHeaders(), res.getValue().value(),
-            res.getValue().nextLink(), null);
+        return listSinglePage(resourceGroupName, containerAppName, Context.NONE);
     }
 
     /**
@@ -766,39 +622,13 @@ public final class ContainerAppPrivateEndpointConnectionsClientImpl
             res.getValue().nextLink(), null);
     }
 
-    /**
-     * List private endpoint connections for a given Container App.
-     * 
-     * Lists all private endpoint connections associated with a Container App.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param containerAppName Name of the Container App.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the response of a PrivateEndpointConnection list operation as paginated response with
-     * {@link PagedIterable}.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.COLLECTION)
     public PagedIterable<PrivateEndpointConnectionInner> list(String resourceGroupName, String containerAppName) {
-        return new PagedIterable<>(() -> listSinglePage(resourceGroupName, containerAppName),
-            nextLink -> listNextSinglePage(nextLink));
+        return list(resourceGroupName, containerAppName, Context.NONE);
     }
 
-    /**
-     * List private endpoint connections for a given Container App.
-     * 
-     * Lists all private endpoint connections associated with a Container App.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param containerAppName Name of the Container App.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the response of a PrivateEndpointConnection list operation as paginated response with
-     * {@link PagedIterable}.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.COLLECTION)
     public PagedIterable<PrivateEndpointConnectionInner> list(String resourceGroupName, String containerAppName,
         Context context) {
@@ -840,11 +670,7 @@ public final class ContainerAppPrivateEndpointConnectionsClientImpl
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private PagedResponse<PrivateEndpointConnectionInner> listNextSinglePage(String nextLink) {
-        final String accept = "application/json";
-        Response<PrivateEndpointConnectionListResult> res
-            = service.listNextSync(nextLink, this.client.getEndpoint(), accept, Context.NONE);
-        return new PagedResponseBase<>(res.getRequest(), res.getStatusCode(), res.getHeaders(), res.getValue().value(),
-            res.getValue().nextLink(), null);
+        return listNextSinglePage(nextLink, Context.NONE);
     }
 
     /**

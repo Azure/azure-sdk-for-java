@@ -189,10 +189,7 @@ public final class LabImpl implements Lab, Lab.Definition, Lab.Update {
     }
 
     public Lab create() {
-        this.innerObject = serviceManager.serviceClient()
-            .getLabs()
-            .createOrUpdate(resourceGroupName, name, this.innerModel(), Context.NONE);
-        return this;
+        return this.create(Context.NONE);
     }
 
     public Lab create(Context context) {
@@ -214,11 +211,7 @@ public final class LabImpl implements Lab, Lab.Definition, Lab.Update {
     }
 
     public Lab apply() {
-        this.innerObject = serviceManager.serviceClient()
-            .getLabs()
-            .updateWithResponse(resourceGroupName, name, updateLab, Context.NONE)
-            .getValue();
-        return this;
+        return this.apply(Context.NONE);
     }
 
     public Lab apply(Context context) {
@@ -241,12 +234,7 @@ public final class LabImpl implements Lab, Lab.Definition, Lab.Update {
     }
 
     public Lab refresh() {
-        String localExpand = null;
-        this.innerObject = serviceManager.serviceClient()
-            .getLabs()
-            .getByResourceGroupWithResponse(resourceGroupName, name, localExpand, Context.NONE)
-            .getValue();
-        return this;
+        return this.refresh(Context.NONE);
     }
 
     public Lab refresh(Context context) {

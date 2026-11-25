@@ -228,18 +228,7 @@ public final class PrivateEndpointConnProxiesClientImpl implements PrivateEndpoi
             .flatMap(res -> Mono.justOrEmpty(res.getValue()));
     }
 
-    /**
-     * Gets the private endpoint connection proxy details.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param vaultName The vault name.
-     * @param privateEndpointConnectionProxyName The private endpoint connection proxy name.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the private endpoint connection proxy details along with {@link Response}.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Response<PrivateEndpointConnectionProxyInner> getWithResponse(String resourceGroupName, String vaultName,
         String privateEndpointConnectionProxyName, Context context) {
@@ -248,17 +237,7 @@ public final class PrivateEndpointConnProxiesClientImpl implements PrivateEndpoi
             resourceGroupName, vaultName, privateEndpointConnectionProxyName, accept, context);
     }
 
-    /**
-     * Gets the private endpoint connection proxy details.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param vaultName The vault name.
-     * @param privateEndpointConnectionProxyName The private endpoint connection proxy name.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the private endpoint connection proxy details.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public PrivateEndpointConnectionProxyInner get(String resourceGroupName, String vaultName,
         String privateEndpointConnectionProxyName) {
@@ -312,20 +291,7 @@ public final class PrivateEndpointConnProxiesClientImpl implements PrivateEndpoi
             .flatMap(res -> Mono.justOrEmpty(res.getValue()));
     }
 
-    /**
-     * Create a new private endpoint connection proxy which includes both auto and manual approval types. Creating the
-     * proxy resource will also create a private endpoint connection resource.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param vaultName The vault name.
-     * @param privateEndpointConnectionProxyName The private endpoint connection proxy name.
-     * @param resource Private endpoint connection creation input.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return represents private endpoint connection proxy request along with {@link Response}.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Response<PrivateEndpointConnectionProxyInner> createWithResponse(String resourceGroupName, String vaultName,
         String privateEndpointConnectionProxyName, PrivateEndpointConnectionProxyInner resource, Context context) {
@@ -336,19 +302,7 @@ public final class PrivateEndpointConnProxiesClientImpl implements PrivateEndpoi
             contentType, accept, resource, context);
     }
 
-    /**
-     * Create a new private endpoint connection proxy which includes both auto and manual approval types. Creating the
-     * proxy resource will also create a private endpoint connection resource.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param vaultName The vault name.
-     * @param privateEndpointConnectionProxyName The private endpoint connection proxy name.
-     * @param resource Private endpoint connection creation input.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return represents private endpoint connection proxy request.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public PrivateEndpointConnectionProxyInner create(String resourceGroupName, String vaultName,
         String privateEndpointConnectionProxyName, PrivateEndpointConnectionProxyInner resource) {
@@ -389,9 +343,7 @@ public final class PrivateEndpointConnProxiesClientImpl implements PrivateEndpoi
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Response<BinaryData> deleteWithResponse(String resourceGroupName, String vaultName,
         String privateEndpointConnectionProxyName) {
-        return service.deleteSync(this.client.getEndpoint(), this.client.getApiVersion(),
-            this.client.getSubscriptionId(), resourceGroupName, vaultName, privateEndpointConnectionProxyName,
-            Context.NONE);
+        return deleteWithResponse(resourceGroupName, vaultName, privateEndpointConnectionProxyName, Context.NONE);
     }
 
     /**
@@ -433,37 +385,14 @@ public final class PrivateEndpointConnProxiesClientImpl implements PrivateEndpoi
             this.client.getContext());
     }
 
-    /**
-     * Returns the operation to track the deletion of private endpoint connection proxy.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param vaultName The vault name.
-     * @param privateEndpointConnectionProxyName The private endpoint connection proxy name.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the {@link SyncPoller} for polling of long-running operation.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public SyncPoller<PollResult<Void>, Void> beginDelete(String resourceGroupName, String vaultName,
         String privateEndpointConnectionProxyName) {
-        Response<BinaryData> response
-            = deleteWithResponse(resourceGroupName, vaultName, privateEndpointConnectionProxyName);
-        return this.client.<Void, Void>getLroResult(response, Void.class, Void.class, Context.NONE);
+        return beginDelete(resourceGroupName, vaultName, privateEndpointConnectionProxyName, Context.NONE);
     }
 
-    /**
-     * Returns the operation to track the deletion of private endpoint connection proxy.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param vaultName The vault name.
-     * @param privateEndpointConnectionProxyName The private endpoint connection proxy name.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the {@link SyncPoller} for polling of long-running operation.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public SyncPoller<PollResult<Void>, Void> beginDelete(String resourceGroupName, String vaultName,
         String privateEndpointConnectionProxyName, Context context) {
@@ -490,36 +419,18 @@ public final class PrivateEndpointConnProxiesClientImpl implements PrivateEndpoi
             .flatMap(this.client::getLroFinalResultOrError);
     }
 
-    /**
-     * Returns the operation to track the deletion of private endpoint connection proxy.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param vaultName The vault name.
-     * @param privateEndpointConnectionProxyName The private endpoint connection proxy name.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public void delete(String resourceGroupName, String vaultName, String privateEndpointConnectionProxyName) {
-        beginDelete(resourceGroupName, vaultName, privateEndpointConnectionProxyName).getFinalResult();
+        delete(resourceGroupName, vaultName, privateEndpointConnectionProxyName, Context.NONE);
     }
 
-    /**
-     * Returns the operation to track the deletion of private endpoint connection proxy.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param vaultName The vault name.
-     * @param privateEndpointConnectionProxyName The private endpoint connection proxy name.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public void delete(String resourceGroupName, String vaultName, String privateEndpointConnectionProxyName,
         Context context) {
-        beginDelete(resourceGroupName, vaultName, privateEndpointConnectionProxyName, context).getFinalResult();
+        this.client.getLroFinalResultOrError(
+            beginDelete(resourceGroupName, vaultName, privateEndpointConnectionProxyName, context));
     }
 
     /**
@@ -574,12 +485,7 @@ public final class PrivateEndpointConnProxiesClientImpl implements PrivateEndpoi
     @ServiceMethod(returns = ReturnType.SINGLE)
     private PagedResponse<PrivateEndpointConnectionProxyInner> listSinglePage(String resourceGroupName,
         String vaultName) {
-        final String accept = "application/json";
-        Response<PrivEdpConnProxyListResult> res
-            = service.listSync(this.client.getEndpoint(), this.client.getApiVersion(), this.client.getSubscriptionId(),
-                resourceGroupName, vaultName, accept, Context.NONE);
-        return new PagedResponseBase<>(res.getRequest(), res.getStatusCode(), res.getHeaders(), res.getValue().value(),
-            res.getValue().nextLink(), null);
+        return listSinglePage(resourceGroupName, vaultName, Context.NONE);
     }
 
     /**
@@ -604,33 +510,13 @@ public final class PrivateEndpointConnProxiesClientImpl implements PrivateEndpoi
             res.getValue().nextLink(), null);
     }
 
-    /**
-     * Gets the all private endpoint connections proxies.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param vaultName The vault name.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the all private endpoint connections proxies as paginated response with {@link PagedIterable}.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.COLLECTION)
     public PagedIterable<PrivateEndpointConnectionProxyInner> list(String resourceGroupName, String vaultName) {
-        return new PagedIterable<>(() -> listSinglePage(resourceGroupName, vaultName),
-            nextLink -> listNextSinglePage(nextLink));
+        return list(resourceGroupName, vaultName, Context.NONE);
     }
 
-    /**
-     * Gets the all private endpoint connections proxies.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param vaultName The vault name.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the all private endpoint connections proxies as paginated response with {@link PagedIterable}.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.COLLECTION)
     public PagedIterable<PrivateEndpointConnectionProxyInner> list(String resourceGroupName, String vaultName,
         Context context) {
@@ -682,19 +568,7 @@ public final class PrivateEndpointConnProxiesClientImpl implements PrivateEndpoi
             .flatMap(res -> Mono.justOrEmpty(res.getValue()));
     }
 
-    /**
-     * Returns remote private endpoint connection information after validation.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param vaultName The vault name.
-     * @param privateEndpointConnectionProxyName The private endpoint connection proxy name.
-     * @param body The private endpoint connection proxy input.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return represents private endpoint connection proxy request along with {@link Response}.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Response<PrivateEndpointConnectionProxyInner> validateWithResponse(String resourceGroupName,
         String vaultName, String privateEndpointConnectionProxyName, PrivateEndpointConnectionProxyInner body,
@@ -706,18 +580,7 @@ public final class PrivateEndpointConnProxiesClientImpl implements PrivateEndpoi
             contentType, accept, body, context);
     }
 
-    /**
-     * Returns remote private endpoint connection information after validation.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param vaultName The vault name.
-     * @param privateEndpointConnectionProxyName The private endpoint connection proxy name.
-     * @param body The private endpoint connection proxy input.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return represents private endpoint connection proxy request.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public PrivateEndpointConnectionProxyInner validate(String resourceGroupName, String vaultName,
         String privateEndpointConnectionProxyName, PrivateEndpointConnectionProxyInner body) {
@@ -755,11 +618,7 @@ public final class PrivateEndpointConnProxiesClientImpl implements PrivateEndpoi
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private PagedResponse<PrivateEndpointConnectionProxyInner> listNextSinglePage(String nextLink) {
-        final String accept = "application/json";
-        Response<PrivEdpConnProxyListResult> res
-            = service.listNextSync(nextLink, this.client.getEndpoint(), accept, Context.NONE);
-        return new PagedResponseBase<>(res.getRequest(), res.getStatusCode(), res.getHeaders(), res.getValue().value(),
-            res.getValue().nextLink(), null);
+        return listNextSinglePage(nextLink, Context.NONE);
     }
 
     /**

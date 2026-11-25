@@ -51,7 +51,7 @@ public final class AccessImpl implements Access {
     }
 
     public void deleteRoleBinding(String resourceGroupName, String organizationName, String roleBindingId) {
-        this.serviceClient().deleteRoleBinding(resourceGroupName, organizationName, roleBindingId);
+        this.deleteRoleBindingWithResponse(resourceGroupName, organizationName, roleBindingId, Context.NONE);
     }
 
     public Response<AccessListUsersSuccessResponse> listUsersWithResponse(String resourceGroupName,

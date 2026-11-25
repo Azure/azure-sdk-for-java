@@ -114,18 +114,7 @@ public final class ListAssociatedTrafficFiltersClientImpl implements ListAssocia
         return listWithResponseAsync(resourceGroupName, monitorName).flatMap(res -> Mono.justOrEmpty(res.getValue()));
     }
 
-    /**
-     * List all traffic filters associated with your Elastic monitor resource, helping you manage network traffic
-     * control.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param monitorName Monitor resource name.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return list of elastic traffic filters in the account along with {@link Response}.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Response<ElasticTrafficFilterResponseInner> listWithResponse(String resourceGroupName, String monitorName,
         Context context) {
@@ -134,17 +123,7 @@ public final class ListAssociatedTrafficFiltersClientImpl implements ListAssocia
             resourceGroupName, monitorName, accept, context);
     }
 
-    /**
-     * List all traffic filters associated with your Elastic monitor resource, helping you manage network traffic
-     * control.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param monitorName Monitor resource name.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return list of elastic traffic filters in the account.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public ElasticTrafficFilterResponseInner list(String resourceGroupName, String monitorName) {
         return listWithResponse(resourceGroupName, monitorName, Context.NONE).getValue();

@@ -182,11 +182,7 @@ public final class HciUpdateImpl implements HciUpdate, HciUpdate.Definition, Hci
     }
 
     public HciUpdate create() {
-        this.innerObject = serviceManager.serviceClient()
-            .getUpdates()
-            .putWithResponse(resourceGroupName, clusterName, updateName, this.innerModel(), Context.NONE)
-            .getValue();
-        return this;
+        return this.create(Context.NONE);
     }
 
     public HciUpdate create(Context context) {
@@ -208,11 +204,7 @@ public final class HciUpdateImpl implements HciUpdate, HciUpdate.Definition, Hci
     }
 
     public HciUpdate apply() {
-        this.innerObject = serviceManager.serviceClient()
-            .getUpdates()
-            .putWithResponse(resourceGroupName, clusterName, updateName, this.innerModel(), Context.NONE)
-            .getValue();
-        return this;
+        return this.apply(Context.NONE);
     }
 
     public HciUpdate apply(Context context) {
@@ -239,11 +231,7 @@ public final class HciUpdateImpl implements HciUpdate, HciUpdate.Definition, Hci
     }
 
     public HciUpdate refresh() {
-        this.innerObject = serviceManager.serviceClient()
-            .getUpdates()
-            .getWithResponse(resourceGroupName, clusterName, updateName, Context.NONE)
-            .getValue();
-        return this;
+        return this.refresh(Context.NONE);
     }
 
     public HciUpdate refresh(Context context) {

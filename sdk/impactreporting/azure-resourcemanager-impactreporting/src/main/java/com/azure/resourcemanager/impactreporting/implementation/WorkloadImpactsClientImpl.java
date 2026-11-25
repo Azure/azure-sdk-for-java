@@ -189,10 +189,7 @@ public final class WorkloadImpactsClientImpl implements WorkloadImpactsClient {
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Response<BinaryData> createWithResponse(String workloadImpactName, WorkloadImpactInner resource) {
-        final String contentType = "application/json";
-        final String accept = "application/json";
-        return service.createSync(this.client.getEndpoint(), this.client.getApiVersion(),
-            this.client.getSubscriptionId(), workloadImpactName, contentType, accept, resource, Context.NONE);
+        return createWithResponse(workloadImpactName, resource, Context.NONE);
     }
 
     /**
@@ -233,35 +230,14 @@ public final class WorkloadImpactsClientImpl implements WorkloadImpactsClient {
             WorkloadImpactInner.class, WorkloadImpactInner.class, this.client.getContext());
     }
 
-    /**
-     * Create a WorkloadImpact.
-     * 
-     * @param workloadImpactName workloadImpact resource.
-     * @param resource Resource create parameters.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the {@link SyncPoller} for polling of workload Impact properties.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public SyncPoller<PollResult<WorkloadImpactInner>, WorkloadImpactInner> beginCreate(String workloadImpactName,
         WorkloadImpactInner resource) {
-        Response<BinaryData> response = createWithResponse(workloadImpactName, resource);
-        return this.client.<WorkloadImpactInner, WorkloadImpactInner>getLroResult(response, WorkloadImpactInner.class,
-            WorkloadImpactInner.class, Context.NONE);
+        return beginCreate(workloadImpactName, resource, Context.NONE);
     }
 
-    /**
-     * Create a WorkloadImpact.
-     * 
-     * @param workloadImpactName workloadImpact resource.
-     * @param resource Resource create parameters.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the {@link SyncPoller} for polling of workload Impact properties.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public SyncPoller<PollResult<WorkloadImpactInner>, WorkloadImpactInner> beginCreate(String workloadImpactName,
         WorkloadImpactInner resource, Context context) {
@@ -285,35 +261,16 @@ public final class WorkloadImpactsClientImpl implements WorkloadImpactsClient {
         return beginCreateAsync(workloadImpactName, resource).last().flatMap(this.client::getLroFinalResultOrError);
     }
 
-    /**
-     * Create a WorkloadImpact.
-     * 
-     * @param workloadImpactName workloadImpact resource.
-     * @param resource Resource create parameters.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return workload Impact properties.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public WorkloadImpactInner create(String workloadImpactName, WorkloadImpactInner resource) {
-        return beginCreate(workloadImpactName, resource).getFinalResult();
+        return create(workloadImpactName, resource, Context.NONE);
     }
 
-    /**
-     * Create a WorkloadImpact.
-     * 
-     * @param workloadImpactName workloadImpact resource.
-     * @param resource Resource create parameters.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return workload Impact properties.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public WorkloadImpactInner create(String workloadImpactName, WorkloadImpactInner resource, Context context) {
-        return beginCreate(workloadImpactName, resource, context).getFinalResult();
+        return this.client.getLroFinalResultOrError(beginCreate(workloadImpactName, resource, context));
     }
 
     /**
@@ -348,16 +305,7 @@ public final class WorkloadImpactsClientImpl implements WorkloadImpactsClient {
         return getWithResponseAsync(workloadImpactName).flatMap(res -> Mono.justOrEmpty(res.getValue()));
     }
 
-    /**
-     * Get a WorkloadImpact.
-     * 
-     * @param workloadImpactName workloadImpact resource.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return a WorkloadImpact along with {@link Response}.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Response<WorkloadImpactInner> getWithResponse(String workloadImpactName, Context context) {
         final String accept = "application/json";
@@ -365,15 +313,7 @@ public final class WorkloadImpactsClientImpl implements WorkloadImpactsClient {
             workloadImpactName, accept, context);
     }
 
-    /**
-     * Get a WorkloadImpact.
-     * 
-     * @param workloadImpactName workloadImpact resource.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return a WorkloadImpact.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public WorkloadImpactInner get(String workloadImpactName) {
         return getWithResponse(workloadImpactName, Context.NONE).getValue();
@@ -410,30 +350,14 @@ public final class WorkloadImpactsClientImpl implements WorkloadImpactsClient {
         return deleteWithResponseAsync(workloadImpactName).flatMap(ignored -> Mono.empty());
     }
 
-    /**
-     * Delete a WorkloadImpact.
-     * 
-     * @param workloadImpactName workloadImpact resource.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the {@link Response}.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Response<Void> deleteWithResponse(String workloadImpactName, Context context) {
         return service.deleteSync(this.client.getEndpoint(), this.client.getApiVersion(),
             this.client.getSubscriptionId(), workloadImpactName, context);
     }
 
-    /**
-     * Delete a WorkloadImpact.
-     * 
-     * @param workloadImpactName workloadImpact resource.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public void delete(String workloadImpactName) {
         deleteWithResponse(workloadImpactName, Context.NONE);
@@ -480,11 +404,7 @@ public final class WorkloadImpactsClientImpl implements WorkloadImpactsClient {
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private PagedResponse<WorkloadImpactInner> listSinglePage() {
-        final String accept = "application/json";
-        Response<WorkloadImpactListResult> res = service.listSync(this.client.getEndpoint(),
-            this.client.getApiVersion(), this.client.getSubscriptionId(), accept, Context.NONE);
-        return new PagedResponseBase<>(res.getRequest(), res.getStatusCode(), res.getHeaders(), res.getValue().value(),
-            res.getValue().nextLink(), null);
+        return listSinglePage(Context.NONE);
     }
 
     /**
@@ -505,27 +425,13 @@ public final class WorkloadImpactsClientImpl implements WorkloadImpactsClient {
             res.getValue().nextLink(), null);
     }
 
-    /**
-     * List WorkloadImpact resources by subscription ID.
-     * 
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the response of a WorkloadImpact list operation as paginated response with {@link PagedIterable}.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.COLLECTION)
     public PagedIterable<WorkloadImpactInner> list() {
-        return new PagedIterable<>(() -> listSinglePage(), nextLink -> listBySubscriptionNextSinglePage(nextLink));
+        return list(Context.NONE);
     }
 
-    /**
-     * List WorkloadImpact resources by subscription ID.
-     * 
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the response of a WorkloadImpact list operation as paginated response with {@link PagedIterable}.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.COLLECTION)
     public PagedIterable<WorkloadImpactInner> list(Context context) {
         return new PagedIterable<>(() -> listSinglePage(context),
@@ -564,11 +470,7 @@ public final class WorkloadImpactsClientImpl implements WorkloadImpactsClient {
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private PagedResponse<WorkloadImpactInner> listBySubscriptionNextSinglePage(String nextLink) {
-        final String accept = "application/json";
-        Response<WorkloadImpactListResult> res
-            = service.listBySubscriptionNextSync(nextLink, this.client.getEndpoint(), accept, Context.NONE);
-        return new PagedResponseBase<>(res.getRequest(), res.getStatusCode(), res.getHeaders(), res.getValue().value(),
-            res.getValue().nextLink(), null);
+        return listBySubscriptionNextSinglePage(nextLink, Context.NONE);
     }
 
     /**

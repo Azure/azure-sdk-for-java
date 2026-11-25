@@ -29,7 +29,7 @@ public final class JobOperationResultsImpl implements JobOperationResults {
     }
 
     public void get(String vaultName, String resourceGroupName, String jobName, String operationId) {
-        this.serviceClient().get(vaultName, resourceGroupName, jobName, operationId);
+        this.getWithResponse(vaultName, resourceGroupName, jobName, operationId, Context.NONE);
     }
 
     private JobOperationResultsClient serviceClient() {

@@ -144,16 +144,7 @@ public final class ActivityLogAlertsClientImpl implements InnerSupportsGet<Activ
             @HeaderParam("Accept") String accept, Context context);
     }
 
-    /**
-     * Get an Activity Log Alert rule.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param activityLogAlertName The name of the Activity Log Alert rule.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return an Activity Log Alert rule along with {@link Response} on successful completion of {@link Mono}.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Response<ActivityLogAlertResourceInner>> getByResourceGroupWithResponseAsync(String resourceGroupName,
         String activityLogAlertName) {
@@ -218,16 +209,7 @@ public final class ActivityLogAlertsClientImpl implements InnerSupportsGet<Activ
             resourceGroupName, activityLogAlertName, accept, context);
     }
 
-    /**
-     * Get an Activity Log Alert rule.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param activityLogAlertName The name of the Activity Log Alert rule.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return an Activity Log Alert rule on successful completion of {@link Mono}.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<ActivityLogAlertResourceInner> getByResourceGroupAsync(String resourceGroupName,
         String activityLogAlertName) {
@@ -235,49 +217,20 @@ public final class ActivityLogAlertsClientImpl implements InnerSupportsGet<Activ
             .flatMap(res -> Mono.justOrEmpty(res.getValue()));
     }
 
-    /**
-     * Get an Activity Log Alert rule.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param activityLogAlertName The name of the Activity Log Alert rule.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return an Activity Log Alert rule along with {@link Response}.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Response<ActivityLogAlertResourceInner> getByResourceGroupWithResponse(String resourceGroupName,
         String activityLogAlertName, Context context) {
         return getByResourceGroupWithResponseAsync(resourceGroupName, activityLogAlertName, context).block();
     }
 
-    /**
-     * Get an Activity Log Alert rule.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param activityLogAlertName The name of the Activity Log Alert rule.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return an Activity Log Alert rule.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public ActivityLogAlertResourceInner getByResourceGroup(String resourceGroupName, String activityLogAlertName) {
         return getByResourceGroupWithResponse(resourceGroupName, activityLogAlertName, Context.NONE).getValue();
     }
 
-    /**
-     * Create a new Activity Log Alert rule or update an existing one.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param activityLogAlertName The name of the Activity Log Alert rule.
-     * @param activityLogAlertRule The Activity Log Alert rule to create or use for the update.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return an Activity Log Alert rule resource along with {@link Response} on successful completion of {@link Mono}.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Response<ActivityLogAlertResourceInner>> createOrUpdateWithResponseAsync(String resourceGroupName,
         String activityLogAlertName, ActivityLogAlertResourceInner activityLogAlertRule) {
@@ -358,17 +311,7 @@ public final class ActivityLogAlertsClientImpl implements InnerSupportsGet<Activ
             resourceGroupName, activityLogAlertName, contentType, accept, activityLogAlertRule, context);
     }
 
-    /**
-     * Create a new Activity Log Alert rule or update an existing one.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param activityLogAlertName The name of the Activity Log Alert rule.
-     * @param activityLogAlertRule The Activity Log Alert rule to create or use for the update.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return an Activity Log Alert rule resource on successful completion of {@link Mono}.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<ActivityLogAlertResourceInner> createOrUpdateAsync(String resourceGroupName,
         String activityLogAlertName, ActivityLogAlertResourceInner activityLogAlertRule) {
@@ -376,18 +319,7 @@ public final class ActivityLogAlertsClientImpl implements InnerSupportsGet<Activ
             .flatMap(res -> Mono.justOrEmpty(res.getValue()));
     }
 
-    /**
-     * Create a new Activity Log Alert rule or update an existing one.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param activityLogAlertName The name of the Activity Log Alert rule.
-     * @param activityLogAlertRule The Activity Log Alert rule to create or use for the update.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return an Activity Log Alert rule resource along with {@link Response}.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Response<ActivityLogAlertResourceInner> createOrUpdateWithResponse(String resourceGroupName,
         String activityLogAlertName, ActivityLogAlertResourceInner activityLogAlertRule, Context context) {
@@ -395,17 +327,7 @@ public final class ActivityLogAlertsClientImpl implements InnerSupportsGet<Activ
             .block();
     }
 
-    /**
-     * Create a new Activity Log Alert rule or update an existing one.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param activityLogAlertName The name of the Activity Log Alert rule.
-     * @param activityLogAlertRule The Activity Log Alert rule to create or use for the update.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return an Activity Log Alert rule resource.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public ActivityLogAlertResourceInner createOrUpdate(String resourceGroupName, String activityLogAlertName,
         ActivityLogAlertResourceInner activityLogAlertRule) {
@@ -413,18 +335,7 @@ public final class ActivityLogAlertsClientImpl implements InnerSupportsGet<Activ
             .getValue();
     }
 
-    /**
-     * Updates 'tags' and 'enabled' fields in an existing Alert rule. This method is used to update the Alert rule tags,
-     * and to enable or disable the Alert rule. To update other fields use CreateOrUpdate operation.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param activityLogAlertName The name of the Activity Log Alert rule.
-     * @param activityLogAlertRulePatch Parameters supplied to the operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return an Activity Log Alert rule resource along with {@link Response} on successful completion of {@link Mono}.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Response<ActivityLogAlertResourceInner>> updateWithResponseAsync(String resourceGroupName,
         String activityLogAlertName, AlertRulePatchObject activityLogAlertRulePatch) {
@@ -506,18 +417,7 @@ public final class ActivityLogAlertsClientImpl implements InnerSupportsGet<Activ
             activityLogAlertName, contentType, accept, activityLogAlertRulePatch, context);
     }
 
-    /**
-     * Updates 'tags' and 'enabled' fields in an existing Alert rule. This method is used to update the Alert rule tags,
-     * and to enable or disable the Alert rule. To update other fields use CreateOrUpdate operation.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param activityLogAlertName The name of the Activity Log Alert rule.
-     * @param activityLogAlertRulePatch Parameters supplied to the operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return an Activity Log Alert rule resource on successful completion of {@link Mono}.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<ActivityLogAlertResourceInner> updateAsync(String resourceGroupName, String activityLogAlertName,
         AlertRulePatchObject activityLogAlertRulePatch) {
@@ -525,19 +425,7 @@ public final class ActivityLogAlertsClientImpl implements InnerSupportsGet<Activ
             .flatMap(res -> Mono.justOrEmpty(res.getValue()));
     }
 
-    /**
-     * Updates 'tags' and 'enabled' fields in an existing Alert rule. This method is used to update the Alert rule tags,
-     * and to enable or disable the Alert rule. To update other fields use CreateOrUpdate operation.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param activityLogAlertName The name of the Activity Log Alert rule.
-     * @param activityLogAlertRulePatch Parameters supplied to the operation.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return an Activity Log Alert rule resource along with {@link Response}.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Response<ActivityLogAlertResourceInner> updateWithResponse(String resourceGroupName,
         String activityLogAlertName, AlertRulePatchObject activityLogAlertRulePatch, Context context) {
@@ -545,18 +433,7 @@ public final class ActivityLogAlertsClientImpl implements InnerSupportsGet<Activ
             .block();
     }
 
-    /**
-     * Updates 'tags' and 'enabled' fields in an existing Alert rule. This method is used to update the Alert rule tags,
-     * and to enable or disable the Alert rule. To update other fields use CreateOrUpdate operation.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param activityLogAlertName The name of the Activity Log Alert rule.
-     * @param activityLogAlertRulePatch Parameters supplied to the operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return an Activity Log Alert rule resource.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public ActivityLogAlertResourceInner update(String resourceGroupName, String activityLogAlertName,
         AlertRulePatchObject activityLogAlertRulePatch) {
@@ -564,16 +441,7 @@ public final class ActivityLogAlertsClientImpl implements InnerSupportsGet<Activ
             .getValue();
     }
 
-    /**
-     * Delete an Activity Log Alert rule.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param activityLogAlertName The name of the Activity Log Alert rule.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the {@link Response} on successful completion of {@link Mono}.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Response<Void>> deleteWithResponseAsync(String resourceGroupName, String activityLogAlertName) {
         if (this.client.getEndpoint() == null) {
@@ -635,46 +503,19 @@ public final class ActivityLogAlertsClientImpl implements InnerSupportsGet<Activ
             activityLogAlertName, context);
     }
 
-    /**
-     * Delete an Activity Log Alert rule.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param activityLogAlertName The name of the Activity Log Alert rule.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return A {@link Mono} that completes when a successful response is received.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Void> deleteAsync(String resourceGroupName, String activityLogAlertName) {
         return deleteWithResponseAsync(resourceGroupName, activityLogAlertName).flatMap(ignored -> Mono.empty());
     }
 
-    /**
-     * Delete an Activity Log Alert rule.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param activityLogAlertName The name of the Activity Log Alert rule.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the {@link Response}.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Response<Void> deleteWithResponse(String resourceGroupName, String activityLogAlertName, Context context) {
         return deleteWithResponseAsync(resourceGroupName, activityLogAlertName, context).block();
     }
 
-    /**
-     * Delete an Activity Log Alert rule.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param activityLogAlertName The name of the Activity Log Alert rule.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public void delete(String resourceGroupName, String activityLogAlertName) {
         deleteWithResponse(resourceGroupName, activityLogAlertName, Context.NONE);
@@ -751,15 +592,7 @@ public final class ActivityLogAlertsClientImpl implements InnerSupportsGet<Activ
                 res.getValue().value(), res.getValue().nextLink(), null));
     }
 
-    /**
-     * Get a list of all Activity Log Alert rules in a resource group.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return a list of all Activity Log Alert rules in a resource group as paginated response with {@link PagedFlux}.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.COLLECTION)
     public PagedFlux<ActivityLogAlertResourceInner> listByResourceGroupAsync(String resourceGroupName) {
         return new PagedFlux<>(() -> listByResourceGroupSinglePageAsync(resourceGroupName),
@@ -783,32 +616,13 @@ public final class ActivityLogAlertsClientImpl implements InnerSupportsGet<Activ
             nextLink -> listByResourceGroupNextSinglePageAsync(nextLink, context));
     }
 
-    /**
-     * Get a list of all Activity Log Alert rules in a resource group.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return a list of all Activity Log Alert rules in a resource group as paginated response with
-     * {@link PagedIterable}.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.COLLECTION)
     public PagedIterable<ActivityLogAlertResourceInner> listByResourceGroup(String resourceGroupName) {
         return new PagedIterable<>(listByResourceGroupAsync(resourceGroupName));
     }
 
-    /**
-     * Get a list of all Activity Log Alert rules in a resource group.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return a list of all Activity Log Alert rules in a resource group as paginated response with
-     * {@link PagedIterable}.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.COLLECTION)
     public PagedIterable<ActivityLogAlertResourceInner> listByResourceGroup(String resourceGroupName, Context context) {
         return new PagedIterable<>(listByResourceGroupAsync(resourceGroupName, context));
@@ -870,13 +684,7 @@ public final class ActivityLogAlertsClientImpl implements InnerSupportsGet<Activ
                 res.getValue().value(), res.getValue().nextLink(), null));
     }
 
-    /**
-     * Get a list of all Activity Log Alert rules in a subscription.
-     * 
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return a list of all Activity Log Alert rules in a subscription as paginated response with {@link PagedFlux}.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.COLLECTION)
     public PagedFlux<ActivityLogAlertResourceInner> listAsync() {
         return new PagedFlux<>(() -> listSinglePageAsync(),
@@ -898,29 +706,13 @@ public final class ActivityLogAlertsClientImpl implements InnerSupportsGet<Activ
             nextLink -> listBySubscriptionIdNextSinglePageAsync(nextLink, context));
     }
 
-    /**
-     * Get a list of all Activity Log Alert rules in a subscription.
-     * 
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return a list of all Activity Log Alert rules in a subscription as paginated response with
-     * {@link PagedIterable}.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.COLLECTION)
     public PagedIterable<ActivityLogAlertResourceInner> list() {
         return new PagedIterable<>(listAsync());
     }
 
-    /**
-     * Get a list of all Activity Log Alert rules in a subscription.
-     * 
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return a list of all Activity Log Alert rules in a subscription as paginated response with
-     * {@link PagedIterable}.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.COLLECTION)
     public PagedIterable<ActivityLogAlertResourceInner> list(Context context) {
         return new PagedIterable<>(listAsync(context));

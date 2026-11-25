@@ -242,18 +242,7 @@ public final class VirtualNetworkLinksClientImpl implements VirtualNetworkLinksC
             .flatMap(res -> Mono.justOrEmpty(res.getValue()));
     }
 
-    /**
-     * Gets properties of a virtual network link to a DNS forwarding ruleset.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param dnsForwardingRulesetName The name of the DNS forwarding ruleset.
-     * @param virtualNetworkLinkName The name of the virtual network link.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return properties of a virtual network link to a DNS forwarding ruleset along with {@link Response}.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Response<VirtualNetworkLinkInner> getWithResponse(String resourceGroupName, String dnsForwardingRulesetName,
         String virtualNetworkLinkName, Context context) {
@@ -262,17 +251,7 @@ public final class VirtualNetworkLinksClientImpl implements VirtualNetworkLinksC
             resourceGroupName, dnsForwardingRulesetName, virtualNetworkLinkName, accept, context);
     }
 
-    /**
-     * Gets properties of a virtual network link to a DNS forwarding ruleset.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param dnsForwardingRulesetName The name of the DNS forwarding ruleset.
-     * @param virtualNetworkLinkName The name of the virtual network link.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return properties of a virtual network link to a DNS forwarding ruleset.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public VirtualNetworkLinkInner get(String resourceGroupName, String dnsForwardingRulesetName,
         String virtualNetworkLinkName) {
@@ -328,11 +307,8 @@ public final class VirtualNetworkLinksClientImpl implements VirtualNetworkLinksC
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Response<BinaryData> createOrUpdateWithResponse(String resourceGroupName, String dnsForwardingRulesetName,
         String virtualNetworkLinkName, VirtualNetworkLinkInner parameters, String ifMatch, String ifNoneMatch) {
-        final String contentType = "application/json";
-        final String accept = "application/json";
-        return service.createOrUpdateSync(this.client.getEndpoint(), this.client.getApiVersion(),
-            this.client.getSubscriptionId(), resourceGroupName, dnsForwardingRulesetName, virtualNetworkLinkName,
-            ifMatch, ifNoneMatch, contentType, accept, parameters, Context.NONE);
+        return createOrUpdateWithResponse(resourceGroupName, dnsForwardingRulesetName, virtualNetworkLinkName,
+            parameters, ifMatch, ifNoneMatch, Context.NONE);
     }
 
     /**
@@ -435,53 +411,22 @@ public final class VirtualNetworkLinksClientImpl implements VirtualNetworkLinksC
     private SyncPoller<PollResult<VirtualNetworkLinkInner>, VirtualNetworkLinkInner> beginCreateOrUpdate(
         String resourceGroupName, String dnsForwardingRulesetName, String virtualNetworkLinkName,
         VirtualNetworkLinkInner parameters, String ifMatch, String ifNoneMatch) {
-        Response<BinaryData> response = createOrUpdateWithResponse(resourceGroupName, dnsForwardingRulesetName,
-            virtualNetworkLinkName, parameters, ifMatch, ifNoneMatch);
-        return this.client.<VirtualNetworkLinkInner, VirtualNetworkLinkInner>getLroResult(response,
-            VirtualNetworkLinkInner.class, VirtualNetworkLinkInner.class, Context.NONE);
+        return beginCreateOrUpdate(resourceGroupName, dnsForwardingRulesetName, virtualNetworkLinkName, parameters,
+            ifMatch, ifNoneMatch, Context.NONE);
     }
 
-    /**
-     * Creates or updates a virtual network link to a DNS forwarding ruleset.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param dnsForwardingRulesetName The name of the DNS forwarding ruleset.
-     * @param virtualNetworkLinkName The name of the virtual network link.
-     * @param parameters Parameters supplied to the CreateOrUpdate operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the {@link SyncPoller} for polling of describes a virtual network link.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public SyncPoller<PollResult<VirtualNetworkLinkInner>, VirtualNetworkLinkInner> beginCreateOrUpdate(
         String resourceGroupName, String dnsForwardingRulesetName, String virtualNetworkLinkName,
         VirtualNetworkLinkInner parameters) {
         final String ifMatch = null;
         final String ifNoneMatch = null;
-        Response<BinaryData> response = createOrUpdateWithResponse(resourceGroupName, dnsForwardingRulesetName,
-            virtualNetworkLinkName, parameters, ifMatch, ifNoneMatch);
-        return this.client.<VirtualNetworkLinkInner, VirtualNetworkLinkInner>getLroResult(response,
-            VirtualNetworkLinkInner.class, VirtualNetworkLinkInner.class, Context.NONE);
+        return beginCreateOrUpdate(resourceGroupName, dnsForwardingRulesetName, virtualNetworkLinkName, parameters,
+            ifMatch, ifNoneMatch, Context.NONE);
     }
 
-    /**
-     * Creates or updates a virtual network link to a DNS forwarding ruleset.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param dnsForwardingRulesetName The name of the DNS forwarding ruleset.
-     * @param virtualNetworkLinkName The name of the virtual network link.
-     * @param parameters Parameters supplied to the CreateOrUpdate operation.
-     * @param ifMatch ETag of the resource. Omit this value to always overwrite the current resource. Specify the
-     * last-seen ETag value to prevent accidentally overwriting any concurrent changes.
-     * @param ifNoneMatch Set to '*' to allow a new resource to be created, but to prevent updating an existing
-     * resource. Other values will be ignored.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the {@link SyncPoller} for polling of describes a virtual network link.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public SyncPoller<PollResult<VirtualNetworkLinkInner>, VirtualNetworkLinkInner> beginCreateOrUpdate(
         String resourceGroupName, String dnsForwardingRulesetName, String virtualNetworkLinkName,
@@ -536,50 +481,23 @@ public final class VirtualNetworkLinksClientImpl implements VirtualNetworkLinksC
             ifMatch, ifNoneMatch).last().flatMap(this.client::getLroFinalResultOrError);
     }
 
-    /**
-     * Creates or updates a virtual network link to a DNS forwarding ruleset.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param dnsForwardingRulesetName The name of the DNS forwarding ruleset.
-     * @param virtualNetworkLinkName The name of the virtual network link.
-     * @param parameters Parameters supplied to the CreateOrUpdate operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return describes a virtual network link.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public VirtualNetworkLinkInner createOrUpdate(String resourceGroupName, String dnsForwardingRulesetName,
         String virtualNetworkLinkName, VirtualNetworkLinkInner parameters) {
         final String ifMatch = null;
         final String ifNoneMatch = null;
-        return beginCreateOrUpdate(resourceGroupName, dnsForwardingRulesetName, virtualNetworkLinkName, parameters,
-            ifMatch, ifNoneMatch).getFinalResult();
+        return createOrUpdate(resourceGroupName, dnsForwardingRulesetName, virtualNetworkLinkName, parameters, ifMatch,
+            ifNoneMatch, Context.NONE);
     }
 
-    /**
-     * Creates or updates a virtual network link to a DNS forwarding ruleset.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param dnsForwardingRulesetName The name of the DNS forwarding ruleset.
-     * @param virtualNetworkLinkName The name of the virtual network link.
-     * @param parameters Parameters supplied to the CreateOrUpdate operation.
-     * @param ifMatch ETag of the resource. Omit this value to always overwrite the current resource. Specify the
-     * last-seen ETag value to prevent accidentally overwriting any concurrent changes.
-     * @param ifNoneMatch Set to '*' to allow a new resource to be created, but to prevent updating an existing
-     * resource. Other values will be ignored.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return describes a virtual network link.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public VirtualNetworkLinkInner createOrUpdate(String resourceGroupName, String dnsForwardingRulesetName,
         String virtualNetworkLinkName, VirtualNetworkLinkInner parameters, String ifMatch, String ifNoneMatch,
         Context context) {
-        return beginCreateOrUpdate(resourceGroupName, dnsForwardingRulesetName, virtualNetworkLinkName, parameters,
-            ifMatch, ifNoneMatch, context).getFinalResult();
+        return this.client.getLroFinalResultOrError(beginCreateOrUpdate(resourceGroupName, dnsForwardingRulesetName,
+            virtualNetworkLinkName, parameters, ifMatch, ifNoneMatch, context));
     }
 
     /**
@@ -626,11 +544,8 @@ public final class VirtualNetworkLinksClientImpl implements VirtualNetworkLinksC
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Response<BinaryData> updateWithResponse(String resourceGroupName, String dnsForwardingRulesetName,
         String virtualNetworkLinkName, VirtualNetworkLinkPatch parameters, String ifMatch) {
-        final String contentType = "application/json";
-        final String accept = "application/json";
-        return service.updateSync(this.client.getEndpoint(), this.client.getApiVersion(),
-            this.client.getSubscriptionId(), resourceGroupName, dnsForwardingRulesetName, virtualNetworkLinkName,
-            ifMatch, contentType, accept, parameters, Context.NONE);
+        return updateWithResponse(resourceGroupName, dnsForwardingRulesetName, virtualNetworkLinkName, parameters,
+            ifMatch, Context.NONE);
     }
 
     /**
@@ -725,50 +640,21 @@ public final class VirtualNetworkLinksClientImpl implements VirtualNetworkLinksC
     private SyncPoller<PollResult<VirtualNetworkLinkInner>, VirtualNetworkLinkInner> beginUpdate(
         String resourceGroupName, String dnsForwardingRulesetName, String virtualNetworkLinkName,
         VirtualNetworkLinkPatch parameters, String ifMatch) {
-        Response<BinaryData> response = updateWithResponse(resourceGroupName, dnsForwardingRulesetName,
-            virtualNetworkLinkName, parameters, ifMatch);
-        return this.client.<VirtualNetworkLinkInner, VirtualNetworkLinkInner>getLroResult(response,
-            VirtualNetworkLinkInner.class, VirtualNetworkLinkInner.class, Context.NONE);
+        return beginUpdate(resourceGroupName, dnsForwardingRulesetName, virtualNetworkLinkName, parameters, ifMatch,
+            Context.NONE);
     }
 
-    /**
-     * Updates a virtual network link to a DNS forwarding ruleset.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param dnsForwardingRulesetName The name of the DNS forwarding ruleset.
-     * @param virtualNetworkLinkName The name of the virtual network link.
-     * @param parameters Parameters supplied to the Update operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the {@link SyncPoller} for polling of describes a virtual network link.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public SyncPoller<PollResult<VirtualNetworkLinkInner>, VirtualNetworkLinkInner> beginUpdate(
         String resourceGroupName, String dnsForwardingRulesetName, String virtualNetworkLinkName,
         VirtualNetworkLinkPatch parameters) {
         final String ifMatch = null;
-        Response<BinaryData> response = updateWithResponse(resourceGroupName, dnsForwardingRulesetName,
-            virtualNetworkLinkName, parameters, ifMatch);
-        return this.client.<VirtualNetworkLinkInner, VirtualNetworkLinkInner>getLroResult(response,
-            VirtualNetworkLinkInner.class, VirtualNetworkLinkInner.class, Context.NONE);
+        return beginUpdate(resourceGroupName, dnsForwardingRulesetName, virtualNetworkLinkName, parameters, ifMatch,
+            Context.NONE);
     }
 
-    /**
-     * Updates a virtual network link to a DNS forwarding ruleset.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param dnsForwardingRulesetName The name of the DNS forwarding ruleset.
-     * @param virtualNetworkLinkName The name of the virtual network link.
-     * @param parameters Parameters supplied to the Update operation.
-     * @param ifMatch ETag of the resource. Omit this value to always overwrite the current resource. Specify the
-     * last-seen ETag value to prevent accidentally overwriting any concurrent changes.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the {@link SyncPoller} for polling of describes a virtual network link.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public SyncPoller<PollResult<VirtualNetworkLinkInner>, VirtualNetworkLinkInner> beginUpdate(
         String resourceGroupName, String dnsForwardingRulesetName, String virtualNetworkLinkName,
@@ -820,46 +706,21 @@ public final class VirtualNetworkLinksClientImpl implements VirtualNetworkLinksC
             ifMatch).last().flatMap(this.client::getLroFinalResultOrError);
     }
 
-    /**
-     * Updates a virtual network link to a DNS forwarding ruleset.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param dnsForwardingRulesetName The name of the DNS forwarding ruleset.
-     * @param virtualNetworkLinkName The name of the virtual network link.
-     * @param parameters Parameters supplied to the Update operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return describes a virtual network link.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public VirtualNetworkLinkInner update(String resourceGroupName, String dnsForwardingRulesetName,
         String virtualNetworkLinkName, VirtualNetworkLinkPatch parameters) {
         final String ifMatch = null;
-        return beginUpdate(resourceGroupName, dnsForwardingRulesetName, virtualNetworkLinkName, parameters, ifMatch)
-            .getFinalResult();
+        return update(resourceGroupName, dnsForwardingRulesetName, virtualNetworkLinkName, parameters, ifMatch,
+            Context.NONE);
     }
 
-    /**
-     * Updates a virtual network link to a DNS forwarding ruleset.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param dnsForwardingRulesetName The name of the DNS forwarding ruleset.
-     * @param virtualNetworkLinkName The name of the virtual network link.
-     * @param parameters Parameters supplied to the Update operation.
-     * @param ifMatch ETag of the resource. Omit this value to always overwrite the current resource. Specify the
-     * last-seen ETag value to prevent accidentally overwriting any concurrent changes.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return describes a virtual network link.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public VirtualNetworkLinkInner update(String resourceGroupName, String dnsForwardingRulesetName,
         String virtualNetworkLinkName, VirtualNetworkLinkPatch parameters, String ifMatch, Context context) {
-        return beginUpdate(resourceGroupName, dnsForwardingRulesetName, virtualNetworkLinkName, parameters, ifMatch,
-            context).getFinalResult();
+        return this.client.getLroFinalResultOrError(beginUpdate(resourceGroupName, dnsForwardingRulesetName,
+            virtualNetworkLinkName, parameters, ifMatch, context));
     }
 
     /**
@@ -901,9 +762,8 @@ public final class VirtualNetworkLinksClientImpl implements VirtualNetworkLinksC
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Response<BinaryData> deleteWithResponse(String resourceGroupName, String dnsForwardingRulesetName,
         String virtualNetworkLinkName, String ifMatch) {
-        return service.deleteSync(this.client.getEndpoint(), this.client.getApiVersion(),
-            this.client.getSubscriptionId(), resourceGroupName, dnsForwardingRulesetName, virtualNetworkLinkName,
-            ifMatch, Context.NONE);
+        return deleteWithResponse(resourceGroupName, dnsForwardingRulesetName, virtualNetworkLinkName, ifMatch,
+            Context.NONE);
     }
 
     /**
@@ -987,45 +847,18 @@ public final class VirtualNetworkLinksClientImpl implements VirtualNetworkLinksC
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     private SyncPoller<PollResult<Void>, Void> beginDelete(String resourceGroupName, String dnsForwardingRulesetName,
         String virtualNetworkLinkName, String ifMatch) {
-        Response<BinaryData> response
-            = deleteWithResponse(resourceGroupName, dnsForwardingRulesetName, virtualNetworkLinkName, ifMatch);
-        return this.client.<Void, Void>getLroResult(response, Void.class, Void.class, Context.NONE);
+        return beginDelete(resourceGroupName, dnsForwardingRulesetName, virtualNetworkLinkName, ifMatch, Context.NONE);
     }
 
-    /**
-     * Deletes a virtual network link to a DNS forwarding ruleset. WARNING: This operation cannot be undone.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param dnsForwardingRulesetName The name of the DNS forwarding ruleset.
-     * @param virtualNetworkLinkName The name of the virtual network link.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the {@link SyncPoller} for polling of long-running operation.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public SyncPoller<PollResult<Void>, Void> beginDelete(String resourceGroupName, String dnsForwardingRulesetName,
         String virtualNetworkLinkName) {
         final String ifMatch = null;
-        Response<BinaryData> response
-            = deleteWithResponse(resourceGroupName, dnsForwardingRulesetName, virtualNetworkLinkName, ifMatch);
-        return this.client.<Void, Void>getLroResult(response, Void.class, Void.class, Context.NONE);
+        return beginDelete(resourceGroupName, dnsForwardingRulesetName, virtualNetworkLinkName, ifMatch, Context.NONE);
     }
 
-    /**
-     * Deletes a virtual network link to a DNS forwarding ruleset. WARNING: This operation cannot be undone.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param dnsForwardingRulesetName The name of the DNS forwarding ruleset.
-     * @param virtualNetworkLinkName The name of the virtual network link.
-     * @param ifMatch ETag of the resource. Omit this value to always overwrite the current resource. Specify the
-     * last-seen ETag value to prevent accidentally overwriting any concurrent changes.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the {@link SyncPoller} for polling of long-running operation.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public SyncPoller<PollResult<Void>, Void> beginDelete(String resourceGroupName, String dnsForwardingRulesetName,
         String virtualNetworkLinkName, String ifMatch, Context context) {
@@ -1073,40 +906,19 @@ public final class VirtualNetworkLinksClientImpl implements VirtualNetworkLinksC
             .flatMap(this.client::getLroFinalResultOrError);
     }
 
-    /**
-     * Deletes a virtual network link to a DNS forwarding ruleset. WARNING: This operation cannot be undone.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param dnsForwardingRulesetName The name of the DNS forwarding ruleset.
-     * @param virtualNetworkLinkName The name of the virtual network link.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public void delete(String resourceGroupName, String dnsForwardingRulesetName, String virtualNetworkLinkName) {
         final String ifMatch = null;
-        beginDelete(resourceGroupName, dnsForwardingRulesetName, virtualNetworkLinkName, ifMatch).getFinalResult();
+        delete(resourceGroupName, dnsForwardingRulesetName, virtualNetworkLinkName, ifMatch, Context.NONE);
     }
 
-    /**
-     * Deletes a virtual network link to a DNS forwarding ruleset. WARNING: This operation cannot be undone.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param dnsForwardingRulesetName The name of the DNS forwarding ruleset.
-     * @param virtualNetworkLinkName The name of the virtual network link.
-     * @param ifMatch ETag of the resource. Omit this value to always overwrite the current resource. Specify the
-     * last-seen ETag value to prevent accidentally overwriting any concurrent changes.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public void delete(String resourceGroupName, String dnsForwardingRulesetName, String virtualNetworkLinkName,
         String ifMatch, Context context) {
-        beginDelete(resourceGroupName, dnsForwardingRulesetName, virtualNetworkLinkName, ifMatch, context)
-            .getFinalResult();
+        this.client.getLroFinalResultOrError(
+            beginDelete(resourceGroupName, dnsForwardingRulesetName, virtualNetworkLinkName, ifMatch, context));
     }
 
     /**
@@ -1182,12 +994,7 @@ public final class VirtualNetworkLinksClientImpl implements VirtualNetworkLinksC
     @ServiceMethod(returns = ReturnType.SINGLE)
     private PagedResponse<VirtualNetworkLinkInner> listSinglePage(String resourceGroupName,
         String dnsForwardingRulesetName, Integer top) {
-        final String accept = "application/json";
-        Response<VirtualNetworkLinkListResult> res
-            = service.listSync(this.client.getEndpoint(), this.client.getApiVersion(), this.client.getSubscriptionId(),
-                resourceGroupName, dnsForwardingRulesetName, top, accept, Context.NONE);
-        return new PagedResponseBase<>(res.getRequest(), res.getStatusCode(), res.getHeaders(), res.getValue().value(),
-            res.getValue().nextLink(), null);
+        return listSinglePage(resourceGroupName, dnsForwardingRulesetName, top, Context.NONE);
     }
 
     /**
@@ -1213,35 +1020,14 @@ public final class VirtualNetworkLinksClientImpl implements VirtualNetworkLinksC
             res.getValue().nextLink(), null);
     }
 
-    /**
-     * Lists virtual network links to a DNS forwarding ruleset.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param dnsForwardingRulesetName The name of the DNS forwarding ruleset.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the response of a VirtualNetworkLink list operation as paginated response with {@link PagedIterable}.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.COLLECTION)
     public PagedIterable<VirtualNetworkLinkInner> list(String resourceGroupName, String dnsForwardingRulesetName) {
         final Integer top = null;
-        return new PagedIterable<>(() -> listSinglePage(resourceGroupName, dnsForwardingRulesetName, top),
-            nextLink -> listNextSinglePage(nextLink));
+        return list(resourceGroupName, dnsForwardingRulesetName, top, Context.NONE);
     }
 
-    /**
-     * Lists virtual network links to a DNS forwarding ruleset.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param dnsForwardingRulesetName The name of the DNS forwarding ruleset.
-     * @param top The maximum number of results to return. If not specified, returns up to 100 results.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the response of a VirtualNetworkLink list operation as paginated response with {@link PagedIterable}.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.COLLECTION)
     public PagedIterable<VirtualNetworkLinkInner> list(String resourceGroupName, String dnsForwardingRulesetName,
         Integer top, Context context) {
@@ -1279,11 +1065,7 @@ public final class VirtualNetworkLinksClientImpl implements VirtualNetworkLinksC
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private PagedResponse<VirtualNetworkLinkInner> listNextSinglePage(String nextLink) {
-        final String accept = "application/json";
-        Response<VirtualNetworkLinkListResult> res
-            = service.listNextSync(nextLink, this.client.getEndpoint(), accept, Context.NONE);
-        return new PagedResponseBase<>(res.getRequest(), res.getStatusCode(), res.getHeaders(), res.getValue().value(),
-            res.getValue().nextLink(), null);
+        return listNextSinglePage(nextLink, Context.NONE);
     }
 
     /**

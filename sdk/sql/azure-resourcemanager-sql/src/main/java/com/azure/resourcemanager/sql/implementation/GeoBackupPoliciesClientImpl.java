@@ -105,19 +105,7 @@ public final class GeoBackupPoliciesClientImpl implements GeoBackupPoliciesClien
             @HeaderParam("Accept") String accept, Context context);
     }
 
-    /**
-     * Gets a Geo backup policy for the given database resource.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param serverName The name of the server.
-     * @param databaseName The name of the database.
-     * @param geoBackupPolicyName The name of the Geo backup policy. This should always be 'Default'.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return a Geo backup policy for the given database resource along with {@link Response} on successful completion
-     * of {@link Mono}.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Response<GeoBackupPolicyInner>> getWithResponseAsync(String resourceGroupName, String serverName,
         String databaseName, GeoBackupPolicyName geoBackupPolicyName) {
@@ -196,18 +184,7 @@ public final class GeoBackupPoliciesClientImpl implements GeoBackupPoliciesClien
             resourceGroupName, serverName, databaseName, geoBackupPolicyName, accept, context);
     }
 
-    /**
-     * Gets a Geo backup policy for the given database resource.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param serverName The name of the server.
-     * @param databaseName The name of the database.
-     * @param geoBackupPolicyName The name of the Geo backup policy. This should always be 'Default'.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return a Geo backup policy for the given database resource on successful completion of {@link Mono}.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<GeoBackupPolicyInner> getAsync(String resourceGroupName, String serverName, String databaseName,
         GeoBackupPolicyName geoBackupPolicyName) {
@@ -215,37 +192,14 @@ public final class GeoBackupPoliciesClientImpl implements GeoBackupPoliciesClien
             .flatMap(res -> Mono.justOrEmpty(res.getValue()));
     }
 
-    /**
-     * Gets a Geo backup policy for the given database resource.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param serverName The name of the server.
-     * @param databaseName The name of the database.
-     * @param geoBackupPolicyName The name of the Geo backup policy. This should always be 'Default'.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return a Geo backup policy for the given database resource along with {@link Response}.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Response<GeoBackupPolicyInner> getWithResponse(String resourceGroupName, String serverName,
         String databaseName, GeoBackupPolicyName geoBackupPolicyName, Context context) {
         return getWithResponseAsync(resourceGroupName, serverName, databaseName, geoBackupPolicyName, context).block();
     }
 
-    /**
-     * Gets a Geo backup policy for the given database resource.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param serverName The name of the server.
-     * @param databaseName The name of the database.
-     * @param geoBackupPolicyName The name of the Geo backup policy. This should always be 'Default'.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return a Geo backup policy for the given database resource.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public GeoBackupPolicyInner get(String resourceGroupName, String serverName, String databaseName,
         GeoBackupPolicyName geoBackupPolicyName) {
@@ -253,19 +207,7 @@ public final class GeoBackupPoliciesClientImpl implements GeoBackupPoliciesClien
             .getValue();
     }
 
-    /**
-     * Create or update a database default Geo backup policy.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param serverName The name of the server.
-     * @param databaseName The name of the database.
-     * @param geoBackupPolicyName The name of the Geo backup policy. This should always be 'Default'.
-     * @param parameters The required parameters for creating or updating the geo backup policy.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return a Geo backup policy along with {@link Response} on successful completion of {@link Mono}.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Response<GeoBackupPolicyInner>> createOrUpdateWithResponseAsync(String resourceGroupName,
         String serverName, String databaseName, GeoBackupPolicyName geoBackupPolicyName,
@@ -359,19 +301,7 @@ public final class GeoBackupPoliciesClientImpl implements GeoBackupPoliciesClien
             contentType, accept, parameters, context);
     }
 
-    /**
-     * Create or update a database default Geo backup policy.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param serverName The name of the server.
-     * @param databaseName The name of the database.
-     * @param geoBackupPolicyName The name of the Geo backup policy. This should always be 'Default'.
-     * @param parameters The required parameters for creating or updating the geo backup policy.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return a Geo backup policy on successful completion of {@link Mono}.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<GeoBackupPolicyInner> createOrUpdateAsync(String resourceGroupName, String serverName,
         String databaseName, GeoBackupPolicyName geoBackupPolicyName, GeoBackupPolicyInner parameters) {
@@ -379,20 +309,7 @@ public final class GeoBackupPoliciesClientImpl implements GeoBackupPoliciesClien
             parameters).flatMap(res -> Mono.justOrEmpty(res.getValue()));
     }
 
-    /**
-     * Create or update a database default Geo backup policy.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param serverName The name of the server.
-     * @param databaseName The name of the database.
-     * @param geoBackupPolicyName The name of the Geo backup policy. This should always be 'Default'.
-     * @param parameters The required parameters for creating or updating the geo backup policy.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return a Geo backup policy along with {@link Response}.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Response<GeoBackupPolicyInner> createOrUpdateWithResponse(String resourceGroupName, String serverName,
         String databaseName, GeoBackupPolicyName geoBackupPolicyName, GeoBackupPolicyInner parameters,
@@ -401,19 +318,7 @@ public final class GeoBackupPoliciesClientImpl implements GeoBackupPoliciesClien
             parameters, context).block();
     }
 
-    /**
-     * Create or update a database default Geo backup policy.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param serverName The name of the server.
-     * @param databaseName The name of the database.
-     * @param geoBackupPolicyName The name of the Geo backup policy. This should always be 'Default'.
-     * @param parameters The required parameters for creating or updating the geo backup policy.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return a Geo backup policy.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public GeoBackupPolicyInner createOrUpdate(String resourceGroupName, String serverName, String databaseName,
         GeoBackupPolicyName geoBackupPolicyName, GeoBackupPolicyInner parameters) {
@@ -506,18 +411,7 @@ public final class GeoBackupPoliciesClientImpl implements GeoBackupPoliciesClien
                 res.getValue().value(), res.getValue().nextLink(), null));
     }
 
-    /**
-     * Gets a list of Geo backup policies for the given database resource.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param serverName The name of the server.
-     * @param databaseName The name of the database.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return a list of Geo backup policies for the given database resource as paginated response with
-     * {@link PagedFlux}.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.COLLECTION)
     public PagedFlux<GeoBackupPolicyInner> listAsync(String resourceGroupName, String serverName, String databaseName) {
         return new PagedFlux<>(() -> listSinglePageAsync(resourceGroupName, serverName, databaseName),
@@ -544,36 +438,13 @@ public final class GeoBackupPoliciesClientImpl implements GeoBackupPoliciesClien
             nextLink -> listNextSinglePageAsync(nextLink, context));
     }
 
-    /**
-     * Gets a list of Geo backup policies for the given database resource.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param serverName The name of the server.
-     * @param databaseName The name of the database.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return a list of Geo backup policies for the given database resource as paginated response with
-     * {@link PagedIterable}.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.COLLECTION)
     public PagedIterable<GeoBackupPolicyInner> list(String resourceGroupName, String serverName, String databaseName) {
         return new PagedIterable<>(listAsync(resourceGroupName, serverName, databaseName));
     }
 
-    /**
-     * Gets a list of Geo backup policies for the given database resource.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param serverName The name of the server.
-     * @param databaseName The name of the database.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return a list of Geo backup policies for the given database resource as paginated response with
-     * {@link PagedIterable}.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.COLLECTION)
     public PagedIterable<GeoBackupPolicyInner> list(String resourceGroupName, String serverName, String databaseName,
         Context context) {

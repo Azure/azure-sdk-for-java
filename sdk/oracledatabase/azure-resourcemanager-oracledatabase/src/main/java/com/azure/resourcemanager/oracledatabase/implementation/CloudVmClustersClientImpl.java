@@ -322,11 +322,7 @@ public final class CloudVmClustersClientImpl implements CloudVmClustersClient {
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private PagedResponse<CloudVmClusterInner> listSinglePage() {
-        final String accept = "application/json";
-        Response<CloudVmClusterListResult> res = service.listSync(this.client.getEndpoint(),
-            this.client.getApiVersion(), this.client.getSubscriptionId(), accept, Context.NONE);
-        return new PagedResponseBase<>(res.getRequest(), res.getStatusCode(), res.getHeaders(), res.getValue().value(),
-            res.getValue().nextLink(), null);
+        return listSinglePage(Context.NONE);
     }
 
     /**
@@ -347,27 +343,13 @@ public final class CloudVmClustersClientImpl implements CloudVmClustersClient {
             res.getValue().nextLink(), null);
     }
 
-    /**
-     * List CloudVmCluster resources by subscription ID.
-     * 
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the response of a CloudVmCluster list operation as paginated response with {@link PagedIterable}.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.COLLECTION)
     public PagedIterable<CloudVmClusterInner> list() {
-        return new PagedIterable<>(() -> listSinglePage(), nextLink -> listBySubscriptionNextSinglePage(nextLink));
+        return list(Context.NONE);
     }
 
-    /**
-     * List CloudVmCluster resources by subscription ID.
-     * 
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the response of a CloudVmCluster list operation as paginated response with {@link PagedIterable}.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.COLLECTION)
     public PagedIterable<CloudVmClusterInner> list(Context context) {
         return new PagedIterable<>(() -> listSinglePage(context),
@@ -411,11 +393,7 @@ public final class CloudVmClustersClientImpl implements CloudVmClustersClient {
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Response<BinaryData> createOrUpdateWithResponse(String resourceGroupName, String cloudvmclustername,
         CloudVmClusterInner resource) {
-        final String contentType = "application/json";
-        final String accept = "application/json";
-        return service.createOrUpdateSync(this.client.getEndpoint(), this.client.getApiVersion(),
-            this.client.getSubscriptionId(), resourceGroupName, cloudvmclustername, contentType, accept, resource,
-            Context.NONE);
+        return createOrUpdateWithResponse(resourceGroupName, cloudvmclustername, resource, Context.NONE);
     }
 
     /**
@@ -460,37 +438,14 @@ public final class CloudVmClustersClientImpl implements CloudVmClustersClient {
             CloudVmClusterInner.class, CloudVmClusterInner.class, this.client.getContext());
     }
 
-    /**
-     * Create a CloudVmCluster.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param cloudvmclustername CloudVmCluster name.
-     * @param resource Resource create parameters.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the {@link SyncPoller} for polling of cloudVmCluster resource definition.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public SyncPoller<PollResult<CloudVmClusterInner>, CloudVmClusterInner>
         beginCreateOrUpdate(String resourceGroupName, String cloudvmclustername, CloudVmClusterInner resource) {
-        Response<BinaryData> response = createOrUpdateWithResponse(resourceGroupName, cloudvmclustername, resource);
-        return this.client.<CloudVmClusterInner, CloudVmClusterInner>getLroResult(response, CloudVmClusterInner.class,
-            CloudVmClusterInner.class, Context.NONE);
+        return beginCreateOrUpdate(resourceGroupName, cloudvmclustername, resource, Context.NONE);
     }
 
-    /**
-     * Create a CloudVmCluster.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param cloudvmclustername CloudVmCluster name.
-     * @param resource Resource create parameters.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the {@link SyncPoller} for polling of cloudVmCluster resource definition.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public SyncPoller<PollResult<CloudVmClusterInner>, CloudVmClusterInner> beginCreateOrUpdate(
         String resourceGroupName, String cloudvmclustername, CloudVmClusterInner resource, Context context) {
@@ -518,39 +473,19 @@ public final class CloudVmClustersClientImpl implements CloudVmClustersClient {
             .flatMap(this.client::getLroFinalResultOrError);
     }
 
-    /**
-     * Create a CloudVmCluster.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param cloudvmclustername CloudVmCluster name.
-     * @param resource Resource create parameters.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return cloudVmCluster resource definition.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public CloudVmClusterInner createOrUpdate(String resourceGroupName, String cloudvmclustername,
         CloudVmClusterInner resource) {
-        return beginCreateOrUpdate(resourceGroupName, cloudvmclustername, resource).getFinalResult();
+        return createOrUpdate(resourceGroupName, cloudvmclustername, resource, Context.NONE);
     }
 
-    /**
-     * Create a CloudVmCluster.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param cloudvmclustername CloudVmCluster name.
-     * @param resource Resource create parameters.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return cloudVmCluster resource definition.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public CloudVmClusterInner createOrUpdate(String resourceGroupName, String cloudvmclustername,
         CloudVmClusterInner resource, Context context) {
-        return beginCreateOrUpdate(resourceGroupName, cloudvmclustername, resource, context).getFinalResult();
+        return this.client
+            .getLroFinalResultOrError(beginCreateOrUpdate(resourceGroupName, cloudvmclustername, resource, context));
     }
 
     /**
@@ -589,17 +524,7 @@ public final class CloudVmClustersClientImpl implements CloudVmClustersClient {
             .flatMap(res -> Mono.justOrEmpty(res.getValue()));
     }
 
-    /**
-     * Get a CloudVmCluster.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param cloudvmclustername CloudVmCluster name.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return a CloudVmCluster along with {@link Response}.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Response<CloudVmClusterInner> getByResourceGroupWithResponse(String resourceGroupName,
         String cloudvmclustername, Context context) {
@@ -608,16 +533,7 @@ public final class CloudVmClustersClientImpl implements CloudVmClustersClient {
             this.client.getSubscriptionId(), resourceGroupName, cloudvmclustername, accept, context);
     }
 
-    /**
-     * Get a CloudVmCluster.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param cloudvmclustername CloudVmCluster name.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return a CloudVmCluster.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public CloudVmClusterInner getByResourceGroup(String resourceGroupName, String cloudvmclustername) {
         return getByResourceGroupWithResponse(resourceGroupName, cloudvmclustername, Context.NONE).getValue();
@@ -660,11 +576,7 @@ public final class CloudVmClustersClientImpl implements CloudVmClustersClient {
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Response<BinaryData> updateWithResponse(String resourceGroupName, String cloudvmclustername,
         CloudVmClusterUpdate properties) {
-        final String contentType = "application/json";
-        final String accept = "application/json";
-        return service.updateSync(this.client.getEndpoint(), this.client.getApiVersion(),
-            this.client.getSubscriptionId(), resourceGroupName, cloudvmclustername, contentType, accept, properties,
-            Context.NONE);
+        return updateWithResponse(resourceGroupName, cloudvmclustername, properties, Context.NONE);
     }
 
     /**
@@ -709,37 +621,14 @@ public final class CloudVmClustersClientImpl implements CloudVmClustersClient {
             CloudVmClusterInner.class, CloudVmClusterInner.class, this.client.getContext());
     }
 
-    /**
-     * Update a CloudVmCluster.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param cloudvmclustername CloudVmCluster name.
-     * @param properties The resource properties to be updated.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the {@link SyncPoller} for polling of cloudVmCluster resource definition.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public SyncPoller<PollResult<CloudVmClusterInner>, CloudVmClusterInner> beginUpdate(String resourceGroupName,
         String cloudvmclustername, CloudVmClusterUpdate properties) {
-        Response<BinaryData> response = updateWithResponse(resourceGroupName, cloudvmclustername, properties);
-        return this.client.<CloudVmClusterInner, CloudVmClusterInner>getLroResult(response, CloudVmClusterInner.class,
-            CloudVmClusterInner.class, Context.NONE);
+        return beginUpdate(resourceGroupName, cloudvmclustername, properties, Context.NONE);
     }
 
-    /**
-     * Update a CloudVmCluster.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param cloudvmclustername CloudVmCluster name.
-     * @param properties The resource properties to be updated.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the {@link SyncPoller} for polling of cloudVmCluster resource definition.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public SyncPoller<PollResult<CloudVmClusterInner>, CloudVmClusterInner> beginUpdate(String resourceGroupName,
         String cloudvmclustername, CloudVmClusterUpdate properties, Context context) {
@@ -766,39 +655,19 @@ public final class CloudVmClustersClientImpl implements CloudVmClustersClient {
             .flatMap(this.client::getLroFinalResultOrError);
     }
 
-    /**
-     * Update a CloudVmCluster.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param cloudvmclustername CloudVmCluster name.
-     * @param properties The resource properties to be updated.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return cloudVmCluster resource definition.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public CloudVmClusterInner update(String resourceGroupName, String cloudvmclustername,
         CloudVmClusterUpdate properties) {
-        return beginUpdate(resourceGroupName, cloudvmclustername, properties).getFinalResult();
+        return update(resourceGroupName, cloudvmclustername, properties, Context.NONE);
     }
 
-    /**
-     * Update a CloudVmCluster.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param cloudvmclustername CloudVmCluster name.
-     * @param properties The resource properties to be updated.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return cloudVmCluster resource definition.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public CloudVmClusterInner update(String resourceGroupName, String cloudvmclustername,
         CloudVmClusterUpdate properties, Context context) {
-        return beginUpdate(resourceGroupName, cloudvmclustername, properties, context).getFinalResult();
+        return this.client
+            .getLroFinalResultOrError(beginUpdate(resourceGroupName, cloudvmclustername, properties, context));
     }
 
     /**
@@ -832,8 +701,7 @@ public final class CloudVmClustersClientImpl implements CloudVmClustersClient {
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Response<BinaryData> deleteWithResponse(String resourceGroupName, String cloudvmclustername) {
-        return service.deleteSync(this.client.getEndpoint(), this.client.getApiVersion(),
-            this.client.getSubscriptionId(), resourceGroupName, cloudvmclustername, Context.NONE);
+        return deleteWithResponse(resourceGroupName, cloudvmclustername, Context.NONE);
     }
 
     /**
@@ -871,33 +739,13 @@ public final class CloudVmClustersClientImpl implements CloudVmClustersClient {
             this.client.getContext());
     }
 
-    /**
-     * Delete a CloudVmCluster.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param cloudvmclustername CloudVmCluster name.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the {@link SyncPoller} for polling of long-running operation.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public SyncPoller<PollResult<Void>, Void> beginDelete(String resourceGroupName, String cloudvmclustername) {
-        Response<BinaryData> response = deleteWithResponse(resourceGroupName, cloudvmclustername);
-        return this.client.<Void, Void>getLroResult(response, Void.class, Void.class, Context.NONE);
+        return beginDelete(resourceGroupName, cloudvmclustername, Context.NONE);
     }
 
-    /**
-     * Delete a CloudVmCluster.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param cloudvmclustername CloudVmCluster name.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the {@link SyncPoller} for polling of long-running operation.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public SyncPoller<PollResult<Void>, Void> beginDelete(String resourceGroupName, String cloudvmclustername,
         Context context) {
@@ -921,33 +769,16 @@ public final class CloudVmClustersClientImpl implements CloudVmClustersClient {
             .flatMap(this.client::getLroFinalResultOrError);
     }
 
-    /**
-     * Delete a CloudVmCluster.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param cloudvmclustername CloudVmCluster name.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public void delete(String resourceGroupName, String cloudvmclustername) {
-        beginDelete(resourceGroupName, cloudvmclustername).getFinalResult();
+        delete(resourceGroupName, cloudvmclustername, Context.NONE);
     }
 
-    /**
-     * Delete a CloudVmCluster.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param cloudvmclustername CloudVmCluster name.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public void delete(String resourceGroupName, String cloudvmclustername, Context context) {
-        beginDelete(resourceGroupName, cloudvmclustername, context).getFinalResult();
+        this.client.getLroFinalResultOrError(beginDelete(resourceGroupName, cloudvmclustername, context));
     }
 
     /**
@@ -997,11 +828,7 @@ public final class CloudVmClustersClientImpl implements CloudVmClustersClient {
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private PagedResponse<CloudVmClusterInner> listByResourceGroupSinglePage(String resourceGroupName) {
-        final String accept = "application/json";
-        Response<CloudVmClusterListResult> res = service.listByResourceGroupSync(this.client.getEndpoint(),
-            this.client.getApiVersion(), this.client.getSubscriptionId(), resourceGroupName, accept, Context.NONE);
-        return new PagedResponseBase<>(res.getRequest(), res.getStatusCode(), res.getHeaders(), res.getValue().value(),
-            res.getValue().nextLink(), null);
+        return listByResourceGroupSinglePage(resourceGroupName, Context.NONE);
     }
 
     /**
@@ -1024,31 +851,13 @@ public final class CloudVmClustersClientImpl implements CloudVmClustersClient {
             res.getValue().nextLink(), null);
     }
 
-    /**
-     * List CloudVmCluster resources by resource group.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the response of a CloudVmCluster list operation as paginated response with {@link PagedIterable}.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.COLLECTION)
     public PagedIterable<CloudVmClusterInner> listByResourceGroup(String resourceGroupName) {
-        return new PagedIterable<>(() -> listByResourceGroupSinglePage(resourceGroupName),
-            nextLink -> listByResourceGroupNextSinglePage(nextLink));
+        return listByResourceGroup(resourceGroupName, Context.NONE);
     }
 
-    /**
-     * List CloudVmCluster resources by resource group.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the response of a CloudVmCluster list operation as paginated response with {@link PagedIterable}.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.COLLECTION)
     public PagedIterable<CloudVmClusterInner> listByResourceGroup(String resourceGroupName, Context context) {
         return new PagedIterable<>(() -> listByResourceGroupSinglePage(resourceGroupName, context),
@@ -1090,11 +899,7 @@ public final class CloudVmClustersClientImpl implements CloudVmClustersClient {
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Response<BinaryData> addVmsWithResponse(String resourceGroupName, String cloudvmclustername,
         AddRemoveDbNode body) {
-        final String contentType = "application/json";
-        final String accept = "application/json";
-        return service.addVmsSync(this.client.getEndpoint(), this.client.getApiVersion(),
-            this.client.getSubscriptionId(), resourceGroupName, cloudvmclustername, contentType, accept, body,
-            Context.NONE);
+        return addVmsWithResponse(resourceGroupName, cloudvmclustername, body, Context.NONE);
     }
 
     /**
@@ -1137,37 +942,14 @@ public final class CloudVmClustersClientImpl implements CloudVmClustersClient {
             CloudVmClusterInner.class, CloudVmClusterInner.class, this.client.getContext());
     }
 
-    /**
-     * Add VMs to the VM Cluster.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param cloudvmclustername CloudVmCluster name.
-     * @param body The content of the action request.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the {@link SyncPoller} for polling of cloudVmCluster resource definition.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public SyncPoller<PollResult<CloudVmClusterInner>, CloudVmClusterInner> beginAddVms(String resourceGroupName,
         String cloudvmclustername, AddRemoveDbNode body) {
-        Response<BinaryData> response = addVmsWithResponse(resourceGroupName, cloudvmclustername, body);
-        return this.client.<CloudVmClusterInner, CloudVmClusterInner>getLroResult(response, CloudVmClusterInner.class,
-            CloudVmClusterInner.class, Context.NONE);
+        return beginAddVms(resourceGroupName, cloudvmclustername, body, Context.NONE);
     }
 
-    /**
-     * Add VMs to the VM Cluster.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param cloudvmclustername CloudVmCluster name.
-     * @param body The content of the action request.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the {@link SyncPoller} for polling of cloudVmCluster resource definition.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public SyncPoller<PollResult<CloudVmClusterInner>, CloudVmClusterInner> beginAddVms(String resourceGroupName,
         String cloudvmclustername, AddRemoveDbNode body, Context context) {
@@ -1194,38 +976,17 @@ public final class CloudVmClustersClientImpl implements CloudVmClustersClient {
             .flatMap(this.client::getLroFinalResultOrError);
     }
 
-    /**
-     * Add VMs to the VM Cluster.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param cloudvmclustername CloudVmCluster name.
-     * @param body The content of the action request.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return cloudVmCluster resource definition.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public CloudVmClusterInner addVms(String resourceGroupName, String cloudvmclustername, AddRemoveDbNode body) {
-        return beginAddVms(resourceGroupName, cloudvmclustername, body).getFinalResult();
+        return addVms(resourceGroupName, cloudvmclustername, body, Context.NONE);
     }
 
-    /**
-     * Add VMs to the VM Cluster.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param cloudvmclustername CloudVmCluster name.
-     * @param body The content of the action request.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return cloudVmCluster resource definition.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public CloudVmClusterInner addVms(String resourceGroupName, String cloudvmclustername, AddRemoveDbNode body,
         Context context) {
-        return beginAddVms(resourceGroupName, cloudvmclustername, body, context).getFinalResult();
+        return this.client.getLroFinalResultOrError(beginAddVms(resourceGroupName, cloudvmclustername, body, context));
     }
 
     /**
@@ -1263,11 +1024,7 @@ public final class CloudVmClustersClientImpl implements CloudVmClustersClient {
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Response<BinaryData> removeVmsWithResponse(String resourceGroupName, String cloudvmclustername,
         AddRemoveDbNode body) {
-        final String contentType = "application/json";
-        final String accept = "application/json";
-        return service.removeVmsSync(this.client.getEndpoint(), this.client.getApiVersion(),
-            this.client.getSubscriptionId(), resourceGroupName, cloudvmclustername, contentType, accept, body,
-            Context.NONE);
+        return removeVmsWithResponse(resourceGroupName, cloudvmclustername, body, Context.NONE);
     }
 
     /**
@@ -1310,37 +1067,14 @@ public final class CloudVmClustersClientImpl implements CloudVmClustersClient {
             CloudVmClusterInner.class, CloudVmClusterInner.class, this.client.getContext());
     }
 
-    /**
-     * Remove VMs from the VM Cluster.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param cloudvmclustername CloudVmCluster name.
-     * @param body The content of the action request.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the {@link SyncPoller} for polling of cloudVmCluster resource definition.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public SyncPoller<PollResult<CloudVmClusterInner>, CloudVmClusterInner> beginRemoveVms(String resourceGroupName,
         String cloudvmclustername, AddRemoveDbNode body) {
-        Response<BinaryData> response = removeVmsWithResponse(resourceGroupName, cloudvmclustername, body);
-        return this.client.<CloudVmClusterInner, CloudVmClusterInner>getLroResult(response, CloudVmClusterInner.class,
-            CloudVmClusterInner.class, Context.NONE);
+        return beginRemoveVms(resourceGroupName, cloudvmclustername, body, Context.NONE);
     }
 
-    /**
-     * Remove VMs from the VM Cluster.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param cloudvmclustername CloudVmCluster name.
-     * @param body The content of the action request.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the {@link SyncPoller} for polling of cloudVmCluster resource definition.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public SyncPoller<PollResult<CloudVmClusterInner>, CloudVmClusterInner> beginRemoveVms(String resourceGroupName,
         String cloudvmclustername, AddRemoveDbNode body, Context context) {
@@ -1367,38 +1101,18 @@ public final class CloudVmClustersClientImpl implements CloudVmClustersClient {
             .flatMap(this.client::getLroFinalResultOrError);
     }
 
-    /**
-     * Remove VMs from the VM Cluster.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param cloudvmclustername CloudVmCluster name.
-     * @param body The content of the action request.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return cloudVmCluster resource definition.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public CloudVmClusterInner removeVms(String resourceGroupName, String cloudvmclustername, AddRemoveDbNode body) {
-        return beginRemoveVms(resourceGroupName, cloudvmclustername, body).getFinalResult();
+        return removeVms(resourceGroupName, cloudvmclustername, body, Context.NONE);
     }
 
-    /**
-     * Remove VMs from the VM Cluster.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param cloudvmclustername CloudVmCluster name.
-     * @param body The content of the action request.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return cloudVmCluster resource definition.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public CloudVmClusterInner removeVms(String resourceGroupName, String cloudvmclustername, AddRemoveDbNode body,
         Context context) {
-        return beginRemoveVms(resourceGroupName, cloudvmclustername, body, context).getFinalResult();
+        return this.client
+            .getLroFinalResultOrError(beginRemoveVms(resourceGroupName, cloudvmclustername, body, context));
     }
 
     /**
@@ -1442,18 +1156,7 @@ public final class CloudVmClustersClientImpl implements CloudVmClustersClient {
             .flatMap(res -> Mono.justOrEmpty(res.getValue()));
     }
 
-    /**
-     * List Private IP Addresses by the provided filter.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param cloudvmclustername CloudVmCluster name.
-     * @param body The content of the action request.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the response body along with {@link Response}.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Response<List<PrivateIpAddressPropertiesInner>> listPrivateIpAddressesWithResponse(String resourceGroupName,
         String cloudvmclustername, PrivateIpAddressesFilter body, Context context) {
@@ -1463,17 +1166,7 @@ public final class CloudVmClustersClientImpl implements CloudVmClustersClient {
             this.client.getSubscriptionId(), resourceGroupName, cloudvmclustername, contentType, accept, body, context);
     }
 
-    /**
-     * List Private IP Addresses by the provided filter.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param cloudvmclustername CloudVmCluster name.
-     * @param body The content of the action request.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the response.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public List<PrivateIpAddressPropertiesInner> listPrivateIpAddresses(String resourceGroupName,
         String cloudvmclustername, PrivateIpAddressesFilter body) {
@@ -1512,11 +1205,7 @@ public final class CloudVmClustersClientImpl implements CloudVmClustersClient {
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private PagedResponse<CloudVmClusterInner> listBySubscriptionNextSinglePage(String nextLink) {
-        final String accept = "application/json";
-        Response<CloudVmClusterListResult> res
-            = service.listBySubscriptionNextSync(nextLink, this.client.getEndpoint(), accept, Context.NONE);
-        return new PagedResponseBase<>(res.getRequest(), res.getStatusCode(), res.getHeaders(), res.getValue().value(),
-            res.getValue().nextLink(), null);
+        return listBySubscriptionNextSinglePage(nextLink, Context.NONE);
     }
 
     /**
@@ -1570,11 +1259,7 @@ public final class CloudVmClustersClientImpl implements CloudVmClustersClient {
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private PagedResponse<CloudVmClusterInner> listByResourceGroupNextSinglePage(String nextLink) {
-        final String accept = "application/json";
-        Response<CloudVmClusterListResult> res
-            = service.listByResourceGroupNextSync(nextLink, this.client.getEndpoint(), accept, Context.NONE);
-        return new PagedResponseBase<>(res.getRequest(), res.getStatusCode(), res.getHeaders(), res.getValue().value(),
-            res.getValue().nextLink(), null);
+        return listByResourceGroupNextSinglePage(nextLink, Context.NONE);
     }
 
     /**

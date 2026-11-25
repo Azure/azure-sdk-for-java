@@ -178,21 +178,7 @@ public final class ManagedDatabaseSecurityEventsClientImpl implements ManagedDat
                 res.getValue().value(), res.getValue().nextLink(), null));
     }
 
-    /**
-     * Gets a list of security events.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param managedInstanceName The name of the managed instance.
-     * @param databaseName The name of the database.
-     * @param filter An OData filter expression that filters elements in the collection.
-     * @param skip The number of elements in the collection to skip.
-     * @param top The number of elements to return from the collection.
-     * @param skiptoken An opaque token that identifies a starting point in the collection.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return a list of security events as paginated response with {@link PagedFlux}.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.COLLECTION)
     public PagedFlux<SecurityEventInner> listByDatabaseAsync(String resourceGroupName, String managedInstanceName,
         String databaseName, String filter, Long skip, Long top, String skiptoken) {
@@ -200,17 +186,7 @@ public final class ManagedDatabaseSecurityEventsClientImpl implements ManagedDat
             filter, skip, top, skiptoken), nextLink -> listByDatabaseNextSinglePageAsync(nextLink));
     }
 
-    /**
-     * Gets a list of security events.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param managedInstanceName The name of the managed instance.
-     * @param databaseName The name of the database.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return a list of security events as paginated response with {@link PagedFlux}.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.COLLECTION)
     public PagedFlux<SecurityEventInner> listByDatabaseAsync(String resourceGroupName, String managedInstanceName,
         String databaseName) {
@@ -245,17 +221,7 @@ public final class ManagedDatabaseSecurityEventsClientImpl implements ManagedDat
             filter, skip, top, skiptoken, context), nextLink -> listByDatabaseNextSinglePageAsync(nextLink, context));
     }
 
-    /**
-     * Gets a list of security events.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param managedInstanceName The name of the managed instance.
-     * @param databaseName The name of the database.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return a list of security events as paginated response with {@link PagedIterable}.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.COLLECTION)
     public PagedIterable<SecurityEventInner> listByDatabase(String resourceGroupName, String managedInstanceName,
         String databaseName) {
@@ -267,22 +233,7 @@ public final class ManagedDatabaseSecurityEventsClientImpl implements ManagedDat
             listByDatabaseAsync(resourceGroupName, managedInstanceName, databaseName, filter, skip, top, skiptoken));
     }
 
-    /**
-     * Gets a list of security events.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param managedInstanceName The name of the managed instance.
-     * @param databaseName The name of the database.
-     * @param filter An OData filter expression that filters elements in the collection.
-     * @param skip The number of elements in the collection to skip.
-     * @param top The number of elements to return from the collection.
-     * @param skiptoken An opaque token that identifies a starting point in the collection.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return a list of security events as paginated response with {@link PagedIterable}.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.COLLECTION)
     public PagedIterable<SecurityEventInner> listByDatabase(String resourceGroupName, String managedInstanceName,
         String databaseName, String filter, Long skip, Long top, String skiptoken, Context context) {

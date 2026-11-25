@@ -235,18 +235,7 @@ public final class StorageAssetsClientImpl implements StorageAssetsClient {
             .flatMap(res -> Mono.justOrEmpty(res.getValue()));
     }
 
-    /**
-     * Get a StorageAsset.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param storageContainerName The name of the StorageContainer.
-     * @param storageAssetName The name of the StorageAsset.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return a StorageAsset along with {@link Response}.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Response<StorageAssetInner> getWithResponse(String resourceGroupName, String storageContainerName,
         String storageAssetName, Context context) {
@@ -255,17 +244,7 @@ public final class StorageAssetsClientImpl implements StorageAssetsClient {
             resourceGroupName, storageContainerName, storageAssetName, accept, context);
     }
 
-    /**
-     * Get a StorageAsset.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param storageContainerName The name of the StorageContainer.
-     * @param storageAssetName The name of the StorageAsset.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return a StorageAsset.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public StorageAssetInner get(String resourceGroupName, String storageContainerName, String storageAssetName) {
         return getWithResponse(resourceGroupName, storageContainerName, storageAssetName, Context.NONE).getValue();
@@ -310,11 +289,8 @@ public final class StorageAssetsClientImpl implements StorageAssetsClient {
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Response<BinaryData> createOrUpdateWithResponse(String resourceGroupName, String storageContainerName,
         String storageAssetName, StorageAssetInner resource) {
-        final String contentType = "application/json";
-        final String accept = "application/json";
-        return service.createOrUpdateSync(this.client.getEndpoint(), this.client.getApiVersion(),
-            this.client.getSubscriptionId(), resourceGroupName, storageContainerName, storageAssetName, contentType,
-            accept, resource, Context.NONE);
+        return createOrUpdateWithResponse(resourceGroupName, storageContainerName, storageAssetName, resource,
+            Context.NONE);
     }
 
     /**
@@ -361,40 +337,14 @@ public final class StorageAssetsClientImpl implements StorageAssetsClient {
             StorageAssetInner.class, StorageAssetInner.class, this.client.getContext());
     }
 
-    /**
-     * Create a StorageAsset.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param storageContainerName The name of the StorageContainer.
-     * @param storageAssetName The name of the StorageAsset.
-     * @param resource Resource create parameters.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the {@link SyncPoller} for polling of storage Asset tracked resource.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public SyncPoller<PollResult<StorageAssetInner>, StorageAssetInner> beginCreateOrUpdate(String resourceGroupName,
         String storageContainerName, String storageAssetName, StorageAssetInner resource) {
-        Response<BinaryData> response
-            = createOrUpdateWithResponse(resourceGroupName, storageContainerName, storageAssetName, resource);
-        return this.client.<StorageAssetInner, StorageAssetInner>getLroResult(response, StorageAssetInner.class,
-            StorageAssetInner.class, Context.NONE);
+        return beginCreateOrUpdate(resourceGroupName, storageContainerName, storageAssetName, resource, Context.NONE);
     }
 
-    /**
-     * Create a StorageAsset.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param storageContainerName The name of the StorageContainer.
-     * @param storageAssetName The name of the StorageAsset.
-     * @param resource Resource create parameters.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the {@link SyncPoller} for polling of storage Asset tracked resource.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public SyncPoller<PollResult<StorageAssetInner>, StorageAssetInner> beginCreateOrUpdate(String resourceGroupName,
         String storageContainerName, String storageAssetName, StorageAssetInner resource, Context context) {
@@ -423,43 +373,19 @@ public final class StorageAssetsClientImpl implements StorageAssetsClient {
             .flatMap(this.client::getLroFinalResultOrError);
     }
 
-    /**
-     * Create a StorageAsset.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param storageContainerName The name of the StorageContainer.
-     * @param storageAssetName The name of the StorageAsset.
-     * @param resource Resource create parameters.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return storage Asset tracked resource.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public StorageAssetInner createOrUpdate(String resourceGroupName, String storageContainerName,
         String storageAssetName, StorageAssetInner resource) {
-        return beginCreateOrUpdate(resourceGroupName, storageContainerName, storageAssetName, resource)
-            .getFinalResult();
+        return createOrUpdate(resourceGroupName, storageContainerName, storageAssetName, resource, Context.NONE);
     }
 
-    /**
-     * Create a StorageAsset.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param storageContainerName The name of the StorageContainer.
-     * @param storageAssetName The name of the StorageAsset.
-     * @param resource Resource create parameters.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return storage Asset tracked resource.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public StorageAssetInner createOrUpdate(String resourceGroupName, String storageContainerName,
         String storageAssetName, StorageAssetInner resource, Context context) {
-        return beginCreateOrUpdate(resourceGroupName, storageContainerName, storageAssetName, resource, context)
-            .getFinalResult();
+        return this.client.getLroFinalResultOrError(
+            beginCreateOrUpdate(resourceGroupName, storageContainerName, storageAssetName, resource, context));
     }
 
     /**
@@ -501,11 +427,7 @@ public final class StorageAssetsClientImpl implements StorageAssetsClient {
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Response<BinaryData> updateWithResponse(String resourceGroupName, String storageContainerName,
         String storageAssetName, StorageAssetInner properties) {
-        final String contentType = "application/json";
-        final String accept = "application/json";
-        return service.updateSync(this.client.getEndpoint(), this.client.getApiVersion(),
-            this.client.getSubscriptionId(), resourceGroupName, storageContainerName, storageAssetName, contentType,
-            accept, properties, Context.NONE);
+        return updateWithResponse(resourceGroupName, storageContainerName, storageAssetName, properties, Context.NONE);
     }
 
     /**
@@ -552,40 +474,14 @@ public final class StorageAssetsClientImpl implements StorageAssetsClient {
             StorageAssetInner.class, StorageAssetInner.class, this.client.getContext());
     }
 
-    /**
-     * Update a StorageAsset.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param storageContainerName The name of the StorageContainer.
-     * @param storageAssetName The name of the StorageAsset.
-     * @param properties The resource properties to be updated.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the {@link SyncPoller} for polling of storage Asset tracked resource.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public SyncPoller<PollResult<StorageAssetInner>, StorageAssetInner> beginUpdate(String resourceGroupName,
         String storageContainerName, String storageAssetName, StorageAssetInner properties) {
-        Response<BinaryData> response
-            = updateWithResponse(resourceGroupName, storageContainerName, storageAssetName, properties);
-        return this.client.<StorageAssetInner, StorageAssetInner>getLroResult(response, StorageAssetInner.class,
-            StorageAssetInner.class, Context.NONE);
+        return beginUpdate(resourceGroupName, storageContainerName, storageAssetName, properties, Context.NONE);
     }
 
-    /**
-     * Update a StorageAsset.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param storageContainerName The name of the StorageContainer.
-     * @param storageAssetName The name of the StorageAsset.
-     * @param properties The resource properties to be updated.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the {@link SyncPoller} for polling of storage Asset tracked resource.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public SyncPoller<PollResult<StorageAssetInner>, StorageAssetInner> beginUpdate(String resourceGroupName,
         String storageContainerName, String storageAssetName, StorageAssetInner properties, Context context) {
@@ -614,42 +510,19 @@ public final class StorageAssetsClientImpl implements StorageAssetsClient {
             .flatMap(this.client::getLroFinalResultOrError);
     }
 
-    /**
-     * Update a StorageAsset.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param storageContainerName The name of the StorageContainer.
-     * @param storageAssetName The name of the StorageAsset.
-     * @param properties The resource properties to be updated.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return storage Asset tracked resource.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public StorageAssetInner update(String resourceGroupName, String storageContainerName, String storageAssetName,
         StorageAssetInner properties) {
-        return beginUpdate(resourceGroupName, storageContainerName, storageAssetName, properties).getFinalResult();
+        return update(resourceGroupName, storageContainerName, storageAssetName, properties, Context.NONE);
     }
 
-    /**
-     * Update a StorageAsset.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param storageContainerName The name of the StorageContainer.
-     * @param storageAssetName The name of the StorageAsset.
-     * @param properties The resource properties to be updated.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return storage Asset tracked resource.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public StorageAssetInner update(String resourceGroupName, String storageContainerName, String storageAssetName,
         StorageAssetInner properties, Context context) {
-        return beginUpdate(resourceGroupName, storageContainerName, storageAssetName, properties, context)
-            .getFinalResult();
+        return this.client.getLroFinalResultOrError(
+            beginUpdate(resourceGroupName, storageContainerName, storageAssetName, properties, context));
     }
 
     /**
@@ -686,8 +559,7 @@ public final class StorageAssetsClientImpl implements StorageAssetsClient {
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Response<BinaryData> deleteWithResponse(String resourceGroupName, String storageContainerName,
         String storageAssetName) {
-        return service.deleteSync(this.client.getEndpoint(), this.client.getApiVersion(),
-            this.client.getSubscriptionId(), resourceGroupName, storageContainerName, storageAssetName, Context.NONE);
+        return deleteWithResponse(resourceGroupName, storageContainerName, storageAssetName, Context.NONE);
     }
 
     /**
@@ -729,36 +601,14 @@ public final class StorageAssetsClientImpl implements StorageAssetsClient {
             this.client.getContext());
     }
 
-    /**
-     * Delete a StorageAsset.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param storageContainerName The name of the StorageContainer.
-     * @param storageAssetName The name of the StorageAsset.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the {@link SyncPoller} for polling of long-running operation.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public SyncPoller<PollResult<Void>, Void> beginDelete(String resourceGroupName, String storageContainerName,
         String storageAssetName) {
-        Response<BinaryData> response = deleteWithResponse(resourceGroupName, storageContainerName, storageAssetName);
-        return this.client.<Void, Void>getLroResult(response, Void.class, Void.class, Context.NONE);
+        return beginDelete(resourceGroupName, storageContainerName, storageAssetName, Context.NONE);
     }
 
-    /**
-     * Delete a StorageAsset.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param storageContainerName The name of the StorageContainer.
-     * @param storageAssetName The name of the StorageAsset.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the {@link SyncPoller} for polling of long-running operation.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public SyncPoller<PollResult<Void>, Void> beginDelete(String resourceGroupName, String storageContainerName,
         String storageAssetName, Context context) {
@@ -784,36 +634,18 @@ public final class StorageAssetsClientImpl implements StorageAssetsClient {
             .flatMap(this.client::getLroFinalResultOrError);
     }
 
-    /**
-     * Delete a StorageAsset.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param storageContainerName The name of the StorageContainer.
-     * @param storageAssetName The name of the StorageAsset.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public void delete(String resourceGroupName, String storageContainerName, String storageAssetName) {
-        beginDelete(resourceGroupName, storageContainerName, storageAssetName).getFinalResult();
+        delete(resourceGroupName, storageContainerName, storageAssetName, Context.NONE);
     }
 
-    /**
-     * Delete a StorageAsset.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param storageContainerName The name of the StorageContainer.
-     * @param storageAssetName The name of the StorageAsset.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public void delete(String resourceGroupName, String storageContainerName, String storageAssetName,
         Context context) {
-        beginDelete(resourceGroupName, storageContainerName, storageAssetName, context).getFinalResult();
+        this.client
+            .getLroFinalResultOrError(beginDelete(resourceGroupName, storageContainerName, storageAssetName, context));
     }
 
     /**
@@ -870,12 +702,7 @@ public final class StorageAssetsClientImpl implements StorageAssetsClient {
     @ServiceMethod(returns = ReturnType.SINGLE)
     private PagedResponse<StorageAssetInner> listByStorageContainerSinglePage(String resourceGroupName,
         String storageContainerName) {
-        final String accept = "application/json";
-        Response<StorageAssetListResult> res
-            = service.listByStorageContainerSync(this.client.getEndpoint(), this.client.getApiVersion(),
-                this.client.getSubscriptionId(), resourceGroupName, storageContainerName, accept, Context.NONE);
-        return new PagedResponseBase<>(res.getRequest(), res.getStatusCode(), res.getHeaders(), res.getValue().value(),
-            res.getValue().nextLink(), null);
+        return listByStorageContainerSinglePage(resourceGroupName, storageContainerName, Context.NONE);
     }
 
     /**
@@ -900,34 +727,14 @@ public final class StorageAssetsClientImpl implements StorageAssetsClient {
             res.getValue().nextLink(), null);
     }
 
-    /**
-     * List StorageAsset resources by StorageContainer.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param storageContainerName The name of the StorageContainer.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the response of a StorageAsset list operation as paginated response with {@link PagedIterable}.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.COLLECTION)
     public PagedIterable<StorageAssetInner> listByStorageContainer(String resourceGroupName,
         String storageContainerName) {
-        return new PagedIterable<>(() -> listByStorageContainerSinglePage(resourceGroupName, storageContainerName),
-            nextLink -> listByStorageContainerNextSinglePage(nextLink));
+        return listByStorageContainer(resourceGroupName, storageContainerName, Context.NONE);
     }
 
-    /**
-     * List StorageAsset resources by StorageContainer.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param storageContainerName The name of the StorageContainer.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the response of a StorageAsset list operation as paginated response with {@link PagedIterable}.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.COLLECTION)
     public PagedIterable<StorageAssetInner> listByStorageContainer(String resourceGroupName,
         String storageContainerName, Context context) {
@@ -968,11 +775,7 @@ public final class StorageAssetsClientImpl implements StorageAssetsClient {
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private PagedResponse<StorageAssetInner> listByStorageContainerNextSinglePage(String nextLink) {
-        final String accept = "application/json";
-        Response<StorageAssetListResult> res
-            = service.listByStorageContainerNextSync(nextLink, this.client.getEndpoint(), accept, Context.NONE);
-        return new PagedResponseBase<>(res.getRequest(), res.getStatusCode(), res.getHeaders(), res.getValue().value(),
-            res.getValue().nextLink(), null);
+        return listByStorageContainerNextSinglePage(nextLink, Context.NONE);
     }
 
     /**

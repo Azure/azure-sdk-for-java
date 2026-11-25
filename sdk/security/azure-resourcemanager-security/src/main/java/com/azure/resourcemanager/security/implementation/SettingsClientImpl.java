@@ -170,30 +170,13 @@ public final class SettingsClientImpl implements SettingsClient {
         return getWithResponseAsync(settingName).flatMap(res -> Mono.justOrEmpty(res.getValue()));
     }
 
-    /**
-     * Settings of different configurations in Microsoft Defender for Cloud.
-     * 
-     * @param settingName The name of the setting.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the kind of the security setting along with {@link Response}.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Response<SettingInner> getWithResponse(SettingName settingName, Context context) {
         return getWithResponseAsync(settingName, context).block();
     }
 
-    /**
-     * Settings of different configurations in Microsoft Defender for Cloud.
-     * 
-     * @param settingName The name of the setting.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the kind of the security setting.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public SettingInner get(SettingName settingName) {
         return getWithResponse(settingName, Context.NONE).getValue();
@@ -289,32 +272,13 @@ public final class SettingsClientImpl implements SettingsClient {
         return updateWithResponseAsync(settingName, setting).flatMap(res -> Mono.justOrEmpty(res.getValue()));
     }
 
-    /**
-     * updating settings about different configurations in Microsoft Defender for Cloud.
-     * 
-     * @param settingName The name of the setting.
-     * @param setting Setting object.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the kind of the security setting along with {@link Response}.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Response<SettingInner> updateWithResponse(SettingName settingName, SettingInner setting, Context context) {
         return updateWithResponseAsync(settingName, setting, context).block();
     }
 
-    /**
-     * updating settings about different configurations in Microsoft Defender for Cloud.
-     * 
-     * @param settingName The name of the setting.
-     * @param setting Setting object.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the kind of the security setting.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public SettingInner update(SettingName settingName, SettingInner setting) {
         return updateWithResponse(settingName, setting, Context.NONE).getValue();
@@ -401,27 +365,13 @@ public final class SettingsClientImpl implements SettingsClient {
             nextLink -> listNextSinglePageAsync(nextLink, context));
     }
 
-    /**
-     * Settings about different configurations in Microsoft Defender for Cloud.
-     * 
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return subscription settings list as paginated response with {@link PagedIterable}.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.COLLECTION)
     public PagedIterable<SettingInner> list() {
         return new PagedIterable<>(listAsync());
     }
 
-    /**
-     * Settings about different configurations in Microsoft Defender for Cloud.
-     * 
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return subscription settings list as paginated response with {@link PagedIterable}.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.COLLECTION)
     public PagedIterable<SettingInner> list(Context context) {
         return new PagedIterable<>(listAsync(context));

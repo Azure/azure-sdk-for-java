@@ -88,16 +88,7 @@ public final class AccessReviewHistoryDefinitionsClientImpl implements AccessRev
             @HeaderParam("Accept") String accept, Context context);
     }
 
-    /**
-     * Get access review history definition by definition Id.
-     * 
-     * @param historyDefinitionId The id of the access review history definition.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return access review history definition by definition Id along with {@link Response} on successful completion of
-     * {@link Mono}.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Response<AccessReviewHistoryDefinitionInner>> getByIdWithResponseAsync(String historyDefinitionId) {
         if (this.client.getEndpoint() == null) {
@@ -153,45 +144,20 @@ public final class AccessReviewHistoryDefinitionsClientImpl implements AccessRev
             historyDefinitionId, accept, context);
     }
 
-    /**
-     * Get access review history definition by definition Id.
-     * 
-     * @param historyDefinitionId The id of the access review history definition.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return access review history definition by definition Id on successful completion of {@link Mono}.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<AccessReviewHistoryDefinitionInner> getByIdAsync(String historyDefinitionId) {
         return getByIdWithResponseAsync(historyDefinitionId).flatMap(res -> Mono.justOrEmpty(res.getValue()));
     }
 
-    /**
-     * Get access review history definition by definition Id.
-     * 
-     * @param historyDefinitionId The id of the access review history definition.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return access review history definition by definition Id along with {@link Response}.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Response<AccessReviewHistoryDefinitionInner> getByIdWithResponse(String historyDefinitionId,
         Context context) {
         return getByIdWithResponseAsync(historyDefinitionId, context).block();
     }
 
-    /**
-     * Get access review history definition by definition Id.
-     * 
-     * @param historyDefinitionId The id of the access review history definition.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return access review history definition by definition Id.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public AccessReviewHistoryDefinitionInner getById(String historyDefinitionId) {
         return getByIdWithResponse(historyDefinitionId, Context.NONE).getValue();
@@ -262,32 +228,13 @@ public final class AccessReviewHistoryDefinitionsClientImpl implements AccessRev
                 res.getValue().value(), res.getValue().nextLink(), null));
     }
 
-    /**
-     * Lists the accessReviewHistoryDefinitions available from this provider, definition instances are only available
-     * for 30 days after creation.
-     * 
-     * @param filter The filter to apply on the operation. Only standard filters on definition name and created date are
-     * supported.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the response of a AccessReviewHistoryDefinition list operation as paginated response with
-     * {@link PagedFlux}.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.COLLECTION)
     public PagedFlux<AccessReviewHistoryDefinitionInner> listAsync(String filter) {
         return new PagedFlux<>(() -> listSinglePageAsync(filter), nextLink -> listNextSinglePageAsync(nextLink));
     }
 
-    /**
-     * Lists the accessReviewHistoryDefinitions available from this provider, definition instances are only available
-     * for 30 days after creation.
-     * 
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the response of a AccessReviewHistoryDefinition list operation as paginated response with
-     * {@link PagedFlux}.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.COLLECTION)
     public PagedFlux<AccessReviewHistoryDefinitionInner> listAsync() {
         final String filter = null;
@@ -313,34 +260,14 @@ public final class AccessReviewHistoryDefinitionsClientImpl implements AccessRev
             nextLink -> listNextSinglePageAsync(nextLink, context));
     }
 
-    /**
-     * Lists the accessReviewHistoryDefinitions available from this provider, definition instances are only available
-     * for 30 days after creation.
-     * 
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the response of a AccessReviewHistoryDefinition list operation as paginated response with
-     * {@link PagedIterable}.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.COLLECTION)
     public PagedIterable<AccessReviewHistoryDefinitionInner> list() {
         final String filter = null;
         return new PagedIterable<>(listAsync(filter));
     }
 
-    /**
-     * Lists the accessReviewHistoryDefinitions available from this provider, definition instances are only available
-     * for 30 days after creation.
-     * 
-     * @param filter The filter to apply on the operation. Only standard filters on definition name and created date are
-     * supported.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the response of a AccessReviewHistoryDefinition list operation as paginated response with
-     * {@link PagedIterable}.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.COLLECTION)
     public PagedIterable<AccessReviewHistoryDefinitionInner> list(String filter, Context context) {
         return new PagedIterable<>(listAsync(filter, context));

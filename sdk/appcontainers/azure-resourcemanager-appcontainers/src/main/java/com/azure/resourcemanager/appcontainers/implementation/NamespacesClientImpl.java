@@ -124,20 +124,7 @@ public final class NamespacesClientImpl implements NamespacesClient {
             .flatMap(res -> Mono.justOrEmpty(res.getValue()));
     }
 
-    /**
-     * Checks the resource name availability.
-     * 
-     * Checks if resource name is available.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param environmentName Name of the Environment.
-     * @param checkNameAvailabilityRequest The check name availability request.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the check availability result along with {@link Response}.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Response<CheckNameAvailabilityResponseInner> checkNameAvailabilityWithResponse(String resourceGroupName,
         String environmentName, CheckNameAvailabilityRequest checkNameAvailabilityRequest, Context context) {
@@ -148,19 +135,7 @@ public final class NamespacesClientImpl implements NamespacesClient {
             checkNameAvailabilityRequest, context);
     }
 
-    /**
-     * Checks the resource name availability.
-     * 
-     * Checks if resource name is available.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param environmentName Name of the Environment.
-     * @param checkNameAvailabilityRequest The check name availability request.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the check availability result.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public CheckNameAvailabilityResponseInner checkNameAvailability(String resourceGroupName, String environmentName,
         CheckNameAvailabilityRequest checkNameAvailabilityRequest) {

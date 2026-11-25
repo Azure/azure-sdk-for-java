@@ -252,17 +252,7 @@ public final class DeploymentsClientImpl implements DeploymentsClient {
             .flatMap(res -> Mono.justOrEmpty(res.getValue()));
     }
 
-    /**
-     * Get the NGINX deployment.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param deploymentName The name of targeted NGINX deployment.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the NGINX deployment along with {@link Response}.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Response<NginxDeploymentInner> getByResourceGroupWithResponse(String resourceGroupName,
         String deploymentName, Context context) {
@@ -271,16 +261,7 @@ public final class DeploymentsClientImpl implements DeploymentsClient {
             this.client.getSubscriptionId(), resourceGroupName, deploymentName, accept, context);
     }
 
-    /**
-     * Get the NGINX deployment.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param deploymentName The name of targeted NGINX deployment.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the NGINX deployment.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public NginxDeploymentInner getByResourceGroup(String resourceGroupName, String deploymentName) {
         return getByResourceGroupWithResponse(resourceGroupName, deploymentName, Context.NONE).getValue();
@@ -321,9 +302,7 @@ public final class DeploymentsClientImpl implements DeploymentsClient {
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Response<BinaryData> createOrUpdateWithResponse(String resourceGroupName, String deploymentName,
         NginxDeploymentInner body) {
-        final String accept = "application/json";
-        return service.createOrUpdateSync(this.client.getEndpoint(), this.client.getApiVersion(),
-            this.client.getSubscriptionId(), resourceGroupName, deploymentName, accept, body, Context.NONE);
+        return createOrUpdateWithResponse(resourceGroupName, deploymentName, body, Context.NONE);
     }
 
     /**
@@ -400,42 +379,18 @@ public final class DeploymentsClientImpl implements DeploymentsClient {
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     private SyncPoller<PollResult<NginxDeploymentInner>, NginxDeploymentInner>
         beginCreateOrUpdate(String resourceGroupName, String deploymentName, NginxDeploymentInner body) {
-        Response<BinaryData> response = createOrUpdateWithResponse(resourceGroupName, deploymentName, body);
-        return this.client.<NginxDeploymentInner, NginxDeploymentInner>getLroResult(response,
-            NginxDeploymentInner.class, NginxDeploymentInner.class, Context.NONE);
+        return beginCreateOrUpdate(resourceGroupName, deploymentName, body, Context.NONE);
     }
 
-    /**
-     * Create or update the NGINX deployment.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param deploymentName The name of targeted NGINX deployment.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the {@link SyncPoller} for polling of nginx Deployment.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public SyncPoller<PollResult<NginxDeploymentInner>, NginxDeploymentInner>
         beginCreateOrUpdate(String resourceGroupName, String deploymentName) {
         final NginxDeploymentInner body = null;
-        Response<BinaryData> response = createOrUpdateWithResponse(resourceGroupName, deploymentName, body);
-        return this.client.<NginxDeploymentInner, NginxDeploymentInner>getLroResult(response,
-            NginxDeploymentInner.class, NginxDeploymentInner.class, Context.NONE);
+        return beginCreateOrUpdate(resourceGroupName, deploymentName, body, Context.NONE);
     }
 
-    /**
-     * Create or update the NGINX deployment.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param deploymentName The name of targeted NGINX deployment.
-     * @param body The Nginx deployment.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the {@link SyncPoller} for polling of nginx Deployment.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public SyncPoller<PollResult<NginxDeploymentInner>, NginxDeploymentInner> beginCreateOrUpdate(
         String resourceGroupName, String deploymentName, NginxDeploymentInner body, Context context) {
@@ -479,38 +434,19 @@ public final class DeploymentsClientImpl implements DeploymentsClient {
             .flatMap(this.client::getLroFinalResultOrError);
     }
 
-    /**
-     * Create or update the NGINX deployment.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param deploymentName The name of targeted NGINX deployment.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return nginx Deployment.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public NginxDeploymentInner createOrUpdate(String resourceGroupName, String deploymentName) {
         final NginxDeploymentInner body = null;
-        return beginCreateOrUpdate(resourceGroupName, deploymentName, body).getFinalResult();
+        return createOrUpdate(resourceGroupName, deploymentName, body, Context.NONE);
     }
 
-    /**
-     * Create or update the NGINX deployment.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param deploymentName The name of targeted NGINX deployment.
-     * @param body The Nginx deployment.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return nginx Deployment.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public NginxDeploymentInner createOrUpdate(String resourceGroupName, String deploymentName,
         NginxDeploymentInner body, Context context) {
-        return beginCreateOrUpdate(resourceGroupName, deploymentName, body, context).getFinalResult();
+        return this.client
+            .getLroFinalResultOrError(beginCreateOrUpdate(resourceGroupName, deploymentName, body, context));
     }
 
     /**
@@ -548,9 +484,7 @@ public final class DeploymentsClientImpl implements DeploymentsClient {
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Response<BinaryData> updateWithResponse(String resourceGroupName, String deploymentName,
         NginxDeploymentUpdateParameters body) {
-        final String accept = "application/json";
-        return service.updateSync(this.client.getEndpoint(), this.client.getApiVersion(),
-            this.client.getSubscriptionId(), resourceGroupName, deploymentName, accept, body, Context.NONE);
+        return updateWithResponse(resourceGroupName, deploymentName, body, Context.NONE);
     }
 
     /**
@@ -625,42 +559,18 @@ public final class DeploymentsClientImpl implements DeploymentsClient {
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     private SyncPoller<PollResult<NginxDeploymentInner>, NginxDeploymentInner> beginUpdate(String resourceGroupName,
         String deploymentName, NginxDeploymentUpdateParameters body) {
-        Response<BinaryData> response = updateWithResponse(resourceGroupName, deploymentName, body);
-        return this.client.<NginxDeploymentInner, NginxDeploymentInner>getLroResult(response,
-            NginxDeploymentInner.class, NginxDeploymentInner.class, Context.NONE);
+        return beginUpdate(resourceGroupName, deploymentName, body, Context.NONE);
     }
 
-    /**
-     * Update the NGINX deployment.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param deploymentName The name of targeted NGINX deployment.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the {@link SyncPoller} for polling of nginx Deployment.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public SyncPoller<PollResult<NginxDeploymentInner>, NginxDeploymentInner> beginUpdate(String resourceGroupName,
         String deploymentName) {
         final NginxDeploymentUpdateParameters body = null;
-        Response<BinaryData> response = updateWithResponse(resourceGroupName, deploymentName, body);
-        return this.client.<NginxDeploymentInner, NginxDeploymentInner>getLroResult(response,
-            NginxDeploymentInner.class, NginxDeploymentInner.class, Context.NONE);
+        return beginUpdate(resourceGroupName, deploymentName, body, Context.NONE);
     }
 
-    /**
-     * Update the NGINX deployment.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param deploymentName The name of targeted NGINX deployment.
-     * @param body The Nginx deployment update parameters.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the {@link SyncPoller} for polling of nginx Deployment.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public SyncPoller<PollResult<NginxDeploymentInner>, NginxDeploymentInner> beginUpdate(String resourceGroupName,
         String deploymentName, NginxDeploymentUpdateParameters body, Context context) {
@@ -704,38 +614,18 @@ public final class DeploymentsClientImpl implements DeploymentsClient {
             .flatMap(this.client::getLroFinalResultOrError);
     }
 
-    /**
-     * Update the NGINX deployment.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param deploymentName The name of targeted NGINX deployment.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return nginx Deployment.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public NginxDeploymentInner update(String resourceGroupName, String deploymentName) {
         final NginxDeploymentUpdateParameters body = null;
-        return beginUpdate(resourceGroupName, deploymentName, body).getFinalResult();
+        return update(resourceGroupName, deploymentName, body, Context.NONE);
     }
 
-    /**
-     * Update the NGINX deployment.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param deploymentName The name of targeted NGINX deployment.
-     * @param body The Nginx deployment update parameters.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return nginx Deployment.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public NginxDeploymentInner update(String resourceGroupName, String deploymentName,
         NginxDeploymentUpdateParameters body, Context context) {
-        return beginUpdate(resourceGroupName, deploymentName, body, context).getFinalResult();
+        return this.client.getLroFinalResultOrError(beginUpdate(resourceGroupName, deploymentName, body, context));
     }
 
     /**
@@ -768,8 +658,7 @@ public final class DeploymentsClientImpl implements DeploymentsClient {
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Response<BinaryData> deleteWithResponse(String resourceGroupName, String deploymentName) {
-        return service.deleteSync(this.client.getEndpoint(), this.client.getApiVersion(),
-            this.client.getSubscriptionId(), resourceGroupName, deploymentName, Context.NONE);
+        return deleteWithResponse(resourceGroupName, deploymentName, Context.NONE);
     }
 
     /**
@@ -806,33 +695,13 @@ public final class DeploymentsClientImpl implements DeploymentsClient {
             this.client.getContext());
     }
 
-    /**
-     * Delete the NGINX deployment resource.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param deploymentName The name of targeted NGINX deployment.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the {@link SyncPoller} for polling of long-running operation.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public SyncPoller<PollResult<Void>, Void> beginDelete(String resourceGroupName, String deploymentName) {
-        Response<BinaryData> response = deleteWithResponse(resourceGroupName, deploymentName);
-        return this.client.<Void, Void>getLroResult(response, Void.class, Void.class, Context.NONE);
+        return beginDelete(resourceGroupName, deploymentName, Context.NONE);
     }
 
-    /**
-     * Delete the NGINX deployment resource.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param deploymentName The name of targeted NGINX deployment.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the {@link SyncPoller} for polling of long-running operation.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public SyncPoller<PollResult<Void>, Void> beginDelete(String resourceGroupName, String deploymentName,
         Context context) {
@@ -856,33 +725,16 @@ public final class DeploymentsClientImpl implements DeploymentsClient {
             .flatMap(this.client::getLroFinalResultOrError);
     }
 
-    /**
-     * Delete the NGINX deployment resource.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param deploymentName The name of targeted NGINX deployment.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public void delete(String resourceGroupName, String deploymentName) {
-        beginDelete(resourceGroupName, deploymentName).getFinalResult();
+        delete(resourceGroupName, deploymentName, Context.NONE);
     }
 
-    /**
-     * Delete the NGINX deployment resource.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param deploymentName The name of targeted NGINX deployment.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public void delete(String resourceGroupName, String deploymentName, Context context) {
-        beginDelete(resourceGroupName, deploymentName, context).getFinalResult();
+        this.client.getLroFinalResultOrError(beginDelete(resourceGroupName, deploymentName, context));
     }
 
     /**
@@ -931,11 +783,7 @@ public final class DeploymentsClientImpl implements DeploymentsClient {
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private PagedResponse<NginxDeploymentInner> listByResourceGroupSinglePage(String resourceGroupName) {
-        final String accept = "application/json";
-        Response<NginxDeploymentListResponse> res = service.listByResourceGroupSync(this.client.getEndpoint(),
-            this.client.getApiVersion(), this.client.getSubscriptionId(), resourceGroupName, accept, Context.NONE);
-        return new PagedResponseBase<>(res.getRequest(), res.getStatusCode(), res.getHeaders(), res.getValue().value(),
-            res.getValue().nextLink(), null);
+        return listByResourceGroupSinglePage(resourceGroupName, Context.NONE);
     }
 
     /**
@@ -958,31 +806,13 @@ public final class DeploymentsClientImpl implements DeploymentsClient {
             res.getValue().nextLink(), null);
     }
 
-    /**
-     * List all NGINX deployments under the specified resource group.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return nginx Deployment List Response as paginated response with {@link PagedIterable}.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.COLLECTION)
     public PagedIterable<NginxDeploymentInner> listByResourceGroup(String resourceGroupName) {
-        return new PagedIterable<>(() -> listByResourceGroupSinglePage(resourceGroupName),
-            nextLink -> listByResourceGroupNextSinglePage(nextLink));
+        return listByResourceGroup(resourceGroupName, Context.NONE);
     }
 
-    /**
-     * List all NGINX deployments under the specified resource group.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return nginx Deployment List Response as paginated response with {@link PagedIterable}.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.COLLECTION)
     public PagedIterable<NginxDeploymentInner> listByResourceGroup(String resourceGroupName, Context context) {
         return new PagedIterable<>(() -> listByResourceGroupSinglePage(resourceGroupName, context),
@@ -1028,11 +858,7 @@ public final class DeploymentsClientImpl implements DeploymentsClient {
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private PagedResponse<NginxDeploymentInner> listSinglePage() {
-        final String accept = "application/json";
-        Response<NginxDeploymentListResponse> res = service.listSync(this.client.getEndpoint(),
-            this.client.getApiVersion(), this.client.getSubscriptionId(), accept, Context.NONE);
-        return new PagedResponseBase<>(res.getRequest(), res.getStatusCode(), res.getHeaders(), res.getValue().value(),
-            res.getValue().nextLink(), null);
+        return listSinglePage(Context.NONE);
     }
 
     /**
@@ -1053,27 +879,13 @@ public final class DeploymentsClientImpl implements DeploymentsClient {
             res.getValue().nextLink(), null);
     }
 
-    /**
-     * List the NGINX deployments resources.
-     * 
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return nginx Deployment List Response as paginated response with {@link PagedIterable}.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.COLLECTION)
     public PagedIterable<NginxDeploymentInner> list() {
-        return new PagedIterable<>(() -> listSinglePage(), nextLink -> listNextSinglePage(nextLink));
+        return list(Context.NONE);
     }
 
-    /**
-     * List the NGINX deployments resources.
-     * 
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return nginx Deployment List Response as paginated response with {@link PagedIterable}.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.COLLECTION)
     public PagedIterable<NginxDeploymentInner> list(Context context) {
         return new PagedIterable<>(() -> listSinglePage(context), nextLink -> listNextSinglePage(nextLink, context));
@@ -1110,11 +922,7 @@ public final class DeploymentsClientImpl implements DeploymentsClient {
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private PagedResponse<NginxDeploymentInner> listByResourceGroupNextSinglePage(String nextLink) {
-        final String accept = "application/json";
-        Response<NginxDeploymentListResponse> res
-            = service.listByResourceGroupNextSync(nextLink, this.client.getEndpoint(), accept, Context.NONE);
-        return new PagedResponseBase<>(res.getRequest(), res.getStatusCode(), res.getHeaders(), res.getValue().value(),
-            res.getValue().nextLink(), null);
+        return listByResourceGroupNextSinglePage(nextLink, Context.NONE);
     }
 
     /**
@@ -1165,11 +973,7 @@ public final class DeploymentsClientImpl implements DeploymentsClient {
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private PagedResponse<NginxDeploymentInner> listNextSinglePage(String nextLink) {
-        final String accept = "application/json";
-        Response<NginxDeploymentListResponse> res
-            = service.listNextSync(nextLink, this.client.getEndpoint(), accept, Context.NONE);
-        return new PagedResponseBase<>(res.getRequest(), res.getStatusCode(), res.getHeaders(), res.getValue().value(),
-            res.getValue().nextLink(), null);
+        return listNextSinglePage(nextLink, Context.NONE);
     }
 
     /**

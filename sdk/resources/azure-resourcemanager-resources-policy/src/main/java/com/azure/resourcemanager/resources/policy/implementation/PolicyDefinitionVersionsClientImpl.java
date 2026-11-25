@@ -394,18 +394,7 @@ public final class PolicyDefinitionVersionsClientImpl implements PolicyDefinitio
             .flatMap(res -> Mono.justOrEmpty(res.getValue()));
     }
 
-    /**
-     * This operation retrieves the policy definition version in the given subscription with the given name.
-     * 
-     * @param policyDefinitionName The name of the policy definition.
-     * @param policyDefinitionVersion The policy definition version. The format is x.y.z where x is the major version
-     * number, y is the minor version number, and z is the patch number.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the ID of the policy definition version along with {@link Response}.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Response<PolicyDefinitionVersionInner> getWithResponse(String policyDefinitionName,
         String policyDefinitionVersion, Context context) {
@@ -414,17 +403,7 @@ public final class PolicyDefinitionVersionsClientImpl implements PolicyDefinitio
             policyDefinitionName, policyDefinitionVersion, accept, context);
     }
 
-    /**
-     * This operation retrieves the policy definition version in the given subscription with the given name.
-     * 
-     * @param policyDefinitionName The name of the policy definition.
-     * @param policyDefinitionVersion The policy definition version. The format is x.y.z where x is the major version
-     * number, y is the minor version number, and z is the patch number.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the ID of the policy definition version.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public PolicyDefinitionVersionInner get(String policyDefinitionName, String policyDefinitionVersion) {
         return getWithResponse(policyDefinitionName, policyDefinitionVersion, Context.NONE).getValue();
@@ -474,19 +453,7 @@ public final class PolicyDefinitionVersionsClientImpl implements PolicyDefinitio
             .flatMap(res -> Mono.justOrEmpty(res.getValue()));
     }
 
-    /**
-     * This operation creates or updates a policy definition in the given subscription with the given name.
-     * 
-     * @param policyDefinitionName The name of the policy definition.
-     * @param policyDefinitionVersion The policy definition version. The format is x.y.z where x is the major version
-     * number, y is the minor version number, and z is the patch number.
-     * @param parameters The policy definition properties.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the ID of the policy definition version along with {@link Response}.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Response<PolicyDefinitionVersionInner> createOrUpdateWithResponse(String policyDefinitionName,
         String policyDefinitionVersion, PolicyDefinitionVersionInner parameters, Context context) {
@@ -497,18 +464,7 @@ public final class PolicyDefinitionVersionsClientImpl implements PolicyDefinitio
             parameters, context);
     }
 
-    /**
-     * This operation creates or updates a policy definition in the given subscription with the given name.
-     * 
-     * @param policyDefinitionName The name of the policy definition.
-     * @param policyDefinitionVersion The policy definition version. The format is x.y.z where x is the major version
-     * number, y is the minor version number, and z is the patch number.
-     * @param parameters The policy definition properties.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the ID of the policy definition version.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public PolicyDefinitionVersionInner createOrUpdate(String policyDefinitionName, String policyDefinitionVersion,
         PolicyDefinitionVersionInner parameters) {
@@ -551,18 +507,7 @@ public final class PolicyDefinitionVersionsClientImpl implements PolicyDefinitio
         return deleteWithResponseAsync(policyDefinitionName, policyDefinitionVersion).flatMap(ignored -> Mono.empty());
     }
 
-    /**
-     * This operation deletes the policy definition version in the given subscription with the given name.
-     * 
-     * @param policyDefinitionName The name of the policy definition.
-     * @param policyDefinitionVersion The policy definition version. The format is x.y.z where x is the major version
-     * number, y is the minor version number, and z is the patch number.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the {@link Response}.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Response<Void> deleteWithResponse(String policyDefinitionName, String policyDefinitionVersion,
         Context context) {
@@ -570,16 +515,7 @@ public final class PolicyDefinitionVersionsClientImpl implements PolicyDefinitio
             this.client.getSubscriptionId(), policyDefinitionName, policyDefinitionVersion, context);
     }
 
-    /**
-     * This operation deletes the policy definition version in the given subscription with the given name.
-     * 
-     * @param policyDefinitionName The name of the policy definition.
-     * @param policyDefinitionVersion The policy definition version. The format is x.y.z where x is the major version
-     * number, y is the minor version number, and z is the patch number.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public void delete(String policyDefinitionName, String policyDefinitionVersion) {
         deleteWithResponse(policyDefinitionName, policyDefinitionVersion, Context.NONE);
@@ -652,12 +588,7 @@ public final class PolicyDefinitionVersionsClientImpl implements PolicyDefinitio
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private PagedResponse<PolicyDefinitionVersionInner> listSinglePage(String policyDefinitionName, Integer top) {
-        final String accept = "application/json";
-        Response<PolicyDefinitionVersionListResultInner> res
-            = service.listSync(this.client.getEndpoint(), this.client.getApiVersion(), this.client.getSubscriptionId(),
-                policyDefinitionName, top, accept, Context.NONE);
-        return new PagedResponseBase<>(res.getRequest(), res.getStatusCode(), res.getHeaders(), res.getValue().value(),
-            res.getValue().nextLink(), null);
+        return listSinglePage(policyDefinitionName, top, Context.NONE);
     }
 
     /**
@@ -681,35 +612,14 @@ public final class PolicyDefinitionVersionsClientImpl implements PolicyDefinitio
             res.getValue().nextLink(), null);
     }
 
-    /**
-     * This operation retrieves a list of all the policy definition versions for the given policy definition.
-     * 
-     * @param policyDefinitionName The name of the policy definition.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the response of a PolicyDefinitionVersion list operation as paginated response with
-     * {@link PagedIterable}.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.COLLECTION)
     public PagedIterable<PolicyDefinitionVersionInner> list(String policyDefinitionName) {
         final Integer top = null;
-        return new PagedIterable<>(() -> listSinglePage(policyDefinitionName, top),
-            nextLink -> listNextSinglePage(nextLink));
+        return list(policyDefinitionName, top, Context.NONE);
     }
 
-    /**
-     * This operation retrieves a list of all the policy definition versions for the given policy definition.
-     * 
-     * @param policyDefinitionName The name of the policy definition.
-     * @param top Maximum number of records to return. When the $top filter is not provided, it will return 500 records.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the response of a PolicyDefinitionVersion list operation as paginated response with
-     * {@link PagedIterable}.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.COLLECTION)
     public PagedIterable<PolicyDefinitionVersionInner> list(String policyDefinitionName, Integer top, Context context) {
         return new PagedIterable<>(() -> listSinglePage(policyDefinitionName, top, context),
@@ -756,18 +666,7 @@ public final class PolicyDefinitionVersionsClientImpl implements PolicyDefinitio
             .flatMap(res -> Mono.justOrEmpty(res.getValue()));
     }
 
-    /**
-     * This operation retrieves the built-in policy definition version with the given name.
-     * 
-     * @param policyDefinitionName The name of the policy definition.
-     * @param policyDefinitionVersion The policy definition version. The format is x.y.z where x is the major version
-     * number, y is the minor version number, and z is the patch number.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the ID of the policy definition version along with {@link Response}.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Response<PolicyDefinitionVersionInner> getBuiltInWithResponse(String policyDefinitionName,
         String policyDefinitionVersion, Context context) {
@@ -776,17 +675,7 @@ public final class PolicyDefinitionVersionsClientImpl implements PolicyDefinitio
             policyDefinitionVersion, accept, context);
     }
 
-    /**
-     * This operation retrieves the built-in policy definition version with the given name.
-     * 
-     * @param policyDefinitionName The name of the policy definition.
-     * @param policyDefinitionVersion The policy definition version. The format is x.y.z where x is the major version
-     * number, y is the minor version number, and z is the patch number.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the ID of the policy definition version.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public PolicyDefinitionVersionInner getBuiltIn(String policyDefinitionName, String policyDefinitionVersion) {
         return getBuiltInWithResponse(policyDefinitionName, policyDefinitionVersion, Context.NONE).getValue();
@@ -860,11 +749,7 @@ public final class PolicyDefinitionVersionsClientImpl implements PolicyDefinitio
     @ServiceMethod(returns = ReturnType.SINGLE)
     private PagedResponse<PolicyDefinitionVersionInner> listBuiltInSinglePage(String policyDefinitionName,
         Integer top) {
-        final String accept = "application/json";
-        Response<PolicyDefinitionVersionListResultInner> res = service.listBuiltInSync(this.client.getEndpoint(),
-            this.client.getApiVersion(), policyDefinitionName, top, accept, Context.NONE);
-        return new PagedResponseBase<>(res.getRequest(), res.getStatusCode(), res.getHeaders(), res.getValue().value(),
-            res.getValue().nextLink(), null);
+        return listBuiltInSinglePage(policyDefinitionName, top, Context.NONE);
     }
 
     /**
@@ -888,35 +773,14 @@ public final class PolicyDefinitionVersionsClientImpl implements PolicyDefinitio
             res.getValue().nextLink(), null);
     }
 
-    /**
-     * This operation retrieves a list of all the built-in policy definition versions for the given policy definition.
-     * 
-     * @param policyDefinitionName The name of the policy definition.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the response of a PolicyDefinitionVersion list operation as paginated response with
-     * {@link PagedIterable}.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.COLLECTION)
     public PagedIterable<PolicyDefinitionVersionInner> listBuiltIn(String policyDefinitionName) {
         final Integer top = null;
-        return new PagedIterable<>(() -> listBuiltInSinglePage(policyDefinitionName, top),
-            nextLink -> listBuiltInNextSinglePage(nextLink));
+        return listBuiltIn(policyDefinitionName, top, Context.NONE);
     }
 
-    /**
-     * This operation retrieves a list of all the built-in policy definition versions for the given policy definition.
-     * 
-     * @param policyDefinitionName The name of the policy definition.
-     * @param top Maximum number of records to return. When the $top filter is not provided, it will return 500 records.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the response of a PolicyDefinitionVersion list operation as paginated response with
-     * {@link PagedIterable}.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.COLLECTION)
     public PagedIterable<PolicyDefinitionVersionInner> listBuiltIn(String policyDefinitionName, Integer top,
         Context context) {
@@ -966,19 +830,7 @@ public final class PolicyDefinitionVersionsClientImpl implements PolicyDefinitio
             .flatMap(res -> Mono.justOrEmpty(res.getValue()));
     }
 
-    /**
-     * This operation retrieves the policy definition version in the given management group with the given name.
-     * 
-     * @param managementGroupName The name of the management group. The name is case insensitive.
-     * @param policyDefinitionName The name of the policy definition.
-     * @param policyDefinitionVersion The policy definition version. The format is x.y.z where x is the major version
-     * number, y is the minor version number, and z is the patch number.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the ID of the policy definition version along with {@link Response}.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Response<PolicyDefinitionVersionInner> getAtManagementGroupWithResponse(String managementGroupName,
         String policyDefinitionName, String policyDefinitionVersion, Context context) {
@@ -987,18 +839,7 @@ public final class PolicyDefinitionVersionsClientImpl implements PolicyDefinitio
             managementGroupName, policyDefinitionName, policyDefinitionVersion, accept, context);
     }
 
-    /**
-     * This operation retrieves the policy definition version in the given management group with the given name.
-     * 
-     * @param managementGroupName The name of the management group. The name is case insensitive.
-     * @param policyDefinitionName The name of the policy definition.
-     * @param policyDefinitionVersion The policy definition version. The format is x.y.z where x is the major version
-     * number, y is the minor version number, and z is the patch number.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the ID of the policy definition version.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public PolicyDefinitionVersionInner getAtManagementGroup(String managementGroupName, String policyDefinitionName,
         String policyDefinitionVersion) {
@@ -1053,20 +894,7 @@ public final class PolicyDefinitionVersionsClientImpl implements PolicyDefinitio
             policyDefinitionVersion, parameters).flatMap(res -> Mono.justOrEmpty(res.getValue()));
     }
 
-    /**
-     * This operation creates or updates a policy definition version in the given management group with the given name.
-     * 
-     * @param managementGroupName The name of the management group. The name is case insensitive.
-     * @param policyDefinitionName The name of the policy definition.
-     * @param policyDefinitionVersion The policy definition version. The format is x.y.z where x is the major version
-     * number, y is the minor version number, and z is the patch number.
-     * @param parameters The policy definition properties.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the ID of the policy definition version along with {@link Response}.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Response<PolicyDefinitionVersionInner> createOrUpdateAtManagementGroupWithResponse(
         String managementGroupName, String policyDefinitionName, String policyDefinitionVersion,
@@ -1078,19 +906,7 @@ public final class PolicyDefinitionVersionsClientImpl implements PolicyDefinitio
             context);
     }
 
-    /**
-     * This operation creates or updates a policy definition version in the given management group with the given name.
-     * 
-     * @param managementGroupName The name of the management group. The name is case insensitive.
-     * @param policyDefinitionName The name of the policy definition.
-     * @param policyDefinitionVersion The policy definition version. The format is x.y.z where x is the major version
-     * number, y is the minor version number, and z is the patch number.
-     * @param parameters The policy definition properties.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the ID of the policy definition version.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public PolicyDefinitionVersionInner createOrUpdateAtManagementGroup(String managementGroupName,
         String policyDefinitionName, String policyDefinitionVersion, PolicyDefinitionVersionInner parameters) {
@@ -1139,19 +955,7 @@ public final class PolicyDefinitionVersionsClientImpl implements PolicyDefinitio
             policyDefinitionVersion).flatMap(ignored -> Mono.empty());
     }
 
-    /**
-     * This operation deletes the policy definition in the given management group with the given name.
-     * 
-     * @param managementGroupName The name of the management group. The name is case insensitive.
-     * @param policyDefinitionName The name of the policy definition.
-     * @param policyDefinitionVersion The policy definition version. The format is x.y.z where x is the major version
-     * number, y is the minor version number, and z is the patch number.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the {@link Response}.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Response<Void> deleteAtManagementGroupWithResponse(String managementGroupName, String policyDefinitionName,
         String policyDefinitionVersion, Context context) {
@@ -1159,17 +963,7 @@ public final class PolicyDefinitionVersionsClientImpl implements PolicyDefinitio
             managementGroupName, policyDefinitionName, policyDefinitionVersion, context);
     }
 
-    /**
-     * This operation deletes the policy definition in the given management group with the given name.
-     * 
-     * @param managementGroupName The name of the management group. The name is case insensitive.
-     * @param policyDefinitionName The name of the policy definition.
-     * @param policyDefinitionVersion The policy definition version. The format is x.y.z where x is the major version
-     * number, y is the minor version number, and z is the patch number.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public void deleteAtManagementGroup(String managementGroupName, String policyDefinitionName,
         String policyDefinitionVersion) {
@@ -1257,12 +1051,7 @@ public final class PolicyDefinitionVersionsClientImpl implements PolicyDefinitio
     @ServiceMethod(returns = ReturnType.SINGLE)
     private PagedResponse<PolicyDefinitionVersionInner> listByManagementGroupSinglePage(String managementGroupName,
         String policyDefinitionName, Integer top) {
-        final String accept = "application/json";
-        Response<PolicyDefinitionVersionListResultInner> res
-            = service.listByManagementGroupSync(this.client.getEndpoint(), this.client.getApiVersion(),
-                managementGroupName, policyDefinitionName, top, accept, Context.NONE);
-        return new PagedResponseBase<>(res.getRequest(), res.getStatusCode(), res.getHeaders(), res.getValue().value(),
-            res.getValue().nextLink(), null);
+        return listByManagementGroupSinglePage(managementGroupName, policyDefinitionName, top, Context.NONE);
     }
 
     /**
@@ -1289,41 +1078,15 @@ public final class PolicyDefinitionVersionsClientImpl implements PolicyDefinitio
             res.getValue().nextLink(), null);
     }
 
-    /**
-     * This operation retrieves a list of all the policy definition versions for the given policy definition in the
-     * given management group.
-     * 
-     * @param managementGroupName The name of the management group. The name is case insensitive.
-     * @param policyDefinitionName The name of the policy definition.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the response of a PolicyDefinitionVersion list operation as paginated response with
-     * {@link PagedIterable}.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.COLLECTION)
     public PagedIterable<PolicyDefinitionVersionInner> listByManagementGroup(String managementGroupName,
         String policyDefinitionName) {
         final Integer top = null;
-        return new PagedIterable<>(
-            () -> listByManagementGroupSinglePage(managementGroupName, policyDefinitionName, top),
-            nextLink -> listByManagementGroupNextSinglePage(nextLink));
+        return listByManagementGroup(managementGroupName, policyDefinitionName, top, Context.NONE);
     }
 
-    /**
-     * This operation retrieves a list of all the policy definition versions for the given policy definition in the
-     * given management group.
-     * 
-     * @param managementGroupName The name of the management group. The name is case insensitive.
-     * @param policyDefinitionName The name of the policy definition.
-     * @param top Maximum number of records to return. When the $top filter is not provided, it will return 500 records.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the response of a PolicyDefinitionVersion list operation as paginated response with
-     * {@link PagedIterable}.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.COLLECTION)
     public PagedIterable<PolicyDefinitionVersionInner> listByManagementGroup(String managementGroupName,
         String policyDefinitionName, Integer top, Context context) {
@@ -1364,32 +1127,14 @@ public final class PolicyDefinitionVersionsClientImpl implements PolicyDefinitio
         return listAllBuiltinsWithResponseAsync().flatMap(res -> Mono.justOrEmpty(res.getValue()));
     }
 
-    /**
-     * Lists all built-in policy definition versions.
-     * 
-     * This operation lists all the built-in policy definition versions for all built-in policy definitions.
-     * 
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the response of a PolicyDefinitionVersion list operation along with {@link Response}.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Response<PolicyDefinitionVersionListResultInner> listAllBuiltinsWithResponse(Context context) {
         final String accept = "application/json";
         return service.listAllBuiltinsSync(this.client.getEndpoint(), this.client.getApiVersion(), accept, context);
     }
 
-    /**
-     * Lists all built-in policy definition versions.
-     * 
-     * This operation lists all the built-in policy definition versions for all built-in policy definitions.
-     * 
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the response of a PolicyDefinitionVersion list operation.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public PolicyDefinitionVersionListResultInner listAllBuiltins() {
         return listAllBuiltinsWithResponse(Context.NONE).getValue();
@@ -1434,18 +1179,7 @@ public final class PolicyDefinitionVersionsClientImpl implements PolicyDefinitio
             .flatMap(res -> Mono.justOrEmpty(res.getValue()));
     }
 
-    /**
-     * Lists all policy definition versions at management group scope.
-     * 
-     * This operation lists all the policy definition versions for all policy definitions at the management group scope.
-     * 
-     * @param managementGroupName The name of the management group. The name is case insensitive.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the response of a PolicyDefinitionVersion list operation along with {@link Response}.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Response<PolicyDefinitionVersionListResultInner>
         listAllAtManagementGroupWithResponse(String managementGroupName, Context context) {
@@ -1454,17 +1188,7 @@ public final class PolicyDefinitionVersionsClientImpl implements PolicyDefinitio
             this.client.getApiVersion(), accept, context);
     }
 
-    /**
-     * Lists all policy definition versions at management group scope.
-     * 
-     * This operation lists all the policy definition versions for all policy definitions at the management group scope.
-     * 
-     * @param managementGroupName The name of the management group. The name is case insensitive.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the response of a PolicyDefinitionVersion list operation.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public PolicyDefinitionVersionListResultInner listAllAtManagementGroup(String managementGroupName) {
         return listAllAtManagementGroupWithResponse(managementGroupName, Context.NONE).getValue();
@@ -1503,17 +1227,7 @@ public final class PolicyDefinitionVersionsClientImpl implements PolicyDefinitio
         return listAllWithResponseAsync().flatMap(res -> Mono.justOrEmpty(res.getValue()));
     }
 
-    /**
-     * Lists all policy definition versions within a subscription.
-     * 
-     * This operation lists all the policy definition versions for all policy definitions within a subscription.
-     * 
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the response of a PolicyDefinitionVersion list operation along with {@link Response}.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Response<PolicyDefinitionVersionListResultInner> listAllWithResponse(Context context) {
         final String accept = "application/json";
@@ -1521,15 +1235,7 @@ public final class PolicyDefinitionVersionsClientImpl implements PolicyDefinitio
             this.client.getSubscriptionId(), accept, context);
     }
 
-    /**
-     * Lists all policy definition versions within a subscription.
-     * 
-     * This operation lists all the policy definition versions for all policy definitions within a subscription.
-     * 
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the response of a PolicyDefinitionVersion list operation.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public PolicyDefinitionVersionListResultInner listAll() {
         return listAllWithResponse(Context.NONE).getValue();
@@ -1565,11 +1271,7 @@ public final class PolicyDefinitionVersionsClientImpl implements PolicyDefinitio
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private PagedResponse<PolicyDefinitionVersionInner> listNextSinglePage(String nextLink) {
-        final String accept = "application/json";
-        Response<PolicyDefinitionVersionListResultInner> res
-            = service.listNextSync(nextLink, this.client.getEndpoint(), accept, Context.NONE);
-        return new PagedResponseBase<>(res.getRequest(), res.getStatusCode(), res.getHeaders(), res.getValue().value(),
-            res.getValue().nextLink(), null);
+        return listNextSinglePage(nextLink, Context.NONE);
     }
 
     /**
@@ -1622,11 +1324,7 @@ public final class PolicyDefinitionVersionsClientImpl implements PolicyDefinitio
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private PagedResponse<PolicyDefinitionVersionInner> listBuiltInNextSinglePage(String nextLink) {
-        final String accept = "application/json";
-        Response<PolicyDefinitionVersionListResultInner> res
-            = service.listBuiltInNextSync(nextLink, this.client.getEndpoint(), accept, Context.NONE);
-        return new PagedResponseBase<>(res.getRequest(), res.getStatusCode(), res.getHeaders(), res.getValue().value(),
-            res.getValue().nextLink(), null);
+        return listBuiltInNextSinglePage(nextLink, Context.NONE);
     }
 
     /**
@@ -1681,11 +1379,7 @@ public final class PolicyDefinitionVersionsClientImpl implements PolicyDefinitio
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private PagedResponse<PolicyDefinitionVersionInner> listByManagementGroupNextSinglePage(String nextLink) {
-        final String accept = "application/json";
-        Response<PolicyDefinitionVersionListResultInner> res
-            = service.listByManagementGroupNextSync(nextLink, this.client.getEndpoint(), accept, Context.NONE);
-        return new PagedResponseBase<>(res.getRequest(), res.getStatusCode(), res.getHeaders(), res.getValue().value(),
-            res.getValue().nextLink(), null);
+        return listByManagementGroupNextSinglePage(nextLink, Context.NONE);
     }
 
     /**

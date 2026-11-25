@@ -165,10 +165,7 @@ public final class LocalRulesResourceImpl
     }
 
     public LocalRulesResource create() {
-        this.innerObject = serviceManager.serviceClient()
-            .getLocalRules()
-            .createOrUpdate(resourceGroupName, localRulestackName, priority, this.innerModel(), Context.NONE);
-        return this;
+        return this.create(Context.NONE);
     }
 
     public LocalRulesResource create(Context context) {
@@ -190,10 +187,7 @@ public final class LocalRulesResourceImpl
     }
 
     public LocalRulesResource apply() {
-        this.innerObject = serviceManager.serviceClient()
-            .getLocalRules()
-            .createOrUpdate(resourceGroupName, localRulestackName, priority, this.innerModel(), Context.NONE);
-        return this;
+        return this.apply(Context.NONE);
     }
 
     public LocalRulesResource apply(Context context) {
@@ -219,11 +213,7 @@ public final class LocalRulesResourceImpl
     }
 
     public LocalRulesResource refresh() {
-        this.innerObject = serviceManager.serviceClient()
-            .getLocalRules()
-            .getWithResponse(resourceGroupName, localRulestackName, priority, Context.NONE)
-            .getValue();
-        return this;
+        return this.refresh(Context.NONE);
     }
 
     public LocalRulesResource refresh(Context context) {

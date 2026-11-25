@@ -61,10 +61,7 @@ public final class EdgeMachineSecuritySettingsImpl
     }
 
     public EdgeMachineSecuritySettings create() {
-        this.innerObject = serviceManager.serviceClient()
-            .getEdgeMachineSecuritySettingsOperations()
-            .createOrUpdate(resourceGroupName, edgeMachineName, securitySettingsName, this.innerModel(), Context.NONE);
-        return this;
+        return this.create(Context.NONE);
     }
 
     public EdgeMachineSecuritySettings create(Context context) {
@@ -86,10 +83,7 @@ public final class EdgeMachineSecuritySettingsImpl
     }
 
     public EdgeMachineSecuritySettings apply() {
-        this.innerObject = serviceManager.serviceClient()
-            .getEdgeMachineSecuritySettingsOperations()
-            .createOrUpdate(resourceGroupName, edgeMachineName, securitySettingsName, this.innerModel(), Context.NONE);
-        return this;
+        return this.apply(Context.NONE);
     }
 
     public EdgeMachineSecuritySettings apply(Context context) {
@@ -115,11 +109,7 @@ public final class EdgeMachineSecuritySettingsImpl
     }
 
     public EdgeMachineSecuritySettings refresh() {
-        this.innerObject = serviceManager.serviceClient()
-            .getEdgeMachineSecuritySettingsOperations()
-            .getWithResponse(resourceGroupName, edgeMachineName, securitySettingsName, Context.NONE)
-            .getValue();
-        return this;
+        return this.refresh(Context.NONE);
     }
 
     public EdgeMachineSecuritySettings refresh(Context context) {

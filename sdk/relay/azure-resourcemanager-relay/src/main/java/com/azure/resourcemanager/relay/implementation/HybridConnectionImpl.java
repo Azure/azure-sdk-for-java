@@ -90,12 +90,7 @@ public final class HybridConnectionImpl
     }
 
     public HybridConnection create() {
-        this.innerObject = serviceManager.serviceClient()
-            .getHybridConnections()
-            .createOrUpdateWithResponse(resourceGroupName, namespaceName, hybridConnectionName, this.innerModel(),
-                Context.NONE)
-            .getValue();
-        return this;
+        return this.create(Context.NONE);
     }
 
     public HybridConnection create(Context context) {
@@ -118,12 +113,7 @@ public final class HybridConnectionImpl
     }
 
     public HybridConnection apply() {
-        this.innerObject = serviceManager.serviceClient()
-            .getHybridConnections()
-            .createOrUpdateWithResponse(resourceGroupName, namespaceName, hybridConnectionName, this.innerModel(),
-                Context.NONE)
-            .getValue();
-        return this;
+        return this.apply(Context.NONE);
     }
 
     public HybridConnection apply(Context context) {
@@ -151,11 +141,7 @@ public final class HybridConnectionImpl
     }
 
     public HybridConnection refresh() {
-        this.innerObject = serviceManager.serviceClient()
-            .getHybridConnections()
-            .getWithResponse(resourceGroupName, namespaceName, hybridConnectionName, Context.NONE)
-            .getValue();
-        return this;
+        return this.refresh(Context.NONE);
     }
 
     public HybridConnection refresh(Context context) {

@@ -157,11 +157,7 @@ public final class SourceControlOperationsClientImpl implements SourceControlOpe
     @ServiceMethod(returns = ReturnType.SINGLE)
     private PagedResponse<RepoInner> listRepositoriesSinglePage(String resourceGroupName, String workspaceName,
         RepositoryAccessProperties repositoryAccess) {
-        final String accept = "application/json";
-        Response<RepoList> res = service.listRepositoriesSync(this.client.getEndpoint(), this.client.getApiVersion(),
-            this.client.getSubscriptionId(), resourceGroupName, workspaceName, accept, repositoryAccess, Context.NONE);
-        return new PagedResponseBase<>(res.getRequest(), res.getStatusCode(), res.getHeaders(), res.getValue().value(),
-            res.getValue().nextLink(), null);
+        return listRepositoriesSinglePage(resourceGroupName, workspaceName, repositoryAccess, Context.NONE);
     }
 
     /**
@@ -186,36 +182,14 @@ public final class SourceControlOperationsClientImpl implements SourceControlOpe
             res.getValue().nextLink(), null);
     }
 
-    /**
-     * Gets a list of repositories metadata.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param workspaceName The name of the workspace.
-     * @param repositoryAccess The content of the action request.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return a list of repositories metadata as paginated response with {@link PagedIterable}.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.COLLECTION)
     public PagedIterable<RepoInner> listRepositories(String resourceGroupName, String workspaceName,
         RepositoryAccessProperties repositoryAccess) {
-        return new PagedIterable<>(() -> listRepositoriesSinglePage(resourceGroupName, workspaceName, repositoryAccess),
-            nextLink -> listRepositoriesNextSinglePage(nextLink));
+        return listRepositories(resourceGroupName, workspaceName, repositoryAccess, Context.NONE);
     }
 
-    /**
-     * Gets a list of repositories metadata.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param workspaceName The name of the workspace.
-     * @param repositoryAccess The content of the action request.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return a list of repositories metadata as paginated response with {@link PagedIterable}.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.COLLECTION)
     public PagedIterable<RepoInner> listRepositories(String resourceGroupName, String workspaceName,
         RepositoryAccessProperties repositoryAccess, Context context) {
@@ -255,11 +229,7 @@ public final class SourceControlOperationsClientImpl implements SourceControlOpe
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private PagedResponse<RepoInner> listRepositoriesNextSinglePage(String nextLink) {
-        final String accept = "application/json";
-        Response<RepoList> res
-            = service.listRepositoriesNextSync(nextLink, this.client.getEndpoint(), accept, Context.NONE);
-        return new PagedResponseBase<>(res.getRequest(), res.getStatusCode(), res.getHeaders(), res.getValue().value(),
-            res.getValue().nextLink(), null);
+        return listRepositoriesNextSinglePage(nextLink, Context.NONE);
     }
 
     /**

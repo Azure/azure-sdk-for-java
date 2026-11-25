@@ -142,20 +142,7 @@ public final class CustomDomainsClientImpl implements CustomDomainsClient {
             @HeaderParam("Accept") String accept, Context context);
     }
 
-    /**
-     * Gets an existing custom domain within an endpoint.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param profileName Name of the Azure Front Door Standard or Azure Front Door Premium or CDN profile which is
-     * unique within the resource group.
-     * @param endpointName Name of the endpoint under the profile which is unique globally.
-     * @param customDomainName Name of the custom domain within an endpoint.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return an existing custom domain within an endpoint along with {@link Response} on successful completion of
-     * {@link Mono}.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Response<CustomDomainInner>> getWithResponseAsync(String resourceGroupName, String profileName,
         String endpointName, String customDomainName) {
@@ -235,19 +222,7 @@ public final class CustomDomainsClientImpl implements CustomDomainsClient {
             resourceGroupName, profileName, endpointName, customDomainName, accept, context);
     }
 
-    /**
-     * Gets an existing custom domain within an endpoint.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param profileName Name of the Azure Front Door Standard or Azure Front Door Premium or CDN profile which is
-     * unique within the resource group.
-     * @param endpointName Name of the endpoint under the profile which is unique globally.
-     * @param customDomainName Name of the custom domain within an endpoint.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return an existing custom domain within an endpoint on successful completion of {@link Mono}.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<CustomDomainInner> getAsync(String resourceGroupName, String profileName, String endpointName,
         String customDomainName) {
@@ -255,60 +230,21 @@ public final class CustomDomainsClientImpl implements CustomDomainsClient {
             .flatMap(res -> Mono.justOrEmpty(res.getValue()));
     }
 
-    /**
-     * Gets an existing custom domain within an endpoint.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param profileName Name of the Azure Front Door Standard or Azure Front Door Premium or CDN profile which is
-     * unique within the resource group.
-     * @param endpointName Name of the endpoint under the profile which is unique globally.
-     * @param customDomainName Name of the custom domain within an endpoint.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return an existing custom domain within an endpoint along with {@link Response}.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Response<CustomDomainInner> getWithResponse(String resourceGroupName, String profileName,
         String endpointName, String customDomainName, Context context) {
         return getWithResponseAsync(resourceGroupName, profileName, endpointName, customDomainName, context).block();
     }
 
-    /**
-     * Gets an existing custom domain within an endpoint.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param profileName Name of the Azure Front Door Standard or Azure Front Door Premium or CDN profile which is
-     * unique within the resource group.
-     * @param endpointName Name of the endpoint under the profile which is unique globally.
-     * @param customDomainName Name of the custom domain within an endpoint.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return an existing custom domain within an endpoint.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public CustomDomainInner get(String resourceGroupName, String profileName, String endpointName,
         String customDomainName) {
         return getWithResponse(resourceGroupName, profileName, endpointName, customDomainName, Context.NONE).getValue();
     }
 
-    /**
-     * Creates a new custom domain within an endpoint.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param profileName Name of the Azure Front Door Standard or Azure Front Door Premium or CDN profile which is
-     * unique within the resource group.
-     * @param endpointName Name of the endpoint under the profile which is unique globally.
-     * @param customDomainName Name of the custom domain within an endpoint.
-     * @param customDomainProperties Properties required to create a new custom domain.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return friendly domain name mapping to the endpoint hostname that the customer provides for branding purposes,
-     * e.g along with {@link Response} on successful completion of {@link Mono}.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Response<Flux<ByteBuffer>>> createWithResponseAsync(String resourceGroupName, String profileName,
         String endpointName, String customDomainName, CustomDomainParameters customDomainProperties) {
@@ -404,21 +340,7 @@ public final class CustomDomainsClientImpl implements CustomDomainsClient {
             context);
     }
 
-    /**
-     * Creates a new custom domain within an endpoint.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param profileName Name of the Azure Front Door Standard or Azure Front Door Premium or CDN profile which is
-     * unique within the resource group.
-     * @param endpointName Name of the endpoint under the profile which is unique globally.
-     * @param customDomainName Name of the custom domain within an endpoint.
-     * @param customDomainProperties Properties required to create a new custom domain.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the {@link PollerFlux} for polling of friendly domain name mapping to the endpoint hostname that the
-     * customer provides for branding purposes, e.g.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public PollerFlux<PollResult<CustomDomainInner>, CustomDomainInner> beginCreateAsync(String resourceGroupName,
         String profileName, String endpointName, String customDomainName,
@@ -456,21 +378,7 @@ public final class CustomDomainsClientImpl implements CustomDomainsClient {
             CustomDomainInner.class, CustomDomainInner.class, context);
     }
 
-    /**
-     * Creates a new custom domain within an endpoint.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param profileName Name of the Azure Front Door Standard or Azure Front Door Premium or CDN profile which is
-     * unique within the resource group.
-     * @param endpointName Name of the endpoint under the profile which is unique globally.
-     * @param customDomainName Name of the custom domain within an endpoint.
-     * @param customDomainProperties Properties required to create a new custom domain.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the {@link SyncPoller} for polling of friendly domain name mapping to the endpoint hostname that the
-     * customer provides for branding purposes, e.g.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public SyncPoller<PollResult<CustomDomainInner>, CustomDomainInner> beginCreate(String resourceGroupName,
         String profileName, String endpointName, String customDomainName,
@@ -480,22 +388,7 @@ public final class CustomDomainsClientImpl implements CustomDomainsClient {
             .getSyncPoller();
     }
 
-    /**
-     * Creates a new custom domain within an endpoint.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param profileName Name of the Azure Front Door Standard or Azure Front Door Premium or CDN profile which is
-     * unique within the resource group.
-     * @param endpointName Name of the endpoint under the profile which is unique globally.
-     * @param customDomainName Name of the custom domain within an endpoint.
-     * @param customDomainProperties Properties required to create a new custom domain.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the {@link SyncPoller} for polling of friendly domain name mapping to the endpoint hostname that the
-     * customer provides for branding purposes, e.g.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public SyncPoller<PollResult<CustomDomainInner>, CustomDomainInner> beginCreate(String resourceGroupName,
         String profileName, String endpointName, String customDomainName, CustomDomainParameters customDomainProperties,
@@ -506,21 +399,7 @@ public final class CustomDomainsClientImpl implements CustomDomainsClient {
             .getSyncPoller();
     }
 
-    /**
-     * Creates a new custom domain within an endpoint.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param profileName Name of the Azure Front Door Standard or Azure Front Door Premium or CDN profile which is
-     * unique within the resource group.
-     * @param endpointName Name of the endpoint under the profile which is unique globally.
-     * @param customDomainName Name of the custom domain within an endpoint.
-     * @param customDomainProperties Properties required to create a new custom domain.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return friendly domain name mapping to the endpoint hostname that the customer provides for branding purposes,
-     * e.g on successful completion of {@link Mono}.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<CustomDomainInner> createAsync(String resourceGroupName, String profileName, String endpointName,
         String customDomainName, CustomDomainParameters customDomainProperties) {
@@ -552,21 +431,7 @@ public final class CustomDomainsClientImpl implements CustomDomainsClient {
             context).last().flatMap(this.client::getLroFinalResultOrError);
     }
 
-    /**
-     * Creates a new custom domain within an endpoint.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param profileName Name of the Azure Front Door Standard or Azure Front Door Premium or CDN profile which is
-     * unique within the resource group.
-     * @param endpointName Name of the endpoint under the profile which is unique globally.
-     * @param customDomainName Name of the custom domain within an endpoint.
-     * @param customDomainProperties Properties required to create a new custom domain.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return friendly domain name mapping to the endpoint hostname that the customer provides for branding purposes,
-     * e.g.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public CustomDomainInner create(String resourceGroupName, String profileName, String endpointName,
         String customDomainName, CustomDomainParameters customDomainProperties) {
@@ -574,22 +439,7 @@ public final class CustomDomainsClientImpl implements CustomDomainsClient {
             .block();
     }
 
-    /**
-     * Creates a new custom domain within an endpoint.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param profileName Name of the Azure Front Door Standard or Azure Front Door Premium or CDN profile which is
-     * unique within the resource group.
-     * @param endpointName Name of the endpoint under the profile which is unique globally.
-     * @param customDomainName Name of the custom domain within an endpoint.
-     * @param customDomainProperties Properties required to create a new custom domain.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return friendly domain name mapping to the endpoint hostname that the customer provides for branding purposes,
-     * e.g.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public CustomDomainInner create(String resourceGroupName, String profileName, String endpointName,
         String customDomainName, CustomDomainParameters customDomainProperties, Context context) {
@@ -597,19 +447,7 @@ public final class CustomDomainsClientImpl implements CustomDomainsClient {
             context).block();
     }
 
-    /**
-     * Deletes an existing custom domain within an endpoint.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param profileName Name of the Azure Front Door Standard or Azure Front Door Premium or CDN profile which is
-     * unique within the resource group.
-     * @param endpointName Name of the endpoint under the profile which is unique globally.
-     * @param customDomainName Name of the custom domain within an endpoint.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the response body along with {@link Response} on successful completion of {@link Mono}.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Response<Flux<ByteBuffer>>> deleteWithResponseAsync(String resourceGroupName, String profileName,
         String endpointName, String customDomainName) {
@@ -688,19 +526,7 @@ public final class CustomDomainsClientImpl implements CustomDomainsClient {
             resourceGroupName, profileName, endpointName, customDomainName, accept, context);
     }
 
-    /**
-     * Deletes an existing custom domain within an endpoint.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param profileName Name of the Azure Front Door Standard or Azure Front Door Premium or CDN profile which is
-     * unique within the resource group.
-     * @param endpointName Name of the endpoint under the profile which is unique globally.
-     * @param customDomainName Name of the custom domain within an endpoint.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the {@link PollerFlux} for polling of long-running operation.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public PollerFlux<PollResult<Void>, Void> beginDeleteAsync(String resourceGroupName, String profileName,
         String endpointName, String customDomainName) {
@@ -734,39 +560,14 @@ public final class CustomDomainsClientImpl implements CustomDomainsClient {
             context);
     }
 
-    /**
-     * Deletes an existing custom domain within an endpoint.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param profileName Name of the Azure Front Door Standard or Azure Front Door Premium or CDN profile which is
-     * unique within the resource group.
-     * @param endpointName Name of the endpoint under the profile which is unique globally.
-     * @param customDomainName Name of the custom domain within an endpoint.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the {@link SyncPoller} for polling of long-running operation.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public SyncPoller<PollResult<Void>, Void> beginDelete(String resourceGroupName, String profileName,
         String endpointName, String customDomainName) {
         return this.beginDeleteAsync(resourceGroupName, profileName, endpointName, customDomainName).getSyncPoller();
     }
 
-    /**
-     * Deletes an existing custom domain within an endpoint.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param profileName Name of the Azure Front Door Standard or Azure Front Door Premium or CDN profile which is
-     * unique within the resource group.
-     * @param endpointName Name of the endpoint under the profile which is unique globally.
-     * @param customDomainName Name of the custom domain within an endpoint.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the {@link SyncPoller} for polling of long-running operation.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public SyncPoller<PollResult<Void>, Void> beginDelete(String resourceGroupName, String profileName,
         String endpointName, String customDomainName, Context context) {
@@ -774,19 +575,7 @@ public final class CustomDomainsClientImpl implements CustomDomainsClient {
             .getSyncPoller();
     }
 
-    /**
-     * Deletes an existing custom domain within an endpoint.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param profileName Name of the Azure Front Door Standard or Azure Front Door Premium or CDN profile which is
-     * unique within the resource group.
-     * @param endpointName Name of the endpoint under the profile which is unique globally.
-     * @param customDomainName Name of the custom domain within an endpoint.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return A {@link Mono} that completes when a successful response is received.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Void> deleteAsync(String resourceGroupName, String profileName, String endpointName,
         String customDomainName) {
@@ -815,36 +604,13 @@ public final class CustomDomainsClientImpl implements CustomDomainsClient {
             .flatMap(this.client::getLroFinalResultOrError);
     }
 
-    /**
-     * Deletes an existing custom domain within an endpoint.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param profileName Name of the Azure Front Door Standard or Azure Front Door Premium or CDN profile which is
-     * unique within the resource group.
-     * @param endpointName Name of the endpoint under the profile which is unique globally.
-     * @param customDomainName Name of the custom domain within an endpoint.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public void delete(String resourceGroupName, String profileName, String endpointName, String customDomainName) {
         deleteAsync(resourceGroupName, profileName, endpointName, customDomainName).block();
     }
 
-    /**
-     * Deletes an existing custom domain within an endpoint.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param profileName Name of the Azure Front Door Standard or Azure Front Door Premium or CDN profile which is
-     * unique within the resource group.
-     * @param endpointName Name of the endpoint under the profile which is unique globally.
-     * @param customDomainName Name of the custom domain within an endpoint.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public void delete(String resourceGroupName, String profileName, String endpointName, String customDomainName,
         Context context) {
@@ -938,18 +704,7 @@ public final class CustomDomainsClientImpl implements CustomDomainsClient {
                 res.getValue().value(), res.getValue().nextLink(), null));
     }
 
-    /**
-     * Lists all of the existing custom domains within an endpoint.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param profileName Name of the Azure Front Door Standard or Azure Front Door Premium or CDN profile which is
-     * unique within the resource group.
-     * @param endpointName Name of the endpoint under the profile which is unique globally.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the response of a CustomDomain list operation as paginated response with {@link PagedFlux}.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.COLLECTION)
     public PagedFlux<CustomDomainInner> listByEndpointAsync(String resourceGroupName, String profileName,
         String endpointName) {
@@ -978,57 +733,21 @@ public final class CustomDomainsClientImpl implements CustomDomainsClient {
             nextLink -> listByEndpointNextSinglePageAsync(nextLink, context));
     }
 
-    /**
-     * Lists all of the existing custom domains within an endpoint.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param profileName Name of the Azure Front Door Standard or Azure Front Door Premium or CDN profile which is
-     * unique within the resource group.
-     * @param endpointName Name of the endpoint under the profile which is unique globally.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the response of a CustomDomain list operation as paginated response with {@link PagedIterable}.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.COLLECTION)
     public PagedIterable<CustomDomainInner> listByEndpoint(String resourceGroupName, String profileName,
         String endpointName) {
         return new PagedIterable<>(listByEndpointAsync(resourceGroupName, profileName, endpointName));
     }
 
-    /**
-     * Lists all of the existing custom domains within an endpoint.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param profileName Name of the Azure Front Door Standard or Azure Front Door Premium or CDN profile which is
-     * unique within the resource group.
-     * @param endpointName Name of the endpoint under the profile which is unique globally.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the response of a CustomDomain list operation as paginated response with {@link PagedIterable}.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.COLLECTION)
     public PagedIterable<CustomDomainInner> listByEndpoint(String resourceGroupName, String profileName,
         String endpointName, Context context) {
         return new PagedIterable<>(listByEndpointAsync(resourceGroupName, profileName, endpointName, context));
     }
 
-    /**
-     * Disable https delivery of the custom domain.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param profileName Name of the Azure Front Door Standard or Azure Front Door Premium or CDN profile which is
-     * unique within the resource group.
-     * @param endpointName Name of the endpoint under the profile which is unique globally.
-     * @param customDomainName Name of the custom domain within an endpoint.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return friendly domain name mapping to the endpoint hostname that the customer provides for branding purposes,
-     * e.g along with {@link Response} on successful completion of {@link Mono}.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Response<Flux<ByteBuffer>>> disableCustomHttpsWithResponseAsync(String resourceGroupName,
         String profileName, String endpointName, String customDomainName) {
@@ -1109,20 +828,7 @@ public final class CustomDomainsClientImpl implements CustomDomainsClient {
             context);
     }
 
-    /**
-     * Disable https delivery of the custom domain.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param profileName Name of the Azure Front Door Standard or Azure Front Door Premium or CDN profile which is
-     * unique within the resource group.
-     * @param endpointName Name of the endpoint under the profile which is unique globally.
-     * @param customDomainName Name of the custom domain within an endpoint.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the {@link PollerFlux} for polling of friendly domain name mapping to the endpoint hostname that the
-     * customer provides for branding purposes, e.g.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public PollerFlux<PollResult<CustomDomainInner>, CustomDomainInner> beginDisableCustomHttpsAsync(
         String resourceGroupName, String profileName, String endpointName, String customDomainName) {
@@ -1157,20 +863,7 @@ public final class CustomDomainsClientImpl implements CustomDomainsClient {
             CustomDomainInner.class, CustomDomainInner.class, context);
     }
 
-    /**
-     * Disable https delivery of the custom domain.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param profileName Name of the Azure Front Door Standard or Azure Front Door Premium or CDN profile which is
-     * unique within the resource group.
-     * @param endpointName Name of the endpoint under the profile which is unique globally.
-     * @param customDomainName Name of the custom domain within an endpoint.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the {@link SyncPoller} for polling of friendly domain name mapping to the endpoint hostname that the
-     * customer provides for branding purposes, e.g.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public SyncPoller<PollResult<CustomDomainInner>, CustomDomainInner> beginDisableCustomHttps(
         String resourceGroupName, String profileName, String endpointName, String customDomainName) {
@@ -1178,21 +871,7 @@ public final class CustomDomainsClientImpl implements CustomDomainsClient {
             .getSyncPoller();
     }
 
-    /**
-     * Disable https delivery of the custom domain.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param profileName Name of the Azure Front Door Standard or Azure Front Door Premium or CDN profile which is
-     * unique within the resource group.
-     * @param endpointName Name of the endpoint under the profile which is unique globally.
-     * @param customDomainName Name of the custom domain within an endpoint.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the {@link SyncPoller} for polling of friendly domain name mapping to the endpoint hostname that the
-     * customer provides for branding purposes, e.g.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public SyncPoller<PollResult<CustomDomainInner>, CustomDomainInner> beginDisableCustomHttps(
         String resourceGroupName, String profileName, String endpointName, String customDomainName, Context context) {
@@ -1201,20 +880,7 @@ public final class CustomDomainsClientImpl implements CustomDomainsClient {
             .getSyncPoller();
     }
 
-    /**
-     * Disable https delivery of the custom domain.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param profileName Name of the Azure Front Door Standard or Azure Front Door Premium or CDN profile which is
-     * unique within the resource group.
-     * @param endpointName Name of the endpoint under the profile which is unique globally.
-     * @param customDomainName Name of the custom domain within an endpoint.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return friendly domain name mapping to the endpoint hostname that the customer provides for branding purposes,
-     * e.g on successful completion of {@link Mono}.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<CustomDomainInner> disableCustomHttpsAsync(String resourceGroupName, String profileName,
         String endpointName, String customDomainName) {
@@ -1245,64 +911,21 @@ public final class CustomDomainsClientImpl implements CustomDomainsClient {
             .flatMap(this.client::getLroFinalResultOrError);
     }
 
-    /**
-     * Disable https delivery of the custom domain.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param profileName Name of the Azure Front Door Standard or Azure Front Door Premium or CDN profile which is
-     * unique within the resource group.
-     * @param endpointName Name of the endpoint under the profile which is unique globally.
-     * @param customDomainName Name of the custom domain within an endpoint.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return friendly domain name mapping to the endpoint hostname that the customer provides for branding purposes,
-     * e.g.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public CustomDomainInner disableCustomHttps(String resourceGroupName, String profileName, String endpointName,
         String customDomainName) {
         return disableCustomHttpsAsync(resourceGroupName, profileName, endpointName, customDomainName).block();
     }
 
-    /**
-     * Disable https delivery of the custom domain.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param profileName Name of the Azure Front Door Standard or Azure Front Door Premium or CDN profile which is
-     * unique within the resource group.
-     * @param endpointName Name of the endpoint under the profile which is unique globally.
-     * @param customDomainName Name of the custom domain within an endpoint.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return friendly domain name mapping to the endpoint hostname that the customer provides for branding purposes,
-     * e.g.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public CustomDomainInner disableCustomHttps(String resourceGroupName, String profileName, String endpointName,
         String customDomainName, Context context) {
         return disableCustomHttpsAsync(resourceGroupName, profileName, endpointName, customDomainName, context).block();
     }
 
-    /**
-     * Enable https delivery of the custom domain.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param profileName Name of the Azure Front Door Standard or Azure Front Door Premium or CDN profile which is
-     * unique within the resource group.
-     * @param endpointName Name of the endpoint under the profile which is unique globally.
-     * @param customDomainName Name of the custom domain within an endpoint.
-     * @param customDomainHttpsParameters The configuration specifying how to enable HTTPS for the custom domain - using
-     * CDN managed certificate or user's own certificate. If not specified, enabling ssl uses CDN managed certificate by
-     * default.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return friendly domain name mapping to the endpoint hostname that the customer provides for branding purposes,
-     * e.g along with {@link Response} on successful completion of {@link Mono}.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Response<Flux<ByteBuffer>>> enableCustomHttpsWithResponseAsync(String resourceGroupName,
         String profileName, String endpointName, String customDomainName,
@@ -1394,23 +1017,7 @@ public final class CustomDomainsClientImpl implements CustomDomainsClient {
             customDomainHttpsParameters, context);
     }
 
-    /**
-     * Enable https delivery of the custom domain.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param profileName Name of the Azure Front Door Standard or Azure Front Door Premium or CDN profile which is
-     * unique within the resource group.
-     * @param endpointName Name of the endpoint under the profile which is unique globally.
-     * @param customDomainName Name of the custom domain within an endpoint.
-     * @param customDomainHttpsParameters The configuration specifying how to enable HTTPS for the custom domain - using
-     * CDN managed certificate or user's own certificate. If not specified, enabling ssl uses CDN managed certificate by
-     * default.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the {@link PollerFlux} for polling of friendly domain name mapping to the endpoint hostname that the
-     * customer provides for branding purposes, e.g.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public PollerFlux<PollResult<CustomDomainInner>, CustomDomainInner> beginEnableCustomHttpsAsync(
         String resourceGroupName, String profileName, String endpointName, String customDomainName,
@@ -1421,20 +1028,7 @@ public final class CustomDomainsClientImpl implements CustomDomainsClient {
             CustomDomainInner.class, CustomDomainInner.class, this.client.getContext());
     }
 
-    /**
-     * Enable https delivery of the custom domain.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param profileName Name of the Azure Front Door Standard or Azure Front Door Premium or CDN profile which is
-     * unique within the resource group.
-     * @param endpointName Name of the endpoint under the profile which is unique globally.
-     * @param customDomainName Name of the custom domain within an endpoint.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the {@link PollerFlux} for polling of friendly domain name mapping to the endpoint hostname that the
-     * customer provides for branding purposes, e.g.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public PollerFlux<PollResult<CustomDomainInner>, CustomDomainInner> beginEnableCustomHttpsAsync(
         String resourceGroupName, String profileName, String endpointName, String customDomainName) {
@@ -1474,20 +1068,7 @@ public final class CustomDomainsClientImpl implements CustomDomainsClient {
             CustomDomainInner.class, CustomDomainInner.class, context);
     }
 
-    /**
-     * Enable https delivery of the custom domain.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param profileName Name of the Azure Front Door Standard or Azure Front Door Premium or CDN profile which is
-     * unique within the resource group.
-     * @param endpointName Name of the endpoint under the profile which is unique globally.
-     * @param customDomainName Name of the custom domain within an endpoint.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the {@link SyncPoller} for polling of friendly domain name mapping to the endpoint hostname that the
-     * customer provides for branding purposes, e.g.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public SyncPoller<PollResult<CustomDomainInner>, CustomDomainInner> beginEnableCustomHttps(String resourceGroupName,
         String profileName, String endpointName, String customDomainName) {
@@ -1498,24 +1079,7 @@ public final class CustomDomainsClientImpl implements CustomDomainsClient {
             .getSyncPoller();
     }
 
-    /**
-     * Enable https delivery of the custom domain.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param profileName Name of the Azure Front Door Standard or Azure Front Door Premium or CDN profile which is
-     * unique within the resource group.
-     * @param endpointName Name of the endpoint under the profile which is unique globally.
-     * @param customDomainName Name of the custom domain within an endpoint.
-     * @param customDomainHttpsParameters The configuration specifying how to enable HTTPS for the custom domain - using
-     * CDN managed certificate or user's own certificate. If not specified, enabling ssl uses CDN managed certificate by
-     * default.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the {@link SyncPoller} for polling of friendly domain name mapping to the endpoint hostname that the
-     * customer provides for branding purposes, e.g.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public SyncPoller<PollResult<CustomDomainInner>, CustomDomainInner> beginEnableCustomHttps(String resourceGroupName,
         String profileName, String endpointName, String customDomainName,
@@ -1526,23 +1090,7 @@ public final class CustomDomainsClientImpl implements CustomDomainsClient {
             .getSyncPoller();
     }
 
-    /**
-     * Enable https delivery of the custom domain.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param profileName Name of the Azure Front Door Standard or Azure Front Door Premium or CDN profile which is
-     * unique within the resource group.
-     * @param endpointName Name of the endpoint under the profile which is unique globally.
-     * @param customDomainName Name of the custom domain within an endpoint.
-     * @param customDomainHttpsParameters The configuration specifying how to enable HTTPS for the custom domain - using
-     * CDN managed certificate or user's own certificate. If not specified, enabling ssl uses CDN managed certificate by
-     * default.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return friendly domain name mapping to the endpoint hostname that the customer provides for branding purposes,
-     * e.g on successful completion of {@link Mono}.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<CustomDomainInner> enableCustomHttpsAsync(String resourceGroupName, String profileName,
         String endpointName, String customDomainName, CustomDomainHttpsParameters customDomainHttpsParameters) {
@@ -1550,20 +1098,7 @@ public final class CustomDomainsClientImpl implements CustomDomainsClient {
             customDomainHttpsParameters).last().flatMap(this.client::getLroFinalResultOrError);
     }
 
-    /**
-     * Enable https delivery of the custom domain.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param profileName Name of the Azure Front Door Standard or Azure Front Door Premium or CDN profile which is
-     * unique within the resource group.
-     * @param endpointName Name of the endpoint under the profile which is unique globally.
-     * @param customDomainName Name of the custom domain within an endpoint.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return friendly domain name mapping to the endpoint hostname that the customer provides for branding purposes,
-     * e.g on successful completion of {@link Mono}.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<CustomDomainInner> enableCustomHttpsAsync(String resourceGroupName, String profileName,
         String endpointName, String customDomainName) {
@@ -1598,20 +1133,7 @@ public final class CustomDomainsClientImpl implements CustomDomainsClient {
             customDomainHttpsParameters, context).last().flatMap(this.client::getLroFinalResultOrError);
     }
 
-    /**
-     * Enable https delivery of the custom domain.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param profileName Name of the Azure Front Door Standard or Azure Front Door Premium or CDN profile which is
-     * unique within the resource group.
-     * @param endpointName Name of the endpoint under the profile which is unique globally.
-     * @param customDomainName Name of the custom domain within an endpoint.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return friendly domain name mapping to the endpoint hostname that the customer provides for branding purposes,
-     * e.g.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public CustomDomainInner enableCustomHttps(String resourceGroupName, String profileName, String endpointName,
         String customDomainName) {
@@ -1620,24 +1142,7 @@ public final class CustomDomainsClientImpl implements CustomDomainsClient {
             customDomainHttpsParameters).block();
     }
 
-    /**
-     * Enable https delivery of the custom domain.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param profileName Name of the Azure Front Door Standard or Azure Front Door Premium or CDN profile which is
-     * unique within the resource group.
-     * @param endpointName Name of the endpoint under the profile which is unique globally.
-     * @param customDomainName Name of the custom domain within an endpoint.
-     * @param customDomainHttpsParameters The configuration specifying how to enable HTTPS for the custom domain - using
-     * CDN managed certificate or user's own certificate. If not specified, enabling ssl uses CDN managed certificate by
-     * default.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return friendly domain name mapping to the endpoint hostname that the customer provides for branding purposes,
-     * e.g.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public CustomDomainInner enableCustomHttps(String resourceGroupName, String profileName, String endpointName,
         String customDomainName, CustomDomainHttpsParameters customDomainHttpsParameters, Context context) {

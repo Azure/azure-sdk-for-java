@@ -104,11 +104,7 @@ public final class DnsResolverPolicyVirtualNetworkLinkImpl implements DnsResolve
     }
 
     public DnsResolverPolicyVirtualNetworkLink create() {
-        this.innerObject = serviceManager.serviceClient()
-            .getDnsResolverPolicyVirtualNetworkLinks()
-            .createOrUpdate(resourceGroupName, dnsResolverPolicyName, dnsResolverPolicyVirtualNetworkLinkName,
-                this.innerModel(), createIfMatch, createIfNoneMatch, Context.NONE);
-        return this;
+        return this.create(Context.NONE);
     }
 
     public DnsResolverPolicyVirtualNetworkLink create(Context context) {
@@ -135,11 +131,7 @@ public final class DnsResolverPolicyVirtualNetworkLinkImpl implements DnsResolve
     }
 
     public DnsResolverPolicyVirtualNetworkLink apply() {
-        this.innerObject = serviceManager.serviceClient()
-            .getDnsResolverPolicyVirtualNetworkLinks()
-            .update(resourceGroupName, dnsResolverPolicyName, dnsResolverPolicyVirtualNetworkLinkName, updateParameters,
-                updateIfMatch, Context.NONE);
-        return this;
+        return this.apply(Context.NONE);
     }
 
     public DnsResolverPolicyVirtualNetworkLink apply(Context context) {
@@ -167,12 +159,7 @@ public final class DnsResolverPolicyVirtualNetworkLinkImpl implements DnsResolve
     }
 
     public DnsResolverPolicyVirtualNetworkLink refresh() {
-        this.innerObject = serviceManager.serviceClient()
-            .getDnsResolverPolicyVirtualNetworkLinks()
-            .getWithResponse(resourceGroupName, dnsResolverPolicyName, dnsResolverPolicyVirtualNetworkLinkName,
-                Context.NONE)
-            .getValue();
-        return this;
+        return this.refresh(Context.NONE);
     }
 
     public DnsResolverPolicyVirtualNetworkLink refresh(Context context) {

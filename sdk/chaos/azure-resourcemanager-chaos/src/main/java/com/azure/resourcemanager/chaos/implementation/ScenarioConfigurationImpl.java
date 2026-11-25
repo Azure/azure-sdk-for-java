@@ -77,11 +77,7 @@ public final class ScenarioConfigurationImpl
     }
 
     public ScenarioConfiguration create() {
-        this.innerObject = serviceManager.serviceClient()
-            .getScenarioConfigurations()
-            .createOrUpdate(resourceGroupName, workspaceName, scenarioName, scenarioConfigurationName,
-                this.innerModel(), createIfNoneMatch, createIfMatch, Context.NONE);
-        return this;
+        return this.create(Context.NONE);
     }
 
     public ScenarioConfiguration create(Context context) {
@@ -107,11 +103,7 @@ public final class ScenarioConfigurationImpl
     }
 
     public ScenarioConfiguration apply() {
-        this.innerObject = serviceManager.serviceClient()
-            .getScenarioConfigurations()
-            .createOrUpdate(resourceGroupName, workspaceName, scenarioName, scenarioConfigurationName,
-                this.innerModel(), updateIfNoneMatch, updateIfMatch, Context.NONE);
-        return this;
+        return this.apply(Context.NONE);
     }
 
     public ScenarioConfiguration apply(Context context) {
@@ -141,11 +133,7 @@ public final class ScenarioConfigurationImpl
     }
 
     public ScenarioConfiguration refresh() {
-        this.innerObject = serviceManager.serviceClient()
-            .getScenarioConfigurations()
-            .getWithResponse(resourceGroupName, workspaceName, scenarioName, scenarioConfigurationName, Context.NONE)
-            .getValue();
-        return this;
+        return this.refresh(Context.NONE);
     }
 
     public ScenarioConfiguration refresh(Context context) {

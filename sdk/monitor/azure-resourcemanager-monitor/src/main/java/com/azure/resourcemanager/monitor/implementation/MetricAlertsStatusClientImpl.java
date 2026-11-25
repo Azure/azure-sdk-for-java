@@ -159,16 +159,7 @@ public final class MetricAlertsStatusClientImpl implements MetricAlertsStatusCli
                 res.getValue().value(), null, null));
     }
 
-    /**
-     * Retrieve an alert rule status.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param ruleName The name of the rule.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return represents a collection of alert rule resources as paginated response with {@link PagedFlux}.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.COLLECTION)
     public PagedFlux<MetricAlertStatusInner> listAsync(String resourceGroupName, String ruleName) {
         return new PagedFlux<>(() -> listSinglePageAsync(resourceGroupName, ruleName));
@@ -190,32 +181,13 @@ public final class MetricAlertsStatusClientImpl implements MetricAlertsStatusCli
         return new PagedFlux<>(() -> listSinglePageAsync(resourceGroupName, ruleName, context));
     }
 
-    /**
-     * Retrieve an alert rule status.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param ruleName The name of the rule.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return represents a collection of alert rule resources as paginated response with {@link PagedIterable}.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.COLLECTION)
     public PagedIterable<MetricAlertStatusInner> list(String resourceGroupName, String ruleName) {
         return new PagedIterable<>(listAsync(resourceGroupName, ruleName));
     }
 
-    /**
-     * Retrieve an alert rule status.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param ruleName The name of the rule.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return represents a collection of alert rule resources as paginated response with {@link PagedIterable}.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.COLLECTION)
     public PagedIterable<MetricAlertStatusInner> list(String resourceGroupName, String ruleName, Context context) {
         return new PagedIterable<>(listAsync(resourceGroupName, ruleName, context));
@@ -308,17 +280,7 @@ public final class MetricAlertsStatusClientImpl implements MetricAlertsStatusCli
                 res.getValue().value(), null, null));
     }
 
-    /**
-     * Retrieve an alert rule status.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param ruleName The name of the rule.
-     * @param statusName The name of the status.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return represents a collection of alert rule resources as paginated response with {@link PagedFlux}.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.COLLECTION)
     public PagedFlux<MetricAlertStatusInner> listByNameAsync(String resourceGroupName, String ruleName,
         String statusName) {
@@ -343,35 +305,14 @@ public final class MetricAlertsStatusClientImpl implements MetricAlertsStatusCli
         return new PagedFlux<>(() -> listByNameSinglePageAsync(resourceGroupName, ruleName, statusName, context));
     }
 
-    /**
-     * Retrieve an alert rule status.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param ruleName The name of the rule.
-     * @param statusName The name of the status.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return represents a collection of alert rule resources as paginated response with {@link PagedIterable}.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.COLLECTION)
     public PagedIterable<MetricAlertStatusInner> listByName(String resourceGroupName, String ruleName,
         String statusName) {
         return new PagedIterable<>(listByNameAsync(resourceGroupName, ruleName, statusName));
     }
 
-    /**
-     * Retrieve an alert rule status.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param ruleName The name of the rule.
-     * @param statusName The name of the status.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return represents a collection of alert rule resources as paginated response with {@link PagedIterable}.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.COLLECTION)
     public PagedIterable<MetricAlertStatusInner> listByName(String resourceGroupName, String ruleName,
         String statusName, Context context) {

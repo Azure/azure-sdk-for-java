@@ -355,25 +355,7 @@ public final class PrivateCloudsClientImpl implements PrivateCloudsClient {
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private PagedResponse<PrivateCloudInner> listByResourceGroupSinglePage(String resourceGroupName) {
-        if (this.client.getEndpoint() == null) {
-            throw LOGGER.atError()
-                .log(new IllegalArgumentException(
-                    "Parameter this.client.getEndpoint() is required and cannot be null."));
-        }
-        if (this.client.getSubscriptionId() == null) {
-            throw LOGGER.atError()
-                .log(new IllegalArgumentException(
-                    "Parameter this.client.getSubscriptionId() is required and cannot be null."));
-        }
-        if (resourceGroupName == null) {
-            throw LOGGER.atError()
-                .log(new IllegalArgumentException("Parameter resourceGroupName is required and cannot be null."));
-        }
-        final String accept = "application/json";
-        Response<PrivateCloudList> res = service.listByResourceGroupSync(this.client.getEndpoint(),
-            this.client.getApiVersion(), this.client.getSubscriptionId(), resourceGroupName, accept, Context.NONE);
-        return new PagedResponseBase<>(res.getRequest(), res.getStatusCode(), res.getHeaders(), res.getValue().value(),
-            res.getValue().nextLink(), null);
+        return listByResourceGroupSinglePage(resourceGroupName, Context.NONE);
     }
 
     /**
@@ -409,31 +391,13 @@ public final class PrivateCloudsClientImpl implements PrivateCloudsClient {
             res.getValue().nextLink(), null);
     }
 
-    /**
-     * List PrivateCloud resources by resource group.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the response of a PrivateCloud list operation as paginated response with {@link PagedIterable}.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.COLLECTION)
     public PagedIterable<PrivateCloudInner> listByResourceGroup(String resourceGroupName) {
-        return new PagedIterable<>(() -> listByResourceGroupSinglePage(resourceGroupName),
-            nextLink -> listNextSinglePage(nextLink));
+        return listByResourceGroup(resourceGroupName, Context.NONE);
     }
 
-    /**
-     * List PrivateCloud resources by resource group.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the response of a PrivateCloud list operation as paginated response with {@link PagedIterable}.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.COLLECTION)
     public PagedIterable<PrivateCloudInner> listByResourceGroup(String resourceGroupName, Context context) {
         return new PagedIterable<>(() -> listByResourceGroupSinglePage(resourceGroupName, context),
@@ -489,21 +453,7 @@ public final class PrivateCloudsClientImpl implements PrivateCloudsClient {
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private PagedResponse<PrivateCloudInner> listSinglePage() {
-        if (this.client.getEndpoint() == null) {
-            throw LOGGER.atError()
-                .log(new IllegalArgumentException(
-                    "Parameter this.client.getEndpoint() is required and cannot be null."));
-        }
-        if (this.client.getSubscriptionId() == null) {
-            throw LOGGER.atError()
-                .log(new IllegalArgumentException(
-                    "Parameter this.client.getSubscriptionId() is required and cannot be null."));
-        }
-        final String accept = "application/json";
-        Response<PrivateCloudList> res = service.listSync(this.client.getEndpoint(), this.client.getApiVersion(),
-            this.client.getSubscriptionId(), accept, Context.NONE);
-        return new PagedResponseBase<>(res.getRequest(), res.getStatusCode(), res.getHeaders(), res.getValue().value(),
-            res.getValue().nextLink(), null);
+        return listSinglePage(Context.NONE);
     }
 
     /**
@@ -534,27 +484,13 @@ public final class PrivateCloudsClientImpl implements PrivateCloudsClient {
             res.getValue().nextLink(), null);
     }
 
-    /**
-     * List PrivateCloud resources by subscription ID.
-     * 
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the response of a PrivateCloud list operation as paginated response with {@link PagedIterable}.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.COLLECTION)
     public PagedIterable<PrivateCloudInner> list() {
-        return new PagedIterable<>(() -> listSinglePage(), nextLink -> listInSubscriptionNextSinglePage(nextLink));
+        return list(Context.NONE);
     }
 
-    /**
-     * List PrivateCloud resources by subscription ID.
-     * 
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the response of a PrivateCloud list operation as paginated response with {@link PagedIterable}.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.COLLECTION)
     public PagedIterable<PrivateCloudInner> list(Context context) {
         return new PagedIterable<>(() -> listSinglePage(context),
@@ -613,17 +549,7 @@ public final class PrivateCloudsClientImpl implements PrivateCloudsClient {
             .flatMap(res -> Mono.justOrEmpty(res.getValue()));
     }
 
-    /**
-     * Get a PrivateCloud.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param privateCloudName Name of the private cloud.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return a PrivateCloud along with {@link Response}.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Response<PrivateCloudInner> getByResourceGroupWithResponse(String resourceGroupName, String privateCloudName,
         Context context) {
@@ -650,16 +576,7 @@ public final class PrivateCloudsClientImpl implements PrivateCloudsClient {
             this.client.getSubscriptionId(), resourceGroupName, privateCloudName, accept, context);
     }
 
-    /**
-     * Get a PrivateCloud.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param privateCloudName Name of the private cloud.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return a PrivateCloud.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public PrivateCloudInner getByResourceGroup(String resourceGroupName, String privateCloudName) {
         return getByResourceGroupWithResponse(resourceGroupName, privateCloudName, Context.NONE).getValue();
@@ -723,35 +640,7 @@ public final class PrivateCloudsClientImpl implements PrivateCloudsClient {
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Response<BinaryData> createOrUpdateWithResponse(String resourceGroupName, String privateCloudName,
         PrivateCloudInner privateCloud) {
-        if (this.client.getEndpoint() == null) {
-            throw LOGGER.atError()
-                .log(new IllegalArgumentException(
-                    "Parameter this.client.getEndpoint() is required and cannot be null."));
-        }
-        if (this.client.getSubscriptionId() == null) {
-            throw LOGGER.atError()
-                .log(new IllegalArgumentException(
-                    "Parameter this.client.getSubscriptionId() is required and cannot be null."));
-        }
-        if (resourceGroupName == null) {
-            throw LOGGER.atError()
-                .log(new IllegalArgumentException("Parameter resourceGroupName is required and cannot be null."));
-        }
-        if (privateCloudName == null) {
-            throw LOGGER.atError()
-                .log(new IllegalArgumentException("Parameter privateCloudName is required and cannot be null."));
-        }
-        if (privateCloud == null) {
-            throw LOGGER.atError()
-                .log(new IllegalArgumentException("Parameter privateCloud is required and cannot be null."));
-        } else {
-            privateCloud.validate();
-        }
-        final String contentType = "application/json";
-        final String accept = "application/json";
-        return service.createOrUpdateSync(this.client.getEndpoint(), this.client.getApiVersion(),
-            this.client.getSubscriptionId(), resourceGroupName, privateCloudName, contentType, accept, privateCloud,
-            Context.NONE);
+        return createOrUpdateWithResponse(resourceGroupName, privateCloudName, privateCloud, Context.NONE);
     }
 
     /**
@@ -820,37 +709,14 @@ public final class PrivateCloudsClientImpl implements PrivateCloudsClient {
             PrivateCloudInner.class, PrivateCloudInner.class, this.client.getContext());
     }
 
-    /**
-     * Create a PrivateCloud.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param privateCloudName Name of the private cloud.
-     * @param privateCloud Resource create parameters.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the {@link SyncPoller} for polling of a private cloud resource.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public SyncPoller<PollResult<PrivateCloudInner>, PrivateCloudInner> beginCreateOrUpdate(String resourceGroupName,
         String privateCloudName, PrivateCloudInner privateCloud) {
-        Response<BinaryData> response = createOrUpdateWithResponse(resourceGroupName, privateCloudName, privateCloud);
-        return this.client.<PrivateCloudInner, PrivateCloudInner>getLroResult(response, PrivateCloudInner.class,
-            PrivateCloudInner.class, Context.NONE);
+        return beginCreateOrUpdate(resourceGroupName, privateCloudName, privateCloud, Context.NONE);
     }
 
-    /**
-     * Create a PrivateCloud.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param privateCloudName Name of the private cloud.
-     * @param privateCloud Resource create parameters.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the {@link SyncPoller} for polling of a private cloud resource.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public SyncPoller<PollResult<PrivateCloudInner>, PrivateCloudInner> beginCreateOrUpdate(String resourceGroupName,
         String privateCloudName, PrivateCloudInner privateCloud, Context context) {
@@ -878,39 +744,19 @@ public final class PrivateCloudsClientImpl implements PrivateCloudsClient {
             .flatMap(this.client::getLroFinalResultOrError);
     }
 
-    /**
-     * Create a PrivateCloud.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param privateCloudName Name of the private cloud.
-     * @param privateCloud Resource create parameters.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return a private cloud resource.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public PrivateCloudInner createOrUpdate(String resourceGroupName, String privateCloudName,
         PrivateCloudInner privateCloud) {
-        return beginCreateOrUpdate(resourceGroupName, privateCloudName, privateCloud).getFinalResult();
+        return createOrUpdate(resourceGroupName, privateCloudName, privateCloud, Context.NONE);
     }
 
-    /**
-     * Create a PrivateCloud.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param privateCloudName Name of the private cloud.
-     * @param privateCloud Resource create parameters.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return a private cloud resource.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public PrivateCloudInner createOrUpdate(String resourceGroupName, String privateCloudName,
         PrivateCloudInner privateCloud, Context context) {
-        return beginCreateOrUpdate(resourceGroupName, privateCloudName, privateCloud, context).getFinalResult();
+        return this.client
+            .getLroFinalResultOrError(beginCreateOrUpdate(resourceGroupName, privateCloudName, privateCloud, context));
     }
 
     /**
@@ -972,35 +818,7 @@ public final class PrivateCloudsClientImpl implements PrivateCloudsClient {
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Response<BinaryData> updateWithResponse(String resourceGroupName, String privateCloudName,
         PrivateCloudUpdate privateCloudUpdate) {
-        if (this.client.getEndpoint() == null) {
-            throw LOGGER.atError()
-                .log(new IllegalArgumentException(
-                    "Parameter this.client.getEndpoint() is required and cannot be null."));
-        }
-        if (this.client.getSubscriptionId() == null) {
-            throw LOGGER.atError()
-                .log(new IllegalArgumentException(
-                    "Parameter this.client.getSubscriptionId() is required and cannot be null."));
-        }
-        if (resourceGroupName == null) {
-            throw LOGGER.atError()
-                .log(new IllegalArgumentException("Parameter resourceGroupName is required and cannot be null."));
-        }
-        if (privateCloudName == null) {
-            throw LOGGER.atError()
-                .log(new IllegalArgumentException("Parameter privateCloudName is required and cannot be null."));
-        }
-        if (privateCloudUpdate == null) {
-            throw LOGGER.atError()
-                .log(new IllegalArgumentException("Parameter privateCloudUpdate is required and cannot be null."));
-        } else {
-            privateCloudUpdate.validate();
-        }
-        final String contentType = "application/json";
-        final String accept = "application/json";
-        return service.updateSync(this.client.getEndpoint(), this.client.getApiVersion(),
-            this.client.getSubscriptionId(), resourceGroupName, privateCloudName, contentType, accept,
-            privateCloudUpdate, Context.NONE);
+        return updateWithResponse(resourceGroupName, privateCloudName, privateCloudUpdate, Context.NONE);
     }
 
     /**
@@ -1069,37 +887,14 @@ public final class PrivateCloudsClientImpl implements PrivateCloudsClient {
             PrivateCloudInner.class, PrivateCloudInner.class, this.client.getContext());
     }
 
-    /**
-     * Update a PrivateCloud.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param privateCloudName Name of the private cloud.
-     * @param privateCloudUpdate The resource properties to be updated.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the {@link SyncPoller} for polling of a private cloud resource.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public SyncPoller<PollResult<PrivateCloudInner>, PrivateCloudInner> beginUpdate(String resourceGroupName,
         String privateCloudName, PrivateCloudUpdate privateCloudUpdate) {
-        Response<BinaryData> response = updateWithResponse(resourceGroupName, privateCloudName, privateCloudUpdate);
-        return this.client.<PrivateCloudInner, PrivateCloudInner>getLroResult(response, PrivateCloudInner.class,
-            PrivateCloudInner.class, Context.NONE);
+        return beginUpdate(resourceGroupName, privateCloudName, privateCloudUpdate, Context.NONE);
     }
 
-    /**
-     * Update a PrivateCloud.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param privateCloudName Name of the private cloud.
-     * @param privateCloudUpdate The resource properties to be updated.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the {@link SyncPoller} for polling of a private cloud resource.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public SyncPoller<PollResult<PrivateCloudInner>, PrivateCloudInner> beginUpdate(String resourceGroupName,
         String privateCloudName, PrivateCloudUpdate privateCloudUpdate, Context context) {
@@ -1127,39 +922,19 @@ public final class PrivateCloudsClientImpl implements PrivateCloudsClient {
             .flatMap(this.client::getLroFinalResultOrError);
     }
 
-    /**
-     * Update a PrivateCloud.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param privateCloudName Name of the private cloud.
-     * @param privateCloudUpdate The resource properties to be updated.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return a private cloud resource.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public PrivateCloudInner update(String resourceGroupName, String privateCloudName,
         PrivateCloudUpdate privateCloudUpdate) {
-        return beginUpdate(resourceGroupName, privateCloudName, privateCloudUpdate).getFinalResult();
+        return update(resourceGroupName, privateCloudName, privateCloudUpdate, Context.NONE);
     }
 
-    /**
-     * Update a PrivateCloud.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param privateCloudName Name of the private cloud.
-     * @param privateCloudUpdate The resource properties to be updated.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return a private cloud resource.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public PrivateCloudInner update(String resourceGroupName, String privateCloudName,
         PrivateCloudUpdate privateCloudUpdate, Context context) {
-        return beginUpdate(resourceGroupName, privateCloudName, privateCloudUpdate, context).getFinalResult();
+        return this.client
+            .getLroFinalResultOrError(beginUpdate(resourceGroupName, privateCloudName, privateCloudUpdate, context));
     }
 
     /**
@@ -1209,26 +984,7 @@ public final class PrivateCloudsClientImpl implements PrivateCloudsClient {
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Response<BinaryData> deleteWithResponse(String resourceGroupName, String privateCloudName) {
-        if (this.client.getEndpoint() == null) {
-            throw LOGGER.atError()
-                .log(new IllegalArgumentException(
-                    "Parameter this.client.getEndpoint() is required and cannot be null."));
-        }
-        if (this.client.getSubscriptionId() == null) {
-            throw LOGGER.atError()
-                .log(new IllegalArgumentException(
-                    "Parameter this.client.getSubscriptionId() is required and cannot be null."));
-        }
-        if (resourceGroupName == null) {
-            throw LOGGER.atError()
-                .log(new IllegalArgumentException("Parameter resourceGroupName is required and cannot be null."));
-        }
-        if (privateCloudName == null) {
-            throw LOGGER.atError()
-                .log(new IllegalArgumentException("Parameter privateCloudName is required and cannot be null."));
-        }
-        return service.deleteSync(this.client.getEndpoint(), this.client.getApiVersion(),
-            this.client.getSubscriptionId(), resourceGroupName, privateCloudName, Context.NONE);
+        return deleteWithResponse(resourceGroupName, privateCloudName, Context.NONE);
     }
 
     /**
@@ -1284,33 +1040,13 @@ public final class PrivateCloudsClientImpl implements PrivateCloudsClient {
             this.client.getContext());
     }
 
-    /**
-     * Delete a PrivateCloud.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param privateCloudName Name of the private cloud.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the {@link SyncPoller} for polling of long-running operation.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public SyncPoller<PollResult<Void>, Void> beginDelete(String resourceGroupName, String privateCloudName) {
-        Response<BinaryData> response = deleteWithResponse(resourceGroupName, privateCloudName);
-        return this.client.<Void, Void>getLroResult(response, Void.class, Void.class, Context.NONE);
+        return beginDelete(resourceGroupName, privateCloudName, Context.NONE);
     }
 
-    /**
-     * Delete a PrivateCloud.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param privateCloudName Name of the private cloud.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the {@link SyncPoller} for polling of long-running operation.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public SyncPoller<PollResult<Void>, Void> beginDelete(String resourceGroupName, String privateCloudName,
         Context context) {
@@ -1334,33 +1070,16 @@ public final class PrivateCloudsClientImpl implements PrivateCloudsClient {
             .flatMap(this.client::getLroFinalResultOrError);
     }
 
-    /**
-     * Delete a PrivateCloud.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param privateCloudName Name of the private cloud.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public void delete(String resourceGroupName, String privateCloudName) {
-        beginDelete(resourceGroupName, privateCloudName).getFinalResult();
+        delete(resourceGroupName, privateCloudName, Context.NONE);
     }
 
-    /**
-     * Delete a PrivateCloud.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param privateCloudName Name of the private cloud.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public void delete(String resourceGroupName, String privateCloudName, Context context) {
-        beginDelete(resourceGroupName, privateCloudName, context).getFinalResult();
+        this.client.getLroFinalResultOrError(beginDelete(resourceGroupName, privateCloudName, context));
     }
 
     /**
@@ -1411,26 +1130,7 @@ public final class PrivateCloudsClientImpl implements PrivateCloudsClient {
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Response<BinaryData> rotateVcenterPasswordWithResponse(String resourceGroupName, String privateCloudName) {
-        if (this.client.getEndpoint() == null) {
-            throw LOGGER.atError()
-                .log(new IllegalArgumentException(
-                    "Parameter this.client.getEndpoint() is required and cannot be null."));
-        }
-        if (this.client.getSubscriptionId() == null) {
-            throw LOGGER.atError()
-                .log(new IllegalArgumentException(
-                    "Parameter this.client.getSubscriptionId() is required and cannot be null."));
-        }
-        if (resourceGroupName == null) {
-            throw LOGGER.atError()
-                .log(new IllegalArgumentException("Parameter resourceGroupName is required and cannot be null."));
-        }
-        if (privateCloudName == null) {
-            throw LOGGER.atError()
-                .log(new IllegalArgumentException("Parameter privateCloudName is required and cannot be null."));
-        }
-        return service.rotateVcenterPasswordSync(this.client.getEndpoint(), this.client.getApiVersion(),
-            this.client.getSubscriptionId(), resourceGroupName, privateCloudName, Context.NONE);
+        return rotateVcenterPasswordWithResponse(resourceGroupName, privateCloudName, Context.NONE);
     }
 
     /**
@@ -1488,34 +1188,14 @@ public final class PrivateCloudsClientImpl implements PrivateCloudsClient {
             this.client.getContext());
     }
 
-    /**
-     * Rotate the vCenter password.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param privateCloudName Name of the private cloud.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the {@link SyncPoller} for polling of long-running operation.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public SyncPoller<PollResult<Void>, Void> beginRotateVcenterPassword(String resourceGroupName,
         String privateCloudName) {
-        Response<BinaryData> response = rotateVcenterPasswordWithResponse(resourceGroupName, privateCloudName);
-        return this.client.<Void, Void>getLroResult(response, Void.class, Void.class, Context.NONE);
+        return beginRotateVcenterPassword(resourceGroupName, privateCloudName, Context.NONE);
     }
 
-    /**
-     * Rotate the vCenter password.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param privateCloudName Name of the private cloud.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the {@link SyncPoller} for polling of long-running operation.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public SyncPoller<PollResult<Void>, Void> beginRotateVcenterPassword(String resourceGroupName,
         String privateCloudName, Context context) {
@@ -1539,33 +1219,16 @@ public final class PrivateCloudsClientImpl implements PrivateCloudsClient {
             .flatMap(this.client::getLroFinalResultOrError);
     }
 
-    /**
-     * Rotate the vCenter password.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param privateCloudName Name of the private cloud.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public void rotateVcenterPassword(String resourceGroupName, String privateCloudName) {
-        beginRotateVcenterPassword(resourceGroupName, privateCloudName).getFinalResult();
+        rotateVcenterPassword(resourceGroupName, privateCloudName, Context.NONE);
     }
 
-    /**
-     * Rotate the vCenter password.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param privateCloudName Name of the private cloud.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public void rotateVcenterPassword(String resourceGroupName, String privateCloudName, Context context) {
-        beginRotateVcenterPassword(resourceGroupName, privateCloudName, context).getFinalResult();
+        this.client.getLroFinalResultOrError(beginRotateVcenterPassword(resourceGroupName, privateCloudName, context));
     }
 
     /**
@@ -1615,26 +1278,7 @@ public final class PrivateCloudsClientImpl implements PrivateCloudsClient {
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Response<BinaryData> rotateNsxtPasswordWithResponse(String resourceGroupName, String privateCloudName) {
-        if (this.client.getEndpoint() == null) {
-            throw LOGGER.atError()
-                .log(new IllegalArgumentException(
-                    "Parameter this.client.getEndpoint() is required and cannot be null."));
-        }
-        if (this.client.getSubscriptionId() == null) {
-            throw LOGGER.atError()
-                .log(new IllegalArgumentException(
-                    "Parameter this.client.getSubscriptionId() is required and cannot be null."));
-        }
-        if (resourceGroupName == null) {
-            throw LOGGER.atError()
-                .log(new IllegalArgumentException("Parameter resourceGroupName is required and cannot be null."));
-        }
-        if (privateCloudName == null) {
-            throw LOGGER.atError()
-                .log(new IllegalArgumentException("Parameter privateCloudName is required and cannot be null."));
-        }
-        return service.rotateNsxtPasswordSync(this.client.getEndpoint(), this.client.getApiVersion(),
-            this.client.getSubscriptionId(), resourceGroupName, privateCloudName, Context.NONE);
+        return rotateNsxtPasswordWithResponse(resourceGroupName, privateCloudName, Context.NONE);
     }
 
     /**
@@ -1692,34 +1336,14 @@ public final class PrivateCloudsClientImpl implements PrivateCloudsClient {
             this.client.getContext());
     }
 
-    /**
-     * Rotate the NSX-T Manager password.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param privateCloudName Name of the private cloud.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the {@link SyncPoller} for polling of long-running operation.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public SyncPoller<PollResult<Void>, Void> beginRotateNsxtPassword(String resourceGroupName,
         String privateCloudName) {
-        Response<BinaryData> response = rotateNsxtPasswordWithResponse(resourceGroupName, privateCloudName);
-        return this.client.<Void, Void>getLroResult(response, Void.class, Void.class, Context.NONE);
+        return beginRotateNsxtPassword(resourceGroupName, privateCloudName, Context.NONE);
     }
 
-    /**
-     * Rotate the NSX-T Manager password.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param privateCloudName Name of the private cloud.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the {@link SyncPoller} for polling of long-running operation.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public SyncPoller<PollResult<Void>, Void> beginRotateNsxtPassword(String resourceGroupName, String privateCloudName,
         Context context) {
@@ -1743,33 +1367,16 @@ public final class PrivateCloudsClientImpl implements PrivateCloudsClient {
             .flatMap(this.client::getLroFinalResultOrError);
     }
 
-    /**
-     * Rotate the NSX-T Manager password.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param privateCloudName Name of the private cloud.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public void rotateNsxtPassword(String resourceGroupName, String privateCloudName) {
-        beginRotateNsxtPassword(resourceGroupName, privateCloudName).getFinalResult();
+        rotateNsxtPassword(resourceGroupName, privateCloudName, Context.NONE);
     }
 
-    /**
-     * Rotate the NSX-T Manager password.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param privateCloudName Name of the private cloud.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public void rotateNsxtPassword(String resourceGroupName, String privateCloudName, Context context) {
-        beginRotateNsxtPassword(resourceGroupName, privateCloudName, context).getFinalResult();
+        this.client.getLroFinalResultOrError(beginRotateNsxtPassword(resourceGroupName, privateCloudName, context));
     }
 
     /**
@@ -1825,17 +1432,7 @@ public final class PrivateCloudsClientImpl implements PrivateCloudsClient {
             .flatMap(res -> Mono.justOrEmpty(res.getValue()));
     }
 
-    /**
-     * List the admin credentials for the private cloud.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param privateCloudName Name of the private cloud.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return administrative credentials for accessing vCenter and NSX-T along with {@link Response}.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Response<AdminCredentialsInner> listAdminCredentialsWithResponse(String resourceGroupName,
         String privateCloudName, Context context) {
@@ -1862,16 +1459,7 @@ public final class PrivateCloudsClientImpl implements PrivateCloudsClient {
             this.client.getSubscriptionId(), resourceGroupName, privateCloudName, accept, context);
     }
 
-    /**
-     * List the admin credentials for the private cloud.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param privateCloudName Name of the private cloud.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return administrative credentials for accessing vCenter and NSX-T.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public AdminCredentialsInner listAdminCredentials(String resourceGroupName, String privateCloudName) {
         return listAdminCredentialsWithResponse(resourceGroupName, privateCloudName, Context.NONE).getValue();
@@ -1929,17 +1517,7 @@ public final class PrivateCloudsClientImpl implements PrivateCloudsClient {
             .flatMap(res -> Mono.justOrEmpty(res.getValue()));
     }
 
-    /**
-     * Get the license for the private cloud.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param privateCloudName Name of the private cloud.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the license for the private cloud along with {@link Response}.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Response<VcfLicenseInner> getVcfLicenseWithResponse(String resourceGroupName, String privateCloudName,
         Context context) {
@@ -1966,16 +1544,7 @@ public final class PrivateCloudsClientImpl implements PrivateCloudsClient {
             this.client.getSubscriptionId(), resourceGroupName, privateCloudName, accept, context);
     }
 
-    /**
-     * Get the license for the private cloud.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param privateCloudName Name of the private cloud.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the license for the private cloud.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public VcfLicenseInner getVcfLicense(String resourceGroupName, String privateCloudName) {
         return getVcfLicenseWithResponse(resourceGroupName, privateCloudName, Context.NONE).getValue();
@@ -2018,20 +1587,7 @@ public final class PrivateCloudsClientImpl implements PrivateCloudsClient {
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private PagedResponse<PrivateCloudInner> listNextSinglePage(String nextLink) {
-        if (nextLink == null) {
-            throw LOGGER.atError()
-                .log(new IllegalArgumentException("Parameter nextLink is required and cannot be null."));
-        }
-        if (this.client.getEndpoint() == null) {
-            throw LOGGER.atError()
-                .log(new IllegalArgumentException(
-                    "Parameter this.client.getEndpoint() is required and cannot be null."));
-        }
-        final String accept = "application/json";
-        Response<PrivateCloudList> res
-            = service.listNextSync(nextLink, this.client.getEndpoint(), accept, Context.NONE);
-        return new PagedResponseBase<>(res.getRequest(), res.getStatusCode(), res.getHeaders(), res.getValue().value(),
-            res.getValue().nextLink(), null);
+        return listNextSinglePage(nextLink, Context.NONE);
     }
 
     /**
@@ -2100,20 +1656,7 @@ public final class PrivateCloudsClientImpl implements PrivateCloudsClient {
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private PagedResponse<PrivateCloudInner> listInSubscriptionNextSinglePage(String nextLink) {
-        if (nextLink == null) {
-            throw LOGGER.atError()
-                .log(new IllegalArgumentException("Parameter nextLink is required and cannot be null."));
-        }
-        if (this.client.getEndpoint() == null) {
-            throw LOGGER.atError()
-                .log(new IllegalArgumentException(
-                    "Parameter this.client.getEndpoint() is required and cannot be null."));
-        }
-        final String accept = "application/json";
-        Response<PrivateCloudList> res
-            = service.listInSubscriptionNextSync(nextLink, this.client.getEndpoint(), accept, Context.NONE);
-        return new PagedResponseBase<>(res.getRequest(), res.getStatusCode(), res.getHeaders(), res.getValue().value(),
-            res.getValue().nextLink(), null);
+        return listInSubscriptionNextSinglePage(nextLink, Context.NONE);
     }
 
     /**

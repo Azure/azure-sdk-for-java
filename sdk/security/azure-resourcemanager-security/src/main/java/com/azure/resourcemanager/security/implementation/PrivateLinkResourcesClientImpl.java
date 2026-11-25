@@ -197,37 +197,14 @@ public final class PrivateLinkResourcesClientImpl implements PrivateLinkResource
             .flatMap(res -> Mono.justOrEmpty(res.getValue()));
     }
 
-    /**
-     * Get the specified private link resource associated with the private link.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param privateLinkName The name of the private link resource. Must be unique within the resource group and follow
-     * Azure naming conventions.
-     * @param groupId The group ID of the private link resource.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the specified private link resource associated with the private link along with {@link Response}.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Response<PrivateLinkGroupResourceInner> getWithResponse(String resourceGroupName, String privateLinkName,
         String groupId, Context context) {
         return getWithResponseAsync(resourceGroupName, privateLinkName, groupId, context).block();
     }
 
-    /**
-     * Get the specified private link resource associated with the private link.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param privateLinkName The name of the private link resource. Must be unique within the resource group and follow
-     * Azure naming conventions.
-     * @param groupId The group ID of the private link resource.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the specified private link resource associated with the private link.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public PrivateLinkGroupResourceInner get(String resourceGroupName, String privateLinkName, String groupId) {
         return getWithResponse(resourceGroupName, privateLinkName, groupId, Context.NONE).getValue();
@@ -352,36 +329,13 @@ public final class PrivateLinkResourcesClientImpl implements PrivateLinkResource
             nextLink -> listNextSinglePageAsync(nextLink, context));
     }
 
-    /**
-     * List all private link resources in a private link.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param privateLinkName The name of the private link resource. Must be unique within the resource group and follow
-     * Azure naming conventions.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the response of a PrivateLinkGroupResource list operation as paginated response with
-     * {@link PagedIterable}.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.COLLECTION)
     public PagedIterable<PrivateLinkGroupResourceInner> list(String resourceGroupName, String privateLinkName) {
         return new PagedIterable<>(listAsync(resourceGroupName, privateLinkName));
     }
 
-    /**
-     * List all private link resources in a private link.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param privateLinkName The name of the private link resource. Must be unique within the resource group and follow
-     * Azure naming conventions.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the response of a PrivateLinkGroupResource list operation as paginated response with
-     * {@link PagedIterable}.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.COLLECTION)
     public PagedIterable<PrivateLinkGroupResourceInner> list(String resourceGroupName, String privateLinkName,
         Context context) {

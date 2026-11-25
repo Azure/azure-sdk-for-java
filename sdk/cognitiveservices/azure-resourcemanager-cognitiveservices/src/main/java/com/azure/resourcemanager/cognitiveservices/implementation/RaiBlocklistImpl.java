@@ -75,12 +75,7 @@ public final class RaiBlocklistImpl implements RaiBlocklist, RaiBlocklist.Defini
     }
 
     public RaiBlocklist create() {
-        this.innerObject = serviceManager.serviceClient()
-            .getRaiBlocklists()
-            .createOrUpdateWithResponse(resourceGroupName, accountName, raiBlocklistName, this.innerModel(),
-                Context.NONE)
-            .getValue();
-        return this;
+        return this.create(Context.NONE);
     }
 
     public RaiBlocklist create(Context context) {
@@ -102,12 +97,7 @@ public final class RaiBlocklistImpl implements RaiBlocklist, RaiBlocklist.Defini
     }
 
     public RaiBlocklist apply() {
-        this.innerObject = serviceManager.serviceClient()
-            .getRaiBlocklists()
-            .createOrUpdateWithResponse(resourceGroupName, accountName, raiBlocklistName, this.innerModel(),
-                Context.NONE)
-            .getValue();
-        return this;
+        return this.apply(Context.NONE);
     }
 
     public RaiBlocklist apply(Context context) {
@@ -134,11 +124,7 @@ public final class RaiBlocklistImpl implements RaiBlocklist, RaiBlocklist.Defini
     }
 
     public RaiBlocklist refresh() {
-        this.innerObject = serviceManager.serviceClient()
-            .getRaiBlocklists()
-            .getWithResponse(resourceGroupName, accountName, raiBlocklistName, Context.NONE)
-            .getValue();
-        return this;
+        return this.refresh(Context.NONE);
     }
 
     public RaiBlocklist refresh(Context context) {

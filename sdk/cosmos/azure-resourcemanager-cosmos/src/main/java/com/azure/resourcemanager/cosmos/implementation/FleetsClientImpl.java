@@ -144,16 +144,7 @@ public final class FleetsClientImpl implements InnerSupportsGet<FleetResourceInn
             @HostParam("endpoint") String endpoint, @HeaderParam("Accept") String accept, Context context);
     }
 
-    /**
-     * Retrieves the properties of an existing Azure Cosmos DB fleet under a subscription.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param fleetName Cosmos DB fleet name. Needs to be unique under a subscription.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return an Azure Cosmos DB FleetResource along with {@link Response} on successful completion of {@link Mono}.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Response<FleetResourceInner>> getByResourceGroupWithResponseAsync(String resourceGroupName,
         String fleetName) {
@@ -214,65 +205,27 @@ public final class FleetsClientImpl implements InnerSupportsGet<FleetResourceInn
             this.client.getSubscriptionId(), resourceGroupName, fleetName, accept, context);
     }
 
-    /**
-     * Retrieves the properties of an existing Azure Cosmos DB fleet under a subscription.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param fleetName Cosmos DB fleet name. Needs to be unique under a subscription.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return an Azure Cosmos DB FleetResource on successful completion of {@link Mono}.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<FleetResourceInner> getByResourceGroupAsync(String resourceGroupName, String fleetName) {
         return getByResourceGroupWithResponseAsync(resourceGroupName, fleetName)
             .flatMap(res -> Mono.justOrEmpty(res.getValue()));
     }
 
-    /**
-     * Retrieves the properties of an existing Azure Cosmos DB fleet under a subscription.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param fleetName Cosmos DB fleet name. Needs to be unique under a subscription.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return an Azure Cosmos DB FleetResource along with {@link Response}.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Response<FleetResourceInner> getByResourceGroupWithResponse(String resourceGroupName, String fleetName,
         Context context) {
         return getByResourceGroupWithResponseAsync(resourceGroupName, fleetName, context).block();
     }
 
-    /**
-     * Retrieves the properties of an existing Azure Cosmos DB fleet under a subscription.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param fleetName Cosmos DB fleet name. Needs to be unique under a subscription.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return an Azure Cosmos DB FleetResource.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public FleetResourceInner getByResourceGroup(String resourceGroupName, String fleetName) {
         return getByResourceGroupWithResponse(resourceGroupName, fleetName, Context.NONE).getValue();
     }
 
-    /**
-     * Creates an Azure Cosmos DB fleet under a subscription.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param fleetName Cosmos DB fleet name. Needs to be unique under a subscription.
-     * @param body The parameters to provide for the current fleet.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return an Azure Cosmos DB FleetResource along with {@link Response} on successful completion of {@link Mono}.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Response<FleetResourceInner>> createWithResponseAsync(String resourceGroupName, String fleetName,
         FleetResourceInner body) {
@@ -346,68 +299,27 @@ public final class FleetsClientImpl implements InnerSupportsGet<FleetResourceInn
             resourceGroupName, fleetName, contentType, accept, body, context);
     }
 
-    /**
-     * Creates an Azure Cosmos DB fleet under a subscription.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param fleetName Cosmos DB fleet name. Needs to be unique under a subscription.
-     * @param body The parameters to provide for the current fleet.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return an Azure Cosmos DB FleetResource on successful completion of {@link Mono}.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<FleetResourceInner> createAsync(String resourceGroupName, String fleetName, FleetResourceInner body) {
         return createWithResponseAsync(resourceGroupName, fleetName, body)
             .flatMap(res -> Mono.justOrEmpty(res.getValue()));
     }
 
-    /**
-     * Creates an Azure Cosmos DB fleet under a subscription.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param fleetName Cosmos DB fleet name. Needs to be unique under a subscription.
-     * @param body The parameters to provide for the current fleet.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return an Azure Cosmos DB FleetResource along with {@link Response}.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Response<FleetResourceInner> createWithResponse(String resourceGroupName, String fleetName,
         FleetResourceInner body, Context context) {
         return createWithResponseAsync(resourceGroupName, fleetName, body, context).block();
     }
 
-    /**
-     * Creates an Azure Cosmos DB fleet under a subscription.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param fleetName Cosmos DB fleet name. Needs to be unique under a subscription.
-     * @param body The parameters to provide for the current fleet.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return an Azure Cosmos DB FleetResource.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public FleetResourceInner create(String resourceGroupName, String fleetName, FleetResourceInner body) {
         return createWithResponse(resourceGroupName, fleetName, body, Context.NONE).getValue();
     }
 
-    /**
-     * Updates the properties of an existing Azure Cosmos DB Fleet.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param fleetName Cosmos DB fleet name. Needs to be unique under a subscription.
-     * @param body The parameters to provide for the current fleet.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return an Azure Cosmos DB FleetResource along with {@link Response} on successful completion of {@link Mono}.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Response<FleetResourceInner>> updateWithResponseAsync(String resourceGroupName, String fleetName,
         FleetResourceUpdate body) {
@@ -481,67 +393,27 @@ public final class FleetsClientImpl implements InnerSupportsGet<FleetResourceInn
             resourceGroupName, fleetName, contentType, accept, body, context);
     }
 
-    /**
-     * Updates the properties of an existing Azure Cosmos DB Fleet.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param fleetName Cosmos DB fleet name. Needs to be unique under a subscription.
-     * @param body The parameters to provide for the current fleet.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return an Azure Cosmos DB FleetResource on successful completion of {@link Mono}.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<FleetResourceInner> updateAsync(String resourceGroupName, String fleetName, FleetResourceUpdate body) {
         return updateWithResponseAsync(resourceGroupName, fleetName, body)
             .flatMap(res -> Mono.justOrEmpty(res.getValue()));
     }
 
-    /**
-     * Updates the properties of an existing Azure Cosmos DB Fleet.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param fleetName Cosmos DB fleet name. Needs to be unique under a subscription.
-     * @param body The parameters to provide for the current fleet.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return an Azure Cosmos DB FleetResource along with {@link Response}.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Response<FleetResourceInner> updateWithResponse(String resourceGroupName, String fleetName,
         FleetResourceUpdate body, Context context) {
         return updateWithResponseAsync(resourceGroupName, fleetName, body, context).block();
     }
 
-    /**
-     * Updates the properties of an existing Azure Cosmos DB Fleet.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param fleetName Cosmos DB fleet name. Needs to be unique under a subscription.
-     * @param body The parameters to provide for the current fleet.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return an Azure Cosmos DB FleetResource.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public FleetResourceInner update(String resourceGroupName, String fleetName, FleetResourceUpdate body) {
         return updateWithResponse(resourceGroupName, fleetName, body, Context.NONE).getValue();
     }
 
-    /**
-     * Deletes an existing Azure Cosmos DB Fleet.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param fleetName Cosmos DB fleet name. Needs to be unique under a subscription.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the {@link Response} on successful completion of {@link Mono}.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Response<Flux<ByteBuffer>>> deleteWithResponseAsync(String resourceGroupName, String fleetName) {
         if (this.client.getEndpoint() == null) {
@@ -599,16 +471,7 @@ public final class FleetsClientImpl implements InnerSupportsGet<FleetResourceInn
             resourceGroupName, fleetName, context);
     }
 
-    /**
-     * Deletes an existing Azure Cosmos DB Fleet.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param fleetName Cosmos DB fleet name. Needs to be unique under a subscription.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the {@link PollerFlux} for polling of long-running operation.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public PollerFlux<PollResult<Void>, Void> beginDeleteAsync(String resourceGroupName, String fleetName) {
         Mono<Response<Flux<ByteBuffer>>> mono = deleteWithResponseAsync(resourceGroupName, fleetName);
@@ -636,47 +499,19 @@ public final class FleetsClientImpl implements InnerSupportsGet<FleetResourceInn
             context);
     }
 
-    /**
-     * Deletes an existing Azure Cosmos DB Fleet.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param fleetName Cosmos DB fleet name. Needs to be unique under a subscription.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the {@link SyncPoller} for polling of long-running operation.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public SyncPoller<PollResult<Void>, Void> beginDelete(String resourceGroupName, String fleetName) {
         return this.beginDeleteAsync(resourceGroupName, fleetName).getSyncPoller();
     }
 
-    /**
-     * Deletes an existing Azure Cosmos DB Fleet.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param fleetName Cosmos DB fleet name. Needs to be unique under a subscription.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the {@link SyncPoller} for polling of long-running operation.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public SyncPoller<PollResult<Void>, Void> beginDelete(String resourceGroupName, String fleetName, Context context) {
         return this.beginDeleteAsync(resourceGroupName, fleetName, context).getSyncPoller();
     }
 
-    /**
-     * Deletes an existing Azure Cosmos DB Fleet.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param fleetName Cosmos DB fleet name. Needs to be unique under a subscription.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return A {@link Mono} that completes when a successful response is received.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Void> deleteAsync(String resourceGroupName, String fleetName) {
         return beginDeleteAsync(resourceGroupName, fleetName).last().flatMap(this.client::getLroFinalResultOrError);
@@ -699,30 +534,13 @@ public final class FleetsClientImpl implements InnerSupportsGet<FleetResourceInn
             .flatMap(this.client::getLroFinalResultOrError);
     }
 
-    /**
-     * Deletes an existing Azure Cosmos DB Fleet.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param fleetName Cosmos DB fleet name. Needs to be unique under a subscription.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public void delete(String resourceGroupName, String fleetName) {
         deleteAsync(resourceGroupName, fleetName).block();
     }
 
-    /**
-     * Deletes an existing Azure Cosmos DB Fleet.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param fleetName Cosmos DB fleet name. Needs to be unique under a subscription.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public void delete(String resourceGroupName, String fleetName, Context context) {
         deleteAsync(resourceGroupName, fleetName, context).block();
@@ -796,15 +614,7 @@ public final class FleetsClientImpl implements InnerSupportsGet<FleetResourceInn
                 res.getValue().value(), res.getValue().nextLink(), null));
     }
 
-    /**
-     * Lists all the fleets under the specified subscription and resource group.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the response of a FleetResource list operation as paginated response with {@link PagedFlux}.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.COLLECTION)
     public PagedFlux<FleetResourceInner> listByResourceGroupAsync(String resourceGroupName) {
         return new PagedFlux<>(() -> listByResourceGroupSinglePageAsync(resourceGroupName),
@@ -827,30 +637,13 @@ public final class FleetsClientImpl implements InnerSupportsGet<FleetResourceInn
             nextLink -> listByResourceGroupNextSinglePageAsync(nextLink, context));
     }
 
-    /**
-     * Lists all the fleets under the specified subscription and resource group.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the response of a FleetResource list operation as paginated response with {@link PagedIterable}.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.COLLECTION)
     public PagedIterable<FleetResourceInner> listByResourceGroup(String resourceGroupName) {
         return new PagedIterable<>(listByResourceGroupAsync(resourceGroupName));
     }
 
-    /**
-     * Lists all the fleets under the specified subscription and resource group.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the response of a FleetResource list operation as paginated response with {@link PagedIterable}.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.COLLECTION)
     public PagedIterable<FleetResourceInner> listByResourceGroup(String resourceGroupName, Context context) {
         return new PagedIterable<>(listByResourceGroupAsync(resourceGroupName, context));
@@ -912,13 +705,7 @@ public final class FleetsClientImpl implements InnerSupportsGet<FleetResourceInn
                 res.getValue().value(), res.getValue().nextLink(), null));
     }
 
-    /**
-     * Lists all the fleets under the subscription.
-     * 
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the response of a FleetResource list operation as paginated response with {@link PagedFlux}.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.COLLECTION)
     public PagedFlux<FleetResourceInner> listAsync() {
         return new PagedFlux<>(() -> listSinglePageAsync(), nextLink -> listNextSinglePageAsync(nextLink));
@@ -939,27 +726,13 @@ public final class FleetsClientImpl implements InnerSupportsGet<FleetResourceInn
             nextLink -> listNextSinglePageAsync(nextLink, context));
     }
 
-    /**
-     * Lists all the fleets under the subscription.
-     * 
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the response of a FleetResource list operation as paginated response with {@link PagedIterable}.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.COLLECTION)
     public PagedIterable<FleetResourceInner> list() {
         return new PagedIterable<>(listAsync());
     }
 
-    /**
-     * Lists all the fleets under the subscription.
-     * 
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the response of a FleetResource list operation as paginated response with {@link PagedIterable}.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.COLLECTION)
     public PagedIterable<FleetResourceInner> list(Context context) {
         return new PagedIterable<>(listAsync(context));

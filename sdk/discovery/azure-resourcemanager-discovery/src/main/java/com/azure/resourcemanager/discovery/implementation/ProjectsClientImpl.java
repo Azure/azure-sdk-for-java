@@ -220,18 +220,7 @@ public final class ProjectsClientImpl implements ProjectsClient {
             .flatMap(res -> Mono.justOrEmpty(res.getValue()));
     }
 
-    /**
-     * Get a Project.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param workspaceName The name of the Workspace.
-     * @param projectName The name of the Project.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return a Project along with {@link Response}.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Response<ProjectInner> getWithResponse(String resourceGroupName, String workspaceName, String projectName,
         Context context) {
@@ -240,17 +229,7 @@ public final class ProjectsClientImpl implements ProjectsClient {
             resourceGroupName, workspaceName, projectName, accept, context);
     }
 
-    /**
-     * Get a Project.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param workspaceName The name of the Workspace.
-     * @param projectName The name of the Project.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return a Project.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public ProjectInner get(String resourceGroupName, String workspaceName, String projectName) {
         return getWithResponse(resourceGroupName, workspaceName, projectName, Context.NONE).getValue();
@@ -295,11 +274,7 @@ public final class ProjectsClientImpl implements ProjectsClient {
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Response<BinaryData> createOrUpdateWithResponse(String resourceGroupName, String workspaceName,
         String projectName, ProjectInner resource) {
-        final String contentType = "application/json";
-        final String accept = "application/json";
-        return service.createOrUpdateSync(this.client.getEndpoint(), this.client.getApiVersion(),
-            this.client.getSubscriptionId(), resourceGroupName, workspaceName, projectName, contentType, accept,
-            resource, Context.NONE);
+        return createOrUpdateWithResponse(resourceGroupName, workspaceName, projectName, resource, Context.NONE);
     }
 
     /**
@@ -346,40 +321,14 @@ public final class ProjectsClientImpl implements ProjectsClient {
             ProjectInner.class, ProjectInner.class, this.client.getContext());
     }
 
-    /**
-     * Create a Project.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param workspaceName The name of the Workspace.
-     * @param projectName The name of the Project.
-     * @param resource Resource create parameters.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the {@link SyncPoller} for polling of project tracked resource.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public SyncPoller<PollResult<ProjectInner>, ProjectInner> beginCreateOrUpdate(String resourceGroupName,
         String workspaceName, String projectName, ProjectInner resource) {
-        Response<BinaryData> response
-            = createOrUpdateWithResponse(resourceGroupName, workspaceName, projectName, resource);
-        return this.client.<ProjectInner, ProjectInner>getLroResult(response, ProjectInner.class, ProjectInner.class,
-            Context.NONE);
+        return beginCreateOrUpdate(resourceGroupName, workspaceName, projectName, resource, Context.NONE);
     }
 
-    /**
-     * Create a Project.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param workspaceName The name of the Workspace.
-     * @param projectName The name of the Project.
-     * @param resource Resource create parameters.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the {@link SyncPoller} for polling of project tracked resource.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public SyncPoller<PollResult<ProjectInner>, ProjectInner> beginCreateOrUpdate(String resourceGroupName,
         String workspaceName, String projectName, ProjectInner resource, Context context) {
@@ -408,41 +357,19 @@ public final class ProjectsClientImpl implements ProjectsClient {
             .flatMap(this.client::getLroFinalResultOrError);
     }
 
-    /**
-     * Create a Project.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param workspaceName The name of the Workspace.
-     * @param projectName The name of the Project.
-     * @param resource Resource create parameters.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return project tracked resource.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public ProjectInner createOrUpdate(String resourceGroupName, String workspaceName, String projectName,
         ProjectInner resource) {
-        return beginCreateOrUpdate(resourceGroupName, workspaceName, projectName, resource).getFinalResult();
+        return createOrUpdate(resourceGroupName, workspaceName, projectName, resource, Context.NONE);
     }
 
-    /**
-     * Create a Project.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param workspaceName The name of the Workspace.
-     * @param projectName The name of the Project.
-     * @param resource Resource create parameters.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return project tracked resource.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public ProjectInner createOrUpdate(String resourceGroupName, String workspaceName, String projectName,
         ProjectInner resource, Context context) {
-        return beginCreateOrUpdate(resourceGroupName, workspaceName, projectName, resource, context).getFinalResult();
+        return this.client.getLroFinalResultOrError(
+            beginCreateOrUpdate(resourceGroupName, workspaceName, projectName, resource, context));
     }
 
     /**
@@ -484,11 +411,7 @@ public final class ProjectsClientImpl implements ProjectsClient {
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Response<BinaryData> updateWithResponse(String resourceGroupName, String workspaceName, String projectName,
         ProjectInner properties) {
-        final String contentType = "application/json";
-        final String accept = "application/json";
-        return service.updateSync(this.client.getEndpoint(), this.client.getApiVersion(),
-            this.client.getSubscriptionId(), resourceGroupName, workspaceName, projectName, contentType, accept,
-            properties, Context.NONE);
+        return updateWithResponse(resourceGroupName, workspaceName, projectName, properties, Context.NONE);
     }
 
     /**
@@ -535,39 +458,14 @@ public final class ProjectsClientImpl implements ProjectsClient {
             ProjectInner.class, ProjectInner.class, this.client.getContext());
     }
 
-    /**
-     * Update a Project.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param workspaceName The name of the Workspace.
-     * @param projectName The name of the Project.
-     * @param properties The resource properties to be updated.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the {@link SyncPoller} for polling of project tracked resource.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public SyncPoller<PollResult<ProjectInner>, ProjectInner> beginUpdate(String resourceGroupName,
         String workspaceName, String projectName, ProjectInner properties) {
-        Response<BinaryData> response = updateWithResponse(resourceGroupName, workspaceName, projectName, properties);
-        return this.client.<ProjectInner, ProjectInner>getLroResult(response, ProjectInner.class, ProjectInner.class,
-            Context.NONE);
+        return beginUpdate(resourceGroupName, workspaceName, projectName, properties, Context.NONE);
     }
 
-    /**
-     * Update a Project.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param workspaceName The name of the Workspace.
-     * @param projectName The name of the Project.
-     * @param properties The resource properties to be updated.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the {@link SyncPoller} for polling of project tracked resource.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public SyncPoller<PollResult<ProjectInner>, ProjectInner> beginUpdate(String resourceGroupName,
         String workspaceName, String projectName, ProjectInner properties, Context context) {
@@ -596,41 +494,19 @@ public final class ProjectsClientImpl implements ProjectsClient {
             .flatMap(this.client::getLroFinalResultOrError);
     }
 
-    /**
-     * Update a Project.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param workspaceName The name of the Workspace.
-     * @param projectName The name of the Project.
-     * @param properties The resource properties to be updated.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return project tracked resource.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public ProjectInner update(String resourceGroupName, String workspaceName, String projectName,
         ProjectInner properties) {
-        return beginUpdate(resourceGroupName, workspaceName, projectName, properties).getFinalResult();
+        return update(resourceGroupName, workspaceName, projectName, properties, Context.NONE);
     }
 
-    /**
-     * Update a Project.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param workspaceName The name of the Workspace.
-     * @param projectName The name of the Project.
-     * @param properties The resource properties to be updated.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return project tracked resource.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public ProjectInner update(String resourceGroupName, String workspaceName, String projectName,
         ProjectInner properties, Context context) {
-        return beginUpdate(resourceGroupName, workspaceName, projectName, properties, context).getFinalResult();
+        return this.client
+            .getLroFinalResultOrError(beginUpdate(resourceGroupName, workspaceName, projectName, properties, context));
     }
 
     /**
@@ -667,8 +543,7 @@ public final class ProjectsClientImpl implements ProjectsClient {
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Response<BinaryData> deleteWithResponse(String resourceGroupName, String workspaceName,
         String projectName) {
-        return service.deleteSync(this.client.getEndpoint(), this.client.getApiVersion(),
-            this.client.getSubscriptionId(), resourceGroupName, workspaceName, projectName, Context.NONE);
+        return deleteWithResponse(resourceGroupName, workspaceName, projectName, Context.NONE);
     }
 
     /**
@@ -709,36 +584,14 @@ public final class ProjectsClientImpl implements ProjectsClient {
             this.client.getContext());
     }
 
-    /**
-     * Delete a Project.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param workspaceName The name of the Workspace.
-     * @param projectName The name of the Project.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the {@link SyncPoller} for polling of long-running operation.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public SyncPoller<PollResult<Void>, Void> beginDelete(String resourceGroupName, String workspaceName,
         String projectName) {
-        Response<BinaryData> response = deleteWithResponse(resourceGroupName, workspaceName, projectName);
-        return this.client.<Void, Void>getLroResult(response, Void.class, Void.class, Context.NONE);
+        return beginDelete(resourceGroupName, workspaceName, projectName, Context.NONE);
     }
 
-    /**
-     * Delete a Project.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param workspaceName The name of the Workspace.
-     * @param projectName The name of the Project.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the {@link SyncPoller} for polling of long-running operation.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public SyncPoller<PollResult<Void>, Void> beginDelete(String resourceGroupName, String workspaceName,
         String projectName, Context context) {
@@ -763,35 +616,16 @@ public final class ProjectsClientImpl implements ProjectsClient {
             .flatMap(this.client::getLroFinalResultOrError);
     }
 
-    /**
-     * Delete a Project.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param workspaceName The name of the Workspace.
-     * @param projectName The name of the Project.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public void delete(String resourceGroupName, String workspaceName, String projectName) {
-        beginDelete(resourceGroupName, workspaceName, projectName).getFinalResult();
+        delete(resourceGroupName, workspaceName, projectName, Context.NONE);
     }
 
-    /**
-     * Delete a Project.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param workspaceName The name of the Workspace.
-     * @param projectName The name of the Project.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public void delete(String resourceGroupName, String workspaceName, String projectName, Context context) {
-        beginDelete(resourceGroupName, workspaceName, projectName, context).getFinalResult();
+        this.client.getLroFinalResultOrError(beginDelete(resourceGroupName, workspaceName, projectName, context));
     }
 
     /**
@@ -845,12 +679,7 @@ public final class ProjectsClientImpl implements ProjectsClient {
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private PagedResponse<ProjectInner> listByWorkspaceSinglePage(String resourceGroupName, String workspaceName) {
-        final String accept = "application/json";
-        Response<ProjectListResult> res
-            = service.listByWorkspaceSync(this.client.getEndpoint(), this.client.getApiVersion(),
-                this.client.getSubscriptionId(), resourceGroupName, workspaceName, accept, Context.NONE);
-        return new PagedResponseBase<>(res.getRequest(), res.getStatusCode(), res.getHeaders(), res.getValue().value(),
-            res.getValue().nextLink(), null);
+        return listByWorkspaceSinglePage(resourceGroupName, workspaceName, Context.NONE);
     }
 
     /**
@@ -875,33 +704,13 @@ public final class ProjectsClientImpl implements ProjectsClient {
             res.getValue().nextLink(), null);
     }
 
-    /**
-     * List Project resources by Workspace.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param workspaceName The name of the Workspace.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the response of a Project list operation as paginated response with {@link PagedIterable}.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.COLLECTION)
     public PagedIterable<ProjectInner> listByWorkspace(String resourceGroupName, String workspaceName) {
-        return new PagedIterable<>(() -> listByWorkspaceSinglePage(resourceGroupName, workspaceName),
-            nextLink -> listByWorkspaceNextSinglePage(nextLink));
+        return listByWorkspace(resourceGroupName, workspaceName, Context.NONE);
     }
 
-    /**
-     * List Project resources by Workspace.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param workspaceName The name of the Workspace.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the response of a Project list operation as paginated response with {@link PagedIterable}.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.COLLECTION)
     public PagedIterable<ProjectInner> listByWorkspace(String resourceGroupName, String workspaceName,
         Context context) {
@@ -940,11 +749,7 @@ public final class ProjectsClientImpl implements ProjectsClient {
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private PagedResponse<ProjectInner> listByWorkspaceNextSinglePage(String nextLink) {
-        final String accept = "application/json";
-        Response<ProjectListResult> res
-            = service.listByWorkspaceNextSync(nextLink, this.client.getEndpoint(), accept, Context.NONE);
-        return new PagedResponseBase<>(res.getRequest(), res.getStatusCode(), res.getHeaders(), res.getValue().value(),
-            res.getValue().nextLink(), null);
+        return listByWorkspaceNextSinglePage(nextLink, Context.NONE);
     }
 
     /**

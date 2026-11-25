@@ -26,9 +26,7 @@ public final class NodeTypeSkusImpl implements NodeTypeSkus {
     }
 
     public PagedIterable<NodeTypeAvailableSku> list(String resourceGroupName, String clusterName, String nodeTypeName) {
-        PagedIterable<NodeTypeAvailableSkuInner> inner
-            = this.serviceClient().list(resourceGroupName, clusterName, nodeTypeName);
-        return ResourceManagerUtils.mapPage(inner, inner1 -> new NodeTypeAvailableSkuImpl(inner1, this.manager()));
+        return this.list(resourceGroupName, clusterName, nodeTypeName, Context.NONE);
     }
 
     public PagedIterable<NodeTypeAvailableSku> list(String resourceGroupName, String clusterName, String nodeTypeName,

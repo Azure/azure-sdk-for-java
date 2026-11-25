@@ -222,18 +222,7 @@ public final class CertificateProfilesClientImpl implements CertificateProfilesC
             .flatMap(res -> Mono.justOrEmpty(res.getValue()));
     }
 
-    /**
-     * Get details of a certificate profile.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param accountName Artifact Signing account name.
-     * @param profileName Certificate profile name.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return details of a certificate profile along with {@link Response}.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Response<CertificateProfileInner> getWithResponse(String resourceGroupName, String accountName,
         String profileName, Context context) {
@@ -242,17 +231,7 @@ public final class CertificateProfilesClientImpl implements CertificateProfilesC
             resourceGroupName, accountName, profileName, accept, context);
     }
 
-    /**
-     * Get details of a certificate profile.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param accountName Artifact Signing account name.
-     * @param profileName Certificate profile name.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return details of a certificate profile.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public CertificateProfileInner get(String resourceGroupName, String accountName, String profileName) {
         return getWithResponse(resourceGroupName, accountName, profileName, Context.NONE).getValue();
@@ -297,11 +276,7 @@ public final class CertificateProfilesClientImpl implements CertificateProfilesC
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Response<BinaryData> createWithResponse(String resourceGroupName, String accountName, String profileName,
         CertificateProfileInner resource) {
-        final String contentType = "application/json";
-        final String accept = "application/json";
-        return service.createSync(this.client.getEndpoint(), this.client.getApiVersion(),
-            this.client.getSubscriptionId(), resourceGroupName, accountName, profileName, contentType, accept, resource,
-            Context.NONE);
+        return createWithResponse(resourceGroupName, accountName, profileName, resource, Context.NONE);
     }
 
     /**
@@ -349,39 +324,14 @@ public final class CertificateProfilesClientImpl implements CertificateProfilesC
             this.client.getContext());
     }
 
-    /**
-     * Create a certificate profile.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param accountName Artifact Signing account name.
-     * @param profileName Certificate profile name.
-     * @param resource Parameters to create the certificate profile.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the {@link SyncPoller} for polling of certificate profile resource.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public SyncPoller<PollResult<CertificateProfileInner>, CertificateProfileInner> beginCreate(
         String resourceGroupName, String accountName, String profileName, CertificateProfileInner resource) {
-        Response<BinaryData> response = createWithResponse(resourceGroupName, accountName, profileName, resource);
-        return this.client.<CertificateProfileInner, CertificateProfileInner>getLroResult(response,
-            CertificateProfileInner.class, CertificateProfileInner.class, Context.NONE);
+        return beginCreate(resourceGroupName, accountName, profileName, resource, Context.NONE);
     }
 
-    /**
-     * Create a certificate profile.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param accountName Artifact Signing account name.
-     * @param profileName Certificate profile name.
-     * @param resource Parameters to create the certificate profile.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the {@link SyncPoller} for polling of certificate profile resource.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public SyncPoller<PollResult<CertificateProfileInner>, CertificateProfileInner> beginCreate(
         String resourceGroupName, String accountName, String profileName, CertificateProfileInner resource,
@@ -411,41 +361,19 @@ public final class CertificateProfilesClientImpl implements CertificateProfilesC
             .flatMap(this.client::getLroFinalResultOrError);
     }
 
-    /**
-     * Create a certificate profile.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param accountName Artifact Signing account name.
-     * @param profileName Certificate profile name.
-     * @param resource Parameters to create the certificate profile.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return certificate profile resource.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public CertificateProfileInner create(String resourceGroupName, String accountName, String profileName,
         CertificateProfileInner resource) {
-        return beginCreate(resourceGroupName, accountName, profileName, resource).getFinalResult();
+        return create(resourceGroupName, accountName, profileName, resource, Context.NONE);
     }
 
-    /**
-     * Create a certificate profile.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param accountName Artifact Signing account name.
-     * @param profileName Certificate profile name.
-     * @param resource Parameters to create the certificate profile.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return certificate profile resource.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public CertificateProfileInner create(String resourceGroupName, String accountName, String profileName,
         CertificateProfileInner resource, Context context) {
-        return beginCreate(resourceGroupName, accountName, profileName, resource, context).getFinalResult();
+        return this.client
+            .getLroFinalResultOrError(beginCreate(resourceGroupName, accountName, profileName, resource, context));
     }
 
     /**
@@ -481,8 +409,7 @@ public final class CertificateProfilesClientImpl implements CertificateProfilesC
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Response<BinaryData> deleteWithResponse(String resourceGroupName, String accountName, String profileName) {
-        return service.deleteSync(this.client.getEndpoint(), this.client.getApiVersion(),
-            this.client.getSubscriptionId(), resourceGroupName, accountName, profileName, Context.NONE);
+        return deleteWithResponse(resourceGroupName, accountName, profileName, Context.NONE);
     }
 
     /**
@@ -523,36 +450,14 @@ public final class CertificateProfilesClientImpl implements CertificateProfilesC
             this.client.getContext());
     }
 
-    /**
-     * Delete a certificate profile.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param accountName Artifact Signing account name.
-     * @param profileName Certificate profile name.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the {@link SyncPoller} for polling of long-running operation.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public SyncPoller<PollResult<Void>, Void> beginDelete(String resourceGroupName, String accountName,
         String profileName) {
-        Response<BinaryData> response = deleteWithResponse(resourceGroupName, accountName, profileName);
-        return this.client.<Void, Void>getLroResult(response, Void.class, Void.class, Context.NONE);
+        return beginDelete(resourceGroupName, accountName, profileName, Context.NONE);
     }
 
-    /**
-     * Delete a certificate profile.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param accountName Artifact Signing account name.
-     * @param profileName Certificate profile name.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the {@link SyncPoller} for polling of long-running operation.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public SyncPoller<PollResult<Void>, Void> beginDelete(String resourceGroupName, String accountName,
         String profileName, Context context) {
@@ -577,35 +482,16 @@ public final class CertificateProfilesClientImpl implements CertificateProfilesC
             .flatMap(this.client::getLroFinalResultOrError);
     }
 
-    /**
-     * Delete a certificate profile.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param accountName Artifact Signing account name.
-     * @param profileName Certificate profile name.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public void delete(String resourceGroupName, String accountName, String profileName) {
-        beginDelete(resourceGroupName, accountName, profileName).getFinalResult();
+        delete(resourceGroupName, accountName, profileName, Context.NONE);
     }
 
-    /**
-     * Delete a certificate profile.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param accountName Artifact Signing account name.
-     * @param profileName Certificate profile name.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public void delete(String resourceGroupName, String accountName, String profileName, Context context) {
-        beginDelete(resourceGroupName, accountName, profileName, context).getFinalResult();
+        this.client.getLroFinalResultOrError(beginDelete(resourceGroupName, accountName, profileName, context));
     }
 
     /**
@@ -662,12 +548,7 @@ public final class CertificateProfilesClientImpl implements CertificateProfilesC
     @ServiceMethod(returns = ReturnType.SINGLE)
     private PagedResponse<CertificateProfileInner> listByCodeSigningAccountSinglePage(String resourceGroupName,
         String accountName) {
-        final String accept = "application/json";
-        Response<CertificateProfileListResult> res
-            = service.listByCodeSigningAccountSync(this.client.getEndpoint(), this.client.getApiVersion(),
-                this.client.getSubscriptionId(), resourceGroupName, accountName, accept, Context.NONE);
-        return new PagedResponseBase<>(res.getRequest(), res.getStatusCode(), res.getHeaders(), res.getValue().value(),
-            res.getValue().nextLink(), null);
+        return listByCodeSigningAccountSinglePage(resourceGroupName, accountName, Context.NONE);
     }
 
     /**
@@ -692,34 +573,14 @@ public final class CertificateProfilesClientImpl implements CertificateProfilesC
             res.getValue().nextLink(), null);
     }
 
-    /**
-     * List certificate profiles under an artifact signing account.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param accountName Artifact Signing account name.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the response of a CertificateProfile list operation as paginated response with {@link PagedIterable}.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.COLLECTION)
     public PagedIterable<CertificateProfileInner> listByCodeSigningAccount(String resourceGroupName,
         String accountName) {
-        return new PagedIterable<>(() -> listByCodeSigningAccountSinglePage(resourceGroupName, accountName),
-            nextLink -> listByCodeSigningAccountNextSinglePage(nextLink));
+        return listByCodeSigningAccount(resourceGroupName, accountName, Context.NONE);
     }
 
-    /**
-     * List certificate profiles under an artifact signing account.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param accountName Artifact Signing account name.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the response of a CertificateProfile list operation as paginated response with {@link PagedIterable}.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.COLLECTION)
     public PagedIterable<CertificateProfileInner> listByCodeSigningAccount(String resourceGroupName, String accountName,
         Context context) {
@@ -769,19 +630,7 @@ public final class CertificateProfilesClientImpl implements CertificateProfilesC
             .flatMap(ignored -> Mono.empty());
     }
 
-    /**
-     * Revokes certificates under a certificate profile.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param accountName Artifact Signing account name.
-     * @param profileName Certificate profile name.
-     * @param body Parameters to revoke the certificates in the certificate profile.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the {@link Response}.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Response<Void> revokeCertificatesWithResponse(String resourceGroupName, String accountName,
         String profileName, RevokeCertificateList body, Context context) {
@@ -790,17 +639,7 @@ public final class CertificateProfilesClientImpl implements CertificateProfilesC
             this.client.getSubscriptionId(), resourceGroupName, accountName, profileName, contentType, body, context);
     }
 
-    /**
-     * Revokes certificates under a certificate profile.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param accountName Artifact Signing account name.
-     * @param profileName Certificate profile name.
-     * @param body Parameters to revoke the certificates in the certificate profile.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public void revokeCertificates(String resourceGroupName, String accountName, String profileName,
         RevokeCertificateList body) {
@@ -839,11 +678,7 @@ public final class CertificateProfilesClientImpl implements CertificateProfilesC
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private PagedResponse<CertificateProfileInner> listByCodeSigningAccountNextSinglePage(String nextLink) {
-        final String accept = "application/json";
-        Response<CertificateProfileListResult> res
-            = service.listByCodeSigningAccountNextSync(nextLink, this.client.getEndpoint(), accept, Context.NONE);
-        return new PagedResponseBase<>(res.getRequest(), res.getStatusCode(), res.getHeaders(), res.getValue().value(),
-            res.getValue().nextLink(), null);
+        return listByCodeSigningAccountNextSinglePage(nextLink, Context.NONE);
     }
 
     /**

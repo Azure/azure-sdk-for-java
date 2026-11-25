@@ -74,6 +74,7 @@ public final class KnowledgeBaseSearchIndexReference extends KnowledgeBaseRefere
         jsonWriter.writeNumberField("rerankerScore", getRerankerScore());
         jsonWriter.writeStringField("type", this.type == null ? null : this.type.toString());
         jsonWriter.writeStringField("docKey", this.docKey);
+        jsonWriter.writeJsonField("searchSensitivityLabelInfo", this.searchSensitivityLabelInfo);
         jsonWriter.writeStringField("citationUrl", this.citationUrl);
         return jsonWriter.writeEndObject();
     }
@@ -96,6 +97,7 @@ public final class KnowledgeBaseSearchIndexReference extends KnowledgeBaseRefere
             Float rerankerScore = null;
             KnowledgeBaseReferenceType type = KnowledgeBaseReferenceType.SEARCH_INDEX;
             String docKey = null;
+            PurviewSensitivityLabelInfo searchSensitivityLabelInfo = null;
             String citationUrl = null;
             while (reader.nextToken() != JsonToken.END_OBJECT) {
                 String fieldName = reader.getFieldName();
@@ -112,6 +114,8 @@ public final class KnowledgeBaseSearchIndexReference extends KnowledgeBaseRefere
                     type = KnowledgeBaseReferenceType.fromString(reader.getString());
                 } else if ("docKey".equals(fieldName)) {
                     docKey = reader.getString();
+                } else if ("searchSensitivityLabelInfo".equals(fieldName)) {
+                    searchSensitivityLabelInfo = PurviewSensitivityLabelInfo.fromJson(reader);
                 } else if ("citationUrl".equals(fieldName)) {
                     citationUrl = reader.getString();
                 } else {
@@ -124,9 +128,26 @@ public final class KnowledgeBaseSearchIndexReference extends KnowledgeBaseRefere
             deserializedKnowledgeBaseSearchIndexReference.setRerankerScore(rerankerScore);
             deserializedKnowledgeBaseSearchIndexReference.type = type;
             deserializedKnowledgeBaseSearchIndexReference.docKey = docKey;
+            deserializedKnowledgeBaseSearchIndexReference.searchSensitivityLabelInfo = searchSensitivityLabelInfo;
             deserializedKnowledgeBaseSearchIndexReference.citationUrl = citationUrl;
             return deserializedKnowledgeBaseSearchIndexReference;
         });
+    }
+
+    /*
+     * The sensitivity label information for the reference.
+     */
+    @Generated
+    private PurviewSensitivityLabelInfo searchSensitivityLabelInfo;
+
+    /**
+     * Get the searchSensitivityLabelInfo property: The sensitivity label information for the reference.
+     *
+     * @return the searchSensitivityLabelInfo value.
+     */
+    @Generated
+    public PurviewSensitivityLabelInfo getSearchSensitivityLabelInfo() {
+        return this.searchSensitivityLabelInfo;
     }
 
     /*

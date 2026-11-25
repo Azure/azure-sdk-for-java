@@ -22,6 +22,7 @@ import com.azure.core.util.CoreUtils;
 import com.azure.core.util.logging.ClientLogger;
 import com.azure.core.util.polling.AsyncPollResponse;
 import com.azure.core.util.polling.LongRunningOperationStatus;
+import com.azure.core.util.polling.PollResponse;
 import com.azure.core.util.polling.PollerFlux;
 import com.azure.core.util.polling.SyncPoller;
 import com.azure.core.util.serializer.SerializerAdapter;
@@ -35,6 +36,7 @@ import com.azure.resourcemanager.containerservicefleet.fluent.FleetMembersClient
 import com.azure.resourcemanager.containerservicefleet.fluent.FleetUpdateStrategiesClient;
 import com.azure.resourcemanager.containerservicefleet.fluent.FleetsClient;
 import com.azure.resourcemanager.containerservicefleet.fluent.GatesClient;
+import com.azure.resourcemanager.containerservicefleet.fluent.IdentityBindingProfilesClient;
 import com.azure.resourcemanager.containerservicefleet.fluent.OperationsClient;
 import com.azure.resourcemanager.containerservicefleet.fluent.UpdateRunsClient;
 import java.io.IOException;
@@ -220,6 +222,20 @@ public final class ContainerServiceFleetManagementClientImpl implements Containe
     }
 
     /**
+     * The IdentityBindingProfilesClient object to access its operations.
+     */
+    private final IdentityBindingProfilesClient identityBindingProfiles;
+
+    /**
+     * Gets the IdentityBindingProfilesClient object to access its operations.
+     * 
+     * @return the IdentityBindingProfilesClient object.
+     */
+    public IdentityBindingProfilesClient getIdentityBindingProfiles() {
+        return this.identityBindingProfiles;
+    }
+
+    /**
      * The UpdateRunsClient object to access its operations.
      */
     private final UpdateRunsClient updateRuns;
@@ -292,13 +308,14 @@ public final class ContainerServiceFleetManagementClientImpl implements Containe
         this.defaultPollInterval = defaultPollInterval;
         this.endpoint = endpoint;
         this.subscriptionId = subscriptionId;
-        this.apiVersion = "2026-11-01";
+        this.apiVersion = "2026-11-02-preview";
         this.operations = new OperationsClientImpl(this);
         this.clusterMeshProfiles = new ClusterMeshProfilesClientImpl(this);
         this.fleets = new FleetsClientImpl(this);
         this.fleetMembers = new FleetMembersClientImpl(this);
         this.fleetManagedNamespaces = new FleetManagedNamespacesClientImpl(this);
         this.gates = new GatesClientImpl(this);
+        this.identityBindingProfiles = new IdentityBindingProfilesClientImpl(this);
         this.updateRuns = new UpdateRunsClientImpl(this);
         this.fleetUpdateStrategies = new FleetUpdateStrategiesClientImpl(this);
         this.autoUpgradeProfiles = new AutoUpgradeProfilesClientImpl(this);
@@ -360,6 +377,24 @@ public final class ContainerServiceFleetManagementClientImpl implements Containe
     }
 
     /**
+     * Waits for completion and gets the final result, or throws an error.
+     * 
+     * @param poller the synchronous poller.
+     * @param <T> type of poll result.
+     * @param <U> type of final result.
+     * @return the final result.
+     * @throws ManagementException if the long running operation fails.
+     */
+    public <T, U> U getLroFinalResultOrError(SyncPoller<PollResult<T>, U> poller) {
+        PollResponse<PollResult<T>> response = poller.waitForCompletion();
+        ManagementException exception = getLroException(response.getStatus(), response.getValue());
+        if (exception != null) {
+            throw exception;
+        }
+        return poller.getFinalResult();
+    }
+
+    /**
      * Gets the final result, or an error, based on last async poll response.
      * 
      * @param response the last async poll response.
@@ -368,17 +403,25 @@ public final class ContainerServiceFleetManagementClientImpl implements Containe
      * @return the final result, or an error.
      */
     public <T, U> Mono<U> getLroFinalResultOrError(AsyncPollResponse<PollResult<T>, U> response) {
-        if (response.getStatus() != LongRunningOperationStatus.SUCCESSFULLY_COMPLETED) {
+        ManagementException exception = getLroException(response.getStatus(), response.getValue());
+        if (exception != null) {
+            return Mono.error(exception);
+        }
+        return response.getFinalResult();
+    }
+
+    private ManagementException getLroException(LongRunningOperationStatus status, PollResult<?> result) {
+        PollResult.Error lroError = result == null ? null : result.getError();
+        if (status != LongRunningOperationStatus.SUCCESSFULLY_COMPLETED || lroError != null) {
             String errorMessage;
             ManagementError managementError = null;
             HttpResponse errorResponse = null;
-            PollResult.Error lroError = response.getValue().getError();
             if (lroError != null) {
                 errorResponse = new HttpResponseImpl(lroError.getResponseStatusCode(), lroError.getResponseHeaders(),
                     lroError.getResponseBody());
 
-                errorMessage = response.getValue().getError().getMessage();
-                String errorBody = response.getValue().getError().getResponseBody();
+                errorMessage = lroError.getMessage();
+                String errorBody = lroError.getResponseBody();
                 if (errorBody != null) {
                     // try to deserialize error body to ManagementError
                     try {
@@ -397,12 +440,11 @@ public final class ContainerServiceFleetManagementClientImpl implements Containe
             }
             if (managementError == null) {
                 // fallback to default ManagementError
-                managementError = new ManagementError(response.getStatus().toString(), errorMessage);
+                managementError = new ManagementError(status.toString(), errorMessage);
             }
-            return Mono.error(new ManagementException(errorMessage, errorResponse, managementError));
-        } else {
-            return response.getFinalResult();
+            return new ManagementException(errorMessage, errorResponse, managementError);
         }
+        return null;
     }
 
     private static final class HttpResponseImpl extends HttpResponse {

@@ -254,19 +254,7 @@ public final class ExtensionsClientImpl implements ExtensionsClient {
             .flatMap(res -> Mono.justOrEmpty(res.getValue()));
     }
 
-    /**
-     * Get particular Arc Extension of HCI Cluster.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param clusterName The name of the cluster.
-     * @param arcSettingName The name of the proxy resource holding details of HCI ArcSetting information.
-     * @param extensionName The name of the machine extension.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return particular Arc Extension of HCI Cluster along with {@link Response}.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Response<ExtensionInner> getWithResponse(String resourceGroupName, String clusterName, String arcSettingName,
         String extensionName, Context context) {
@@ -275,18 +263,7 @@ public final class ExtensionsClientImpl implements ExtensionsClient {
             resourceGroupName, clusterName, arcSettingName, extensionName, accept, context);
     }
 
-    /**
-     * Get particular Arc Extension of HCI Cluster.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param clusterName The name of the cluster.
-     * @param arcSettingName The name of the proxy resource holding details of HCI ArcSetting information.
-     * @param extensionName The name of the machine extension.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return particular Arc Extension of HCI Cluster.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public ExtensionInner get(String resourceGroupName, String clusterName, String arcSettingName,
         String extensionName) {
@@ -335,11 +312,8 @@ public final class ExtensionsClientImpl implements ExtensionsClient {
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Response<BinaryData> createWithResponse(String resourceGroupName, String clusterName, String arcSettingName,
         String extensionName, ExtensionInner extension) {
-        final String contentType = "application/json";
-        final String accept = "application/json";
-        return service.createSync(this.client.getEndpoint(), this.client.getApiVersion(),
-            this.client.getSubscriptionId(), resourceGroupName, clusterName, arcSettingName, extensionName, contentType,
-            accept, extension, Context.NONE);
+        return createWithResponse(resourceGroupName, clusterName, arcSettingName, extensionName, extension,
+            Context.NONE);
     }
 
     /**
@@ -388,42 +362,14 @@ public final class ExtensionsClientImpl implements ExtensionsClient {
             ExtensionInner.class, ExtensionInner.class, this.client.getContext());
     }
 
-    /**
-     * Create Extension for HCI cluster.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param clusterName The name of the cluster.
-     * @param arcSettingName The name of the proxy resource holding details of HCI ArcSetting information.
-     * @param extensionName The name of the machine extension.
-     * @param extension Details of the Machine Extension to be created.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the {@link SyncPoller} for polling of details of a particular extension in HCI Cluster.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public SyncPoller<PollResult<ExtensionInner>, ExtensionInner> beginCreate(String resourceGroupName,
         String clusterName, String arcSettingName, String extensionName, ExtensionInner extension) {
-        Response<BinaryData> response
-            = createWithResponse(resourceGroupName, clusterName, arcSettingName, extensionName, extension);
-        return this.client.<ExtensionInner, ExtensionInner>getLroResult(response, ExtensionInner.class,
-            ExtensionInner.class, Context.NONE);
+        return beginCreate(resourceGroupName, clusterName, arcSettingName, extensionName, extension, Context.NONE);
     }
 
-    /**
-     * Create Extension for HCI cluster.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param clusterName The name of the cluster.
-     * @param arcSettingName The name of the proxy resource holding details of HCI ArcSetting information.
-     * @param extensionName The name of the machine extension.
-     * @param extension Details of the Machine Extension to be created.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the {@link SyncPoller} for polling of details of a particular extension in HCI Cluster.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public SyncPoller<PollResult<ExtensionInner>, ExtensionInner> beginCreate(String resourceGroupName,
         String clusterName, String arcSettingName, String extensionName, ExtensionInner extension, Context context) {
@@ -453,44 +399,19 @@ public final class ExtensionsClientImpl implements ExtensionsClient {
             .flatMap(this.client::getLroFinalResultOrError);
     }
 
-    /**
-     * Create Extension for HCI cluster.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param clusterName The name of the cluster.
-     * @param arcSettingName The name of the proxy resource holding details of HCI ArcSetting information.
-     * @param extensionName The name of the machine extension.
-     * @param extension Details of the Machine Extension to be created.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return details of a particular extension in HCI Cluster.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public ExtensionInner create(String resourceGroupName, String clusterName, String arcSettingName,
         String extensionName, ExtensionInner extension) {
-        return beginCreate(resourceGroupName, clusterName, arcSettingName, extensionName, extension).getFinalResult();
+        return create(resourceGroupName, clusterName, arcSettingName, extensionName, extension, Context.NONE);
     }
 
-    /**
-     * Create Extension for HCI cluster.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param clusterName The name of the cluster.
-     * @param arcSettingName The name of the proxy resource holding details of HCI ArcSetting information.
-     * @param extensionName The name of the machine extension.
-     * @param extension Details of the Machine Extension to be created.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return details of a particular extension in HCI Cluster.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public ExtensionInner create(String resourceGroupName, String clusterName, String arcSettingName,
         String extensionName, ExtensionInner extension, Context context) {
-        return beginCreate(resourceGroupName, clusterName, arcSettingName, extensionName, extension, context)
-            .getFinalResult();
+        return this.client.getLroFinalResultOrError(
+            beginCreate(resourceGroupName, clusterName, arcSettingName, extensionName, extension, context));
     }
 
     /**
@@ -535,11 +456,8 @@ public final class ExtensionsClientImpl implements ExtensionsClient {
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Response<BinaryData> updateWithResponse(String resourceGroupName, String clusterName, String arcSettingName,
         String extensionName, ExtensionPatch extension) {
-        final String contentType = "application/json";
-        final String accept = "application/json";
-        return service.updateSync(this.client.getEndpoint(), this.client.getApiVersion(),
-            this.client.getSubscriptionId(), resourceGroupName, clusterName, arcSettingName, extensionName, contentType,
-            accept, extension, Context.NONE);
+        return updateWithResponse(resourceGroupName, clusterName, arcSettingName, extensionName, extension,
+            Context.NONE);
     }
 
     /**
@@ -588,42 +506,14 @@ public final class ExtensionsClientImpl implements ExtensionsClient {
             ExtensionInner.class, ExtensionInner.class, this.client.getContext());
     }
 
-    /**
-     * Update Extension for HCI cluster.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param clusterName The name of the cluster.
-     * @param arcSettingName The name of the proxy resource holding details of HCI ArcSetting information.
-     * @param extensionName The name of the machine extension.
-     * @param extension Details of the Machine Extension to be created.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the {@link SyncPoller} for polling of details of a particular extension in HCI Cluster.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public SyncPoller<PollResult<ExtensionInner>, ExtensionInner> beginUpdate(String resourceGroupName,
         String clusterName, String arcSettingName, String extensionName, ExtensionPatch extension) {
-        Response<BinaryData> response
-            = updateWithResponse(resourceGroupName, clusterName, arcSettingName, extensionName, extension);
-        return this.client.<ExtensionInner, ExtensionInner>getLroResult(response, ExtensionInner.class,
-            ExtensionInner.class, Context.NONE);
+        return beginUpdate(resourceGroupName, clusterName, arcSettingName, extensionName, extension, Context.NONE);
     }
 
-    /**
-     * Update Extension for HCI cluster.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param clusterName The name of the cluster.
-     * @param arcSettingName The name of the proxy resource holding details of HCI ArcSetting information.
-     * @param extensionName The name of the machine extension.
-     * @param extension Details of the Machine Extension to be created.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the {@link SyncPoller} for polling of details of a particular extension in HCI Cluster.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public SyncPoller<PollResult<ExtensionInner>, ExtensionInner> beginUpdate(String resourceGroupName,
         String clusterName, String arcSettingName, String extensionName, ExtensionPatch extension, Context context) {
@@ -653,44 +543,19 @@ public final class ExtensionsClientImpl implements ExtensionsClient {
             .flatMap(this.client::getLroFinalResultOrError);
     }
 
-    /**
-     * Update Extension for HCI cluster.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param clusterName The name of the cluster.
-     * @param arcSettingName The name of the proxy resource holding details of HCI ArcSetting information.
-     * @param extensionName The name of the machine extension.
-     * @param extension Details of the Machine Extension to be created.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return details of a particular extension in HCI Cluster.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public ExtensionInner update(String resourceGroupName, String clusterName, String arcSettingName,
         String extensionName, ExtensionPatch extension) {
-        return beginUpdate(resourceGroupName, clusterName, arcSettingName, extensionName, extension).getFinalResult();
+        return update(resourceGroupName, clusterName, arcSettingName, extensionName, extension, Context.NONE);
     }
 
-    /**
-     * Update Extension for HCI cluster.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param clusterName The name of the cluster.
-     * @param arcSettingName The name of the proxy resource holding details of HCI ArcSetting information.
-     * @param extensionName The name of the machine extension.
-     * @param extension Details of the Machine Extension to be created.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return details of a particular extension in HCI Cluster.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public ExtensionInner update(String resourceGroupName, String clusterName, String arcSettingName,
         String extensionName, ExtensionPatch extension, Context context) {
-        return beginUpdate(resourceGroupName, clusterName, arcSettingName, extensionName, extension, context)
-            .getFinalResult();
+        return this.client.getLroFinalResultOrError(
+            beginUpdate(resourceGroupName, clusterName, arcSettingName, extensionName, extension, context));
     }
 
     /**
@@ -728,9 +593,7 @@ public final class ExtensionsClientImpl implements ExtensionsClient {
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Response<BinaryData> deleteWithResponse(String resourceGroupName, String clusterName, String arcSettingName,
         String extensionName) {
-        return service.deleteSync(this.client.getEndpoint(), this.client.getApiVersion(),
-            this.client.getSubscriptionId(), resourceGroupName, clusterName, arcSettingName, extensionName,
-            Context.NONE);
+        return deleteWithResponse(resourceGroupName, clusterName, arcSettingName, extensionName, Context.NONE);
     }
 
     /**
@@ -774,39 +637,14 @@ public final class ExtensionsClientImpl implements ExtensionsClient {
             this.client.getContext());
     }
 
-    /**
-     * Delete particular Arc Extension of HCI Cluster.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param clusterName The name of the cluster.
-     * @param arcSettingName The name of the proxy resource holding details of HCI ArcSetting information.
-     * @param extensionName The name of the machine extension.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the {@link SyncPoller} for polling of long-running operation.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public SyncPoller<PollResult<Void>, Void> beginDelete(String resourceGroupName, String clusterName,
         String arcSettingName, String extensionName) {
-        Response<BinaryData> response
-            = deleteWithResponse(resourceGroupName, clusterName, arcSettingName, extensionName);
-        return this.client.<Void, Void>getLroResult(response, Void.class, Void.class, Context.NONE);
+        return beginDelete(resourceGroupName, clusterName, arcSettingName, extensionName, Context.NONE);
     }
 
-    /**
-     * Delete particular Arc Extension of HCI Cluster.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param clusterName The name of the cluster.
-     * @param arcSettingName The name of the proxy resource holding details of HCI ArcSetting information.
-     * @param extensionName The name of the machine extension.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the {@link SyncPoller} for polling of long-running operation.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public SyncPoller<PollResult<Void>, Void> beginDelete(String resourceGroupName, String clusterName,
         String arcSettingName, String extensionName, Context context) {
@@ -834,38 +672,18 @@ public final class ExtensionsClientImpl implements ExtensionsClient {
             .flatMap(this.client::getLroFinalResultOrError);
     }
 
-    /**
-     * Delete particular Arc Extension of HCI Cluster.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param clusterName The name of the cluster.
-     * @param arcSettingName The name of the proxy resource holding details of HCI ArcSetting information.
-     * @param extensionName The name of the machine extension.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public void delete(String resourceGroupName, String clusterName, String arcSettingName, String extensionName) {
-        beginDelete(resourceGroupName, clusterName, arcSettingName, extensionName).getFinalResult();
+        delete(resourceGroupName, clusterName, arcSettingName, extensionName, Context.NONE);
     }
 
-    /**
-     * Delete particular Arc Extension of HCI Cluster.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param clusterName The name of the cluster.
-     * @param arcSettingName The name of the proxy resource holding details of HCI ArcSetting information.
-     * @param extensionName The name of the machine extension.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public void delete(String resourceGroupName, String clusterName, String arcSettingName, String extensionName,
         Context context) {
-        beginDelete(resourceGroupName, clusterName, arcSettingName, extensionName, context).getFinalResult();
+        this.client.getLroFinalResultOrError(
+            beginDelete(resourceGroupName, clusterName, arcSettingName, extensionName, context));
     }
 
     /**
@@ -924,12 +742,7 @@ public final class ExtensionsClientImpl implements ExtensionsClient {
     @ServiceMethod(returns = ReturnType.SINGLE)
     private PagedResponse<ExtensionInner> listByArcSettingSinglePage(String resourceGroupName, String clusterName,
         String arcSettingName) {
-        final String accept = "application/json";
-        Response<ExtensionList> res
-            = service.listByArcSettingSync(this.client.getEndpoint(), this.client.getApiVersion(),
-                this.client.getSubscriptionId(), resourceGroupName, clusterName, arcSettingName, accept, Context.NONE);
-        return new PagedResponseBase<>(res.getRequest(), res.getStatusCode(), res.getHeaders(), res.getValue().value(),
-            res.getValue().nextLink(), null);
+        return listByArcSettingSinglePage(resourceGroupName, clusterName, arcSettingName, Context.NONE);
     }
 
     /**
@@ -955,36 +768,14 @@ public final class ExtensionsClientImpl implements ExtensionsClient {
             res.getValue().nextLink(), null);
     }
 
-    /**
-     * List all Extensions under ArcSetting resource.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param clusterName The name of the cluster.
-     * @param arcSettingName The name of the proxy resource holding details of HCI ArcSetting information.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return list of Extensions in HCI cluster as paginated response with {@link PagedIterable}.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.COLLECTION)
     public PagedIterable<ExtensionInner> listByArcSetting(String resourceGroupName, String clusterName,
         String arcSettingName) {
-        return new PagedIterable<>(() -> listByArcSettingSinglePage(resourceGroupName, clusterName, arcSettingName),
-            nextLink -> listByArcSettingNextSinglePage(nextLink));
+        return listByArcSetting(resourceGroupName, clusterName, arcSettingName, Context.NONE);
     }
 
-    /**
-     * List all Extensions under ArcSetting resource.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param clusterName The name of the cluster.
-     * @param arcSettingName The name of the proxy resource holding details of HCI ArcSetting information.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return list of Extensions in HCI cluster as paginated response with {@link PagedIterable}.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.COLLECTION)
     public PagedIterable<ExtensionInner> listByArcSetting(String resourceGroupName, String clusterName,
         String arcSettingName, Context context) {
@@ -1033,9 +824,7 @@ public final class ExtensionsClientImpl implements ExtensionsClient {
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Response<BinaryData> upgradeWithResponse(String resourceGroupName, String clusterName,
         String arcSettingName, String extensionName, ExtensionUpgradeParameters extensionUpgradeParameters) {
-        final String contentType = "application/json";
-        return service.upgradeSync(this.client.getEndpoint(), this.client.getApiVersion(),
-            this.client.getSubscriptionId(), resourceGroupName, clusterName, arcSettingName, extensionName, contentType,
+        return upgradeWithResponse(resourceGroupName, clusterName, arcSettingName, extensionName,
             extensionUpgradeParameters, Context.NONE);
     }
 
@@ -1085,41 +874,15 @@ public final class ExtensionsClientImpl implements ExtensionsClient {
             this.client.getContext());
     }
 
-    /**
-     * Upgrade a particular Arc Extension of HCI Cluster.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param clusterName The name of the cluster.
-     * @param arcSettingName The name of the proxy resource holding details of HCI ArcSetting information.
-     * @param extensionName The name of the machine extension.
-     * @param extensionUpgradeParameters Parameters supplied to the Upgrade Extensions operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the {@link SyncPoller} for polling of long-running operation.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public SyncPoller<PollResult<Void>, Void> beginUpgrade(String resourceGroupName, String clusterName,
         String arcSettingName, String extensionName, ExtensionUpgradeParameters extensionUpgradeParameters) {
-        Response<BinaryData> response = upgradeWithResponse(resourceGroupName, clusterName, arcSettingName,
-            extensionName, extensionUpgradeParameters);
-        return this.client.<Void, Void>getLroResult(response, Void.class, Void.class, Context.NONE);
+        return beginUpgrade(resourceGroupName, clusterName, arcSettingName, extensionName, extensionUpgradeParameters,
+            Context.NONE);
     }
 
-    /**
-     * Upgrade a particular Arc Extension of HCI Cluster.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param clusterName The name of the cluster.
-     * @param arcSettingName The name of the proxy resource holding details of HCI ArcSetting information.
-     * @param extensionName The name of the machine extension.
-     * @param extensionUpgradeParameters Parameters supplied to the Upgrade Extensions operation.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the {@link SyncPoller} for polling of long-running operation.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public SyncPoller<PollResult<Void>, Void> beginUpgrade(String resourceGroupName, String clusterName,
         String arcSettingName, String extensionName, ExtensionUpgradeParameters extensionUpgradeParameters,
@@ -1149,43 +912,20 @@ public final class ExtensionsClientImpl implements ExtensionsClient {
             extensionUpgradeParameters).last().flatMap(this.client::getLroFinalResultOrError);
     }
 
-    /**
-     * Upgrade a particular Arc Extension of HCI Cluster.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param clusterName The name of the cluster.
-     * @param arcSettingName The name of the proxy resource holding details of HCI ArcSetting information.
-     * @param extensionName The name of the machine extension.
-     * @param extensionUpgradeParameters Parameters supplied to the Upgrade Extensions operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public void upgrade(String resourceGroupName, String clusterName, String arcSettingName, String extensionName,
         ExtensionUpgradeParameters extensionUpgradeParameters) {
-        beginUpgrade(resourceGroupName, clusterName, arcSettingName, extensionName, extensionUpgradeParameters)
-            .getFinalResult();
+        upgrade(resourceGroupName, clusterName, arcSettingName, extensionName, extensionUpgradeParameters,
+            Context.NONE);
     }
 
-    /**
-     * Upgrade a particular Arc Extension of HCI Cluster.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param clusterName The name of the cluster.
-     * @param arcSettingName The name of the proxy resource holding details of HCI ArcSetting information.
-     * @param extensionName The name of the machine extension.
-     * @param extensionUpgradeParameters Parameters supplied to the Upgrade Extensions operation.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public void upgrade(String resourceGroupName, String clusterName, String arcSettingName, String extensionName,
         ExtensionUpgradeParameters extensionUpgradeParameters, Context context) {
-        beginUpgrade(resourceGroupName, clusterName, arcSettingName, extensionName, extensionUpgradeParameters, context)
-            .getFinalResult();
+        this.client.getLroFinalResultOrError(beginUpgrade(resourceGroupName, clusterName, arcSettingName, extensionName,
+            extensionUpgradeParameters, context));
     }
 
     /**
@@ -1219,11 +959,7 @@ public final class ExtensionsClientImpl implements ExtensionsClient {
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private PagedResponse<ExtensionInner> listByArcSettingNextSinglePage(String nextLink) {
-        final String accept = "application/json";
-        Response<ExtensionList> res
-            = service.listByArcSettingNextSync(nextLink, this.client.getEndpoint(), accept, Context.NONE);
-        return new PagedResponseBase<>(res.getRequest(), res.getStatusCode(), res.getHeaders(), res.getValue().value(),
-            res.getValue().nextLink(), null);
+        return listByArcSettingNextSinglePage(nextLink, Context.NONE);
     }
 
     /**

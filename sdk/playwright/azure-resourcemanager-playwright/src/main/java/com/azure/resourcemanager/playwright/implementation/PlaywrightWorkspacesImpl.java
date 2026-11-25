@@ -49,7 +49,7 @@ public final class PlaywrightWorkspacesImpl implements PlaywrightWorkspaces {
     }
 
     public void deleteByResourceGroup(String resourceGroupName, String playwrightWorkspaceName) {
-        this.serviceClient().delete(resourceGroupName, playwrightWorkspaceName);
+        this.delete(resourceGroupName, playwrightWorkspaceName, Context.NONE);
     }
 
     public void delete(String resourceGroupName, String playwrightWorkspaceName, Context context) {
@@ -57,8 +57,7 @@ public final class PlaywrightWorkspacesImpl implements PlaywrightWorkspaces {
     }
 
     public PagedIterable<PlaywrightWorkspace> listByResourceGroup(String resourceGroupName) {
-        PagedIterable<PlaywrightWorkspaceInner> inner = this.serviceClient().listByResourceGroup(resourceGroupName);
-        return ResourceManagerUtils.mapPage(inner, inner1 -> new PlaywrightWorkspaceImpl(inner1, this.manager()));
+        return this.listByResourceGroup(resourceGroupName, Context.NONE);
     }
 
     public PagedIterable<PlaywrightWorkspace> listByResourceGroup(String resourceGroupName, Context context) {
@@ -68,8 +67,7 @@ public final class PlaywrightWorkspacesImpl implements PlaywrightWorkspaces {
     }
 
     public PagedIterable<PlaywrightWorkspace> list() {
-        PagedIterable<PlaywrightWorkspaceInner> inner = this.serviceClient().list();
-        return ResourceManagerUtils.mapPage(inner, inner1 -> new PlaywrightWorkspaceImpl(inner1, this.manager()));
+        return this.list(Context.NONE);
     }
 
     public PagedIterable<PlaywrightWorkspace> list(Context context) {
@@ -95,74 +93,30 @@ public final class PlaywrightWorkspacesImpl implements PlaywrightWorkspaces {
     }
 
     public PlaywrightWorkspace getById(String id) {
-        String resourceGroupName = ResourceManagerUtils.getValueFromIdByParameterName(id,
-            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.LoadTestService/playwrightWorkspaces/{playwrightWorkspaceName}",
-            "resourceGroupName");
-        if (resourceGroupName == null) {
-            throw LOGGER.logExceptionAsError(new IllegalArgumentException(
-                String.format("The resource ID '%s' is not valid. Missing path segment 'resourceGroups'.", id)));
-        }
-        String playwrightWorkspaceName = ResourceManagerUtils.getValueFromIdByParameterName(id,
-            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.LoadTestService/playwrightWorkspaces/{playwrightWorkspaceName}",
-            "playwrightWorkspaceName");
-        if (playwrightWorkspaceName == null) {
-            throw LOGGER.logExceptionAsError(new IllegalArgumentException(
-                String.format("The resource ID '%s' is not valid. Missing path segment 'playwrightWorkspaces'.", id)));
-        }
-        return this.getByResourceGroupWithResponse(resourceGroupName, playwrightWorkspaceName, Context.NONE).getValue();
+        return this.getByIdWithResponse(id, Context.NONE).getValue();
     }
 
     public Response<PlaywrightWorkspace> getByIdWithResponse(String id, Context context) {
-        String resourceGroupName = ResourceManagerUtils.getValueFromIdByParameterName(id,
+        String resourceGroupName = ResourceManagerUtils.getRequiredValueFromIdByParameterName(id,
             "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.LoadTestService/playwrightWorkspaces/{playwrightWorkspaceName}",
-            "resourceGroupName");
-        if (resourceGroupName == null) {
-            throw LOGGER.logExceptionAsError(new IllegalArgumentException(
-                String.format("The resource ID '%s' is not valid. Missing path segment 'resourceGroups'.", id)));
-        }
-        String playwrightWorkspaceName = ResourceManagerUtils.getValueFromIdByParameterName(id,
+            "resourceGroupName", "resourceGroups", LOGGER);
+        String playwrightWorkspaceName = ResourceManagerUtils.getRequiredValueFromIdByParameterName(id,
             "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.LoadTestService/playwrightWorkspaces/{playwrightWorkspaceName}",
-            "playwrightWorkspaceName");
-        if (playwrightWorkspaceName == null) {
-            throw LOGGER.logExceptionAsError(new IllegalArgumentException(
-                String.format("The resource ID '%s' is not valid. Missing path segment 'playwrightWorkspaces'.", id)));
-        }
+            "playwrightWorkspaceName", "playwrightWorkspaces", LOGGER);
         return this.getByResourceGroupWithResponse(resourceGroupName, playwrightWorkspaceName, context);
     }
 
     public void deleteById(String id) {
-        String resourceGroupName = ResourceManagerUtils.getValueFromIdByParameterName(id,
-            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.LoadTestService/playwrightWorkspaces/{playwrightWorkspaceName}",
-            "resourceGroupName");
-        if (resourceGroupName == null) {
-            throw LOGGER.logExceptionAsError(new IllegalArgumentException(
-                String.format("The resource ID '%s' is not valid. Missing path segment 'resourceGroups'.", id)));
-        }
-        String playwrightWorkspaceName = ResourceManagerUtils.getValueFromIdByParameterName(id,
-            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.LoadTestService/playwrightWorkspaces/{playwrightWorkspaceName}",
-            "playwrightWorkspaceName");
-        if (playwrightWorkspaceName == null) {
-            throw LOGGER.logExceptionAsError(new IllegalArgumentException(
-                String.format("The resource ID '%s' is not valid. Missing path segment 'playwrightWorkspaces'.", id)));
-        }
-        this.delete(resourceGroupName, playwrightWorkspaceName, Context.NONE);
+        this.deleteByIdWithResponse(id, Context.NONE);
     }
 
     public void deleteByIdWithResponse(String id, Context context) {
-        String resourceGroupName = ResourceManagerUtils.getValueFromIdByParameterName(id,
+        String resourceGroupName = ResourceManagerUtils.getRequiredValueFromIdByParameterName(id,
             "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.LoadTestService/playwrightWorkspaces/{playwrightWorkspaceName}",
-            "resourceGroupName");
-        if (resourceGroupName == null) {
-            throw LOGGER.logExceptionAsError(new IllegalArgumentException(
-                String.format("The resource ID '%s' is not valid. Missing path segment 'resourceGroups'.", id)));
-        }
-        String playwrightWorkspaceName = ResourceManagerUtils.getValueFromIdByParameterName(id,
+            "resourceGroupName", "resourceGroups", LOGGER);
+        String playwrightWorkspaceName = ResourceManagerUtils.getRequiredValueFromIdByParameterName(id,
             "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.LoadTestService/playwrightWorkspaces/{playwrightWorkspaceName}",
-            "playwrightWorkspaceName");
-        if (playwrightWorkspaceName == null) {
-            throw LOGGER.logExceptionAsError(new IllegalArgumentException(
-                String.format("The resource ID '%s' is not valid. Missing path segment 'playwrightWorkspaces'.", id)));
-        }
+            "playwrightWorkspaceName", "playwrightWorkspaces", LOGGER);
         this.delete(resourceGroupName, playwrightWorkspaceName, context);
     }
 

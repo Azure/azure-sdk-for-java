@@ -9,7 +9,7 @@ package com.azure.resourcemanager.cognitiveservices.generated;
  */
 public final class RaiPoliciesDeleteSamples {
     /*
-     * x-ms-original-file: 2026-09-15-preview/DeleteRaiPolicyAcs.json
+     * x-ms-original-file: 2026-11-15-preview/DeleteRaiPolicyAcs.json
      */
     /**
      * Sample code: Delete an ACS policy.
@@ -23,7 +23,7 @@ public final class RaiPoliciesDeleteSamples {
     }
 
     /*
-     * x-ms-original-file: 2026-09-15-preview/DeleteRaiPolicy.json
+     * x-ms-original-file: 2026-11-15-preview/DeleteRaiPolicy.json
      */
     /**
      * Sample code: DeleteRaiPolicy.

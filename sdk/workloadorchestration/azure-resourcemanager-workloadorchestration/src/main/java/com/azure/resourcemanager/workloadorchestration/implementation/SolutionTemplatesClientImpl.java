@@ -300,17 +300,7 @@ public final class SolutionTemplatesClientImpl implements SolutionTemplatesClien
             .flatMap(res -> Mono.justOrEmpty(res.getValue()));
     }
 
-    /**
-     * Get a Solution Template Resource.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param solutionTemplateName The name of the SolutionTemplate.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return a Solution Template Resource along with {@link Response}.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Response<SolutionTemplateInner> getByResourceGroupWithResponse(String resourceGroupName,
         String solutionTemplateName, Context context) {
@@ -319,16 +309,7 @@ public final class SolutionTemplatesClientImpl implements SolutionTemplatesClien
             this.client.getSubscriptionId(), resourceGroupName, solutionTemplateName, accept, context);
     }
 
-    /**
-     * Get a Solution Template Resource.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param solutionTemplateName The name of the SolutionTemplate.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return a Solution Template Resource.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public SolutionTemplateInner getByResourceGroup(String resourceGroupName, String solutionTemplateName) {
         return getByResourceGroupWithResponse(resourceGroupName, solutionTemplateName, Context.NONE).getValue();
@@ -371,11 +352,7 @@ public final class SolutionTemplatesClientImpl implements SolutionTemplatesClien
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Response<BinaryData> createOrUpdateWithResponse(String resourceGroupName, String solutionTemplateName,
         SolutionTemplateInner resource) {
-        final String contentType = "application/json";
-        final String accept = "application/json";
-        return service.createOrUpdateSync(this.client.getEndpoint(), this.client.getApiVersion(),
-            this.client.getSubscriptionId(), resourceGroupName, solutionTemplateName, contentType, accept, resource,
-            Context.NONE);
+        return createOrUpdateWithResponse(resourceGroupName, solutionTemplateName, resource, Context.NONE);
     }
 
     /**
@@ -421,37 +398,14 @@ public final class SolutionTemplatesClientImpl implements SolutionTemplatesClien
             this.client.getContext());
     }
 
-    /**
-     * Create or update a Solution Template Resource.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param solutionTemplateName The name of the SolutionTemplate.
-     * @param resource Resource create parameters.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the {@link SyncPoller} for polling of solution Template Resource.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public SyncPoller<PollResult<SolutionTemplateInner>, SolutionTemplateInner>
         beginCreateOrUpdate(String resourceGroupName, String solutionTemplateName, SolutionTemplateInner resource) {
-        Response<BinaryData> response = createOrUpdateWithResponse(resourceGroupName, solutionTemplateName, resource);
-        return this.client.<SolutionTemplateInner, SolutionTemplateInner>getLroResult(response,
-            SolutionTemplateInner.class, SolutionTemplateInner.class, Context.NONE);
+        return beginCreateOrUpdate(resourceGroupName, solutionTemplateName, resource, Context.NONE);
     }
 
-    /**
-     * Create or update a Solution Template Resource.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param solutionTemplateName The name of the SolutionTemplate.
-     * @param resource Resource create parameters.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the {@link SyncPoller} for polling of solution Template Resource.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public SyncPoller<PollResult<SolutionTemplateInner>, SolutionTemplateInner> beginCreateOrUpdate(
         String resourceGroupName, String solutionTemplateName, SolutionTemplateInner resource, Context context) {
@@ -479,39 +433,19 @@ public final class SolutionTemplatesClientImpl implements SolutionTemplatesClien
             .flatMap(this.client::getLroFinalResultOrError);
     }
 
-    /**
-     * Create or update a Solution Template Resource.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param solutionTemplateName The name of the SolutionTemplate.
-     * @param resource Resource create parameters.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return solution Template Resource.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public SolutionTemplateInner createOrUpdate(String resourceGroupName, String solutionTemplateName,
         SolutionTemplateInner resource) {
-        return beginCreateOrUpdate(resourceGroupName, solutionTemplateName, resource).getFinalResult();
+        return createOrUpdate(resourceGroupName, solutionTemplateName, resource, Context.NONE);
     }
 
-    /**
-     * Create or update a Solution Template Resource.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param solutionTemplateName The name of the SolutionTemplate.
-     * @param resource Resource create parameters.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return solution Template Resource.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public SolutionTemplateInner createOrUpdate(String resourceGroupName, String solutionTemplateName,
         SolutionTemplateInner resource, Context context) {
-        return beginCreateOrUpdate(resourceGroupName, solutionTemplateName, resource, context).getFinalResult();
+        return this.client
+            .getLroFinalResultOrError(beginCreateOrUpdate(resourceGroupName, solutionTemplateName, resource, context));
     }
 
     /**
@@ -555,18 +489,7 @@ public final class SolutionTemplatesClientImpl implements SolutionTemplatesClien
             .flatMap(res -> Mono.justOrEmpty(res.getValue()));
     }
 
-    /**
-     * update a Solution Template Resource.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param solutionTemplateName The name of the SolutionTemplate.
-     * @param properties The resource properties to be updated.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return solution Template Resource along with {@link Response}.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Response<SolutionTemplateInner> updateWithResponse(String resourceGroupName, String solutionTemplateName,
         SolutionTemplateUpdate properties, Context context) {
@@ -577,17 +500,7 @@ public final class SolutionTemplatesClientImpl implements SolutionTemplatesClien
             context);
     }
 
-    /**
-     * update a Solution Template Resource.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param solutionTemplateName The name of the SolutionTemplate.
-     * @param properties The resource properties to be updated.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return solution Template Resource.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public SolutionTemplateInner update(String resourceGroupName, String solutionTemplateName,
         SolutionTemplateUpdate properties) {
@@ -631,11 +544,7 @@ public final class SolutionTemplatesClientImpl implements SolutionTemplatesClien
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Response<BinaryData> createVersionWithResponse(String resourceGroupName, String solutionTemplateName,
         SolutionTemplateVersionWithUpdateTypeInner body) {
-        final String contentType = "application/json";
-        final String accept = "application/json";
-        return service.createVersionSync(this.client.getEndpoint(), this.client.getApiVersion(),
-            this.client.getSubscriptionId(), resourceGroupName, solutionTemplateName, contentType, accept, body,
-            Context.NONE);
+        return createVersionWithResponse(resourceGroupName, solutionTemplateName, body, Context.NONE);
     }
 
     /**
@@ -681,37 +590,14 @@ public final class SolutionTemplatesClientImpl implements SolutionTemplatesClien
             this.client.getContext());
     }
 
-    /**
-     * Create a Solution Template Version Resource.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param solutionTemplateName The name of the SolutionTemplate.
-     * @param body The content of the action request.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the {@link SyncPoller} for polling of solution Template Version Resource.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public SyncPoller<PollResult<SolutionTemplateVersionInner>, SolutionTemplateVersionInner> beginCreateVersion(
         String resourceGroupName, String solutionTemplateName, SolutionTemplateVersionWithUpdateTypeInner body) {
-        Response<BinaryData> response = createVersionWithResponse(resourceGroupName, solutionTemplateName, body);
-        return this.client.<SolutionTemplateVersionInner, SolutionTemplateVersionInner>getLroResult(response,
-            SolutionTemplateVersionInner.class, SolutionTemplateVersionInner.class, Context.NONE);
+        return beginCreateVersion(resourceGroupName, solutionTemplateName, body, Context.NONE);
     }
 
-    /**
-     * Create a Solution Template Version Resource.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param solutionTemplateName The name of the SolutionTemplate.
-     * @param body The content of the action request.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the {@link SyncPoller} for polling of solution Template Version Resource.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public SyncPoller<PollResult<SolutionTemplateVersionInner>, SolutionTemplateVersionInner> beginCreateVersion(
         String resourceGroupName, String solutionTemplateName, SolutionTemplateVersionWithUpdateTypeInner body,
@@ -740,39 +626,19 @@ public final class SolutionTemplatesClientImpl implements SolutionTemplatesClien
             .flatMap(this.client::getLroFinalResultOrError);
     }
 
-    /**
-     * Create a Solution Template Version Resource.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param solutionTemplateName The name of the SolutionTemplate.
-     * @param body The content of the action request.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return solution Template Version Resource.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public SolutionTemplateVersionInner createVersion(String resourceGroupName, String solutionTemplateName,
         SolutionTemplateVersionWithUpdateTypeInner body) {
-        return beginCreateVersion(resourceGroupName, solutionTemplateName, body).getFinalResult();
+        return createVersion(resourceGroupName, solutionTemplateName, body, Context.NONE);
     }
 
-    /**
-     * Create a Solution Template Version Resource.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param solutionTemplateName The name of the SolutionTemplate.
-     * @param body The content of the action request.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return solution Template Version Resource.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public SolutionTemplateVersionInner createVersion(String resourceGroupName, String solutionTemplateName,
         SolutionTemplateVersionWithUpdateTypeInner body, Context context) {
-        return beginCreateVersion(resourceGroupName, solutionTemplateName, body, context).getFinalResult();
+        return this.client
+            .getLroFinalResultOrError(beginCreateVersion(resourceGroupName, solutionTemplateName, body, context));
     }
 
     /**
@@ -810,9 +676,7 @@ public final class SolutionTemplatesClientImpl implements SolutionTemplatesClien
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Response<BinaryData> removeVersionWithResponse(String resourceGroupName, String solutionTemplateName,
         VersionParameter body) {
-        final String contentType = "application/json";
-        return service.removeVersionSync(this.client.getEndpoint(), this.client.getApiVersion(),
-            this.client.getSubscriptionId(), resourceGroupName, solutionTemplateName, contentType, body, Context.NONE);
+        return removeVersionWithResponse(resourceGroupName, solutionTemplateName, body, Context.NONE);
     }
 
     /**
@@ -855,36 +719,14 @@ public final class SolutionTemplatesClientImpl implements SolutionTemplatesClien
             this.client.getContext());
     }
 
-    /**
-     * Remove Solution Template Version Resource.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param solutionTemplateName The name of the SolutionTemplate.
-     * @param body The content of the action request.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the {@link SyncPoller} for polling of long-running operation.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public SyncPoller<PollResult<Void>, Void> beginRemoveVersion(String resourceGroupName, String solutionTemplateName,
         VersionParameter body) {
-        Response<BinaryData> response = removeVersionWithResponse(resourceGroupName, solutionTemplateName, body);
-        return this.client.<Void, Void>getLroResult(response, Void.class, Void.class, Context.NONE);
+        return beginRemoveVersion(resourceGroupName, solutionTemplateName, body, Context.NONE);
     }
 
-    /**
-     * Remove Solution Template Version Resource.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param solutionTemplateName The name of the SolutionTemplate.
-     * @param body The content of the action request.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the {@link SyncPoller} for polling of long-running operation.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public SyncPoller<PollResult<Void>, Void> beginRemoveVersion(String resourceGroupName, String solutionTemplateName,
         VersionParameter body, Context context) {
@@ -911,36 +753,18 @@ public final class SolutionTemplatesClientImpl implements SolutionTemplatesClien
             .flatMap(this.client::getLroFinalResultOrError);
     }
 
-    /**
-     * Remove Solution Template Version Resource.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param solutionTemplateName The name of the SolutionTemplate.
-     * @param body The content of the action request.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public void removeVersion(String resourceGroupName, String solutionTemplateName, VersionParameter body) {
-        beginRemoveVersion(resourceGroupName, solutionTemplateName, body).getFinalResult();
+        removeVersion(resourceGroupName, solutionTemplateName, body, Context.NONE);
     }
 
-    /**
-     * Remove Solution Template Version Resource.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param solutionTemplateName The name of the SolutionTemplate.
-     * @param body The content of the action request.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public void removeVersion(String resourceGroupName, String solutionTemplateName, VersionParameter body,
         Context context) {
-        beginRemoveVersion(resourceGroupName, solutionTemplateName, body, context).getFinalResult();
+        this.client
+            .getLroFinalResultOrError(beginRemoveVersion(resourceGroupName, solutionTemplateName, body, context));
     }
 
     /**
@@ -974,8 +798,7 @@ public final class SolutionTemplatesClientImpl implements SolutionTemplatesClien
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Response<BinaryData> deleteWithResponse(String resourceGroupName, String solutionTemplateName) {
-        return service.deleteSync(this.client.getEndpoint(), this.client.getApiVersion(),
-            this.client.getSubscriptionId(), resourceGroupName, solutionTemplateName, Context.NONE);
+        return deleteWithResponse(resourceGroupName, solutionTemplateName, Context.NONE);
     }
 
     /**
@@ -1013,33 +836,13 @@ public final class SolutionTemplatesClientImpl implements SolutionTemplatesClien
             this.client.getContext());
     }
 
-    /**
-     * Delete a Solution Template Resource.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param solutionTemplateName The name of the SolutionTemplate.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the {@link SyncPoller} for polling of long-running operation.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public SyncPoller<PollResult<Void>, Void> beginDelete(String resourceGroupName, String solutionTemplateName) {
-        Response<BinaryData> response = deleteWithResponse(resourceGroupName, solutionTemplateName);
-        return this.client.<Void, Void>getLroResult(response, Void.class, Void.class, Context.NONE);
+        return beginDelete(resourceGroupName, solutionTemplateName, Context.NONE);
     }
 
-    /**
-     * Delete a Solution Template Resource.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param solutionTemplateName The name of the SolutionTemplate.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the {@link SyncPoller} for polling of long-running operation.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public SyncPoller<PollResult<Void>, Void> beginDelete(String resourceGroupName, String solutionTemplateName,
         Context context) {
@@ -1063,33 +866,16 @@ public final class SolutionTemplatesClientImpl implements SolutionTemplatesClien
             .flatMap(this.client::getLroFinalResultOrError);
     }
 
-    /**
-     * Delete a Solution Template Resource.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param solutionTemplateName The name of the SolutionTemplate.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public void delete(String resourceGroupName, String solutionTemplateName) {
-        beginDelete(resourceGroupName, solutionTemplateName).getFinalResult();
+        delete(resourceGroupName, solutionTemplateName, Context.NONE);
     }
 
-    /**
-     * Delete a Solution Template Resource.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param solutionTemplateName The name of the SolutionTemplate.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public void delete(String resourceGroupName, String solutionTemplateName, Context context) {
-        beginDelete(resourceGroupName, solutionTemplateName, context).getFinalResult();
+        this.client.getLroFinalResultOrError(beginDelete(resourceGroupName, solutionTemplateName, context));
     }
 
     /**
@@ -1139,11 +925,7 @@ public final class SolutionTemplatesClientImpl implements SolutionTemplatesClien
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private PagedResponse<SolutionTemplateInner> listByResourceGroupSinglePage(String resourceGroupName) {
-        final String accept = "application/json";
-        Response<SolutionTemplateListResult> res = service.listByResourceGroupSync(this.client.getEndpoint(),
-            this.client.getApiVersion(), this.client.getSubscriptionId(), resourceGroupName, accept, Context.NONE);
-        return new PagedResponseBase<>(res.getRequest(), res.getStatusCode(), res.getHeaders(), res.getValue().value(),
-            res.getValue().nextLink(), null);
+        return listByResourceGroupSinglePage(resourceGroupName, Context.NONE);
     }
 
     /**
@@ -1166,31 +948,13 @@ public final class SolutionTemplatesClientImpl implements SolutionTemplatesClien
             res.getValue().nextLink(), null);
     }
 
-    /**
-     * List by specified resource group.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the response of a SolutionTemplate list operation as paginated response with {@link PagedIterable}.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.COLLECTION)
     public PagedIterable<SolutionTemplateInner> listByResourceGroup(String resourceGroupName) {
-        return new PagedIterable<>(() -> listByResourceGroupSinglePage(resourceGroupName),
-            nextLink -> listByResourceGroupNextSinglePage(nextLink));
+        return listByResourceGroup(resourceGroupName, Context.NONE);
     }
 
-    /**
-     * List by specified resource group.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the response of a SolutionTemplate list operation as paginated response with {@link PagedIterable}.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.COLLECTION)
     public PagedIterable<SolutionTemplateInner> listByResourceGroup(String resourceGroupName, Context context) {
         return new PagedIterable<>(() -> listByResourceGroupSinglePage(resourceGroupName, context),
@@ -1238,11 +1002,7 @@ public final class SolutionTemplatesClientImpl implements SolutionTemplatesClien
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private PagedResponse<SolutionTemplateInner> listSinglePage() {
-        final String accept = "application/json";
-        Response<SolutionTemplateListResult> res = service.listSync(this.client.getEndpoint(),
-            this.client.getApiVersion(), this.client.getSubscriptionId(), accept, Context.NONE);
-        return new PagedResponseBase<>(res.getRequest(), res.getStatusCode(), res.getHeaders(), res.getValue().value(),
-            res.getValue().nextLink(), null);
+        return listSinglePage(Context.NONE);
     }
 
     /**
@@ -1263,27 +1023,13 @@ public final class SolutionTemplatesClientImpl implements SolutionTemplatesClien
             res.getValue().nextLink(), null);
     }
 
-    /**
-     * List by subscription.
-     * 
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the response of a SolutionTemplate list operation as paginated response with {@link PagedIterable}.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.COLLECTION)
     public PagedIterable<SolutionTemplateInner> list() {
-        return new PagedIterable<>(() -> listSinglePage(), nextLink -> listBySubscriptionNextSinglePage(nextLink));
+        return list(Context.NONE);
     }
 
-    /**
-     * List by subscription.
-     * 
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the response of a SolutionTemplate list operation as paginated response with {@link PagedIterable}.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.COLLECTION)
     public PagedIterable<SolutionTemplateInner> list(Context context) {
         return new PagedIterable<>(() -> listSinglePage(context),
@@ -1322,11 +1068,7 @@ public final class SolutionTemplatesClientImpl implements SolutionTemplatesClien
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private PagedResponse<SolutionTemplateInner> listByResourceGroupNextSinglePage(String nextLink) {
-        final String accept = "application/json";
-        Response<SolutionTemplateListResult> res
-            = service.listByResourceGroupNextSync(nextLink, this.client.getEndpoint(), accept, Context.NONE);
-        return new PagedResponseBase<>(res.getRequest(), res.getStatusCode(), res.getHeaders(), res.getValue().value(),
-            res.getValue().nextLink(), null);
+        return listByResourceGroupNextSinglePage(nextLink, Context.NONE);
     }
 
     /**
@@ -1380,11 +1122,7 @@ public final class SolutionTemplatesClientImpl implements SolutionTemplatesClien
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private PagedResponse<SolutionTemplateInner> listBySubscriptionNextSinglePage(String nextLink) {
-        final String accept = "application/json";
-        Response<SolutionTemplateListResult> res
-            = service.listBySubscriptionNextSync(nextLink, this.client.getEndpoint(), accept, Context.NONE);
-        return new PagedResponseBase<>(res.getRequest(), res.getStatusCode(), res.getHeaders(), res.getValue().value(),
-            res.getValue().nextLink(), null);
+        return listBySubscriptionNextSinglePage(nextLink, Context.NONE);
     }
 
     /**

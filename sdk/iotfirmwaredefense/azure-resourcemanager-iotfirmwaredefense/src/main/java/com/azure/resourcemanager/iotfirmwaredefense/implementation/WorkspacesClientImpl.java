@@ -269,17 +269,7 @@ public final class WorkspacesClientImpl implements WorkspacesClient {
             .flatMap(res -> Mono.justOrEmpty(res.getValue()));
     }
 
-    /**
-     * Get firmware analysis workspace.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param workspaceName The name of the firmware analysis workspace.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return firmware analysis workspace along with {@link Response}.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Response<WorkspaceInner> getByResourceGroupWithResponse(String resourceGroupName, String workspaceName,
         Context context) {
@@ -288,16 +278,7 @@ public final class WorkspacesClientImpl implements WorkspacesClient {
             this.client.getSubscriptionId(), resourceGroupName, workspaceName, accept, context);
     }
 
-    /**
-     * Get firmware analysis workspace.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param workspaceName The name of the firmware analysis workspace.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return firmware analysis workspace.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public WorkspaceInner getByResourceGroup(String resourceGroupName, String workspaceName) {
         return getByResourceGroupWithResponse(resourceGroupName, workspaceName, Context.NONE).getValue();
@@ -341,18 +322,7 @@ public final class WorkspacesClientImpl implements WorkspacesClient {
             .flatMap(res -> Mono.justOrEmpty(res.getValue()));
     }
 
-    /**
-     * The operation to create or update a firmware analysis workspace.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param workspaceName The name of the firmware analysis workspace.
-     * @param resource Parameters when creating a firmware analysis workspace.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return firmware analysis workspace along with {@link Response}.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Response<WorkspaceInner> createWithResponse(String resourceGroupName, String workspaceName,
         WorkspaceInner resource, Context context) {
@@ -362,17 +332,7 @@ public final class WorkspacesClientImpl implements WorkspacesClient {
             this.client.getSubscriptionId(), resourceGroupName, workspaceName, contentType, accept, resource, context);
     }
 
-    /**
-     * The operation to create or update a firmware analysis workspace.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param workspaceName The name of the firmware analysis workspace.
-     * @param resource Parameters when creating a firmware analysis workspace.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return firmware analysis workspace.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public WorkspaceInner create(String resourceGroupName, String workspaceName, WorkspaceInner resource) {
         return createWithResponse(resourceGroupName, workspaceName, resource, Context.NONE).getValue();
@@ -419,18 +379,7 @@ public final class WorkspacesClientImpl implements WorkspacesClient {
             .flatMap(res -> Mono.justOrEmpty(res.getValue()));
     }
 
-    /**
-     * The operation to update a firmware analysis workspaces.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param workspaceName The name of the firmware analysis workspace.
-     * @param properties Parameters when updating a firmware analysis workspace.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return firmware analysis workspace along with {@link Response}.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Response<WorkspaceInner> updateWithResponse(String resourceGroupName, String workspaceName,
         WorkspaceUpdate properties, Context context) {
@@ -441,17 +390,7 @@ public final class WorkspacesClientImpl implements WorkspacesClient {
             context);
     }
 
-    /**
-     * The operation to update a firmware analysis workspaces.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param workspaceName The name of the firmware analysis workspace.
-     * @param properties Parameters when updating a firmware analysis workspace.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return firmware analysis workspace.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public WorkspaceInner update(String resourceGroupName, String workspaceName, WorkspaceUpdate properties) {
         return updateWithResponse(resourceGroupName, workspaceName, properties, Context.NONE).getValue();
@@ -487,8 +426,7 @@ public final class WorkspacesClientImpl implements WorkspacesClient {
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Response<BinaryData> deleteWithResponse(String resourceGroupName, String workspaceName) {
-        return service.deleteSync(this.client.getEndpoint(), this.client.getApiVersion(),
-            this.client.getSubscriptionId(), resourceGroupName, workspaceName, Context.NONE);
+        return deleteWithResponse(resourceGroupName, workspaceName, Context.NONE);
     }
 
     /**
@@ -525,33 +463,13 @@ public final class WorkspacesClientImpl implements WorkspacesClient {
             this.client.getContext());
     }
 
-    /**
-     * The operation to delete a firmware analysis workspace.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param workspaceName The name of the firmware analysis workspace.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the {@link SyncPoller} for polling of long-running operation.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public SyncPoller<PollResult<Void>, Void> beginDelete(String resourceGroupName, String workspaceName) {
-        Response<BinaryData> response = deleteWithResponse(resourceGroupName, workspaceName);
-        return this.client.<Void, Void>getLroResult(response, Void.class, Void.class, Context.NONE);
+        return beginDelete(resourceGroupName, workspaceName, Context.NONE);
     }
 
-    /**
-     * The operation to delete a firmware analysis workspace.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param workspaceName The name of the firmware analysis workspace.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the {@link SyncPoller} for polling of long-running operation.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public SyncPoller<PollResult<Void>, Void> beginDelete(String resourceGroupName, String workspaceName,
         Context context) {
@@ -574,33 +492,16 @@ public final class WorkspacesClientImpl implements WorkspacesClient {
         return beginDeleteAsync(resourceGroupName, workspaceName).last().flatMap(this.client::getLroFinalResultOrError);
     }
 
-    /**
-     * The operation to delete a firmware analysis workspace.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param workspaceName The name of the firmware analysis workspace.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public void delete(String resourceGroupName, String workspaceName) {
-        beginDelete(resourceGroupName, workspaceName).getFinalResult();
+        delete(resourceGroupName, workspaceName, Context.NONE);
     }
 
-    /**
-     * The operation to delete a firmware analysis workspace.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param workspaceName The name of the firmware analysis workspace.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public void delete(String resourceGroupName, String workspaceName, Context context) {
-        beginDelete(resourceGroupName, workspaceName, context).getFinalResult();
+        this.client.getLroFinalResultOrError(beginDelete(resourceGroupName, workspaceName, context));
     }
 
     /**
@@ -650,11 +551,7 @@ public final class WorkspacesClientImpl implements WorkspacesClient {
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private PagedResponse<WorkspaceInner> listByResourceGroupSinglePage(String resourceGroupName) {
-        final String accept = "application/json";
-        Response<WorkspaceListResult> res = service.listByResourceGroupSync(this.client.getEndpoint(),
-            this.client.getApiVersion(), this.client.getSubscriptionId(), resourceGroupName, accept, Context.NONE);
-        return new PagedResponseBase<>(res.getRequest(), res.getStatusCode(), res.getHeaders(), res.getValue().value(),
-            res.getValue().nextLink(), null);
+        return listByResourceGroupSinglePage(resourceGroupName, Context.NONE);
     }
 
     /**
@@ -676,31 +573,13 @@ public final class WorkspacesClientImpl implements WorkspacesClient {
             res.getValue().nextLink(), null);
     }
 
-    /**
-     * Lists all of the firmware analysis workspaces in the specified resource group.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the response of a Workspace list operation as paginated response with {@link PagedIterable}.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.COLLECTION)
     public PagedIterable<WorkspaceInner> listByResourceGroup(String resourceGroupName) {
-        return new PagedIterable<>(() -> listByResourceGroupSinglePage(resourceGroupName),
-            nextLink -> listByResourceGroupNextSinglePage(nextLink));
+        return listByResourceGroup(resourceGroupName, Context.NONE);
     }
 
-    /**
-     * Lists all of the firmware analysis workspaces in the specified resource group.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the response of a Workspace list operation as paginated response with {@link PagedIterable}.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.COLLECTION)
     public PagedIterable<WorkspaceInner> listByResourceGroup(String resourceGroupName, Context context) {
         return new PagedIterable<>(() -> listByResourceGroupSinglePage(resourceGroupName, context),
@@ -748,11 +627,7 @@ public final class WorkspacesClientImpl implements WorkspacesClient {
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private PagedResponse<WorkspaceInner> listSinglePage() {
-        final String accept = "application/json";
-        Response<WorkspaceListResult> res = service.listSync(this.client.getEndpoint(), this.client.getApiVersion(),
-            this.client.getSubscriptionId(), accept, Context.NONE);
-        return new PagedResponseBase<>(res.getRequest(), res.getStatusCode(), res.getHeaders(), res.getValue().value(),
-            res.getValue().nextLink(), null);
+        return listSinglePage(Context.NONE);
     }
 
     /**
@@ -773,27 +648,13 @@ public final class WorkspacesClientImpl implements WorkspacesClient {
             res.getValue().nextLink(), null);
     }
 
-    /**
-     * Lists all of the firmware analysis workspaces in the specified subscription.
-     * 
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the response of a Workspace list operation as paginated response with {@link PagedIterable}.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.COLLECTION)
     public PagedIterable<WorkspaceInner> list() {
-        return new PagedIterable<>(() -> listSinglePage(), nextLink -> listBySubscriptionNextSinglePage(nextLink));
+        return list(Context.NONE);
     }
 
-    /**
-     * Lists all of the firmware analysis workspaces in the specified subscription.
-     * 
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the response of a Workspace list operation as paginated response with {@link PagedIterable}.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.COLLECTION)
     public PagedIterable<WorkspaceInner> list(Context context) {
         return new PagedIterable<>(() -> listSinglePage(context),
@@ -841,18 +702,7 @@ public final class WorkspacesClientImpl implements WorkspacesClient {
             .flatMap(res -> Mono.justOrEmpty(res.getValue()));
     }
 
-    /**
-     * Generate a URL for uploading a firmware image.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param workspaceName The name of the firmware analysis workspace.
-     * @param body Parameters when requesting a URL to upload firmware.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return url data for creating or accessing a blob file along with {@link Response}.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Response<UrlTokenInner> generateUploadUrlWithResponse(String resourceGroupName, String workspaceName,
         GenerateUploadUrlRequest body, Context context) {
@@ -862,17 +712,7 @@ public final class WorkspacesClientImpl implements WorkspacesClient {
             this.client.getSubscriptionId(), resourceGroupName, workspaceName, contentType, accept, body, context);
     }
 
-    /**
-     * Generate a URL for uploading a firmware image.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param workspaceName The name of the firmware analysis workspace.
-     * @param body Parameters when requesting a URL to upload firmware.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return url data for creating or accessing a blob file.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public UrlTokenInner generateUploadUrl(String resourceGroupName, String workspaceName,
         GenerateUploadUrlRequest body) {
@@ -911,11 +751,7 @@ public final class WorkspacesClientImpl implements WorkspacesClient {
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private PagedResponse<WorkspaceInner> listByResourceGroupNextSinglePage(String nextLink) {
-        final String accept = "application/json";
-        Response<WorkspaceListResult> res
-            = service.listByResourceGroupNextSync(nextLink, this.client.getEndpoint(), accept, Context.NONE);
-        return new PagedResponseBase<>(res.getRequest(), res.getStatusCode(), res.getHeaders(), res.getValue().value(),
-            res.getValue().nextLink(), null);
+        return listByResourceGroupNextSinglePage(nextLink, Context.NONE);
     }
 
     /**
@@ -969,11 +805,7 @@ public final class WorkspacesClientImpl implements WorkspacesClient {
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private PagedResponse<WorkspaceInner> listBySubscriptionNextSinglePage(String nextLink) {
-        final String accept = "application/json";
-        Response<WorkspaceListResult> res
-            = service.listBySubscriptionNextSync(nextLink, this.client.getEndpoint(), accept, Context.NONE);
-        return new PagedResponseBase<>(res.getRequest(), res.getStatusCode(), res.getHeaders(), res.getValue().value(),
-            res.getValue().nextLink(), null);
+        return listBySubscriptionNextSinglePage(nextLink, Context.NONE);
     }
 
     /**

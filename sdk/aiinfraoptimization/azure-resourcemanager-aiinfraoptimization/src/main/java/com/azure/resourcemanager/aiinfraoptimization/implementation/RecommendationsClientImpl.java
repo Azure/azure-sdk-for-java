@@ -115,18 +115,7 @@ public final class RecommendationsClientImpl implements RecommendationsClient {
         return recommendVmSkuWithResponseAsync(location, body).flatMap(res -> Mono.justOrEmpty(res.getValue()));
     }
 
-    /**
-     * Recommends Azure virtual machine sizes for an AI workload in the specified subscription and azure location.
-     * 
-     * @param location The name of the Azure region.
-     * @param body The request body.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the recommended Azure virtual machine sizes for the workload, with the sizing calculation they were
-     * derived from along with {@link Response}.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Response<RecommendVmSkuResponseInner> recommendVmSkuWithResponse(String location, RecommendVmSkuRequest body,
         Context context) {
@@ -136,17 +125,7 @@ public final class RecommendationsClientImpl implements RecommendationsClient {
             this.client.getSubscriptionId(), location, contentType, accept, body, context);
     }
 
-    /**
-     * Recommends Azure virtual machine sizes for an AI workload in the specified subscription and azure location.
-     * 
-     * @param location The name of the Azure region.
-     * @param body The request body.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the recommended Azure virtual machine sizes for the workload, with the sizing calculation they were
-     * derived from.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public RecommendVmSkuResponseInner recommendVmSku(String location, RecommendVmSkuRequest body) {
         return recommendVmSkuWithResponse(location, body, Context.NONE).getValue();

@@ -164,11 +164,7 @@ public final class IncidentImpl implements Incident, Incident.Definition, Incide
     }
 
     public Incident create() {
-        this.innerObject = serviceManager.serviceClient()
-            .getIncidents()
-            .createOrUpdateWithResponse(resourceGroupName, workspaceName, incidentId, this.innerModel(), Context.NONE)
-            .getValue();
-        return this;
+        return this.create(Context.NONE);
     }
 
     public Incident create(Context context) {
@@ -190,11 +186,7 @@ public final class IncidentImpl implements Incident, Incident.Definition, Incide
     }
 
     public Incident apply() {
-        this.innerObject = serviceManager.serviceClient()
-            .getIncidents()
-            .createOrUpdateWithResponse(resourceGroupName, workspaceName, incidentId, this.innerModel(), Context.NONE)
-            .getValue();
-        return this;
+        return this.apply(Context.NONE);
     }
 
     public Incident apply(Context context) {
@@ -221,11 +213,7 @@ public final class IncidentImpl implements Incident, Incident.Definition, Incide
     }
 
     public Incident refresh() {
-        this.innerObject = serviceManager.serviceClient()
-            .getIncidents()
-            .getWithResponse(resourceGroupName, workspaceName, incidentId, Context.NONE)
-            .getValue();
-        return this;
+        return this.refresh(Context.NONE);
     }
 
     public Incident refresh(Context context) {

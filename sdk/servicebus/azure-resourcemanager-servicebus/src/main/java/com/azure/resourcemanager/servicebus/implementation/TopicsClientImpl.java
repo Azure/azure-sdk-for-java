@@ -183,19 +183,7 @@ public final class TopicsClientImpl implements TopicsClient {
             @HeaderParam("Accept") String accept, Context context);
     }
 
-    /**
-     * Returns the specified authorization rule.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param namespaceName The namespace name.
-     * @param topicName The topic name.
-     * @param authorizationRuleName The authorization rule name.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return description of a namespace authorization rule along with {@link Response} on successful completion of
-     * {@link Mono}.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Response<SBAuthorizationRuleInner>> getAuthorizationRuleWithResponseAsync(String resourceGroupName,
         String namespaceName, String topicName, String authorizationRuleName) {
@@ -275,18 +263,7 @@ public final class TopicsClientImpl implements TopicsClient {
             context);
     }
 
-    /**
-     * Returns the specified authorization rule.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param namespaceName The namespace name.
-     * @param topicName The topic name.
-     * @param authorizationRuleName The authorization rule name.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return description of a namespace authorization rule on successful completion of {@link Mono}.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<SBAuthorizationRuleInner> getAuthorizationRuleAsync(String resourceGroupName, String namespaceName,
         String topicName, String authorizationRuleName) {
@@ -294,19 +271,7 @@ public final class TopicsClientImpl implements TopicsClient {
             .flatMap(res -> Mono.justOrEmpty(res.getValue()));
     }
 
-    /**
-     * Returns the specified authorization rule.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param namespaceName The namespace name.
-     * @param topicName The topic name.
-     * @param authorizationRuleName The authorization rule name.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return description of a namespace authorization rule along with {@link Response}.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Response<SBAuthorizationRuleInner> getAuthorizationRuleWithResponse(String resourceGroupName,
         String namespaceName, String topicName, String authorizationRuleName, Context context) {
@@ -314,18 +279,7 @@ public final class TopicsClientImpl implements TopicsClient {
             context).block();
     }
 
-    /**
-     * Returns the specified authorization rule.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param namespaceName The namespace name.
-     * @param topicName The topic name.
-     * @param authorizationRuleName The authorization rule name.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return description of a namespace authorization rule.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public SBAuthorizationRuleInner getAuthorizationRule(String resourceGroupName, String namespaceName,
         String topicName, String authorizationRuleName) {
@@ -333,20 +287,7 @@ public final class TopicsClientImpl implements TopicsClient {
             Context.NONE).getValue();
     }
 
-    /**
-     * Creates an authorization rule for the specified topic.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param namespaceName The namespace name.
-     * @param topicName The topic name.
-     * @param authorizationRuleName The authorization rule name.
-     * @param parameters The shared access authorization rule.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return description of a namespace authorization rule along with {@link Response} on successful completion of
-     * {@link Mono}.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Response<SBAuthorizationRuleInner>> createOrUpdateAuthorizationRuleWithResponseAsync(
         String resourceGroupName, String namespaceName, String topicName, String authorizationRuleName,
@@ -441,19 +382,7 @@ public final class TopicsClientImpl implements TopicsClient {
             contentType, accept, parameters, context);
     }
 
-    /**
-     * Creates an authorization rule for the specified topic.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param namespaceName The namespace name.
-     * @param topicName The topic name.
-     * @param authorizationRuleName The authorization rule name.
-     * @param parameters The shared access authorization rule.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return description of a namespace authorization rule on successful completion of {@link Mono}.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<SBAuthorizationRuleInner> createOrUpdateAuthorizationRuleAsync(String resourceGroupName,
         String namespaceName, String topicName, String authorizationRuleName, SBAuthorizationRuleInner parameters) {
@@ -461,20 +390,7 @@ public final class TopicsClientImpl implements TopicsClient {
             authorizationRuleName, parameters).flatMap(res -> Mono.justOrEmpty(res.getValue()));
     }
 
-    /**
-     * Creates an authorization rule for the specified topic.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param namespaceName The namespace name.
-     * @param topicName The topic name.
-     * @param authorizationRuleName The authorization rule name.
-     * @param parameters The shared access authorization rule.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return description of a namespace authorization rule along with {@link Response}.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Response<SBAuthorizationRuleInner> createOrUpdateAuthorizationRuleWithResponse(String resourceGroupName,
         String namespaceName, String topicName, String authorizationRuleName, SBAuthorizationRuleInner parameters,
@@ -483,19 +399,7 @@ public final class TopicsClientImpl implements TopicsClient {
             authorizationRuleName, parameters, context).block();
     }
 
-    /**
-     * Creates an authorization rule for the specified topic.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param namespaceName The namespace name.
-     * @param topicName The topic name.
-     * @param authorizationRuleName The authorization rule name.
-     * @param parameters The shared access authorization rule.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return description of a namespace authorization rule.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public SBAuthorizationRuleInner createOrUpdateAuthorizationRule(String resourceGroupName, String namespaceName,
         String topicName, String authorizationRuleName, SBAuthorizationRuleInner parameters) {
@@ -503,18 +407,7 @@ public final class TopicsClientImpl implements TopicsClient {
             authorizationRuleName, parameters, Context.NONE).getValue();
     }
 
-    /**
-     * Deletes a topic authorization rule.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param namespaceName The namespace name.
-     * @param topicName The topic name.
-     * @param authorizationRuleName The authorization rule name.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the {@link Response} on successful completion of {@link Mono}.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Response<Void>> deleteAuthorizationRuleWithResponseAsync(String resourceGroupName, String namespaceName,
         String topicName, String authorizationRuleName) {
@@ -591,18 +484,7 @@ public final class TopicsClientImpl implements TopicsClient {
             context);
     }
 
-    /**
-     * Deletes a topic authorization rule.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param namespaceName The namespace name.
-     * @param topicName The topic name.
-     * @param authorizationRuleName The authorization rule name.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return A {@link Mono} that completes when a successful response is received.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Void> deleteAuthorizationRuleAsync(String resourceGroupName, String namespaceName, String topicName,
         String authorizationRuleName) {
@@ -610,19 +492,7 @@ public final class TopicsClientImpl implements TopicsClient {
             authorizationRuleName).flatMap(ignored -> Mono.empty());
     }
 
-    /**
-     * Deletes a topic authorization rule.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param namespaceName The namespace name.
-     * @param topicName The topic name.
-     * @param authorizationRuleName The authorization rule name.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the {@link Response}.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Response<Void> deleteAuthorizationRuleWithResponse(String resourceGroupName, String namespaceName,
         String topicName, String authorizationRuleName, Context context) {
@@ -630,17 +500,7 @@ public final class TopicsClientImpl implements TopicsClient {
             authorizationRuleName, context).block();
     }
 
-    /**
-     * Deletes a topic authorization rule.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param namespaceName The namespace name.
-     * @param topicName The topic name.
-     * @param authorizationRuleName The authorization rule name.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public void deleteAuthorizationRule(String resourceGroupName, String namespaceName, String topicName,
         String authorizationRuleName) {
@@ -734,17 +594,7 @@ public final class TopicsClientImpl implements TopicsClient {
                 res.getValue().value(), res.getValue().nextLink(), null));
     }
 
-    /**
-     * Gets authorization rules for a topic.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param namespaceName The namespace name.
-     * @param topicName The topic name.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return authorization rules for a topic as paginated response with {@link PagedFlux}.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.COLLECTION)
     public PagedFlux<SBAuthorizationRuleInner> listAuthorizationRulesAsync(String resourceGroupName,
         String namespaceName, String topicName) {
@@ -772,54 +622,21 @@ public final class TopicsClientImpl implements TopicsClient {
             nextLink -> listAuthorizationRulesNextSinglePageAsync(nextLink, context));
     }
 
-    /**
-     * Gets authorization rules for a topic.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param namespaceName The namespace name.
-     * @param topicName The topic name.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return authorization rules for a topic as paginated response with {@link PagedIterable}.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.COLLECTION)
     public PagedIterable<SBAuthorizationRuleInner> listAuthorizationRules(String resourceGroupName,
         String namespaceName, String topicName) {
         return new PagedIterable<>(listAuthorizationRulesAsync(resourceGroupName, namespaceName, topicName));
     }
 
-    /**
-     * Gets authorization rules for a topic.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param namespaceName The namespace name.
-     * @param topicName The topic name.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return authorization rules for a topic as paginated response with {@link PagedIterable}.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.COLLECTION)
     public PagedIterable<SBAuthorizationRuleInner> listAuthorizationRules(String resourceGroupName,
         String namespaceName, String topicName, Context context) {
         return new PagedIterable<>(listAuthorizationRulesAsync(resourceGroupName, namespaceName, topicName, context));
     }
 
-    /**
-     * Gets the primary and secondary connection strings for the topic.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param namespaceName The namespace name.
-     * @param topicName The topic name.
-     * @param authorizationRuleName The authorization rule name.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the primary and secondary connection strings for the topic along with {@link Response} on successful
-     * completion of {@link Mono}.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Response<AccessKeysInner>> listKeysWithResponseAsync(String resourceGroupName, String namespaceName,
         String topicName, String authorizationRuleName) {
@@ -898,18 +715,7 @@ public final class TopicsClientImpl implements TopicsClient {
             resourceGroupName, namespaceName, topicName, authorizationRuleName, accept, context);
     }
 
-    /**
-     * Gets the primary and secondary connection strings for the topic.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param namespaceName The namespace name.
-     * @param topicName The topic name.
-     * @param authorizationRuleName The authorization rule name.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the primary and secondary connection strings for the topic on successful completion of {@link Mono}.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<AccessKeysInner> listKeysAsync(String resourceGroupName, String namespaceName, String topicName,
         String authorizationRuleName) {
@@ -917,19 +723,7 @@ public final class TopicsClientImpl implements TopicsClient {
             .flatMap(res -> Mono.justOrEmpty(res.getValue()));
     }
 
-    /**
-     * Gets the primary and secondary connection strings for the topic.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param namespaceName The namespace name.
-     * @param topicName The topic name.
-     * @param authorizationRuleName The authorization rule name.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the primary and secondary connection strings for the topic along with {@link Response}.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Response<AccessKeysInner> listKeysWithResponse(String resourceGroupName, String namespaceName,
         String topicName, String authorizationRuleName, Context context) {
@@ -937,18 +731,7 @@ public final class TopicsClientImpl implements TopicsClient {
             .block();
     }
 
-    /**
-     * Gets the primary and secondary connection strings for the topic.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param namespaceName The namespace name.
-     * @param topicName The topic name.
-     * @param authorizationRuleName The authorization rule name.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the primary and secondary connection strings for the topic.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public AccessKeysInner listKeys(String resourceGroupName, String namespaceName, String topicName,
         String authorizationRuleName) {
@@ -956,20 +739,7 @@ public final class TopicsClientImpl implements TopicsClient {
             .getValue();
     }
 
-    /**
-     * Regenerates primary or secondary connection strings for the topic.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param namespaceName The namespace name.
-     * @param topicName The topic name.
-     * @param authorizationRuleName The authorization rule name.
-     * @param parameters Parameters supplied to regenerate the authorization rule.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return namespace/ServiceBus Connection String along with {@link Response} on successful completion of
-     * {@link Mono}.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Response<AccessKeysInner>> regenerateKeysWithResponseAsync(String resourceGroupName,
         String namespaceName, String topicName, String authorizationRuleName,
@@ -1064,19 +834,7 @@ public final class TopicsClientImpl implements TopicsClient {
             contentType, accept, parameters, context);
     }
 
-    /**
-     * Regenerates primary or secondary connection strings for the topic.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param namespaceName The namespace name.
-     * @param topicName The topic name.
-     * @param authorizationRuleName The authorization rule name.
-     * @param parameters Parameters supplied to regenerate the authorization rule.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return namespace/ServiceBus Connection String on successful completion of {@link Mono}.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<AccessKeysInner> regenerateKeysAsync(String resourceGroupName, String namespaceName, String topicName,
         String authorizationRuleName, RegenerateAccessKeyParameters parameters) {
@@ -1084,20 +842,7 @@ public final class TopicsClientImpl implements TopicsClient {
             parameters).flatMap(res -> Mono.justOrEmpty(res.getValue()));
     }
 
-    /**
-     * Regenerates primary or secondary connection strings for the topic.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param namespaceName The namespace name.
-     * @param topicName The topic name.
-     * @param authorizationRuleName The authorization rule name.
-     * @param parameters Parameters supplied to regenerate the authorization rule.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return namespace/ServiceBus Connection String along with {@link Response}.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Response<AccessKeysInner> regenerateKeysWithResponse(String resourceGroupName, String namespaceName,
         String topicName, String authorizationRuleName, RegenerateAccessKeyParameters parameters, Context context) {
@@ -1105,19 +850,7 @@ public final class TopicsClientImpl implements TopicsClient {
             parameters, context).block();
     }
 
-    /**
-     * Regenerates primary or secondary connection strings for the topic.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param namespaceName The namespace name.
-     * @param topicName The topic name.
-     * @param authorizationRuleName The authorization rule name.
-     * @param parameters Parameters supplied to regenerate the authorization rule.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return namespace/ServiceBus Connection String.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public AccessKeysInner regenerateKeys(String resourceGroupName, String namespaceName, String topicName,
         String authorizationRuleName, RegenerateAccessKeyParameters parameters) {
@@ -1125,17 +858,7 @@ public final class TopicsClientImpl implements TopicsClient {
             parameters, Context.NONE).getValue();
     }
 
-    /**
-     * Returns a description for the specified topic.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param namespaceName The namespace name.
-     * @param topicName The topic name.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return description of topic resource along with {@link Response} on successful completion of {@link Mono}.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Response<SBTopicInner>> getWithResponseAsync(String resourceGroupName, String namespaceName,
         String topicName) {
@@ -1203,69 +926,27 @@ public final class TopicsClientImpl implements TopicsClient {
             resourceGroupName, namespaceName, topicName, accept, context);
     }
 
-    /**
-     * Returns a description for the specified topic.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param namespaceName The namespace name.
-     * @param topicName The topic name.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return description of topic resource on successful completion of {@link Mono}.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<SBTopicInner> getAsync(String resourceGroupName, String namespaceName, String topicName) {
         return getWithResponseAsync(resourceGroupName, namespaceName, topicName)
             .flatMap(res -> Mono.justOrEmpty(res.getValue()));
     }
 
-    /**
-     * Returns a description for the specified topic.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param namespaceName The namespace name.
-     * @param topicName The topic name.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return description of topic resource along with {@link Response}.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Response<SBTopicInner> getWithResponse(String resourceGroupName, String namespaceName, String topicName,
         Context context) {
         return getWithResponseAsync(resourceGroupName, namespaceName, topicName, context).block();
     }
 
-    /**
-     * Returns a description for the specified topic.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param namespaceName The namespace name.
-     * @param topicName The topic name.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return description of topic resource.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public SBTopicInner get(String resourceGroupName, String namespaceName, String topicName) {
         return getWithResponse(resourceGroupName, namespaceName, topicName, Context.NONE).getValue();
     }
 
-    /**
-     * Creates a topic in the specified namespace.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param namespaceName The namespace name.
-     * @param topicName The topic name.
-     * @param parameters Parameters supplied to create a topic resource.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return description of topic resource along with {@link Response} on successful completion of {@link Mono}.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Response<SBTopicInner>> createOrUpdateWithResponseAsync(String resourceGroupName, String namespaceName,
         String topicName, SBTopicInner parameters) {
@@ -1348,18 +1029,7 @@ public final class TopicsClientImpl implements TopicsClient {
             parameters, context);
     }
 
-    /**
-     * Creates a topic in the specified namespace.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param namespaceName The namespace name.
-     * @param topicName The topic name.
-     * @param parameters Parameters supplied to create a topic resource.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return description of topic resource on successful completion of {@link Mono}.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<SBTopicInner> createOrUpdateAsync(String resourceGroupName, String namespaceName, String topicName,
         SBTopicInner parameters) {
@@ -1367,19 +1037,7 @@ public final class TopicsClientImpl implements TopicsClient {
             .flatMap(res -> Mono.justOrEmpty(res.getValue()));
     }
 
-    /**
-     * Creates a topic in the specified namespace.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param namespaceName The namespace name.
-     * @param topicName The topic name.
-     * @param parameters Parameters supplied to create a topic resource.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return description of topic resource along with {@link Response}.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Response<SBTopicInner> createOrUpdateWithResponse(String resourceGroupName, String namespaceName,
         String topicName, SBTopicInner parameters, Context context) {
@@ -1387,18 +1045,7 @@ public final class TopicsClientImpl implements TopicsClient {
             .block();
     }
 
-    /**
-     * Creates a topic in the specified namespace.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param namespaceName The namespace name.
-     * @param topicName The topic name.
-     * @param parameters Parameters supplied to create a topic resource.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return description of topic resource.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public SBTopicInner createOrUpdate(String resourceGroupName, String namespaceName, String topicName,
         SBTopicInner parameters) {
@@ -1406,17 +1053,7 @@ public final class TopicsClientImpl implements TopicsClient {
             .getValue();
     }
 
-    /**
-     * Deletes a topic from the specified namespace and resource group.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param namespaceName The namespace name.
-     * @param topicName The topic name.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the {@link Response} on successful completion of {@link Mono}.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Response<Void>> deleteWithResponseAsync(String resourceGroupName, String namespaceName,
         String topicName) {
@@ -1482,50 +1119,20 @@ public final class TopicsClientImpl implements TopicsClient {
             resourceGroupName, namespaceName, topicName, context);
     }
 
-    /**
-     * Deletes a topic from the specified namespace and resource group.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param namespaceName The namespace name.
-     * @param topicName The topic name.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return A {@link Mono} that completes when a successful response is received.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Void> deleteAsync(String resourceGroupName, String namespaceName, String topicName) {
         return deleteWithResponseAsync(resourceGroupName, namespaceName, topicName).flatMap(ignored -> Mono.empty());
     }
 
-    /**
-     * Deletes a topic from the specified namespace and resource group.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param namespaceName The namespace name.
-     * @param topicName The topic name.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the {@link Response}.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Response<Void> deleteWithResponse(String resourceGroupName, String namespaceName, String topicName,
         Context context) {
         return deleteWithResponseAsync(resourceGroupName, namespaceName, topicName, context).block();
     }
 
-    /**
-     * Deletes a topic from the specified namespace and resource group.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param namespaceName The namespace name.
-     * @param topicName The topic name.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public void delete(String resourceGroupName, String namespaceName, String topicName) {
         deleteWithResponse(resourceGroupName, namespaceName, topicName, Context.NONE);
@@ -1614,20 +1221,7 @@ public final class TopicsClientImpl implements TopicsClient {
                 res.getValue().value(), res.getValue().nextLink(), null));
     }
 
-    /**
-     * Gets all the topics in a namespace.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param namespaceName The namespace name.
-     * @param skip Skip is only used if a previous operation returned a partial result. If a previous response contains
-     * a nextLink element, the value of the nextLink element will include a skip parameter that specifies a starting
-     * point to use for subsequent calls.
-     * @param top May be used to limit the number of results to the most recent N usageDetails.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return all the topics in a namespace as paginated response with {@link PagedFlux}.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.COLLECTION)
     public PagedFlux<SBTopicInner> listByNamespaceAsync(String resourceGroupName, String namespaceName, Integer skip,
         Integer top) {
@@ -1635,16 +1229,7 @@ public final class TopicsClientImpl implements TopicsClient {
             nextLink -> listByNamespaceNextSinglePageAsync(nextLink));
     }
 
-    /**
-     * Gets all the topics in a namespace.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param namespaceName The namespace name.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return all the topics in a namespace as paginated response with {@link PagedFlux}.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.COLLECTION)
     public PagedFlux<SBTopicInner> listByNamespaceAsync(String resourceGroupName, String namespaceName) {
         final Integer skip = null;
@@ -1676,16 +1261,7 @@ public final class TopicsClientImpl implements TopicsClient {
             nextLink -> listByNamespaceNextSinglePageAsync(nextLink, context));
     }
 
-    /**
-     * Gets all the topics in a namespace.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param namespaceName The namespace name.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return all the topics in a namespace as paginated response with {@link PagedIterable}.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.COLLECTION)
     public PagedIterable<SBTopicInner> listByNamespace(String resourceGroupName, String namespaceName) {
         final Integer skip = null;
@@ -1693,21 +1269,7 @@ public final class TopicsClientImpl implements TopicsClient {
         return new PagedIterable<>(listByNamespaceAsync(resourceGroupName, namespaceName, skip, top));
     }
 
-    /**
-     * Gets all the topics in a namespace.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param namespaceName The namespace name.
-     * @param skip Skip is only used if a previous operation returned a partial result. If a previous response contains
-     * a nextLink element, the value of the nextLink element will include a skip parameter that specifies a starting
-     * point to use for subsequent calls.
-     * @param top May be used to limit the number of results to the most recent N usageDetails.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return all the topics in a namespace as paginated response with {@link PagedIterable}.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.COLLECTION)
     public PagedIterable<SBTopicInner> listByNamespace(String resourceGroupName, String namespaceName, Integer skip,
         Integer top, Context context) {

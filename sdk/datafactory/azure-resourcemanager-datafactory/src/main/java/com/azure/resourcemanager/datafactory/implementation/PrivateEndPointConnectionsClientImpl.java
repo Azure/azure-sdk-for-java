@@ -150,12 +150,7 @@ public final class PrivateEndPointConnectionsClientImpl implements PrivateEndPoi
     @ServiceMethod(returns = ReturnType.SINGLE)
     private PagedResponse<PrivateEndpointConnectionResourceInner> listByFactorySinglePage(String resourceGroupName,
         String factoryName) {
-        final String accept = "application/json";
-        Response<PrivateEndpointConnectionListResponse> res
-            = service.listByFactorySync(this.client.getEndpoint(), this.client.getApiVersion(),
-                this.client.getSubscriptionId(), resourceGroupName, factoryName, accept, Context.NONE);
-        return new PagedResponseBase<>(res.getRequest(), res.getStatusCode(), res.getHeaders(), res.getValue().value(),
-            res.getValue().nextLink(), null);
+        return listByFactorySinglePage(resourceGroupName, factoryName, Context.NONE);
     }
 
     /**
@@ -180,34 +175,14 @@ public final class PrivateEndPointConnectionsClientImpl implements PrivateEndPoi
             res.getValue().nextLink(), null);
     }
 
-    /**
-     * Lists Private endpoint connections.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param factoryName The factory name.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return a list of linked service resources as paginated response with {@link PagedIterable}.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.COLLECTION)
     public PagedIterable<PrivateEndpointConnectionResourceInner> listByFactory(String resourceGroupName,
         String factoryName) {
-        return new PagedIterable<>(() -> listByFactorySinglePage(resourceGroupName, factoryName),
-            nextLink -> listByFactoryNextSinglePage(nextLink));
+        return listByFactory(resourceGroupName, factoryName, Context.NONE);
     }
 
-    /**
-     * Lists Private endpoint connections.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param factoryName The factory name.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return a list of linked service resources as paginated response with {@link PagedIterable}.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.COLLECTION)
     public PagedIterable<PrivateEndpointConnectionResourceInner> listByFactory(String resourceGroupName,
         String factoryName, Context context) {
@@ -247,11 +222,7 @@ public final class PrivateEndPointConnectionsClientImpl implements PrivateEndPoi
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private PagedResponse<PrivateEndpointConnectionResourceInner> listByFactoryNextSinglePage(String nextLink) {
-        final String accept = "application/json";
-        Response<PrivateEndpointConnectionListResponse> res
-            = service.listByFactoryNextSync(nextLink, this.client.getEndpoint(), accept, Context.NONE);
-        return new PagedResponseBase<>(res.getRequest(), res.getStatusCode(), res.getHeaders(), res.getValue().value(),
-            res.getValue().nextLink(), null);
+        return listByFactoryNextSinglePage(nextLink, Context.NONE);
     }
 
     /**

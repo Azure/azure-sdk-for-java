@@ -63,8 +63,7 @@ public final class TargetsImpl implements Targets {
     }
 
     public PagedIterable<Target> listByResourceGroup(String resourceGroupName) {
-        PagedIterable<TargetInner> inner = this.serviceClient().listByResourceGroup(resourceGroupName);
-        return ResourceManagerUtils.mapPage(inner, inner1 -> new TargetImpl(inner1, this.manager()));
+        return this.listByResourceGroup(resourceGroupName, Context.NONE);
     }
 
     public PagedIterable<Target> listByResourceGroup(String resourceGroupName, Context context) {
@@ -73,8 +72,7 @@ public final class TargetsImpl implements Targets {
     }
 
     public PagedIterable<Target> list() {
-        PagedIterable<TargetInner> inner = this.serviceClient().list();
-        return ResourceManagerUtils.mapPage(inner, inner1 -> new TargetImpl(inner1, this.manager()));
+        return this.list(Context.NONE);
     }
 
     public PagedIterable<Target> list(Context context) {
@@ -83,7 +81,7 @@ public final class TargetsImpl implements Targets {
     }
 
     public void installSolution(String resourceGroupName, String targetName, InstallSolutionParameter body) {
-        this.serviceClient().installSolution(resourceGroupName, targetName, body);
+        this.installSolution(resourceGroupName, targetName, body, Context.NONE);
     }
 
     public void installSolution(String resourceGroupName, String targetName, InstallSolutionParameter body,
@@ -92,7 +90,7 @@ public final class TargetsImpl implements Targets {
     }
 
     public void uninstallSolution(String resourceGroupName, String targetName, UninstallSolutionParameter body) {
-        this.serviceClient().uninstallSolution(resourceGroupName, targetName, body);
+        this.uninstallSolution(resourceGroupName, targetName, body, Context.NONE);
     }
 
     public void uninstallSolution(String resourceGroupName, String targetName, UninstallSolutionParameter body,
@@ -101,7 +99,7 @@ public final class TargetsImpl implements Targets {
     }
 
     public void removeRevision(String resourceGroupName, String targetName, RemoveRevisionParameter body) {
-        this.serviceClient().removeRevision(resourceGroupName, targetName, body);
+        this.removeRevision(resourceGroupName, targetName, body, Context.NONE);
     }
 
     public void removeRevision(String resourceGroupName, String targetName, RemoveRevisionParameter body,
@@ -111,13 +109,7 @@ public final class TargetsImpl implements Targets {
 
     public ResolvedConfiguration resolveConfiguration(String resourceGroupName, String targetName,
         SolutionTemplateParameter body) {
-        ResolvedConfigurationInner inner
-            = this.serviceClient().resolveConfiguration(resourceGroupName, targetName, body);
-        if (inner != null) {
-            return new ResolvedConfigurationImpl(inner, this.manager());
-        } else {
-            return null;
-        }
+        return this.resolveConfiguration(resourceGroupName, targetName, body, Context.NONE);
     }
 
     public ResolvedConfiguration resolveConfiguration(String resourceGroupName, String targetName,
@@ -133,12 +125,7 @@ public final class TargetsImpl implements Targets {
 
     public SolutionVersion reviewSolutionVersion(String resourceGroupName, String targetName,
         SolutionTemplateParameter body) {
-        SolutionVersionInner inner = this.serviceClient().reviewSolutionVersion(resourceGroupName, targetName, body);
-        if (inner != null) {
-            return new SolutionVersionImpl(inner, this.manager());
-        } else {
-            return null;
-        }
+        return this.reviewSolutionVersion(resourceGroupName, targetName, body, Context.NONE);
     }
 
     public SolutionVersion reviewSolutionVersion(String resourceGroupName, String targetName,
@@ -154,12 +141,7 @@ public final class TargetsImpl implements Targets {
 
     public SolutionVersion publishSolutionVersion(String resourceGroupName, String targetName,
         SolutionVersionParameter body) {
-        SolutionVersionInner inner = this.serviceClient().publishSolutionVersion(resourceGroupName, targetName, body);
-        if (inner != null) {
-            return new SolutionVersionImpl(inner, this.manager());
-        } else {
-            return null;
-        }
+        return this.publishSolutionVersion(resourceGroupName, targetName, body, Context.NONE);
     }
 
     public SolutionVersion publishSolutionVersion(String resourceGroupName, String targetName,
@@ -175,13 +157,7 @@ public final class TargetsImpl implements Targets {
 
     public SolutionVersion updateExternalValidationStatus(String resourceGroupName, String targetName,
         UpdateExternalValidationStatusParameter body) {
-        SolutionVersionInner inner
-            = this.serviceClient().updateExternalValidationStatus(resourceGroupName, targetName, body);
-        if (inner != null) {
-            return new SolutionVersionImpl(inner, this.manager());
-        } else {
-            return null;
-        }
+        return this.updateExternalValidationStatus(resourceGroupName, targetName, body, Context.NONE);
     }
 
     public SolutionVersion updateExternalValidationStatus(String resourceGroupName, String targetName,
@@ -196,75 +172,31 @@ public final class TargetsImpl implements Targets {
     }
 
     public Target getById(String id) {
-        String resourceGroupName = ResourceManagerUtils.getValueFromIdByParameterName(id,
-            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Edge/targets/{targetName}",
-            "resourceGroupName");
-        if (resourceGroupName == null) {
-            throw LOGGER.logExceptionAsError(new IllegalArgumentException(
-                String.format("The resource ID '%s' is not valid. Missing path segment 'resourceGroups'.", id)));
-        }
-        String targetName = ResourceManagerUtils.getValueFromIdByParameterName(id,
-            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Edge/targets/{targetName}",
-            "targetName");
-        if (targetName == null) {
-            throw LOGGER.logExceptionAsError(new IllegalArgumentException(
-                String.format("The resource ID '%s' is not valid. Missing path segment 'targets'.", id)));
-        }
-        return this.getByResourceGroupWithResponse(resourceGroupName, targetName, Context.NONE).getValue();
+        return this.getByIdWithResponse(id, Context.NONE).getValue();
     }
 
     public Response<Target> getByIdWithResponse(String id, Context context) {
-        String resourceGroupName = ResourceManagerUtils.getValueFromIdByParameterName(id,
+        String resourceGroupName = ResourceManagerUtils.getRequiredValueFromIdByParameterName(id,
             "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Edge/targets/{targetName}",
-            "resourceGroupName");
-        if (resourceGroupName == null) {
-            throw LOGGER.logExceptionAsError(new IllegalArgumentException(
-                String.format("The resource ID '%s' is not valid. Missing path segment 'resourceGroups'.", id)));
-        }
-        String targetName = ResourceManagerUtils.getValueFromIdByParameterName(id,
+            "resourceGroupName", "resourceGroups", LOGGER);
+        String targetName = ResourceManagerUtils.getRequiredValueFromIdByParameterName(id,
             "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Edge/targets/{targetName}",
-            "targetName");
-        if (targetName == null) {
-            throw LOGGER.logExceptionAsError(new IllegalArgumentException(
-                String.format("The resource ID '%s' is not valid. Missing path segment 'targets'.", id)));
-        }
+            "targetName", "targets", LOGGER);
         return this.getByResourceGroupWithResponse(resourceGroupName, targetName, context);
     }
 
     public void deleteById(String id) {
-        String resourceGroupName = ResourceManagerUtils.getValueFromIdByParameterName(id,
-            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Edge/targets/{targetName}",
-            "resourceGroupName");
-        if (resourceGroupName == null) {
-            throw LOGGER.logExceptionAsError(new IllegalArgumentException(
-                String.format("The resource ID '%s' is not valid. Missing path segment 'resourceGroups'.", id)));
-        }
-        String targetName = ResourceManagerUtils.getValueFromIdByParameterName(id,
-            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Edge/targets/{targetName}",
-            "targetName");
-        if (targetName == null) {
-            throw LOGGER.logExceptionAsError(new IllegalArgumentException(
-                String.format("The resource ID '%s' is not valid. Missing path segment 'targets'.", id)));
-        }
         Boolean localForceDelete = null;
-        this.delete(resourceGroupName, targetName, localForceDelete, Context.NONE);
+        this.deleteByIdWithResponse(id, localForceDelete, Context.NONE);
     }
 
     public void deleteByIdWithResponse(String id, Boolean forceDelete, Context context) {
-        String resourceGroupName = ResourceManagerUtils.getValueFromIdByParameterName(id,
+        String resourceGroupName = ResourceManagerUtils.getRequiredValueFromIdByParameterName(id,
             "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Edge/targets/{targetName}",
-            "resourceGroupName");
-        if (resourceGroupName == null) {
-            throw LOGGER.logExceptionAsError(new IllegalArgumentException(
-                String.format("The resource ID '%s' is not valid. Missing path segment 'resourceGroups'.", id)));
-        }
-        String targetName = ResourceManagerUtils.getValueFromIdByParameterName(id,
+            "resourceGroupName", "resourceGroups", LOGGER);
+        String targetName = ResourceManagerUtils.getRequiredValueFromIdByParameterName(id,
             "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Edge/targets/{targetName}",
-            "targetName");
-        if (targetName == null) {
-            throw LOGGER.logExceptionAsError(new IllegalArgumentException(
-                String.format("The resource ID '%s' is not valid. Missing path segment 'targets'.", id)));
-        }
+            "targetName", "targets", LOGGER);
         this.delete(resourceGroupName, targetName, forceDelete, context);
     }
 

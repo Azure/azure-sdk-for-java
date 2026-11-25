@@ -78,10 +78,7 @@ public final class SecuritySettingImpl implements SecuritySetting, SecuritySetti
     }
 
     public SecuritySetting create() {
-        this.innerObject = serviceManager.serviceClient()
-            .getSecuritySettings()
-            .createOrUpdate(resourceGroupName, clusterName, securitySettingsName, this.innerModel(), Context.NONE);
-        return this;
+        return this.create(Context.NONE);
     }
 
     public SecuritySetting create(Context context) {
@@ -102,10 +99,7 @@ public final class SecuritySettingImpl implements SecuritySetting, SecuritySetti
     }
 
     public SecuritySetting apply() {
-        this.innerObject = serviceManager.serviceClient()
-            .getSecuritySettings()
-            .createOrUpdate(resourceGroupName, clusterName, securitySettingsName, this.innerModel(), Context.NONE);
-        return this;
+        return this.apply(Context.NONE);
     }
 
     public SecuritySetting apply(Context context) {
@@ -131,11 +125,7 @@ public final class SecuritySettingImpl implements SecuritySetting, SecuritySetti
     }
 
     public SecuritySetting refresh() {
-        this.innerObject = serviceManager.serviceClient()
-            .getSecuritySettings()
-            .getWithResponse(resourceGroupName, clusterName, securitySettingsName, Context.NONE)
-            .getValue();
-        return this;
+        return this.refresh(Context.NONE);
     }
 
     public SecuritySetting refresh(Context context) {

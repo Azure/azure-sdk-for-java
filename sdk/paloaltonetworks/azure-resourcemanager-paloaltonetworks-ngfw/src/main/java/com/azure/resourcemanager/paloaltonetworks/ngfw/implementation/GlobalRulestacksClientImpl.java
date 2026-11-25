@@ -367,16 +367,7 @@ public final class GlobalRulestacksClientImpl implements GlobalRulestacksClient 
         return getWithResponseAsync(globalRulestackName).flatMap(res -> Mono.justOrEmpty(res.getValue()));
     }
 
-    /**
-     * Get a GlobalRulestackResource.
-     * 
-     * @param globalRulestackName GlobalRulestack resource name.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return a GlobalRulestackResource along with {@link Response}.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Response<GlobalRulestackResourceInner> getWithResponse(String globalRulestackName, Context context) {
         final String accept = "application/json";
@@ -384,15 +375,7 @@ public final class GlobalRulestacksClientImpl implements GlobalRulestacksClient 
             context);
     }
 
-    /**
-     * Get a GlobalRulestackResource.
-     * 
-     * @param globalRulestackName GlobalRulestack resource name.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return a GlobalRulestackResource.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public GlobalRulestackResourceInner get(String globalRulestackName) {
         return getWithResponse(globalRulestackName, Context.NONE).getValue();
@@ -432,10 +415,7 @@ public final class GlobalRulestacksClientImpl implements GlobalRulestacksClient 
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Response<BinaryData> createOrUpdateWithResponse(String globalRulestackName,
         GlobalRulestackResourceInner resource) {
-        final String contentType = "application/json";
-        final String accept = "application/json";
-        return service.createOrUpdateSync(this.client.getEndpoint(), this.client.getApiVersion(), globalRulestackName,
-            contentType, accept, resource, Context.NONE);
+        return createOrUpdateWithResponse(globalRulestackName, resource, Context.NONE);
     }
 
     /**
@@ -477,35 +457,14 @@ public final class GlobalRulestacksClientImpl implements GlobalRulestacksClient 
             this.client.getContext());
     }
 
-    /**
-     * Create a GlobalRulestackResource.
-     * 
-     * @param globalRulestackName GlobalRulestack resource name.
-     * @param resource Resource create parameters.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the {@link SyncPoller} for polling of paloAltoNetworks GlobalRulestack.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public SyncPoller<PollResult<GlobalRulestackResourceInner>, GlobalRulestackResourceInner>
         beginCreateOrUpdate(String globalRulestackName, GlobalRulestackResourceInner resource) {
-        Response<BinaryData> response = createOrUpdateWithResponse(globalRulestackName, resource);
-        return this.client.<GlobalRulestackResourceInner, GlobalRulestackResourceInner>getLroResult(response,
-            GlobalRulestackResourceInner.class, GlobalRulestackResourceInner.class, Context.NONE);
+        return beginCreateOrUpdate(globalRulestackName, resource, Context.NONE);
     }
 
-    /**
-     * Create a GlobalRulestackResource.
-     * 
-     * @param globalRulestackName GlobalRulestack resource name.
-     * @param resource Resource create parameters.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the {@link SyncPoller} for polling of paloAltoNetworks GlobalRulestack.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public SyncPoller<PollResult<GlobalRulestackResourceInner>, GlobalRulestackResourceInner>
         beginCreateOrUpdate(String globalRulestackName, GlobalRulestackResourceInner resource, Context context) {
@@ -531,37 +490,18 @@ public final class GlobalRulestacksClientImpl implements GlobalRulestacksClient 
             .flatMap(this.client::getLroFinalResultOrError);
     }
 
-    /**
-     * Create a GlobalRulestackResource.
-     * 
-     * @param globalRulestackName GlobalRulestack resource name.
-     * @param resource Resource create parameters.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return paloAltoNetworks GlobalRulestack.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public GlobalRulestackResourceInner createOrUpdate(String globalRulestackName,
         GlobalRulestackResourceInner resource) {
-        return beginCreateOrUpdate(globalRulestackName, resource).getFinalResult();
+        return createOrUpdate(globalRulestackName, resource, Context.NONE);
     }
 
-    /**
-     * Create a GlobalRulestackResource.
-     * 
-     * @param globalRulestackName GlobalRulestack resource name.
-     * @param resource Resource create parameters.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return paloAltoNetworks GlobalRulestack.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public GlobalRulestackResourceInner createOrUpdate(String globalRulestackName,
         GlobalRulestackResourceInner resource, Context context) {
-        return beginCreateOrUpdate(globalRulestackName, resource, context).getFinalResult();
+        return this.client.getLroFinalResultOrError(beginCreateOrUpdate(globalRulestackName, resource, context));
     }
 
     /**
@@ -602,17 +542,7 @@ public final class GlobalRulestacksClientImpl implements GlobalRulestacksClient 
             .flatMap(res -> Mono.justOrEmpty(res.getValue()));
     }
 
-    /**
-     * Update a GlobalRulestackResource.
-     * 
-     * @param globalRulestackName GlobalRulestack resource name.
-     * @param properties The resource properties to be updated.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return paloAltoNetworks GlobalRulestack along with {@link Response}.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Response<GlobalRulestackResourceInner> updateWithResponse(String globalRulestackName,
         GlobalRulestackResourceUpdate properties, Context context) {
@@ -622,16 +552,7 @@ public final class GlobalRulestacksClientImpl implements GlobalRulestacksClient 
             contentType, accept, properties, context);
     }
 
-    /**
-     * Update a GlobalRulestackResource.
-     * 
-     * @param globalRulestackName GlobalRulestack resource name.
-     * @param properties The resource properties to be updated.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return paloAltoNetworks GlobalRulestack.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public GlobalRulestackResourceInner update(String globalRulestackName, GlobalRulestackResourceUpdate properties) {
         return updateWithResponse(globalRulestackName, properties, Context.NONE).getValue();
@@ -665,8 +586,7 @@ public final class GlobalRulestacksClientImpl implements GlobalRulestacksClient 
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Response<BinaryData> deleteWithResponse(String globalRulestackName) {
-        return service.deleteSync(this.client.getEndpoint(), this.client.getApiVersion(), globalRulestackName,
-            Context.NONE);
+        return deleteWithResponse(globalRulestackName, Context.NONE);
     }
 
     /**
@@ -700,31 +620,13 @@ public final class GlobalRulestacksClientImpl implements GlobalRulestacksClient 
             this.client.getContext());
     }
 
-    /**
-     * Delete a GlobalRulestackResource.
-     * 
-     * @param globalRulestackName GlobalRulestack resource name.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the {@link SyncPoller} for polling of long-running operation.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public SyncPoller<PollResult<Void>, Void> beginDelete(String globalRulestackName) {
-        Response<BinaryData> response = deleteWithResponse(globalRulestackName);
-        return this.client.<Void, Void>getLroResult(response, Void.class, Void.class, Context.NONE);
+        return beginDelete(globalRulestackName, Context.NONE);
     }
 
-    /**
-     * Delete a GlobalRulestackResource.
-     * 
-     * @param globalRulestackName GlobalRulestack resource name.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the {@link SyncPoller} for polling of long-running operation.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public SyncPoller<PollResult<Void>, Void> beginDelete(String globalRulestackName, Context context) {
         Response<BinaryData> response = deleteWithResponse(globalRulestackName, context);
@@ -745,31 +647,16 @@ public final class GlobalRulestacksClientImpl implements GlobalRulestacksClient 
         return beginDeleteAsync(globalRulestackName).last().flatMap(this.client::getLroFinalResultOrError);
     }
 
-    /**
-     * Delete a GlobalRulestackResource.
-     * 
-     * @param globalRulestackName GlobalRulestack resource name.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public void delete(String globalRulestackName) {
-        beginDelete(globalRulestackName).getFinalResult();
+        delete(globalRulestackName, Context.NONE);
     }
 
-    /**
-     * Delete a GlobalRulestackResource.
-     * 
-     * @param globalRulestackName GlobalRulestack resource name.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public void delete(String globalRulestackName, Context context) {
-        beginDelete(globalRulestackName, context).getFinalResult();
+        this.client.getLroFinalResultOrError(beginDelete(globalRulestackName, context));
     }
 
     /**
@@ -812,11 +699,7 @@ public final class GlobalRulestacksClientImpl implements GlobalRulestacksClient 
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private PagedResponse<GlobalRulestackResourceInner> listSinglePage() {
-        final String accept = "application/json";
-        Response<GlobalRulestackResourceListResult> res
-            = service.listSync(this.client.getEndpoint(), this.client.getApiVersion(), accept, Context.NONE);
-        return new PagedResponseBase<>(res.getRequest(), res.getStatusCode(), res.getHeaders(), res.getValue().value(),
-            res.getValue().nextLink(), null);
+        return listSinglePage(Context.NONE);
     }
 
     /**
@@ -837,29 +720,13 @@ public final class GlobalRulestacksClientImpl implements GlobalRulestacksClient 
             res.getValue().nextLink(), null);
     }
 
-    /**
-     * List GlobalRulestackResource resources by Tenant.
-     * 
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the response of a GlobalRulestackResource list operation as paginated response with
-     * {@link PagedIterable}.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.COLLECTION)
     public PagedIterable<GlobalRulestackResourceInner> list() {
-        return new PagedIterable<>(() -> listSinglePage(), nextLink -> listNextSinglePage(nextLink));
+        return list(Context.NONE);
     }
 
-    /**
-     * List GlobalRulestackResource resources by Tenant.
-     * 
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the response of a GlobalRulestackResource list operation as paginated response with
-     * {@link PagedIterable}.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.COLLECTION)
     public PagedIterable<GlobalRulestackResourceInner> list(Context context) {
         return new PagedIterable<>(() -> listSinglePage(context), nextLink -> listNextSinglePage(nextLink, context));
@@ -893,8 +760,7 @@ public final class GlobalRulestacksClientImpl implements GlobalRulestacksClient 
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Response<BinaryData> commitWithResponse(String globalRulestackName) {
-        return service.commitSync(this.client.getEndpoint(), this.client.getApiVersion(), globalRulestackName,
-            Context.NONE);
+        return commitWithResponse(globalRulestackName, Context.NONE);
     }
 
     /**
@@ -928,31 +794,13 @@ public final class GlobalRulestacksClientImpl implements GlobalRulestacksClient 
             this.client.getContext());
     }
 
-    /**
-     * Commit rulestack configuration.
-     * 
-     * @param globalRulestackName GlobalRulestack resource name.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the {@link SyncPoller} for polling of long-running operation.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public SyncPoller<PollResult<Void>, Void> beginCommit(String globalRulestackName) {
-        Response<BinaryData> response = commitWithResponse(globalRulestackName);
-        return this.client.<Void, Void>getLroResult(response, Void.class, Void.class, Context.NONE);
+        return beginCommit(globalRulestackName, Context.NONE);
     }
 
-    /**
-     * Commit rulestack configuration.
-     * 
-     * @param globalRulestackName GlobalRulestack resource name.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the {@link SyncPoller} for polling of long-running operation.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public SyncPoller<PollResult<Void>, Void> beginCommit(String globalRulestackName, Context context) {
         Response<BinaryData> response = commitWithResponse(globalRulestackName, context);
@@ -973,31 +821,16 @@ public final class GlobalRulestacksClientImpl implements GlobalRulestacksClient 
         return beginCommitAsync(globalRulestackName).last().flatMap(this.client::getLroFinalResultOrError);
     }
 
-    /**
-     * Commit rulestack configuration.
-     * 
-     * @param globalRulestackName GlobalRulestack resource name.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public void commit(String globalRulestackName) {
-        beginCommit(globalRulestackName).getFinalResult();
+        commit(globalRulestackName, Context.NONE);
     }
 
-    /**
-     * Commit rulestack configuration.
-     * 
-     * @param globalRulestackName GlobalRulestack resource name.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public void commit(String globalRulestackName, Context context) {
-        beginCommit(globalRulestackName, context).getFinalResult();
+        this.client.getLroFinalResultOrError(beginCommit(globalRulestackName, context));
     }
 
     /**
@@ -1032,16 +865,7 @@ public final class GlobalRulestacksClientImpl implements GlobalRulestacksClient 
         return getChangeLogWithResponseAsync(globalRulestackName).flatMap(res -> Mono.justOrEmpty(res.getValue()));
     }
 
-    /**
-     * Get changelog.
-     * 
-     * @param globalRulestackName GlobalRulestack resource name.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return changelog along with {@link Response}.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Response<ChangelogInner> getChangeLogWithResponse(String globalRulestackName, Context context) {
         final String accept = "application/json";
@@ -1049,15 +873,7 @@ public final class GlobalRulestacksClientImpl implements GlobalRulestacksClient 
             accept, context);
     }
 
-    /**
-     * Get changelog.
-     * 
-     * @param globalRulestackName GlobalRulestack resource name.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return changelog.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public ChangelogInner getChangeLog(String globalRulestackName) {
         return getChangeLogWithResponse(globalRulestackName, Context.NONE).getValue();
@@ -1105,19 +921,7 @@ public final class GlobalRulestacksClientImpl implements GlobalRulestacksClient 
             .flatMap(res -> Mono.justOrEmpty(res.getValue()));
     }
 
-    /**
-     * Get the list of advanced security objects.
-     * 
-     * @param globalRulestackName GlobalRulestack resource name.
-     * @param type The type parameter.
-     * @param skip The skip parameter.
-     * @param top The top parameter.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the list of advanced security objects along with {@link Response}.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Response<AdvSecurityObjectListResponseInner> listAdvancedSecurityObjectsWithResponse(
         String globalRulestackName, AdvSecurityObjectTypeEnum type, String skip, Integer top, Context context) {
@@ -1126,16 +930,7 @@ public final class GlobalRulestacksClientImpl implements GlobalRulestacksClient 
             globalRulestackName, skip, top, type, accept, context);
     }
 
-    /**
-     * Get the list of advanced security objects.
-     * 
-     * @param globalRulestackName GlobalRulestack resource name.
-     * @param type The type parameter.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the list of advanced security objects.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public AdvSecurityObjectListResponseInner listAdvancedSecurityObjects(String globalRulestackName,
         AdvSecurityObjectTypeEnum type) {
@@ -1186,20 +981,7 @@ public final class GlobalRulestacksClientImpl implements GlobalRulestacksClient 
             .flatMap(res -> Mono.justOrEmpty(res.getValue()));
     }
 
-    /**
-     * List of AppIds for GlobalRulestack ApiVersion.
-     * 
-     * @param globalRulestackName GlobalRulestack resource name.
-     * @param appIdVersion The appIdVersion parameter.
-     * @param appPrefix The appPrefix parameter.
-     * @param skip The skip parameter.
-     * @param top The top parameter.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the response body along with {@link Response}.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Response<ListAppIdResponseInner> listAppIdsWithResponse(String globalRulestackName, String appIdVersion,
         String appPrefix, String skip, Integer top, Context context) {
@@ -1208,15 +990,7 @@ public final class GlobalRulestacksClientImpl implements GlobalRulestacksClient 
             appIdVersion, appPrefix, skip, top, accept, context);
     }
 
-    /**
-     * List of AppIds for GlobalRulestack ApiVersion.
-     * 
-     * @param globalRulestackName GlobalRulestack resource name.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the response.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public ListAppIdResponseInner listAppIds(String globalRulestackName) {
         final String appIdVersion = null;
@@ -1264,18 +1038,7 @@ public final class GlobalRulestacksClientImpl implements GlobalRulestacksClient 
             .flatMap(res -> Mono.justOrEmpty(res.getValue()));
     }
 
-    /**
-     * List of countries for Rulestack.
-     * 
-     * @param globalRulestackName GlobalRulestack resource name.
-     * @param skip The skip parameter.
-     * @param top The top parameter.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return countries Response Object along with {@link Response}.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Response<CountriesResponseInner> listCountriesWithResponse(String globalRulestackName, String skip,
         Integer top, Context context) {
@@ -1284,15 +1047,7 @@ public final class GlobalRulestacksClientImpl implements GlobalRulestacksClient 
             skip, top, accept, context);
     }
 
-    /**
-     * List of countries for Rulestack.
-     * 
-     * @param globalRulestackName GlobalRulestack resource name.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return countries Response Object.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public CountriesResponseInner listCountries(String globalRulestackName) {
         final String skip = null;
@@ -1332,16 +1087,7 @@ public final class GlobalRulestacksClientImpl implements GlobalRulestacksClient 
         return listFirewallsWithResponseAsync(globalRulestackName).flatMap(res -> Mono.justOrEmpty(res.getValue()));
     }
 
-    /**
-     * List of Firewalls associated with Rulestack.
-     * 
-     * @param globalRulestackName GlobalRulestack resource name.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return list firewalls response along with {@link Response}.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Response<ListFirewallsResponseInner> listFirewallsWithResponse(String globalRulestackName, Context context) {
         final String accept = "application/json";
@@ -1349,15 +1095,7 @@ public final class GlobalRulestacksClientImpl implements GlobalRulestacksClient 
             accept, context);
     }
 
-    /**
-     * List of Firewalls associated with Rulestack.
-     * 
-     * @param globalRulestackName GlobalRulestack resource name.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return list firewalls response.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public ListFirewallsResponseInner listFirewalls(String globalRulestackName) {
         return listFirewallsWithResponse(globalRulestackName, Context.NONE).getValue();
@@ -1401,18 +1139,7 @@ public final class GlobalRulestacksClientImpl implements GlobalRulestacksClient 
             .flatMap(res -> Mono.justOrEmpty(res.getValue()));
     }
 
-    /**
-     * List predefined URL categories for rulestack.
-     * 
-     * @param globalRulestackName GlobalRulestack resource name.
-     * @param skip The skip parameter.
-     * @param top The top parameter.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return predefined url categories response along with {@link Response}.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Response<PredefinedUrlCategoriesResponseInner>
         listPredefinedUrlCategoriesWithResponse(String globalRulestackName, String skip, Integer top, Context context) {
@@ -1421,15 +1148,7 @@ public final class GlobalRulestacksClientImpl implements GlobalRulestacksClient 
             globalRulestackName, skip, top, accept, context);
     }
 
-    /**
-     * List predefined URL categories for rulestack.
-     * 
-     * @param globalRulestackName GlobalRulestack resource name.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return predefined url categories response.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public PredefinedUrlCategoriesResponseInner listPredefinedUrlCategories(String globalRulestackName) {
         final String skip = null;
@@ -1478,19 +1197,7 @@ public final class GlobalRulestacksClientImpl implements GlobalRulestacksClient 
             .flatMap(res -> Mono.justOrEmpty(res.getValue()));
     }
 
-    /**
-     * List the security services for rulestack.
-     * 
-     * @param globalRulestackName GlobalRulestack resource name.
-     * @param type The type parameter.
-     * @param skip The skip parameter.
-     * @param top The top parameter.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return security services list response along with {@link Response}.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Response<SecurityServicesResponseInner> listSecurityServicesWithResponse(String globalRulestackName,
         SecurityServicesTypeEnum type, String skip, Integer top, Context context) {
@@ -1499,16 +1206,7 @@ public final class GlobalRulestacksClientImpl implements GlobalRulestacksClient 
             globalRulestackName, skip, top, type, accept, context);
     }
 
-    /**
-     * List the security services for rulestack.
-     * 
-     * @param globalRulestackName GlobalRulestack resource name.
-     * @param type The type parameter.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return security services list response.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public SecurityServicesResponseInner listSecurityServices(String globalRulestackName,
         SecurityServicesTypeEnum type) {
@@ -1548,29 +1246,13 @@ public final class GlobalRulestacksClientImpl implements GlobalRulestacksClient 
         return revertWithResponseAsync(globalRulestackName).flatMap(ignored -> Mono.empty());
     }
 
-    /**
-     * Revert rulestack configuration.
-     * 
-     * @param globalRulestackName GlobalRulestack resource name.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the {@link Response}.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Response<Void> revertWithResponse(String globalRulestackName, Context context) {
         return service.revertSync(this.client.getEndpoint(), this.client.getApiVersion(), globalRulestackName, context);
     }
 
-    /**
-     * Revert rulestack configuration.
-     * 
-     * @param globalRulestackName GlobalRulestack resource name.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public void revert(String globalRulestackName) {
         revertWithResponse(globalRulestackName, Context.NONE);
@@ -1606,11 +1288,7 @@ public final class GlobalRulestacksClientImpl implements GlobalRulestacksClient 
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private PagedResponse<GlobalRulestackResourceInner> listNextSinglePage(String nextLink) {
-        final String accept = "application/json";
-        Response<GlobalRulestackResourceListResult> res
-            = service.listNextSync(nextLink, this.client.getEndpoint(), accept, Context.NONE);
-        return new PagedResponseBase<>(res.getRequest(), res.getStatusCode(), res.getHeaders(), res.getValue().value(),
-            res.getValue().nextLink(), null);
+        return listNextSinglePage(nextLink, Context.NONE);
     }
 
     /**

@@ -15,10 +15,10 @@ import com.azure.resourcemanager.mongocluster.fluent.models.ReplicaInner;
  */
 public interface ReplicasClient {
     /**
-     * List all the replicas for the mongo cluster.
+     * List all the replicas for the DocumentDB cluster.
      * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param mongoClusterName The name of the mongo cluster.
+     * @param mongoClusterName The name of the DocumentDB cluster.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
@@ -28,10 +28,10 @@ public interface ReplicasClient {
     PagedIterable<ReplicaInner> listByParent(String resourceGroupName, String mongoClusterName);
 
     /**
-     * List all the replicas for the mongo cluster.
+     * List all the replicas for the DocumentDB cluster.
      * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param mongoClusterName The name of the mongo cluster.
+     * @param mongoClusterName The name of the DocumentDB cluster.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.

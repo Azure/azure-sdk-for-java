@@ -56,11 +56,7 @@ public final class RuleImpl implements Rule, Rule.Definition, Rule.Update {
     }
 
     public Rule create() {
-        this.innerObject = serviceManager.serviceClient()
-            .getRules()
-            .createOrUpdateWithResponse(resourceUri, ruleName, this.innerModel(), Context.NONE)
-            .getValue();
-        return this;
+        return this.create(Context.NONE);
     }
 
     public Rule create(Context context) {
@@ -83,11 +79,7 @@ public final class RuleImpl implements Rule, Rule.Definition, Rule.Update {
     }
 
     public Rule apply() {
-        this.innerObject = serviceManager.serviceClient()
-            .getRules()
-            .updateWithResponse(resourceUri, ruleName, updateProperties, Context.NONE)
-            .getValue();
-        return this;
+        return this.apply(Context.NONE);
     }
 
     public Rule apply(Context context) {
@@ -108,9 +100,7 @@ public final class RuleImpl implements Rule, Rule.Definition, Rule.Update {
     }
 
     public Rule refresh() {
-        this.innerObject
-            = serviceManager.serviceClient().getRules().getWithResponse(resourceUri, ruleName, Context.NONE).getValue();
-        return this;
+        return this.refresh(Context.NONE);
     }
 
     public Rule refresh(Context context) {

@@ -209,11 +209,7 @@ public final class TemplateModelImpl implements TemplateModel, TemplateModel.Def
     }
 
     public TemplateModel create() {
-        this.innerObject = serviceManager.serviceClient()
-            .getContentTemplates()
-            .installWithResponse(resourceGroupName, workspaceName, templateId, this.innerModel(), Context.NONE)
-            .getValue();
-        return this;
+        return this.create(Context.NONE);
     }
 
     public TemplateModel create(Context context) {
@@ -235,11 +231,7 @@ public final class TemplateModelImpl implements TemplateModel, TemplateModel.Def
     }
 
     public TemplateModel apply() {
-        this.innerObject = serviceManager.serviceClient()
-            .getContentTemplates()
-            .installWithResponse(resourceGroupName, workspaceName, templateId, this.innerModel(), Context.NONE)
-            .getValue();
-        return this;
+        return this.apply(Context.NONE);
     }
 
     public TemplateModel apply(Context context) {
@@ -266,11 +258,7 @@ public final class TemplateModelImpl implements TemplateModel, TemplateModel.Def
     }
 
     public TemplateModel refresh() {
-        this.innerObject = serviceManager.serviceClient()
-            .getContentTemplates()
-            .getWithResponse(resourceGroupName, workspaceName, templateId, Context.NONE)
-            .getValue();
-        return this;
+        return this.refresh(Context.NONE);
     }
 
     public TemplateModel refresh(Context context) {

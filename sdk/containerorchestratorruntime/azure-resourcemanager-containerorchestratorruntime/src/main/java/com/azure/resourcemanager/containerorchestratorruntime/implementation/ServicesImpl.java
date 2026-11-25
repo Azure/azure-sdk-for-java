@@ -47,12 +47,11 @@ public final class ServicesImpl implements Services {
     }
 
     public void deleteByResourceGroup(String resourceUri, String serviceName) {
-        this.serviceClient().delete(resourceUri, serviceName);
+        this.deleteByResourceGroupWithResponse(resourceUri, serviceName, Context.NONE);
     }
 
     public PagedIterable<ServiceResource> list(String resourceUri) {
-        PagedIterable<ServiceResourceInner> inner = this.serviceClient().list(resourceUri);
-        return ResourceManagerUtils.mapPage(inner, inner1 -> new ServiceResourceImpl(inner1, this.manager()));
+        return this.list(resourceUri, Context.NONE);
     }
 
     public PagedIterable<ServiceResource> list(String resourceUri, Context context) {
@@ -61,66 +60,30 @@ public final class ServicesImpl implements Services {
     }
 
     public ServiceResource getById(String id) {
-        String resourceUri = ResourceManagerUtils.getValueFromIdByParameterName(id,
-            "/{resourceUri}/providers/Microsoft.KubernetesRuntime/services/{serviceName}", "resourceUri");
-        if (resourceUri == null) {
-            throw LOGGER.logExceptionAsError(new IllegalArgumentException(
-                String.format("The resource ID '%s' is not valid. Missing path segment 'resourceUri'.", id)));
-        }
-        String serviceName = ResourceManagerUtils.getValueFromIdByParameterName(id,
-            "/{resourceUri}/providers/Microsoft.KubernetesRuntime/services/{serviceName}", "serviceName");
-        if (serviceName == null) {
-            throw LOGGER.logExceptionAsError(new IllegalArgumentException(
-                String.format("The resource ID '%s' is not valid. Missing path segment 'services'.", id)));
-        }
-        return this.getWithResponse(resourceUri, serviceName, Context.NONE).getValue();
+        return this.getByIdWithResponse(id, Context.NONE).getValue();
     }
 
     public Response<ServiceResource> getByIdWithResponse(String id, Context context) {
-        String resourceUri = ResourceManagerUtils.getValueFromIdByParameterName(id,
-            "/{resourceUri}/providers/Microsoft.KubernetesRuntime/services/{serviceName}", "resourceUri");
-        if (resourceUri == null) {
-            throw LOGGER.logExceptionAsError(new IllegalArgumentException(
-                String.format("The resource ID '%s' is not valid. Missing path segment 'resourceUri'.", id)));
-        }
-        String serviceName = ResourceManagerUtils.getValueFromIdByParameterName(id,
-            "/{resourceUri}/providers/Microsoft.KubernetesRuntime/services/{serviceName}", "serviceName");
-        if (serviceName == null) {
-            throw LOGGER.logExceptionAsError(new IllegalArgumentException(
-                String.format("The resource ID '%s' is not valid. Missing path segment 'services'.", id)));
-        }
+        String resourceUri = ResourceManagerUtils.getRequiredValueFromIdByParameterName(id,
+            "/{resourceUri}/providers/Microsoft.KubernetesRuntime/services/{serviceName}", "resourceUri", "resourceUri",
+            LOGGER);
+        String serviceName = ResourceManagerUtils.getRequiredValueFromIdByParameterName(id,
+            "/{resourceUri}/providers/Microsoft.KubernetesRuntime/services/{serviceName}", "serviceName", "services",
+            LOGGER);
         return this.getWithResponse(resourceUri, serviceName, context);
     }
 
     public void deleteById(String id) {
-        String resourceUri = ResourceManagerUtils.getValueFromIdByParameterName(id,
-            "/{resourceUri}/providers/Microsoft.KubernetesRuntime/services/{serviceName}", "resourceUri");
-        if (resourceUri == null) {
-            throw LOGGER.logExceptionAsError(new IllegalArgumentException(
-                String.format("The resource ID '%s' is not valid. Missing path segment 'resourceUri'.", id)));
-        }
-        String serviceName = ResourceManagerUtils.getValueFromIdByParameterName(id,
-            "/{resourceUri}/providers/Microsoft.KubernetesRuntime/services/{serviceName}", "serviceName");
-        if (serviceName == null) {
-            throw LOGGER.logExceptionAsError(new IllegalArgumentException(
-                String.format("The resource ID '%s' is not valid. Missing path segment 'services'.", id)));
-        }
-        this.deleteByResourceGroupWithResponse(resourceUri, serviceName, Context.NONE);
+        this.deleteByIdWithResponse(id, Context.NONE);
     }
 
     public Response<Void> deleteByIdWithResponse(String id, Context context) {
-        String resourceUri = ResourceManagerUtils.getValueFromIdByParameterName(id,
-            "/{resourceUri}/providers/Microsoft.KubernetesRuntime/services/{serviceName}", "resourceUri");
-        if (resourceUri == null) {
-            throw LOGGER.logExceptionAsError(new IllegalArgumentException(
-                String.format("The resource ID '%s' is not valid. Missing path segment 'resourceUri'.", id)));
-        }
-        String serviceName = ResourceManagerUtils.getValueFromIdByParameterName(id,
-            "/{resourceUri}/providers/Microsoft.KubernetesRuntime/services/{serviceName}", "serviceName");
-        if (serviceName == null) {
-            throw LOGGER.logExceptionAsError(new IllegalArgumentException(
-                String.format("The resource ID '%s' is not valid. Missing path segment 'services'.", id)));
-        }
+        String resourceUri = ResourceManagerUtils.getRequiredValueFromIdByParameterName(id,
+            "/{resourceUri}/providers/Microsoft.KubernetesRuntime/services/{serviceName}", "resourceUri", "resourceUri",
+            LOGGER);
+        String serviceName = ResourceManagerUtils.getRequiredValueFromIdByParameterName(id,
+            "/{resourceUri}/providers/Microsoft.KubernetesRuntime/services/{serviceName}", "serviceName", "services",
+            LOGGER);
         return this.deleteByResourceGroupWithResponse(resourceUri, serviceName, context);
     }
 
