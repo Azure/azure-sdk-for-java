@@ -88,10 +88,7 @@ public final class WorkloadNetworkPortMirroringImpl implements WorkloadNetworkPo
     }
 
     public WorkloadNetworkPortMirroring create() {
-        this.innerObject = serviceManager.serviceClient()
-            .getWorkloadNetworks()
-            .createPortMirroring(resourceGroupName, privateCloudName, portMirroringId, this.innerModel(), Context.NONE);
-        return this;
+        return this.create(Context.NONE);
     }
 
     public WorkloadNetworkPortMirroring create(Context context) {
@@ -112,10 +109,7 @@ public final class WorkloadNetworkPortMirroringImpl implements WorkloadNetworkPo
     }
 
     public WorkloadNetworkPortMirroring apply() {
-        this.innerObject = serviceManager.serviceClient()
-            .getWorkloadNetworks()
-            .updatePortMirroring(resourceGroupName, privateCloudName, portMirroringId, this.innerModel(), Context.NONE);
-        return this;
+        return this.apply(Context.NONE);
     }
 
     public WorkloadNetworkPortMirroring apply(Context context) {
@@ -129,17 +123,19 @@ public final class WorkloadNetworkPortMirroringImpl implements WorkloadNetworkPo
         com.azure.resourcemanager.avs.AvsManager serviceManager) {
         this.innerObject = innerObject;
         this.serviceManager = serviceManager;
-        this.resourceGroupName = ResourceManagerUtils.getValueFromIdByName(innerObject.id(), "resourceGroups");
-        this.privateCloudName = ResourceManagerUtils.getValueFromIdByName(innerObject.id(), "privateClouds");
-        this.portMirroringId = ResourceManagerUtils.getValueFromIdByName(innerObject.id(), "portMirroringProfiles");
+        this.resourceGroupName = ResourceManagerUtils.getValueFromIdByParameterName(innerObject.id(),
+            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.AVS/privateClouds/{privateCloudName}/workloadNetworks/default/portMirroringProfiles/{portMirroringId}",
+            "resourceGroupName");
+        this.privateCloudName = ResourceManagerUtils.getValueFromIdByParameterName(innerObject.id(),
+            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.AVS/privateClouds/{privateCloudName}/workloadNetworks/default/portMirroringProfiles/{portMirroringId}",
+            "privateCloudName");
+        this.portMirroringId = ResourceManagerUtils.getValueFromIdByParameterName(innerObject.id(),
+            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.AVS/privateClouds/{privateCloudName}/workloadNetworks/default/portMirroringProfiles/{portMirroringId}",
+            "portMirroringId");
     }
 
     public WorkloadNetworkPortMirroring refresh() {
-        this.innerObject = serviceManager.serviceClient()
-            .getWorkloadNetworks()
-            .getPortMirroringWithResponse(resourceGroupName, privateCloudName, portMirroringId, Context.NONE)
-            .getValue();
-        return this;
+        return this.refresh(Context.NONE);
     }
 
     public WorkloadNetworkPortMirroring refresh(Context context) {

@@ -9,7 +9,7 @@ package com.azure.resourcemanager.networkcloud.generated;
  */
 public final class VirtualMachinesDeleteSamples {
     /*
-     * x-ms-original-file: 2026-05-01-preview/VirtualMachines_Delete.json
+     * x-ms-original-file: 2026-07-01/VirtualMachines_Delete.json
      */
     /**
      * Sample code: Delete virtual machine.

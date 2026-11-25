@@ -46,7 +46,7 @@ public final class ExascaleDbStorageVaultsImpl implements ExascaleDbStorageVault
     }
 
     public void deleteByResourceGroup(String resourceGroupName, String exascaleDbStorageVaultName) {
-        this.serviceClient().delete(resourceGroupName, exascaleDbStorageVaultName);
+        this.delete(resourceGroupName, exascaleDbStorageVaultName, Context.NONE);
     }
 
     public void delete(String resourceGroupName, String exascaleDbStorageVaultName, Context context) {
@@ -54,8 +54,7 @@ public final class ExascaleDbStorageVaultsImpl implements ExascaleDbStorageVault
     }
 
     public PagedIterable<ExascaleDbStorageVault> listByResourceGroup(String resourceGroupName) {
-        PagedIterable<ExascaleDbStorageVaultInner> inner = this.serviceClient().listByResourceGroup(resourceGroupName);
-        return ResourceManagerUtils.mapPage(inner, inner1 -> new ExascaleDbStorageVaultImpl(inner1, this.manager()));
+        return this.listByResourceGroup(resourceGroupName, Context.NONE);
     }
 
     public PagedIterable<ExascaleDbStorageVault> listByResourceGroup(String resourceGroupName, Context context) {
@@ -65,8 +64,7 @@ public final class ExascaleDbStorageVaultsImpl implements ExascaleDbStorageVault
     }
 
     public PagedIterable<ExascaleDbStorageVault> list() {
-        PagedIterable<ExascaleDbStorageVaultInner> inner = this.serviceClient().list();
-        return ResourceManagerUtils.mapPage(inner, inner1 -> new ExascaleDbStorageVaultImpl(inner1, this.manager()));
+        return this.list(Context.NONE);
     }
 
     public PagedIterable<ExascaleDbStorageVault> list(Context context) {
@@ -75,59 +73,30 @@ public final class ExascaleDbStorageVaultsImpl implements ExascaleDbStorageVault
     }
 
     public ExascaleDbStorageVault getById(String id) {
-        String resourceGroupName = ResourceManagerUtils.getValueFromIdByName(id, "resourceGroups");
-        if (resourceGroupName == null) {
-            throw LOGGER.logExceptionAsError(new IllegalArgumentException(
-                String.format("The resource ID '%s' is not valid. Missing path segment 'resourceGroups'.", id)));
-        }
-        String exascaleDbStorageVaultName = ResourceManagerUtils.getValueFromIdByName(id, "exascaleDbStorageVaults");
-        if (exascaleDbStorageVaultName == null) {
-            throw LOGGER.logExceptionAsError(new IllegalArgumentException(String
-                .format("The resource ID '%s' is not valid. Missing path segment 'exascaleDbStorageVaults'.", id)));
-        }
-        return this.getByResourceGroupWithResponse(resourceGroupName, exascaleDbStorageVaultName, Context.NONE)
-            .getValue();
+        return this.getByIdWithResponse(id, Context.NONE).getValue();
     }
 
     public Response<ExascaleDbStorageVault> getByIdWithResponse(String id, Context context) {
-        String resourceGroupName = ResourceManagerUtils.getValueFromIdByName(id, "resourceGroups");
-        if (resourceGroupName == null) {
-            throw LOGGER.logExceptionAsError(new IllegalArgumentException(
-                String.format("The resource ID '%s' is not valid. Missing path segment 'resourceGroups'.", id)));
-        }
-        String exascaleDbStorageVaultName = ResourceManagerUtils.getValueFromIdByName(id, "exascaleDbStorageVaults");
-        if (exascaleDbStorageVaultName == null) {
-            throw LOGGER.logExceptionAsError(new IllegalArgumentException(String
-                .format("The resource ID '%s' is not valid. Missing path segment 'exascaleDbStorageVaults'.", id)));
-        }
+        String resourceGroupName = ResourceManagerUtils.getRequiredValueFromIdByParameterName(id,
+            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Oracle.Database/exascaleDbStorageVaults/{exascaleDbStorageVaultName}",
+            "resourceGroupName", "resourceGroups", LOGGER);
+        String exascaleDbStorageVaultName = ResourceManagerUtils.getRequiredValueFromIdByParameterName(id,
+            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Oracle.Database/exascaleDbStorageVaults/{exascaleDbStorageVaultName}",
+            "exascaleDbStorageVaultName", "exascaleDbStorageVaults", LOGGER);
         return this.getByResourceGroupWithResponse(resourceGroupName, exascaleDbStorageVaultName, context);
     }
 
     public void deleteById(String id) {
-        String resourceGroupName = ResourceManagerUtils.getValueFromIdByName(id, "resourceGroups");
-        if (resourceGroupName == null) {
-            throw LOGGER.logExceptionAsError(new IllegalArgumentException(
-                String.format("The resource ID '%s' is not valid. Missing path segment 'resourceGroups'.", id)));
-        }
-        String exascaleDbStorageVaultName = ResourceManagerUtils.getValueFromIdByName(id, "exascaleDbStorageVaults");
-        if (exascaleDbStorageVaultName == null) {
-            throw LOGGER.logExceptionAsError(new IllegalArgumentException(String
-                .format("The resource ID '%s' is not valid. Missing path segment 'exascaleDbStorageVaults'.", id)));
-        }
-        this.delete(resourceGroupName, exascaleDbStorageVaultName, Context.NONE);
+        this.deleteByIdWithResponse(id, Context.NONE);
     }
 
     public void deleteByIdWithResponse(String id, Context context) {
-        String resourceGroupName = ResourceManagerUtils.getValueFromIdByName(id, "resourceGroups");
-        if (resourceGroupName == null) {
-            throw LOGGER.logExceptionAsError(new IllegalArgumentException(
-                String.format("The resource ID '%s' is not valid. Missing path segment 'resourceGroups'.", id)));
-        }
-        String exascaleDbStorageVaultName = ResourceManagerUtils.getValueFromIdByName(id, "exascaleDbStorageVaults");
-        if (exascaleDbStorageVaultName == null) {
-            throw LOGGER.logExceptionAsError(new IllegalArgumentException(String
-                .format("The resource ID '%s' is not valid. Missing path segment 'exascaleDbStorageVaults'.", id)));
-        }
+        String resourceGroupName = ResourceManagerUtils.getRequiredValueFromIdByParameterName(id,
+            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Oracle.Database/exascaleDbStorageVaults/{exascaleDbStorageVaultName}",
+            "resourceGroupName", "resourceGroups", LOGGER);
+        String exascaleDbStorageVaultName = ResourceManagerUtils.getRequiredValueFromIdByParameterName(id,
+            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Oracle.Database/exascaleDbStorageVaults/{exascaleDbStorageVaultName}",
+            "exascaleDbStorageVaultName", "exascaleDbStorageVaults", LOGGER);
         this.delete(resourceGroupName, exascaleDbStorageVaultName, context);
     }
 

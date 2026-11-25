@@ -123,10 +123,7 @@ public final class ManagedPrivateEndpointModelImpl
     }
 
     public ManagedPrivateEndpointModel create() {
-        this.innerObject = serviceManager.serviceClient()
-            .getManagedPrivateEndpoints()
-            .create(resourceGroupName, workspaceName, managedPrivateEndpointName, this.innerModel(), Context.NONE);
-        return this;
+        return this.create(Context.NONE);
     }
 
     public ManagedPrivateEndpointModel create(Context context) {
@@ -148,11 +145,7 @@ public final class ManagedPrivateEndpointModelImpl
     }
 
     public ManagedPrivateEndpointModel apply() {
-        this.innerObject = serviceManager.serviceClient()
-            .getManagedPrivateEndpoints()
-            .update(resourceGroupName, workspaceName, managedPrivateEndpointName, updateRequestBodyParameters,
-                Context.NONE);
-        return this;
+        return this.apply(Context.NONE);
     }
 
     public ManagedPrivateEndpointModel apply(Context context) {
@@ -166,18 +159,19 @@ public final class ManagedPrivateEndpointModelImpl
         com.azure.resourcemanager.dashboard.DashboardManager serviceManager) {
         this.innerObject = innerObject;
         this.serviceManager = serviceManager;
-        this.resourceGroupName = ResourceManagerUtils.getValueFromIdByName(innerObject.id(), "resourceGroups");
-        this.workspaceName = ResourceManagerUtils.getValueFromIdByName(innerObject.id(), "grafana");
-        this.managedPrivateEndpointName
-            = ResourceManagerUtils.getValueFromIdByName(innerObject.id(), "managedPrivateEndpoints");
+        this.resourceGroupName = ResourceManagerUtils.getValueFromIdByParameterName(innerObject.id(),
+            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Dashboard/grafana/{workspaceName}/managedPrivateEndpoints/{managedPrivateEndpointName}",
+            "resourceGroupName");
+        this.workspaceName = ResourceManagerUtils.getValueFromIdByParameterName(innerObject.id(),
+            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Dashboard/grafana/{workspaceName}/managedPrivateEndpoints/{managedPrivateEndpointName}",
+            "workspaceName");
+        this.managedPrivateEndpointName = ResourceManagerUtils.getValueFromIdByParameterName(innerObject.id(),
+            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Dashboard/grafana/{workspaceName}/managedPrivateEndpoints/{managedPrivateEndpointName}",
+            "managedPrivateEndpointName");
     }
 
     public ManagedPrivateEndpointModel refresh() {
-        this.innerObject = serviceManager.serviceClient()
-            .getManagedPrivateEndpoints()
-            .getWithResponse(resourceGroupName, workspaceName, managedPrivateEndpointName, Context.NONE)
-            .getValue();
-        return this;
+        return this.refresh(Context.NONE);
     }
 
     public ManagedPrivateEndpointModel refresh(Context context) {

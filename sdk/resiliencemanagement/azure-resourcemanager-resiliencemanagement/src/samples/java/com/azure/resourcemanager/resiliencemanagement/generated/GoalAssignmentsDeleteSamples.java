@@ -9,7 +9,7 @@ package com.azure.resourcemanager.resiliencemanagement.generated;
  */
 public final class GoalAssignmentsDeleteSamples {
     /*
-     * x-ms-original-file: 2026-06-01-preview/GoalAssignments_Delete_MaximumSet_Gen.json
+     * x-ms-original-file: 2026-10-01/GoalAssignments_Delete_MaximumSet_Gen.json
      */
     /**
      * Sample code: GoalAssignments_Delete_MaximumSet.
@@ -18,6 +18,6 @@ public final class GoalAssignmentsDeleteSamples {
      */
     public static void goalAssignmentsDeleteMaximumSet(
         com.azure.resourcemanager.resiliencemanagement.ResilienceManagementManager manager) {
-        manager.goalAssignments().delete("sg1", "ga1", com.azure.core.util.Context.NONE);
+        manager.goalAssignments().delete("production-sg", "zonal-resiliency-goal", com.azure.core.util.Context.NONE);
     }
 }

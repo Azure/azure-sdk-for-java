@@ -23,6 +23,7 @@ import com.azure.messaging.servicebus.ServiceBusReceivedMessage;
 import com.azure.messaging.servicebus.ServiceBusTransactionContext;
 import com.azure.messaging.servicebus.administration.models.CreateRuleOptions;
 import com.azure.messaging.servicebus.administration.models.RuleProperties;
+import com.azure.messaging.servicebus.models.DeleteMessagesResult;
 import com.azure.messaging.servicebus.models.ServiceBusReceiveMode;
 import org.apache.qpid.proton.Proton;
 import org.apache.qpid.proton.amqp.Binary;
@@ -57,6 +58,7 @@ import static com.azure.core.amqp.implementation.ClientConstants.ENTITY_PATH_KEY
 import static com.azure.core.util.FluxUtil.fluxError;
 import static com.azure.core.util.FluxUtil.monoError;
 import static com.azure.messaging.servicebus.implementation.ManagementConstants.OPERATION_ADD_RULE;
+import static com.azure.messaging.servicebus.implementation.ManagementConstants.OPERATION_BATCH_DELETE_MESSAGES;
 import static com.azure.messaging.servicebus.implementation.ManagementConstants.OPERATION_GET_MESSAGE_SESSIONS;
 import static com.azure.messaging.servicebus.implementation.ManagementConstants.OPERATION_GET_RULES;
 import static com.azure.messaging.servicebus.implementation.ManagementConstants.OPERATION_GET_SESSION_STATE;
@@ -474,6 +476,66 @@ public class ManagementChannel implements ServiceBusManagementNode {
      * {@inheritDoc}
      */
     @Override
+    public Mono<DeleteMessagesResult> deleteMessages(int maxMessages, OffsetDateTime enqueueTimeUtcOlderThan,
+        String sessionId, String associatedLinkName) {
+        if (maxMessages < 1) {
+            return monoError(logger,
+                new IllegalArgumentException("'maxMessages' must be positive; got " + maxMessages + "."));
+        }
+        if (enqueueTimeUtcOlderThan == null) {
+            return monoError(logger, new NullPointerException("'enqueueTimeUtcOlderThan' cannot be null."));
+        }
+
+        return isAuthorized(OPERATION_BATCH_DELETE_MESSAGES).then(channelCache.get().flatMap(channel -> {
+            final Message message = createManagementMessage(OPERATION_BATCH_DELETE_MESSAGES, associatedLinkName);
+            final Map<String, Object> body = new HashMap<>();
+            body.put(ManagementConstants.MESSAGE_COUNT_KEY, maxMessages);
+            body.put(ManagementConstants.ENQUEUED_TIME_UTC, Date.from(enqueueTimeUtcOlderThan.toInstant()));
+            if (!CoreUtils.isNullOrEmpty(sessionId)) {
+                body.put(ManagementConstants.SESSION_ID, sessionId);
+            }
+            message.setBody(new AmqpValue(body));
+
+            return sendWithVerify(channel, message, null);
+        })).flatMap(response -> {
+            final AmqpResponseCode statusCode = RequestResponseUtils.getStatusCode(response);
+            if (statusCode == AmqpResponseCode.NO_CONTENT) {
+                return Mono.just(new DeleteMessagesResult(0));
+            }
+            final String errorCondition = RequestResponseUtils.getErrorCondition(response);
+            final boolean messageNotFound = statusCode == AmqpResponseCode.NOT_FOUND
+                && AmqpErrorCondition.MESSAGE_NOT_FOUND.getErrorCondition().equals(errorCondition);
+            if (statusCode != AmqpResponseCode.OK && !messageNotFound) {
+                return monoError(logger,
+                    new IllegalStateException("Batch delete returned unexpected status code: " + statusCode + "."));
+            }
+
+            final Object responseBody = response.getBody();
+            if (!(responseBody instanceof AmqpValue) || !(((AmqpValue) responseBody).getValue() instanceof Map)) {
+                return monoError(logger,
+                    new IllegalStateException("Batch delete returned a response with an invalid body."));
+            }
+
+            @SuppressWarnings("unchecked")
+            final Map<String, Object> body = (Map<String, Object>) ((AmqpValue) responseBody).getValue();
+            final Object deletedCount = body.get(ManagementConstants.MESSAGE_COUNT_KEY);
+            if (!(deletedCount instanceof Integer)
+                || (Integer) deletedCount < 0
+                || (Integer) deletedCount > maxMessages) {
+                return monoError(logger,
+                    new IllegalStateException("Batch delete response did not contain a valid message-count."));
+            }
+            return Mono.just(new DeleteMessagesResult((Integer) deletedCount));
+        })
+            .timeout(operationTimeout,
+                Mono.defer(() -> monoError(logger, new AmqpException(true, AmqpErrorCondition.TIMEOUT_ERROR,
+                    "Batch delete timed out. The deletion outcome may be unknown.", getErrorContext()))));
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
     public Mono<Void> createRule(String ruleName, CreateRuleOptions ruleOptions) {
         return isAuthorized(OPERATION_ADD_RULE).then(channelCache.get().flatMap(channel -> {
             final Message message = createManagementMessage(OPERATION_ADD_RULE, null);
@@ -521,17 +583,18 @@ public class ManagementChannel implements ServiceBusManagementNode {
             return monoError(logger, new IllegalArgumentException("'top' must be positive; got " + top + "."));
         }
 
-        // Track 1's SessionBrowser uses new Date(253402300800000L) as the active-messages sentinel
+        // Track 1's SessionBrowser uses new Date(253402300800000L) as the default-listing sentinel
         // (1ms past 9999-12-31T23:59:59.999Z, rendered by OffsetDateTime.toString() as
         // +10000-01-01T00:00Z). This is the wire value the broker has been validated against for
-        // years; align with it here. Any input at or beyond that instant (including
+        // listing sessions with active messages or stored session state; align with it here. Any
+        // input at or beyond that instant (including
         // OffsetDateTime.MAX, whose nanosecond precision and year-999_999_999 value would otherwise
         // overflow java.util.Date) is clamped to it so the sentinel comparison and Date.from(...)
         // both stay well-defined. Comparing with >= so the sentinel-equal case is also routed
         // through the clamp explicitly (it's a no-op for equal values, but keeps the comment/code
         // contract precise).
-        final OffsetDateTime cappedTime = lastUpdatedTime.compareTo(ManagementConstants.ACTIVE_MESSAGES_SENTINEL) >= 0
-            ? ManagementConstants.ACTIVE_MESSAGES_SENTINEL
+        final OffsetDateTime cappedTime = lastUpdatedTime.compareTo(ManagementConstants.DEFAULT_LISTING_SENTINEL) >= 0
+            ? ManagementConstants.DEFAULT_LISTING_SENTINEL
             : lastUpdatedTime;
 
         return isAuthorized(OPERATION_GET_MESSAGE_SESSIONS).then(channelCache.get().flatMap(channel -> {

@@ -5,35 +5,44 @@
 package com.azure.resourcemanager.chaos.generated;
 
 import com.azure.core.util.BinaryData;
+import com.azure.resourcemanager.chaos.models.ParameterFormatType;
 import com.azure.resourcemanager.chaos.models.ParameterType;
 import com.azure.resourcemanager.chaos.models.ScenarioParameter;
+import com.azure.resourcemanager.chaos.models.ScenarioParameterFormat;
+import java.util.Arrays;
 import org.junit.jupiter.api.Assertions;
 
 public final class ScenarioParameterTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
         ScenarioParameter model = BinaryData.fromString(
-            "{\"name\":\"embnkbw\",\"type\":\"array\",\"default\":\"xk\",\"required\":true,\"description\":\"ihebwtsw\"}")
+            "{\"name\":\"oxgsgbpfgzdjtx\",\"type\":\"boolean\",\"default\":\"lbqvgaqvlgafcqu\",\"required\":false,\"description\":\"etnwsdtutnw\",\"format\":{\"formatType\":\"Duration\",\"examples\":[\"uzhyrmewipmvekdx\",\"kuqgsjjxundxgket\"]}}")
             .toObject(ScenarioParameter.class);
-        Assertions.assertEquals("embnkbw", model.name());
-        Assertions.assertEquals(ParameterType.ARRAY, model.type());
-        Assertions.assertEquals("xk", model.defaultProperty());
-        Assertions.assertTrue(model.required());
-        Assertions.assertEquals("ihebwtsw", model.description());
+        Assertions.assertEquals("oxgsgbpfgzdjtx", model.name());
+        Assertions.assertEquals(ParameterType.BOOLEAN, model.type());
+        Assertions.assertEquals("lbqvgaqvlgafcqu", model.defaultProperty());
+        Assertions.assertFalse(model.required());
+        Assertions.assertEquals("etnwsdtutnw", model.description());
+        Assertions.assertEquals(ParameterFormatType.DURATION, model.format().formatType());
+        Assertions.assertEquals("uzhyrmewipmvekdx", model.format().examples().get(0));
     }
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
-        ScenarioParameter model = new ScenarioParameter().withName("embnkbw")
-            .withType(ParameterType.ARRAY)
-            .withDefaultProperty("xk")
-            .withRequired(true)
-            .withDescription("ihebwtsw");
+        ScenarioParameter model = new ScenarioParameter().withName("oxgsgbpfgzdjtx")
+            .withType(ParameterType.BOOLEAN)
+            .withDefaultProperty("lbqvgaqvlgafcqu")
+            .withRequired(false)
+            .withDescription("etnwsdtutnw")
+            .withFormat(new ScenarioParameterFormat().withFormatType(ParameterFormatType.DURATION)
+                .withExamples(Arrays.asList("uzhyrmewipmvekdx", "kuqgsjjxundxgket")));
         model = BinaryData.fromObject(model).toObject(ScenarioParameter.class);
-        Assertions.assertEquals("embnkbw", model.name());
-        Assertions.assertEquals(ParameterType.ARRAY, model.type());
-        Assertions.assertEquals("xk", model.defaultProperty());
-        Assertions.assertTrue(model.required());
-        Assertions.assertEquals("ihebwtsw", model.description());
+        Assertions.assertEquals("oxgsgbpfgzdjtx", model.name());
+        Assertions.assertEquals(ParameterType.BOOLEAN, model.type());
+        Assertions.assertEquals("lbqvgaqvlgafcqu", model.defaultProperty());
+        Assertions.assertFalse(model.required());
+        Assertions.assertEquals("etnwsdtutnw", model.description());
+        Assertions.assertEquals(ParameterFormatType.DURATION, model.format().formatType());
+        Assertions.assertEquals("uzhyrmewipmvekdx", model.format().examples().get(0));
     }
 }

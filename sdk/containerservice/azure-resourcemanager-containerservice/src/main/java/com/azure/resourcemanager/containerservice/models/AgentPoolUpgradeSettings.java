@@ -64,6 +64,15 @@ public final class AgentPoolUpgradeSettings implements JsonSerializable<AgentPoo
      */
     private UndrainableNodeBehavior undrainableNodeBehavior;
 
+    /*
+     * Settings for upgrade gating on upgrades of this agent pool. Health signals are `HealthSignal` custom resources
+     * published by monitoring components running in the cluster. When the cluster-level `enabled` is unset or `false`,
+     * this agent pool can opt in independently. When the cluster-level `enabled` is `true`, gating is inherited and
+     * setting this agent pool's `enabled` to `false` is rejected; an omitted value on a newly created agent pool is
+     * defaulted to `true`.
+     */
+    private UpgradeGateSettings upgradeGateSettings;
+
     /**
      * Creates an instance of AgentPoolUpgradeSettings class.
      */
@@ -231,11 +240,42 @@ public final class AgentPoolUpgradeSettings implements JsonSerializable<AgentPoo
     }
 
     /**
+     * Get the upgradeGateSettings property: Settings for upgrade gating on upgrades of this agent pool. Health signals
+     * are `HealthSignal` custom resources published by monitoring components running in the cluster. When the
+     * cluster-level `enabled` is unset or `false`, this agent pool can opt in independently. When the cluster-level
+     * `enabled` is `true`, gating is inherited and setting this agent pool's `enabled` to `false` is rejected; an
+     * omitted value on a newly created agent pool is defaulted to `true`.
+     * 
+     * @return the upgradeGateSettings value.
+     */
+    public UpgradeGateSettings upgradeGateSettings() {
+        return this.upgradeGateSettings;
+    }
+
+    /**
+     * Set the upgradeGateSettings property: Settings for upgrade gating on upgrades of this agent pool. Health signals
+     * are `HealthSignal` custom resources published by monitoring components running in the cluster. When the
+     * cluster-level `enabled` is unset or `false`, this agent pool can opt in independently. When the cluster-level
+     * `enabled` is `true`, gating is inherited and setting this agent pool's `enabled` to `false` is rejected; an
+     * omitted value on a newly created agent pool is defaulted to `true`.
+     * 
+     * @param upgradeGateSettings the upgradeGateSettings value to set.
+     * @return the AgentPoolUpgradeSettings object itself.
+     */
+    public AgentPoolUpgradeSettings withUpgradeGateSettings(UpgradeGateSettings upgradeGateSettings) {
+        this.upgradeGateSettings = upgradeGateSettings;
+        return this;
+    }
+
+    /**
      * Validates the instance.
      * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {
+        if (upgradeGateSettings() != null) {
+            upgradeGateSettings().validate();
+        }
     }
 
     /**
@@ -251,6 +291,7 @@ public final class AgentPoolUpgradeSettings implements JsonSerializable<AgentPoo
         jsonWriter.writeNumberField("nodeSoakDurationInMinutes", this.nodeSoakDurationInMinutes);
         jsonWriter.writeStringField("undrainableNodeBehavior",
             this.undrainableNodeBehavior == null ? null : this.undrainableNodeBehavior.toString());
+        jsonWriter.writeJsonField("upgradeGateSettings", this.upgradeGateSettings);
         return jsonWriter.writeEndObject();
     }
 
@@ -283,6 +324,8 @@ public final class AgentPoolUpgradeSettings implements JsonSerializable<AgentPoo
                 } else if ("undrainableNodeBehavior".equals(fieldName)) {
                     deserializedAgentPoolUpgradeSettings.undrainableNodeBehavior
                         = UndrainableNodeBehavior.fromString(reader.getString());
+                } else if ("upgradeGateSettings".equals(fieldName)) {
+                    deserializedAgentPoolUpgradeSettings.upgradeGateSettings = UpgradeGateSettings.fromJson(reader);
                 } else {
                     reader.skipChildren();
                 }

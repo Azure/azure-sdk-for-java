@@ -124,11 +124,7 @@ public final class AssignmentImpl implements Assignment, Assignment.Definition, 
     }
 
     public Assignment create() {
-        this.innerObject = serviceManager.serviceClient()
-            .getAssignments()
-            .createOrUpdateWithResponse(resourceGroupName, assignmentId, this.innerModel(), Context.NONE)
-            .getValue();
-        return this;
+        return this.create(Context.NONE);
     }
 
     public Assignment create(Context context) {
@@ -150,11 +146,7 @@ public final class AssignmentImpl implements Assignment, Assignment.Definition, 
     }
 
     public Assignment apply() {
-        this.innerObject = serviceManager.serviceClient()
-            .getAssignments()
-            .createOrUpdateWithResponse(resourceGroupName, assignmentId, this.innerModel(), Context.NONE)
-            .getValue();
-        return this;
+        return this.apply(Context.NONE);
     }
 
     public Assignment apply(Context context) {
@@ -168,16 +160,16 @@ public final class AssignmentImpl implements Assignment, Assignment.Definition, 
     AssignmentImpl(AssignmentInner innerObject, com.azure.resourcemanager.security.SecurityManager serviceManager) {
         this.innerObject = innerObject;
         this.serviceManager = serviceManager;
-        this.resourceGroupName = ResourceManagerUtils.getValueFromIdByName(innerObject.id(), "resourceGroups");
-        this.assignmentId = ResourceManagerUtils.getValueFromIdByName(innerObject.id(), "assignments");
+        this.resourceGroupName = ResourceManagerUtils.getValueFromIdByParameterName(innerObject.id(),
+            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Security/assignments/{assignmentId}",
+            "resourceGroupName");
+        this.assignmentId = ResourceManagerUtils.getValueFromIdByParameterName(innerObject.id(),
+            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Security/assignments/{assignmentId}",
+            "assignmentId");
     }
 
     public Assignment refresh() {
-        this.innerObject = serviceManager.serviceClient()
-            .getAssignments()
-            .getByResourceGroupWithResponse(resourceGroupName, assignmentId, Context.NONE)
-            .getValue();
-        return this;
+        return this.refresh(Context.NONE);
     }
 
     public Assignment refresh(Context context) {

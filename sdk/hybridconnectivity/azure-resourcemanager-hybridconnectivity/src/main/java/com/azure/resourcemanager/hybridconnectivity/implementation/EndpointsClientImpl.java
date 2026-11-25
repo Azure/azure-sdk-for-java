@@ -283,17 +283,7 @@ public final class EndpointsClientImpl implements EndpointsClient {
         return getWithResponseAsync(resourceUri, endpointName).flatMap(res -> Mono.justOrEmpty(res.getValue()));
     }
 
-    /**
-     * Gets the endpoint to the resource.
-     * 
-     * @param resourceUri The fully qualified Azure Resource manager identifier of the resource.
-     * @param endpointName The endpoint name.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the endpoint to the resource along with {@link Response}.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Response<EndpointResourceInner> getWithResponse(String resourceUri, String endpointName, Context context) {
         final String accept = "application/json";
@@ -301,16 +291,7 @@ public final class EndpointsClientImpl implements EndpointsClient {
             accept, context);
     }
 
-    /**
-     * Gets the endpoint to the resource.
-     * 
-     * @param resourceUri The fully qualified Azure Resource manager identifier of the resource.
-     * @param endpointName The endpoint name.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the endpoint to the resource.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public EndpointResourceInner get(String resourceUri, String endpointName) {
         return getWithResponse(resourceUri, endpointName, Context.NONE).getValue();
@@ -357,18 +338,7 @@ public final class EndpointsClientImpl implements EndpointsClient {
             .flatMap(res -> Mono.justOrEmpty(res.getValue()));
     }
 
-    /**
-     * Create or update the endpoint to the target resource.
-     * 
-     * @param resourceUri The fully qualified Azure Resource manager identifier of the resource.
-     * @param endpointName The endpoint name.
-     * @param endpointResource Endpoint details.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the endpoint for the target resource along with {@link Response}.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Response<EndpointResourceInner> createOrUpdateWithResponse(String resourceUri, String endpointName,
         EndpointResourceInner endpointResource, Context context) {
@@ -378,17 +348,7 @@ public final class EndpointsClientImpl implements EndpointsClient {
             endpointName, contentType, accept, endpointResource, context);
     }
 
-    /**
-     * Create or update the endpoint to the target resource.
-     * 
-     * @param resourceUri The fully qualified Azure Resource manager identifier of the resource.
-     * @param endpointName The endpoint name.
-     * @param endpointResource Endpoint details.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the endpoint for the target resource.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public EndpointResourceInner createOrUpdate(String resourceUri, String endpointName,
         EndpointResourceInner endpointResource) {
@@ -436,18 +396,7 @@ public final class EndpointsClientImpl implements EndpointsClient {
             .flatMap(res -> Mono.justOrEmpty(res.getValue()));
     }
 
-    /**
-     * Update the endpoint to the target resource.
-     * 
-     * @param resourceUri The fully qualified Azure Resource manager identifier of the resource.
-     * @param endpointName The endpoint name.
-     * @param endpointResource Endpoint details.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the endpoint for the target resource along with {@link Response}.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Response<EndpointResourceInner> updateWithResponse(String resourceUri, String endpointName,
         EndpointResourceInner endpointResource, Context context) {
@@ -457,17 +406,7 @@ public final class EndpointsClientImpl implements EndpointsClient {
             contentType, accept, endpointResource, context);
     }
 
-    /**
-     * Update the endpoint to the target resource.
-     * 
-     * @param resourceUri The fully qualified Azure Resource manager identifier of the resource.
-     * @param endpointName The endpoint name.
-     * @param endpointResource Endpoint details.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the endpoint for the target resource.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public EndpointResourceInner update(String resourceUri, String endpointName,
         EndpointResourceInner endpointResource) {
@@ -507,32 +446,14 @@ public final class EndpointsClientImpl implements EndpointsClient {
         return deleteWithResponseAsync(resourceUri, endpointName).flatMap(ignored -> Mono.empty());
     }
 
-    /**
-     * Deletes the endpoint access to the target resource.
-     * 
-     * @param resourceUri The fully qualified Azure Resource manager identifier of the resource.
-     * @param endpointName The endpoint name.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the {@link Response}.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Response<Void> deleteWithResponse(String resourceUri, String endpointName, Context context) {
         return service.deleteSync(this.client.getEndpoint(), this.client.getApiVersion(), resourceUri, endpointName,
             context);
     }
 
-    /**
-     * Deletes the endpoint access to the target resource.
-     * 
-     * @param resourceUri The fully qualified Azure Resource manager identifier of the resource.
-     * @param endpointName The endpoint name.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public void delete(String resourceUri, String endpointName) {
         deleteWithResponse(resourceUri, endpointName, Context.NONE);
@@ -583,11 +504,7 @@ public final class EndpointsClientImpl implements EndpointsClient {
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private PagedResponse<EndpointResourceInner> listSinglePage(String resourceUri) {
-        final String accept = "application/json";
-        Response<EndpointsList> res = service.listSync(this.client.getEndpoint(), this.client.getApiVersion(),
-            resourceUri, accept, Context.NONE);
-        return new PagedResponseBase<>(res.getRequest(), res.getStatusCode(), res.getHeaders(), res.getValue().value(),
-            res.getValue().nextLink(), null);
+        return listSinglePage(resourceUri, Context.NONE);
     }
 
     /**
@@ -609,30 +526,13 @@ public final class EndpointsClientImpl implements EndpointsClient {
             res.getValue().nextLink(), null);
     }
 
-    /**
-     * List of endpoints to the target resource.
-     * 
-     * @param resourceUri The fully qualified Azure Resource manager identifier of the resource.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the list of endpoints as paginated response with {@link PagedIterable}.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.COLLECTION)
     public PagedIterable<EndpointResourceInner> list(String resourceUri) {
-        return new PagedIterable<>(() -> listSinglePage(resourceUri), nextLink -> listNextSinglePage(nextLink));
+        return list(resourceUri, Context.NONE);
     }
 
-    /**
-     * List of endpoints to the target resource.
-     * 
-     * @param resourceUri The fully qualified Azure Resource manager identifier of the resource.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the list of endpoints as paginated response with {@link PagedIterable}.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.COLLECTION)
     public PagedIterable<EndpointResourceInner> list(String resourceUri, Context context) {
         return new PagedIterable<>(() -> listSinglePage(resourceUri, context),
@@ -680,19 +580,7 @@ public final class EndpointsClientImpl implements EndpointsClient {
             .flatMap(res -> Mono.justOrEmpty(res.getValue()));
     }
 
-    /**
-     * Gets the endpoint access credentials to the resource.
-     * 
-     * @param resourceUri The fully qualified Azure Resource manager identifier of the resource.
-     * @param endpointName The endpoint name.
-     * @param expiresin The is how long the endpoint access token is valid (in seconds).
-     * @param listCredentialsRequest Object of type ListCredentialsRequest.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the endpoint access credentials to the resource along with {@link Response}.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Response<EndpointAccessResourceInner> listCredentialsWithResponse(String resourceUri, String endpointName,
         Long expiresin, ListCredentialsRequest listCredentialsRequest, Context context) {
@@ -701,16 +589,7 @@ public final class EndpointsClientImpl implements EndpointsClient {
             endpointName, expiresin, accept, listCredentialsRequest, context);
     }
 
-    /**
-     * Gets the endpoint access credentials to the resource.
-     * 
-     * @param resourceUri The fully qualified Azure Resource manager identifier of the resource.
-     * @param endpointName The endpoint name.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the endpoint access credentials to the resource.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public EndpointAccessResourceInner listCredentials(String resourceUri, String endpointName) {
         final Long expiresin = null;
@@ -763,19 +642,7 @@ public final class EndpointsClientImpl implements EndpointsClient {
             listIngressGatewayCredentialsRequest).flatMap(res -> Mono.justOrEmpty(res.getValue()));
     }
 
-    /**
-     * Gets the ingress gateway endpoint credentials.
-     * 
-     * @param resourceUri The fully qualified Azure Resource manager identifier of the resource.
-     * @param endpointName The endpoint name.
-     * @param expiresin The is how long the endpoint access token is valid (in seconds).
-     * @param listIngressGatewayCredentialsRequest Object of type ListIngressGatewayCredentialsRequest.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the ingress gateway endpoint credentials along with {@link Response}.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Response<IngressGatewayResourceInner> listIngressGatewayCredentialsWithResponse(String resourceUri,
         String endpointName, Long expiresin, ListIngressGatewayCredentialsRequest listIngressGatewayCredentialsRequest,
@@ -785,16 +652,7 @@ public final class EndpointsClientImpl implements EndpointsClient {
             resourceUri, endpointName, expiresin, accept, listIngressGatewayCredentialsRequest, context);
     }
 
-    /**
-     * Gets the ingress gateway endpoint credentials.
-     * 
-     * @param resourceUri The fully qualified Azure Resource manager identifier of the resource.
-     * @param endpointName The endpoint name.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the ingress gateway endpoint credentials.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public IngressGatewayResourceInner listIngressGatewayCredentials(String resourceUri, String endpointName) {
         final Long expiresin = null;
@@ -844,18 +702,7 @@ public final class EndpointsClientImpl implements EndpointsClient {
             .flatMap(res -> Mono.justOrEmpty(res.getValue()));
     }
 
-    /**
-     * Fetches the managed proxy details.
-     * 
-     * @param resourceUri The fully qualified Azure Resource manager identifier of the resource.
-     * @param endpointName The endpoint name.
-     * @param managedProxyRequest Object of type ManagedProxyRequest.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return managed Proxy along with {@link Response}.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Response<ManagedProxyResourceInner> listManagedProxyDetailsWithResponse(String resourceUri,
         String endpointName, ManagedProxyRequest managedProxyRequest, Context context) {
@@ -865,17 +712,7 @@ public final class EndpointsClientImpl implements EndpointsClient {
             endpointName, contentType, accept, managedProxyRequest, context);
     }
 
-    /**
-     * Fetches the managed proxy details.
-     * 
-     * @param resourceUri The fully qualified Azure Resource manager identifier of the resource.
-     * @param endpointName The endpoint name.
-     * @param managedProxyRequest Object of type ManagedProxyRequest.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return managed Proxy.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public ManagedProxyResourceInner listManagedProxyDetails(String resourceUri, String endpointName,
         ManagedProxyRequest managedProxyRequest) {
@@ -912,10 +749,7 @@ public final class EndpointsClientImpl implements EndpointsClient {
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private PagedResponse<EndpointResourceInner> listNextSinglePage(String nextLink) {
-        final String accept = "application/json";
-        Response<EndpointsList> res = service.listNextSync(nextLink, this.client.getEndpoint(), accept, Context.NONE);
-        return new PagedResponseBase<>(res.getRequest(), res.getStatusCode(), res.getHeaders(), res.getValue().value(),
-            res.getValue().nextLink(), null);
+        return listNextSinglePage(nextLink, Context.NONE);
     }
 
     /**

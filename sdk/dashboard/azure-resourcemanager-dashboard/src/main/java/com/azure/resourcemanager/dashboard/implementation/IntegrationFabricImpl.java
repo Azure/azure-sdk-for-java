@@ -89,10 +89,7 @@ public final class IntegrationFabricImpl
     }
 
     public IntegrationFabric create() {
-        this.innerObject = serviceManager.serviceClient()
-            .getIntegrationFabrics()
-            .create(resourceGroupName, workspaceName, integrationFabricName, this.innerModel(), Context.NONE);
-        return this;
+        return this.create(Context.NONE);
     }
 
     public IntegrationFabric create(Context context) {
@@ -114,10 +111,7 @@ public final class IntegrationFabricImpl
     }
 
     public IntegrationFabric apply() {
-        this.innerObject = serviceManager.serviceClient()
-            .getIntegrationFabrics()
-            .update(resourceGroupName, workspaceName, integrationFabricName, updateRequestBodyParameters, Context.NONE);
-        return this;
+        return this.apply(Context.NONE);
     }
 
     public IntegrationFabric apply(Context context) {
@@ -131,17 +125,19 @@ public final class IntegrationFabricImpl
         com.azure.resourcemanager.dashboard.DashboardManager serviceManager) {
         this.innerObject = innerObject;
         this.serviceManager = serviceManager;
-        this.resourceGroupName = ResourceManagerUtils.getValueFromIdByName(innerObject.id(), "resourceGroups");
-        this.workspaceName = ResourceManagerUtils.getValueFromIdByName(innerObject.id(), "grafana");
-        this.integrationFabricName = ResourceManagerUtils.getValueFromIdByName(innerObject.id(), "integrationFabrics");
+        this.resourceGroupName = ResourceManagerUtils.getValueFromIdByParameterName(innerObject.id(),
+            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Dashboard/grafana/{workspaceName}/integrationFabrics/{integrationFabricName}",
+            "resourceGroupName");
+        this.workspaceName = ResourceManagerUtils.getValueFromIdByParameterName(innerObject.id(),
+            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Dashboard/grafana/{workspaceName}/integrationFabrics/{integrationFabricName}",
+            "workspaceName");
+        this.integrationFabricName = ResourceManagerUtils.getValueFromIdByParameterName(innerObject.id(),
+            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Dashboard/grafana/{workspaceName}/integrationFabrics/{integrationFabricName}",
+            "integrationFabricName");
     }
 
     public IntegrationFabric refresh() {
-        this.innerObject = serviceManager.serviceClient()
-            .getIntegrationFabrics()
-            .getWithResponse(resourceGroupName, workspaceName, integrationFabricName, Context.NONE)
-            .getValue();
-        return this;
+        return this.refresh(Context.NONE);
     }
 
     public IntegrationFabric refresh(Context context) {

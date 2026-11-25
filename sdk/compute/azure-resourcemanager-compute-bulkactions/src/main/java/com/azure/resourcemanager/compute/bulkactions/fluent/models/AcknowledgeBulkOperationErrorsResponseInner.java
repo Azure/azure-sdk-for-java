@@ -13,24 +13,23 @@ import java.io.IOException;
 import java.util.List;
 
 /**
- * The response from acknowledging bulk operation errors.
+ * The result of acknowledging errors for specified operations.
  */
 @Immutable
 public final class AcknowledgeBulkOperationErrorsResponseInner
     implements JsonSerializable<AcknowledgeBulkOperationErrorsResponseInner> {
     /*
-     * The set of operation ids that were newly acknowledged
+     * The Bulk Action Operation Ids that identify operations with acknowledged errors.
      */
     private List<String> acknowledged;
 
     /*
-     * The set of operation ids that were not found in the completed operations store
+     * The Bulk Action Operation Ids that were not found or are no longer available.
      */
     private List<String> notFound;
 
     /*
-     * The set of operation ids that were skipped because they were already acknowledged, not failed, or belong to a
-     * different scope
+     * The Bulk Action Operation Ids that identify operations with errors that could not be acknowledged.
      */
     private List<String> skipped;
 
@@ -41,7 +40,7 @@ public final class AcknowledgeBulkOperationErrorsResponseInner
     }
 
     /**
-     * Get the acknowledged property: The set of operation ids that were newly acknowledged.
+     * Get the acknowledged property: The Bulk Action Operation Ids that identify operations with acknowledged errors.
      * 
      * @return the acknowledged value.
      */
@@ -50,7 +49,7 @@ public final class AcknowledgeBulkOperationErrorsResponseInner
     }
 
     /**
-     * Get the notFound property: The set of operation ids that were not found in the completed operations store.
+     * Get the notFound property: The Bulk Action Operation Ids that were not found or are no longer available.
      * 
      * @return the notFound value.
      */
@@ -59,8 +58,8 @@ public final class AcknowledgeBulkOperationErrorsResponseInner
     }
 
     /**
-     * Get the skipped property: The set of operation ids that were skipped because they were already acknowledged, not
-     * failed, or belong to a different scope.
+     * Get the skipped property: The Bulk Action Operation Ids that identify operations with errors that could not be
+     * acknowledged.
      * 
      * @return the skipped value.
      */

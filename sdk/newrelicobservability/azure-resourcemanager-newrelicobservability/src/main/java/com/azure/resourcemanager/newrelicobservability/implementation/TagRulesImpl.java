@@ -45,7 +45,7 @@ public final class TagRulesImpl implements TagRules {
     }
 
     public void delete(String resourceGroupName, String monitorName, String ruleSetName) {
-        this.serviceClient().delete(resourceGroupName, monitorName, ruleSetName);
+        this.delete(resourceGroupName, monitorName, ruleSetName, Context.NONE);
     }
 
     public void delete(String resourceGroupName, String monitorName, String ruleSetName, Context context) {
@@ -53,9 +53,7 @@ public final class TagRulesImpl implements TagRules {
     }
 
     public PagedIterable<TagRule> listByNewRelicMonitorResource(String resourceGroupName, String monitorName) {
-        PagedIterable<TagRuleInner> inner
-            = this.serviceClient().listByNewRelicMonitorResource(resourceGroupName, monitorName);
-        return ResourceManagerUtils.mapPage(inner, inner1 -> new TagRuleImpl(inner1, this.manager()));
+        return this.listByNewRelicMonitorResource(resourceGroupName, monitorName, Context.NONE);
     }
 
     public PagedIterable<TagRule> listByNewRelicMonitorResource(String resourceGroupName, String monitorName,
@@ -66,78 +64,36 @@ public final class TagRulesImpl implements TagRules {
     }
 
     public TagRule getById(String id) {
-        String resourceGroupName = ResourceManagerUtils.getValueFromIdByName(id, "resourceGroups");
-        if (resourceGroupName == null) {
-            throw LOGGER.logExceptionAsError(new IllegalArgumentException(
-                String.format("The resource ID '%s' is not valid. Missing path segment 'resourceGroups'.", id)));
-        }
-        String monitorName = ResourceManagerUtils.getValueFromIdByName(id, "monitors");
-        if (monitorName == null) {
-            throw LOGGER.logExceptionAsError(new IllegalArgumentException(
-                String.format("The resource ID '%s' is not valid. Missing path segment 'monitors'.", id)));
-        }
-        String ruleSetName = ResourceManagerUtils.getValueFromIdByName(id, "tagRules");
-        if (ruleSetName == null) {
-            throw LOGGER.logExceptionAsError(new IllegalArgumentException(
-                String.format("The resource ID '%s' is not valid. Missing path segment 'tagRules'.", id)));
-        }
-        return this.getWithResponse(resourceGroupName, monitorName, ruleSetName, Context.NONE).getValue();
+        return this.getByIdWithResponse(id, Context.NONE).getValue();
     }
 
     public Response<TagRule> getByIdWithResponse(String id, Context context) {
-        String resourceGroupName = ResourceManagerUtils.getValueFromIdByName(id, "resourceGroups");
-        if (resourceGroupName == null) {
-            throw LOGGER.logExceptionAsError(new IllegalArgumentException(
-                String.format("The resource ID '%s' is not valid. Missing path segment 'resourceGroups'.", id)));
-        }
-        String monitorName = ResourceManagerUtils.getValueFromIdByName(id, "monitors");
-        if (monitorName == null) {
-            throw LOGGER.logExceptionAsError(new IllegalArgumentException(
-                String.format("The resource ID '%s' is not valid. Missing path segment 'monitors'.", id)));
-        }
-        String ruleSetName = ResourceManagerUtils.getValueFromIdByName(id, "tagRules");
-        if (ruleSetName == null) {
-            throw LOGGER.logExceptionAsError(new IllegalArgumentException(
-                String.format("The resource ID '%s' is not valid. Missing path segment 'tagRules'.", id)));
-        }
+        String resourceGroupName = ResourceManagerUtils.getRequiredValueFromIdByParameterName(id,
+            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/NewRelic.Observability/monitors/{monitorName}/tagRules/{ruleSetName}",
+            "resourceGroupName", "resourceGroups", LOGGER);
+        String monitorName = ResourceManagerUtils.getRequiredValueFromIdByParameterName(id,
+            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/NewRelic.Observability/monitors/{monitorName}/tagRules/{ruleSetName}",
+            "monitorName", "monitors", LOGGER);
+        String ruleSetName = ResourceManagerUtils.getRequiredValueFromIdByParameterName(id,
+            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/NewRelic.Observability/monitors/{monitorName}/tagRules/{ruleSetName}",
+            "ruleSetName", "tagRules", LOGGER);
         return this.getWithResponse(resourceGroupName, monitorName, ruleSetName, context);
     }
 
     public void deleteById(String id) {
-        String resourceGroupName = ResourceManagerUtils.getValueFromIdByName(id, "resourceGroups");
-        if (resourceGroupName == null) {
-            throw LOGGER.logExceptionAsError(new IllegalArgumentException(
-                String.format("The resource ID '%s' is not valid. Missing path segment 'resourceGroups'.", id)));
-        }
-        String monitorName = ResourceManagerUtils.getValueFromIdByName(id, "monitors");
-        if (monitorName == null) {
-            throw LOGGER.logExceptionAsError(new IllegalArgumentException(
-                String.format("The resource ID '%s' is not valid. Missing path segment 'monitors'.", id)));
-        }
-        String ruleSetName = ResourceManagerUtils.getValueFromIdByName(id, "tagRules");
-        if (ruleSetName == null) {
-            throw LOGGER.logExceptionAsError(new IllegalArgumentException(
-                String.format("The resource ID '%s' is not valid. Missing path segment 'tagRules'.", id)));
-        }
-        this.delete(resourceGroupName, monitorName, ruleSetName, Context.NONE);
+        this.deleteByIdWithResponse(id, Context.NONE);
     }
 
     public void deleteByIdWithResponse(String id, Context context) {
-        String resourceGroupName = ResourceManagerUtils.getValueFromIdByName(id, "resourceGroups");
-        if (resourceGroupName == null) {
-            throw LOGGER.logExceptionAsError(new IllegalArgumentException(
-                String.format("The resource ID '%s' is not valid. Missing path segment 'resourceGroups'.", id)));
-        }
-        String monitorName = ResourceManagerUtils.getValueFromIdByName(id, "monitors");
-        if (monitorName == null) {
-            throw LOGGER.logExceptionAsError(new IllegalArgumentException(
-                String.format("The resource ID '%s' is not valid. Missing path segment 'monitors'.", id)));
-        }
-        String ruleSetName = ResourceManagerUtils.getValueFromIdByName(id, "tagRules");
-        if (ruleSetName == null) {
-            throw LOGGER.logExceptionAsError(new IllegalArgumentException(
-                String.format("The resource ID '%s' is not valid. Missing path segment 'tagRules'.", id)));
-        }
+        String resourceGroupName = ResourceManagerUtils.getRequiredValueFromIdByParameterName(id,
+            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/NewRelic.Observability/monitors/{monitorName}/tagRules/{ruleSetName}",
+            "resourceGroupName", "resourceGroups", LOGGER);
+        String monitorName = ResourceManagerUtils.getRequiredValueFromIdByParameterName(id,
+            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/NewRelic.Observability/monitors/{monitorName}/tagRules/{ruleSetName}",
+            "monitorName", "monitors", LOGGER);
+        String ruleSetName = ResourceManagerUtils.getRequiredValueFromIdByParameterName(id,
+            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/NewRelic.Observability/monitors/{monitorName}/tagRules/{ruleSetName}",
+            "ruleSetName", "tagRules", LOGGER);
         this.delete(resourceGroupName, monitorName, ruleSetName, context);
     }
 

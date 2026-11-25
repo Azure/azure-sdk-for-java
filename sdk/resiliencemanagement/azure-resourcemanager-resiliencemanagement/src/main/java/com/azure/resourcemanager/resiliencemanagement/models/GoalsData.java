@@ -17,68 +17,19 @@ import java.io.IOException;
 @Immutable
 public final class GoalsData implements JsonSerializable<GoalsData> {
     /*
-     * Arm id of the goal template.
-     */
-    private String templateId;
-
-    /*
      * Arm id of the goal assignment.
      */
     private String assignmentId;
 
     /*
-     * Regional RPO set in resilience goal in minutes.
+     * Zonal resiliency goal copied from the goal assignment.
      */
-    private IsoDuration regionalRecoveryPointObjectiveInMinutes;
-
-    /*
-     * Computed recovery point estimated for the service group in minutes.
-     */
-    private IsoDuration regionalRecoveryPointEstimatedInMinutes;
-
-    /*
-     * Regional RPO status of the service group.
-     */
-    private ResilienceHealthStatus regionalRecoveryPointObjectiveStatus;
-
-    /*
-     * Regional RTO set in resilience goal in minutes.
-     */
-    private IsoDuration regionalRecoveryTimeObjectiveInMinutes;
-
-    /*
-     * Computed RTA for the service group in minutes.
-     */
-    private IsoDuration regionalRecoveryTimeActualInMinutes;
-
-    /*
-     * Regional RTO status of the service group.
-     */
-    private ResilienceHealthStatus regionalRecoveryTimeObjectiveStatus;
-
-    /*
-     * Whether the resource is required for high availability.
-     */
-    private UnifiedResilienceItemRequirementSelected requireHighAvailability;
-
-    /*
-     * Whether the resource is required for disaster recovery.
-     */
-    private UnifiedResilienceItemRequirementSelected requireDisasterRecovery;
+    private UnifiedResilienceItemGoalRequirement zonalResiliency;
 
     /**
      * Creates an instance of GoalsData class.
      */
     private GoalsData() {
-    }
-
-    /**
-     * Get the templateId property: Arm id of the goal template.
-     * 
-     * @return the templateId value.
-     */
-    public String templateId() {
-        return this.templateId;
     }
 
     /**
@@ -91,76 +42,12 @@ public final class GoalsData implements JsonSerializable<GoalsData> {
     }
 
     /**
-     * Get the regionalRecoveryPointObjectiveInMinutes property: Regional RPO set in resilience goal in minutes.
+     * Get the zonalResiliency property: Zonal resiliency goal copied from the goal assignment.
      * 
-     * @return the regionalRecoveryPointObjectiveInMinutes value.
+     * @return the zonalResiliency value.
      */
-    public IsoDuration regionalRecoveryPointObjectiveInMinutes() {
-        return this.regionalRecoveryPointObjectiveInMinutes;
-    }
-
-    /**
-     * Get the regionalRecoveryPointEstimatedInMinutes property: Computed recovery point estimated for the service group
-     * in minutes.
-     * 
-     * @return the regionalRecoveryPointEstimatedInMinutes value.
-     */
-    public IsoDuration regionalRecoveryPointEstimatedInMinutes() {
-        return this.regionalRecoveryPointEstimatedInMinutes;
-    }
-
-    /**
-     * Get the regionalRecoveryPointObjectiveStatus property: Regional RPO status of the service group.
-     * 
-     * @return the regionalRecoveryPointObjectiveStatus value.
-     */
-    public ResilienceHealthStatus regionalRecoveryPointObjectiveStatus() {
-        return this.regionalRecoveryPointObjectiveStatus;
-    }
-
-    /**
-     * Get the regionalRecoveryTimeObjectiveInMinutes property: Regional RTO set in resilience goal in minutes.
-     * 
-     * @return the regionalRecoveryTimeObjectiveInMinutes value.
-     */
-    public IsoDuration regionalRecoveryTimeObjectiveInMinutes() {
-        return this.regionalRecoveryTimeObjectiveInMinutes;
-    }
-
-    /**
-     * Get the regionalRecoveryTimeActualInMinutes property: Computed RTA for the service group in minutes.
-     * 
-     * @return the regionalRecoveryTimeActualInMinutes value.
-     */
-    public IsoDuration regionalRecoveryTimeActualInMinutes() {
-        return this.regionalRecoveryTimeActualInMinutes;
-    }
-
-    /**
-     * Get the regionalRecoveryTimeObjectiveStatus property: Regional RTO status of the service group.
-     * 
-     * @return the regionalRecoveryTimeObjectiveStatus value.
-     */
-    public ResilienceHealthStatus regionalRecoveryTimeObjectiveStatus() {
-        return this.regionalRecoveryTimeObjectiveStatus;
-    }
-
-    /**
-     * Get the requireHighAvailability property: Whether the resource is required for high availability.
-     * 
-     * @return the requireHighAvailability value.
-     */
-    public UnifiedResilienceItemRequirementSelected requireHighAvailability() {
-        return this.requireHighAvailability;
-    }
-
-    /**
-     * Get the requireDisasterRecovery property: Whether the resource is required for disaster recovery.
-     * 
-     * @return the requireDisasterRecovery value.
-     */
-    public UnifiedResilienceItemRequirementSelected requireDisasterRecovery() {
-        return this.requireDisasterRecovery;
+    public UnifiedResilienceItemGoalRequirement zonalResiliency() {
+        return this.zonalResiliency;
     }
 
     /**
@@ -169,36 +56,8 @@ public final class GoalsData implements JsonSerializable<GoalsData> {
     @Override
     public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
         jsonWriter.writeStartObject();
-        jsonWriter.writeStringField("templateId", this.templateId);
         jsonWriter.writeStringField("assignmentId", this.assignmentId);
-        jsonWriter.writeStringField("regionalRecoveryPointObjectiveStatus",
-            this.regionalRecoveryPointObjectiveStatus == null
-                ? null
-                : this.regionalRecoveryPointObjectiveStatus.toString());
-        jsonWriter.writeStringField("regionalRecoveryTimeObjectiveStatus",
-            this.regionalRecoveryTimeObjectiveStatus == null
-                ? null
-                : this.regionalRecoveryTimeObjectiveStatus.toString());
-        jsonWriter.writeStringField("regionalRecoveryPointObjectiveInMinutes",
-            this.regionalRecoveryPointObjectiveInMinutes == null
-                ? null
-                : this.regionalRecoveryPointObjectiveInMinutes.toString());
-        jsonWriter.writeStringField("regionalRecoveryPointEstimatedInMinutes",
-            this.regionalRecoveryPointEstimatedInMinutes == null
-                ? null
-                : this.regionalRecoveryPointEstimatedInMinutes.toString());
-        jsonWriter.writeStringField("regionalRecoveryTimeObjectiveInMinutes",
-            this.regionalRecoveryTimeObjectiveInMinutes == null
-                ? null
-                : this.regionalRecoveryTimeObjectiveInMinutes.toString());
-        jsonWriter.writeStringField("regionalRecoveryTimeActualInMinutes",
-            this.regionalRecoveryTimeActualInMinutes == null
-                ? null
-                : this.regionalRecoveryTimeActualInMinutes.toString());
-        jsonWriter.writeStringField("requireHighAvailability",
-            this.requireHighAvailability == null ? null : this.requireHighAvailability.toString());
-        jsonWriter.writeStringField("requireDisasterRecovery",
-            this.requireDisasterRecovery == null ? null : this.requireDisasterRecovery.toString());
+        jsonWriter.writeJsonField("zonalResiliency", this.zonalResiliency);
         return jsonWriter.writeEndObject();
     }
 
@@ -218,34 +77,10 @@ public final class GoalsData implements JsonSerializable<GoalsData> {
                 String fieldName = reader.getFieldName();
                 reader.nextToken();
 
-                if ("templateId".equals(fieldName)) {
-                    deserializedGoalsData.templateId = reader.getString();
-                } else if ("assignmentId".equals(fieldName)) {
+                if ("assignmentId".equals(fieldName)) {
                     deserializedGoalsData.assignmentId = reader.getString();
-                } else if ("regionalRecoveryPointObjectiveStatus".equals(fieldName)) {
-                    deserializedGoalsData.regionalRecoveryPointObjectiveStatus
-                        = ResilienceHealthStatus.fromString(reader.getString());
-                } else if ("regionalRecoveryTimeObjectiveStatus".equals(fieldName)) {
-                    deserializedGoalsData.regionalRecoveryTimeObjectiveStatus
-                        = ResilienceHealthStatus.fromString(reader.getString());
-                } else if ("regionalRecoveryPointObjectiveInMinutes".equals(fieldName)) {
-                    deserializedGoalsData.regionalRecoveryPointObjectiveInMinutes
-                        = IsoDuration.fromString(reader.getString());
-                } else if ("regionalRecoveryPointEstimatedInMinutes".equals(fieldName)) {
-                    deserializedGoalsData.regionalRecoveryPointEstimatedInMinutes
-                        = IsoDuration.fromString(reader.getString());
-                } else if ("regionalRecoveryTimeObjectiveInMinutes".equals(fieldName)) {
-                    deserializedGoalsData.regionalRecoveryTimeObjectiveInMinutes
-                        = IsoDuration.fromString(reader.getString());
-                } else if ("regionalRecoveryTimeActualInMinutes".equals(fieldName)) {
-                    deserializedGoalsData.regionalRecoveryTimeActualInMinutes
-                        = IsoDuration.fromString(reader.getString());
-                } else if ("requireHighAvailability".equals(fieldName)) {
-                    deserializedGoalsData.requireHighAvailability
-                        = UnifiedResilienceItemRequirementSelected.fromString(reader.getString());
-                } else if ("requireDisasterRecovery".equals(fieldName)) {
-                    deserializedGoalsData.requireDisasterRecovery
-                        = UnifiedResilienceItemRequirementSelected.fromString(reader.getString());
+                } else if ("zonalResiliency".equals(fieldName)) {
+                    deserializedGoalsData.zonalResiliency = UnifiedResilienceItemGoalRequirement.fromJson(reader);
                 } else {
                     reader.skipChildren();
                 }

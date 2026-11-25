@@ -3,13 +3,19 @@
 package com.azure.storage.file.datalake;
 
 import com.azure.core.http.HttpHeaderName;
+import com.azure.core.http.HttpMethod;
+import com.azure.core.http.HttpRequest;
+import com.azure.core.http.policy.HttpPipelinePolicy;
 import com.azure.core.http.rest.PagedResponse;
 import com.azure.core.http.rest.Response;
+import com.azure.core.test.utils.TestUtils;
 import com.azure.core.util.Context;
 import com.azure.core.util.CoreUtils;
 import com.azure.identity.DefaultAzureCredentialBuilder;
 import com.azure.storage.blob.BlobUrlParts;
 import com.azure.storage.blob.models.BlobErrorCode;
+import com.azure.storage.blob.SessionContext;
+import com.azure.storage.blob.SessionContext.SessionMode;
 import com.azure.storage.common.test.shared.TestHttpClientType;
 import com.azure.storage.common.test.shared.extensions.LiveOnly;
 import com.azure.storage.common.test.shared.extensions.PlaybackOnly;
@@ -39,17 +45,20 @@ import com.azure.storage.file.datalake.options.DataLakePathScheduleDeletionOptio
 import com.azure.storage.file.datalake.options.FileScheduleDeletionOptions;
 import com.azure.storage.file.datalake.options.FileSystemEncryptionScopeOptions;
 import org.junit.jupiter.api.Test;
+import org.junit.jupiter.api.parallel.ResourceLock;
 import org.junit.jupiter.params.ParameterizedTest;
 import org.junit.jupiter.params.provider.Arguments;
 import org.junit.jupiter.params.provider.CsvSource;
 import org.junit.jupiter.params.provider.MethodSource;
 import org.junit.jupiter.params.provider.ValueSource;
 
+import java.io.ByteArrayOutputStream;
 import java.time.Duration;
 import java.time.OffsetDateTime;
 import java.time.ZoneId;
 import java.time.format.DateTimeFormatter;
 import java.time.temporal.ChronoUnit;
+import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Collections;
 import java.util.HashMap;
@@ -261,10 +270,52 @@ public class FileSystemApiTests extends DataLakeTestBase {
         DataLakeFileSystemClient dataLakeFileSystemClient
             = primaryDataLakeServiceClient.getFileSystemClient(generateFileSystemName());
 
-        assertEquals(201,
-            dataLakeFileSystemClient.createIfNotExistsWithResponse(null, null, null, null).getStatusCode());
-        assertEquals(409,
-            dataLakeFileSystemClient.createIfNotExistsWithResponse(null, null, null, null).getStatusCode());
+        Response<Boolean> created = dataLakeFileSystemClient.createIfNotExistsWithResponse(null, null, null, null);
+        assertEquals(201, created.getStatusCode());
+        assertTrue(created.getValue());
+
+        Response<Boolean> existing = dataLakeFileSystemClient.createIfNotExistsWithResponse(null, null, null, null);
+        assertEquals(409, existing.getStatusCode());
+        assertFalse(existing.getValue());
+    }
+
+    @Test
+    public void createIfNotExistsOnFileSystemBeingDeleted() {
+        dataLakeFileSystemClient.delete();
+
+        DataLakeStorageException e
+            = assertThrows(DataLakeStorageException.class, () -> dataLakeFileSystemClient.createIfNotExists());
+        assertExceptionStatusCodeAndMessage(e, 409, BlobErrorCode.CONTAINER_BEING_DELETED);
+    }
+
+    @Test
+    public void createIfNotExistsWithResponseOnFileSystemBeingDeleted() {
+        dataLakeFileSystemClient.delete();
+
+        DataLakeStorageException e = assertThrows(DataLakeStorageException.class,
+            () -> dataLakeFileSystemClient.createIfNotExistsWithResponse(null, null, null, null));
+        assertExceptionStatusCodeAndMessage(e, 409, BlobErrorCode.CONTAINER_BEING_DELETED);
+    }
+
+    // Live only: it waits for the service to finish deleting the file system, typically 30 to 60 seconds. The recorded
+    // tests above cover the refusal while the delete is in progress.
+    @LiveOnly
+    @Test
+    public void createIfNotExistsAfterFileSystemDeleteCompletes() {
+        dataLakeFileSystemClient.delete();
+
+        assertTrue(runAfterFileSystemDeleteCompletes(() -> dataLakeFileSystemClient.createIfNotExists()));
+    }
+
+    @LiveOnly
+    @Test
+    public void createIfNotExistsWithResponseAfterFileSystemDeleteCompletes() {
+        dataLakeFileSystemClient.delete();
+
+        Response<Boolean> response = runAfterFileSystemDeleteCompletes(
+            () -> dataLakeFileSystemClient.createIfNotExistsWithResponse(null, null, null, Context.NONE));
+        assertEquals(201, response.getStatusCode());
+        assertTrue(response.getValue());
     }
 
     @Test
@@ -545,7 +596,9 @@ public class FileSystemApiTests extends DataLakeTestBase {
         DataLakeFileSystemClient dataLakeFileSystemClient
             = primaryDataLakeServiceClient.getFileSystemClient(generateFileSystemName());
 
-        assertEquals(404, dataLakeFileSystemClient.deleteIfExistsWithResponse(null, null, null).getStatusCode());
+        Response<Boolean> response = dataLakeFileSystemClient.deleteIfExistsWithResponse(null, null, null);
+        assertEquals(404, response.getStatusCode());
+        assertFalse(response.getValue());
         assertFalse(dataLakeFileSystemClient.exists());
     }
 
@@ -1532,6 +1585,26 @@ public class FileSystemApiTests extends DataLakeTestBase {
     }
 
     @Test
+    public void createIfNotExistsFileOnDir() {
+        String pathName = generatePathName();
+        dataLakeFileSystemClient.createDirectory(pathName);
+
+        DataLakeStorageException e = assertThrows(DataLakeStorageException.class,
+            () -> dataLakeFileSystemClient.createFileIfNotExists(pathName));
+        assertExceptionStatusCodeAndMessage(e, 409, "PathConflict");
+    }
+
+    @Test
+    public void createIfNotExistsDirOnFile() {
+        String pathName = generatePathName();
+        dataLakeFileSystemClient.createFile(pathName);
+
+        DataLakeStorageException e = assertThrows(DataLakeStorageException.class,
+            () -> dataLakeFileSystemClient.createDirectoryIfNotExists(pathName));
+        assertExceptionStatusCodeAndMessage(e, 409, "PathConflict");
+    }
+
+    @Test
     public void createIfNotExistsDirDefaults() {
         Response<?> createResponse
             = dataLakeFileSystemClient.createDirectoryIfNotExistsWithResponse(generatePathName(), null, null, null);
@@ -2434,7 +2507,7 @@ public class FileSystemApiTests extends DataLakeTestBase {
         foo.createSubdirectory("foo");
         foo.createSubdirectory("bar");
 
-        // Creat subdirs for baz
+        // Create subdirs for baz
         baz.createSubdirectory("foo").createSubdirectory("bar");
         baz.createSubdirectory("bar/foo");
     }
@@ -2518,4 +2591,79 @@ public class FileSystemApiTests extends DataLakeTestBase {
     //
     //        assertThrows(DataLakeStorageException.class, () -> dataLakeFileSystemClient.rename(generateFileSystemName()));
     //    }
+
+    // Session credentials are bound to the network context of the CreateSession call, so any TLS-terminating
+    // intermediary (including the test proxy) causes the service to reject the session-signed reads.
+    @Test
+    @LiveOnly
+    @ResourceLock("DataLakeSessionAuth")
+    public void readFileOverSessionAuth() {
+        assertReadFileOverSessionAuth(new SessionContext().setSessionMode(SessionMode.ENABLED), 5);
+    }
+
+    @Test
+    @LiveOnly
+    @ResourceLock("DataLakeSessionAuth")
+    public void readFileOverSessionAuthWithDfsAcquisitionEndpoint() {
+        assertReadFileOverSessionAuth(getEnabledDfsSessionContext(), 1);
+    }
+
+    private void assertReadFileOverSessionAuth(SessionContext sessionContext, int fileCount) {
+        List<String> fileNames = new ArrayList<>();
+        for (int i = 0; i < fileCount; i++) {
+            String fileName = generatePathName();
+            dataLakeFileSystemClient.getFileClient(fileName).upload(DATA.getDefaultBinaryData());
+            fileNames.add(fileName);
+        }
+
+        List<String> downloadAuthSchemes = Collections.synchronizedList(new ArrayList<>());
+        List<String> dfsAuthorizationHeaders = Collections.synchronizedList(new ArrayList<>());
+        HttpPipelinePolicy inspect = (context, next) -> {
+            HttpRequest req = context.getHttpRequest();
+            String auth = req.getHeaders().getValue(HttpHeaderName.AUTHORIZATION);
+            String host = req.getUrl().getHost();
+            String path = req.getUrl().getPath();
+            String trimmed = path != null && path.startsWith("/") ? path.substring(1) : path;
+            if (auth != null && host != null && host.contains(".dfs.")) {
+                dfsAuthorizationHeaders.add(auth);
+            } else if (auth != null
+                && req.getHttpMethod() == HttpMethod.GET
+                && trimmed != null
+                && trimmed.contains("/")) {
+                downloadAuthSchemes.add(auth.startsWith("Session ") ? "Session" : "Bearer");
+            }
+            return next.process();
+        };
+
+        DataLakeFileSystemClient sessionFileSystemClient = sessionEnabledFileSystemClient(sessionContext, inspect);
+
+        for (String fileName : fileNames) {
+            ByteArrayOutputStream outStream = new ByteArrayOutputStream();
+            sessionFileSystemClient.getFileClient(fileName).read(outStream);
+            TestUtils.assertArraysEqual(DATA.getDefaultBytes(), outStream.toByteArray());
+        }
+
+        // Sessions are wired only into the blob pipeline, so this DFS-routed call must stay on token auth.
+        sessionFileSystemClient.listPaths().iterator().hasNext();
+
+        assertTrue(downloadAuthSchemes.size() >= fileCount,
+            "Expected to observe at least one download request per file; saw " + downloadAuthSchemes);
+        assertTrue(downloadAuthSchemes.stream().allMatch("Session"::equals),
+            "Expected all file downloads to be authenticated with Session scheme; saw " + downloadAuthSchemes);
+        assertFalse(dfsAuthorizationHeaders.isEmpty(),
+            "Expected to observe at least one DFS endpoint request; saw none");
+        assertTrue(dfsAuthorizationHeaders.stream().allMatch(auth -> auth.startsWith("Bearer ")),
+            // Avoid printing full headers
+            "Expected all DFS endpoint requests to use Bearer auth; saw " + dfsAuthorizationHeaders.stream()
+                .map(auth -> auth.length() < 10
+                    ? "******"
+                    : auth.substring(0, 5) + "..." + auth.substring(auth.length() - 5))
+                .collect(Collectors.toList()));
+    }
+
+    private DataLakeFileSystemClient sessionEnabledFileSystemClient(SessionContext sessionContext,
+        HttpPipelinePolicy... policies) {
+        return getOAuthServiceClient(sessionContext, policies)
+            .getFileSystemClient(dataLakeFileSystemClient.getFileSystemName());
+    }
 }

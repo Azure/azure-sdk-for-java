@@ -11,17 +11,18 @@ import org.junit.jupiter.api.Assertions;
 public final class ClusterTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
-        Cluster model = BinaryData.fromString("{\"clusterSize\":622690283,\"defaultDatabaseName\":\"b\"}")
-            .toObject(Cluster.class);
-        Assertions.assertEquals(622690283, model.clusterSize());
-        Assertions.assertEquals("b", model.defaultDatabaseName());
+        Cluster model
+            = BinaryData.fromString("{\"clusterSize\":1987785731,\"defaultDatabaseName\":\"napnyiropuhpigv\"}")
+                .toObject(Cluster.class);
+        Assertions.assertEquals(1987785731, model.clusterSize());
+        Assertions.assertEquals("napnyiropuhpigv", model.defaultDatabaseName());
     }
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
-        Cluster model = new Cluster().withClusterSize(622690283).withDefaultDatabaseName("b");
+        Cluster model = new Cluster().withClusterSize(1987785731).withDefaultDatabaseName("napnyiropuhpigv");
         model = BinaryData.fromObject(model).toObject(Cluster.class);
-        Assertions.assertEquals(622690283, model.clusterSize());
-        Assertions.assertEquals("b", model.defaultDatabaseName());
+        Assertions.assertEquals(1987785731, model.clusterSize());
+        Assertions.assertEquals("napnyiropuhpigv", model.defaultDatabaseName());
     }
 }

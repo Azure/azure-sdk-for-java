@@ -348,20 +348,7 @@ public final class ApplicationsClientImpl implements ApplicationsClient {
             .flatMap(res -> Mono.justOrEmpty(res.getValue()));
     }
 
-    /**
-     * Get a Service Fabric managed application resource created or in the process of being created in the Service
-     * Fabric cluster resource.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param clusterName The name of the cluster resource.
-     * @param applicationName The name of the application resource.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return a Service Fabric managed application resource created or in the process of being created in the Service
-     * Fabric cluster resource along with {@link Response}.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Response<ApplicationResourceInner> getWithResponse(String resourceGroupName, String clusterName,
         String applicationName, Context context) {
@@ -370,19 +357,7 @@ public final class ApplicationsClientImpl implements ApplicationsClient {
             resourceGroupName, clusterName, applicationName, accept, context);
     }
 
-    /**
-     * Get a Service Fabric managed application resource created or in the process of being created in the Service
-     * Fabric cluster resource.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param clusterName The name of the cluster resource.
-     * @param applicationName The name of the application resource.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return a Service Fabric managed application resource created or in the process of being created in the Service
-     * Fabric cluster resource.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public ApplicationResourceInner get(String resourceGroupName, String clusterName, String applicationName) {
         return getWithResponse(resourceGroupName, clusterName, applicationName, Context.NONE).getValue();
@@ -427,11 +402,7 @@ public final class ApplicationsClientImpl implements ApplicationsClient {
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Response<BinaryData> createOrUpdateWithResponse(String resourceGroupName, String clusterName,
         String applicationName, ApplicationResourceInner parameters) {
-        final String contentType = "application/json";
-        final String accept = "application/json";
-        return service.createOrUpdateSync(this.client.getEndpoint(), this.client.getApiVersion(),
-            this.client.getSubscriptionId(), resourceGroupName, clusterName, applicationName, contentType, accept,
-            parameters, Context.NONE);
+        return createOrUpdateWithResponse(resourceGroupName, clusterName, applicationName, parameters, Context.NONE);
     }
 
     /**
@@ -479,40 +450,14 @@ public final class ApplicationsClientImpl implements ApplicationsClient {
             this.client.getContext());
     }
 
-    /**
-     * Create or update a Service Fabric managed application resource with the specified name.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param clusterName The name of the cluster resource.
-     * @param applicationName The name of the application resource.
-     * @param parameters The application resource.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the {@link SyncPoller} for polling of the application resource.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public SyncPoller<PollResult<ApplicationResourceInner>, ApplicationResourceInner> beginCreateOrUpdate(
         String resourceGroupName, String clusterName, String applicationName, ApplicationResourceInner parameters) {
-        Response<BinaryData> response
-            = createOrUpdateWithResponse(resourceGroupName, clusterName, applicationName, parameters);
-        return this.client.<ApplicationResourceInner, ApplicationResourceInner>getLroResult(response,
-            ApplicationResourceInner.class, ApplicationResourceInner.class, Context.NONE);
+        return beginCreateOrUpdate(resourceGroupName, clusterName, applicationName, parameters, Context.NONE);
     }
 
-    /**
-     * Create or update a Service Fabric managed application resource with the specified name.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param clusterName The name of the cluster resource.
-     * @param applicationName The name of the application resource.
-     * @param parameters The application resource.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the {@link SyncPoller} for polling of the application resource.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public SyncPoller<PollResult<ApplicationResourceInner>, ApplicationResourceInner> beginCreateOrUpdate(
         String resourceGroupName, String clusterName, String applicationName, ApplicationResourceInner parameters,
@@ -542,42 +487,19 @@ public final class ApplicationsClientImpl implements ApplicationsClient {
             .flatMap(this.client::getLroFinalResultOrError);
     }
 
-    /**
-     * Create or update a Service Fabric managed application resource with the specified name.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param clusterName The name of the cluster resource.
-     * @param applicationName The name of the application resource.
-     * @param parameters The application resource.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the application resource.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public ApplicationResourceInner createOrUpdate(String resourceGroupName, String clusterName, String applicationName,
         ApplicationResourceInner parameters) {
-        return beginCreateOrUpdate(resourceGroupName, clusterName, applicationName, parameters).getFinalResult();
+        return createOrUpdate(resourceGroupName, clusterName, applicationName, parameters, Context.NONE);
     }
 
-    /**
-     * Create or update a Service Fabric managed application resource with the specified name.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param clusterName The name of the cluster resource.
-     * @param applicationName The name of the application resource.
-     * @param parameters The application resource.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the application resource.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public ApplicationResourceInner createOrUpdate(String resourceGroupName, String clusterName, String applicationName,
         ApplicationResourceInner parameters, Context context) {
-        return beginCreateOrUpdate(resourceGroupName, clusterName, applicationName, parameters, context)
-            .getFinalResult();
+        return this.client.getLroFinalResultOrError(
+            beginCreateOrUpdate(resourceGroupName, clusterName, applicationName, parameters, context));
     }
 
     /**
@@ -619,11 +541,7 @@ public final class ApplicationsClientImpl implements ApplicationsClient {
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Response<BinaryData> updateWithResponse(String resourceGroupName, String clusterName,
         String applicationName, ApplicationUpdateParameters parameters) {
-        final String contentType = "application/json";
-        final String accept = "application/json";
-        return service.updateSync(this.client.getEndpoint(), this.client.getApiVersion(),
-            this.client.getSubscriptionId(), resourceGroupName, clusterName, applicationName, contentType, accept,
-            parameters, Context.NONE);
+        return updateWithResponse(resourceGroupName, clusterName, applicationName, parameters, Context.NONE);
     }
 
     /**
@@ -671,39 +589,14 @@ public final class ApplicationsClientImpl implements ApplicationsClient {
             this.client.getContext());
     }
 
-    /**
-     * Updates an application resource of a given managed cluster.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param clusterName The name of the cluster resource.
-     * @param applicationName The name of the application resource.
-     * @param parameters The application resource updated tags.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the {@link SyncPoller} for polling of the application resource.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public SyncPoller<PollResult<ApplicationResourceInner>, ApplicationResourceInner> beginUpdate(
         String resourceGroupName, String clusterName, String applicationName, ApplicationUpdateParameters parameters) {
-        Response<BinaryData> response = updateWithResponse(resourceGroupName, clusterName, applicationName, parameters);
-        return this.client.<ApplicationResourceInner, ApplicationResourceInner>getLroResult(response,
-            ApplicationResourceInner.class, ApplicationResourceInner.class, Context.NONE);
+        return beginUpdate(resourceGroupName, clusterName, applicationName, parameters, Context.NONE);
     }
 
-    /**
-     * Updates an application resource of a given managed cluster.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param clusterName The name of the cluster resource.
-     * @param applicationName The name of the application resource.
-     * @param parameters The application resource updated tags.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the {@link SyncPoller} for polling of the application resource.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public SyncPoller<PollResult<ApplicationResourceInner>, ApplicationResourceInner> beginUpdate(
         String resourceGroupName, String clusterName, String applicationName, ApplicationUpdateParameters parameters,
@@ -733,41 +626,19 @@ public final class ApplicationsClientImpl implements ApplicationsClient {
             .flatMap(this.client::getLroFinalResultOrError);
     }
 
-    /**
-     * Updates an application resource of a given managed cluster.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param clusterName The name of the cluster resource.
-     * @param applicationName The name of the application resource.
-     * @param parameters The application resource updated tags.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the application resource.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public ApplicationResourceInner update(String resourceGroupName, String clusterName, String applicationName,
         ApplicationUpdateParameters parameters) {
-        return beginUpdate(resourceGroupName, clusterName, applicationName, parameters).getFinalResult();
+        return update(resourceGroupName, clusterName, applicationName, parameters, Context.NONE);
     }
 
-    /**
-     * Updates an application resource of a given managed cluster.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param clusterName The name of the cluster resource.
-     * @param applicationName The name of the application resource.
-     * @param parameters The application resource updated tags.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the application resource.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public ApplicationResourceInner update(String resourceGroupName, String clusterName, String applicationName,
         ApplicationUpdateParameters parameters, Context context) {
-        return beginUpdate(resourceGroupName, clusterName, applicationName, parameters, context).getFinalResult();
+        return this.client.getLroFinalResultOrError(
+            beginUpdate(resourceGroupName, clusterName, applicationName, parameters, context));
     }
 
     /**
@@ -804,8 +675,7 @@ public final class ApplicationsClientImpl implements ApplicationsClient {
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Response<BinaryData> deleteWithResponse(String resourceGroupName, String clusterName,
         String applicationName) {
-        return service.deleteSync(this.client.getEndpoint(), this.client.getApiVersion(),
-            this.client.getSubscriptionId(), resourceGroupName, clusterName, applicationName, Context.NONE);
+        return deleteWithResponse(resourceGroupName, clusterName, applicationName, Context.NONE);
     }
 
     /**
@@ -847,36 +717,14 @@ public final class ApplicationsClientImpl implements ApplicationsClient {
             this.client.getContext());
     }
 
-    /**
-     * Delete a Service Fabric managed application resource with the specified name.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param clusterName The name of the cluster resource.
-     * @param applicationName The name of the application resource.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the {@link SyncPoller} for polling of long-running operation.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public SyncPoller<PollResult<Void>, Void> beginDelete(String resourceGroupName, String clusterName,
         String applicationName) {
-        Response<BinaryData> response = deleteWithResponse(resourceGroupName, clusterName, applicationName);
-        return this.client.<Void, Void>getLroResult(response, Void.class, Void.class, Context.NONE);
+        return beginDelete(resourceGroupName, clusterName, applicationName, Context.NONE);
     }
 
-    /**
-     * Delete a Service Fabric managed application resource with the specified name.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param clusterName The name of the cluster resource.
-     * @param applicationName The name of the application resource.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the {@link SyncPoller} for polling of long-running operation.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public SyncPoller<PollResult<Void>, Void> beginDelete(String resourceGroupName, String clusterName,
         String applicationName, Context context) {
@@ -901,35 +749,16 @@ public final class ApplicationsClientImpl implements ApplicationsClient {
             .flatMap(this.client::getLroFinalResultOrError);
     }
 
-    /**
-     * Delete a Service Fabric managed application resource with the specified name.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param clusterName The name of the cluster resource.
-     * @param applicationName The name of the application resource.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public void delete(String resourceGroupName, String clusterName, String applicationName) {
-        beginDelete(resourceGroupName, clusterName, applicationName).getFinalResult();
+        delete(resourceGroupName, clusterName, applicationName, Context.NONE);
     }
 
-    /**
-     * Delete a Service Fabric managed application resource with the specified name.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param clusterName The name of the cluster resource.
-     * @param applicationName The name of the application resource.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public void delete(String resourceGroupName, String clusterName, String applicationName, Context context) {
-        beginDelete(resourceGroupName, clusterName, applicationName, context).getFinalResult();
+        this.client.getLroFinalResultOrError(beginDelete(resourceGroupName, clusterName, applicationName, context));
     }
 
     /**
@@ -988,11 +817,7 @@ public final class ApplicationsClientImpl implements ApplicationsClient {
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private PagedResponse<ApplicationResourceInner> listSinglePage(String resourceGroupName, String clusterName) {
-        final String accept = "application/json";
-        Response<ApplicationResourceList> res = service.listSync(this.client.getEndpoint(), this.client.getApiVersion(),
-            this.client.getSubscriptionId(), resourceGroupName, clusterName, accept, Context.NONE);
-        return new PagedResponseBase<>(res.getRequest(), res.getStatusCode(), res.getHeaders(), res.getValue().value(),
-            res.getValue().nextLink(), null);
+        return listSinglePage(resourceGroupName, clusterName, Context.NONE);
     }
 
     /**
@@ -1018,37 +843,13 @@ public final class ApplicationsClientImpl implements ApplicationsClient {
             res.getValue().nextLink(), null);
     }
 
-    /**
-     * Gets all managed application resources created or in the process of being created in the Service Fabric cluster
-     * resource.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param clusterName The name of the cluster resource.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return all managed application resources created or in the process of being created in the Service Fabric
-     * cluster resource as paginated response with {@link PagedIterable}.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.COLLECTION)
     public PagedIterable<ApplicationResourceInner> list(String resourceGroupName, String clusterName) {
-        return new PagedIterable<>(() -> listSinglePage(resourceGroupName, clusterName),
-            nextLink -> listNextSinglePage(nextLink));
+        return list(resourceGroupName, clusterName, Context.NONE);
     }
 
-    /**
-     * Gets all managed application resources created or in the process of being created in the Service Fabric cluster
-     * resource.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param clusterName The name of the cluster resource.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return all managed application resources created or in the process of being created in the Service Fabric
-     * cluster resource as paginated response with {@link PagedIterable}.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.COLLECTION)
     public PagedIterable<ApplicationResourceInner> list(String resourceGroupName, String clusterName, Context context) {
         return new PagedIterable<>(() -> listSinglePage(resourceGroupName, clusterName, context),
@@ -1092,8 +893,7 @@ public final class ApplicationsClientImpl implements ApplicationsClient {
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Response<BinaryData> readUpgradeWithResponse(String resourceGroupName, String clusterName,
         String applicationName) {
-        return service.readUpgradeSync(this.client.getEndpoint(), this.client.getApiVersion(),
-            this.client.getSubscriptionId(), resourceGroupName, clusterName, applicationName, Context.NONE);
+        return readUpgradeWithResponse(resourceGroupName, clusterName, applicationName, Context.NONE);
     }
 
     /**
@@ -1137,38 +937,14 @@ public final class ApplicationsClientImpl implements ApplicationsClient {
             this.client.getContext());
     }
 
-    /**
-     * Get the status of the latest application upgrade. It will query the cluster to find the status of the latest
-     * application upgrade.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param clusterName The name of the cluster resource.
-     * @param applicationName The name of the application resource.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the {@link SyncPoller} for polling of the status of the latest application upgrade.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public SyncPoller<PollResult<Void>, Void> beginReadUpgrade(String resourceGroupName, String clusterName,
         String applicationName) {
-        Response<BinaryData> response = readUpgradeWithResponse(resourceGroupName, clusterName, applicationName);
-        return this.client.<Void, Void>getLroResult(response, Void.class, Void.class, Context.NONE);
+        return beginReadUpgrade(resourceGroupName, clusterName, applicationName, Context.NONE);
     }
 
-    /**
-     * Get the status of the latest application upgrade. It will query the cluster to find the status of the latest
-     * application upgrade.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param clusterName The name of the cluster resource.
-     * @param applicationName The name of the application resource.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the {@link SyncPoller} for polling of the status of the latest application upgrade.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public SyncPoller<PollResult<Void>, Void> beginReadUpgrade(String resourceGroupName, String clusterName,
         String applicationName, Context context) {
@@ -1195,37 +971,17 @@ public final class ApplicationsClientImpl implements ApplicationsClient {
             .flatMap(this.client::getLroFinalResultOrError);
     }
 
-    /**
-     * Get the status of the latest application upgrade. It will query the cluster to find the status of the latest
-     * application upgrade.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param clusterName The name of the cluster resource.
-     * @param applicationName The name of the application resource.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public void readUpgrade(String resourceGroupName, String clusterName, String applicationName) {
-        beginReadUpgrade(resourceGroupName, clusterName, applicationName).getFinalResult();
+        readUpgrade(resourceGroupName, clusterName, applicationName, Context.NONE);
     }
 
-    /**
-     * Get the status of the latest application upgrade. It will query the cluster to find the status of the latest
-     * application upgrade.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param clusterName The name of the cluster resource.
-     * @param applicationName The name of the application resource.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public void readUpgrade(String resourceGroupName, String clusterName, String applicationName, Context context) {
-        beginReadUpgrade(resourceGroupName, clusterName, applicationName, context).getFinalResult();
+        this.client
+            .getLroFinalResultOrError(beginReadUpgrade(resourceGroupName, clusterName, applicationName, context));
     }
 
     /**
@@ -1268,10 +1024,7 @@ public final class ApplicationsClientImpl implements ApplicationsClient {
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Response<BinaryData> resumeUpgradeWithResponse(String resourceGroupName, String clusterName,
         String applicationName, RuntimeResumeApplicationUpgradeParameters parameters) {
-        final String contentType = "application/json";
-        return service.resumeUpgradeSync(this.client.getEndpoint(), this.client.getApiVersion(),
-            this.client.getSubscriptionId(), resourceGroupName, clusterName, applicationName, contentType, parameters,
-            Context.NONE);
+        return resumeUpgradeWithResponse(resourceGroupName, clusterName, applicationName, parameters, Context.NONE);
     }
 
     /**
@@ -1319,41 +1072,14 @@ public final class ApplicationsClientImpl implements ApplicationsClient {
             this.client.getContext());
     }
 
-    /**
-     * Send a request to resume the current application upgrade. This will resume the application upgrade from where it
-     * was paused.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param clusterName The name of the cluster resource.
-     * @param applicationName The name of the application resource.
-     * @param parameters The parameters for resuming an application upgrade.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the {@link SyncPoller} for polling of long-running operation.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public SyncPoller<PollResult<Void>, Void> beginResumeUpgrade(String resourceGroupName, String clusterName,
         String applicationName, RuntimeResumeApplicationUpgradeParameters parameters) {
-        Response<BinaryData> response
-            = resumeUpgradeWithResponse(resourceGroupName, clusterName, applicationName, parameters);
-        return this.client.<Void, Void>getLroResult(response, Void.class, Void.class, Context.NONE);
+        return beginResumeUpgrade(resourceGroupName, clusterName, applicationName, parameters, Context.NONE);
     }
 
-    /**
-     * Send a request to resume the current application upgrade. This will resume the application upgrade from where it
-     * was paused.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param clusterName The name of the cluster resource.
-     * @param applicationName The name of the application resource.
-     * @param parameters The parameters for resuming an application upgrade.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the {@link SyncPoller} for polling of long-running operation.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public SyncPoller<PollResult<Void>, Void> beginResumeUpgrade(String resourceGroupName, String clusterName,
         String applicationName, RuntimeResumeApplicationUpgradeParameters parameters, Context context) {
@@ -1382,41 +1108,19 @@ public final class ApplicationsClientImpl implements ApplicationsClient {
             .flatMap(this.client::getLroFinalResultOrError);
     }
 
-    /**
-     * Send a request to resume the current application upgrade. This will resume the application upgrade from where it
-     * was paused.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param clusterName The name of the cluster resource.
-     * @param applicationName The name of the application resource.
-     * @param parameters The parameters for resuming an application upgrade.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public void resumeUpgrade(String resourceGroupName, String clusterName, String applicationName,
         RuntimeResumeApplicationUpgradeParameters parameters) {
-        beginResumeUpgrade(resourceGroupName, clusterName, applicationName, parameters).getFinalResult();
+        resumeUpgrade(resourceGroupName, clusterName, applicationName, parameters, Context.NONE);
     }
 
-    /**
-     * Send a request to resume the current application upgrade. This will resume the application upgrade from where it
-     * was paused.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param clusterName The name of the cluster resource.
-     * @param applicationName The name of the application resource.
-     * @param parameters The parameters for resuming an application upgrade.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public void resumeUpgrade(String resourceGroupName, String clusterName, String applicationName,
         RuntimeResumeApplicationUpgradeParameters parameters, Context context) {
-        beginResumeUpgrade(resourceGroupName, clusterName, applicationName, parameters, context).getFinalResult();
+        this.client.getLroFinalResultOrError(
+            beginResumeUpgrade(resourceGroupName, clusterName, applicationName, parameters, context));
     }
 
     /**
@@ -1455,8 +1159,7 @@ public final class ApplicationsClientImpl implements ApplicationsClient {
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Response<BinaryData> startRollbackWithResponse(String resourceGroupName, String clusterName,
         String applicationName) {
-        return service.startRollbackSync(this.client.getEndpoint(), this.client.getApiVersion(),
-            this.client.getSubscriptionId(), resourceGroupName, clusterName, applicationName, Context.NONE);
+        return startRollbackWithResponse(resourceGroupName, clusterName, applicationName, Context.NONE);
     }
 
     /**
@@ -1500,38 +1203,14 @@ public final class ApplicationsClientImpl implements ApplicationsClient {
             this.client.getContext());
     }
 
-    /**
-     * Send a request to start a rollback of the current application upgrade. This will start rolling back the
-     * application to the previous version.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param clusterName The name of the cluster resource.
-     * @param applicationName The name of the application resource.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the {@link SyncPoller} for polling of long-running operation.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public SyncPoller<PollResult<Void>, Void> beginStartRollback(String resourceGroupName, String clusterName,
         String applicationName) {
-        Response<BinaryData> response = startRollbackWithResponse(resourceGroupName, clusterName, applicationName);
-        return this.client.<Void, Void>getLroResult(response, Void.class, Void.class, Context.NONE);
+        return beginStartRollback(resourceGroupName, clusterName, applicationName, Context.NONE);
     }
 
-    /**
-     * Send a request to start a rollback of the current application upgrade. This will start rolling back the
-     * application to the previous version.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param clusterName The name of the cluster resource.
-     * @param applicationName The name of the application resource.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the {@link SyncPoller} for polling of long-running operation.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public SyncPoller<PollResult<Void>, Void> beginStartRollback(String resourceGroupName, String clusterName,
         String applicationName, Context context) {
@@ -1558,37 +1237,17 @@ public final class ApplicationsClientImpl implements ApplicationsClient {
             .flatMap(this.client::getLroFinalResultOrError);
     }
 
-    /**
-     * Send a request to start a rollback of the current application upgrade. This will start rolling back the
-     * application to the previous version.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param clusterName The name of the cluster resource.
-     * @param applicationName The name of the application resource.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public void startRollback(String resourceGroupName, String clusterName, String applicationName) {
-        beginStartRollback(resourceGroupName, clusterName, applicationName).getFinalResult();
+        startRollback(resourceGroupName, clusterName, applicationName, Context.NONE);
     }
 
-    /**
-     * Send a request to start a rollback of the current application upgrade. This will start rolling back the
-     * application to the previous version.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param clusterName The name of the cluster resource.
-     * @param applicationName The name of the application resource.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public void startRollback(String resourceGroupName, String clusterName, String applicationName, Context context) {
-        beginStartRollback(resourceGroupName, clusterName, applicationName, context).getFinalResult();
+        this.client
+            .getLroFinalResultOrError(beginStartRollback(resourceGroupName, clusterName, applicationName, context));
     }
 
     /**
@@ -1629,10 +1288,7 @@ public final class ApplicationsClientImpl implements ApplicationsClient {
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Response<BinaryData> updateUpgradeWithResponse(String resourceGroupName, String clusterName,
         String applicationName, RuntimeUpdateApplicationUpgradeParameters parameters) {
-        final String contentType = "application/json";
-        return service.updateUpgradeSync(this.client.getEndpoint(), this.client.getApiVersion(),
-            this.client.getSubscriptionId(), resourceGroupName, clusterName, applicationName, contentType, parameters,
-            Context.NONE);
+        return updateUpgradeWithResponse(resourceGroupName, clusterName, applicationName, parameters, Context.NONE);
     }
 
     /**
@@ -1678,39 +1334,14 @@ public final class ApplicationsClientImpl implements ApplicationsClient {
             this.client.getContext());
     }
 
-    /**
-     * Send a request to update the current application upgrade.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param clusterName The name of the cluster resource.
-     * @param applicationName The name of the application resource.
-     * @param parameters The parameters for updating an application upgrade.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the {@link SyncPoller} for polling of long-running operation.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public SyncPoller<PollResult<Void>, Void> beginUpdateUpgrade(String resourceGroupName, String clusterName,
         String applicationName, RuntimeUpdateApplicationUpgradeParameters parameters) {
-        Response<BinaryData> response
-            = updateUpgradeWithResponse(resourceGroupName, clusterName, applicationName, parameters);
-        return this.client.<Void, Void>getLroResult(response, Void.class, Void.class, Context.NONE);
+        return beginUpdateUpgrade(resourceGroupName, clusterName, applicationName, parameters, Context.NONE);
     }
 
-    /**
-     * Send a request to update the current application upgrade.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param clusterName The name of the cluster resource.
-     * @param applicationName The name of the application resource.
-     * @param parameters The parameters for updating an application upgrade.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the {@link SyncPoller} for polling of long-running operation.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public SyncPoller<PollResult<Void>, Void> beginUpdateUpgrade(String resourceGroupName, String clusterName,
         String applicationName, RuntimeUpdateApplicationUpgradeParameters parameters, Context context) {
@@ -1738,39 +1369,19 @@ public final class ApplicationsClientImpl implements ApplicationsClient {
             .flatMap(this.client::getLroFinalResultOrError);
     }
 
-    /**
-     * Send a request to update the current application upgrade.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param clusterName The name of the cluster resource.
-     * @param applicationName The name of the application resource.
-     * @param parameters The parameters for updating an application upgrade.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public void updateUpgrade(String resourceGroupName, String clusterName, String applicationName,
         RuntimeUpdateApplicationUpgradeParameters parameters) {
-        beginUpdateUpgrade(resourceGroupName, clusterName, applicationName, parameters).getFinalResult();
+        updateUpgrade(resourceGroupName, clusterName, applicationName, parameters, Context.NONE);
     }
 
-    /**
-     * Send a request to update the current application upgrade.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param clusterName The name of the cluster resource.
-     * @param applicationName The name of the application resource.
-     * @param parameters The parameters for updating an application upgrade.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public void updateUpgrade(String resourceGroupName, String clusterName, String applicationName,
         RuntimeUpdateApplicationUpgradeParameters parameters, Context context) {
-        beginUpdateUpgrade(resourceGroupName, clusterName, applicationName, parameters, context).getFinalResult();
+        this.client.getLroFinalResultOrError(
+            beginUpdateUpgrade(resourceGroupName, clusterName, applicationName, parameters, context));
     }
 
     /**
@@ -1814,10 +1425,7 @@ public final class ApplicationsClientImpl implements ApplicationsClient {
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Response<BinaryData> fetchHealthWithResponse(String resourceGroupName, String clusterName,
         String applicationName, ApplicationFetchHealthRequest parameters) {
-        final String contentType = "application/json";
-        return service.fetchHealthSync(this.client.getEndpoint(), this.client.getApiVersion(),
-            this.client.getSubscriptionId(), resourceGroupName, clusterName, applicationName, contentType, parameters,
-            Context.NONE);
+        return fetchHealthWithResponse(resourceGroupName, clusterName, applicationName, parameters, Context.NONE);
     }
 
     /**
@@ -1865,41 +1473,14 @@ public final class ApplicationsClientImpl implements ApplicationsClient {
             this.client.getContext());
     }
 
-    /**
-     * Get the status of the deployed application health. It will query the cluster to find the health of the deployed
-     * application.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param clusterName The name of the cluster resource.
-     * @param applicationName The name of the application resource.
-     * @param parameters The parameters for fetching the health of a deployed application.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the {@link SyncPoller} for polling of the status of the deployed application health.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public SyncPoller<PollResult<Void>, Void> beginFetchHealth(String resourceGroupName, String clusterName,
         String applicationName, ApplicationFetchHealthRequest parameters) {
-        Response<BinaryData> response
-            = fetchHealthWithResponse(resourceGroupName, clusterName, applicationName, parameters);
-        return this.client.<Void, Void>getLroResult(response, Void.class, Void.class, Context.NONE);
+        return beginFetchHealth(resourceGroupName, clusterName, applicationName, parameters, Context.NONE);
     }
 
-    /**
-     * Get the status of the deployed application health. It will query the cluster to find the health of the deployed
-     * application.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param clusterName The name of the cluster resource.
-     * @param applicationName The name of the application resource.
-     * @param parameters The parameters for fetching the health of a deployed application.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the {@link SyncPoller} for polling of the status of the deployed application health.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public SyncPoller<PollResult<Void>, Void> beginFetchHealth(String resourceGroupName, String clusterName,
         String applicationName, ApplicationFetchHealthRequest parameters, Context context) {
@@ -1928,41 +1509,19 @@ public final class ApplicationsClientImpl implements ApplicationsClient {
             .flatMap(this.client::getLroFinalResultOrError);
     }
 
-    /**
-     * Get the status of the deployed application health. It will query the cluster to find the health of the deployed
-     * application.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param clusterName The name of the cluster resource.
-     * @param applicationName The name of the application resource.
-     * @param parameters The parameters for fetching the health of a deployed application.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public void fetchHealth(String resourceGroupName, String clusterName, String applicationName,
         ApplicationFetchHealthRequest parameters) {
-        beginFetchHealth(resourceGroupName, clusterName, applicationName, parameters).getFinalResult();
+        fetchHealth(resourceGroupName, clusterName, applicationName, parameters, Context.NONE);
     }
 
-    /**
-     * Get the status of the deployed application health. It will query the cluster to find the health of the deployed
-     * application.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param clusterName The name of the cluster resource.
-     * @param applicationName The name of the application resource.
-     * @param parameters The parameters for fetching the health of a deployed application.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public void fetchHealth(String resourceGroupName, String clusterName, String applicationName,
         ApplicationFetchHealthRequest parameters, Context context) {
-        beginFetchHealth(resourceGroupName, clusterName, applicationName, parameters, context).getFinalResult();
+        this.client.getLroFinalResultOrError(
+            beginFetchHealth(resourceGroupName, clusterName, applicationName, parameters, context));
     }
 
     /**
@@ -2005,9 +1564,7 @@ public final class ApplicationsClientImpl implements ApplicationsClient {
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Response<BinaryData> restartDeployedCodePackageWithResponse(String resourceGroupName, String clusterName,
         String applicationName, RestartDeployedCodePackageRequest parameters) {
-        final String contentType = "application/json";
-        return service.restartDeployedCodePackageSync(this.client.getEndpoint(), this.client.getApiVersion(),
-            this.client.getSubscriptionId(), resourceGroupName, clusterName, applicationName, contentType, parameters,
+        return restartDeployedCodePackageWithResponse(resourceGroupName, clusterName, applicationName, parameters,
             Context.NONE);
     }
 
@@ -2056,41 +1613,15 @@ public final class ApplicationsClientImpl implements ApplicationsClient {
             this.client.getContext());
     }
 
-    /**
-     * Restart a code package instance of a service replica or instance. This is a potentially destabilizing operation
-     * that should be used with immense care.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param clusterName The name of the cluster resource.
-     * @param applicationName The name of the application resource.
-     * @param parameters The parameters for restarting a deployed code package.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the {@link SyncPoller} for polling of long-running operation.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public SyncPoller<PollResult<Void>, Void> beginRestartDeployedCodePackage(String resourceGroupName,
         String clusterName, String applicationName, RestartDeployedCodePackageRequest parameters) {
-        Response<BinaryData> response
-            = restartDeployedCodePackageWithResponse(resourceGroupName, clusterName, applicationName, parameters);
-        return this.client.<Void, Void>getLroResult(response, Void.class, Void.class, Context.NONE);
+        return beginRestartDeployedCodePackage(resourceGroupName, clusterName, applicationName, parameters,
+            Context.NONE);
     }
 
-    /**
-     * Restart a code package instance of a service replica or instance. This is a potentially destabilizing operation
-     * that should be used with immense care.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param clusterName The name of the cluster resource.
-     * @param applicationName The name of the application resource.
-     * @param parameters The parameters for restarting a deployed code package.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the {@link SyncPoller} for polling of long-running operation.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public SyncPoller<PollResult<Void>, Void> beginRestartDeployedCodePackage(String resourceGroupName,
         String clusterName, String applicationName, RestartDeployedCodePackageRequest parameters, Context context) {
@@ -2119,42 +1650,19 @@ public final class ApplicationsClientImpl implements ApplicationsClient {
             .flatMap(this.client::getLroFinalResultOrError);
     }
 
-    /**
-     * Restart a code package instance of a service replica or instance. This is a potentially destabilizing operation
-     * that should be used with immense care.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param clusterName The name of the cluster resource.
-     * @param applicationName The name of the application resource.
-     * @param parameters The parameters for restarting a deployed code package.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public void restartDeployedCodePackage(String resourceGroupName, String clusterName, String applicationName,
         RestartDeployedCodePackageRequest parameters) {
-        beginRestartDeployedCodePackage(resourceGroupName, clusterName, applicationName, parameters).getFinalResult();
+        restartDeployedCodePackage(resourceGroupName, clusterName, applicationName, parameters, Context.NONE);
     }
 
-    /**
-     * Restart a code package instance of a service replica or instance. This is a potentially destabilizing operation
-     * that should be used with immense care.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param clusterName The name of the cluster resource.
-     * @param applicationName The name of the application resource.
-     * @param parameters The parameters for restarting a deployed code package.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public void restartDeployedCodePackage(String resourceGroupName, String clusterName, String applicationName,
         RestartDeployedCodePackageRequest parameters, Context context) {
-        beginRestartDeployedCodePackage(resourceGroupName, clusterName, applicationName, parameters, context)
-            .getFinalResult();
+        this.client.getLroFinalResultOrError(
+            beginRestartDeployedCodePackage(resourceGroupName, clusterName, applicationName, parameters, context));
     }
 
     /**
@@ -2188,11 +1696,7 @@ public final class ApplicationsClientImpl implements ApplicationsClient {
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private PagedResponse<ApplicationResourceInner> listNextSinglePage(String nextLink) {
-        final String accept = "application/json";
-        Response<ApplicationResourceList> res
-            = service.listNextSync(nextLink, this.client.getEndpoint(), accept, Context.NONE);
-        return new PagedResponseBase<>(res.getRequest(), res.getStatusCode(), res.getHeaders(), res.getValue().value(),
-            res.getValue().nextLink(), null);
+        return listNextSinglePage(nextLink, Context.NONE);
     }
 
     /**

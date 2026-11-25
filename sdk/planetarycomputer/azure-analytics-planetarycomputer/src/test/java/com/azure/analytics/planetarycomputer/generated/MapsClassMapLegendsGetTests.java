@@ -15,7 +15,7 @@ public final class MapsClassMapLegendsGetTests extends PlanetaryComputerProClien
     @Disabled
     public void testMapsClassMapLegendsGetTests() {
         // method invocation
-        ClassMapLegendResponse response = dataClient.getClassMapLegend("mtbs-severity", null, null);
+        ClassMapLegendResponse response = dataClient.getClassMapLegend("mtbs-severity", (Integer) null, (Integer) null);
 
         // response assertion
         Assertions.assertNotNull(response);

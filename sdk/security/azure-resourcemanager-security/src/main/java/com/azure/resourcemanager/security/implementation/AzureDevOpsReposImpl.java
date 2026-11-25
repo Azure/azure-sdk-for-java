@@ -61,62 +61,25 @@ public final class AzureDevOpsReposImpl implements AzureDevOpsRepos {
     }
 
     public AzureDevOpsRepository getById(String id) {
-        String resourceGroupName = ResourceManagerUtils.getValueFromIdByName(id, "resourceGroups");
-        if (resourceGroupName == null) {
-            throw LOGGER.logExceptionAsError(new IllegalArgumentException(
-                String.format("The resource ID '%s' is not valid. Missing path segment 'resourceGroups'.", id)));
-        }
-        String securityConnectorName = ResourceManagerUtils.getValueFromIdByName(id, "securityConnectors");
-        if (securityConnectorName == null) {
-            throw LOGGER.logExceptionAsError(new IllegalArgumentException(
-                String.format("The resource ID '%s' is not valid. Missing path segment 'securityConnectors'.", id)));
-        }
-        String orgName = ResourceManagerUtils.getValueFromIdByName(id, "azureDevOpsOrgs");
-        if (orgName == null) {
-            throw LOGGER.logExceptionAsError(new IllegalArgumentException(
-                String.format("The resource ID '%s' is not valid. Missing path segment 'azureDevOpsOrgs'.", id)));
-        }
-        String projectName = ResourceManagerUtils.getValueFromIdByName(id, "projects");
-        if (projectName == null) {
-            throw LOGGER.logExceptionAsError(new IllegalArgumentException(
-                String.format("The resource ID '%s' is not valid. Missing path segment 'projects'.", id)));
-        }
-        String repoName = ResourceManagerUtils.getValueFromIdByName(id, "repos");
-        if (repoName == null) {
-            throw LOGGER.logExceptionAsError(new IllegalArgumentException(
-                String.format("The resource ID '%s' is not valid. Missing path segment 'repos'.", id)));
-        }
-        return this
-            .getWithResponse(resourceGroupName, securityConnectorName, orgName, projectName, repoName, Context.NONE)
-            .getValue();
+        return this.getByIdWithResponse(id, Context.NONE).getValue();
     }
 
     public Response<AzureDevOpsRepository> getByIdWithResponse(String id, Context context) {
-        String resourceGroupName = ResourceManagerUtils.getValueFromIdByName(id, "resourceGroups");
-        if (resourceGroupName == null) {
-            throw LOGGER.logExceptionAsError(new IllegalArgumentException(
-                String.format("The resource ID '%s' is not valid. Missing path segment 'resourceGroups'.", id)));
-        }
-        String securityConnectorName = ResourceManagerUtils.getValueFromIdByName(id, "securityConnectors");
-        if (securityConnectorName == null) {
-            throw LOGGER.logExceptionAsError(new IllegalArgumentException(
-                String.format("The resource ID '%s' is not valid. Missing path segment 'securityConnectors'.", id)));
-        }
-        String orgName = ResourceManagerUtils.getValueFromIdByName(id, "azureDevOpsOrgs");
-        if (orgName == null) {
-            throw LOGGER.logExceptionAsError(new IllegalArgumentException(
-                String.format("The resource ID '%s' is not valid. Missing path segment 'azureDevOpsOrgs'.", id)));
-        }
-        String projectName = ResourceManagerUtils.getValueFromIdByName(id, "projects");
-        if (projectName == null) {
-            throw LOGGER.logExceptionAsError(new IllegalArgumentException(
-                String.format("The resource ID '%s' is not valid. Missing path segment 'projects'.", id)));
-        }
-        String repoName = ResourceManagerUtils.getValueFromIdByName(id, "repos");
-        if (repoName == null) {
-            throw LOGGER.logExceptionAsError(new IllegalArgumentException(
-                String.format("The resource ID '%s' is not valid. Missing path segment 'repos'.", id)));
-        }
+        String resourceGroupName = ResourceManagerUtils.getRequiredValueFromIdByParameterName(id,
+            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Security/securityConnectors/{securityConnectorName}/devops/default/azureDevOpsOrgs/{orgName}/projects/{projectName}/repos/{repoName}",
+            "resourceGroupName", "resourceGroups", LOGGER);
+        String securityConnectorName = ResourceManagerUtils.getRequiredValueFromIdByParameterName(id,
+            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Security/securityConnectors/{securityConnectorName}/devops/default/azureDevOpsOrgs/{orgName}/projects/{projectName}/repos/{repoName}",
+            "securityConnectorName", "securityConnectors", LOGGER);
+        String orgName = ResourceManagerUtils.getRequiredValueFromIdByParameterName(id,
+            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Security/securityConnectors/{securityConnectorName}/devops/default/azureDevOpsOrgs/{orgName}/projects/{projectName}/repos/{repoName}",
+            "orgName", "azureDevOpsOrgs", LOGGER);
+        String projectName = ResourceManagerUtils.getRequiredValueFromIdByParameterName(id,
+            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Security/securityConnectors/{securityConnectorName}/devops/default/azureDevOpsOrgs/{orgName}/projects/{projectName}/repos/{repoName}",
+            "projectName", "projects", LOGGER);
+        String repoName = ResourceManagerUtils.getRequiredValueFromIdByParameterName(id,
+            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Security/securityConnectors/{securityConnectorName}/devops/default/azureDevOpsOrgs/{orgName}/projects/{projectName}/repos/{repoName}",
+            "repoName", "repos", LOGGER);
         return this.getWithResponse(resourceGroupName, securityConnectorName, orgName, projectName, repoName, context);
     }
 

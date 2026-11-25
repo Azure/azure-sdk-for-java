@@ -47,7 +47,7 @@ public final class PrivateEndpointConnectionsImpl implements PrivateEndpointConn
     }
 
     public void delete(String resourceGroupName, String configStoreName, String privateEndpointConnectionName) {
-        this.serviceClient().delete(resourceGroupName, configStoreName, privateEndpointConnectionName);
+        this.delete(resourceGroupName, configStoreName, privateEndpointConnectionName, Context.NONE);
     }
 
     public void delete(String resourceGroupName, String configStoreName, String privateEndpointConnectionName,
@@ -57,9 +57,7 @@ public final class PrivateEndpointConnectionsImpl implements PrivateEndpointConn
 
     public PagedIterable<PrivateEndpointConnection> listByConfigurationStore(String resourceGroupName,
         String configStoreName) {
-        PagedIterable<PrivateEndpointConnectionInner> inner
-            = this.serviceClient().listByConfigurationStore(resourceGroupName, configStoreName);
-        return ResourceManagerUtils.mapPage(inner, inner1 -> new PrivateEndpointConnectionImpl(inner1, this.manager()));
+        return this.listByConfigurationStore(resourceGroupName, configStoreName, Context.NONE);
     }
 
     public PagedIterable<PrivateEndpointConnection> listByConfigurationStore(String resourceGroupName,
@@ -70,83 +68,36 @@ public final class PrivateEndpointConnectionsImpl implements PrivateEndpointConn
     }
 
     public PrivateEndpointConnection getById(String id) {
-        String resourceGroupName = ResourceManagerUtils.getValueFromIdByName(id, "resourceGroups");
-        if (resourceGroupName == null) {
-            throw LOGGER.logExceptionAsError(new IllegalArgumentException(
-                String.format("The resource ID '%s' is not valid. Missing path segment 'resourceGroups'.", id)));
-        }
-        String configStoreName = ResourceManagerUtils.getValueFromIdByName(id, "configurationStores");
-        if (configStoreName == null) {
-            throw LOGGER.logExceptionAsError(new IllegalArgumentException(
-                String.format("The resource ID '%s' is not valid. Missing path segment 'configurationStores'.", id)));
-        }
-        String privateEndpointConnectionName
-            = ResourceManagerUtils.getValueFromIdByName(id, "privateEndpointConnections");
-        if (privateEndpointConnectionName == null) {
-            throw LOGGER.logExceptionAsError(new IllegalArgumentException(String
-                .format("The resource ID '%s' is not valid. Missing path segment 'privateEndpointConnections'.", id)));
-        }
-        return this.getWithResponse(resourceGroupName, configStoreName, privateEndpointConnectionName, Context.NONE)
-            .getValue();
+        return this.getByIdWithResponse(id, Context.NONE).getValue();
     }
 
     public Response<PrivateEndpointConnection> getByIdWithResponse(String id, Context context) {
-        String resourceGroupName = ResourceManagerUtils.getValueFromIdByName(id, "resourceGroups");
-        if (resourceGroupName == null) {
-            throw LOGGER.logExceptionAsError(new IllegalArgumentException(
-                String.format("The resource ID '%s' is not valid. Missing path segment 'resourceGroups'.", id)));
-        }
-        String configStoreName = ResourceManagerUtils.getValueFromIdByName(id, "configurationStores");
-        if (configStoreName == null) {
-            throw LOGGER.logExceptionAsError(new IllegalArgumentException(
-                String.format("The resource ID '%s' is not valid. Missing path segment 'configurationStores'.", id)));
-        }
-        String privateEndpointConnectionName
-            = ResourceManagerUtils.getValueFromIdByName(id, "privateEndpointConnections");
-        if (privateEndpointConnectionName == null) {
-            throw LOGGER.logExceptionAsError(new IllegalArgumentException(String
-                .format("The resource ID '%s' is not valid. Missing path segment 'privateEndpointConnections'.", id)));
-        }
+        String resourceGroupName = ResourceManagerUtils.getRequiredValueFromIdByParameterName(id,
+            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.AppConfiguration/configurationStores/{configStoreName}/privateEndpointConnections/{privateEndpointConnectionName}",
+            "resourceGroupName", "resourceGroups", LOGGER);
+        String configStoreName = ResourceManagerUtils.getRequiredValueFromIdByParameterName(id,
+            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.AppConfiguration/configurationStores/{configStoreName}/privateEndpointConnections/{privateEndpointConnectionName}",
+            "configStoreName", "configurationStores", LOGGER);
+        String privateEndpointConnectionName = ResourceManagerUtils.getRequiredValueFromIdByParameterName(id,
+            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.AppConfiguration/configurationStores/{configStoreName}/privateEndpointConnections/{privateEndpointConnectionName}",
+            "privateEndpointConnectionName", "privateEndpointConnections", LOGGER);
         return this.getWithResponse(resourceGroupName, configStoreName, privateEndpointConnectionName, context);
     }
 
     public void deleteById(String id) {
-        String resourceGroupName = ResourceManagerUtils.getValueFromIdByName(id, "resourceGroups");
-        if (resourceGroupName == null) {
-            throw LOGGER.logExceptionAsError(new IllegalArgumentException(
-                String.format("The resource ID '%s' is not valid. Missing path segment 'resourceGroups'.", id)));
-        }
-        String configStoreName = ResourceManagerUtils.getValueFromIdByName(id, "configurationStores");
-        if (configStoreName == null) {
-            throw LOGGER.logExceptionAsError(new IllegalArgumentException(
-                String.format("The resource ID '%s' is not valid. Missing path segment 'configurationStores'.", id)));
-        }
-        String privateEndpointConnectionName
-            = ResourceManagerUtils.getValueFromIdByName(id, "privateEndpointConnections");
-        if (privateEndpointConnectionName == null) {
-            throw LOGGER.logExceptionAsError(new IllegalArgumentException(String
-                .format("The resource ID '%s' is not valid. Missing path segment 'privateEndpointConnections'.", id)));
-        }
-        this.delete(resourceGroupName, configStoreName, privateEndpointConnectionName, Context.NONE);
+        this.deleteByIdWithResponse(id, Context.NONE);
     }
 
     public void deleteByIdWithResponse(String id, Context context) {
-        String resourceGroupName = ResourceManagerUtils.getValueFromIdByName(id, "resourceGroups");
-        if (resourceGroupName == null) {
-            throw LOGGER.logExceptionAsError(new IllegalArgumentException(
-                String.format("The resource ID '%s' is not valid. Missing path segment 'resourceGroups'.", id)));
-        }
-        String configStoreName = ResourceManagerUtils.getValueFromIdByName(id, "configurationStores");
-        if (configStoreName == null) {
-            throw LOGGER.logExceptionAsError(new IllegalArgumentException(
-                String.format("The resource ID '%s' is not valid. Missing path segment 'configurationStores'.", id)));
-        }
-        String privateEndpointConnectionName
-            = ResourceManagerUtils.getValueFromIdByName(id, "privateEndpointConnections");
-        if (privateEndpointConnectionName == null) {
-            throw LOGGER.logExceptionAsError(new IllegalArgumentException(String
-                .format("The resource ID '%s' is not valid. Missing path segment 'privateEndpointConnections'.", id)));
-        }
+        String resourceGroupName = ResourceManagerUtils.getRequiredValueFromIdByParameterName(id,
+            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.AppConfiguration/configurationStores/{configStoreName}/privateEndpointConnections/{privateEndpointConnectionName}",
+            "resourceGroupName", "resourceGroups", LOGGER);
+        String configStoreName = ResourceManagerUtils.getRequiredValueFromIdByParameterName(id,
+            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.AppConfiguration/configurationStores/{configStoreName}/privateEndpointConnections/{privateEndpointConnectionName}",
+            "configStoreName", "configurationStores", LOGGER);
+        String privateEndpointConnectionName = ResourceManagerUtils.getRequiredValueFromIdByParameterName(id,
+            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.AppConfiguration/configurationStores/{configStoreName}/privateEndpointConnections/{privateEndpointConnectionName}",
+            "privateEndpointConnectionName", "privateEndpointConnections", LOGGER);
         this.delete(resourceGroupName, configStoreName, privateEndpointConnectionName, context);
     }
 

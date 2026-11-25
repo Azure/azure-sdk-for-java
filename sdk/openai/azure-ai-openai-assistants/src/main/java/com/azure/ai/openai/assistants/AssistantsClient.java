@@ -2307,11 +2307,11 @@ public final class AssistantsClient {
      * @return represents an assistant that can call the model and use tools along with {@link Response}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    Response<BinaryData> uploadFileWithResponse(BinaryData request, RequestOptions requestOptions) {
+    Response<BinaryData> uploadFileWithResponseInternal(BinaryData request, RequestOptions requestOptions) {
         // Protocol API requires serialization of parts with content-disposition and data, as operation 'uploadFile' is
         // 'multipart/form-data'
         addAzureVersionToRequestOptions(serviceClient.getEndpoint(), requestOptions, serviceClient.getServiceVersion());
-        return this.serviceClient.uploadFileWithResponse(request, requestOptions);
+        return this.serviceClient.uploadFileWithResponseInternal(request, requestOptions);
     }
 
     /**
@@ -2662,7 +2662,7 @@ public final class AssistantsClient {
             .serializeTextField("filename", requestObj.getFilename())
             .end()
             .getRequestBody();
-        return uploadFileWithResponse(request, requestOptions).getValue().toObject(OpenAIFile.class);
+        return uploadFileWithResponseInternal(request, requestOptions).getValue().toObject(OpenAIFile.class);
     }
 
     /**
@@ -2690,7 +2690,7 @@ public final class AssistantsClient {
             .serializeTextField("filename", requestObj.getFilename())
             .end()
             .getRequestBody();
-        return uploadFileWithResponse(request, requestOptions).getValue().toObject(OpenAIFile.class);
+        return uploadFileWithResponseInternal(request, requestOptions).getValue().toObject(OpenAIFile.class);
     }
 
     /**

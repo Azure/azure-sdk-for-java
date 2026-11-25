@@ -114,7 +114,9 @@ public interface Volume {
     VolumePropertiesExportPolicy exportPolicy();
 
     /**
-     * Gets the protocolTypes property: Set of protocol types, default NFSv3, CIFS for SMB protocol.
+     * Gets the protocolTypes property: Specify the protocol types for the volume. Supported values are NFSv3, NFSv4.1,
+     * and CIFS. For SMB volumes, specify CIFS.
+     * The value SMB isn't supported in the protocolTypes property. Default: NFSv3.
      * 
      * @return the protocolTypes value.
      */
@@ -292,6 +294,14 @@ public interface Volume {
     Boolean smbContinuouslyAvailable();
 
     /**
+     * Gets the smbOplocks property: Enables or disables SMB opportunistic lock property for SMB Shares. Only applicable
+     * for SMB/DualProtocol volume.
+     * 
+     * @return the smbOplocks value.
+     */
+    SmbOplocks smbOplocks();
+
+    /**
      * Gets the throughputMibps property: Maximum throughput in MiB/s that can be achieved by this volume and this will
      * be accepted as input only for manual qosType volume.
      * 
@@ -330,6 +340,13 @@ public interface Volume {
      * @return the ldapEnabled value.
      */
     Boolean ldapEnabled();
+
+    /**
+     * Gets the ldapServerType property: Specifies the type of LDAP server for a given NFS volume.
+     * 
+     * @return the ldapServerType value.
+     */
+    LdapServerType ldapServerType();
 
     /**
      * Gets the coolAccess property: Specifies whether Cool Access(tiering) is enabled for the volume.
@@ -494,14 +511,6 @@ public interface Volume {
      * @return the placementRules value.
      */
     List<PlacementKeyValuePairs> placementRules();
-
-    /**
-     * Gets the enableSubvolumes property: Flag indicating whether subvolume operations are enabled on the volume
-     * Deprecated. Subvolume operations and this flag will be removed in a future API version.
-     * 
-     * @return the enableSubvolumes value.
-     */
-    EnableSubvolumes enableSubvolumes();
 
     /**
      * Gets the provisionedAvailabilityZone property: The availability zone where the volume is provisioned. This refers
@@ -681,16 +690,17 @@ public interface Volume {
             DefinitionStages.WithSnapshotDirectoryVisible, DefinitionStages.WithKerberosEnabled,
             DefinitionStages.WithSecurityStyle, DefinitionStages.WithSmbEncryption,
             DefinitionStages.WithSmbAccessBasedEnumeration, DefinitionStages.WithSmbNonBrowsable,
-            DefinitionStages.WithSmbContinuouslyAvailable, DefinitionStages.WithThroughputMibps,
-            DefinitionStages.WithEncryptionKeySource, DefinitionStages.WithKeyVaultPrivateEndpointResourceId,
-            DefinitionStages.WithLdapEnabled, DefinitionStages.WithCoolAccess, DefinitionStages.WithCoolnessPeriod,
+            DefinitionStages.WithSmbContinuouslyAvailable, DefinitionStages.WithSmbOplocks,
+            DefinitionStages.WithThroughputMibps, DefinitionStages.WithEncryptionKeySource,
+            DefinitionStages.WithKeyVaultPrivateEndpointResourceId, DefinitionStages.WithLdapEnabled,
+            DefinitionStages.WithLdapServerType, DefinitionStages.WithCoolAccess, DefinitionStages.WithCoolnessPeriod,
             DefinitionStages.WithCoolAccessRetrievalPolicy, DefinitionStages.WithCoolAccessTieringPolicy,
             DefinitionStages.WithUnixPermissions, DefinitionStages.WithAvsDataStore,
             DefinitionStages.WithIsDefaultQuotaEnabled, DefinitionStages.WithDefaultUserQuotaInKiBs,
             DefinitionStages.WithDefaultGroupQuotaInKiBs, DefinitionStages.WithCapacityPoolResourceId,
             DefinitionStages.WithProximityPlacementGroup, DefinitionStages.WithVolumeSpecName,
-            DefinitionStages.WithPlacementRules, DefinitionStages.WithEnableSubvolumes,
-            DefinitionStages.WithIsLargeVolume, DefinitionStages.WithBreakthroughMode {
+            DefinitionStages.WithPlacementRules, DefinitionStages.WithIsLargeVolume,
+            DefinitionStages.WithBreakthroughMode {
             /**
              * Executes the create request.
              * 
@@ -764,9 +774,13 @@ public interface Volume {
          */
         interface WithProtocolTypes {
             /**
-             * Specifies the protocolTypes property: Set of protocol types, default NFSv3, CIFS for SMB protocol.
+             * Specifies the protocolTypes property: Specify the protocol types for the volume. Supported values are
+             * NFSv3, NFSv4.1, and CIFS. For SMB volumes, specify CIFS.
+             * The value SMB isn't supported in the protocolTypes property. Default: NFSv3.
              * 
-             * @param protocolTypes Set of protocol types, default NFSv3, CIFS for SMB protocol.
+             * @param protocolTypes Specify the protocol types for the volume. Supported values are NFSv3, NFSv4.1, and
+             * CIFS. For SMB volumes, specify CIFS.
+             * The value SMB isn't supported in the protocolTypes property. Default: NFSv3.
              * @return the next definition stage.
              */
             WithCreate withProtocolTypes(List<String> protocolTypes);
@@ -984,6 +998,21 @@ public interface Volume {
         }
 
         /**
+         * The stage of the Volume definition allowing to specify smbOplocks.
+         */
+        interface WithSmbOplocks {
+            /**
+             * Specifies the smbOplocks property: Enables or disables SMB opportunistic lock property for SMB Shares.
+             * Only applicable for SMB/DualProtocol volume.
+             * 
+             * @param smbOplocks Enables or disables SMB opportunistic lock property for SMB Shares. Only applicable for
+             * SMB/DualProtocol volume.
+             * @return the next definition stage.
+             */
+            WithCreate withSmbOplocks(SmbOplocks smbOplocks);
+        }
+
+        /**
          * The stage of the Volume definition allowing to specify throughputMibps.
          */
         interface WithThroughputMibps {
@@ -1042,6 +1071,19 @@ public interface Volume {
              * @return the next definition stage.
              */
             WithCreate withLdapEnabled(Boolean ldapEnabled);
+        }
+
+        /**
+         * The stage of the Volume definition allowing to specify ldapServerType.
+         */
+        interface WithLdapServerType {
+            /**
+             * Specifies the ldapServerType property: Specifies the type of LDAP server for a given NFS volume..
+             * 
+             * @param ldapServerType Specifies the type of LDAP server for a given NFS volume.
+             * @return the next definition stage.
+             */
+            WithCreate withLdapServerType(LdapServerType ldapServerType);
         }
 
         /**
@@ -1255,22 +1297,6 @@ public interface Volume {
         }
 
         /**
-         * The stage of the Volume definition allowing to specify enableSubvolumes.
-         */
-        interface WithEnableSubvolumes {
-            /**
-             * Specifies the enableSubvolumes property: Flag indicating whether subvolume operations are enabled on the
-             * volume
-             * Deprecated. Subvolume operations and this flag will be removed in a future API version..
-             * 
-             * @param enableSubvolumes Flag indicating whether subvolume operations are enabled on the volume
-             * Deprecated. Subvolume operations and this flag will be removed in a future API version.
-             * @return the next definition stage.
-             */
-            WithCreate withEnableSubvolumes(EnableSubvolumes enableSubvolumes);
-        }
-
-        /**
          * The stage of the Volume definition allowing to specify isLargeVolume.
          */
         interface WithIsLargeVolume {
@@ -1314,7 +1340,7 @@ public interface Volume {
         UpdateStages.WithUnixPermissions, UpdateStages.WithCoolAccess, UpdateStages.WithCoolnessPeriod,
         UpdateStages.WithCoolAccessRetrievalPolicy, UpdateStages.WithCoolAccessTieringPolicy,
         UpdateStages.WithSnapshotDirectoryVisible, UpdateStages.WithSmbAccessBasedEnumeration,
-        UpdateStages.WithSmbNonBrowsable {
+        UpdateStages.WithSmbNonBrowsable, UpdateStages.WithSmbOplocks {
         /**
          * Executes the update request.
          * 
@@ -1398,9 +1424,13 @@ public interface Volume {
          */
         interface WithProtocolTypes {
             /**
-             * Specifies the protocolTypes property: Set of protocol types, default NFSv3, CIFS for SMB protocol.
+             * Specifies the protocolTypes property: Specify the protocol types for the volume. Supported values are
+             * NFSv3, NFSv4.1, and CIFS. For SMB volumes, specify CIFS.
+             * The value SMB isn't supported in the protocolTypes property. Default: NFSv3.
              * 
-             * @param protocolTypes Set of protocol types, default NFSv3, CIFS for SMB protocol.
+             * @param protocolTypes Specify the protocol types for the volume. Supported values are NFSv3, NFSv4.1, and
+             * CIFS. For SMB volumes, specify CIFS.
+             * The value SMB isn't supported in the protocolTypes property. Default: NFSv3.
              * @return the next definition stage.
              */
             Update withProtocolTypes(List<String> protocolTypes);
@@ -1619,6 +1649,21 @@ public interface Volume {
              * @return the next definition stage.
              */
             Update withSmbNonBrowsable(SmbNonBrowsable smbNonBrowsable);
+        }
+
+        /**
+         * The stage of the Volume update allowing to specify smbOplocks.
+         */
+        interface WithSmbOplocks {
+            /**
+             * Specifies the smbOplocks property: Enables or disables SMB opportunistic lock property for SMB Shares.
+             * Only applicable for SMB/DualProtocol volume.
+             * 
+             * @param smbOplocks Enables or disables SMB opportunistic lock property for SMB Shares. Only applicable for
+             * SMB/DualProtocol volume.
+             * @return the next definition stage.
+             */
+            Update withSmbOplocks(SmbOplocks smbOplocks);
         }
     }
 

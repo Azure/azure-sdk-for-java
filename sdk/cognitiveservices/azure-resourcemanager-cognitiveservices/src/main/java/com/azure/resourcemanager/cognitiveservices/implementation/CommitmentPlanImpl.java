@@ -97,10 +97,7 @@ public final class CommitmentPlanImpl implements CommitmentPlan, CommitmentPlan.
     }
 
     public CommitmentPlan create() {
-        this.innerObject = serviceManager.serviceClient()
-            .getCommitmentPlans()
-            .createOrUpdatePlan(resourceGroupName, commitmentPlanName, this.innerModel(), Context.NONE);
-        return this;
+        return this.create(Context.NONE);
     }
 
     public CommitmentPlan create(Context context) {
@@ -123,10 +120,7 @@ public final class CommitmentPlanImpl implements CommitmentPlan, CommitmentPlan.
     }
 
     public CommitmentPlan apply() {
-        this.innerObject = serviceManager.serviceClient()
-            .getCommitmentPlans()
-            .updatePlan(resourceGroupName, commitmentPlanName, updateCommitmentPlan, Context.NONE);
-        return this;
+        return this.apply(Context.NONE);
     }
 
     public CommitmentPlan apply(Context context) {
@@ -140,16 +134,26 @@ public final class CommitmentPlanImpl implements CommitmentPlan, CommitmentPlan.
         com.azure.resourcemanager.cognitiveservices.CognitiveServicesManager serviceManager) {
         this.innerObject = innerObject;
         this.serviceManager = serviceManager;
-        this.resourceGroupName = ResourceManagerUtils.getValueFromIdByName(innerObject.id(), "resourceGroups");
-        this.commitmentPlanName = ResourceManagerUtils.getValueFromIdByName(innerObject.id(), "commitmentPlans");
+        this.resourceGroupName = ResourceManagerUtils.getValueFromIdByParameterName(innerObject.id(),
+            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.CognitiveServices/commitmentPlans/{commitmentPlanName}",
+            "resourceGroupName");
+        if (this.resourceGroupName == null) {
+            this.resourceGroupName = ResourceManagerUtils.getValueFromIdByParameterName(innerObject.id(),
+                "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.CognitiveServices/accounts/{accountName}/commitmentPlans/{commitmentPlanName}",
+                "resourceGroupName");
+        }
+        this.commitmentPlanName = ResourceManagerUtils.getValueFromIdByParameterName(innerObject.id(),
+            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.CognitiveServices/commitmentPlans/{commitmentPlanName}",
+            "commitmentPlanName");
+        if (this.commitmentPlanName == null) {
+            this.commitmentPlanName = ResourceManagerUtils.getValueFromIdByParameterName(innerObject.id(),
+                "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.CognitiveServices/accounts/{accountName}/commitmentPlans/{commitmentPlanName}",
+                "commitmentPlanName");
+        }
     }
 
     public CommitmentPlan refresh() {
-        this.innerObject = serviceManager.serviceClient()
-            .getCommitmentPlans()
-            .getByResourceGroupWithResponse(resourceGroupName, commitmentPlanName, Context.NONE)
-            .getValue();
-        return this;
+        return this.refresh(Context.NONE);
     }
 
     public CommitmentPlan refresh(Context context) {

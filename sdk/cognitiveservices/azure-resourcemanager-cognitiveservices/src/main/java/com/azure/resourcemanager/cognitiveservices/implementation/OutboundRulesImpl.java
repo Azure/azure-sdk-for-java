@@ -47,7 +47,7 @@ public final class OutboundRulesImpl implements OutboundRules {
     }
 
     public void delete(String resourceGroupName, String accountName, String managedNetworkName, String ruleName) {
-        this.serviceClient().delete(resourceGroupName, accountName, managedNetworkName, ruleName);
+        this.delete(resourceGroupName, accountName, managedNetworkName, ruleName, Context.NONE);
     }
 
     public void delete(String resourceGroupName, String accountName, String managedNetworkName, String ruleName,
@@ -57,9 +57,7 @@ public final class OutboundRulesImpl implements OutboundRules {
 
     public PagedIterable<OutboundRuleBasicResource> list(String resourceGroupName, String accountName,
         String managedNetworkName) {
-        PagedIterable<OutboundRuleBasicResourceInner> inner
-            = this.serviceClient().list(resourceGroupName, accountName, managedNetworkName);
-        return ResourceManagerUtils.mapPage(inner, inner1 -> new OutboundRuleBasicResourceImpl(inner1, this.manager()));
+        return this.list(resourceGroupName, accountName, managedNetworkName, Context.NONE);
     }
 
     public PagedIterable<OutboundRuleBasicResource> list(String resourceGroupName, String accountName,
@@ -70,99 +68,42 @@ public final class OutboundRulesImpl implements OutboundRules {
     }
 
     public OutboundRuleBasicResource getById(String id) {
-        String resourceGroupName = ResourceManagerUtils.getValueFromIdByName(id, "resourceGroups");
-        if (resourceGroupName == null) {
-            throw LOGGER.logExceptionAsError(new IllegalArgumentException(
-                String.format("The resource ID '%s' is not valid. Missing path segment 'resourceGroups'.", id)));
-        }
-        String accountName = ResourceManagerUtils.getValueFromIdByName(id, "accounts");
-        if (accountName == null) {
-            throw LOGGER.logExceptionAsError(new IllegalArgumentException(
-                String.format("The resource ID '%s' is not valid. Missing path segment 'accounts'.", id)));
-        }
-        String managedNetworkName = ResourceManagerUtils.getValueFromIdByName(id, "managedNetworks");
-        if (managedNetworkName == null) {
-            throw LOGGER.logExceptionAsError(new IllegalArgumentException(
-                String.format("The resource ID '%s' is not valid. Missing path segment 'managedNetworks'.", id)));
-        }
-        String ruleName = ResourceManagerUtils.getValueFromIdByName(id, "outboundRules");
-        if (ruleName == null) {
-            throw LOGGER.logExceptionAsError(new IllegalArgumentException(
-                String.format("The resource ID '%s' is not valid. Missing path segment 'outboundRules'.", id)));
-        }
-        return this.getWithResponse(resourceGroupName, accountName, managedNetworkName, ruleName, Context.NONE)
-            .getValue();
+        return this.getByIdWithResponse(id, Context.NONE).getValue();
     }
 
     public Response<OutboundRuleBasicResource> getByIdWithResponse(String id, Context context) {
-        String resourceGroupName = ResourceManagerUtils.getValueFromIdByName(id, "resourceGroups");
-        if (resourceGroupName == null) {
-            throw LOGGER.logExceptionAsError(new IllegalArgumentException(
-                String.format("The resource ID '%s' is not valid. Missing path segment 'resourceGroups'.", id)));
-        }
-        String accountName = ResourceManagerUtils.getValueFromIdByName(id, "accounts");
-        if (accountName == null) {
-            throw LOGGER.logExceptionAsError(new IllegalArgumentException(
-                String.format("The resource ID '%s' is not valid. Missing path segment 'accounts'.", id)));
-        }
-        String managedNetworkName = ResourceManagerUtils.getValueFromIdByName(id, "managedNetworks");
-        if (managedNetworkName == null) {
-            throw LOGGER.logExceptionAsError(new IllegalArgumentException(
-                String.format("The resource ID '%s' is not valid. Missing path segment 'managedNetworks'.", id)));
-        }
-        String ruleName = ResourceManagerUtils.getValueFromIdByName(id, "outboundRules");
-        if (ruleName == null) {
-            throw LOGGER.logExceptionAsError(new IllegalArgumentException(
-                String.format("The resource ID '%s' is not valid. Missing path segment 'outboundRules'.", id)));
-        }
+        String resourceGroupName = ResourceManagerUtils.getRequiredValueFromIdByParameterName(id,
+            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.CognitiveServices/accounts/{accountName}/managedNetworks/{managedNetworkName}/outboundRules/{ruleName}",
+            "resourceGroupName", "resourceGroups", LOGGER);
+        String accountName = ResourceManagerUtils.getRequiredValueFromIdByParameterName(id,
+            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.CognitiveServices/accounts/{accountName}/managedNetworks/{managedNetworkName}/outboundRules/{ruleName}",
+            "accountName", "accounts", LOGGER);
+        String managedNetworkName = ResourceManagerUtils.getRequiredValueFromIdByParameterName(id,
+            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.CognitiveServices/accounts/{accountName}/managedNetworks/{managedNetworkName}/outboundRules/{ruleName}",
+            "managedNetworkName", "managedNetworks", LOGGER);
+        String ruleName = ResourceManagerUtils.getRequiredValueFromIdByParameterName(id,
+            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.CognitiveServices/accounts/{accountName}/managedNetworks/{managedNetworkName}/outboundRules/{ruleName}",
+            "ruleName", "outboundRules", LOGGER);
         return this.getWithResponse(resourceGroupName, accountName, managedNetworkName, ruleName, context);
     }
 
     public void deleteById(String id) {
-        String resourceGroupName = ResourceManagerUtils.getValueFromIdByName(id, "resourceGroups");
-        if (resourceGroupName == null) {
-            throw LOGGER.logExceptionAsError(new IllegalArgumentException(
-                String.format("The resource ID '%s' is not valid. Missing path segment 'resourceGroups'.", id)));
-        }
-        String accountName = ResourceManagerUtils.getValueFromIdByName(id, "accounts");
-        if (accountName == null) {
-            throw LOGGER.logExceptionAsError(new IllegalArgumentException(
-                String.format("The resource ID '%s' is not valid. Missing path segment 'accounts'.", id)));
-        }
-        String managedNetworkName = ResourceManagerUtils.getValueFromIdByName(id, "managedNetworks");
-        if (managedNetworkName == null) {
-            throw LOGGER.logExceptionAsError(new IllegalArgumentException(
-                String.format("The resource ID '%s' is not valid. Missing path segment 'managedNetworks'.", id)));
-        }
-        String ruleName = ResourceManagerUtils.getValueFromIdByName(id, "outboundRules");
-        if (ruleName == null) {
-            throw LOGGER.logExceptionAsError(new IllegalArgumentException(
-                String.format("The resource ID '%s' is not valid. Missing path segment 'outboundRules'.", id)));
-        }
-        this.delete(resourceGroupName, accountName, managedNetworkName, ruleName, Context.NONE);
+        this.deleteByIdWithResponse(id, Context.NONE);
     }
 
     public void deleteByIdWithResponse(String id, Context context) {
-        String resourceGroupName = ResourceManagerUtils.getValueFromIdByName(id, "resourceGroups");
-        if (resourceGroupName == null) {
-            throw LOGGER.logExceptionAsError(new IllegalArgumentException(
-                String.format("The resource ID '%s' is not valid. Missing path segment 'resourceGroups'.", id)));
-        }
-        String accountName = ResourceManagerUtils.getValueFromIdByName(id, "accounts");
-        if (accountName == null) {
-            throw LOGGER.logExceptionAsError(new IllegalArgumentException(
-                String.format("The resource ID '%s' is not valid. Missing path segment 'accounts'.", id)));
-        }
-        String managedNetworkName = ResourceManagerUtils.getValueFromIdByName(id, "managedNetworks");
-        if (managedNetworkName == null) {
-            throw LOGGER.logExceptionAsError(new IllegalArgumentException(
-                String.format("The resource ID '%s' is not valid. Missing path segment 'managedNetworks'.", id)));
-        }
-        String ruleName = ResourceManagerUtils.getValueFromIdByName(id, "outboundRules");
-        if (ruleName == null) {
-            throw LOGGER.logExceptionAsError(new IllegalArgumentException(
-                String.format("The resource ID '%s' is not valid. Missing path segment 'outboundRules'.", id)));
-        }
+        String resourceGroupName = ResourceManagerUtils.getRequiredValueFromIdByParameterName(id,
+            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.CognitiveServices/accounts/{accountName}/managedNetworks/{managedNetworkName}/outboundRules/{ruleName}",
+            "resourceGroupName", "resourceGroups", LOGGER);
+        String accountName = ResourceManagerUtils.getRequiredValueFromIdByParameterName(id,
+            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.CognitiveServices/accounts/{accountName}/managedNetworks/{managedNetworkName}/outboundRules/{ruleName}",
+            "accountName", "accounts", LOGGER);
+        String managedNetworkName = ResourceManagerUtils.getRequiredValueFromIdByParameterName(id,
+            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.CognitiveServices/accounts/{accountName}/managedNetworks/{managedNetworkName}/outboundRules/{ruleName}",
+            "managedNetworkName", "managedNetworks", LOGGER);
+        String ruleName = ResourceManagerUtils.getRequiredValueFromIdByParameterName(id,
+            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.CognitiveServices/accounts/{accountName}/managedNetworks/{managedNetworkName}/outboundRules/{ruleName}",
+            "ruleName", "outboundRules", LOGGER);
         this.delete(resourceGroupName, accountName, managedNetworkName, ruleName, context);
     }
 

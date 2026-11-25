@@ -46,7 +46,7 @@ public final class EdgeActionExecutionFiltersImpl implements EdgeActionExecution
     }
 
     public void delete(String resourceGroupName, String edgeActionName, String executionFilter) {
-        this.serviceClient().delete(resourceGroupName, edgeActionName, executionFilter);
+        this.delete(resourceGroupName, edgeActionName, executionFilter, Context.NONE);
     }
 
     public void delete(String resourceGroupName, String edgeActionName, String executionFilter, Context context) {
@@ -54,9 +54,7 @@ public final class EdgeActionExecutionFiltersImpl implements EdgeActionExecution
     }
 
     public PagedIterable<EdgeActionExecutionFilter> listByEdgeAction(String resourceGroupName, String edgeActionName) {
-        PagedIterable<EdgeActionExecutionFilterInner> inner
-            = this.serviceClient().listByEdgeAction(resourceGroupName, edgeActionName);
-        return ResourceManagerUtils.mapPage(inner, inner1 -> new EdgeActionExecutionFilterImpl(inner1, this.manager()));
+        return this.listByEdgeAction(resourceGroupName, edgeActionName, Context.NONE);
     }
 
     public PagedIterable<EdgeActionExecutionFilter> listByEdgeAction(String resourceGroupName, String edgeActionName,
@@ -67,78 +65,36 @@ public final class EdgeActionExecutionFiltersImpl implements EdgeActionExecution
     }
 
     public EdgeActionExecutionFilter getById(String id) {
-        String resourceGroupName = ResourceManagerUtils.getValueFromIdByName(id, "resourceGroups");
-        if (resourceGroupName == null) {
-            throw LOGGER.logExceptionAsError(new IllegalArgumentException(
-                String.format("The resource ID '%s' is not valid. Missing path segment 'resourceGroups'.", id)));
-        }
-        String edgeActionName = ResourceManagerUtils.getValueFromIdByName(id, "edgeActions");
-        if (edgeActionName == null) {
-            throw LOGGER.logExceptionAsError(new IllegalArgumentException(
-                String.format("The resource ID '%s' is not valid. Missing path segment 'edgeActions'.", id)));
-        }
-        String executionFilter = ResourceManagerUtils.getValueFromIdByName(id, "executionFilters");
-        if (executionFilter == null) {
-            throw LOGGER.logExceptionAsError(new IllegalArgumentException(
-                String.format("The resource ID '%s' is not valid. Missing path segment 'executionFilters'.", id)));
-        }
-        return this.getWithResponse(resourceGroupName, edgeActionName, executionFilter, Context.NONE).getValue();
+        return this.getByIdWithResponse(id, Context.NONE).getValue();
     }
 
     public Response<EdgeActionExecutionFilter> getByIdWithResponse(String id, Context context) {
-        String resourceGroupName = ResourceManagerUtils.getValueFromIdByName(id, "resourceGroups");
-        if (resourceGroupName == null) {
-            throw LOGGER.logExceptionAsError(new IllegalArgumentException(
-                String.format("The resource ID '%s' is not valid. Missing path segment 'resourceGroups'.", id)));
-        }
-        String edgeActionName = ResourceManagerUtils.getValueFromIdByName(id, "edgeActions");
-        if (edgeActionName == null) {
-            throw LOGGER.logExceptionAsError(new IllegalArgumentException(
-                String.format("The resource ID '%s' is not valid. Missing path segment 'edgeActions'.", id)));
-        }
-        String executionFilter = ResourceManagerUtils.getValueFromIdByName(id, "executionFilters");
-        if (executionFilter == null) {
-            throw LOGGER.logExceptionAsError(new IllegalArgumentException(
-                String.format("The resource ID '%s' is not valid. Missing path segment 'executionFilters'.", id)));
-        }
+        String resourceGroupName = ResourceManagerUtils.getRequiredValueFromIdByParameterName(id,
+            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Cdn/edgeActions/{edgeActionName}/executionFilters/{executionFilter}",
+            "resourceGroupName", "resourceGroups", LOGGER);
+        String edgeActionName = ResourceManagerUtils.getRequiredValueFromIdByParameterName(id,
+            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Cdn/edgeActions/{edgeActionName}/executionFilters/{executionFilter}",
+            "edgeActionName", "edgeActions", LOGGER);
+        String executionFilter = ResourceManagerUtils.getRequiredValueFromIdByParameterName(id,
+            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Cdn/edgeActions/{edgeActionName}/executionFilters/{executionFilter}",
+            "executionFilter", "executionFilters", LOGGER);
         return this.getWithResponse(resourceGroupName, edgeActionName, executionFilter, context);
     }
 
     public void deleteById(String id) {
-        String resourceGroupName = ResourceManagerUtils.getValueFromIdByName(id, "resourceGroups");
-        if (resourceGroupName == null) {
-            throw LOGGER.logExceptionAsError(new IllegalArgumentException(
-                String.format("The resource ID '%s' is not valid. Missing path segment 'resourceGroups'.", id)));
-        }
-        String edgeActionName = ResourceManagerUtils.getValueFromIdByName(id, "edgeActions");
-        if (edgeActionName == null) {
-            throw LOGGER.logExceptionAsError(new IllegalArgumentException(
-                String.format("The resource ID '%s' is not valid. Missing path segment 'edgeActions'.", id)));
-        }
-        String executionFilter = ResourceManagerUtils.getValueFromIdByName(id, "executionFilters");
-        if (executionFilter == null) {
-            throw LOGGER.logExceptionAsError(new IllegalArgumentException(
-                String.format("The resource ID '%s' is not valid. Missing path segment 'executionFilters'.", id)));
-        }
-        this.delete(resourceGroupName, edgeActionName, executionFilter, Context.NONE);
+        this.deleteByIdWithResponse(id, Context.NONE);
     }
 
     public void deleteByIdWithResponse(String id, Context context) {
-        String resourceGroupName = ResourceManagerUtils.getValueFromIdByName(id, "resourceGroups");
-        if (resourceGroupName == null) {
-            throw LOGGER.logExceptionAsError(new IllegalArgumentException(
-                String.format("The resource ID '%s' is not valid. Missing path segment 'resourceGroups'.", id)));
-        }
-        String edgeActionName = ResourceManagerUtils.getValueFromIdByName(id, "edgeActions");
-        if (edgeActionName == null) {
-            throw LOGGER.logExceptionAsError(new IllegalArgumentException(
-                String.format("The resource ID '%s' is not valid. Missing path segment 'edgeActions'.", id)));
-        }
-        String executionFilter = ResourceManagerUtils.getValueFromIdByName(id, "executionFilters");
-        if (executionFilter == null) {
-            throw LOGGER.logExceptionAsError(new IllegalArgumentException(
-                String.format("The resource ID '%s' is not valid. Missing path segment 'executionFilters'.", id)));
-        }
+        String resourceGroupName = ResourceManagerUtils.getRequiredValueFromIdByParameterName(id,
+            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Cdn/edgeActions/{edgeActionName}/executionFilters/{executionFilter}",
+            "resourceGroupName", "resourceGroups", LOGGER);
+        String edgeActionName = ResourceManagerUtils.getRequiredValueFromIdByParameterName(id,
+            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Cdn/edgeActions/{edgeActionName}/executionFilters/{executionFilter}",
+            "edgeActionName", "edgeActions", LOGGER);
+        String executionFilter = ResourceManagerUtils.getRequiredValueFromIdByParameterName(id,
+            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Cdn/edgeActions/{edgeActionName}/executionFilters/{executionFilter}",
+            "executionFilter", "executionFilters", LOGGER);
         this.delete(resourceGroupName, edgeActionName, executionFilter, context);
     }
 

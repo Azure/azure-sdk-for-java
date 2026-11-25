@@ -85,10 +85,7 @@ public final class ChatModelDeploymentImpl
     }
 
     public ChatModelDeployment create() {
-        this.innerObject = serviceManager.serviceClient()
-            .getChatModelDeployments()
-            .createOrUpdate(resourceGroupName, workspaceName, chatModelDeploymentName, this.innerModel(), Context.NONE);
-        return this;
+        return this.create(Context.NONE);
     }
 
     public ChatModelDeployment create(Context context) {
@@ -109,10 +106,7 @@ public final class ChatModelDeploymentImpl
     }
 
     public ChatModelDeployment apply() {
-        this.innerObject = serviceManager.serviceClient()
-            .getChatModelDeployments()
-            .update(resourceGroupName, workspaceName, chatModelDeploymentName, this.innerModel(), Context.NONE);
-        return this;
+        return this.apply(Context.NONE);
     }
 
     public ChatModelDeployment apply(Context context) {
@@ -126,18 +120,19 @@ public final class ChatModelDeploymentImpl
         com.azure.resourcemanager.discovery.DiscoveryManager serviceManager) {
         this.innerObject = innerObject;
         this.serviceManager = serviceManager;
-        this.resourceGroupName = ResourceManagerUtils.getValueFromIdByName(innerObject.id(), "resourceGroups");
-        this.workspaceName = ResourceManagerUtils.getValueFromIdByName(innerObject.id(), "workspaces");
-        this.chatModelDeploymentName
-            = ResourceManagerUtils.getValueFromIdByName(innerObject.id(), "chatModelDeployments");
+        this.resourceGroupName = ResourceManagerUtils.getValueFromIdByParameterName(innerObject.id(),
+            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Discovery/workspaces/{workspaceName}/chatModelDeployments/{chatModelDeploymentName}",
+            "resourceGroupName");
+        this.workspaceName = ResourceManagerUtils.getValueFromIdByParameterName(innerObject.id(),
+            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Discovery/workspaces/{workspaceName}/chatModelDeployments/{chatModelDeploymentName}",
+            "workspaceName");
+        this.chatModelDeploymentName = ResourceManagerUtils.getValueFromIdByParameterName(innerObject.id(),
+            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Discovery/workspaces/{workspaceName}/chatModelDeployments/{chatModelDeploymentName}",
+            "chatModelDeploymentName");
     }
 
     public ChatModelDeployment refresh() {
-        this.innerObject = serviceManager.serviceClient()
-            .getChatModelDeployments()
-            .getWithResponse(resourceGroupName, workspaceName, chatModelDeploymentName, Context.NONE)
-            .getValue();
-        return this;
+        return this.refresh(Context.NONE);
     }
 
     public ChatModelDeployment refresh(Context context) {

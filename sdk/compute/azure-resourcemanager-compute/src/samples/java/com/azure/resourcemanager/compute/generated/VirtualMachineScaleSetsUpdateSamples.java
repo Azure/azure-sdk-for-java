@@ -87,7 +87,7 @@ import java.util.Map;
  */
 public final class VirtualMachineScaleSetsUpdateSamples {
     /*
-     * x-ms-original-file: 2026-03-01/virtualMachineScaleSetExamples/VirtualMachineScaleSet_Update_MinimumSet_Gen.json
+     * x-ms-original-file: 2026-04-01/virtualMachineScaleSetExamples/VirtualMachineScaleSet_Update_MinimumSet_Gen.json
      */
     /**
      * Sample code: VirtualMachineScaleSet_Update_MinimumSet_Gen.
@@ -103,7 +103,7 @@ public final class VirtualMachineScaleSetsUpdateSamples {
     }
 
     /*
-     * x-ms-original-file: 2026-03-01/virtualMachineScaleSetExamples/VirtualMachineScaleSet_Update_MaximumSet_Gen.json
+     * x-ms-original-file: 2026-04-01/virtualMachineScaleSetExamples/VirtualMachineScaleSet_Update_MaximumSet_Gen.json
      */
     /**
      * Sample code: VirtualMachineScaleSet_Update_MaximumSet_Gen.
@@ -224,6 +224,7 @@ public final class VirtualMachineScaleSetsUpdateSamples {
                                                     .withDomainNameLabel("aaaaaaaaaaaaaaaaaa"))
                                             .withDeleteOption(DeleteOptions.DELETE))
                                     .withPrivateIpAddressVersion(IpVersion.IPV4)
+                                    .withPrivateIPAddressPrefixLength(28)
                                     .withApplicationGatewayBackendAddressPools(Arrays.asList(new SubResource().withId(
                                         "subscriptions/{subscription-id}/resourceGroups/myResourceGroup/providers/Microsoft.Compute/snapshots/mySnapshot")))
                                     .withApplicationSecurityGroups(Arrays.asList(new SubResource().withId(

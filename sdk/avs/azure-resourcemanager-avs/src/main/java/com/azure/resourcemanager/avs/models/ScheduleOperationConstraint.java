@@ -81,6 +81,8 @@ public class ScheduleOperationConstraint implements JsonSerializable<ScheduleOpe
                 // Use the discriminator value to determine which subtype should be deserialized.
                 if ("SchedulingWindow".equals(discriminatorValue)) {
                     return SchedulingWindow.fromJson(readerToUse.reset());
+                } else if ("WeekendScheduling".equals(discriminatorValue)) {
+                    return WeekendSchedulingConstraint.fromJson(readerToUse.reset());
                 } else if ("AvailableWindowForMaintenance".equals(discriminatorValue)) {
                     return AvailableWindowForMaintenanceWhileScheduleOperation.fromJson(readerToUse.reset());
                 } else if ("Blocked".equals(discriminatorValue)) {

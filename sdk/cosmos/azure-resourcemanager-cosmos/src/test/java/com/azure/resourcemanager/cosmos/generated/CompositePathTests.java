@@ -12,18 +12,17 @@ import org.junit.jupiter.api.Assertions;
 public final class CompositePathTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
-        CompositePath model = BinaryData.fromString("{\"path\":\"lmywwtkgkxnyed\",\"order\":\"descending\"}")
-            .toObject(CompositePath.class);
-        Assertions.assertEquals("lmywwtkgkxnyed", model.path());
-        Assertions.assertEquals(CompositePathSortOrder.DESCENDING, model.order());
+        CompositePath model
+            = BinaryData.fromString("{\"path\":\"qxnmwmqt\",\"order\":\"ascending\"}").toObject(CompositePath.class);
+        Assertions.assertEquals("qxnmwmqt", model.path());
+        Assertions.assertEquals(CompositePathSortOrder.ASCENDING, model.order());
     }
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
-        CompositePath model
-            = new CompositePath().withPath("lmywwtkgkxnyed").withOrder(CompositePathSortOrder.DESCENDING);
+        CompositePath model = new CompositePath().withPath("qxnmwmqt").withOrder(CompositePathSortOrder.ASCENDING);
         model = BinaryData.fromObject(model).toObject(CompositePath.class);
-        Assertions.assertEquals("lmywwtkgkxnyed", model.path());
-        Assertions.assertEquals(CompositePathSortOrder.DESCENDING, model.order());
+        Assertions.assertEquals("qxnmwmqt", model.path());
+        Assertions.assertEquals(CompositePathSortOrder.ASCENDING, model.order());
     }
 }

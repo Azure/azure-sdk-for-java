@@ -119,11 +119,7 @@ public final class AgentImpl implements Agent, Agent.Definition, Agent.Update {
     }
 
     public Agent create() {
-        this.innerObject = serviceManager.serviceClient()
-            .getAgents()
-            .createOrUpdateWithResponse(resourceGroupName, storageMoverName, agentName, this.innerModel(), Context.NONE)
-            .getValue();
-        return this;
+        return this.create(Context.NONE);
     }
 
     public Agent create(Context context) {
@@ -146,11 +142,7 @@ public final class AgentImpl implements Agent, Agent.Definition, Agent.Update {
     }
 
     public Agent apply() {
-        this.innerObject = serviceManager.serviceClient()
-            .getAgents()
-            .updateWithResponse(resourceGroupName, storageMoverName, agentName, updateAgent, Context.NONE)
-            .getValue();
-        return this;
+        return this.apply(Context.NONE);
     }
 
     public Agent apply(Context context) {
@@ -164,17 +156,19 @@ public final class AgentImpl implements Agent, Agent.Definition, Agent.Update {
     AgentImpl(AgentInner innerObject, com.azure.resourcemanager.storagemover.StorageMoverManager serviceManager) {
         this.innerObject = innerObject;
         this.serviceManager = serviceManager;
-        this.resourceGroupName = ResourceManagerUtils.getValueFromIdByName(innerObject.id(), "resourceGroups");
-        this.storageMoverName = ResourceManagerUtils.getValueFromIdByName(innerObject.id(), "storageMovers");
-        this.agentName = ResourceManagerUtils.getValueFromIdByName(innerObject.id(), "agents");
+        this.resourceGroupName = ResourceManagerUtils.getValueFromIdByParameterName(innerObject.id(),
+            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.StorageMover/storageMovers/{storageMoverName}/agents/{agentName}",
+            "resourceGroupName");
+        this.storageMoverName = ResourceManagerUtils.getValueFromIdByParameterName(innerObject.id(),
+            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.StorageMover/storageMovers/{storageMoverName}/agents/{agentName}",
+            "storageMoverName");
+        this.agentName = ResourceManagerUtils.getValueFromIdByParameterName(innerObject.id(),
+            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.StorageMover/storageMovers/{storageMoverName}/agents/{agentName}",
+            "agentName");
     }
 
     public Agent refresh() {
-        this.innerObject = serviceManager.serviceClient()
-            .getAgents()
-            .getWithResponse(resourceGroupName, storageMoverName, agentName, Context.NONE)
-            .getValue();
-        return this;
+        return this.refresh(Context.NONE);
     }
 
     public Agent refresh(Context context) {

@@ -45,7 +45,7 @@ public final class VNetPeeringsImpl implements VNetPeerings {
     }
 
     public void delete(String resourceGroupName, String workspaceName, String peeringName) {
-        this.serviceClient().delete(resourceGroupName, workspaceName, peeringName);
+        this.delete(resourceGroupName, workspaceName, peeringName, Context.NONE);
     }
 
     public void delete(String resourceGroupName, String workspaceName, String peeringName, Context context) {
@@ -53,9 +53,7 @@ public final class VNetPeeringsImpl implements VNetPeerings {
     }
 
     public PagedIterable<VirtualNetworkPeering> listByWorkspace(String resourceGroupName, String workspaceName) {
-        PagedIterable<VirtualNetworkPeeringInner> inner
-            = this.serviceClient().listByWorkspace(resourceGroupName, workspaceName);
-        return ResourceManagerUtils.mapPage(inner, inner1 -> new VirtualNetworkPeeringImpl(inner1, this.manager()));
+        return this.listByWorkspace(resourceGroupName, workspaceName, Context.NONE);
     }
 
     public PagedIterable<VirtualNetworkPeering> listByWorkspace(String resourceGroupName, String workspaceName,
@@ -66,78 +64,36 @@ public final class VNetPeeringsImpl implements VNetPeerings {
     }
 
     public VirtualNetworkPeering getById(String id) {
-        String resourceGroupName = ResourceManagerUtils.getValueFromIdByName(id, "resourceGroups");
-        if (resourceGroupName == null) {
-            throw LOGGER.logExceptionAsError(new IllegalArgumentException(
-                String.format("The resource ID '%s' is not valid. Missing path segment 'resourceGroups'.", id)));
-        }
-        String workspaceName = ResourceManagerUtils.getValueFromIdByName(id, "workspaces");
-        if (workspaceName == null) {
-            throw LOGGER.logExceptionAsError(new IllegalArgumentException(
-                String.format("The resource ID '%s' is not valid. Missing path segment 'workspaces'.", id)));
-        }
-        String peeringName = ResourceManagerUtils.getValueFromIdByName(id, "virtualNetworkPeerings");
-        if (peeringName == null) {
-            throw LOGGER.logExceptionAsError(new IllegalArgumentException(String
-                .format("The resource ID '%s' is not valid. Missing path segment 'virtualNetworkPeerings'.", id)));
-        }
-        return this.getWithResponse(resourceGroupName, workspaceName, peeringName, Context.NONE).getValue();
+        return this.getByIdWithResponse(id, Context.NONE).getValue();
     }
 
     public Response<VirtualNetworkPeering> getByIdWithResponse(String id, Context context) {
-        String resourceGroupName = ResourceManagerUtils.getValueFromIdByName(id, "resourceGroups");
-        if (resourceGroupName == null) {
-            throw LOGGER.logExceptionAsError(new IllegalArgumentException(
-                String.format("The resource ID '%s' is not valid. Missing path segment 'resourceGroups'.", id)));
-        }
-        String workspaceName = ResourceManagerUtils.getValueFromIdByName(id, "workspaces");
-        if (workspaceName == null) {
-            throw LOGGER.logExceptionAsError(new IllegalArgumentException(
-                String.format("The resource ID '%s' is not valid. Missing path segment 'workspaces'.", id)));
-        }
-        String peeringName = ResourceManagerUtils.getValueFromIdByName(id, "virtualNetworkPeerings");
-        if (peeringName == null) {
-            throw LOGGER.logExceptionAsError(new IllegalArgumentException(String
-                .format("The resource ID '%s' is not valid. Missing path segment 'virtualNetworkPeerings'.", id)));
-        }
+        String resourceGroupName = ResourceManagerUtils.getRequiredValueFromIdByParameterName(id,
+            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Databricks/workspaces/{workspaceName}/virtualNetworkPeerings/{peeringName}",
+            "resourceGroupName", "resourceGroups", LOGGER);
+        String workspaceName = ResourceManagerUtils.getRequiredValueFromIdByParameterName(id,
+            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Databricks/workspaces/{workspaceName}/virtualNetworkPeerings/{peeringName}",
+            "workspaceName", "workspaces", LOGGER);
+        String peeringName = ResourceManagerUtils.getRequiredValueFromIdByParameterName(id,
+            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Databricks/workspaces/{workspaceName}/virtualNetworkPeerings/{peeringName}",
+            "peeringName", "virtualNetworkPeerings", LOGGER);
         return this.getWithResponse(resourceGroupName, workspaceName, peeringName, context);
     }
 
     public void deleteById(String id) {
-        String resourceGroupName = ResourceManagerUtils.getValueFromIdByName(id, "resourceGroups");
-        if (resourceGroupName == null) {
-            throw LOGGER.logExceptionAsError(new IllegalArgumentException(
-                String.format("The resource ID '%s' is not valid. Missing path segment 'resourceGroups'.", id)));
-        }
-        String workspaceName = ResourceManagerUtils.getValueFromIdByName(id, "workspaces");
-        if (workspaceName == null) {
-            throw LOGGER.logExceptionAsError(new IllegalArgumentException(
-                String.format("The resource ID '%s' is not valid. Missing path segment 'workspaces'.", id)));
-        }
-        String peeringName = ResourceManagerUtils.getValueFromIdByName(id, "virtualNetworkPeerings");
-        if (peeringName == null) {
-            throw LOGGER.logExceptionAsError(new IllegalArgumentException(String
-                .format("The resource ID '%s' is not valid. Missing path segment 'virtualNetworkPeerings'.", id)));
-        }
-        this.delete(resourceGroupName, workspaceName, peeringName, Context.NONE);
+        this.deleteByIdWithResponse(id, Context.NONE);
     }
 
     public void deleteByIdWithResponse(String id, Context context) {
-        String resourceGroupName = ResourceManagerUtils.getValueFromIdByName(id, "resourceGroups");
-        if (resourceGroupName == null) {
-            throw LOGGER.logExceptionAsError(new IllegalArgumentException(
-                String.format("The resource ID '%s' is not valid. Missing path segment 'resourceGroups'.", id)));
-        }
-        String workspaceName = ResourceManagerUtils.getValueFromIdByName(id, "workspaces");
-        if (workspaceName == null) {
-            throw LOGGER.logExceptionAsError(new IllegalArgumentException(
-                String.format("The resource ID '%s' is not valid. Missing path segment 'workspaces'.", id)));
-        }
-        String peeringName = ResourceManagerUtils.getValueFromIdByName(id, "virtualNetworkPeerings");
-        if (peeringName == null) {
-            throw LOGGER.logExceptionAsError(new IllegalArgumentException(String
-                .format("The resource ID '%s' is not valid. Missing path segment 'virtualNetworkPeerings'.", id)));
-        }
+        String resourceGroupName = ResourceManagerUtils.getRequiredValueFromIdByParameterName(id,
+            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Databricks/workspaces/{workspaceName}/virtualNetworkPeerings/{peeringName}",
+            "resourceGroupName", "resourceGroups", LOGGER);
+        String workspaceName = ResourceManagerUtils.getRequiredValueFromIdByParameterName(id,
+            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Databricks/workspaces/{workspaceName}/virtualNetworkPeerings/{peeringName}",
+            "workspaceName", "workspaces", LOGGER);
+        String peeringName = ResourceManagerUtils.getRequiredValueFromIdByParameterName(id,
+            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Databricks/workspaces/{workspaceName}/virtualNetworkPeerings/{peeringName}",
+            "peeringName", "virtualNetworkPeerings", LOGGER);
         this.delete(resourceGroupName, workspaceName, peeringName, context);
     }
 

@@ -48,7 +48,7 @@ public final class CachesImpl implements Caches {
     }
 
     public void deleteByResourceGroup(String resourceGroupName, String cacheName) {
-        this.serviceClient().delete(resourceGroupName, cacheName);
+        this.delete(resourceGroupName, cacheName, Context.NONE);
     }
 
     public void delete(String resourceGroupName, String cacheName, Context context) {
@@ -56,8 +56,7 @@ public final class CachesImpl implements Caches {
     }
 
     public PagedIterable<Cache> listByResourceGroup(String resourceGroupName) {
-        PagedIterable<CacheInner> inner = this.serviceClient().listByResourceGroup(resourceGroupName);
-        return ResourceManagerUtils.mapPage(inner, inner1 -> new CacheImpl(inner1, this.manager()));
+        return this.listByResourceGroup(resourceGroupName, Context.NONE);
     }
 
     public PagedIterable<Cache> listByResourceGroup(String resourceGroupName, Context context) {
@@ -66,8 +65,7 @@ public final class CachesImpl implements Caches {
     }
 
     public PagedIterable<Cache> list() {
-        PagedIterable<CacheInner> inner = this.serviceClient().list();
-        return ResourceManagerUtils.mapPage(inner, inner1 -> new CacheImpl(inner1, this.manager()));
+        return this.list(Context.NONE);
     }
 
     public PagedIterable<Cache> list(Context context) {
@@ -76,7 +74,7 @@ public final class CachesImpl implements Caches {
     }
 
     public void debugInfo(String resourceGroupName, String cacheName) {
-        this.serviceClient().debugInfo(resourceGroupName, cacheName);
+        this.debugInfo(resourceGroupName, cacheName, Context.NONE);
     }
 
     public void debugInfo(String resourceGroupName, String cacheName, Context context) {
@@ -84,7 +82,7 @@ public final class CachesImpl implements Caches {
     }
 
     public void flush(String resourceGroupName, String cacheName) {
-        this.serviceClient().flush(resourceGroupName, cacheName);
+        this.flush(resourceGroupName, cacheName, Context.NONE);
     }
 
     public void flush(String resourceGroupName, String cacheName, Context context) {
@@ -92,7 +90,7 @@ public final class CachesImpl implements Caches {
     }
 
     public void start(String resourceGroupName, String cacheName) {
-        this.serviceClient().start(resourceGroupName, cacheName);
+        this.start(resourceGroupName, cacheName, Context.NONE);
     }
 
     public void start(String resourceGroupName, String cacheName, Context context) {
@@ -100,7 +98,7 @@ public final class CachesImpl implements Caches {
     }
 
     public void stop(String resourceGroupName, String cacheName) {
-        this.serviceClient().stop(resourceGroupName, cacheName);
+        this.stop(resourceGroupName, cacheName, Context.NONE);
     }
 
     public void stop(String resourceGroupName, String cacheName, Context context) {
@@ -143,7 +141,7 @@ public final class CachesImpl implements Caches {
     }
 
     public void upgradeFirmware(String resourceGroupName, String cacheName) {
-        this.serviceClient().upgradeFirmware(resourceGroupName, cacheName);
+        this.upgradeFirmware(resourceGroupName, cacheName, Context.NONE);
     }
 
     public void upgradeFirmware(String resourceGroupName, String cacheName, Context context) {
@@ -160,58 +158,30 @@ public final class CachesImpl implements Caches {
     }
 
     public Cache getById(String id) {
-        String resourceGroupName = ResourceManagerUtils.getValueFromIdByName(id, "resourceGroups");
-        if (resourceGroupName == null) {
-            throw LOGGER.logExceptionAsError(new IllegalArgumentException(
-                String.format("The resource ID '%s' is not valid. Missing path segment 'resourceGroups'.", id)));
-        }
-        String cacheName = ResourceManagerUtils.getValueFromIdByName(id, "caches");
-        if (cacheName == null) {
-            throw LOGGER.logExceptionAsError(new IllegalArgumentException(
-                String.format("The resource ID '%s' is not valid. Missing path segment 'caches'.", id)));
-        }
-        return this.getByResourceGroupWithResponse(resourceGroupName, cacheName, Context.NONE).getValue();
+        return this.getByIdWithResponse(id, Context.NONE).getValue();
     }
 
     public Response<Cache> getByIdWithResponse(String id, Context context) {
-        String resourceGroupName = ResourceManagerUtils.getValueFromIdByName(id, "resourceGroups");
-        if (resourceGroupName == null) {
-            throw LOGGER.logExceptionAsError(new IllegalArgumentException(
-                String.format("The resource ID '%s' is not valid. Missing path segment 'resourceGroups'.", id)));
-        }
-        String cacheName = ResourceManagerUtils.getValueFromIdByName(id, "caches");
-        if (cacheName == null) {
-            throw LOGGER.logExceptionAsError(new IllegalArgumentException(
-                String.format("The resource ID '%s' is not valid. Missing path segment 'caches'.", id)));
-        }
+        String resourceGroupName = ResourceManagerUtils.getRequiredValueFromIdByParameterName(id,
+            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.StorageCache/caches/{cacheName}",
+            "resourceGroupName", "resourceGroups", LOGGER);
+        String cacheName = ResourceManagerUtils.getRequiredValueFromIdByParameterName(id,
+            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.StorageCache/caches/{cacheName}",
+            "cacheName", "caches", LOGGER);
         return this.getByResourceGroupWithResponse(resourceGroupName, cacheName, context);
     }
 
     public void deleteById(String id) {
-        String resourceGroupName = ResourceManagerUtils.getValueFromIdByName(id, "resourceGroups");
-        if (resourceGroupName == null) {
-            throw LOGGER.logExceptionAsError(new IllegalArgumentException(
-                String.format("The resource ID '%s' is not valid. Missing path segment 'resourceGroups'.", id)));
-        }
-        String cacheName = ResourceManagerUtils.getValueFromIdByName(id, "caches");
-        if (cacheName == null) {
-            throw LOGGER.logExceptionAsError(new IllegalArgumentException(
-                String.format("The resource ID '%s' is not valid. Missing path segment 'caches'.", id)));
-        }
-        this.delete(resourceGroupName, cacheName, Context.NONE);
+        this.deleteByIdWithResponse(id, Context.NONE);
     }
 
     public void deleteByIdWithResponse(String id, Context context) {
-        String resourceGroupName = ResourceManagerUtils.getValueFromIdByName(id, "resourceGroups");
-        if (resourceGroupName == null) {
-            throw LOGGER.logExceptionAsError(new IllegalArgumentException(
-                String.format("The resource ID '%s' is not valid. Missing path segment 'resourceGroups'.", id)));
-        }
-        String cacheName = ResourceManagerUtils.getValueFromIdByName(id, "caches");
-        if (cacheName == null) {
-            throw LOGGER.logExceptionAsError(new IllegalArgumentException(
-                String.format("The resource ID '%s' is not valid. Missing path segment 'caches'.", id)));
-        }
+        String resourceGroupName = ResourceManagerUtils.getRequiredValueFromIdByParameterName(id,
+            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.StorageCache/caches/{cacheName}",
+            "resourceGroupName", "resourceGroups", LOGGER);
+        String cacheName = ResourceManagerUtils.getRequiredValueFromIdByParameterName(id,
+            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.StorageCache/caches/{cacheName}",
+            "cacheName", "caches", LOGGER);
         this.delete(resourceGroupName, cacheName, context);
     }
 

@@ -227,18 +227,7 @@ public final class EdgeActionExecutionFiltersClientImpl implements EdgeActionExe
             .flatMap(res -> Mono.justOrEmpty(res.getValue()));
     }
 
-    /**
-     * Get a EdgeActionExecutionFilter.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param edgeActionName The name of the Edge Action.
-     * @param executionFilter The name of the execution filter.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return a EdgeActionExecutionFilter along with {@link Response}.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Response<EdgeActionExecutionFilterInner> getWithResponse(String resourceGroupName, String edgeActionName,
         String executionFilter, Context context) {
@@ -247,17 +236,7 @@ public final class EdgeActionExecutionFiltersClientImpl implements EdgeActionExe
             resourceGroupName, edgeActionName, executionFilter, accept, context);
     }
 
-    /**
-     * Get a EdgeActionExecutionFilter.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param edgeActionName The name of the Edge Action.
-     * @param executionFilter The name of the execution filter.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return a EdgeActionExecutionFilter.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public EdgeActionExecutionFilterInner get(String resourceGroupName, String edgeActionName, String executionFilter) {
         return getWithResponse(resourceGroupName, edgeActionName, executionFilter, Context.NONE).getValue();
@@ -304,11 +283,7 @@ public final class EdgeActionExecutionFiltersClientImpl implements EdgeActionExe
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Response<BinaryData> createWithResponse(String resourceGroupName, String edgeActionName,
         String executionFilter, EdgeActionExecutionFilterInner resource) {
-        final String contentType = "application/json";
-        final String accept = "application/json";
-        return service.createSync(this.client.getEndpoint(), this.client.getApiVersion(),
-            this.client.getSubscriptionId(), resourceGroupName, edgeActionName, executionFilter, contentType, accept,
-            resource, Context.NONE);
+        return createWithResponse(resourceGroupName, edgeActionName, executionFilter, resource, Context.NONE);
     }
 
     /**
@@ -359,43 +334,15 @@ public final class EdgeActionExecutionFiltersClientImpl implements EdgeActionExe
             this.client.getContext());
     }
 
-    /**
-     * Create a EdgeActionExecutionFilter.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param edgeActionName The name of the Edge Action.
-     * @param executionFilter The name of the execution filter.
-     * @param resource Resource create parameters.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the {@link SyncPoller} for polling of concrete tracked resource types can be created by aliasing this
-     * type using a specific property type.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public SyncPoller<PollResult<EdgeActionExecutionFilterInner>, EdgeActionExecutionFilterInner> beginCreate(
         String resourceGroupName, String edgeActionName, String executionFilter,
         EdgeActionExecutionFilterInner resource) {
-        Response<BinaryData> response
-            = createWithResponse(resourceGroupName, edgeActionName, executionFilter, resource);
-        return this.client.<EdgeActionExecutionFilterInner, EdgeActionExecutionFilterInner>getLroResult(response,
-            EdgeActionExecutionFilterInner.class, EdgeActionExecutionFilterInner.class, Context.NONE);
+        return beginCreate(resourceGroupName, edgeActionName, executionFilter, resource, Context.NONE);
     }
 
-    /**
-     * Create a EdgeActionExecutionFilter.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param edgeActionName The name of the Edge Action.
-     * @param executionFilter The name of the execution filter.
-     * @param resource Resource create parameters.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the {@link SyncPoller} for polling of concrete tracked resource types can be created by aliasing this
-     * type using a specific property type.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public SyncPoller<PollResult<EdgeActionExecutionFilterInner>, EdgeActionExecutionFilterInner> beginCreate(
         String resourceGroupName, String edgeActionName, String executionFilter,
@@ -426,45 +373,24 @@ public final class EdgeActionExecutionFiltersClientImpl implements EdgeActionExe
             .flatMap(this.client::getLroFinalResultOrError);
     }
 
-    /**
-     * Create a EdgeActionExecutionFilter.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param edgeActionName The name of the Edge Action.
-     * @param executionFilter The name of the execution filter.
-     * @param resource Resource create parameters.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return concrete tracked resource types can be created by aliasing this type using a specific property type.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public EdgeActionExecutionFilterInner create(String resourceGroupName, String edgeActionName,
         String executionFilter, EdgeActionExecutionFilterInner resource) {
-        return beginCreate(resourceGroupName, edgeActionName, executionFilter, resource).getFinalResult();
+        return create(resourceGroupName, edgeActionName, executionFilter, resource, Context.NONE);
     }
 
-    /**
-     * Create a EdgeActionExecutionFilter.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param edgeActionName The name of the Edge Action.
-     * @param executionFilter The name of the execution filter.
-     * @param resource Resource create parameters.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return concrete tracked resource types can be created by aliasing this type using a specific property type.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public EdgeActionExecutionFilterInner create(String resourceGroupName, String edgeActionName,
         String executionFilter, EdgeActionExecutionFilterInner resource, Context context) {
-        return beginCreate(resourceGroupName, edgeActionName, executionFilter, resource, context).getFinalResult();
+        return this.client.getLroFinalResultOrError(
+            beginCreate(resourceGroupName, edgeActionName, executionFilter, resource, context));
     }
 
     /**
-     * Update a EdgeActionExecutionFilter.
+     * Updates the properties and tags of an Edge Action execution filter. Omitted tags are preserved, an empty tags
+     * object clears all tags, and supplied tags replace the entire tag collection. Null tags are rejected.
      * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param edgeActionName The name of the Edge Action.
@@ -489,7 +415,8 @@ public final class EdgeActionExecutionFiltersClientImpl implements EdgeActionExe
     }
 
     /**
-     * Update a EdgeActionExecutionFilter.
+     * Updates the properties and tags of an Edge Action execution filter. Omitted tags are preserved, an empty tags
+     * object clears all tags, and supplied tags replace the entire tag collection. Null tags are rejected.
      * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param edgeActionName The name of the Edge Action.
@@ -504,15 +431,12 @@ public final class EdgeActionExecutionFiltersClientImpl implements EdgeActionExe
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Response<BinaryData> updateWithResponse(String resourceGroupName, String edgeActionName,
         String executionFilter, EdgeActionExecutionFilterUpdate properties) {
-        final String contentType = "application/json";
-        final String accept = "application/json";
-        return service.updateSync(this.client.getEndpoint(), this.client.getApiVersion(),
-            this.client.getSubscriptionId(), resourceGroupName, edgeActionName, executionFilter, contentType, accept,
-            properties, Context.NONE);
+        return updateWithResponse(resourceGroupName, edgeActionName, executionFilter, properties, Context.NONE);
     }
 
     /**
-     * Update a EdgeActionExecutionFilter.
+     * Updates the properties and tags of an Edge Action execution filter. Omitted tags are preserved, an empty tags
+     * object clears all tags, and supplied tags replace the entire tag collection. Null tags are rejected.
      * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param edgeActionName The name of the Edge Action.
@@ -536,7 +460,8 @@ public final class EdgeActionExecutionFiltersClientImpl implements EdgeActionExe
     }
 
     /**
-     * Update a EdgeActionExecutionFilter.
+     * Updates the properties and tags of an Edge Action execution filter. Omitted tags are preserved, an empty tags
+     * object clears all tags, and supplied tags replace the entire tag collection. Null tags are rejected.
      * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param edgeActionName The name of the Edge Action.
@@ -559,43 +484,15 @@ public final class EdgeActionExecutionFiltersClientImpl implements EdgeActionExe
             this.client.getContext());
     }
 
-    /**
-     * Update a EdgeActionExecutionFilter.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param edgeActionName The name of the Edge Action.
-     * @param executionFilter The name of the execution filter.
-     * @param properties The resource properties to be updated.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the {@link SyncPoller} for polling of concrete tracked resource types can be created by aliasing this
-     * type using a specific property type.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public SyncPoller<PollResult<EdgeActionExecutionFilterInner>, EdgeActionExecutionFilterInner> beginUpdate(
         String resourceGroupName, String edgeActionName, String executionFilter,
         EdgeActionExecutionFilterUpdate properties) {
-        Response<BinaryData> response
-            = updateWithResponse(resourceGroupName, edgeActionName, executionFilter, properties);
-        return this.client.<EdgeActionExecutionFilterInner, EdgeActionExecutionFilterInner>getLroResult(response,
-            EdgeActionExecutionFilterInner.class, EdgeActionExecutionFilterInner.class, Context.NONE);
+        return beginUpdate(resourceGroupName, edgeActionName, executionFilter, properties, Context.NONE);
     }
 
-    /**
-     * Update a EdgeActionExecutionFilter.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param edgeActionName The name of the Edge Action.
-     * @param executionFilter The name of the execution filter.
-     * @param properties The resource properties to be updated.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the {@link SyncPoller} for polling of concrete tracked resource types can be created by aliasing this
-     * type using a specific property type.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public SyncPoller<PollResult<EdgeActionExecutionFilterInner>, EdgeActionExecutionFilterInner> beginUpdate(
         String resourceGroupName, String edgeActionName, String executionFilter,
@@ -607,7 +504,8 @@ public final class EdgeActionExecutionFiltersClientImpl implements EdgeActionExe
     }
 
     /**
-     * Update a EdgeActionExecutionFilter.
+     * Updates the properties and tags of an Edge Action execution filter. Omitted tags are preserved, an empty tags
+     * object clears all tags, and supplied tags replace the entire tag collection. Null tags are rejected.
      * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param edgeActionName The name of the Edge Action.
@@ -626,41 +524,19 @@ public final class EdgeActionExecutionFiltersClientImpl implements EdgeActionExe
             .flatMap(this.client::getLroFinalResultOrError);
     }
 
-    /**
-     * Update a EdgeActionExecutionFilter.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param edgeActionName The name of the Edge Action.
-     * @param executionFilter The name of the execution filter.
-     * @param properties The resource properties to be updated.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return concrete tracked resource types can be created by aliasing this type using a specific property type.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public EdgeActionExecutionFilterInner update(String resourceGroupName, String edgeActionName,
         String executionFilter, EdgeActionExecutionFilterUpdate properties) {
-        return beginUpdate(resourceGroupName, edgeActionName, executionFilter, properties).getFinalResult();
+        return update(resourceGroupName, edgeActionName, executionFilter, properties, Context.NONE);
     }
 
-    /**
-     * Update a EdgeActionExecutionFilter.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param edgeActionName The name of the Edge Action.
-     * @param executionFilter The name of the execution filter.
-     * @param properties The resource properties to be updated.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return concrete tracked resource types can be created by aliasing this type using a specific property type.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public EdgeActionExecutionFilterInner update(String resourceGroupName, String edgeActionName,
         String executionFilter, EdgeActionExecutionFilterUpdate properties, Context context) {
-        return beginUpdate(resourceGroupName, edgeActionName, executionFilter, properties, context).getFinalResult();
+        return this.client.getLroFinalResultOrError(
+            beginUpdate(resourceGroupName, edgeActionName, executionFilter, properties, context));
     }
 
     /**
@@ -697,8 +573,7 @@ public final class EdgeActionExecutionFiltersClientImpl implements EdgeActionExe
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Response<BinaryData> deleteWithResponse(String resourceGroupName, String edgeActionName,
         String executionFilter) {
-        return service.deleteSync(this.client.getEndpoint(), this.client.getApiVersion(),
-            this.client.getSubscriptionId(), resourceGroupName, edgeActionName, executionFilter, Context.NONE);
+        return deleteWithResponse(resourceGroupName, edgeActionName, executionFilter, Context.NONE);
     }
 
     /**
@@ -740,36 +615,14 @@ public final class EdgeActionExecutionFiltersClientImpl implements EdgeActionExe
             this.client.getContext());
     }
 
-    /**
-     * Delete a EdgeActionExecutionFilter.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param edgeActionName The name of the Edge Action.
-     * @param executionFilter The name of the execution filter.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the {@link SyncPoller} for polling of long-running operation.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public SyncPoller<PollResult<Void>, Void> beginDelete(String resourceGroupName, String edgeActionName,
         String executionFilter) {
-        Response<BinaryData> response = deleteWithResponse(resourceGroupName, edgeActionName, executionFilter);
-        return this.client.<Void, Void>getLroResult(response, Void.class, Void.class, Context.NONE);
+        return beginDelete(resourceGroupName, edgeActionName, executionFilter, Context.NONE);
     }
 
-    /**
-     * Delete a EdgeActionExecutionFilter.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param edgeActionName The name of the Edge Action.
-     * @param executionFilter The name of the execution filter.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the {@link SyncPoller} for polling of long-running operation.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public SyncPoller<PollResult<Void>, Void> beginDelete(String resourceGroupName, String edgeActionName,
         String executionFilter, Context context) {
@@ -794,35 +647,16 @@ public final class EdgeActionExecutionFiltersClientImpl implements EdgeActionExe
             .flatMap(this.client::getLroFinalResultOrError);
     }
 
-    /**
-     * Delete a EdgeActionExecutionFilter.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param edgeActionName The name of the Edge Action.
-     * @param executionFilter The name of the execution filter.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public void delete(String resourceGroupName, String edgeActionName, String executionFilter) {
-        beginDelete(resourceGroupName, edgeActionName, executionFilter).getFinalResult();
+        delete(resourceGroupName, edgeActionName, executionFilter, Context.NONE);
     }
 
-    /**
-     * Delete a EdgeActionExecutionFilter.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param edgeActionName The name of the Edge Action.
-     * @param executionFilter The name of the execution filter.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public void delete(String resourceGroupName, String edgeActionName, String executionFilter, Context context) {
-        beginDelete(resourceGroupName, edgeActionName, executionFilter, context).getFinalResult();
+        this.client.getLroFinalResultOrError(beginDelete(resourceGroupName, edgeActionName, executionFilter, context));
     }
 
     /**
@@ -878,12 +712,7 @@ public final class EdgeActionExecutionFiltersClientImpl implements EdgeActionExe
     @ServiceMethod(returns = ReturnType.SINGLE)
     private PagedResponse<EdgeActionExecutionFilterInner> listByEdgeActionSinglePage(String resourceGroupName,
         String edgeActionName) {
-        final String accept = "application/json";
-        Response<EdgeActionExecutionFilterListResult> res
-            = service.listByEdgeActionSync(this.client.getEndpoint(), this.client.getApiVersion(),
-                this.client.getSubscriptionId(), resourceGroupName, edgeActionName, accept, Context.NONE);
-        return new PagedResponseBase<>(res.getRequest(), res.getStatusCode(), res.getHeaders(), res.getValue().value(),
-            res.getValue().nextLink(), null);
+        return listByEdgeActionSinglePage(resourceGroupName, edgeActionName, Context.NONE);
     }
 
     /**
@@ -908,36 +737,14 @@ public final class EdgeActionExecutionFiltersClientImpl implements EdgeActionExe
             res.getValue().nextLink(), null);
     }
 
-    /**
-     * List EdgeActionExecutionFilter resources by EdgeAction.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param edgeActionName The name of the Edge Action.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the response of a EdgeActionExecutionFilter list operation as paginated response with
-     * {@link PagedIterable}.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.COLLECTION)
     public PagedIterable<EdgeActionExecutionFilterInner> listByEdgeAction(String resourceGroupName,
         String edgeActionName) {
-        return new PagedIterable<>(() -> listByEdgeActionSinglePage(resourceGroupName, edgeActionName),
-            nextLink -> listByEdgeActionNextSinglePage(nextLink));
+        return listByEdgeAction(resourceGroupName, edgeActionName, Context.NONE);
     }
 
-    /**
-     * List EdgeActionExecutionFilter resources by EdgeAction.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param edgeActionName The name of the Edge Action.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the response of a EdgeActionExecutionFilter list operation as paginated response with
-     * {@link PagedIterable}.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.COLLECTION)
     public PagedIterable<EdgeActionExecutionFilterInner> listByEdgeAction(String resourceGroupName,
         String edgeActionName, Context context) {
@@ -976,11 +783,7 @@ public final class EdgeActionExecutionFiltersClientImpl implements EdgeActionExe
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private PagedResponse<EdgeActionExecutionFilterInner> listByEdgeActionNextSinglePage(String nextLink) {
-        final String accept = "application/json";
-        Response<EdgeActionExecutionFilterListResult> res
-            = service.listByEdgeActionNextSync(nextLink, this.client.getEndpoint(), accept, Context.NONE);
-        return new PagedResponseBase<>(res.getRequest(), res.getStatusCode(), res.getHeaders(), res.getValue().value(),
-            res.getValue().nextLink(), null);
+        return listByEdgeActionNextSinglePage(nextLink, Context.NONE);
     }
 
     /**

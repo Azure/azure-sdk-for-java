@@ -9,7 +9,7 @@ package com.azure.resourcemanager.storagecache.generated;
  */
 public final class StorageTargetOperationFlushSamples {
     /*
-     * x-ms-original-file: 2026-01-01/StorageTargets_Flush.json
+     * x-ms-original-file: 2026-08-01/StorageTargets_Flush.json
      */
     /**
      * Sample code: StorageTargets_Flush.

@@ -32,11 +32,6 @@ public final class HealthState extends ExpandableStringEnum<HealthState> {
     public static final HealthState UNKNOWN = fromString("Unknown");
 
     /**
-     * Deleted status.
-     */
-    public static final HealthState DELETED = fromString("Deleted");
-
-    /**
      * Creates a new instance of HealthState value.
      * 
      * @deprecated Use the {@link #fromString(String)} factory method.

@@ -58,9 +58,7 @@ public final class AIManagerNamespacesImpl implements AIManagerNamespaces {
     }
 
     public PagedIterable<AIManagerNamespace> listByAIManager(String resourceGroupName, String aiManagerName) {
-        PagedIterable<AIManagerNamespaceInner> inner
-            = this.serviceClient().listByAIManager(resourceGroupName, aiManagerName);
-        return ResourceManagerUtils.mapPage(inner, inner1 -> new AIManagerNamespaceImpl(inner1, this.manager()));
+        return this.listByAIManager(resourceGroupName, aiManagerName, Context.NONE);
     }
 
     public PagedIterable<AIManagerNamespace> listByAIManager(String resourceGroupName, String aiManagerName,
@@ -125,79 +123,37 @@ public final class AIManagerNamespacesImpl implements AIManagerNamespaces {
     }
 
     public AIManagerNamespace getById(String id) {
-        String resourceGroupName = ResourceManagerUtils.getValueFromIdByName(id, "resourceGroups");
-        if (resourceGroupName == null) {
-            throw LOGGER.logExceptionAsError(new IllegalArgumentException(
-                String.format("The resource ID '%s' is not valid. Missing path segment 'resourceGroups'.", id)));
-        }
-        String aiManagerName = ResourceManagerUtils.getValueFromIdByName(id, "aiManagers");
-        if (aiManagerName == null) {
-            throw LOGGER.logExceptionAsError(new IllegalArgumentException(
-                String.format("The resource ID '%s' is not valid. Missing path segment 'aiManagers'.", id)));
-        }
-        String namespaceName = ResourceManagerUtils.getValueFromIdByName(id, "namespaces");
-        if (namespaceName == null) {
-            throw LOGGER.logExceptionAsError(new IllegalArgumentException(
-                String.format("The resource ID '%s' is not valid. Missing path segment 'namespaces'.", id)));
-        }
-        return this.getWithResponse(resourceGroupName, aiManagerName, namespaceName, Context.NONE).getValue();
+        return this.getByIdWithResponse(id, Context.NONE).getValue();
     }
 
     public Response<AIManagerNamespace> getByIdWithResponse(String id, Context context) {
-        String resourceGroupName = ResourceManagerUtils.getValueFromIdByName(id, "resourceGroups");
-        if (resourceGroupName == null) {
-            throw LOGGER.logExceptionAsError(new IllegalArgumentException(
-                String.format("The resource ID '%s' is not valid. Missing path segment 'resourceGroups'.", id)));
-        }
-        String aiManagerName = ResourceManagerUtils.getValueFromIdByName(id, "aiManagers");
-        if (aiManagerName == null) {
-            throw LOGGER.logExceptionAsError(new IllegalArgumentException(
-                String.format("The resource ID '%s' is not valid. Missing path segment 'aiManagers'.", id)));
-        }
-        String namespaceName = ResourceManagerUtils.getValueFromIdByName(id, "namespaces");
-        if (namespaceName == null) {
-            throw LOGGER.logExceptionAsError(new IllegalArgumentException(
-                String.format("The resource ID '%s' is not valid. Missing path segment 'namespaces'.", id)));
-        }
+        String resourceGroupName = ResourceManagerUtils.getRequiredValueFromIdByParameterName(id,
+            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.ContainerService/aiManagers/{aiManagerName}/namespaces/{namespaceName}",
+            "resourceGroupName", "resourceGroups", LOGGER);
+        String aiManagerName = ResourceManagerUtils.getRequiredValueFromIdByParameterName(id,
+            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.ContainerService/aiManagers/{aiManagerName}/namespaces/{namespaceName}",
+            "aiManagerName", "aiManagers", LOGGER);
+        String namespaceName = ResourceManagerUtils.getRequiredValueFromIdByParameterName(id,
+            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.ContainerService/aiManagers/{aiManagerName}/namespaces/{namespaceName}",
+            "namespaceName", "namespaces", LOGGER);
         return this.getWithResponse(resourceGroupName, aiManagerName, namespaceName, context);
     }
 
     public void deleteById(String id) {
-        String resourceGroupName = ResourceManagerUtils.getValueFromIdByName(id, "resourceGroups");
-        if (resourceGroupName == null) {
-            throw LOGGER.logExceptionAsError(new IllegalArgumentException(
-                String.format("The resource ID '%s' is not valid. Missing path segment 'resourceGroups'.", id)));
-        }
-        String aiManagerName = ResourceManagerUtils.getValueFromIdByName(id, "aiManagers");
-        if (aiManagerName == null) {
-            throw LOGGER.logExceptionAsError(new IllegalArgumentException(
-                String.format("The resource ID '%s' is not valid. Missing path segment 'aiManagers'.", id)));
-        }
-        String namespaceName = ResourceManagerUtils.getValueFromIdByName(id, "namespaces");
-        if (namespaceName == null) {
-            throw LOGGER.logExceptionAsError(new IllegalArgumentException(
-                String.format("The resource ID '%s' is not valid. Missing path segment 'namespaces'.", id)));
-        }
         String localIfMatch = null;
-        this.delete(resourceGroupName, aiManagerName, namespaceName, localIfMatch, Context.NONE);
+        this.deleteByIdWithResponse(id, localIfMatch, Context.NONE);
     }
 
     public void deleteByIdWithResponse(String id, String ifMatch, Context context) {
-        String resourceGroupName = ResourceManagerUtils.getValueFromIdByName(id, "resourceGroups");
-        if (resourceGroupName == null) {
-            throw LOGGER.logExceptionAsError(new IllegalArgumentException(
-                String.format("The resource ID '%s' is not valid. Missing path segment 'resourceGroups'.", id)));
-        }
-        String aiManagerName = ResourceManagerUtils.getValueFromIdByName(id, "aiManagers");
-        if (aiManagerName == null) {
-            throw LOGGER.logExceptionAsError(new IllegalArgumentException(
-                String.format("The resource ID '%s' is not valid. Missing path segment 'aiManagers'.", id)));
-        }
-        String namespaceName = ResourceManagerUtils.getValueFromIdByName(id, "namespaces");
-        if (namespaceName == null) {
-            throw LOGGER.logExceptionAsError(new IllegalArgumentException(
-                String.format("The resource ID '%s' is not valid. Missing path segment 'namespaces'.", id)));
-        }
+        String resourceGroupName = ResourceManagerUtils.getRequiredValueFromIdByParameterName(id,
+            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.ContainerService/aiManagers/{aiManagerName}/namespaces/{namespaceName}",
+            "resourceGroupName", "resourceGroups", LOGGER);
+        String aiManagerName = ResourceManagerUtils.getRequiredValueFromIdByParameterName(id,
+            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.ContainerService/aiManagers/{aiManagerName}/namespaces/{namespaceName}",
+            "aiManagerName", "aiManagers", LOGGER);
+        String namespaceName = ResourceManagerUtils.getRequiredValueFromIdByParameterName(id,
+            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.ContainerService/aiManagers/{aiManagerName}/namespaces/{namespaceName}",
+            "namespaceName", "namespaces", LOGGER);
         this.delete(resourceGroupName, aiManagerName, namespaceName, ifMatch, context);
     }
 

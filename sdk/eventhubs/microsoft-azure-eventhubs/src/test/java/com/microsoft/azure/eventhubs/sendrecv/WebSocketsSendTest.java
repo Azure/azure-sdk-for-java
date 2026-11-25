@@ -10,11 +10,11 @@ import com.microsoft.azure.eventhubs.impl.SendTest;
 import com.microsoft.azure.eventhubs.lib.SasTokenTestBase;
 import com.microsoft.azure.eventhubs.lib.TestContext;
 import org.apache.qpid.proton.engine.SslDomain;
-import org.junit.After;
-import org.junit.AfterClass;
-import org.junit.Assert;
-import org.junit.BeforeClass;
-import org.junit.Test;
+import org.junit.jupiter.api.AfterEach;
+import org.junit.jupiter.api.AfterAll;
+import org.junit.jupiter.api.Assertions;
+import org.junit.jupiter.api.BeforeAll;
+import org.junit.jupiter.api.Test;
 
 import java.util.concurrent.ExecutionException;
 import java.util.concurrent.TimeoutException;
@@ -23,10 +23,10 @@ public class WebSocketsSendTest extends SasTokenTestBase {
 
     private static SendTest sendTest;
 
-    @BeforeClass
+    @BeforeAll
     public static void initialize() throws Exception {
 
-        Assert.assertTrue(TestContext.getConnectionString().getSharedAccessSignature() != null
+        Assertions.assertTrue(TestContext.getConnectionString().getSharedAccessSignature() != null
                 && TestContext.getConnectionString().getSasKey() == null
                 && TestContext.getConnectionString().getSasKeyName() == null);
 
@@ -37,7 +37,7 @@ public class WebSocketsSendTest extends SasTokenTestBase {
         SendTest.initializeEventHub(connectionString, SslDomain.VerifyMode.VERIFY_PEER_NAME);
     }
 
-    @AfterClass
+    @AfterAll
     public static void cleanupClient() throws EventHubException {
 
         SendTest.cleanupClient();
@@ -55,7 +55,7 @@ public class WebSocketsSendTest extends SasTokenTestBase {
         sendTest.sendResultsInSysPropertiesWithPartitionKey();
     }
 
-    @After
+    @AfterEach
     public void cleanup() throws EventHubException {
 
         sendTest.cleanup();

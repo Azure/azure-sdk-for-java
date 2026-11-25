@@ -10,6 +10,7 @@ import com.azure.json.JsonReader;
 import com.azure.json.JsonSerializable;
 import com.azure.json.JsonToken;
 import com.azure.json.JsonWriter;
+import com.azure.resourcemanager.compute.recommender.models.SkuMixPlacementCapacityLimit;
 import com.azure.resourcemanager.compute.recommender.models.SkuMixPlacementDeploymentChoice;
 import com.azure.resourcemanager.compute.recommender.models.SkuMixPlacementPartialFulfillmentReason;
 import java.io.IOException;
@@ -22,6 +23,12 @@ import java.util.List;
  */
 @Immutable
 public final class SkuMixPlacementResponseInner implements JsonSerializable<SkuMixPlacementResponseInner> {
+    /*
+     * Unique identifier for this placement response, including responses that contain no placement choices.
+     * Replaces the per-choice id that was present on placementChoices in earlier API versions.
+     */
+    private String id;
+
     /*
      * List of placement choice recommendations.
      */
@@ -38,10 +45,28 @@ public final class SkuMixPlacementResponseInner implements JsonSerializable<SkuM
      */
     private SkuMixPlacementPartialFulfillmentReason partialFulfillmentReason;
 
+    /*
+     * Capacity availability for each requested (VM size, zone) combination, independent of the recommended
+     * placement. An entry is present for every requested combination, including those excluded by capacity
+     * or quota. Only returned for requests that describe instances by VM sizes.
+     */
+    private List<SkuMixPlacementCapacityLimit> capacityLimits;
+
     /**
      * Creates an instance of SkuMixPlacementResponseInner class.
      */
     private SkuMixPlacementResponseInner() {
+    }
+
+    /**
+     * Get the id property: Unique identifier for this placement response, including responses that contain no placement
+     * choices.
+     * Replaces the per-choice id that was present on placementChoices in earlier API versions.
+     * 
+     * @return the id value.
+     */
+    public String id() {
+        return this.id;
     }
 
     /**
@@ -73,17 +98,32 @@ public final class SkuMixPlacementResponseInner implements JsonSerializable<SkuM
     }
 
     /**
+     * Get the capacityLimits property: Capacity availability for each requested (VM size, zone) combination,
+     * independent of the recommended
+     * placement. An entry is present for every requested combination, including those excluded by capacity
+     * or quota. Only returned for requests that describe instances by VM sizes.
+     * 
+     * @return the capacityLimits value.
+     */
+    public List<SkuMixPlacementCapacityLimit> capacityLimits() {
+        return this.capacityLimits;
+    }
+
+    /**
      * {@inheritDoc}
      */
     @Override
     public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
         jsonWriter.writeStartObject();
+        jsonWriter.writeStringField("id", this.id);
         jsonWriter.writeArrayField("placementChoices", this.placementChoices,
             (writer, element) -> writer.writeJson(element));
         jsonWriter.writeStringField("partialFulfillmentReason",
             this.partialFulfillmentReason == null ? null : this.partialFulfillmentReason.toString());
         jsonWriter.writeStringField("validUntil",
             this.validUntil == null ? null : DateTimeFormatter.ISO_OFFSET_DATE_TIME.format(this.validUntil));
+        jsonWriter.writeArrayField("capacityLimits", this.capacityLimits,
+            (writer, element) -> writer.writeJson(element));
         return jsonWriter.writeEndObject();
     }
 
@@ -103,7 +143,9 @@ public final class SkuMixPlacementResponseInner implements JsonSerializable<SkuM
                 String fieldName = reader.getFieldName();
                 reader.nextToken();
 
-                if ("placementChoices".equals(fieldName)) {
+                if ("id".equals(fieldName)) {
+                    deserializedSkuMixPlacementResponseInner.id = reader.getString();
+                } else if ("placementChoices".equals(fieldName)) {
                     List<SkuMixPlacementDeploymentChoice> placementChoices
                         = reader.readArray(reader1 -> SkuMixPlacementDeploymentChoice.fromJson(reader1));
                     deserializedSkuMixPlacementResponseInner.placementChoices = placementChoices;
@@ -113,6 +155,10 @@ public final class SkuMixPlacementResponseInner implements JsonSerializable<SkuM
                 } else if ("validUntil".equals(fieldName)) {
                     deserializedSkuMixPlacementResponseInner.validUntil = reader
                         .getNullable(nonNullReader -> CoreUtils.parseBestOffsetDateTime(nonNullReader.getString()));
+                } else if ("capacityLimits".equals(fieldName)) {
+                    List<SkuMixPlacementCapacityLimit> capacityLimits
+                        = reader.readArray(reader1 -> SkuMixPlacementCapacityLimit.fromJson(reader1));
+                    deserializedSkuMixPlacementResponseInner.capacityLimits = capacityLimits;
                 } else {
                     reader.skipChildren();
                 }

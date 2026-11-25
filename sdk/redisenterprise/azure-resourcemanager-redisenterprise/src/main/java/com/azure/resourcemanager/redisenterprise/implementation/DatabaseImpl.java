@@ -135,10 +135,7 @@ public final class DatabaseImpl implements Database, Database.Definition, Databa
     }
 
     public Database create() {
-        this.innerObject = serviceManager.serviceClient()
-            .getDatabases()
-            .create(resourceGroupName, clusterName, databaseName, this.innerModel(), Context.NONE);
-        return this;
+        return this.create(Context.NONE);
     }
 
     public Database create(Context context) {
@@ -160,10 +157,7 @@ public final class DatabaseImpl implements Database, Database.Definition, Databa
     }
 
     public Database apply() {
-        this.innerObject = serviceManager.serviceClient()
-            .getDatabases()
-            .update(resourceGroupName, clusterName, databaseName, updateParameters, Context.NONE);
-        return this;
+        return this.apply(Context.NONE);
     }
 
     public Database apply(Context context) {
@@ -177,17 +171,19 @@ public final class DatabaseImpl implements Database, Database.Definition, Databa
         com.azure.resourcemanager.redisenterprise.RedisEnterpriseManager serviceManager) {
         this.innerObject = innerObject;
         this.serviceManager = serviceManager;
-        this.resourceGroupName = ResourceManagerUtils.getValueFromIdByName(innerObject.id(), "resourceGroups");
-        this.clusterName = ResourceManagerUtils.getValueFromIdByName(innerObject.id(), "redisEnterprise");
-        this.databaseName = ResourceManagerUtils.getValueFromIdByName(innerObject.id(), "databases");
+        this.resourceGroupName = ResourceManagerUtils.getValueFromIdByParameterName(innerObject.id(),
+            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Cache/redisEnterprise/{clusterName}/databases/{databaseName}",
+            "resourceGroupName");
+        this.clusterName = ResourceManagerUtils.getValueFromIdByParameterName(innerObject.id(),
+            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Cache/redisEnterprise/{clusterName}/databases/{databaseName}",
+            "clusterName");
+        this.databaseName = ResourceManagerUtils.getValueFromIdByParameterName(innerObject.id(),
+            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Cache/redisEnterprise/{clusterName}/databases/{databaseName}",
+            "databaseName");
     }
 
     public Database refresh() {
-        this.innerObject = serviceManager.serviceClient()
-            .getDatabases()
-            .getWithResponse(resourceGroupName, clusterName, databaseName, Context.NONE)
-            .getValue();
-        return this;
+        return this.refresh(Context.NONE);
     }
 
     public Database refresh(Context context) {

@@ -13,7 +13,7 @@ import java.util.Map;
  */
 public final class BareMetalMachinesUpdateSamples {
     /*
-     * x-ms-original-file: 2026-05-01-preview/BareMetalMachines_Patch.json
+     * x-ms-original-file: 2026-07-01/BareMetalMachines_Patch.json
      */
     /**
      * Sample code: Patch bare metal machine.

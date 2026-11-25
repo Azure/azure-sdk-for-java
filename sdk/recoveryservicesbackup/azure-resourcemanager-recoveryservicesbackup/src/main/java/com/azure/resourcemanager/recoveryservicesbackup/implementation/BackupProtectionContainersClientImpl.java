@@ -172,12 +172,7 @@ public final class BackupProtectionContainersClientImpl implements BackupProtect
     @ServiceMethod(returns = ReturnType.SINGLE)
     private PagedResponse<ProtectionContainerResourceInner> listSinglePage(String vaultName, String resourceGroupName,
         String filter) {
-        final String accept = "application/json";
-        Response<ProtectionContainerResourceList> res
-            = service.listSync(this.client.getEndpoint(), this.client.getApiVersion(), vaultName, resourceGroupName,
-                this.client.getSubscriptionId(), filter, accept, Context.NONE);
-        return new PagedResponseBase<>(res.getRequest(), res.getStatusCode(), res.getHeaders(), res.getValue().value(),
-            res.getValue().nextLink(), null);
+        return listSinglePage(vaultName, resourceGroupName, filter, Context.NONE);
     }
 
     /**
@@ -203,35 +198,14 @@ public final class BackupProtectionContainersClientImpl implements BackupProtect
             res.getValue().nextLink(), null);
     }
 
-    /**
-     * Lists the containers registered to Recovery Services Vault.
-     * 
-     * @param vaultName The name of the recovery services vault.
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return list of ProtectionContainer resources as paginated response with {@link PagedIterable}.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.COLLECTION)
     public PagedIterable<ProtectionContainerResourceInner> list(String vaultName, String resourceGroupName) {
         final String filter = null;
-        return new PagedIterable<>(() -> listSinglePage(vaultName, resourceGroupName, filter),
-            nextLink -> listNextSinglePage(nextLink));
+        return list(vaultName, resourceGroupName, filter, Context.NONE);
     }
 
-    /**
-     * Lists the containers registered to Recovery Services Vault.
-     * 
-     * @param vaultName The name of the recovery services vault.
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param filter OData filter options.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return list of ProtectionContainer resources as paginated response with {@link PagedIterable}.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.COLLECTION)
     public PagedIterable<ProtectionContainerResourceInner> list(String vaultName, String resourceGroupName,
         String filter, Context context) {
@@ -269,11 +243,7 @@ public final class BackupProtectionContainersClientImpl implements BackupProtect
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private PagedResponse<ProtectionContainerResourceInner> listNextSinglePage(String nextLink) {
-        final String accept = "application/json";
-        Response<ProtectionContainerResourceList> res
-            = service.listNextSync(nextLink, this.client.getEndpoint(), accept, Context.NONE);
-        return new PagedResponseBase<>(res.getRequest(), res.getStatusCode(), res.getHeaders(), res.getValue().value(),
-            res.getValue().nextLink(), null);
+        return listNextSinglePage(nextLink, Context.NONE);
     }
 
     /**

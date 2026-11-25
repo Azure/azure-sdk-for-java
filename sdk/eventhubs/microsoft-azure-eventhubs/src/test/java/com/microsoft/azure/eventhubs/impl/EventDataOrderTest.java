@@ -11,8 +11,8 @@ import com.microsoft.azure.eventhubs.EventData;
 import org.apache.qpid.proton.amqp.Symbol;
 import org.apache.qpid.proton.amqp.messaging.MessageAnnotations;
 import org.apache.qpid.proton.message.Message;
-import org.junit.Assert;
-import org.junit.Test;
+import org.junit.jupiter.api.Assertions;
+import org.junit.jupiter.api.Test;
 
 public class EventDataOrderTest {
 
@@ -43,9 +43,9 @@ public class EventDataOrderTest {
 
         Collections.sort(messages);
 
-        Assert.assertEquals(messages.get(0), first);
-        Assert.assertEquals(messages.get(1), second);
-        Assert.assertEquals(messages.get(2), third);
-        Assert.assertEquals(messages.get(3), last);
+        Assertions.assertEquals(messages.get(0), first);
+        Assertions.assertEquals(messages.get(1), second);
+        Assertions.assertEquals(messages.get(2), third);
+        Assertions.assertEquals(messages.get(3), last);
     }
 }

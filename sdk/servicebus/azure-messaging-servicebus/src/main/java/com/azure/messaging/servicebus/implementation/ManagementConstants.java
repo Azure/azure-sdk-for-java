@@ -20,6 +20,7 @@ public class ManagementConstants {
     public static final String LOCK_TOKEN_KEY = "lock-token";
     public static final String LOCK_TOKENS_KEY = "lock-tokens";
     public static final String MESSAGE_COUNT_KEY = "message-count";
+    public static final String ENQUEUED_TIME_UTC = "enqueued-time-utc";
     public static final String MESSAGE = "message";
     public static final String MESSAGES = "messages";
     public static final String MESSAGE_ID = "message-id";
@@ -36,8 +37,9 @@ public class ManagementConstants {
     public static final String SESSION_IDS = "sessions-ids";
 
     /**
-     * Sentinel timestamp the broker recognizes as "list sessions with active messages" mode for the
-     * {@code OPERATION_GET_MESSAGE_SESSIONS} operation. Matches Track 1's
+     * Sentinel timestamp the broker recognizes as the default list mode for the
+     * {@code OPERATION_GET_MESSAGE_SESSIONS} operation. This mode returns sessions with active
+     * messages or stored session state and excludes sessions with neither. Matches Track 1's
      * {@code SessionBrowser.MAXDATE = new Date(253402300800000L)}
      * (rendered by {@link OffsetDateTime#toString()} as {@code +10000-01-01T00:00Z} - the leading
      * {@code +} is required by ISO 8601 for years with more than four digits); using any other
@@ -45,7 +47,7 @@ public class ManagementConstants {
      * so callers and the implementation can clamp inputs via {@link OffsetDateTime#compareTo}
      * without each owning their own copy.
      */
-    public static final OffsetDateTime ACTIVE_MESSAGES_SENTINEL
+    public static final OffsetDateTime DEFAULT_LISTING_SENTINEL
         = OffsetDateTime.of(10000, 1, 1, 0, 0, 0, 0, ZoneOffset.UTC);
     public static final String LAST_UPDATED_TIME = "last-updated-time";
     public static final String LAST_SESSION_ID = "last-session-id";
@@ -83,6 +85,7 @@ public class ManagementConstants {
     static final String OPERATION_SET_SESSION_STATE = AmqpConstants.VENDOR + ":set-session-state";
     static final String OPERATION_UPDATE_DISPOSITION = AmqpConstants.VENDOR + ":update-disposition";
     static final String OPERATION_ADD_RULE = AmqpConstants.VENDOR + ":add-rule";
+    static final String OPERATION_BATCH_DELETE_MESSAGES = AmqpConstants.VENDOR + ":batch-delete-messages";
     static final String OPERATION_REMOVE_RULE = AmqpConstants.VENDOR + ":remove-rule";
     static final String OPERATION_GET_RULES = AmqpConstants.VENDOR + ":enumerate-rules";
     static final String OPERATION_GET_MESSAGE_SESSIONS = AmqpConstants.VENDOR + ":get-message-sessions";

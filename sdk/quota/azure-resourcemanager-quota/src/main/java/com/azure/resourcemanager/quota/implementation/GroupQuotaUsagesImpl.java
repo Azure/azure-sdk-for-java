@@ -27,9 +27,7 @@ public final class GroupQuotaUsagesImpl implements GroupQuotaUsages {
 
     public PagedIterable<ResourceUsages> list(String managementGroupId, String groupQuotaName,
         String resourceProviderName, String location) {
-        PagedIterable<ResourceUsagesInner> inner
-            = this.serviceClient().list(managementGroupId, groupQuotaName, resourceProviderName, location);
-        return ResourceManagerUtils.mapPage(inner, inner1 -> new ResourceUsagesImpl(inner1, this.manager()));
+        return this.list(managementGroupId, groupQuotaName, resourceProviderName, location, Context.NONE);
     }
 
     public PagedIterable<ResourceUsages> list(String managementGroupId, String groupQuotaName,

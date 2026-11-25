@@ -12,9 +12,12 @@ public final class MetricsContainerResourceListResultTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
         MetricsContainerResourceListResult model = BinaryData.fromString(
-            "{\"value\":[{\"properties\":{\"provisioningState\":\"Failed\",\"version\":\"koymkcd\"},\"id\":\"bpkkpwdre\",\"name\":\"novvqfovljxy\",\"type\":\"suwsyrsnds\"},{\"properties\":{\"provisioningState\":\"Canceled\",\"version\":\"gvraeaen\"},\"id\":\"nzar\",\"name\":\"wlquuijfqkace\",\"type\":\"iipfpubj\"}],\"nextLink\":\"wwiftohqkvpuv\"}")
+            "{\"value\":[{\"properties\":{\"provisioningState\":\"Succeeded\",\"limits\":{\"enableAutoScale\":false,\"maxActiveTimeSeries\":2236269397517718606,\"maxEventsPerMinute\":675045316169439948},\"version\":\"otftpvjzbexilz\"},\"id\":\"fqqnvwpmqtaruo\",\"name\":\"jmkcjhwqytj\",\"type\":\"ybn\"},{\"properties\":{\"provisioningState\":\"Succeeded\",\"limits\":{\"enableAutoScale\":false,\"maxActiveTimeSeries\":4072418869463569489,\"maxEventsPerMinute\":4551525858065712139},\"version\":\"nqpeh\"},\"id\":\"doy\",\"name\":\"mifthnzdnd\",\"type\":\"l\"},{\"properties\":{\"provisioningState\":\"Succeeded\",\"limits\":{\"enableAutoScale\":false,\"maxActiveTimeSeries\":6131994767406394779,\"maxEventsPerMinute\":8794733551106835330},\"version\":\"hqlkthumaqo\"},\"id\":\"gycdu\",\"name\":\"ertgccymva\",\"type\":\"l\"}],\"nextLink\":\"slqlfmmdn\"}")
             .toObject(MetricsContainerResourceListResult.class);
-        Assertions.assertEquals("koymkcd", model.value().get(0).properties().version());
-        Assertions.assertEquals("wwiftohqkvpuv", model.nextLink());
+        Assertions.assertFalse(model.value().get(0).properties().limits().enableAutoScale());
+        Assertions.assertEquals(2236269397517718606L, model.value().get(0).properties().limits().maxActiveTimeSeries());
+        Assertions.assertEquals(675045316169439948L, model.value().get(0).properties().limits().maxEventsPerMinute());
+        Assertions.assertEquals("otftpvjzbexilz", model.value().get(0).properties().version());
+        Assertions.assertEquals("slqlfmmdn", model.nextLink());
     }
 }

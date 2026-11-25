@@ -47,7 +47,7 @@ public final class SolutionVersionsImpl implements SolutionVersions {
     }
 
     public void delete(String resourceGroupName, String targetName, String solutionName, String solutionVersionName) {
-        this.serviceClient().delete(resourceGroupName, targetName, solutionName, solutionVersionName);
+        this.delete(resourceGroupName, targetName, solutionName, solutionVersionName, Context.NONE);
     }
 
     public void delete(String resourceGroupName, String targetName, String solutionName, String solutionVersionName,
@@ -57,9 +57,7 @@ public final class SolutionVersionsImpl implements SolutionVersions {
 
     public PagedIterable<SolutionVersion> listBySolution(String resourceGroupName, String targetName,
         String solutionName) {
-        PagedIterable<SolutionVersionInner> inner
-            = this.serviceClient().listBySolution(resourceGroupName, targetName, solutionName);
-        return ResourceManagerUtils.mapPage(inner, inner1 -> new SolutionVersionImpl(inner1, this.manager()));
+        return this.listBySolution(resourceGroupName, targetName, solutionName, Context.NONE);
     }
 
     public PagedIterable<SolutionVersion> listBySolution(String resourceGroupName, String targetName,
@@ -70,99 +68,42 @@ public final class SolutionVersionsImpl implements SolutionVersions {
     }
 
     public SolutionVersion getById(String id) {
-        String resourceGroupName = ResourceManagerUtils.getValueFromIdByName(id, "resourceGroups");
-        if (resourceGroupName == null) {
-            throw LOGGER.logExceptionAsError(new IllegalArgumentException(
-                String.format("The resource ID '%s' is not valid. Missing path segment 'resourceGroups'.", id)));
-        }
-        String targetName = ResourceManagerUtils.getValueFromIdByName(id, "targets");
-        if (targetName == null) {
-            throw LOGGER.logExceptionAsError(new IllegalArgumentException(
-                String.format("The resource ID '%s' is not valid. Missing path segment 'targets'.", id)));
-        }
-        String solutionName = ResourceManagerUtils.getValueFromIdByName(id, "solutions");
-        if (solutionName == null) {
-            throw LOGGER.logExceptionAsError(new IllegalArgumentException(
-                String.format("The resource ID '%s' is not valid. Missing path segment 'solutions'.", id)));
-        }
-        String solutionVersionName = ResourceManagerUtils.getValueFromIdByName(id, "versions");
-        if (solutionVersionName == null) {
-            throw LOGGER.logExceptionAsError(new IllegalArgumentException(
-                String.format("The resource ID '%s' is not valid. Missing path segment 'versions'.", id)));
-        }
-        return this.getWithResponse(resourceGroupName, targetName, solutionName, solutionVersionName, Context.NONE)
-            .getValue();
+        return this.getByIdWithResponse(id, Context.NONE).getValue();
     }
 
     public Response<SolutionVersion> getByIdWithResponse(String id, Context context) {
-        String resourceGroupName = ResourceManagerUtils.getValueFromIdByName(id, "resourceGroups");
-        if (resourceGroupName == null) {
-            throw LOGGER.logExceptionAsError(new IllegalArgumentException(
-                String.format("The resource ID '%s' is not valid. Missing path segment 'resourceGroups'.", id)));
-        }
-        String targetName = ResourceManagerUtils.getValueFromIdByName(id, "targets");
-        if (targetName == null) {
-            throw LOGGER.logExceptionAsError(new IllegalArgumentException(
-                String.format("The resource ID '%s' is not valid. Missing path segment 'targets'.", id)));
-        }
-        String solutionName = ResourceManagerUtils.getValueFromIdByName(id, "solutions");
-        if (solutionName == null) {
-            throw LOGGER.logExceptionAsError(new IllegalArgumentException(
-                String.format("The resource ID '%s' is not valid. Missing path segment 'solutions'.", id)));
-        }
-        String solutionVersionName = ResourceManagerUtils.getValueFromIdByName(id, "versions");
-        if (solutionVersionName == null) {
-            throw LOGGER.logExceptionAsError(new IllegalArgumentException(
-                String.format("The resource ID '%s' is not valid. Missing path segment 'versions'.", id)));
-        }
+        String resourceGroupName = ResourceManagerUtils.getRequiredValueFromIdByParameterName(id,
+            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Edge/targets/{targetName}/solutions/{solutionName}/versions/{solutionVersionName}",
+            "resourceGroupName", "resourceGroups", LOGGER);
+        String targetName = ResourceManagerUtils.getRequiredValueFromIdByParameterName(id,
+            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Edge/targets/{targetName}/solutions/{solutionName}/versions/{solutionVersionName}",
+            "targetName", "targets", LOGGER);
+        String solutionName = ResourceManagerUtils.getRequiredValueFromIdByParameterName(id,
+            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Edge/targets/{targetName}/solutions/{solutionName}/versions/{solutionVersionName}",
+            "solutionName", "solutions", LOGGER);
+        String solutionVersionName = ResourceManagerUtils.getRequiredValueFromIdByParameterName(id,
+            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Edge/targets/{targetName}/solutions/{solutionName}/versions/{solutionVersionName}",
+            "solutionVersionName", "versions", LOGGER);
         return this.getWithResponse(resourceGroupName, targetName, solutionName, solutionVersionName, context);
     }
 
     public void deleteById(String id) {
-        String resourceGroupName = ResourceManagerUtils.getValueFromIdByName(id, "resourceGroups");
-        if (resourceGroupName == null) {
-            throw LOGGER.logExceptionAsError(new IllegalArgumentException(
-                String.format("The resource ID '%s' is not valid. Missing path segment 'resourceGroups'.", id)));
-        }
-        String targetName = ResourceManagerUtils.getValueFromIdByName(id, "targets");
-        if (targetName == null) {
-            throw LOGGER.logExceptionAsError(new IllegalArgumentException(
-                String.format("The resource ID '%s' is not valid. Missing path segment 'targets'.", id)));
-        }
-        String solutionName = ResourceManagerUtils.getValueFromIdByName(id, "solutions");
-        if (solutionName == null) {
-            throw LOGGER.logExceptionAsError(new IllegalArgumentException(
-                String.format("The resource ID '%s' is not valid. Missing path segment 'solutions'.", id)));
-        }
-        String solutionVersionName = ResourceManagerUtils.getValueFromIdByName(id, "versions");
-        if (solutionVersionName == null) {
-            throw LOGGER.logExceptionAsError(new IllegalArgumentException(
-                String.format("The resource ID '%s' is not valid. Missing path segment 'versions'.", id)));
-        }
-        this.delete(resourceGroupName, targetName, solutionName, solutionVersionName, Context.NONE);
+        this.deleteByIdWithResponse(id, Context.NONE);
     }
 
     public void deleteByIdWithResponse(String id, Context context) {
-        String resourceGroupName = ResourceManagerUtils.getValueFromIdByName(id, "resourceGroups");
-        if (resourceGroupName == null) {
-            throw LOGGER.logExceptionAsError(new IllegalArgumentException(
-                String.format("The resource ID '%s' is not valid. Missing path segment 'resourceGroups'.", id)));
-        }
-        String targetName = ResourceManagerUtils.getValueFromIdByName(id, "targets");
-        if (targetName == null) {
-            throw LOGGER.logExceptionAsError(new IllegalArgumentException(
-                String.format("The resource ID '%s' is not valid. Missing path segment 'targets'.", id)));
-        }
-        String solutionName = ResourceManagerUtils.getValueFromIdByName(id, "solutions");
-        if (solutionName == null) {
-            throw LOGGER.logExceptionAsError(new IllegalArgumentException(
-                String.format("The resource ID '%s' is not valid. Missing path segment 'solutions'.", id)));
-        }
-        String solutionVersionName = ResourceManagerUtils.getValueFromIdByName(id, "versions");
-        if (solutionVersionName == null) {
-            throw LOGGER.logExceptionAsError(new IllegalArgumentException(
-                String.format("The resource ID '%s' is not valid. Missing path segment 'versions'.", id)));
-        }
+        String resourceGroupName = ResourceManagerUtils.getRequiredValueFromIdByParameterName(id,
+            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Edge/targets/{targetName}/solutions/{solutionName}/versions/{solutionVersionName}",
+            "resourceGroupName", "resourceGroups", LOGGER);
+        String targetName = ResourceManagerUtils.getRequiredValueFromIdByParameterName(id,
+            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Edge/targets/{targetName}/solutions/{solutionName}/versions/{solutionVersionName}",
+            "targetName", "targets", LOGGER);
+        String solutionName = ResourceManagerUtils.getRequiredValueFromIdByParameterName(id,
+            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Edge/targets/{targetName}/solutions/{solutionName}/versions/{solutionVersionName}",
+            "solutionName", "solutions", LOGGER);
+        String solutionVersionName = ResourceManagerUtils.getRequiredValueFromIdByParameterName(id,
+            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Edge/targets/{targetName}/solutions/{solutionName}/versions/{solutionVersionName}",
+            "solutionVersionName", "versions", LOGGER);
         this.delete(resourceGroupName, targetName, solutionName, solutionVersionName, context);
     }
 

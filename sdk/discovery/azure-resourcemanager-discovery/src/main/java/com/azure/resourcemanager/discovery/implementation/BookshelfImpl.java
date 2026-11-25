@@ -81,10 +81,7 @@ public final class BookshelfImpl implements Bookshelf, Bookshelf.Definition, Boo
     }
 
     public Bookshelf create() {
-        this.innerObject = serviceManager.serviceClient()
-            .getBookshelves()
-            .createOrUpdate(resourceGroupName, bookshelfName, this.innerModel(), Context.NONE);
-        return this;
+        return this.create(Context.NONE);
     }
 
     public Bookshelf create(Context context) {
@@ -105,10 +102,7 @@ public final class BookshelfImpl implements Bookshelf, Bookshelf.Definition, Boo
     }
 
     public Bookshelf apply() {
-        this.innerObject = serviceManager.serviceClient()
-            .getBookshelves()
-            .update(resourceGroupName, bookshelfName, this.innerModel(), Context.NONE);
-        return this;
+        return this.apply(Context.NONE);
     }
 
     public Bookshelf apply(Context context) {
@@ -121,16 +115,16 @@ public final class BookshelfImpl implements Bookshelf, Bookshelf.Definition, Boo
     BookshelfImpl(BookshelfInner innerObject, com.azure.resourcemanager.discovery.DiscoveryManager serviceManager) {
         this.innerObject = innerObject;
         this.serviceManager = serviceManager;
-        this.resourceGroupName = ResourceManagerUtils.getValueFromIdByName(innerObject.id(), "resourceGroups");
-        this.bookshelfName = ResourceManagerUtils.getValueFromIdByName(innerObject.id(), "bookshelves");
+        this.resourceGroupName = ResourceManagerUtils.getValueFromIdByParameterName(innerObject.id(),
+            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Discovery/bookshelves/{bookshelfName}",
+            "resourceGroupName");
+        this.bookshelfName = ResourceManagerUtils.getValueFromIdByParameterName(innerObject.id(),
+            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Discovery/bookshelves/{bookshelfName}",
+            "bookshelfName");
     }
 
     public Bookshelf refresh() {
-        this.innerObject = serviceManager.serviceClient()
-            .getBookshelves()
-            .getByResourceGroupWithResponse(resourceGroupName, bookshelfName, Context.NONE)
-            .getValue();
-        return this;
+        return this.refresh(Context.NONE);
     }
 
     public Bookshelf refresh(Context context) {

@@ -26,7 +26,7 @@ public final class DatastoresCreateOrUpdateMockTests {
     @Test
     public void testCreateOrUpdate() throws Exception {
         String responseStr
-            = "{\"properties\":{\"provisioningState\":\"Succeeded\",\"netAppVolume\":{\"id\":\"ab\"},\"diskPoolVolume\":{\"targetId\":\"ujtmvcopexcmjurb\",\"lunName\":\"hhlkyqltqsrogtu\",\"mountOption\":\"ATTACH\",\"path\":\"djk\"},\"elasticSanVolume\":{\"targetId\":\"ysidfvclgl\"},\"pureStorageVolume\":{\"storagePoolId\":\"fuijtkbus\",\"sizeGb\":939102144},\"status\":\"DeadOrError\"},\"id\":\"ikayiansharuj\",\"name\":\"ji\",\"type\":\"xfz\"}";
+            = "{\"properties\":{\"provisioningState\":\"Succeeded\",\"netAppVolume\":{\"id\":\"ruwnpqxpx\"},\"diskPoolVolume\":{\"targetId\":\"fcngjsa\",\"lunName\":\"sii\",\"mountOption\":\"ATTACH\",\"path\":\"zjvkviirhgfgrws\"},\"elasticSanVolume\":{\"targetId\":\"gratzvzbglbyvict\"},\"pureStorageVolume\":{\"storagePoolId\":\"brxkjzwr\",\"sizeGb\":802199540},\"status\":\"Inaccessible\"},\"id\":\"shkwfbkgozxwopd\",\"name\":\"yd\",\"type\":\"izqaclnapxbiyg\"}";
 
         HttpClient httpClient
             = response -> Mono.just(new MockHttpResponse(response, 200, responseStr.getBytes(StandardCharsets.UTF_8)));
@@ -36,22 +36,21 @@ public final class DatastoresCreateOrUpdateMockTests {
                 new AzureProfile("", "", AzureCloud.AZURE_PUBLIC_CLOUD));
 
         Datastore response = manager.datastores()
-            .define("zjrwdkqze")
-            .withExistingCluster("m", "jgcgbjbgdlfgtdys", "aquflqbctqha")
-            .withNetAppVolume(new NetAppVolume().withId("zi"))
-            .withDiskPoolVolume(new DiskPoolVolume().withTargetId("jxdfzantkwcegya")
-                .withLunName("lbnseqac")
-                .withMountOption(MountOptionEnum.MOUNT))
-            .withElasticSanVolume(new ElasticSanVolume().withTargetId("iookjbsah"))
-            .withPureStorageVolume(new PureStorageVolume().withStoragePoolId("dt").withSizeGb(807818343))
+            .define("uojqt")
+            .withExistingCluster("nbmhyree", "dzqavbpdqmjxlyyz", "lgouwtlmjj")
+            .withNetAppVolume(new NetAppVolume().withId("j"))
+            .withDiskPoolVolume(
+                new DiskPoolVolume().withTargetId("tu").withLunName("lbfjkwr").withMountOption(MountOptionEnum.ATTACH))
+            .withElasticSanVolume(new ElasticSanVolume().withTargetId("jqhden"))
+            .withPureStorageVolume(new PureStorageVolume().withStoragePoolId("ulkpakd").withSizeGb(1551601241))
             .create();
 
-        Assertions.assertEquals("ab", response.netAppVolume().id());
-        Assertions.assertEquals("ujtmvcopexcmjurb", response.diskPoolVolume().targetId());
-        Assertions.assertEquals("hhlkyqltqsrogtu", response.diskPoolVolume().lunName());
+        Assertions.assertEquals("ruwnpqxpx", response.netAppVolume().id());
+        Assertions.assertEquals("fcngjsa", response.diskPoolVolume().targetId());
+        Assertions.assertEquals("sii", response.diskPoolVolume().lunName());
         Assertions.assertEquals(MountOptionEnum.ATTACH, response.diskPoolVolume().mountOption());
-        Assertions.assertEquals("ysidfvclgl", response.elasticSanVolume().targetId());
-        Assertions.assertEquals("fuijtkbus", response.pureStorageVolume().storagePoolId());
-        Assertions.assertEquals(939102144, response.pureStorageVolume().sizeGb());
+        Assertions.assertEquals("gratzvzbglbyvict", response.elasticSanVolume().targetId());
+        Assertions.assertEquals("brxkjzwr", response.pureStorageVolume().storagePoolId());
+        Assertions.assertEquals(802199540, response.pureStorageVolume().sizeGb());
     }
 }

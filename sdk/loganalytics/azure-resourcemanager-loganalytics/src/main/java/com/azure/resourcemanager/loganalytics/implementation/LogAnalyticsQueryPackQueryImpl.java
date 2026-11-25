@@ -106,11 +106,7 @@ public final class LogAnalyticsQueryPackQueryImpl
     }
 
     public LogAnalyticsQueryPackQuery create() {
-        this.innerObject = serviceManager.serviceClient()
-            .getQueries()
-            .putWithResponse(resourceGroupName, queryPackName, id, this.innerModel(), Context.NONE)
-            .getValue();
-        return this;
+        return this.create(Context.NONE);
     }
 
     public LogAnalyticsQueryPackQuery create(Context context) {
@@ -133,11 +129,7 @@ public final class LogAnalyticsQueryPackQueryImpl
     }
 
     public LogAnalyticsQueryPackQuery apply() {
-        this.innerObject = serviceManager.serviceClient()
-            .getQueries()
-            .updateWithResponse(resourceGroupName, queryPackName, id, this.innerModel(), Context.NONE)
-            .getValue();
-        return this;
+        return this.apply(Context.NONE);
     }
 
     public LogAnalyticsQueryPackQuery apply(Context context) {
@@ -152,17 +144,19 @@ public final class LogAnalyticsQueryPackQueryImpl
         com.azure.resourcemanager.loganalytics.LogAnalyticsManager serviceManager) {
         this.innerObject = innerObject;
         this.serviceManager = serviceManager;
-        this.resourceGroupName = ResourceManagerUtils.getValueFromIdByName(innerObject.id(), "resourceGroups");
-        this.queryPackName = ResourceManagerUtils.getValueFromIdByName(innerObject.id(), "queryPacks");
-        this.id = ResourceManagerUtils.getValueFromIdByName(innerObject.id(), "queries");
+        this.resourceGroupName = ResourceManagerUtils.getValueFromIdByParameterName(innerObject.id(),
+            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.OperationalInsights/queryPacks/{queryPackName}/queries/{id}",
+            "resourceGroupName");
+        this.queryPackName = ResourceManagerUtils.getValueFromIdByParameterName(innerObject.id(),
+            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.OperationalInsights/queryPacks/{queryPackName}/queries/{id}",
+            "queryPackName");
+        this.id = ResourceManagerUtils.getValueFromIdByParameterName(innerObject.id(),
+            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.OperationalInsights/queryPacks/{queryPackName}/queries/{id}",
+            "id");
     }
 
     public LogAnalyticsQueryPackQuery refresh() {
-        this.innerObject = serviceManager.serviceClient()
-            .getQueries()
-            .getWithResponse(resourceGroupName, queryPackName, id, Context.NONE)
-            .getValue();
-        return this;
+        return this.refresh(Context.NONE);
     }
 
     public LogAnalyticsQueryPackQuery refresh(Context context) {

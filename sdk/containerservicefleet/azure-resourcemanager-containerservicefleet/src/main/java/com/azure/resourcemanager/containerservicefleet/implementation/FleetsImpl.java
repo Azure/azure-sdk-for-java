@@ -54,8 +54,7 @@ public final class FleetsImpl implements Fleets {
     }
 
     public PagedIterable<Fleet> listByResourceGroup(String resourceGroupName) {
-        PagedIterable<FleetInner> inner = this.serviceClient().listByResourceGroup(resourceGroupName);
-        return ResourceManagerUtils.mapPage(inner, inner1 -> new FleetImpl(inner1, this.manager()));
+        return this.listByResourceGroup(resourceGroupName, Context.NONE);
     }
 
     public PagedIterable<Fleet> listByResourceGroup(String resourceGroupName, Context context) {
@@ -91,59 +90,31 @@ public final class FleetsImpl implements Fleets {
     }
 
     public Fleet getById(String id) {
-        String resourceGroupName = ResourceManagerUtils.getValueFromIdByName(id, "resourceGroups");
-        if (resourceGroupName == null) {
-            throw LOGGER.logExceptionAsError(new IllegalArgumentException(
-                String.format("The resource ID '%s' is not valid. Missing path segment 'resourceGroups'.", id)));
-        }
-        String fleetName = ResourceManagerUtils.getValueFromIdByName(id, "fleets");
-        if (fleetName == null) {
-            throw LOGGER.logExceptionAsError(new IllegalArgumentException(
-                String.format("The resource ID '%s' is not valid. Missing path segment 'fleets'.", id)));
-        }
-        return this.getByResourceGroupWithResponse(resourceGroupName, fleetName, Context.NONE).getValue();
+        return this.getByIdWithResponse(id, Context.NONE).getValue();
     }
 
     public Response<Fleet> getByIdWithResponse(String id, Context context) {
-        String resourceGroupName = ResourceManagerUtils.getValueFromIdByName(id, "resourceGroups");
-        if (resourceGroupName == null) {
-            throw LOGGER.logExceptionAsError(new IllegalArgumentException(
-                String.format("The resource ID '%s' is not valid. Missing path segment 'resourceGroups'.", id)));
-        }
-        String fleetName = ResourceManagerUtils.getValueFromIdByName(id, "fleets");
-        if (fleetName == null) {
-            throw LOGGER.logExceptionAsError(new IllegalArgumentException(
-                String.format("The resource ID '%s' is not valid. Missing path segment 'fleets'.", id)));
-        }
+        String resourceGroupName = ResourceManagerUtils.getRequiredValueFromIdByParameterName(id,
+            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.ContainerService/fleets/{fleetName}",
+            "resourceGroupName", "resourceGroups", LOGGER);
+        String fleetName = ResourceManagerUtils.getRequiredValueFromIdByParameterName(id,
+            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.ContainerService/fleets/{fleetName}",
+            "fleetName", "fleets", LOGGER);
         return this.getByResourceGroupWithResponse(resourceGroupName, fleetName, context);
     }
 
     public void deleteById(String id) {
-        String resourceGroupName = ResourceManagerUtils.getValueFromIdByName(id, "resourceGroups");
-        if (resourceGroupName == null) {
-            throw LOGGER.logExceptionAsError(new IllegalArgumentException(
-                String.format("The resource ID '%s' is not valid. Missing path segment 'resourceGroups'.", id)));
-        }
-        String fleetName = ResourceManagerUtils.getValueFromIdByName(id, "fleets");
-        if (fleetName == null) {
-            throw LOGGER.logExceptionAsError(new IllegalArgumentException(
-                String.format("The resource ID '%s' is not valid. Missing path segment 'fleets'.", id)));
-        }
         String localIfMatch = null;
-        this.delete(resourceGroupName, fleetName, localIfMatch, Context.NONE);
+        this.deleteByIdWithResponse(id, localIfMatch, Context.NONE);
     }
 
     public void deleteByIdWithResponse(String id, String ifMatch, Context context) {
-        String resourceGroupName = ResourceManagerUtils.getValueFromIdByName(id, "resourceGroups");
-        if (resourceGroupName == null) {
-            throw LOGGER.logExceptionAsError(new IllegalArgumentException(
-                String.format("The resource ID '%s' is not valid. Missing path segment 'resourceGroups'.", id)));
-        }
-        String fleetName = ResourceManagerUtils.getValueFromIdByName(id, "fleets");
-        if (fleetName == null) {
-            throw LOGGER.logExceptionAsError(new IllegalArgumentException(
-                String.format("The resource ID '%s' is not valid. Missing path segment 'fleets'.", id)));
-        }
+        String resourceGroupName = ResourceManagerUtils.getRequiredValueFromIdByParameterName(id,
+            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.ContainerService/fleets/{fleetName}",
+            "resourceGroupName", "resourceGroups", LOGGER);
+        String fleetName = ResourceManagerUtils.getRequiredValueFromIdByParameterName(id,
+            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.ContainerService/fleets/{fleetName}",
+            "fleetName", "fleets", LOGGER);
         this.delete(resourceGroupName, fleetName, ifMatch, context);
     }
 

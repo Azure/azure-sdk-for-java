@@ -119,20 +119,7 @@ public final class HubVirtualNetworkConnectionsClientImpl implements HubVirtualN
             @HeaderParam("Accept") String accept, Context context);
     }
 
-    /**
-     * Creates a hub virtual network connection if it doesn't exist else updates the existing one.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param virtualHubName The name of the Virtual Hub.
-     * @param connectionName The connectionName parameter.
-     * @param hubVirtualNetworkConnectionParameters Parameters supplied to create or update a hub virtual network
-     * connection.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return hubVirtualNetworkConnection Resource along with {@link Response} on successful completion of
-     * {@link Mono}.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Response<Flux<ByteBuffer>>> createOrUpdateWithResponseAsync(String resourceGroupName,
         String virtualHubName, String connectionName,
@@ -161,7 +148,7 @@ public final class HubVirtualNetworkConnectionsClientImpl implements HubVirtualN
         } else {
             hubVirtualNetworkConnectionParameters.validate();
         }
-        final String apiVersion = "2025-07-01";
+        final String apiVersion = "2026-05-01";
         final String contentType = "application/json";
         final String accept = "application/json";
         return FluxUtil
@@ -214,7 +201,7 @@ public final class HubVirtualNetworkConnectionsClientImpl implements HubVirtualN
         } else {
             hubVirtualNetworkConnectionParameters.validate();
         }
-        final String apiVersion = "2025-07-01";
+        final String apiVersion = "2026-05-01";
         final String contentType = "application/json";
         final String accept = "application/json";
         context = this.client.mergeContext(context);
@@ -223,19 +210,7 @@ public final class HubVirtualNetworkConnectionsClientImpl implements HubVirtualN
             hubVirtualNetworkConnectionParameters, context);
     }
 
-    /**
-     * Creates a hub virtual network connection if it doesn't exist else updates the existing one.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param virtualHubName The name of the Virtual Hub.
-     * @param connectionName The connectionName parameter.
-     * @param hubVirtualNetworkConnectionParameters Parameters supplied to create or update a hub virtual network
-     * connection.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the {@link PollerFlux} for polling of hubVirtualNetworkConnection Resource.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public PollerFlux<PollResult<HubVirtualNetworkConnectionInner>, HubVirtualNetworkConnectionInner>
         beginCreateOrUpdateAsync(String resourceGroupName, String virtualHubName, String connectionName,
@@ -273,19 +248,7 @@ public final class HubVirtualNetworkConnectionsClientImpl implements HubVirtualN
             HubVirtualNetworkConnectionInner.class, context);
     }
 
-    /**
-     * Creates a hub virtual network connection if it doesn't exist else updates the existing one.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param virtualHubName The name of the Virtual Hub.
-     * @param connectionName The connectionName parameter.
-     * @param hubVirtualNetworkConnectionParameters Parameters supplied to create or update a hub virtual network
-     * connection.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the {@link SyncPoller} for polling of hubVirtualNetworkConnection Resource.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public SyncPoller<PollResult<HubVirtualNetworkConnectionInner>, HubVirtualNetworkConnectionInner>
         beginCreateOrUpdate(String resourceGroupName, String virtualHubName, String connectionName,
@@ -296,20 +259,7 @@ public final class HubVirtualNetworkConnectionsClientImpl implements HubVirtualN
             .getSyncPoller();
     }
 
-    /**
-     * Creates a hub virtual network connection if it doesn't exist else updates the existing one.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param virtualHubName The name of the Virtual Hub.
-     * @param connectionName The connectionName parameter.
-     * @param hubVirtualNetworkConnectionParameters Parameters supplied to create or update a hub virtual network
-     * connection.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the {@link SyncPoller} for polling of hubVirtualNetworkConnection Resource.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public SyncPoller<PollResult<HubVirtualNetworkConnectionInner>, HubVirtualNetworkConnectionInner>
         beginCreateOrUpdate(String resourceGroupName, String virtualHubName, String connectionName,
@@ -320,19 +270,7 @@ public final class HubVirtualNetworkConnectionsClientImpl implements HubVirtualN
             .getSyncPoller();
     }
 
-    /**
-     * Creates a hub virtual network connection if it doesn't exist else updates the existing one.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param virtualHubName The name of the Virtual Hub.
-     * @param connectionName The connectionName parameter.
-     * @param hubVirtualNetworkConnectionParameters Parameters supplied to create or update a hub virtual network
-     * connection.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return hubVirtualNetworkConnection Resource on successful completion of {@link Mono}.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<HubVirtualNetworkConnectionInner> createOrUpdateAsync(String resourceGroupName, String virtualHubName,
         String connectionName, HubVirtualNetworkConnectionInner hubVirtualNetworkConnectionParameters) {
@@ -362,19 +300,7 @@ public final class HubVirtualNetworkConnectionsClientImpl implements HubVirtualN
             hubVirtualNetworkConnectionParameters, context).last().flatMap(this.client::getLroFinalResultOrError);
     }
 
-    /**
-     * Creates a hub virtual network connection if it doesn't exist else updates the existing one.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param virtualHubName The name of the Virtual Hub.
-     * @param connectionName The connectionName parameter.
-     * @param hubVirtualNetworkConnectionParameters Parameters supplied to create or update a hub virtual network
-     * connection.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return hubVirtualNetworkConnection Resource.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public HubVirtualNetworkConnectionInner createOrUpdate(String resourceGroupName, String virtualHubName,
         String connectionName, HubVirtualNetworkConnectionInner hubVirtualNetworkConnectionParameters) {
@@ -382,20 +308,7 @@ public final class HubVirtualNetworkConnectionsClientImpl implements HubVirtualN
             hubVirtualNetworkConnectionParameters).block();
     }
 
-    /**
-     * Creates a hub virtual network connection if it doesn't exist else updates the existing one.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param virtualHubName The name of the Virtual Hub.
-     * @param connectionName The connectionName parameter.
-     * @param hubVirtualNetworkConnectionParameters Parameters supplied to create or update a hub virtual network
-     * connection.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return hubVirtualNetworkConnection Resource.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public HubVirtualNetworkConnectionInner createOrUpdate(String resourceGroupName, String virtualHubName,
         String connectionName, HubVirtualNetworkConnectionInner hubVirtualNetworkConnectionParameters,
@@ -404,17 +317,7 @@ public final class HubVirtualNetworkConnectionsClientImpl implements HubVirtualN
             hubVirtualNetworkConnectionParameters, context).block();
     }
 
-    /**
-     * Deletes a HubVirtualNetworkConnection.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param virtualHubName The name of the Virtual Hub.
-     * @param connectionName The connectionName parameter.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the {@link Response} on successful completion of {@link Mono}.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Response<Flux<ByteBuffer>>> deleteWithResponseAsync(String resourceGroupName, String virtualHubName,
         String connectionName) {
@@ -436,7 +339,7 @@ public final class HubVirtualNetworkConnectionsClientImpl implements HubVirtualN
         if (connectionName == null) {
             return Mono.error(new IllegalArgumentException("Parameter connectionName is required and cannot be null."));
         }
-        final String apiVersion = "2025-07-01";
+        final String apiVersion = "2026-05-01";
         return FluxUtil
             .withContext(context -> service.delete(this.client.getEndpoint(), apiVersion,
                 this.client.getSubscriptionId(), resourceGroupName, virtualHubName, connectionName, context))
@@ -476,23 +379,13 @@ public final class HubVirtualNetworkConnectionsClientImpl implements HubVirtualN
         if (connectionName == null) {
             return Mono.error(new IllegalArgumentException("Parameter connectionName is required and cannot be null."));
         }
-        final String apiVersion = "2025-07-01";
+        final String apiVersion = "2026-05-01";
         context = this.client.mergeContext(context);
         return service.delete(this.client.getEndpoint(), apiVersion, this.client.getSubscriptionId(), resourceGroupName,
             virtualHubName, connectionName, context);
     }
 
-    /**
-     * Deletes a HubVirtualNetworkConnection.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param virtualHubName The name of the Virtual Hub.
-     * @param connectionName The connectionName parameter.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the {@link PollerFlux} for polling of long-running operation.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public PollerFlux<PollResult<Void>, Void> beginDeleteAsync(String resourceGroupName, String virtualHubName,
         String connectionName) {
@@ -524,52 +417,21 @@ public final class HubVirtualNetworkConnectionsClientImpl implements HubVirtualN
             context);
     }
 
-    /**
-     * Deletes a HubVirtualNetworkConnection.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param virtualHubName The name of the Virtual Hub.
-     * @param connectionName The connectionName parameter.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the {@link SyncPoller} for polling of long-running operation.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public SyncPoller<PollResult<Void>, Void> beginDelete(String resourceGroupName, String virtualHubName,
         String connectionName) {
         return this.beginDeleteAsync(resourceGroupName, virtualHubName, connectionName).getSyncPoller();
     }
 
-    /**
-     * Deletes a HubVirtualNetworkConnection.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param virtualHubName The name of the Virtual Hub.
-     * @param connectionName The connectionName parameter.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the {@link SyncPoller} for polling of long-running operation.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public SyncPoller<PollResult<Void>, Void> beginDelete(String resourceGroupName, String virtualHubName,
         String connectionName, Context context) {
         return this.beginDeleteAsync(resourceGroupName, virtualHubName, connectionName, context).getSyncPoller();
     }
 
-    /**
-     * Deletes a HubVirtualNetworkConnection.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param virtualHubName The name of the Virtual Hub.
-     * @param connectionName The connectionName parameter.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return A {@link Mono} that completes when a successful response is received.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Void> deleteAsync(String resourceGroupName, String virtualHubName, String connectionName) {
         return beginDeleteAsync(resourceGroupName, virtualHubName, connectionName).last()
@@ -595,49 +457,19 @@ public final class HubVirtualNetworkConnectionsClientImpl implements HubVirtualN
             .flatMap(this.client::getLroFinalResultOrError);
     }
 
-    /**
-     * Deletes a HubVirtualNetworkConnection.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param virtualHubName The name of the Virtual Hub.
-     * @param connectionName The connectionName parameter.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public void delete(String resourceGroupName, String virtualHubName, String connectionName) {
         deleteAsync(resourceGroupName, virtualHubName, connectionName).block();
     }
 
-    /**
-     * Deletes a HubVirtualNetworkConnection.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param virtualHubName The name of the Virtual Hub.
-     * @param connectionName The connectionName parameter.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public void delete(String resourceGroupName, String virtualHubName, String connectionName, Context context) {
         deleteAsync(resourceGroupName, virtualHubName, connectionName, context).block();
     }
 
-    /**
-     * Retrieves the details of a HubVirtualNetworkConnection.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param virtualHubName The name of the Virtual Hub.
-     * @param connectionName The connectionName parameter.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return hubVirtualNetworkConnection Resource along with {@link Response} on successful completion of
-     * {@link Mono}.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Response<HubVirtualNetworkConnectionInner>> getWithResponseAsync(String resourceGroupName,
         String virtualHubName, String connectionName) {
@@ -659,7 +491,7 @@ public final class HubVirtualNetworkConnectionsClientImpl implements HubVirtualN
         if (connectionName == null) {
             return Mono.error(new IllegalArgumentException("Parameter connectionName is required and cannot be null."));
         }
-        final String apiVersion = "2025-07-01";
+        final String apiVersion = "2026-05-01";
         final String accept = "application/json";
         return FluxUtil
             .withContext(context -> service.get(this.client.getEndpoint(), apiVersion, this.client.getSubscriptionId(),
@@ -701,24 +533,14 @@ public final class HubVirtualNetworkConnectionsClientImpl implements HubVirtualN
         if (connectionName == null) {
             return Mono.error(new IllegalArgumentException("Parameter connectionName is required and cannot be null."));
         }
-        final String apiVersion = "2025-07-01";
+        final String apiVersion = "2026-05-01";
         final String accept = "application/json";
         context = this.client.mergeContext(context);
         return service.get(this.client.getEndpoint(), apiVersion, this.client.getSubscriptionId(), resourceGroupName,
             virtualHubName, connectionName, accept, context);
     }
 
-    /**
-     * Retrieves the details of a HubVirtualNetworkConnection.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param virtualHubName The name of the Virtual Hub.
-     * @param connectionName The connectionName parameter.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return hubVirtualNetworkConnection Resource on successful completion of {@link Mono}.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<HubVirtualNetworkConnectionInner> getAsync(String resourceGroupName, String virtualHubName,
         String connectionName) {
@@ -726,35 +548,14 @@ public final class HubVirtualNetworkConnectionsClientImpl implements HubVirtualN
             .flatMap(res -> Mono.justOrEmpty(res.getValue()));
     }
 
-    /**
-     * Retrieves the details of a HubVirtualNetworkConnection.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param virtualHubName The name of the Virtual Hub.
-     * @param connectionName The connectionName parameter.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return hubVirtualNetworkConnection Resource along with {@link Response}.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Response<HubVirtualNetworkConnectionInner> getWithResponse(String resourceGroupName, String virtualHubName,
         String connectionName, Context context) {
         return getWithResponseAsync(resourceGroupName, virtualHubName, connectionName, context).block();
     }
 
-    /**
-     * Retrieves the details of a HubVirtualNetworkConnection.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param virtualHubName The name of the Virtual Hub.
-     * @param connectionName The connectionName parameter.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return hubVirtualNetworkConnection Resource.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public HubVirtualNetworkConnectionInner get(String resourceGroupName, String virtualHubName,
         String connectionName) {
@@ -790,7 +591,7 @@ public final class HubVirtualNetworkConnectionsClientImpl implements HubVirtualN
         if (virtualHubName == null) {
             return Mono.error(new IllegalArgumentException("Parameter virtualHubName is required and cannot be null."));
         }
-        final String apiVersion = "2025-07-01";
+        final String apiVersion = "2026-05-01";
         final String accept = "application/json";
         return FluxUtil
             .withContext(context -> service.list(this.client.getEndpoint(), apiVersion, this.client.getSubscriptionId(),
@@ -830,7 +631,7 @@ public final class HubVirtualNetworkConnectionsClientImpl implements HubVirtualN
         if (virtualHubName == null) {
             return Mono.error(new IllegalArgumentException("Parameter virtualHubName is required and cannot be null."));
         }
-        final String apiVersion = "2025-07-01";
+        final String apiVersion = "2026-05-01";
         final String accept = "application/json";
         context = this.client.mergeContext(context);
         return service
@@ -840,17 +641,7 @@ public final class HubVirtualNetworkConnectionsClientImpl implements HubVirtualN
                 res.getValue().value(), res.getValue().nextLink(), null));
     }
 
-    /**
-     * Retrieves the details of all HubVirtualNetworkConnections.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param virtualHubName The name of the VirtualHub.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return list of HubVirtualNetworkConnections and a URL nextLink to get the next set of results as paginated
-     * response with {@link PagedFlux}.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.COLLECTION)
     public PagedFlux<HubVirtualNetworkConnectionInner> listAsync(String resourceGroupName, String virtualHubName) {
         return new PagedFlux<>(() -> listSinglePageAsync(resourceGroupName, virtualHubName),
@@ -876,34 +667,13 @@ public final class HubVirtualNetworkConnectionsClientImpl implements HubVirtualN
             nextLink -> listNextSinglePageAsync(nextLink, context));
     }
 
-    /**
-     * Retrieves the details of all HubVirtualNetworkConnections.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param virtualHubName The name of the VirtualHub.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return list of HubVirtualNetworkConnections and a URL nextLink to get the next set of results as paginated
-     * response with {@link PagedIterable}.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.COLLECTION)
     public PagedIterable<HubVirtualNetworkConnectionInner> list(String resourceGroupName, String virtualHubName) {
         return new PagedIterable<>(listAsync(resourceGroupName, virtualHubName));
     }
 
-    /**
-     * Retrieves the details of all HubVirtualNetworkConnections.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param virtualHubName The name of the VirtualHub.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return list of HubVirtualNetworkConnections and a URL nextLink to get the next set of results as paginated
-     * response with {@link PagedIterable}.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.COLLECTION)
     public PagedIterable<HubVirtualNetworkConnectionInner> list(String resourceGroupName, String virtualHubName,
         Context context) {

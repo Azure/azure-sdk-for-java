@@ -46,13 +46,7 @@ public final class FqdnListGlobalRulestacksImpl implements FqdnListGlobalRulesta
 
     public FqdnListGlobalRulestackResource createOrUpdate(String globalRulestackName, String name,
         FqdnListGlobalRulestackResourceInner resource) {
-        FqdnListGlobalRulestackResourceInner inner
-            = this.serviceClient().createOrUpdate(globalRulestackName, name, resource);
-        if (inner != null) {
-            return new FqdnListGlobalRulestackResourceImpl(inner, this.manager());
-        } else {
-            return null;
-        }
+        return this.createOrUpdate(globalRulestackName, name, resource, Context.NONE);
     }
 
     public FqdnListGlobalRulestackResource createOrUpdate(String globalRulestackName, String name,
@@ -67,7 +61,7 @@ public final class FqdnListGlobalRulestacksImpl implements FqdnListGlobalRulesta
     }
 
     public void deleteByResourceGroup(String globalRulestackName, String name) {
-        this.serviceClient().delete(globalRulestackName, name);
+        this.delete(globalRulestackName, name, Context.NONE);
     }
 
     public void delete(String globalRulestackName, String name, Context context) {
@@ -75,9 +69,7 @@ public final class FqdnListGlobalRulestacksImpl implements FqdnListGlobalRulesta
     }
 
     public PagedIterable<FqdnListGlobalRulestackResource> list(String globalRulestackName) {
-        PagedIterable<FqdnListGlobalRulestackResourceInner> inner = this.serviceClient().list(globalRulestackName);
-        return ResourceManagerUtils.mapPage(inner,
-            inner1 -> new FqdnListGlobalRulestackResourceImpl(inner1, this.manager()));
+        return this.list(globalRulestackName, Context.NONE);
     }
 
     public PagedIterable<FqdnListGlobalRulestackResource> list(String globalRulestackName, Context context) {

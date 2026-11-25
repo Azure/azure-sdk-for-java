@@ -45,7 +45,7 @@ public final class RolesImpl implements Roles {
     }
 
     public void delete(String resourceGroupName, String clusterName, String roleName) {
-        this.serviceClient().delete(resourceGroupName, clusterName, roleName);
+        this.delete(resourceGroupName, clusterName, roleName, Context.NONE);
     }
 
     public void delete(String resourceGroupName, String clusterName, String roleName, Context context) {
@@ -53,8 +53,7 @@ public final class RolesImpl implements Roles {
     }
 
     public PagedIterable<Role> listByCluster(String resourceGroupName, String clusterName) {
-        PagedIterable<RoleInner> inner = this.serviceClient().listByCluster(resourceGroupName, clusterName);
-        return ResourceManagerUtils.mapPage(inner, inner1 -> new RoleImpl(inner1, this.manager()));
+        return this.listByCluster(resourceGroupName, clusterName, Context.NONE);
     }
 
     public PagedIterable<Role> listByCluster(String resourceGroupName, String clusterName, Context context) {
@@ -63,78 +62,36 @@ public final class RolesImpl implements Roles {
     }
 
     public Role getById(String id) {
-        String resourceGroupName = ResourceManagerUtils.getValueFromIdByName(id, "resourceGroups");
-        if (resourceGroupName == null) {
-            throw LOGGER.logExceptionAsError(new IllegalArgumentException(
-                String.format("The resource ID '%s' is not valid. Missing path segment 'resourceGroups'.", id)));
-        }
-        String clusterName = ResourceManagerUtils.getValueFromIdByName(id, "serverGroupsv2");
-        if (clusterName == null) {
-            throw LOGGER.logExceptionAsError(new IllegalArgumentException(
-                String.format("The resource ID '%s' is not valid. Missing path segment 'serverGroupsv2'.", id)));
-        }
-        String roleName = ResourceManagerUtils.getValueFromIdByName(id, "roles");
-        if (roleName == null) {
-            throw LOGGER.logExceptionAsError(new IllegalArgumentException(
-                String.format("The resource ID '%s' is not valid. Missing path segment 'roles'.", id)));
-        }
-        return this.getWithResponse(resourceGroupName, clusterName, roleName, Context.NONE).getValue();
+        return this.getByIdWithResponse(id, Context.NONE).getValue();
     }
 
     public Response<Role> getByIdWithResponse(String id, Context context) {
-        String resourceGroupName = ResourceManagerUtils.getValueFromIdByName(id, "resourceGroups");
-        if (resourceGroupName == null) {
-            throw LOGGER.logExceptionAsError(new IllegalArgumentException(
-                String.format("The resource ID '%s' is not valid. Missing path segment 'resourceGroups'.", id)));
-        }
-        String clusterName = ResourceManagerUtils.getValueFromIdByName(id, "serverGroupsv2");
-        if (clusterName == null) {
-            throw LOGGER.logExceptionAsError(new IllegalArgumentException(
-                String.format("The resource ID '%s' is not valid. Missing path segment 'serverGroupsv2'.", id)));
-        }
-        String roleName = ResourceManagerUtils.getValueFromIdByName(id, "roles");
-        if (roleName == null) {
-            throw LOGGER.logExceptionAsError(new IllegalArgumentException(
-                String.format("The resource ID '%s' is not valid. Missing path segment 'roles'.", id)));
-        }
+        String resourceGroupName = ResourceManagerUtils.getRequiredValueFromIdByParameterName(id,
+            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.DBforPostgreSQL/serverGroupsv2/{clusterName}/roles/{roleName}",
+            "resourceGroupName", "resourceGroups", LOGGER);
+        String clusterName = ResourceManagerUtils.getRequiredValueFromIdByParameterName(id,
+            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.DBforPostgreSQL/serverGroupsv2/{clusterName}/roles/{roleName}",
+            "clusterName", "serverGroupsv2", LOGGER);
+        String roleName = ResourceManagerUtils.getRequiredValueFromIdByParameterName(id,
+            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.DBforPostgreSQL/serverGroupsv2/{clusterName}/roles/{roleName}",
+            "roleName", "roles", LOGGER);
         return this.getWithResponse(resourceGroupName, clusterName, roleName, context);
     }
 
     public void deleteById(String id) {
-        String resourceGroupName = ResourceManagerUtils.getValueFromIdByName(id, "resourceGroups");
-        if (resourceGroupName == null) {
-            throw LOGGER.logExceptionAsError(new IllegalArgumentException(
-                String.format("The resource ID '%s' is not valid. Missing path segment 'resourceGroups'.", id)));
-        }
-        String clusterName = ResourceManagerUtils.getValueFromIdByName(id, "serverGroupsv2");
-        if (clusterName == null) {
-            throw LOGGER.logExceptionAsError(new IllegalArgumentException(
-                String.format("The resource ID '%s' is not valid. Missing path segment 'serverGroupsv2'.", id)));
-        }
-        String roleName = ResourceManagerUtils.getValueFromIdByName(id, "roles");
-        if (roleName == null) {
-            throw LOGGER.logExceptionAsError(new IllegalArgumentException(
-                String.format("The resource ID '%s' is not valid. Missing path segment 'roles'.", id)));
-        }
-        this.delete(resourceGroupName, clusterName, roleName, Context.NONE);
+        this.deleteByIdWithResponse(id, Context.NONE);
     }
 
     public void deleteByIdWithResponse(String id, Context context) {
-        String resourceGroupName = ResourceManagerUtils.getValueFromIdByName(id, "resourceGroups");
-        if (resourceGroupName == null) {
-            throw LOGGER.logExceptionAsError(new IllegalArgumentException(
-                String.format("The resource ID '%s' is not valid. Missing path segment 'resourceGroups'.", id)));
-        }
-        String clusterName = ResourceManagerUtils.getValueFromIdByName(id, "serverGroupsv2");
-        if (clusterName == null) {
-            throw LOGGER.logExceptionAsError(new IllegalArgumentException(
-                String.format("The resource ID '%s' is not valid. Missing path segment 'serverGroupsv2'.", id)));
-        }
-        String roleName = ResourceManagerUtils.getValueFromIdByName(id, "roles");
-        if (roleName == null) {
-            throw LOGGER.logExceptionAsError(new IllegalArgumentException(
-                String.format("The resource ID '%s' is not valid. Missing path segment 'roles'.", id)));
-        }
+        String resourceGroupName = ResourceManagerUtils.getRequiredValueFromIdByParameterName(id,
+            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.DBforPostgreSQL/serverGroupsv2/{clusterName}/roles/{roleName}",
+            "resourceGroupName", "resourceGroups", LOGGER);
+        String clusterName = ResourceManagerUtils.getRequiredValueFromIdByParameterName(id,
+            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.DBforPostgreSQL/serverGroupsv2/{clusterName}/roles/{roleName}",
+            "clusterName", "serverGroupsv2", LOGGER);
+        String roleName = ResourceManagerUtils.getRequiredValueFromIdByParameterName(id,
+            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.DBforPostgreSQL/serverGroupsv2/{clusterName}/roles/{roleName}",
+            "roleName", "roles", LOGGER);
         this.delete(resourceGroupName, clusterName, roleName, context);
     }
 

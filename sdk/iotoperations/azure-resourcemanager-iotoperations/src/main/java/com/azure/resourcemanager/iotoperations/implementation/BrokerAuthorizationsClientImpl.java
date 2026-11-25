@@ -209,19 +209,7 @@ public final class BrokerAuthorizationsClientImpl implements BrokerAuthorization
             .flatMap(res -> Mono.justOrEmpty(res.getValue()));
     }
 
-    /**
-     * Get a BrokerAuthorizationResource.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param instanceName Name of instance.
-     * @param brokerName Name of broker.
-     * @param authorizationName Name of Instance broker authorization resource.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return a BrokerAuthorizationResource along with {@link Response}.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Response<BrokerAuthorizationResourceInner> getWithResponse(String resourceGroupName, String instanceName,
         String brokerName, String authorizationName, Context context) {
@@ -230,18 +218,7 @@ public final class BrokerAuthorizationsClientImpl implements BrokerAuthorization
             resourceGroupName, instanceName, brokerName, authorizationName, accept, context);
     }
 
-    /**
-     * Get a BrokerAuthorizationResource.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param instanceName Name of instance.
-     * @param brokerName Name of broker.
-     * @param authorizationName Name of Instance broker authorization resource.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return a BrokerAuthorizationResource.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public BrokerAuthorizationResourceInner get(String resourceGroupName, String instanceName, String brokerName,
         String authorizationName) {
@@ -290,11 +267,8 @@ public final class BrokerAuthorizationsClientImpl implements BrokerAuthorization
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Response<BinaryData> createOrUpdateWithResponse(String resourceGroupName, String instanceName,
         String brokerName, String authorizationName, BrokerAuthorizationResourceInner resource) {
-        final String contentType = "application/json";
-        final String accept = "application/json";
-        return service.createOrUpdateSync(this.client.getEndpoint(), this.client.getApiVersion(),
-            this.client.getSubscriptionId(), resourceGroupName, instanceName, brokerName, authorizationName,
-            contentType, accept, resource, Context.NONE);
+        return createOrUpdateWithResponse(resourceGroupName, instanceName, brokerName, authorizationName, resource,
+            Context.NONE);
     }
 
     /**
@@ -345,43 +319,16 @@ public final class BrokerAuthorizationsClientImpl implements BrokerAuthorization
             BrokerAuthorizationResourceInner.class, this.client.getContext());
     }
 
-    /**
-     * Create a BrokerAuthorizationResource.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param instanceName Name of instance.
-     * @param brokerName Name of broker.
-     * @param authorizationName Name of Instance broker authorization resource.
-     * @param resource Resource create parameters.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the {@link SyncPoller} for polling of instance broker authorizations resource.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public SyncPoller<PollResult<BrokerAuthorizationResourceInner>, BrokerAuthorizationResourceInner>
         beginCreateOrUpdate(String resourceGroupName, String instanceName, String brokerName, String authorizationName,
             BrokerAuthorizationResourceInner resource) {
-        Response<BinaryData> response
-            = createOrUpdateWithResponse(resourceGroupName, instanceName, brokerName, authorizationName, resource);
-        return this.client.<BrokerAuthorizationResourceInner, BrokerAuthorizationResourceInner>getLroResult(response,
-            BrokerAuthorizationResourceInner.class, BrokerAuthorizationResourceInner.class, Context.NONE);
+        return beginCreateOrUpdate(resourceGroupName, instanceName, brokerName, authorizationName, resource,
+            Context.NONE);
     }
 
-    /**
-     * Create a BrokerAuthorizationResource.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param instanceName Name of instance.
-     * @param brokerName Name of broker.
-     * @param authorizationName Name of Instance broker authorization resource.
-     * @param resource Resource create parameters.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the {@link SyncPoller} for polling of instance broker authorizations resource.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public SyncPoller<PollResult<BrokerAuthorizationResourceInner>, BrokerAuthorizationResourceInner>
         beginCreateOrUpdate(String resourceGroupName, String instanceName, String brokerName, String authorizationName,
@@ -412,45 +359,19 @@ public final class BrokerAuthorizationsClientImpl implements BrokerAuthorization
             .flatMap(this.client::getLroFinalResultOrError);
     }
 
-    /**
-     * Create a BrokerAuthorizationResource.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param instanceName Name of instance.
-     * @param brokerName Name of broker.
-     * @param authorizationName Name of Instance broker authorization resource.
-     * @param resource Resource create parameters.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return instance broker authorizations resource.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public BrokerAuthorizationResourceInner createOrUpdate(String resourceGroupName, String instanceName,
         String brokerName, String authorizationName, BrokerAuthorizationResourceInner resource) {
-        return beginCreateOrUpdate(resourceGroupName, instanceName, brokerName, authorizationName, resource)
-            .getFinalResult();
+        return createOrUpdate(resourceGroupName, instanceName, brokerName, authorizationName, resource, Context.NONE);
     }
 
-    /**
-     * Create a BrokerAuthorizationResource.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param instanceName Name of instance.
-     * @param brokerName Name of broker.
-     * @param authorizationName Name of Instance broker authorization resource.
-     * @param resource Resource create parameters.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return instance broker authorizations resource.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public BrokerAuthorizationResourceInner createOrUpdate(String resourceGroupName, String instanceName,
         String brokerName, String authorizationName, BrokerAuthorizationResourceInner resource, Context context) {
-        return beginCreateOrUpdate(resourceGroupName, instanceName, brokerName, authorizationName, resource, context)
-            .getFinalResult();
+        return this.client.getLroFinalResultOrError(
+            beginCreateOrUpdate(resourceGroupName, instanceName, brokerName, authorizationName, resource, context));
     }
 
     /**
@@ -488,9 +409,7 @@ public final class BrokerAuthorizationsClientImpl implements BrokerAuthorization
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Response<BinaryData> deleteWithResponse(String resourceGroupName, String instanceName, String brokerName,
         String authorizationName) {
-        return service.deleteSync(this.client.getEndpoint(), this.client.getApiVersion(),
-            this.client.getSubscriptionId(), resourceGroupName, instanceName, brokerName, authorizationName,
-            Context.NONE);
+        return deleteWithResponse(resourceGroupName, instanceName, brokerName, authorizationName, Context.NONE);
     }
 
     /**
@@ -534,39 +453,14 @@ public final class BrokerAuthorizationsClientImpl implements BrokerAuthorization
             this.client.getContext());
     }
 
-    /**
-     * Delete a BrokerAuthorizationResource.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param instanceName Name of instance.
-     * @param brokerName Name of broker.
-     * @param authorizationName Name of Instance broker authorization resource.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the {@link SyncPoller} for polling of long-running operation.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public SyncPoller<PollResult<Void>, Void> beginDelete(String resourceGroupName, String instanceName,
         String brokerName, String authorizationName) {
-        Response<BinaryData> response
-            = deleteWithResponse(resourceGroupName, instanceName, brokerName, authorizationName);
-        return this.client.<Void, Void>getLroResult(response, Void.class, Void.class, Context.NONE);
+        return beginDelete(resourceGroupName, instanceName, brokerName, authorizationName, Context.NONE);
     }
 
-    /**
-     * Delete a BrokerAuthorizationResource.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param instanceName Name of instance.
-     * @param brokerName Name of broker.
-     * @param authorizationName Name of Instance broker authorization resource.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the {@link SyncPoller} for polling of long-running operation.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public SyncPoller<PollResult<Void>, Void> beginDelete(String resourceGroupName, String instanceName,
         String brokerName, String authorizationName, Context context) {
@@ -594,38 +488,18 @@ public final class BrokerAuthorizationsClientImpl implements BrokerAuthorization
             .flatMap(this.client::getLroFinalResultOrError);
     }
 
-    /**
-     * Delete a BrokerAuthorizationResource.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param instanceName Name of instance.
-     * @param brokerName Name of broker.
-     * @param authorizationName Name of Instance broker authorization resource.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public void delete(String resourceGroupName, String instanceName, String brokerName, String authorizationName) {
-        beginDelete(resourceGroupName, instanceName, brokerName, authorizationName).getFinalResult();
+        delete(resourceGroupName, instanceName, brokerName, authorizationName, Context.NONE);
     }
 
-    /**
-     * Delete a BrokerAuthorizationResource.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param instanceName Name of instance.
-     * @param brokerName Name of broker.
-     * @param authorizationName Name of Instance broker authorization resource.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public void delete(String resourceGroupName, String instanceName, String brokerName, String authorizationName,
         Context context) {
-        beginDelete(resourceGroupName, instanceName, brokerName, authorizationName, context).getFinalResult();
+        this.client.getLroFinalResultOrError(
+            beginDelete(resourceGroupName, instanceName, brokerName, authorizationName, context));
     }
 
     /**
@@ -685,12 +559,7 @@ public final class BrokerAuthorizationsClientImpl implements BrokerAuthorization
     @ServiceMethod(returns = ReturnType.SINGLE)
     private PagedResponse<BrokerAuthorizationResourceInner> listByResourceGroupSinglePage(String resourceGroupName,
         String instanceName, String brokerName) {
-        final String accept = "application/json";
-        Response<BrokerAuthorizationResourceListResult> res
-            = service.listByResourceGroupSync(this.client.getEndpoint(), this.client.getApiVersion(),
-                this.client.getSubscriptionId(), resourceGroupName, instanceName, brokerName, accept, Context.NONE);
-        return new PagedResponseBase<>(res.getRequest(), res.getStatusCode(), res.getHeaders(), res.getValue().value(),
-            res.getValue().nextLink(), null);
+        return listByResourceGroupSinglePage(resourceGroupName, instanceName, brokerName, Context.NONE);
     }
 
     /**
@@ -716,38 +585,14 @@ public final class BrokerAuthorizationsClientImpl implements BrokerAuthorization
             res.getValue().nextLink(), null);
     }
 
-    /**
-     * List BrokerAuthorizationResource resources by BrokerResource.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param instanceName Name of instance.
-     * @param brokerName Name of broker.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the response of a BrokerAuthorizationResource list operation as paginated response with
-     * {@link PagedIterable}.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.COLLECTION)
     public PagedIterable<BrokerAuthorizationResourceInner> listByResourceGroup(String resourceGroupName,
         String instanceName, String brokerName) {
-        return new PagedIterable<>(() -> listByResourceGroupSinglePage(resourceGroupName, instanceName, brokerName),
-            nextLink -> listByResourceGroupNextSinglePage(nextLink));
+        return listByResourceGroup(resourceGroupName, instanceName, brokerName, Context.NONE);
     }
 
-    /**
-     * List BrokerAuthorizationResource resources by BrokerResource.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param instanceName Name of instance.
-     * @param brokerName Name of broker.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the response of a BrokerAuthorizationResource list operation as paginated response with
-     * {@link PagedIterable}.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.COLLECTION)
     public PagedIterable<BrokerAuthorizationResourceInner> listByResourceGroup(String resourceGroupName,
         String instanceName, String brokerName, Context context) {
@@ -789,11 +634,7 @@ public final class BrokerAuthorizationsClientImpl implements BrokerAuthorization
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private PagedResponse<BrokerAuthorizationResourceInner> listByResourceGroupNextSinglePage(String nextLink) {
-        final String accept = "application/json";
-        Response<BrokerAuthorizationResourceListResult> res
-            = service.listByResourceGroupNextSync(nextLink, this.client.getEndpoint(), accept, Context.NONE);
-        return new PagedResponseBase<>(res.getRequest(), res.getStatusCode(), res.getHeaders(), res.getValue().value(),
-            res.getValue().nextLink(), null);
+        return listByResourceGroupNextSinglePage(nextLink, Context.NONE);
     }
 
     /**

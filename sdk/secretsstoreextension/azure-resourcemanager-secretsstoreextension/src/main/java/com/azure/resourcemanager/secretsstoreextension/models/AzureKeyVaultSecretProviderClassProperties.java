@@ -23,6 +23,12 @@ public final class AzureKeyVaultSecretProviderClassProperties
     private String keyvaultName;
 
     /*
+     * The Azure cloud containing the key vault.
+     * If omitted, the in-cluster Azure Key Vault provider's configured default cloud is used.
+     */
+    private AzureCloudName cloudName;
+
+    /*
      * The user assigned managed identity client ID that should be used to access the Azure Key Vault.
      */
     private String clientId;
@@ -65,6 +71,28 @@ public final class AzureKeyVaultSecretProviderClassProperties
      */
     public AzureKeyVaultSecretProviderClassProperties withKeyvaultName(String keyvaultName) {
         this.keyvaultName = keyvaultName;
+        return this;
+    }
+
+    /**
+     * Get the cloudName property: The Azure cloud containing the key vault.
+     * If omitted, the in-cluster Azure Key Vault provider's configured default cloud is used.
+     * 
+     * @return the cloudName value.
+     */
+    public AzureCloudName cloudName() {
+        return this.cloudName;
+    }
+
+    /**
+     * Set the cloudName property: The Azure cloud containing the key vault.
+     * If omitted, the in-cluster Azure Key Vault provider's configured default cloud is used.
+     * 
+     * @param cloudName the cloudName value to set.
+     * @return the AzureKeyVaultSecretProviderClassProperties object itself.
+     */
+    public AzureKeyVaultSecretProviderClassProperties withCloudName(AzureCloudName cloudName) {
+        this.cloudName = cloudName;
         return this;
     }
 
@@ -150,6 +178,7 @@ public final class AzureKeyVaultSecretProviderClassProperties
         jsonWriter.writeStringField("keyvaultName", this.keyvaultName);
         jsonWriter.writeStringField("clientId", this.clientId);
         jsonWriter.writeStringField("tenantId", this.tenantId);
+        jsonWriter.writeStringField("cloudName", this.cloudName == null ? null : this.cloudName.toString());
         jsonWriter.writeStringField("objects", this.objects);
         return jsonWriter.writeEndObject();
     }
@@ -177,6 +206,9 @@ public final class AzureKeyVaultSecretProviderClassProperties
                     deserializedAzureKeyVaultSecretProviderClassProperties.clientId = reader.getString();
                 } else if ("tenantId".equals(fieldName)) {
                     deserializedAzureKeyVaultSecretProviderClassProperties.tenantId = reader.getString();
+                } else if ("cloudName".equals(fieldName)) {
+                    deserializedAzureKeyVaultSecretProviderClassProperties.cloudName
+                        = AzureCloudName.fromString(reader.getString());
                 } else if ("objects".equals(fieldName)) {
                     deserializedAzureKeyVaultSecretProviderClassProperties.objects = reader.getString();
                 } else if ("provisioningState".equals(fieldName)) {

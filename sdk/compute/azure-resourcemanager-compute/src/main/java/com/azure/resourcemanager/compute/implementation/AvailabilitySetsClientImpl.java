@@ -213,17 +213,7 @@ public final class AvailabilitySetsClientImpl implements InnerSupportsGet<Availa
             @HeaderParam("Accept") String accept, Context context);
     }
 
-    /**
-     * Retrieves information about an availability set.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param availabilitySetName The name of the availability set.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ApiErrorException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return specifies information about the availability set that the virtual machine should be assigned to along
-     * with {@link Response} on successful completion of {@link Mono}.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Response<AvailabilitySetInner>> getByResourceGroupWithResponseAsync(String resourceGroupName,
         String availabilitySetName) {
@@ -243,7 +233,7 @@ public final class AvailabilitySetsClientImpl implements InnerSupportsGet<Availa
             return Mono
                 .error(new IllegalArgumentException("Parameter availabilitySetName is required and cannot be null."));
         }
-        final String apiVersion = "2026-03-01";
+        final String apiVersion = "2026-04-01";
         final String accept = "application/json";
         return FluxUtil
             .withContext(context -> service.getByResourceGroup(this.client.getEndpoint(), apiVersion,
@@ -282,75 +272,34 @@ public final class AvailabilitySetsClientImpl implements InnerSupportsGet<Availa
             return Mono
                 .error(new IllegalArgumentException("Parameter availabilitySetName is required and cannot be null."));
         }
-        final String apiVersion = "2026-03-01";
+        final String apiVersion = "2026-04-01";
         final String accept = "application/json";
         context = this.client.mergeContext(context);
         return service.getByResourceGroup(this.client.getEndpoint(), apiVersion, this.client.getSubscriptionId(),
             resourceGroupName, availabilitySetName, accept, context);
     }
 
-    /**
-     * Retrieves information about an availability set.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param availabilitySetName The name of the availability set.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ApiErrorException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return specifies information about the availability set that the virtual machine should be assigned to on
-     * successful completion of {@link Mono}.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<AvailabilitySetInner> getByResourceGroupAsync(String resourceGroupName, String availabilitySetName) {
         return getByResourceGroupWithResponseAsync(resourceGroupName, availabilitySetName)
             .flatMap(res -> Mono.justOrEmpty(res.getValue()));
     }
 
-    /**
-     * Retrieves information about an availability set.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param availabilitySetName The name of the availability set.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ApiErrorException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return specifies information about the availability set that the virtual machine should be assigned to along
-     * with {@link Response}.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Response<AvailabilitySetInner> getByResourceGroupWithResponse(String resourceGroupName,
         String availabilitySetName, Context context) {
         return getByResourceGroupWithResponseAsync(resourceGroupName, availabilitySetName, context).block();
     }
 
-    /**
-     * Retrieves information about an availability set.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param availabilitySetName The name of the availability set.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ApiErrorException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return specifies information about the availability set that the virtual machine should be assigned to.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public AvailabilitySetInner getByResourceGroup(String resourceGroupName, String availabilitySetName) {
         return getByResourceGroupWithResponse(resourceGroupName, availabilitySetName, Context.NONE).getValue();
     }
 
-    /**
-     * Create or update an availability set.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param availabilitySetName The name of the availability set.
-     * @param parameters Parameters supplied to the Create Availability Set operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ApiErrorException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return specifies information about the availability set that the virtual machine should be assigned to along
-     * with {@link Response} on successful completion of {@link Mono}.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Response<AvailabilitySetInner>> createOrUpdateWithResponseAsync(String resourceGroupName,
         String availabilitySetName, AvailabilitySetInner parameters) {
@@ -375,7 +324,7 @@ public final class AvailabilitySetsClientImpl implements InnerSupportsGet<Availa
         } else {
             parameters.validate();
         }
-        final String apiVersion = "2026-03-01";
+        final String apiVersion = "2026-04-01";
         final String contentType = "application/json";
         final String accept = "application/json";
         return FluxUtil
@@ -422,7 +371,7 @@ public final class AvailabilitySetsClientImpl implements InnerSupportsGet<Availa
         } else {
             parameters.validate();
         }
-        final String apiVersion = "2026-03-01";
+        final String apiVersion = "2026-04-01";
         final String contentType = "application/json";
         final String accept = "application/json";
         context = this.client.mergeContext(context);
@@ -430,18 +379,7 @@ public final class AvailabilitySetsClientImpl implements InnerSupportsGet<Availa
             resourceGroupName, availabilitySetName, contentType, accept, parameters, context);
     }
 
-    /**
-     * Create or update an availability set.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param availabilitySetName The name of the availability set.
-     * @param parameters Parameters supplied to the Create Availability Set operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ApiErrorException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return specifies information about the availability set that the virtual machine should be assigned to on
-     * successful completion of {@link Mono}.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<AvailabilitySetInner> createOrUpdateAsync(String resourceGroupName, String availabilitySetName,
         AvailabilitySetInner parameters) {
@@ -449,54 +387,21 @@ public final class AvailabilitySetsClientImpl implements InnerSupportsGet<Availa
             .flatMap(res -> Mono.justOrEmpty(res.getValue()));
     }
 
-    /**
-     * Create or update an availability set.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param availabilitySetName The name of the availability set.
-     * @param parameters Parameters supplied to the Create Availability Set operation.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ApiErrorException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return specifies information about the availability set that the virtual machine should be assigned to along
-     * with {@link Response}.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Response<AvailabilitySetInner> createOrUpdateWithResponse(String resourceGroupName,
         String availabilitySetName, AvailabilitySetInner parameters, Context context) {
         return createOrUpdateWithResponseAsync(resourceGroupName, availabilitySetName, parameters, context).block();
     }
 
-    /**
-     * Create or update an availability set.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param availabilitySetName The name of the availability set.
-     * @param parameters Parameters supplied to the Create Availability Set operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ApiErrorException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return specifies information about the availability set that the virtual machine should be assigned to.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public AvailabilitySetInner createOrUpdate(String resourceGroupName, String availabilitySetName,
         AvailabilitySetInner parameters) {
         return createOrUpdateWithResponse(resourceGroupName, availabilitySetName, parameters, Context.NONE).getValue();
     }
 
-    /**
-     * Update an availability set.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param availabilitySetName The name of the availability set.
-     * @param parameters Parameters supplied to the Update Availability Set operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ApiErrorException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return specifies information about the availability set that the virtual machine should be assigned to along
-     * with {@link Response} on successful completion of {@link Mono}.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Response<AvailabilitySetInner>> updateWithResponseAsync(String resourceGroupName,
         String availabilitySetName, AvailabilitySetUpdate parameters) {
@@ -521,7 +426,7 @@ public final class AvailabilitySetsClientImpl implements InnerSupportsGet<Availa
         } else {
             parameters.validate();
         }
-        final String apiVersion = "2026-03-01";
+        final String apiVersion = "2026-04-01";
         final String contentType = "application/json";
         final String accept = "application/json";
         return FluxUtil
@@ -568,7 +473,7 @@ public final class AvailabilitySetsClientImpl implements InnerSupportsGet<Availa
         } else {
             parameters.validate();
         }
-        final String apiVersion = "2026-03-01";
+        final String apiVersion = "2026-04-01";
         final String contentType = "application/json";
         final String accept = "application/json";
         context = this.client.mergeContext(context);
@@ -576,18 +481,7 @@ public final class AvailabilitySetsClientImpl implements InnerSupportsGet<Availa
             availabilitySetName, contentType, accept, parameters, context);
     }
 
-    /**
-     * Update an availability set.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param availabilitySetName The name of the availability set.
-     * @param parameters Parameters supplied to the Update Availability Set operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ApiErrorException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return specifies information about the availability set that the virtual machine should be assigned to on
-     * successful completion of {@link Mono}.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<AvailabilitySetInner> updateAsync(String resourceGroupName, String availabilitySetName,
         AvailabilitySetUpdate parameters) {
@@ -595,52 +489,21 @@ public final class AvailabilitySetsClientImpl implements InnerSupportsGet<Availa
             .flatMap(res -> Mono.justOrEmpty(res.getValue()));
     }
 
-    /**
-     * Update an availability set.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param availabilitySetName The name of the availability set.
-     * @param parameters Parameters supplied to the Update Availability Set operation.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ApiErrorException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return specifies information about the availability set that the virtual machine should be assigned to along
-     * with {@link Response}.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Response<AvailabilitySetInner> updateWithResponse(String resourceGroupName, String availabilitySetName,
         AvailabilitySetUpdate parameters, Context context) {
         return updateWithResponseAsync(resourceGroupName, availabilitySetName, parameters, context).block();
     }
 
-    /**
-     * Update an availability set.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param availabilitySetName The name of the availability set.
-     * @param parameters Parameters supplied to the Update Availability Set operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ApiErrorException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return specifies information about the availability set that the virtual machine should be assigned to.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public AvailabilitySetInner update(String resourceGroupName, String availabilitySetName,
         AvailabilitySetUpdate parameters) {
         return updateWithResponse(resourceGroupName, availabilitySetName, parameters, Context.NONE).getValue();
     }
 
-    /**
-     * Delete an availability set.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param availabilitySetName The name of the availability set.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ApiErrorException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the {@link Response} on successful completion of {@link Mono}.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Response<Void>> deleteWithResponseAsync(String resourceGroupName, String availabilitySetName) {
         if (this.client.getEndpoint() == null) {
@@ -659,7 +522,7 @@ public final class AvailabilitySetsClientImpl implements InnerSupportsGet<Availa
             return Mono
                 .error(new IllegalArgumentException("Parameter availabilitySetName is required and cannot be null."));
         }
-        final String apiVersion = "2026-03-01";
+        final String apiVersion = "2026-04-01";
         return FluxUtil
             .withContext(context -> service.delete(this.client.getEndpoint(), apiVersion,
                 this.client.getSubscriptionId(), resourceGroupName, availabilitySetName, context))
@@ -696,52 +559,25 @@ public final class AvailabilitySetsClientImpl implements InnerSupportsGet<Availa
             return Mono
                 .error(new IllegalArgumentException("Parameter availabilitySetName is required and cannot be null."));
         }
-        final String apiVersion = "2026-03-01";
+        final String apiVersion = "2026-04-01";
         context = this.client.mergeContext(context);
         return service.delete(this.client.getEndpoint(), apiVersion, this.client.getSubscriptionId(), resourceGroupName,
             availabilitySetName, context);
     }
 
-    /**
-     * Delete an availability set.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param availabilitySetName The name of the availability set.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ApiErrorException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return A {@link Mono} that completes when a successful response is received.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Void> deleteAsync(String resourceGroupName, String availabilitySetName) {
         return deleteWithResponseAsync(resourceGroupName, availabilitySetName).flatMap(ignored -> Mono.empty());
     }
 
-    /**
-     * Delete an availability set.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param availabilitySetName The name of the availability set.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ApiErrorException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the {@link Response}.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Response<Void> deleteWithResponse(String resourceGroupName, String availabilitySetName, Context context) {
         return deleteWithResponseAsync(resourceGroupName, availabilitySetName, context).block();
     }
 
-    /**
-     * Delete an availability set.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param availabilitySetName The name of the availability set.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ApiErrorException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public void delete(String resourceGroupName, String availabilitySetName) {
         deleteWithResponse(resourceGroupName, availabilitySetName, Context.NONE);
@@ -771,7 +607,7 @@ public final class AvailabilitySetsClientImpl implements InnerSupportsGet<Availa
             return Mono
                 .error(new IllegalArgumentException("Parameter resourceGroupName is required and cannot be null."));
         }
-        final String apiVersion = "2026-03-01";
+        final String apiVersion = "2026-04-01";
         final String accept = "application/json";
         return FluxUtil
             .withContext(context -> service.listByResourceGroup(this.client.getEndpoint(), apiVersion,
@@ -807,7 +643,7 @@ public final class AvailabilitySetsClientImpl implements InnerSupportsGet<Availa
             return Mono
                 .error(new IllegalArgumentException("Parameter resourceGroupName is required and cannot be null."));
         }
-        final String apiVersion = "2026-03-01";
+        final String apiVersion = "2026-04-01";
         final String accept = "application/json";
         context = this.client.mergeContext(context);
         return service
@@ -817,15 +653,7 @@ public final class AvailabilitySetsClientImpl implements InnerSupportsGet<Availa
                 res.getValue().value(), res.getValue().nextLink(), null));
     }
 
-    /**
-     * Lists all availability sets in a resource group.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ApiErrorException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the List Availability Set operation response as paginated response with {@link PagedFlux}.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.COLLECTION)
     public PagedFlux<AvailabilitySetInner> listByResourceGroupAsync(String resourceGroupName) {
         return new PagedFlux<>(() -> listByResourceGroupSinglePageAsync(resourceGroupName),
@@ -848,30 +676,13 @@ public final class AvailabilitySetsClientImpl implements InnerSupportsGet<Availa
             nextLink -> listNextSinglePageAsync(nextLink, context));
     }
 
-    /**
-     * Lists all availability sets in a resource group.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ApiErrorException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the List Availability Set operation response as paginated response with {@link PagedIterable}.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.COLLECTION)
     public PagedIterable<AvailabilitySetInner> listByResourceGroup(String resourceGroupName) {
         return new PagedIterable<>(listByResourceGroupAsync(resourceGroupName));
     }
 
-    /**
-     * Lists all availability sets in a resource group.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ApiErrorException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the List Availability Set operation response as paginated response with {@link PagedIterable}.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.COLLECTION)
     public PagedIterable<AvailabilitySetInner> listByResourceGroup(String resourceGroupName, Context context) {
         return new PagedIterable<>(listByResourceGroupAsync(resourceGroupName, context));
@@ -897,7 +708,7 @@ public final class AvailabilitySetsClientImpl implements InnerSupportsGet<Availa
             return Mono.error(new IllegalArgumentException(
                 "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
-        final String apiVersion = "2026-03-01";
+        final String apiVersion = "2026-04-01";
         final String accept = "application/json";
         return FluxUtil
             .withContext(context -> service.list(this.client.getEndpoint(), apiVersion, this.client.getSubscriptionId(),
@@ -928,7 +739,7 @@ public final class AvailabilitySetsClientImpl implements InnerSupportsGet<Availa
             return Mono.error(new IllegalArgumentException(
                 "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
-        final String apiVersion = "2026-03-01";
+        final String apiVersion = "2026-04-01";
         final String accept = "application/json";
         context = this.client.mergeContext(context);
         return service
@@ -937,28 +748,14 @@ public final class AvailabilitySetsClientImpl implements InnerSupportsGet<Availa
                 res.getValue().value(), res.getValue().nextLink(), null));
     }
 
-    /**
-     * Lists all availability sets in a subscription.
-     * 
-     * @param expand The expand expression to apply to the operation. Allowed values are 'instanceView'.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ApiErrorException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the List Availability Set operation response as paginated response with {@link PagedFlux}.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.COLLECTION)
     public PagedFlux<AvailabilitySetInner> listAsync(String expand) {
         return new PagedFlux<>(() -> listSinglePageAsync(expand),
             nextLink -> listBySubscriptionNextSinglePageAsync(nextLink));
     }
 
-    /**
-     * Lists all availability sets in a subscription.
-     * 
-     * @throws ApiErrorException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the List Availability Set operation response as paginated response with {@link PagedFlux}.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.COLLECTION)
     public PagedFlux<AvailabilitySetInner> listAsync() {
         final String expand = null;
@@ -982,29 +779,14 @@ public final class AvailabilitySetsClientImpl implements InnerSupportsGet<Availa
             nextLink -> listBySubscriptionNextSinglePageAsync(nextLink, context));
     }
 
-    /**
-     * Lists all availability sets in a subscription.
-     * 
-     * @throws ApiErrorException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the List Availability Set operation response as paginated response with {@link PagedIterable}.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.COLLECTION)
     public PagedIterable<AvailabilitySetInner> list() {
         final String expand = null;
         return new PagedIterable<>(listAsync(expand));
     }
 
-    /**
-     * Lists all availability sets in a subscription.
-     * 
-     * @param expand The expand expression to apply to the operation. Allowed values are 'instanceView'.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ApiErrorException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the List Availability Set operation response as paginated response with {@link PagedIterable}.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.COLLECTION)
     public PagedIterable<AvailabilitySetInner> list(String expand, Context context) {
         return new PagedIterable<>(listAsync(expand, context));
@@ -1041,7 +823,7 @@ public final class AvailabilitySetsClientImpl implements InnerSupportsGet<Availa
             return Mono
                 .error(new IllegalArgumentException("Parameter availabilitySetName is required and cannot be null."));
         }
-        final String apiVersion = "2026-03-01";
+        final String apiVersion = "2026-04-01";
         final String accept = "application/json";
         return FluxUtil
             .withContext(context -> service.listAvailableSizes(this.client.getEndpoint(), apiVersion,
@@ -1083,7 +865,7 @@ public final class AvailabilitySetsClientImpl implements InnerSupportsGet<Availa
             return Mono
                 .error(new IllegalArgumentException("Parameter availabilitySetName is required and cannot be null."));
         }
-        final String apiVersion = "2026-03-01";
+        final String apiVersion = "2026-04-01";
         final String accept = "application/json";
         context = this.client.mergeContext(context);
         return service
@@ -1093,17 +875,7 @@ public final class AvailabilitySetsClientImpl implements InnerSupportsGet<Availa
                 res.getValue().value(), res.getValue().nextLink(), null));
     }
 
-    /**
-     * Lists all available virtual machine sizes that can be used to create a new virtual machine in an existing
-     * availability set.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param availabilitySetName The name of the availability set.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ApiErrorException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the List Virtual Machine operation response as paginated response with {@link PagedFlux}.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.COLLECTION)
     public PagedFlux<VirtualMachineSizeInner> listAvailableSizesAsync(String resourceGroupName,
         String availabilitySetName) {
@@ -1130,54 +902,21 @@ public final class AvailabilitySetsClientImpl implements InnerSupportsGet<Availa
             nextLink -> listAvailableSizesNextSinglePageAsync(nextLink, context));
     }
 
-    /**
-     * Lists all available virtual machine sizes that can be used to create a new virtual machine in an existing
-     * availability set.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param availabilitySetName The name of the availability set.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ApiErrorException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the List Virtual Machine operation response as paginated response with {@link PagedIterable}.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.COLLECTION)
     public PagedIterable<VirtualMachineSizeInner> listAvailableSizes(String resourceGroupName,
         String availabilitySetName) {
         return new PagedIterable<>(listAvailableSizesAsync(resourceGroupName, availabilitySetName));
     }
 
-    /**
-     * Lists all available virtual machine sizes that can be used to create a new virtual machine in an existing
-     * availability set.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param availabilitySetName The name of the availability set.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ApiErrorException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the List Virtual Machine operation response as paginated response with {@link PagedIterable}.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.COLLECTION)
     public PagedIterable<VirtualMachineSizeInner> listAvailableSizes(String resourceGroupName,
         String availabilitySetName, Context context) {
         return new PagedIterable<>(listAvailableSizesAsync(resourceGroupName, availabilitySetName, context));
     }
 
-    /**
-     * Start migration operation on an Availability Set to move its Virtual Machines to a Virtual Machine Scale Set.
-     * This should be followed by a migrate operation on each Virtual Machine that triggers a downtime on the Virtual
-     * Machine.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param availabilitySetName The name of the availability set.
-     * @param parameters Parameters supplied to the migrate operation on the availability set.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ApiErrorException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the {@link Response} on successful completion of {@link Mono}.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Response<Void>> startMigrationToVirtualMachineScaleSetWithResponseAsync(String resourceGroupName,
         String availabilitySetName, MigrateToVirtualMachineScaleSetInput parameters) {
@@ -1202,7 +941,7 @@ public final class AvailabilitySetsClientImpl implements InnerSupportsGet<Availa
         } else {
             parameters.validate();
         }
-        final String apiVersion = "2026-03-01";
+        final String apiVersion = "2026-04-01";
         final String contentType = "application/json";
         return FluxUtil
             .withContext(context -> service.startMigrationToVirtualMachineScaleSet(this.client.getEndpoint(),
@@ -1249,26 +988,14 @@ public final class AvailabilitySetsClientImpl implements InnerSupportsGet<Availa
         } else {
             parameters.validate();
         }
-        final String apiVersion = "2026-03-01";
+        final String apiVersion = "2026-04-01";
         final String contentType = "application/json";
         context = this.client.mergeContext(context);
         return service.startMigrationToVirtualMachineScaleSet(this.client.getEndpoint(), apiVersion,
             this.client.getSubscriptionId(), resourceGroupName, availabilitySetName, contentType, parameters, context);
     }
 
-    /**
-     * Start migration operation on an Availability Set to move its Virtual Machines to a Virtual Machine Scale Set.
-     * This should be followed by a migrate operation on each Virtual Machine that triggers a downtime on the Virtual
-     * Machine.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param availabilitySetName The name of the availability set.
-     * @param parameters Parameters supplied to the migrate operation on the availability set.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ApiErrorException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return A {@link Mono} that completes when a successful response is received.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Void> startMigrationToVirtualMachineScaleSetAsync(String resourceGroupName, String availabilitySetName,
         MigrateToVirtualMachineScaleSetInput parameters) {
@@ -1276,20 +1003,7 @@ public final class AvailabilitySetsClientImpl implements InnerSupportsGet<Availa
             parameters).flatMap(ignored -> Mono.empty());
     }
 
-    /**
-     * Start migration operation on an Availability Set to move its Virtual Machines to a Virtual Machine Scale Set.
-     * This should be followed by a migrate operation on each Virtual Machine that triggers a downtime on the Virtual
-     * Machine.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param availabilitySetName The name of the availability set.
-     * @param parameters Parameters supplied to the migrate operation on the availability set.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ApiErrorException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the {@link Response}.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Response<Void> startMigrationToVirtualMachineScaleSetWithResponse(String resourceGroupName,
         String availabilitySetName, MigrateToVirtualMachineScaleSetInput parameters, Context context) {
@@ -1297,18 +1011,7 @@ public final class AvailabilitySetsClientImpl implements InnerSupportsGet<Availa
             parameters, context).block();
     }
 
-    /**
-     * Start migration operation on an Availability Set to move its Virtual Machines to a Virtual Machine Scale Set.
-     * This should be followed by a migrate operation on each Virtual Machine that triggers a downtime on the Virtual
-     * Machine.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param availabilitySetName The name of the availability set.
-     * @param parameters Parameters supplied to the migrate operation on the availability set.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ApiErrorException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public void startMigrationToVirtualMachineScaleSet(String resourceGroupName, String availabilitySetName,
         MigrateToVirtualMachineScaleSetInput parameters) {
@@ -1316,16 +1019,7 @@ public final class AvailabilitySetsClientImpl implements InnerSupportsGet<Availa
             Context.NONE);
     }
 
-    /**
-     * Cancel the migration operation on an Availability Set.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param availabilitySetName The name of the availability set.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ApiErrorException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the {@link Response} on successful completion of {@link Mono}.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Response<Void>> cancelMigrationToVirtualMachineScaleSetWithResponseAsync(String resourceGroupName,
         String availabilitySetName) {
@@ -1345,7 +1039,7 @@ public final class AvailabilitySetsClientImpl implements InnerSupportsGet<Availa
             return Mono
                 .error(new IllegalArgumentException("Parameter availabilitySetName is required and cannot be null."));
         }
-        final String apiVersion = "2026-03-01";
+        final String apiVersion = "2026-04-01";
         return FluxUtil
             .withContext(context -> service.cancelMigrationToVirtualMachineScaleSet(this.client.getEndpoint(),
                 apiVersion, this.client.getSubscriptionId(), resourceGroupName, availabilitySetName, context))
@@ -1382,22 +1076,13 @@ public final class AvailabilitySetsClientImpl implements InnerSupportsGet<Availa
             return Mono
                 .error(new IllegalArgumentException("Parameter availabilitySetName is required and cannot be null."));
         }
-        final String apiVersion = "2026-03-01";
+        final String apiVersion = "2026-04-01";
         context = this.client.mergeContext(context);
         return service.cancelMigrationToVirtualMachineScaleSet(this.client.getEndpoint(), apiVersion,
             this.client.getSubscriptionId(), resourceGroupName, availabilitySetName, context);
     }
 
-    /**
-     * Cancel the migration operation on an Availability Set.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param availabilitySetName The name of the availability set.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ApiErrorException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return A {@link Mono} that completes when a successful response is received.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Void> cancelMigrationToVirtualMachineScaleSetAsync(String resourceGroupName,
         String availabilitySetName) {
@@ -1405,17 +1090,7 @@ public final class AvailabilitySetsClientImpl implements InnerSupportsGet<Availa
             .flatMap(ignored -> Mono.empty());
     }
 
-    /**
-     * Cancel the migration operation on an Availability Set.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param availabilitySetName The name of the availability set.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ApiErrorException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the {@link Response}.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Response<Void> cancelMigrationToVirtualMachineScaleSetWithResponse(String resourceGroupName,
         String availabilitySetName, Context context) {
@@ -1423,32 +1098,13 @@ public final class AvailabilitySetsClientImpl implements InnerSupportsGet<Availa
             .block();
     }
 
-    /**
-     * Cancel the migration operation on an Availability Set.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param availabilitySetName The name of the availability set.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ApiErrorException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public void cancelMigrationToVirtualMachineScaleSet(String resourceGroupName, String availabilitySetName) {
         cancelMigrationToVirtualMachineScaleSetWithResponse(resourceGroupName, availabilitySetName, Context.NONE);
     }
 
-    /**
-     * Validates that the Virtual Machines in the Availability Set can be migrated to the provided Virtual Machine Scale
-     * Set.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param availabilitySetName The name of the availability set.
-     * @param parameters Parameters supplied to the migrate operation on the availability set.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ApiErrorException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the {@link Response} on successful completion of {@link Mono}.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Response<Void>> validateMigrationToVirtualMachineScaleSetWithResponseAsync(String resourceGroupName,
         String availabilitySetName, MigrateToVirtualMachineScaleSetInput parameters) {
@@ -1473,7 +1129,7 @@ public final class AvailabilitySetsClientImpl implements InnerSupportsGet<Availa
         } else {
             parameters.validate();
         }
-        final String apiVersion = "2026-03-01";
+        final String apiVersion = "2026-04-01";
         final String contentType = "application/json";
         return FluxUtil
             .withContext(context -> service.validateMigrationToVirtualMachineScaleSet(this.client.getEndpoint(),
@@ -1519,25 +1175,14 @@ public final class AvailabilitySetsClientImpl implements InnerSupportsGet<Availa
         } else {
             parameters.validate();
         }
-        final String apiVersion = "2026-03-01";
+        final String apiVersion = "2026-04-01";
         final String contentType = "application/json";
         context = this.client.mergeContext(context);
         return service.validateMigrationToVirtualMachineScaleSet(this.client.getEndpoint(), apiVersion,
             this.client.getSubscriptionId(), resourceGroupName, availabilitySetName, contentType, parameters, context);
     }
 
-    /**
-     * Validates that the Virtual Machines in the Availability Set can be migrated to the provided Virtual Machine Scale
-     * Set.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param availabilitySetName The name of the availability set.
-     * @param parameters Parameters supplied to the migrate operation on the availability set.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ApiErrorException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return A {@link Mono} that completes when a successful response is received.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Void> validateMigrationToVirtualMachineScaleSetAsync(String resourceGroupName,
         String availabilitySetName, MigrateToVirtualMachineScaleSetInput parameters) {
@@ -1545,19 +1190,7 @@ public final class AvailabilitySetsClientImpl implements InnerSupportsGet<Availa
             parameters).flatMap(ignored -> Mono.empty());
     }
 
-    /**
-     * Validates that the Virtual Machines in the Availability Set can be migrated to the provided Virtual Machine Scale
-     * Set.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param availabilitySetName The name of the availability set.
-     * @param parameters Parameters supplied to the migrate operation on the availability set.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ApiErrorException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the {@link Response}.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Response<Void> validateMigrationToVirtualMachineScaleSetWithResponse(String resourceGroupName,
         String availabilitySetName, MigrateToVirtualMachineScaleSetInput parameters, Context context) {
@@ -1565,17 +1198,7 @@ public final class AvailabilitySetsClientImpl implements InnerSupportsGet<Availa
             parameters, context).block();
     }
 
-    /**
-     * Validates that the Virtual Machines in the Availability Set can be migrated to the provided Virtual Machine Scale
-     * Set.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param availabilitySetName The name of the availability set.
-     * @param parameters Parameters supplied to the migrate operation on the availability set.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ApiErrorException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public void validateMigrationToVirtualMachineScaleSet(String resourceGroupName, String availabilitySetName,
         MigrateToVirtualMachineScaleSetInput parameters) {
@@ -1583,18 +1206,7 @@ public final class AvailabilitySetsClientImpl implements InnerSupportsGet<Availa
             Context.NONE);
     }
 
-    /**
-     * Create a new Flexible Virtual Machine Scale Set and migrate all the Virtual Machines in the Availability Set.
-     * This does not trigger a downtime on the Virtual Machines.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param availabilitySetName The name of the availability set.
-     * @param parameters Parameters supplied to the migrate operation on the availability set.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ApiErrorException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the {@link Response} on successful completion of {@link Mono}.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Response<Flux<ByteBuffer>>> convertToVirtualMachineScaleSetWithResponseAsync(String resourceGroupName,
         String availabilitySetName, ConvertToVirtualMachineScaleSetInput parameters) {
@@ -1617,7 +1229,7 @@ public final class AvailabilitySetsClientImpl implements InnerSupportsGet<Availa
         if (parameters != null) {
             parameters.validate();
         }
-        final String apiVersion = "2026-03-01";
+        final String apiVersion = "2026-04-01";
         return FluxUtil
             .withContext(context -> service.convertToVirtualMachineScaleSet(this.client.getEndpoint(), apiVersion,
                 this.client.getSubscriptionId(), resourceGroupName, availabilitySetName, parameters, context))
@@ -1659,24 +1271,13 @@ public final class AvailabilitySetsClientImpl implements InnerSupportsGet<Availa
         if (parameters != null) {
             parameters.validate();
         }
-        final String apiVersion = "2026-03-01";
+        final String apiVersion = "2026-04-01";
         context = this.client.mergeContext(context);
         return service.convertToVirtualMachineScaleSet(this.client.getEndpoint(), apiVersion,
             this.client.getSubscriptionId(), resourceGroupName, availabilitySetName, parameters, context);
     }
 
-    /**
-     * Create a new Flexible Virtual Machine Scale Set and migrate all the Virtual Machines in the Availability Set.
-     * This does not trigger a downtime on the Virtual Machines.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param availabilitySetName The name of the availability set.
-     * @param parameters Parameters supplied to the migrate operation on the availability set.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ApiErrorException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the {@link PollerFlux} for polling of long-running operation.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public PollerFlux<PollResult<Void>, Void> beginConvertToVirtualMachineScaleSetAsync(String resourceGroupName,
         String availabilitySetName, ConvertToVirtualMachineScaleSetInput parameters) {
@@ -1686,17 +1287,7 @@ public final class AvailabilitySetsClientImpl implements InnerSupportsGet<Availa
             this.client.getContext());
     }
 
-    /**
-     * Create a new Flexible Virtual Machine Scale Set and migrate all the Virtual Machines in the Availability Set.
-     * This does not trigger a downtime on the Virtual Machines.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param availabilitySetName The name of the availability set.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ApiErrorException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the {@link PollerFlux} for polling of long-running operation.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public PollerFlux<PollResult<Void>, Void> beginConvertToVirtualMachineScaleSetAsync(String resourceGroupName,
         String availabilitySetName) {
@@ -1730,17 +1321,7 @@ public final class AvailabilitySetsClientImpl implements InnerSupportsGet<Availa
             context);
     }
 
-    /**
-     * Create a new Flexible Virtual Machine Scale Set and migrate all the Virtual Machines in the Availability Set.
-     * This does not trigger a downtime on the Virtual Machines.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param availabilitySetName The name of the availability set.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ApiErrorException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the {@link SyncPoller} for polling of long-running operation.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public SyncPoller<PollResult<Void>, Void> beginConvertToVirtualMachineScaleSet(String resourceGroupName,
         String availabilitySetName) {
@@ -1749,19 +1330,7 @@ public final class AvailabilitySetsClientImpl implements InnerSupportsGet<Availa
             .getSyncPoller();
     }
 
-    /**
-     * Create a new Flexible Virtual Machine Scale Set and migrate all the Virtual Machines in the Availability Set.
-     * This does not trigger a downtime on the Virtual Machines.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param availabilitySetName The name of the availability set.
-     * @param parameters Parameters supplied to the migrate operation on the availability set.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ApiErrorException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the {@link SyncPoller} for polling of long-running operation.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public SyncPoller<PollResult<Void>, Void> beginConvertToVirtualMachineScaleSet(String resourceGroupName,
         String availabilitySetName, ConvertToVirtualMachineScaleSetInput parameters, Context context) {
@@ -1770,18 +1339,7 @@ public final class AvailabilitySetsClientImpl implements InnerSupportsGet<Availa
             .getSyncPoller();
     }
 
-    /**
-     * Create a new Flexible Virtual Machine Scale Set and migrate all the Virtual Machines in the Availability Set.
-     * This does not trigger a downtime on the Virtual Machines.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param availabilitySetName The name of the availability set.
-     * @param parameters Parameters supplied to the migrate operation on the availability set.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ApiErrorException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return A {@link Mono} that completes when a successful response is received.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Void> convertToVirtualMachineScaleSetAsync(String resourceGroupName, String availabilitySetName,
         ConvertToVirtualMachineScaleSetInput parameters) {
@@ -1789,17 +1347,7 @@ public final class AvailabilitySetsClientImpl implements InnerSupportsGet<Availa
             .flatMap(this.client::getLroFinalResultOrError);
     }
 
-    /**
-     * Create a new Flexible Virtual Machine Scale Set and migrate all the Virtual Machines in the Availability Set.
-     * This does not trigger a downtime on the Virtual Machines.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param availabilitySetName The name of the availability set.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ApiErrorException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return A {@link Mono} that completes when a successful response is received.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Void> convertToVirtualMachineScaleSetAsync(String resourceGroupName, String availabilitySetName) {
         final ConvertToVirtualMachineScaleSetInput parameters = null;
@@ -1828,34 +1376,14 @@ public final class AvailabilitySetsClientImpl implements InnerSupportsGet<Availa
             .flatMap(this.client::getLroFinalResultOrError);
     }
 
-    /**
-     * Create a new Flexible Virtual Machine Scale Set and migrate all the Virtual Machines in the Availability Set.
-     * This does not trigger a downtime on the Virtual Machines.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param availabilitySetName The name of the availability set.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ApiErrorException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public void convertToVirtualMachineScaleSet(String resourceGroupName, String availabilitySetName) {
         final ConvertToVirtualMachineScaleSetInput parameters = null;
         convertToVirtualMachineScaleSetAsync(resourceGroupName, availabilitySetName, parameters).block();
     }
 
-    /**
-     * Create a new Flexible Virtual Machine Scale Set and migrate all the Virtual Machines in the Availability Set.
-     * This does not trigger a downtime on the Virtual Machines.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param availabilitySetName The name of the availability set.
-     * @param parameters Parameters supplied to the migrate operation on the availability set.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ApiErrorException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public void convertToVirtualMachineScaleSet(String resourceGroupName, String availabilitySetName,
         ConvertToVirtualMachineScaleSetInput parameters, Context context) {

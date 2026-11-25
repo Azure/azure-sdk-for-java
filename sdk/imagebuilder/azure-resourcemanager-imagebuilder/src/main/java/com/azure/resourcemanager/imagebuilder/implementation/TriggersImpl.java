@@ -45,7 +45,7 @@ public final class TriggersImpl implements Triggers {
     }
 
     public void delete(String resourceGroupName, String imageTemplateName, String triggerName) {
-        this.serviceClient().delete(resourceGroupName, imageTemplateName, triggerName);
+        this.delete(resourceGroupName, imageTemplateName, triggerName, Context.NONE);
     }
 
     public void delete(String resourceGroupName, String imageTemplateName, String triggerName, Context context) {
@@ -53,9 +53,7 @@ public final class TriggersImpl implements Triggers {
     }
 
     public PagedIterable<Trigger> listByImageTemplate(String resourceGroupName, String imageTemplateName) {
-        PagedIterable<TriggerInner> inner
-            = this.serviceClient().listByImageTemplate(resourceGroupName, imageTemplateName);
-        return ResourceManagerUtils.mapPage(inner, inner1 -> new TriggerImpl(inner1, this.manager()));
+        return this.listByImageTemplate(resourceGroupName, imageTemplateName, Context.NONE);
     }
 
     public PagedIterable<Trigger> listByImageTemplate(String resourceGroupName, String imageTemplateName,
@@ -66,78 +64,36 @@ public final class TriggersImpl implements Triggers {
     }
 
     public Trigger getById(String id) {
-        String resourceGroupName = ResourceManagerUtils.getValueFromIdByName(id, "resourceGroups");
-        if (resourceGroupName == null) {
-            throw LOGGER.logExceptionAsError(new IllegalArgumentException(
-                String.format("The resource ID '%s' is not valid. Missing path segment 'resourceGroups'.", id)));
-        }
-        String imageTemplateName = ResourceManagerUtils.getValueFromIdByName(id, "imageTemplates");
-        if (imageTemplateName == null) {
-            throw LOGGER.logExceptionAsError(new IllegalArgumentException(
-                String.format("The resource ID '%s' is not valid. Missing path segment 'imageTemplates'.", id)));
-        }
-        String triggerName = ResourceManagerUtils.getValueFromIdByName(id, "triggers");
-        if (triggerName == null) {
-            throw LOGGER.logExceptionAsError(new IllegalArgumentException(
-                String.format("The resource ID '%s' is not valid. Missing path segment 'triggers'.", id)));
-        }
-        return this.getWithResponse(resourceGroupName, imageTemplateName, triggerName, Context.NONE).getValue();
+        return this.getByIdWithResponse(id, Context.NONE).getValue();
     }
 
     public Response<Trigger> getByIdWithResponse(String id, Context context) {
-        String resourceGroupName = ResourceManagerUtils.getValueFromIdByName(id, "resourceGroups");
-        if (resourceGroupName == null) {
-            throw LOGGER.logExceptionAsError(new IllegalArgumentException(
-                String.format("The resource ID '%s' is not valid. Missing path segment 'resourceGroups'.", id)));
-        }
-        String imageTemplateName = ResourceManagerUtils.getValueFromIdByName(id, "imageTemplates");
-        if (imageTemplateName == null) {
-            throw LOGGER.logExceptionAsError(new IllegalArgumentException(
-                String.format("The resource ID '%s' is not valid. Missing path segment 'imageTemplates'.", id)));
-        }
-        String triggerName = ResourceManagerUtils.getValueFromIdByName(id, "triggers");
-        if (triggerName == null) {
-            throw LOGGER.logExceptionAsError(new IllegalArgumentException(
-                String.format("The resource ID '%s' is not valid. Missing path segment 'triggers'.", id)));
-        }
+        String resourceGroupName = ResourceManagerUtils.getRequiredValueFromIdByParameterName(id,
+            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.VirtualMachineImages/imageTemplates/{imageTemplateName}/triggers/{triggerName}",
+            "resourceGroupName", "resourceGroups", LOGGER);
+        String imageTemplateName = ResourceManagerUtils.getRequiredValueFromIdByParameterName(id,
+            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.VirtualMachineImages/imageTemplates/{imageTemplateName}/triggers/{triggerName}",
+            "imageTemplateName", "imageTemplates", LOGGER);
+        String triggerName = ResourceManagerUtils.getRequiredValueFromIdByParameterName(id,
+            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.VirtualMachineImages/imageTemplates/{imageTemplateName}/triggers/{triggerName}",
+            "triggerName", "triggers", LOGGER);
         return this.getWithResponse(resourceGroupName, imageTemplateName, triggerName, context);
     }
 
     public void deleteById(String id) {
-        String resourceGroupName = ResourceManagerUtils.getValueFromIdByName(id, "resourceGroups");
-        if (resourceGroupName == null) {
-            throw LOGGER.logExceptionAsError(new IllegalArgumentException(
-                String.format("The resource ID '%s' is not valid. Missing path segment 'resourceGroups'.", id)));
-        }
-        String imageTemplateName = ResourceManagerUtils.getValueFromIdByName(id, "imageTemplates");
-        if (imageTemplateName == null) {
-            throw LOGGER.logExceptionAsError(new IllegalArgumentException(
-                String.format("The resource ID '%s' is not valid. Missing path segment 'imageTemplates'.", id)));
-        }
-        String triggerName = ResourceManagerUtils.getValueFromIdByName(id, "triggers");
-        if (triggerName == null) {
-            throw LOGGER.logExceptionAsError(new IllegalArgumentException(
-                String.format("The resource ID '%s' is not valid. Missing path segment 'triggers'.", id)));
-        }
-        this.delete(resourceGroupName, imageTemplateName, triggerName, Context.NONE);
+        this.deleteByIdWithResponse(id, Context.NONE);
     }
 
     public void deleteByIdWithResponse(String id, Context context) {
-        String resourceGroupName = ResourceManagerUtils.getValueFromIdByName(id, "resourceGroups");
-        if (resourceGroupName == null) {
-            throw LOGGER.logExceptionAsError(new IllegalArgumentException(
-                String.format("The resource ID '%s' is not valid. Missing path segment 'resourceGroups'.", id)));
-        }
-        String imageTemplateName = ResourceManagerUtils.getValueFromIdByName(id, "imageTemplates");
-        if (imageTemplateName == null) {
-            throw LOGGER.logExceptionAsError(new IllegalArgumentException(
-                String.format("The resource ID '%s' is not valid. Missing path segment 'imageTemplates'.", id)));
-        }
-        String triggerName = ResourceManagerUtils.getValueFromIdByName(id, "triggers");
-        if (triggerName == null) {
-            throw LOGGER.logExceptionAsError(new IllegalArgumentException(
-                String.format("The resource ID '%s' is not valid. Missing path segment 'triggers'.", id)));
-        }
+        String resourceGroupName = ResourceManagerUtils.getRequiredValueFromIdByParameterName(id,
+            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.VirtualMachineImages/imageTemplates/{imageTemplateName}/triggers/{triggerName}",
+            "resourceGroupName", "resourceGroups", LOGGER);
+        String imageTemplateName = ResourceManagerUtils.getRequiredValueFromIdByParameterName(id,
+            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.VirtualMachineImages/imageTemplates/{imageTemplateName}/triggers/{triggerName}",
+            "imageTemplateName", "imageTemplates", LOGGER);
+        String triggerName = ResourceManagerUtils.getRequiredValueFromIdByParameterName(id,
+            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.VirtualMachineImages/imageTemplates/{imageTemplateName}/triggers/{triggerName}",
+            "triggerName", "triggers", LOGGER);
         this.delete(resourceGroupName, imageTemplateName, triggerName, context);
     }
 

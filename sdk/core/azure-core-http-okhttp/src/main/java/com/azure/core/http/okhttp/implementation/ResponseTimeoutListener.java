@@ -20,8 +20,9 @@ import java.util.List;
 /**
  * Implementation of {@link EventListener} that watches {@link #requestHeadersEnd(Call, Request)} and
  * {@link #requestBodyEnd(Call, long)} to detect when a request has completed being sent and
- * {@link #responseHeadersStart(Call)} and {@link #responseFailed(Call, IOException)} to detect when a response has
- * started being received. This is used to determine a response timeout for the call.
+ * {@link #responseHeadersStart(Call)}, {@link #responseHeadersEnd(Call, Response)}, and
+ * {@link #responseFailed(Call, IOException)} to detect when a response has started being received.
+ * This is used to determine a response timeout for the call.
  * <p>
  * Both completing the request headers and the response body need to be watched as requests without a body will never
  * trigger the request body events.
@@ -200,6 +201,11 @@ public class ResponseTimeoutListener extends EventListener {
 
     @Override
     public void responseHeadersEnd(Call call, Response response) {
+        PerCallTimeoutCall perCallTimeoutCall = call.request().tag(PerCallTimeoutCall.class);
+        if (perCallTimeoutCall != null) {
+            // With 100-continue, responseHeadersStart can precede requestBodyEnd. Final headers must stop its timer.
+            perCallTimeoutCall.endPerCallTimeout();
+        }
         delegate.responseHeadersEnd(call, response);
     }
 

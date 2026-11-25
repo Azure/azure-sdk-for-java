@@ -45,8 +45,7 @@ public final class SolutionTypesImpl implements SolutionTypes {
     }
 
     public PagedIterable<SolutionTypeResource> listByResourceGroup(String resourceGroupName) {
-        PagedIterable<SolutionTypeResourceInner> inner = this.serviceClient().listByResourceGroup(resourceGroupName);
-        return ResourceManagerUtils.mapPage(inner, inner1 -> new SolutionTypeResourceImpl(inner1, this.manager()));
+        return this.listByResourceGroup(resourceGroupName, Context.NONE);
     }
 
     public PagedIterable<SolutionTypeResource> listByResourceGroup(String resourceGroupName, Context context) {
@@ -56,8 +55,7 @@ public final class SolutionTypesImpl implements SolutionTypes {
     }
 
     public PagedIterable<SolutionTypeResource> list() {
-        PagedIterable<SolutionTypeResourceInner> inner = this.serviceClient().list();
-        return ResourceManagerUtils.mapPage(inner, inner1 -> new SolutionTypeResourceImpl(inner1, this.manager()));
+        return this.list(Context.NONE);
     }
 
     public PagedIterable<SolutionTypeResource> list(Context context) {

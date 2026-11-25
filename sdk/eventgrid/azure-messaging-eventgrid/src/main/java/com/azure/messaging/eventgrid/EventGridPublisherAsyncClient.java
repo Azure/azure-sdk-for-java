@@ -214,7 +214,7 @@ public final class EventGridPublisherAsyncClient<T> {
             throw LOGGER.logExceptionAsError(new NullPointerException("'endpoint' cannot be null."));
         }
         if (Objects.isNull(keyCredential)) {
-            throw LOGGER.logExceptionAsError(new NullPointerException("'keyCredetial' cannot be null."));
+            throw LOGGER.logExceptionAsError(new NullPointerException("'keyCredential' cannot be null."));
         }
         if (Objects.isNull(expirationTime)) {
             throw LOGGER.logExceptionAsError(new NullPointerException("'expirationTime' cannot be null."));

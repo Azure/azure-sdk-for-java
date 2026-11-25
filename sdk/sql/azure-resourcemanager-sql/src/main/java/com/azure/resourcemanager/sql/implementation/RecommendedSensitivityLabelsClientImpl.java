@@ -69,18 +69,7 @@ public final class RecommendedSensitivityLabelsClientImpl implements Recommended
             @BodyParam("application/json") RecommendedSensitivityLabelUpdateList parameters, Context context);
     }
 
-    /**
-     * Update recommended sensitivity labels states of a given database using an operations batch.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param serverName The name of the server.
-     * @param databaseName The name of the database.
-     * @param parameters The parameters parameter.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the {@link Response} on successful completion of {@link Mono}.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Response<Void>> updateWithResponseAsync(String resourceGroupName, String serverName,
         String databaseName, RecommendedSensitivityLabelUpdateList parameters) {
@@ -160,18 +149,7 @@ public final class RecommendedSensitivityLabelsClientImpl implements Recommended
             resourceGroupName, serverName, databaseName, contentType, parameters, context);
     }
 
-    /**
-     * Update recommended sensitivity labels states of a given database using an operations batch.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param serverName The name of the server.
-     * @param databaseName The name of the database.
-     * @param parameters The parameters parameter.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return A {@link Mono} that completes when a successful response is received.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Void> updateAsync(String resourceGroupName, String serverName, String databaseName,
         RecommendedSensitivityLabelUpdateList parameters) {
@@ -179,36 +157,14 @@ public final class RecommendedSensitivityLabelsClientImpl implements Recommended
             .flatMap(ignored -> Mono.empty());
     }
 
-    /**
-     * Update recommended sensitivity labels states of a given database using an operations batch.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param serverName The name of the server.
-     * @param databaseName The name of the database.
-     * @param parameters The parameters parameter.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the {@link Response}.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Response<Void> updateWithResponse(String resourceGroupName, String serverName, String databaseName,
         RecommendedSensitivityLabelUpdateList parameters, Context context) {
         return updateWithResponseAsync(resourceGroupName, serverName, databaseName, parameters, context).block();
     }
 
-    /**
-     * Update recommended sensitivity labels states of a given database using an operations batch.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param serverName The name of the server.
-     * @param databaseName The name of the database.
-     * @param parameters The parameters parameter.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public void update(String resourceGroupName, String serverName, String databaseName,
         RecommendedSensitivityLabelUpdateList parameters) {

@@ -28,7 +28,7 @@ public final class AzureVmWorkloadSQLInstanceProtectedItem extends AzureVmWorklo
     /*
      * Name of Child Dbs protected under this parent.
      */
-    private List<String> childDBNames;
+    private List<String> childDatabaseNameList;
 
     /*
      * The state of instance protection.
@@ -52,22 +52,22 @@ public final class AzureVmWorkloadSQLInstanceProtectedItem extends AzureVmWorklo
     }
 
     /**
-     * Get the childDBNames property: Name of Child Dbs protected under this parent.
+     * Get the childDatabaseNameList property: Name of Child Dbs protected under this parent.
      * 
-     * @return the childDBNames value.
+     * @return the childDatabaseNameList value.
      */
-    public List<String> childDBNames() {
-        return this.childDBNames;
+    public List<String> childDatabaseNameList() {
+        return this.childDatabaseNameList;
     }
 
     /**
-     * Set the childDBNames property: Name of Child Dbs protected under this parent.
+     * Set the childDatabaseNameList property: Name of Child Dbs protected under this parent.
      * 
-     * @param childDBNames the childDBNames value to set.
+     * @param childDatabaseNameList the childDatabaseNameList value to set.
      * @return the AzureVmWorkloadSQLInstanceProtectedItem object itself.
      */
-    public AzureVmWorkloadSQLInstanceProtectedItem withChildDBNames(List<String> childDBNames) {
-        this.childDBNames = childDBNames;
+    public AzureVmWorkloadSQLInstanceProtectedItem withChildDatabaseNameList(List<String> childDatabaseNameList) {
+        this.childDatabaseNameList = childDatabaseNameList;
         return this;
     }
 
@@ -393,7 +393,8 @@ public final class AzureVmWorkloadSQLInstanceProtectedItem extends AzureVmWorklo
         jsonWriter.writeMapField("kpisHealths", kpisHealths(), (writer, element) -> writer.writeJson(element));
         jsonWriter.writeArrayField("nodesList", nodesList(), (writer, element) -> writer.writeJson(element));
         jsonWriter.writeStringField("protectedItemType", this.protectedItemType);
-        jsonWriter.writeArrayField("childDBNames", this.childDBNames, (writer, element) -> writer.writeString(element));
+        jsonWriter.writeArrayField("childDatabaseNameList", this.childDatabaseNameList,
+            (writer, element) -> writer.writeString(element));
         jsonWriter.writeStringField("instanceProtectionReadiness",
             this.instanceProtectionReadiness == null ? null : this.instanceProtectionReadiness.toString());
         return jsonWriter.writeEndObject();
@@ -462,6 +463,8 @@ public final class AzureVmWorkloadSQLInstanceProtectedItem extends AzureVmWorklo
                 } else if ("softDeleteRetentionPeriodInDays".equals(fieldName)) {
                     deserializedAzureVmWorkloadSQLInstanceProtectedItem
                         .withSoftDeleteRetentionPeriodInDays(reader.getNullable(JsonReader::getInt));
+                } else if ("sourceLocation".equals(fieldName)) {
+                    deserializedAzureVmWorkloadSQLInstanceProtectedItem.withSourceLocation(reader.getString());
                 } else if ("vaultId".equals(fieldName)) {
                     deserializedAzureVmWorkloadSQLInstanceProtectedItem.withVaultId(reader.getString());
                 } else if ("sourceSideScanInfo".equals(fieldName)) {
@@ -508,9 +511,9 @@ public final class AzureVmWorkloadSQLInstanceProtectedItem extends AzureVmWorklo
                     deserializedAzureVmWorkloadSQLInstanceProtectedItem.withNodesList(nodesList);
                 } else if ("protectedItemType".equals(fieldName)) {
                     deserializedAzureVmWorkloadSQLInstanceProtectedItem.protectedItemType = reader.getString();
-                } else if ("childDBNames".equals(fieldName)) {
-                    List<String> childDBNames = reader.readArray(reader1 -> reader1.getString());
-                    deserializedAzureVmWorkloadSQLInstanceProtectedItem.childDBNames = childDBNames;
+                } else if ("childDatabaseNameList".equals(fieldName)) {
+                    List<String> childDatabaseNameList = reader.readArray(reader1 -> reader1.getString());
+                    deserializedAzureVmWorkloadSQLInstanceProtectedItem.childDatabaseNameList = childDatabaseNameList;
                 } else if ("instanceProtectionReadiness".equals(fieldName)) {
                     deserializedAzureVmWorkloadSQLInstanceProtectedItem.instanceProtectionReadiness
                         = InstanceProtectionReadiness.fromString(reader.getString());

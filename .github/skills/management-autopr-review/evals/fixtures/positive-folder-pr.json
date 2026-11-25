@@ -1,0 +1,10 @@
+{
+  "number": 12001,
+  "title": "[AutoPR azure-resourcemanager-containerservicepreparedimgspec]-generated-from-SDK Generation",
+  "user": {"login": "app/azure-sdk-automation"},
+  "base": {"ref": "main", "repo": {"full_name": "Azure/azure-sdk-for-java"}},
+  "head": {"sha": "1200112001120011200112001120011200112001", "repo": {"full_name": "Azure/azure-sdk-for-java"}},
+  "draft": false,
+  "body": "Release Plan link: https://azsdk-releaseplan-dashboard-hveph5aqhhcfhtgu.westus-01.azurewebsites.net/?releaseplan=35926",
+  "changed_files": 2
+}

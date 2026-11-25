@@ -147,10 +147,7 @@ public final class MachineRunCommandImpl
     }
 
     public MachineRunCommand create() {
-        this.innerObject = serviceManager.serviceClient()
-            .getMachineRunCommands()
-            .createOrUpdate(resourceGroupName, machineName, runCommandName, this.innerModel(), Context.NONE);
-        return this;
+        return this.create(Context.NONE);
     }
 
     public MachineRunCommand create(Context context) {
@@ -171,10 +168,7 @@ public final class MachineRunCommandImpl
     }
 
     public MachineRunCommand apply() {
-        this.innerObject = serviceManager.serviceClient()
-            .getMachineRunCommands()
-            .createOrUpdate(resourceGroupName, machineName, runCommandName, this.innerModel(), Context.NONE);
-        return this;
+        return this.apply(Context.NONE);
     }
 
     public MachineRunCommand apply(Context context) {
@@ -188,17 +182,19 @@ public final class MachineRunCommandImpl
         com.azure.resourcemanager.hybridcompute.HybridComputeManager serviceManager) {
         this.innerObject = innerObject;
         this.serviceManager = serviceManager;
-        this.resourceGroupName = ResourceManagerUtils.getValueFromIdByName(innerObject.id(), "resourceGroups");
-        this.machineName = ResourceManagerUtils.getValueFromIdByName(innerObject.id(), "machines");
-        this.runCommandName = ResourceManagerUtils.getValueFromIdByName(innerObject.id(), "runCommands");
+        this.resourceGroupName = ResourceManagerUtils.getValueFromIdByParameterName(innerObject.id(),
+            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.HybridCompute/machines/{machineName}/runCommands/{runCommandName}",
+            "resourceGroupName");
+        this.machineName = ResourceManagerUtils.getValueFromIdByParameterName(innerObject.id(),
+            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.HybridCompute/machines/{machineName}/runCommands/{runCommandName}",
+            "machineName");
+        this.runCommandName = ResourceManagerUtils.getValueFromIdByParameterName(innerObject.id(),
+            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.HybridCompute/machines/{machineName}/runCommands/{runCommandName}",
+            "runCommandName");
     }
 
     public MachineRunCommand refresh() {
-        this.innerObject = serviceManager.serviceClient()
-            .getMachineRunCommands()
-            .getWithResponse(resourceGroupName, machineName, runCommandName, Context.NONE)
-            .getValue();
-        return this;
+        return this.refresh(Context.NONE);
     }
 
     public MachineRunCommand refresh(Context context) {

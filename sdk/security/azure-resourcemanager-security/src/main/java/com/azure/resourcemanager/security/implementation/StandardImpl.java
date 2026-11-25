@@ -121,11 +121,7 @@ public final class StandardImpl implements Standard, Standard.Definition, Standa
     }
 
     public Standard create() {
-        this.innerObject = serviceManager.serviceClient()
-            .getStandards()
-            .createOrUpdateWithResponse(resourceGroupName, standardId, this.innerModel(), Context.NONE)
-            .getValue();
-        return this;
+        return this.create(Context.NONE);
     }
 
     public Standard create(Context context) {
@@ -147,11 +143,7 @@ public final class StandardImpl implements Standard, Standard.Definition, Standa
     }
 
     public Standard apply() {
-        this.innerObject = serviceManager.serviceClient()
-            .getStandards()
-            .createOrUpdateWithResponse(resourceGroupName, standardId, this.innerModel(), Context.NONE)
-            .getValue();
-        return this;
+        return this.apply(Context.NONE);
     }
 
     public Standard apply(Context context) {
@@ -165,16 +157,16 @@ public final class StandardImpl implements Standard, Standard.Definition, Standa
     StandardImpl(StandardInner innerObject, com.azure.resourcemanager.security.SecurityManager serviceManager) {
         this.innerObject = innerObject;
         this.serviceManager = serviceManager;
-        this.resourceGroupName = ResourceManagerUtils.getValueFromIdByName(innerObject.id(), "resourceGroups");
-        this.standardId = ResourceManagerUtils.getValueFromIdByName(innerObject.id(), "standards");
+        this.resourceGroupName = ResourceManagerUtils.getValueFromIdByParameterName(innerObject.id(),
+            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Security/standards/{standardId}",
+            "resourceGroupName");
+        this.standardId = ResourceManagerUtils.getValueFromIdByParameterName(innerObject.id(),
+            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Security/standards/{standardId}",
+            "standardId");
     }
 
     public Standard refresh() {
-        this.innerObject = serviceManager.serviceClient()
-            .getStandards()
-            .getByResourceGroupWithResponse(resourceGroupName, standardId, Context.NONE)
-            .getValue();
-        return this;
+        return this.refresh(Context.NONE);
     }
 
     public Standard refresh(Context context) {

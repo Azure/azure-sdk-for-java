@@ -91,17 +91,7 @@ public final class LoadBalancerProbesClientImpl implements LoadBalancerProbesCli
             @HeaderParam("Accept") String accept, Context context);
     }
 
-    /**
-     * Gets load balancer probe.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param loadBalancerName The name of the load balancer.
-     * @param probeName The name of the probe.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return load balancer probe along with {@link Response} on successful completion of {@link Mono}.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Response<ProbeInner>> getWithResponseAsync(String resourceGroupName, String loadBalancerName,
         String probeName) {
@@ -124,7 +114,7 @@ public final class LoadBalancerProbesClientImpl implements LoadBalancerProbesCli
         if (probeName == null) {
             return Mono.error(new IllegalArgumentException("Parameter probeName is required and cannot be null."));
         }
-        final String apiVersion = "2025-07-01";
+        final String apiVersion = "2026-05-01";
         final String accept = "application/json";
         return FluxUtil
             .withContext(context -> service.get(this.client.getEndpoint(), apiVersion, this.client.getSubscriptionId(),
@@ -166,59 +156,28 @@ public final class LoadBalancerProbesClientImpl implements LoadBalancerProbesCli
         if (probeName == null) {
             return Mono.error(new IllegalArgumentException("Parameter probeName is required and cannot be null."));
         }
-        final String apiVersion = "2025-07-01";
+        final String apiVersion = "2026-05-01";
         final String accept = "application/json";
         context = this.client.mergeContext(context);
         return service.get(this.client.getEndpoint(), apiVersion, this.client.getSubscriptionId(), resourceGroupName,
             loadBalancerName, probeName, accept, context);
     }
 
-    /**
-     * Gets load balancer probe.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param loadBalancerName The name of the load balancer.
-     * @param probeName The name of the probe.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return load balancer probe on successful completion of {@link Mono}.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<ProbeInner> getAsync(String resourceGroupName, String loadBalancerName, String probeName) {
         return getWithResponseAsync(resourceGroupName, loadBalancerName, probeName)
             .flatMap(res -> Mono.justOrEmpty(res.getValue()));
     }
 
-    /**
-     * Gets load balancer probe.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param loadBalancerName The name of the load balancer.
-     * @param probeName The name of the probe.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return load balancer probe along with {@link Response}.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Response<ProbeInner> getWithResponse(String resourceGroupName, String loadBalancerName, String probeName,
         Context context) {
         return getWithResponseAsync(resourceGroupName, loadBalancerName, probeName, context).block();
     }
 
-    /**
-     * Gets load balancer probe.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param loadBalancerName The name of the load balancer.
-     * @param probeName The name of the probe.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return load balancer probe.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public ProbeInner get(String resourceGroupName, String loadBalancerName, String probeName) {
         return getWithResponse(resourceGroupName, loadBalancerName, probeName, Context.NONE).getValue();
@@ -252,7 +211,7 @@ public final class LoadBalancerProbesClientImpl implements LoadBalancerProbesCli
             return Mono
                 .error(new IllegalArgumentException("Parameter loadBalancerName is required and cannot be null."));
         }
-        final String apiVersion = "2025-07-01";
+        final String apiVersion = "2026-05-01";
         final String accept = "application/json";
         return FluxUtil
             .withContext(context -> service.list(this.client.getEndpoint(), apiVersion, this.client.getSubscriptionId(),
@@ -292,7 +251,7 @@ public final class LoadBalancerProbesClientImpl implements LoadBalancerProbesCli
             return Mono
                 .error(new IllegalArgumentException("Parameter loadBalancerName is required and cannot be null."));
         }
-        final String apiVersion = "2025-07-01";
+        final String apiVersion = "2026-05-01";
         final String accept = "application/json";
         context = this.client.mergeContext(context);
         return service
@@ -302,16 +261,7 @@ public final class LoadBalancerProbesClientImpl implements LoadBalancerProbesCli
                 res.getValue().value(), res.getValue().nextLink(), null));
     }
 
-    /**
-     * Gets all the load balancer probes.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param loadBalancerName The name of the load balancer.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return all the load balancer probes as paginated response with {@link PagedFlux}.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.COLLECTION)
     public PagedFlux<ProbeInner> listAsync(String resourceGroupName, String loadBalancerName) {
         return new PagedFlux<>(() -> listSinglePageAsync(resourceGroupName, loadBalancerName),
@@ -335,32 +285,13 @@ public final class LoadBalancerProbesClientImpl implements LoadBalancerProbesCli
             nextLink -> listNextSinglePageAsync(nextLink, context));
     }
 
-    /**
-     * Gets all the load balancer probes.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param loadBalancerName The name of the load balancer.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return all the load balancer probes as paginated response with {@link PagedIterable}.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.COLLECTION)
     public PagedIterable<ProbeInner> list(String resourceGroupName, String loadBalancerName) {
         return new PagedIterable<>(listAsync(resourceGroupName, loadBalancerName));
     }
 
-    /**
-     * Gets all the load balancer probes.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param loadBalancerName The name of the load balancer.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return all the load balancer probes as paginated response with {@link PagedIterable}.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.COLLECTION)
     public PagedIterable<ProbeInner> list(String resourceGroupName, String loadBalancerName, Context context) {
         return new PagedIterable<>(listAsync(resourceGroupName, loadBalancerName, context));

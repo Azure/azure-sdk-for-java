@@ -20,6 +20,7 @@ import com.azure.cosmos.implementation.QueryFeedOperationState;
 import com.azure.cosmos.implementation.RequestOptions;
 import com.azure.cosmos.implementation.ResourceType;
 import com.azure.cosmos.implementation.Strings;
+import com.azure.cosmos.implementation.UserAgentFeatureFlags;
 import com.azure.cosmos.implementation.Utils;
 import com.azure.cosmos.implementation.WriteRetryPolicy;
 import com.azure.cosmos.implementation.clienttelemetry.ClientMetricsDiagnosticsHandler;
@@ -336,7 +337,7 @@ public final class CosmosAsyncClient implements Closeable {
      * Create a Database if it does not already exist on the service.
      * <br/>
      * The throughputProperties will only be used if the specified database
-     * does not exist and therefor a new database will be created with throughputProperties.
+     * does not exist and therefore a new database will be created with throughputProperties.
      * <br/>
      * The {@link Mono} upon successful completion will contain a single cosmos database response with the
      * created or existing database.
@@ -907,6 +908,16 @@ public final class CosmosAsyncClient implements Closeable {
                 @Override
                 public String getUserAgent(CosmosAsyncClient client) {
                     return client.getUserAgent();
+                }
+
+                @Override
+                public void appendUserAgentSuffix(CosmosAsyncClient client, String suffix) {
+                    client.asyncDocumentClient.appendUserAgentSuffix(suffix);
+                }
+
+                @Override
+                public void addUserAgentFeatureFlag(CosmosAsyncClient client, UserAgentFeatureFlags userAgentFeatureFlag) {
+                    client.asyncDocumentClient.addUserAgentFeatureFlag(userAgentFeatureFlag);
                 }
 
                 @Override

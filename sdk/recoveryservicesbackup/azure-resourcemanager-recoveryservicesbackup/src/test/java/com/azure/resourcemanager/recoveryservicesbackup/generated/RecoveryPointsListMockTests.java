@@ -25,7 +25,7 @@ public final class RecoveryPointsListMockTests {
     @Test
     public void testList() throws Exception {
         String responseStr
-            = "{\"value\":[{\"properties\":{\"objectType\":\"RecoveryPoint\",\"threatStatus\":\"Unknown\",\"threatInfo\":[{\"threatTitle\":\"pkrietbgni\",\"threatDescription\":\"owwzkyfwnwpi\",\"lastUpdatedTime\":\"2021-12-08T12:27:35Z\",\"threatState\":\"Resolved\",\"threatStartTime\":\"2021-10-21T18:59:22Z\",\"threatEndTime\":\"2021-11-02T13:52:08Z\",\"threatURI\":\"pk\",\"threatSeverity\":\"Informational\"},{\"threatTitle\":\"xxij\",\"threatDescription\":\"kwsdgkj\",\"lastUpdatedTime\":\"2021-06-14T02:30:10Z\",\"threatState\":\"InProgress\",\"threatStartTime\":\"2021-07-20T04:54:29Z\",\"threatEndTime\":\"2021-10-18T10:28:50Z\",\"threatURI\":\"wefcvoinw\",\"threatSeverity\":\"Warning\"}]},\"tags\":{\"atdavuqmcbyms\":\"wyxqiclad\"},\"location\":\"bjlquv\",\"eTag\":\"zcjumvpsimioyoig\",\"id\":\"miqwnnrac\",\"name\":\"ibb\",\"type\":\"qpspkladydgnha\"}]}";
+            = "{\"value\":[{\"properties\":{\"objectType\":\"RecoveryPoint\",\"threatStatus\":\"Unknown\",\"threatInfo\":[{\"threatTitle\":\"rfwss\",\"threatDescription\":\"lc\",\"lastUpdatedTime\":\"2021-02-12T01:55:01Z\",\"threatState\":\"InProgress\",\"threatStartTime\":\"2021-07-29T07:10:03Z\",\"threatEndTime\":\"2021-01-16T18:52:39Z\",\"threatURI\":\"xcrqmipfjwfo\",\"threatSeverity\":\"Warning\"},{\"threatTitle\":\"mshxxba\",\"threatDescription\":\"abuln\",\"lastUpdatedTime\":\"2021-08-20T06:54:22Z\",\"threatState\":\"Ignored\",\"threatStartTime\":\"2021-08-29T03:37:05Z\",\"threatEndTime\":\"2021-07-03T04:06:17Z\",\"threatURI\":\"zjsjzn\",\"threatSeverity\":\"Critical\"},{\"threatTitle\":\"qmqipaydhfnzoc\",\"threatDescription\":\"tfshksnyzm\",\"lastUpdatedTime\":\"2021-08-16T00:12:21Z\",\"threatState\":\"Resolved\",\"threatStartTime\":\"2021-11-06T05:00:45Z\",\"threatEndTime\":\"2021-12-10T05:04:56Z\",\"threatURI\":\"lslcefiqdktwtkvi\",\"threatSeverity\":\"High\"},{\"threatTitle\":\"liwoyngu\",\"threatDescription\":\"hwvladpc\",\"lastUpdatedTime\":\"2021-01-14T14:10:41Z\",\"threatState\":\"Active\",\"threatStartTime\":\"2020-12-30T21:03:56Z\",\"threatEndTime\":\"2021-03-03T17:17:38Z\",\"threatURI\":\"ekymffztsilscvqs\",\"threatSeverity\":\"Warning\"}]},\"tags\":{\"eseuugci\":\"fymkouih\"},\"location\":\"hogsmgbvmtd\",\"eTag\":\"qbe\",\"id\":\"nfvegl\",\"name\":\"btvkbi\",\"type\":\"znhtf\"}]}";
 
         HttpClient httpClient
             = response -> Mono.just(new MockHttpResponse(response, 200, responseStr.getBytes(StandardCharsets.UTF_8)));
@@ -35,16 +35,15 @@ public final class RecoveryPointsListMockTests {
                 new AzureProfile("", "", AzureCloud.AZURE_PUBLIC_CLOUD));
 
         PagedIterable<RecoveryPointResource> response = manager.recoveryPoints()
-            .list("greohtwhlpuzjp", "eezn", "angp", "bfaxyxzlbc", "phmsexroq", "ndktxfv",
-                com.azure.core.util.Context.NONE);
+            .list("xkgtlzlmtrlxcznn", "zkbnbmxl", "mwt", "g", "qzusitoq", "ahfsgb", com.azure.core.util.Context.NONE);
 
         Assertions.assertEquals(ThreatStatus.UNKNOWN, response.iterator().next().properties().threatStatus());
-        Assertions.assertEquals(ThreatState.RESOLVED,
+        Assertions.assertEquals(ThreatState.IN_PROGRESS,
             response.iterator().next().properties().threatInfo().get(0).threatState());
-        Assertions.assertEquals(ThreatSeverity.INFORMATIONAL,
+        Assertions.assertEquals(ThreatSeverity.WARNING,
             response.iterator().next().properties().threatInfo().get(0).threatSeverity());
-        Assertions.assertEquals("wyxqiclad", response.iterator().next().tags().get("atdavuqmcbyms"));
-        Assertions.assertEquals("bjlquv", response.iterator().next().location());
-        Assertions.assertEquals("zcjumvpsimioyoig", response.iterator().next().etag());
+        Assertions.assertEquals("fymkouih", response.iterator().next().tags().get("eseuugci"));
+        Assertions.assertEquals("hogsmgbvmtd", response.iterator().next().location());
+        Assertions.assertEquals("qbe", response.iterator().next().etag());
     }
 }

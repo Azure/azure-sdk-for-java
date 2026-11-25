@@ -11,10 +11,10 @@ import org.junit.jupiter.api.Assertions;
 public final class SqlStoredProcedureGetPropertiesResourceTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
-        SqlStoredProcedureGetPropertiesResource model = BinaryData
-            .fromString("{\"_rid\":\"ob\",\"_ts\":8.356482,\"_etag\":\"idgfc\",\"id\":\"qmpimaqxzhem\",\"body\":\"h\"}")
+        SqlStoredProcedureGetPropertiesResource model = BinaryData.fromString(
+            "{\"_rid\":\"mkqscaz\",\"_ts\":68.94478,\"_etag\":\"tzxpuamwabzxrv\",\"id\":\"cush\",\"body\":\"haivm\"}")
             .toObject(SqlStoredProcedureGetPropertiesResource.class);
-        Assertions.assertEquals("qmpimaqxzhem", model.id());
-        Assertions.assertEquals("h", model.body());
+        Assertions.assertEquals("cush", model.id());
+        Assertions.assertEquals("haivm", model.body());
     }
 }

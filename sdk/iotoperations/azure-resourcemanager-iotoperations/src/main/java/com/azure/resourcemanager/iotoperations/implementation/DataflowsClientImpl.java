@@ -212,19 +212,7 @@ public final class DataflowsClientImpl implements DataflowsClient {
             .flatMap(res -> Mono.justOrEmpty(res.getValue()));
     }
 
-    /**
-     * Get a DataflowResource.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param instanceName Name of instance.
-     * @param dataflowProfileName Name of Instance dataflowProfile resource.
-     * @param dataflowName Name of Instance dataflowProfile dataflow resource.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return a DataflowResource along with {@link Response}.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Response<DataflowResourceInner> getWithResponse(String resourceGroupName, String instanceName,
         String dataflowProfileName, String dataflowName, Context context) {
@@ -233,18 +221,7 @@ public final class DataflowsClientImpl implements DataflowsClient {
             resourceGroupName, instanceName, dataflowProfileName, dataflowName, accept, context);
     }
 
-    /**
-     * Get a DataflowResource.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param instanceName Name of instance.
-     * @param dataflowProfileName Name of Instance dataflowProfile resource.
-     * @param dataflowName Name of Instance dataflowProfile dataflow resource.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return a DataflowResource.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public DataflowResourceInner get(String resourceGroupName, String instanceName, String dataflowProfileName,
         String dataflowName) {
@@ -294,11 +271,8 @@ public final class DataflowsClientImpl implements DataflowsClient {
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Response<BinaryData> createOrUpdateWithResponse(String resourceGroupName, String instanceName,
         String dataflowProfileName, String dataflowName, DataflowResourceInner resource) {
-        final String contentType = "application/json";
-        final String accept = "application/json";
-        return service.createOrUpdateSync(this.client.getEndpoint(), this.client.getApiVersion(),
-            this.client.getSubscriptionId(), resourceGroupName, instanceName, dataflowProfileName, dataflowName,
-            contentType, accept, resource, Context.NONE);
+        return createOrUpdateWithResponse(resourceGroupName, instanceName, dataflowProfileName, dataflowName, resource,
+            Context.NONE);
     }
 
     /**
@@ -349,43 +323,16 @@ public final class DataflowsClientImpl implements DataflowsClient {
             this.client.getContext());
     }
 
-    /**
-     * Create a DataflowResource.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param instanceName Name of instance.
-     * @param dataflowProfileName Name of Instance dataflowProfile resource.
-     * @param dataflowName Name of Instance dataflowProfile dataflow resource.
-     * @param resource Resource create parameters.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the {@link SyncPoller} for polling of instance dataflowProfile dataflow resource.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public SyncPoller<PollResult<DataflowResourceInner>, DataflowResourceInner> beginCreateOrUpdate(
         String resourceGroupName, String instanceName, String dataflowProfileName, String dataflowName,
         DataflowResourceInner resource) {
-        Response<BinaryData> response
-            = createOrUpdateWithResponse(resourceGroupName, instanceName, dataflowProfileName, dataflowName, resource);
-        return this.client.<DataflowResourceInner, DataflowResourceInner>getLroResult(response,
-            DataflowResourceInner.class, DataflowResourceInner.class, Context.NONE);
+        return beginCreateOrUpdate(resourceGroupName, instanceName, dataflowProfileName, dataflowName, resource,
+            Context.NONE);
     }
 
-    /**
-     * Create a DataflowResource.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param instanceName Name of instance.
-     * @param dataflowProfileName Name of Instance dataflowProfile resource.
-     * @param dataflowName Name of Instance dataflowProfile dataflow resource.
-     * @param resource Resource create parameters.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the {@link SyncPoller} for polling of instance dataflowProfile dataflow resource.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public SyncPoller<PollResult<DataflowResourceInner>, DataflowResourceInner> beginCreateOrUpdate(
         String resourceGroupName, String instanceName, String dataflowProfileName, String dataflowName,
@@ -417,45 +364,20 @@ public final class DataflowsClientImpl implements DataflowsClient {
             .flatMap(this.client::getLroFinalResultOrError);
     }
 
-    /**
-     * Create a DataflowResource.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param instanceName Name of instance.
-     * @param dataflowProfileName Name of Instance dataflowProfile resource.
-     * @param dataflowName Name of Instance dataflowProfile dataflow resource.
-     * @param resource Resource create parameters.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return instance dataflowProfile dataflow resource.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public DataflowResourceInner createOrUpdate(String resourceGroupName, String instanceName,
         String dataflowProfileName, String dataflowName, DataflowResourceInner resource) {
-        return beginCreateOrUpdate(resourceGroupName, instanceName, dataflowProfileName, dataflowName, resource)
-            .getFinalResult();
+        return createOrUpdate(resourceGroupName, instanceName, dataflowProfileName, dataflowName, resource,
+            Context.NONE);
     }
 
-    /**
-     * Create a DataflowResource.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param instanceName Name of instance.
-     * @param dataflowProfileName Name of Instance dataflowProfile resource.
-     * @param dataflowName Name of Instance dataflowProfile dataflow resource.
-     * @param resource Resource create parameters.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return instance dataflowProfile dataflow resource.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public DataflowResourceInner createOrUpdate(String resourceGroupName, String instanceName,
         String dataflowProfileName, String dataflowName, DataflowResourceInner resource, Context context) {
-        return beginCreateOrUpdate(resourceGroupName, instanceName, dataflowProfileName, dataflowName, resource,
-            context).getFinalResult();
+        return this.client.getLroFinalResultOrError(
+            beginCreateOrUpdate(resourceGroupName, instanceName, dataflowProfileName, dataflowName, resource, context));
     }
 
     /**
@@ -495,9 +417,7 @@ public final class DataflowsClientImpl implements DataflowsClient {
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Response<BinaryData> deleteWithResponse(String resourceGroupName, String instanceName,
         String dataflowProfileName, String dataflowName) {
-        return service.deleteSync(this.client.getEndpoint(), this.client.getApiVersion(),
-            this.client.getSubscriptionId(), resourceGroupName, instanceName, dataflowProfileName, dataflowName,
-            Context.NONE);
+        return deleteWithResponse(resourceGroupName, instanceName, dataflowProfileName, dataflowName, Context.NONE);
     }
 
     /**
@@ -542,39 +462,14 @@ public final class DataflowsClientImpl implements DataflowsClient {
             this.client.getContext());
     }
 
-    /**
-     * Delete a DataflowResource.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param instanceName Name of instance.
-     * @param dataflowProfileName Name of Instance dataflowProfile resource.
-     * @param dataflowName Name of Instance dataflowProfile dataflow resource.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the {@link SyncPoller} for polling of long-running operation.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public SyncPoller<PollResult<Void>, Void> beginDelete(String resourceGroupName, String instanceName,
         String dataflowProfileName, String dataflowName) {
-        Response<BinaryData> response
-            = deleteWithResponse(resourceGroupName, instanceName, dataflowProfileName, dataflowName);
-        return this.client.<Void, Void>getLroResult(response, Void.class, Void.class, Context.NONE);
+        return beginDelete(resourceGroupName, instanceName, dataflowProfileName, dataflowName, Context.NONE);
     }
 
-    /**
-     * Delete a DataflowResource.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param instanceName Name of instance.
-     * @param dataflowProfileName Name of Instance dataflowProfile resource.
-     * @param dataflowName Name of Instance dataflowProfile dataflow resource.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the {@link SyncPoller} for polling of long-running operation.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public SyncPoller<PollResult<Void>, Void> beginDelete(String resourceGroupName, String instanceName,
         String dataflowProfileName, String dataflowName, Context context) {
@@ -602,38 +497,18 @@ public final class DataflowsClientImpl implements DataflowsClient {
             .flatMap(this.client::getLroFinalResultOrError);
     }
 
-    /**
-     * Delete a DataflowResource.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param instanceName Name of instance.
-     * @param dataflowProfileName Name of Instance dataflowProfile resource.
-     * @param dataflowName Name of Instance dataflowProfile dataflow resource.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public void delete(String resourceGroupName, String instanceName, String dataflowProfileName, String dataflowName) {
-        beginDelete(resourceGroupName, instanceName, dataflowProfileName, dataflowName).getFinalResult();
+        delete(resourceGroupName, instanceName, dataflowProfileName, dataflowName, Context.NONE);
     }
 
-    /**
-     * Delete a DataflowResource.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param instanceName Name of instance.
-     * @param dataflowProfileName Name of Instance dataflowProfile resource.
-     * @param dataflowName Name of Instance dataflowProfile dataflow resource.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public void delete(String resourceGroupName, String instanceName, String dataflowProfileName, String dataflowName,
         Context context) {
-        beginDelete(resourceGroupName, instanceName, dataflowProfileName, dataflowName, context).getFinalResult();
+        this.client.getLroFinalResultOrError(
+            beginDelete(resourceGroupName, instanceName, dataflowProfileName, dataflowName, context));
     }
 
     /**
@@ -693,12 +568,7 @@ public final class DataflowsClientImpl implements DataflowsClient {
     @ServiceMethod(returns = ReturnType.SINGLE)
     private PagedResponse<DataflowResourceInner> listByResourceGroupSinglePage(String resourceGroupName,
         String instanceName, String dataflowProfileName) {
-        final String accept = "application/json";
-        Response<DataflowResourceListResult> res = service.listByResourceGroupSync(this.client.getEndpoint(),
-            this.client.getApiVersion(), this.client.getSubscriptionId(), resourceGroupName, instanceName,
-            dataflowProfileName, accept, Context.NONE);
-        return new PagedResponseBase<>(res.getRequest(), res.getStatusCode(), res.getHeaders(), res.getValue().value(),
-            res.getValue().nextLink(), null);
+        return listByResourceGroupSinglePage(resourceGroupName, instanceName, dataflowProfileName, Context.NONE);
     }
 
     /**
@@ -724,37 +594,14 @@ public final class DataflowsClientImpl implements DataflowsClient {
             res.getValue().nextLink(), null);
     }
 
-    /**
-     * List DataflowResource resources by DataflowProfileResource.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param instanceName Name of instance.
-     * @param dataflowProfileName Name of Instance dataflowProfile resource.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the response of a DataflowResource list operation as paginated response with {@link PagedIterable}.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.COLLECTION)
     public PagedIterable<DataflowResourceInner> listByResourceGroup(String resourceGroupName, String instanceName,
         String dataflowProfileName) {
-        return new PagedIterable<>(
-            () -> listByResourceGroupSinglePage(resourceGroupName, instanceName, dataflowProfileName),
-            nextLink -> listByResourceGroupNextSinglePage(nextLink));
+        return listByResourceGroup(resourceGroupName, instanceName, dataflowProfileName, Context.NONE);
     }
 
-    /**
-     * List DataflowResource resources by DataflowProfileResource.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param instanceName Name of instance.
-     * @param dataflowProfileName Name of Instance dataflowProfile resource.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the response of a DataflowResource list operation as paginated response with {@link PagedIterable}.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.COLLECTION)
     public PagedIterable<DataflowResourceInner> listByResourceGroup(String resourceGroupName, String instanceName,
         String dataflowProfileName, Context context) {
@@ -795,11 +642,7 @@ public final class DataflowsClientImpl implements DataflowsClient {
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private PagedResponse<DataflowResourceInner> listByResourceGroupNextSinglePage(String nextLink) {
-        final String accept = "application/json";
-        Response<DataflowResourceListResult> res
-            = service.listByResourceGroupNextSync(nextLink, this.client.getEndpoint(), accept, Context.NONE);
-        return new PagedResponseBase<>(res.getRequest(), res.getStatusCode(), res.getHeaders(), res.getValue().value(),
-            res.getValue().nextLink(), null);
+        return listByResourceGroupNextSinglePage(nextLink, Context.NONE);
     }
 
     /**

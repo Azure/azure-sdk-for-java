@@ -90,10 +90,7 @@ public final class PaymentHsmClusterImpl
     }
 
     public PaymentHsmCluster create() {
-        this.innerObject = serviceManager.serviceClient()
-            .getPaymentHsmClusters()
-            .createOrUpdate(resourceGroupName, paymentHsmClusterName, this.innerModel(), Context.NONE);
-        return this;
+        return this.create(Context.NONE);
     }
 
     public PaymentHsmCluster create(Context context) {
@@ -116,10 +113,7 @@ public final class PaymentHsmClusterImpl
     }
 
     public PaymentHsmCluster apply() {
-        this.innerObject = serviceManager.serviceClient()
-            .getPaymentHsmClusters()
-            .update(resourceGroupName, paymentHsmClusterName, updateBody, Context.NONE);
-        return this;
+        return this.apply(Context.NONE);
     }
 
     public PaymentHsmCluster apply(Context context) {
@@ -133,16 +127,16 @@ public final class PaymentHsmClusterImpl
         com.azure.resourcemanager.hardwaresecuritymodules.HardwareSecurityModulesManager serviceManager) {
         this.innerObject = innerObject;
         this.serviceManager = serviceManager;
-        this.resourceGroupName = ResourceManagerUtils.getValueFromIdByName(innerObject.id(), "resourceGroups");
-        this.paymentHsmClusterName = ResourceManagerUtils.getValueFromIdByName(innerObject.id(), "paymentHsmClusters");
+        this.resourceGroupName = ResourceManagerUtils.getValueFromIdByParameterName(innerObject.id(),
+            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.HardwareSecurityModules/paymentHsmClusters/{paymentHsmClusterName}",
+            "resourceGroupName");
+        this.paymentHsmClusterName = ResourceManagerUtils.getValueFromIdByParameterName(innerObject.id(),
+            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.HardwareSecurityModules/paymentHsmClusters/{paymentHsmClusterName}",
+            "paymentHsmClusterName");
     }
 
     public PaymentHsmCluster refresh() {
-        this.innerObject = serviceManager.serviceClient()
-            .getPaymentHsmClusters()
-            .getByResourceGroupWithResponse(resourceGroupName, paymentHsmClusterName, Context.NONE)
-            .getValue();
-        return this;
+        return this.refresh(Context.NONE);
     }
 
     public PaymentHsmCluster refresh(Context context) {

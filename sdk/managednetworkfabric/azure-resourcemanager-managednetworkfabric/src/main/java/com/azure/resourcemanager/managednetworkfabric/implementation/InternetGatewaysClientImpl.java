@@ -255,17 +255,7 @@ public final class InternetGatewaysClientImpl implements InternetGatewaysClient 
             .flatMap(res -> Mono.justOrEmpty(res.getValue()));
     }
 
-    /**
-     * Implements Gateway GET method.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param internetGatewayName Name of the Internet Gateway.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the Internet Gateway resource definition along with {@link Response}.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Response<InternetGatewayInner> getByResourceGroupWithResponse(String resourceGroupName,
         String internetGatewayName, Context context) {
@@ -274,16 +264,7 @@ public final class InternetGatewaysClientImpl implements InternetGatewaysClient 
             this.client.getSubscriptionId(), resourceGroupName, internetGatewayName, accept, context);
     }
 
-    /**
-     * Implements Gateway GET method.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param internetGatewayName Name of the Internet Gateway.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the Internet Gateway resource definition.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public InternetGatewayInner getByResourceGroup(String resourceGroupName, String internetGatewayName) {
         return getByResourceGroupWithResponse(resourceGroupName, internetGatewayName, Context.NONE).getValue();
@@ -327,11 +308,7 @@ public final class InternetGatewaysClientImpl implements InternetGatewaysClient 
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Response<BinaryData> createWithResponse(String resourceGroupName, String internetGatewayName,
         InternetGatewayInner body) {
-        final String contentType = "application/json";
-        final String accept = "application/json";
-        return service.createSync(this.client.getEndpoint(), this.client.getApiVersion(),
-            this.client.getSubscriptionId(), resourceGroupName, internetGatewayName, contentType, accept, body,
-            Context.NONE);
+        return createWithResponse(resourceGroupName, internetGatewayName, body, Context.NONE);
     }
 
     /**
@@ -375,37 +352,14 @@ public final class InternetGatewaysClientImpl implements InternetGatewaysClient 
             InternetGatewayInner.class, InternetGatewayInner.class, this.client.getContext());
     }
 
-    /**
-     * Creates a Network Fabric Service Internet Gateway resource instance.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param internetGatewayName Name of the Internet Gateway.
-     * @param body Request payload.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the {@link SyncPoller} for polling of the Internet Gateway resource definition.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public SyncPoller<PollResult<InternetGatewayInner>, InternetGatewayInner> beginCreate(String resourceGroupName,
         String internetGatewayName, InternetGatewayInner body) {
-        Response<BinaryData> response = createWithResponse(resourceGroupName, internetGatewayName, body);
-        return this.client.<InternetGatewayInner, InternetGatewayInner>getLroResult(response,
-            InternetGatewayInner.class, InternetGatewayInner.class, Context.NONE);
+        return beginCreate(resourceGroupName, internetGatewayName, body, Context.NONE);
     }
 
-    /**
-     * Creates a Network Fabric Service Internet Gateway resource instance.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param internetGatewayName Name of the Internet Gateway.
-     * @param body Request payload.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the {@link SyncPoller} for polling of the Internet Gateway resource definition.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public SyncPoller<PollResult<InternetGatewayInner>, InternetGatewayInner> beginCreate(String resourceGroupName,
         String internetGatewayName, InternetGatewayInner body, Context context) {
@@ -432,39 +386,18 @@ public final class InternetGatewaysClientImpl implements InternetGatewaysClient 
             .flatMap(this.client::getLroFinalResultOrError);
     }
 
-    /**
-     * Creates a Network Fabric Service Internet Gateway resource instance.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param internetGatewayName Name of the Internet Gateway.
-     * @param body Request payload.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the Internet Gateway resource definition.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public InternetGatewayInner create(String resourceGroupName, String internetGatewayName,
         InternetGatewayInner body) {
-        return beginCreate(resourceGroupName, internetGatewayName, body).getFinalResult();
+        return create(resourceGroupName, internetGatewayName, body, Context.NONE);
     }
 
-    /**
-     * Creates a Network Fabric Service Internet Gateway resource instance.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param internetGatewayName Name of the Internet Gateway.
-     * @param body Request payload.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the Internet Gateway resource definition.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public InternetGatewayInner create(String resourceGroupName, String internetGatewayName, InternetGatewayInner body,
         Context context) {
-        return beginCreate(resourceGroupName, internetGatewayName, body, context).getFinalResult();
+        return this.client.getLroFinalResultOrError(beginCreate(resourceGroupName, internetGatewayName, body, context));
     }
 
     /**
@@ -505,11 +438,7 @@ public final class InternetGatewaysClientImpl implements InternetGatewaysClient 
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Response<BinaryData> updateWithResponse(String resourceGroupName, String internetGatewayName,
         InternetGatewayPatch body) {
-        final String contentType = "application/json";
-        final String accept = "application/json";
-        return service.updateSync(this.client.getEndpoint(), this.client.getApiVersion(),
-            this.client.getSubscriptionId(), resourceGroupName, internetGatewayName, contentType, accept, body,
-            Context.NONE);
+        return updateWithResponse(resourceGroupName, internetGatewayName, body, Context.NONE);
     }
 
     /**
@@ -553,37 +482,14 @@ public final class InternetGatewaysClientImpl implements InternetGatewaysClient 
             InternetGatewayInner.class, InternetGatewayInner.class, this.client.getContext());
     }
 
-    /**
-     * Execute patch on Network Fabric Service Internet Gateway.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param internetGatewayName Name of the Internet Gateway.
-     * @param body API to update certain properties of the InternetGateway resource..
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the {@link SyncPoller} for polling of the Internet Gateway resource definition.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public SyncPoller<PollResult<InternetGatewayInner>, InternetGatewayInner> beginUpdate(String resourceGroupName,
         String internetGatewayName, InternetGatewayPatch body) {
-        Response<BinaryData> response = updateWithResponse(resourceGroupName, internetGatewayName, body);
-        return this.client.<InternetGatewayInner, InternetGatewayInner>getLroResult(response,
-            InternetGatewayInner.class, InternetGatewayInner.class, Context.NONE);
+        return beginUpdate(resourceGroupName, internetGatewayName, body, Context.NONE);
     }
 
-    /**
-     * Execute patch on Network Fabric Service Internet Gateway.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param internetGatewayName Name of the Internet Gateway.
-     * @param body API to update certain properties of the InternetGateway resource..
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the {@link SyncPoller} for polling of the Internet Gateway resource definition.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public SyncPoller<PollResult<InternetGatewayInner>, InternetGatewayInner> beginUpdate(String resourceGroupName,
         String internetGatewayName, InternetGatewayPatch body, Context context) {
@@ -610,39 +516,18 @@ public final class InternetGatewaysClientImpl implements InternetGatewaysClient 
             .flatMap(this.client::getLroFinalResultOrError);
     }
 
-    /**
-     * Execute patch on Network Fabric Service Internet Gateway.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param internetGatewayName Name of the Internet Gateway.
-     * @param body API to update certain properties of the InternetGateway resource..
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the Internet Gateway resource definition.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public InternetGatewayInner update(String resourceGroupName, String internetGatewayName,
         InternetGatewayPatch body) {
-        return beginUpdate(resourceGroupName, internetGatewayName, body).getFinalResult();
+        return update(resourceGroupName, internetGatewayName, body, Context.NONE);
     }
 
-    /**
-     * Execute patch on Network Fabric Service Internet Gateway.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param internetGatewayName Name of the Internet Gateway.
-     * @param body API to update certain properties of the InternetGateway resource..
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the Internet Gateway resource definition.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public InternetGatewayInner update(String resourceGroupName, String internetGatewayName, InternetGatewayPatch body,
         Context context) {
-        return beginUpdate(resourceGroupName, internetGatewayName, body, context).getFinalResult();
+        return this.client.getLroFinalResultOrError(beginUpdate(resourceGroupName, internetGatewayName, body, context));
     }
 
     /**
@@ -676,8 +561,7 @@ public final class InternetGatewaysClientImpl implements InternetGatewaysClient 
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Response<BinaryData> deleteWithResponse(String resourceGroupName, String internetGatewayName) {
-        return service.deleteSync(this.client.getEndpoint(), this.client.getApiVersion(),
-            this.client.getSubscriptionId(), resourceGroupName, internetGatewayName, Context.NONE);
+        return deleteWithResponse(resourceGroupName, internetGatewayName, Context.NONE);
     }
 
     /**
@@ -715,33 +599,13 @@ public final class InternetGatewaysClientImpl implements InternetGatewaysClient 
             this.client.getContext());
     }
 
-    /**
-     * Execute a delete on Network Fabric Service Internet Gateway.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param internetGatewayName Name of the Internet Gateway.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the {@link SyncPoller} for polling of long-running operation.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public SyncPoller<PollResult<Void>, Void> beginDelete(String resourceGroupName, String internetGatewayName) {
-        Response<BinaryData> response = deleteWithResponse(resourceGroupName, internetGatewayName);
-        return this.client.<Void, Void>getLroResult(response, Void.class, Void.class, Context.NONE);
+        return beginDelete(resourceGroupName, internetGatewayName, Context.NONE);
     }
 
-    /**
-     * Execute a delete on Network Fabric Service Internet Gateway.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param internetGatewayName Name of the Internet Gateway.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the {@link SyncPoller} for polling of long-running operation.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public SyncPoller<PollResult<Void>, Void> beginDelete(String resourceGroupName, String internetGatewayName,
         Context context) {
@@ -765,33 +629,16 @@ public final class InternetGatewaysClientImpl implements InternetGatewaysClient 
             .flatMap(this.client::getLroFinalResultOrError);
     }
 
-    /**
-     * Execute a delete on Network Fabric Service Internet Gateway.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param internetGatewayName Name of the Internet Gateway.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public void delete(String resourceGroupName, String internetGatewayName) {
-        beginDelete(resourceGroupName, internetGatewayName).getFinalResult();
+        delete(resourceGroupName, internetGatewayName, Context.NONE);
     }
 
-    /**
-     * Execute a delete on Network Fabric Service Internet Gateway.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param internetGatewayName Name of the Internet Gateway.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public void delete(String resourceGroupName, String internetGatewayName, Context context) {
-        beginDelete(resourceGroupName, internetGatewayName, context).getFinalResult();
+        this.client.getLroFinalResultOrError(beginDelete(resourceGroupName, internetGatewayName, context));
     }
 
     /**
@@ -841,11 +688,7 @@ public final class InternetGatewaysClientImpl implements InternetGatewaysClient 
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private PagedResponse<InternetGatewayInner> listByResourceGroupSinglePage(String resourceGroupName) {
-        final String accept = "application/json";
-        Response<InternetGatewaysListResult> res = service.listByResourceGroupSync(this.client.getEndpoint(),
-            this.client.getApiVersion(), this.client.getSubscriptionId(), resourceGroupName, accept, Context.NONE);
-        return new PagedResponseBase<>(res.getRequest(), res.getStatusCode(), res.getHeaders(), res.getValue().value(),
-            res.getValue().nextLink(), null);
+        return listByResourceGroupSinglePage(resourceGroupName, Context.NONE);
     }
 
     /**
@@ -868,31 +711,13 @@ public final class InternetGatewaysClientImpl implements InternetGatewaysClient 
             res.getValue().nextLink(), null);
     }
 
-    /**
-     * Displays Internet Gateways list by resource group GET method.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return paged collection of InternetGateway items as paginated response with {@link PagedIterable}.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.COLLECTION)
     public PagedIterable<InternetGatewayInner> listByResourceGroup(String resourceGroupName) {
-        return new PagedIterable<>(() -> listByResourceGroupSinglePage(resourceGroupName),
-            nextLink -> listByResourceGroupNextSinglePage(nextLink));
+        return listByResourceGroup(resourceGroupName, Context.NONE);
     }
 
-    /**
-     * Displays Internet Gateways list by resource group GET method.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return paged collection of InternetGateway items as paginated response with {@link PagedIterable}.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.COLLECTION)
     public PagedIterable<InternetGatewayInner> listByResourceGroup(String resourceGroupName, Context context) {
         return new PagedIterable<>(() -> listByResourceGroupSinglePage(resourceGroupName, context),
@@ -940,11 +765,7 @@ public final class InternetGatewaysClientImpl implements InternetGatewaysClient 
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private PagedResponse<InternetGatewayInner> listSinglePage() {
-        final String accept = "application/json";
-        Response<InternetGatewaysListResult> res = service.listSync(this.client.getEndpoint(),
-            this.client.getApiVersion(), this.client.getSubscriptionId(), accept, Context.NONE);
-        return new PagedResponseBase<>(res.getRequest(), res.getStatusCode(), res.getHeaders(), res.getValue().value(),
-            res.getValue().nextLink(), null);
+        return listSinglePage(Context.NONE);
     }
 
     /**
@@ -965,27 +786,13 @@ public final class InternetGatewaysClientImpl implements InternetGatewaysClient 
             res.getValue().nextLink(), null);
     }
 
-    /**
-     * Displays Internet Gateways list by subscription GET method.
-     * 
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return paged collection of InternetGateway items as paginated response with {@link PagedIterable}.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.COLLECTION)
     public PagedIterable<InternetGatewayInner> list() {
-        return new PagedIterable<>(() -> listSinglePage(), nextLink -> listBySubscriptionNextSinglePage(nextLink));
+        return list(Context.NONE);
     }
 
-    /**
-     * Displays Internet Gateways list by subscription GET method.
-     * 
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return paged collection of InternetGateway items as paginated response with {@link PagedIterable}.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.COLLECTION)
     public PagedIterable<InternetGatewayInner> list(Context context) {
         return new PagedIterable<>(() -> listSinglePage(context),
@@ -1024,11 +831,7 @@ public final class InternetGatewaysClientImpl implements InternetGatewaysClient 
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private PagedResponse<InternetGatewayInner> listByResourceGroupNextSinglePage(String nextLink) {
-        final String accept = "application/json";
-        Response<InternetGatewaysListResult> res
-            = service.listByResourceGroupNextSync(nextLink, this.client.getEndpoint(), accept, Context.NONE);
-        return new PagedResponseBase<>(res.getRequest(), res.getStatusCode(), res.getHeaders(), res.getValue().value(),
-            res.getValue().nextLink(), null);
+        return listByResourceGroupNextSinglePage(nextLink, Context.NONE);
     }
 
     /**
@@ -1082,11 +885,7 @@ public final class InternetGatewaysClientImpl implements InternetGatewaysClient 
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private PagedResponse<InternetGatewayInner> listBySubscriptionNextSinglePage(String nextLink) {
-        final String accept = "application/json";
-        Response<InternetGatewaysListResult> res
-            = service.listBySubscriptionNextSync(nextLink, this.client.getEndpoint(), accept, Context.NONE);
-        return new PagedResponseBase<>(res.getRequest(), res.getStatusCode(), res.getHeaders(), res.getValue().value(),
-            res.getValue().nextLink(), null);
+        return listBySubscriptionNextSinglePage(nextLink, Context.NONE);
     }
 
     /**

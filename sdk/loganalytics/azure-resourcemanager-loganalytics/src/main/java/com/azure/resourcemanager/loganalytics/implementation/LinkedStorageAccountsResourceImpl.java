@@ -72,12 +72,7 @@ public final class LinkedStorageAccountsResourceImpl implements LinkedStorageAcc
     }
 
     public LinkedStorageAccountsResource create() {
-        this.innerObject = serviceManager.serviceClient()
-            .getLinkedStorageAccounts()
-            .createOrUpdateWithResponse(resourceGroupName, workspaceName, dataSourceType, this.innerModel(),
-                Context.NONE)
-            .getValue();
-        return this;
+        return this.create(Context.NONE);
     }
 
     public LinkedStorageAccountsResource create(Context context) {
@@ -100,12 +95,7 @@ public final class LinkedStorageAccountsResourceImpl implements LinkedStorageAcc
     }
 
     public LinkedStorageAccountsResource apply() {
-        this.innerObject = serviceManager.serviceClient()
-            .getLinkedStorageAccounts()
-            .createOrUpdateWithResponse(resourceGroupName, workspaceName, dataSourceType, this.innerModel(),
-                Context.NONE)
-            .getValue();
-        return this;
+        return this.apply(Context.NONE);
     }
 
     public LinkedStorageAccountsResource apply(Context context) {
@@ -120,18 +110,20 @@ public final class LinkedStorageAccountsResourceImpl implements LinkedStorageAcc
         com.azure.resourcemanager.loganalytics.LogAnalyticsManager serviceManager) {
         this.innerObject = innerObject;
         this.serviceManager = serviceManager;
-        this.resourceGroupName = ResourceManagerUtils.getValueFromIdByName(innerObject.id(), "resourceGroups");
-        this.workspaceName = ResourceManagerUtils.getValueFromIdByName(innerObject.id(), "workspaces");
-        this.dataSourceType = DataSourceType
-            .fromString(ResourceManagerUtils.getValueFromIdByName(innerObject.id(), "linkedStorageAccounts"));
+        this.resourceGroupName = ResourceManagerUtils.getValueFromIdByParameterName(innerObject.id(),
+            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.OperationalInsights/workspaces/{workspaceName}/linkedStorageAccounts/{dataSourceType}",
+            "resourceGroupName");
+        this.workspaceName = ResourceManagerUtils.getValueFromIdByParameterName(innerObject.id(),
+            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.OperationalInsights/workspaces/{workspaceName}/linkedStorageAccounts/{dataSourceType}",
+            "workspaceName");
+        this.dataSourceType = DataSourceType.fromString(ResourceManagerUtils.getValueFromIdByParameterName(
+            innerObject.id(),
+            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.OperationalInsights/workspaces/{workspaceName}/linkedStorageAccounts/{dataSourceType}",
+            "dataSourceType"));
     }
 
     public LinkedStorageAccountsResource refresh() {
-        this.innerObject = serviceManager.serviceClient()
-            .getLinkedStorageAccounts()
-            .getWithResponse(resourceGroupName, workspaceName, dataSourceType, Context.NONE)
-            .getValue();
-        return this;
+        return this.refresh(Context.NONE);
     }
 
     public LinkedStorageAccountsResource refresh(Context context) {

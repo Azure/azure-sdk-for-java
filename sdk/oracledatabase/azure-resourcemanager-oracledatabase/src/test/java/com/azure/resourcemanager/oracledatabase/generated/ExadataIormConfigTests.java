@@ -14,13 +14,13 @@ public final class ExadataIormConfigTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
         ExadataIormConfig model = BinaryData.fromString(
-            "{\"dbPlans\":[{\"dbName\":\"zznfqqnvwpmqta\",\"flashCacheLimit\":\"oujmkcjhwqytj\",\"share\":778428037},{\"dbName\":\"wj\",\"flashCacheLimit\":\"gdrjervnaenqpe\",\"share\":1632259296},{\"dbName\":\"oygmift\",\"flashCacheLimit\":\"zdnds\",\"share\":1279542640}],\"lifecycleDetails\":\"yq\",\"lifecycleState\":\"Failed\",\"objective\":\"LowLatency\"}")
+            "{\"dbPlans\":[{\"dbName\":\"cjefuzmu\",\"flashCacheLimit\":\"bttdumorppxe\",\"share\":1702938248},{\"dbName\":\"btbhjpglkfgohd\",\"flashCacheLimit\":\"uel\",\"share\":571890155},{\"dbName\":\"dyhtozfikdowwquu\",\"flashCacheLimit\":\"zx\",\"share\":1297043875}],\"lifecycleDetails\":\"thhqzonosggbh\",\"lifecycleState\":\"Disabled\",\"objective\":\"HighThroughput\"}")
             .toObject(ExadataIormConfig.class);
-        Assertions.assertEquals("zznfqqnvwpmqta", model.dbPlans().get(0).dbName());
-        Assertions.assertEquals("oujmkcjhwqytj", model.dbPlans().get(0).flashCacheLimit());
-        Assertions.assertEquals(778428037, model.dbPlans().get(0).share());
-        Assertions.assertEquals("yq", model.lifecycleDetails());
-        Assertions.assertEquals(IormLifecycleState.FAILED, model.lifecycleState());
-        Assertions.assertEquals(Objective.LOW_LATENCY, model.objective());
+        Assertions.assertEquals("cjefuzmu", model.dbPlans().get(0).dbName());
+        Assertions.assertEquals("bttdumorppxe", model.dbPlans().get(0).flashCacheLimit());
+        Assertions.assertEquals(1702938248, model.dbPlans().get(0).share());
+        Assertions.assertEquals("thhqzonosggbh", model.lifecycleDetails());
+        Assertions.assertEquals(IormLifecycleState.DISABLED, model.lifecycleState());
+        Assertions.assertEquals(Objective.HIGH_THROUGHPUT, model.objective());
     }
 }

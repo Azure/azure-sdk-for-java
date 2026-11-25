@@ -28,9 +28,7 @@ public final class AuthorizationsImpl implements Authorizations {
     }
 
     public PagedIterable<ExpressRouteAuthorization> list(String resourceGroupName, String privateCloudName) {
-        PagedIterable<ExpressRouteAuthorizationInner> inner
-            = this.serviceClient().list(resourceGroupName, privateCloudName);
-        return ResourceManagerUtils.mapPage(inner, inner1 -> new ExpressRouteAuthorizationImpl(inner1, this.manager()));
+        return this.list(resourceGroupName, privateCloudName, Context.NONE);
     }
 
     public PagedIterable<ExpressRouteAuthorization> list(String resourceGroupName, String privateCloudName,
@@ -59,7 +57,7 @@ public final class AuthorizationsImpl implements Authorizations {
     }
 
     public void delete(String resourceGroupName, String privateCloudName, String authorizationName) {
-        this.serviceClient().delete(resourceGroupName, privateCloudName, authorizationName);
+        this.delete(resourceGroupName, privateCloudName, authorizationName, Context.NONE);
     }
 
     public void delete(String resourceGroupName, String privateCloudName, String authorizationName, Context context) {
@@ -67,78 +65,36 @@ public final class AuthorizationsImpl implements Authorizations {
     }
 
     public ExpressRouteAuthorization getById(String id) {
-        String resourceGroupName = ResourceManagerUtils.getValueFromIdByName(id, "resourceGroups");
-        if (resourceGroupName == null) {
-            throw LOGGER.logExceptionAsError(new IllegalArgumentException(
-                String.format("The resource ID '%s' is not valid. Missing path segment 'resourceGroups'.", id)));
-        }
-        String privateCloudName = ResourceManagerUtils.getValueFromIdByName(id, "privateClouds");
-        if (privateCloudName == null) {
-            throw LOGGER.logExceptionAsError(new IllegalArgumentException(
-                String.format("The resource ID '%s' is not valid. Missing path segment 'privateClouds'.", id)));
-        }
-        String authorizationName = ResourceManagerUtils.getValueFromIdByName(id, "authorizations");
-        if (authorizationName == null) {
-            throw LOGGER.logExceptionAsError(new IllegalArgumentException(
-                String.format("The resource ID '%s' is not valid. Missing path segment 'authorizations'.", id)));
-        }
-        return this.getWithResponse(resourceGroupName, privateCloudName, authorizationName, Context.NONE).getValue();
+        return this.getByIdWithResponse(id, Context.NONE).getValue();
     }
 
     public Response<ExpressRouteAuthorization> getByIdWithResponse(String id, Context context) {
-        String resourceGroupName = ResourceManagerUtils.getValueFromIdByName(id, "resourceGroups");
-        if (resourceGroupName == null) {
-            throw LOGGER.logExceptionAsError(new IllegalArgumentException(
-                String.format("The resource ID '%s' is not valid. Missing path segment 'resourceGroups'.", id)));
-        }
-        String privateCloudName = ResourceManagerUtils.getValueFromIdByName(id, "privateClouds");
-        if (privateCloudName == null) {
-            throw LOGGER.logExceptionAsError(new IllegalArgumentException(
-                String.format("The resource ID '%s' is not valid. Missing path segment 'privateClouds'.", id)));
-        }
-        String authorizationName = ResourceManagerUtils.getValueFromIdByName(id, "authorizations");
-        if (authorizationName == null) {
-            throw LOGGER.logExceptionAsError(new IllegalArgumentException(
-                String.format("The resource ID '%s' is not valid. Missing path segment 'authorizations'.", id)));
-        }
+        String resourceGroupName = ResourceManagerUtils.getRequiredValueFromIdByParameterName(id,
+            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.AVS/privateClouds/{privateCloudName}/authorizations/{authorizationName}",
+            "resourceGroupName", "resourceGroups", LOGGER);
+        String privateCloudName = ResourceManagerUtils.getRequiredValueFromIdByParameterName(id,
+            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.AVS/privateClouds/{privateCloudName}/authorizations/{authorizationName}",
+            "privateCloudName", "privateClouds", LOGGER);
+        String authorizationName = ResourceManagerUtils.getRequiredValueFromIdByParameterName(id,
+            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.AVS/privateClouds/{privateCloudName}/authorizations/{authorizationName}",
+            "authorizationName", "authorizations", LOGGER);
         return this.getWithResponse(resourceGroupName, privateCloudName, authorizationName, context);
     }
 
     public void deleteById(String id) {
-        String resourceGroupName = ResourceManagerUtils.getValueFromIdByName(id, "resourceGroups");
-        if (resourceGroupName == null) {
-            throw LOGGER.logExceptionAsError(new IllegalArgumentException(
-                String.format("The resource ID '%s' is not valid. Missing path segment 'resourceGroups'.", id)));
-        }
-        String privateCloudName = ResourceManagerUtils.getValueFromIdByName(id, "privateClouds");
-        if (privateCloudName == null) {
-            throw LOGGER.logExceptionAsError(new IllegalArgumentException(
-                String.format("The resource ID '%s' is not valid. Missing path segment 'privateClouds'.", id)));
-        }
-        String authorizationName = ResourceManagerUtils.getValueFromIdByName(id, "authorizations");
-        if (authorizationName == null) {
-            throw LOGGER.logExceptionAsError(new IllegalArgumentException(
-                String.format("The resource ID '%s' is not valid. Missing path segment 'authorizations'.", id)));
-        }
-        this.delete(resourceGroupName, privateCloudName, authorizationName, Context.NONE);
+        this.deleteByIdWithResponse(id, Context.NONE);
     }
 
     public void deleteByIdWithResponse(String id, Context context) {
-        String resourceGroupName = ResourceManagerUtils.getValueFromIdByName(id, "resourceGroups");
-        if (resourceGroupName == null) {
-            throw LOGGER.logExceptionAsError(new IllegalArgumentException(
-                String.format("The resource ID '%s' is not valid. Missing path segment 'resourceGroups'.", id)));
-        }
-        String privateCloudName = ResourceManagerUtils.getValueFromIdByName(id, "privateClouds");
-        if (privateCloudName == null) {
-            throw LOGGER.logExceptionAsError(new IllegalArgumentException(
-                String.format("The resource ID '%s' is not valid. Missing path segment 'privateClouds'.", id)));
-        }
-        String authorizationName = ResourceManagerUtils.getValueFromIdByName(id, "authorizations");
-        if (authorizationName == null) {
-            throw LOGGER.logExceptionAsError(new IllegalArgumentException(
-                String.format("The resource ID '%s' is not valid. Missing path segment 'authorizations'.", id)));
-        }
+        String resourceGroupName = ResourceManagerUtils.getRequiredValueFromIdByParameterName(id,
+            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.AVS/privateClouds/{privateCloudName}/authorizations/{authorizationName}",
+            "resourceGroupName", "resourceGroups", LOGGER);
+        String privateCloudName = ResourceManagerUtils.getRequiredValueFromIdByParameterName(id,
+            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.AVS/privateClouds/{privateCloudName}/authorizations/{authorizationName}",
+            "privateCloudName", "privateClouds", LOGGER);
+        String authorizationName = ResourceManagerUtils.getRequiredValueFromIdByParameterName(id,
+            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.AVS/privateClouds/{privateCloudName}/authorizations/{authorizationName}",
+            "authorizationName", "authorizations", LOGGER);
         this.delete(resourceGroupName, privateCloudName, authorizationName, context);
     }
 

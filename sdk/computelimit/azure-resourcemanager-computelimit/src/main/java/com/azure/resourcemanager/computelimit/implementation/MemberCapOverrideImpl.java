@@ -57,11 +57,7 @@ public final class MemberCapOverrideImpl
     }
 
     public MemberCapOverride create() {
-        this.innerObject = serviceManager.serviceClient()
-            .getMemberCapOverrides()
-            .createOrUpdateWithResponse(location, vmFamilyName, memberSubscriptionId, this.innerModel(), Context.NONE)
-            .getValue();
-        return this;
+        return this.create(Context.NONE);
     }
 
     public MemberCapOverride create(Context context) {
@@ -83,11 +79,7 @@ public final class MemberCapOverrideImpl
     }
 
     public MemberCapOverride apply() {
-        this.innerObject = serviceManager.serviceClient()
-            .getMemberCapOverrides()
-            .createOrUpdateWithResponse(location, vmFamilyName, memberSubscriptionId, this.innerModel(), Context.NONE)
-            .getValue();
-        return this;
+        return this.apply(Context.NONE);
     }
 
     public MemberCapOverride apply(Context context) {
@@ -102,17 +94,19 @@ public final class MemberCapOverrideImpl
         com.azure.resourcemanager.computelimit.ComputeLimitManager serviceManager) {
         this.innerObject = innerObject;
         this.serviceManager = serviceManager;
-        this.location = ResourceManagerUtils.getValueFromIdByName(innerObject.id(), "locations");
-        this.vmFamilyName = ResourceManagerUtils.getValueFromIdByName(innerObject.id(), "sharedLimitCaps");
-        this.memberSubscriptionId = ResourceManagerUtils.getValueFromIdByName(innerObject.id(), "memberCapOverrides");
+        this.location = ResourceManagerUtils.getValueFromIdByParameterName(innerObject.id(),
+            "/subscriptions/{subscriptionId}/providers/Microsoft.ComputeLimit/locations/{location}/sharedLimitCaps/{vmFamilyName}/memberCapOverrides/{memberSubscriptionId}",
+            "location");
+        this.vmFamilyName = ResourceManagerUtils.getValueFromIdByParameterName(innerObject.id(),
+            "/subscriptions/{subscriptionId}/providers/Microsoft.ComputeLimit/locations/{location}/sharedLimitCaps/{vmFamilyName}/memberCapOverrides/{memberSubscriptionId}",
+            "vmFamilyName");
+        this.memberSubscriptionId = ResourceManagerUtils.getValueFromIdByParameterName(innerObject.id(),
+            "/subscriptions/{subscriptionId}/providers/Microsoft.ComputeLimit/locations/{location}/sharedLimitCaps/{vmFamilyName}/memberCapOverrides/{memberSubscriptionId}",
+            "memberSubscriptionId");
     }
 
     public MemberCapOverride refresh() {
-        this.innerObject = serviceManager.serviceClient()
-            .getMemberCapOverrides()
-            .getWithResponse(location, vmFamilyName, memberSubscriptionId, Context.NONE)
-            .getValue();
-        return this;
+        return this.refresh(Context.NONE);
     }
 
     public MemberCapOverride refresh(Context context) {

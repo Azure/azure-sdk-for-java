@@ -255,20 +255,7 @@ public final class VirtualMachineSchedulesClientImpl implements VirtualMachineSc
             .flatMap(res -> Mono.justOrEmpty(res.getValue()));
     }
 
-    /**
-     * Get schedule.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param labName labs.
-     * @param virtualMachineName virtualmachines.
-     * @param name The name of the Schedule.
-     * @param expand Specify the $expand query. Example: 'properties($select=status)'.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return schedule along with {@link Response}.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Response<ScheduleInner> getWithResponse(String resourceGroupName, String labName, String virtualMachineName,
         String name, String expand, Context context) {
@@ -277,18 +264,7 @@ public final class VirtualMachineSchedulesClientImpl implements VirtualMachineSc
             resourceGroupName, labName, virtualMachineName, name, expand, accept, context);
     }
 
-    /**
-     * Get schedule.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param labName labs.
-     * @param virtualMachineName virtualmachines.
-     * @param name The name of the Schedule.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return schedule.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public ScheduleInner get(String resourceGroupName, String labName, String virtualMachineName, String name) {
         final String expand = null;
@@ -340,20 +316,7 @@ public final class VirtualMachineSchedulesClientImpl implements VirtualMachineSc
             .flatMap(res -> Mono.justOrEmpty(res.getValue()));
     }
 
-    /**
-     * Create or replace an existing schedule.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param labName labs.
-     * @param virtualMachineName virtualmachines.
-     * @param name The name of the Schedule.
-     * @param schedule A schedule.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return a schedule along with {@link Response}.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Response<ScheduleInner> createOrUpdateWithResponse(String resourceGroupName, String labName,
         String virtualMachineName, String name, ScheduleInner schedule, Context context) {
@@ -364,19 +327,7 @@ public final class VirtualMachineSchedulesClientImpl implements VirtualMachineSc
             schedule, context);
     }
 
-    /**
-     * Create or replace an existing schedule.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param labName labs.
-     * @param virtualMachineName virtualmachines.
-     * @param name The name of the Schedule.
-     * @param schedule A schedule.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return a schedule.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public ScheduleInner createOrUpdate(String resourceGroupName, String labName, String virtualMachineName,
         String name, ScheduleInner schedule) {
@@ -429,20 +380,7 @@ public final class VirtualMachineSchedulesClientImpl implements VirtualMachineSc
             .flatMap(res -> Mono.justOrEmpty(res.getValue()));
     }
 
-    /**
-     * Allows modifying tags of schedules. All other properties will be ignored.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param labName labs.
-     * @param virtualMachineName virtualmachines.
-     * @param name The name of the Schedule.
-     * @param schedule A schedule.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return a schedule along with {@link Response}.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Response<ScheduleInner> updateWithResponse(String resourceGroupName, String labName,
         String virtualMachineName, String name, ScheduleFragment schedule, Context context) {
@@ -453,19 +391,7 @@ public final class VirtualMachineSchedulesClientImpl implements VirtualMachineSc
             schedule, context);
     }
 
-    /**
-     * Allows modifying tags of schedules. All other properties will be ignored.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param labName labs.
-     * @param virtualMachineName virtualmachines.
-     * @param name The name of the Schedule.
-     * @param schedule A schedule.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return a schedule.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public ScheduleInner update(String resourceGroupName, String labName, String virtualMachineName, String name,
         ScheduleFragment schedule) {
@@ -512,19 +438,7 @@ public final class VirtualMachineSchedulesClientImpl implements VirtualMachineSc
             .flatMap(ignored -> Mono.empty());
     }
 
-    /**
-     * Delete schedule.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param labName labs.
-     * @param virtualMachineName virtualmachines.
-     * @param name The name of the Schedule.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the {@link Response}.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Response<Void> deleteWithResponse(String resourceGroupName, String labName, String virtualMachineName,
         String name, Context context) {
@@ -532,17 +446,7 @@ public final class VirtualMachineSchedulesClientImpl implements VirtualMachineSc
             this.client.getSubscriptionId(), resourceGroupName, labName, virtualMachineName, name, context);
     }
 
-    /**
-     * Delete schedule.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param labName labs.
-     * @param virtualMachineName virtualmachines.
-     * @param name The name of the Schedule.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public void delete(String resourceGroupName, String labName, String virtualMachineName, String name) {
         deleteWithResponse(resourceGroupName, labName, virtualMachineName, name, Context.NONE);
@@ -640,12 +544,8 @@ public final class VirtualMachineSchedulesClientImpl implements VirtualMachineSc
     @ServiceMethod(returns = ReturnType.SINGLE)
     private PagedResponse<ScheduleInner> listSinglePage(String resourceGroupName, String labName,
         String virtualMachineName, String expand, String filter, Integer top, String orderby) {
-        final String accept = "application/json";
-        Response<ScheduleList> res
-            = service.listSync(this.client.getEndpoint(), this.client.getApiVersion(), this.client.getSubscriptionId(),
-                resourceGroupName, labName, virtualMachineName, expand, filter, top, orderby, accept, Context.NONE);
-        return new PagedResponseBase<>(res.getRequest(), res.getStatusCode(), res.getHeaders(), res.getValue().value(),
-            res.getValue().nextLink(), null);
+        return listSinglePage(resourceGroupName, labName, virtualMachineName, expand, filter, top, orderby,
+            Context.NONE);
     }
 
     /**
@@ -675,44 +575,17 @@ public final class VirtualMachineSchedulesClientImpl implements VirtualMachineSc
             res.getValue().nextLink(), null);
     }
 
-    /**
-     * List schedules in a given virtual machine.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param labName labs.
-     * @param virtualMachineName virtualmachines.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the response of a list operation as paginated response with {@link PagedIterable}.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.COLLECTION)
     public PagedIterable<ScheduleInner> list(String resourceGroupName, String labName, String virtualMachineName) {
         final String expand = null;
         final String filter = null;
         final Integer top = null;
         final String orderby = null;
-        return new PagedIterable<>(
-            () -> listSinglePage(resourceGroupName, labName, virtualMachineName, expand, filter, top, orderby),
-            nextLink -> listNextSinglePage(nextLink));
+        return list(resourceGroupName, labName, virtualMachineName, expand, filter, top, orderby, Context.NONE);
     }
 
-    /**
-     * List schedules in a given virtual machine.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param labName labs.
-     * @param virtualMachineName virtualmachines.
-     * @param expand Specify the $expand query. Example: 'properties($select=status)'.
-     * @param filter The filter to apply to the operation. Example: '$filter=contains(name,'myName').
-     * @param top The maximum number of resources to return from the operation. Example: '$top=10'.
-     * @param orderby The ordering expression for the results, using OData notation. Example: '$orderby=name desc'.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the response of a list operation as paginated response with {@link PagedIterable}.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.COLLECTION)
     public PagedIterable<ScheduleInner> list(String resourceGroupName, String labName, String virtualMachineName,
         String expand, String filter, Integer top, String orderby, Context context) {
@@ -757,8 +630,7 @@ public final class VirtualMachineSchedulesClientImpl implements VirtualMachineSc
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Response<BinaryData> executeWithResponse(String resourceGroupName, String labName,
         String virtualMachineName, String name) {
-        return service.executeSync(this.client.getEndpoint(), this.client.getApiVersion(),
-            this.client.getSubscriptionId(), resourceGroupName, labName, virtualMachineName, name, Context.NONE);
+        return executeWithResponse(resourceGroupName, labName, virtualMachineName, name, Context.NONE);
     }
 
     /**
@@ -802,38 +674,14 @@ public final class VirtualMachineSchedulesClientImpl implements VirtualMachineSc
             this.client.getContext());
     }
 
-    /**
-     * Execute a schedule. This operation can take a while to complete.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param labName labs.
-     * @param virtualMachineName virtualmachines.
-     * @param name The name of the Schedule.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the {@link SyncPoller} for polling of long-running operation.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public SyncPoller<PollResult<Void>, Void> beginExecute(String resourceGroupName, String labName,
         String virtualMachineName, String name) {
-        Response<BinaryData> response = executeWithResponse(resourceGroupName, labName, virtualMachineName, name);
-        return this.client.<Void, Void>getLroResult(response, Void.class, Void.class, Context.NONE);
+        return beginExecute(resourceGroupName, labName, virtualMachineName, name, Context.NONE);
     }
 
-    /**
-     * Execute a schedule. This operation can take a while to complete.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param labName labs.
-     * @param virtualMachineName virtualmachines.
-     * @param name The name of the Schedule.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the {@link SyncPoller} for polling of long-running operation.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public SyncPoller<PollResult<Void>, Void> beginExecute(String resourceGroupName, String labName,
         String virtualMachineName, String name, Context context) {
@@ -860,38 +708,18 @@ public final class VirtualMachineSchedulesClientImpl implements VirtualMachineSc
             .flatMap(this.client::getLroFinalResultOrError);
     }
 
-    /**
-     * Execute a schedule. This operation can take a while to complete.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param labName labs.
-     * @param virtualMachineName virtualmachines.
-     * @param name The name of the Schedule.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public void execute(String resourceGroupName, String labName, String virtualMachineName, String name) {
-        beginExecute(resourceGroupName, labName, virtualMachineName, name).getFinalResult();
+        execute(resourceGroupName, labName, virtualMachineName, name, Context.NONE);
     }
 
-    /**
-     * Execute a schedule. This operation can take a while to complete.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param labName labs.
-     * @param virtualMachineName virtualmachines.
-     * @param name The name of the Schedule.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public void execute(String resourceGroupName, String labName, String virtualMachineName, String name,
         Context context) {
-        beginExecute(resourceGroupName, labName, virtualMachineName, name, context).getFinalResult();
+        this.client
+            .getLroFinalResultOrError(beginExecute(resourceGroupName, labName, virtualMachineName, name, context));
     }
 
     /**
@@ -924,10 +752,7 @@ public final class VirtualMachineSchedulesClientImpl implements VirtualMachineSc
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private PagedResponse<ScheduleInner> listNextSinglePage(String nextLink) {
-        final String accept = "application/json";
-        Response<ScheduleList> res = service.listNextSync(nextLink, this.client.getEndpoint(), accept, Context.NONE);
-        return new PagedResponseBase<>(res.getRequest(), res.getStatusCode(), res.getHeaders(), res.getValue().value(),
-            res.getValue().nextLink(), null);
+        return listNextSinglePage(nextLink, Context.NONE);
     }
 
     /**

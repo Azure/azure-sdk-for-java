@@ -61,12 +61,7 @@ public final class GlobalRulestacksImpl implements GlobalRulestacks {
     }
 
     public GlobalRulestackResource createOrUpdate(String globalRulestackName, GlobalRulestackResourceInner resource) {
-        GlobalRulestackResourceInner inner = this.serviceClient().createOrUpdate(globalRulestackName, resource);
-        if (inner != null) {
-            return new GlobalRulestackResourceImpl(inner, this.manager());
-        } else {
-            return null;
-        }
+        return this.createOrUpdate(globalRulestackName, resource, Context.NONE);
     }
 
     public GlobalRulestackResource createOrUpdate(String globalRulestackName, GlobalRulestackResourceInner resource,
@@ -98,7 +93,7 @@ public final class GlobalRulestacksImpl implements GlobalRulestacks {
     }
 
     public void delete(String globalRulestackName) {
-        this.serviceClient().delete(globalRulestackName);
+        this.delete(globalRulestackName, Context.NONE);
     }
 
     public void delete(String globalRulestackName, Context context) {
@@ -106,8 +101,7 @@ public final class GlobalRulestacksImpl implements GlobalRulestacks {
     }
 
     public PagedIterable<GlobalRulestackResource> list() {
-        PagedIterable<GlobalRulestackResourceInner> inner = this.serviceClient().list();
-        return ResourceManagerUtils.mapPage(inner, inner1 -> new GlobalRulestackResourceImpl(inner1, this.manager()));
+        return this.list(Context.NONE);
     }
 
     public PagedIterable<GlobalRulestackResource> list(Context context) {
@@ -116,7 +110,7 @@ public final class GlobalRulestacksImpl implements GlobalRulestacks {
     }
 
     public void commit(String globalRulestackName) {
-        this.serviceClient().commit(globalRulestackName);
+        this.commit(globalRulestackName, Context.NONE);
     }
 
     public void commit(String globalRulestackName, Context context) {
@@ -247,7 +241,7 @@ public final class GlobalRulestacksImpl implements GlobalRulestacks {
     }
 
     public void revert(String globalRulestackName) {
-        this.serviceClient().revert(globalRulestackName);
+        this.revertWithResponse(globalRulestackName, Context.NONE);
     }
 
     private GlobalRulestacksClient serviceClient() {

@@ -13,22 +13,22 @@ import org.junit.jupiter.api.Assertions;
 public final class ActionDependencyTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
-        ActionDependency model
-            = BinaryData.fromString("{\"type\":\"Action\",\"name\":\"nlvxbcuii\",\"onActionLifecycle\":\"Start\"}")
-                .toObject(ActionDependency.class);
+        ActionDependency model = BinaryData
+            .fromString("{\"type\":\"Action\",\"name\":\"oxfrkenxpmyyefr\",\"onActionLifecycle\":\"AnyTerminal\"}")
+            .toObject(ActionDependency.class);
         Assertions.assertEquals(ActionDependencyType.ACTION, model.type());
-        Assertions.assertEquals("nlvxbcuii", model.name());
-        Assertions.assertEquals(ActionLifecycle.START, model.onActionLifecycle());
+        Assertions.assertEquals("oxfrkenxpmyyefr", model.name());
+        Assertions.assertEquals(ActionLifecycle.ANY_TERMINAL, model.onActionLifecycle());
     }
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
         ActionDependency model = new ActionDependency().withType(ActionDependencyType.ACTION)
-            .withName("nlvxbcuii")
-            .withOnActionLifecycle(ActionLifecycle.START);
+            .withName("oxfrkenxpmyyefr")
+            .withOnActionLifecycle(ActionLifecycle.ANY_TERMINAL);
         model = BinaryData.fromObject(model).toObject(ActionDependency.class);
         Assertions.assertEquals(ActionDependencyType.ACTION, model.type());
-        Assertions.assertEquals("nlvxbcuii", model.name());
-        Assertions.assertEquals(ActionLifecycle.START, model.onActionLifecycle());
+        Assertions.assertEquals("oxfrkenxpmyyefr", model.name());
+        Assertions.assertEquals(ActionLifecycle.ANY_TERMINAL, model.onActionLifecycle());
     }
 }

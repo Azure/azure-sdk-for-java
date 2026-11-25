@@ -12,6 +12,9 @@ import com.azure.resourcemanager.purestorageblock.fluent.models.StoragePoolInner
 import com.azure.resourcemanager.purestorageblock.models.AvsConnection;
 import com.azure.resourcemanager.purestorageblock.models.AvsStatus;
 import com.azure.resourcemanager.purestorageblock.models.ManagedServiceIdentity;
+import com.azure.resourcemanager.purestorageblock.models.PlatformConsoleActivationCode;
+import com.azure.resourcemanager.purestorageblock.models.PlatformConsoleAuthConfig;
+import com.azure.resourcemanager.purestorageblock.models.PlatformConsoleAuthResult;
 import com.azure.resourcemanager.purestorageblock.models.StoragePool;
 import com.azure.resourcemanager.purestorageblock.models.StoragePoolEnableAvsConnectionPost;
 import com.azure.resourcemanager.purestorageblock.models.StoragePoolFinalizeAvsConnectionPost;
@@ -96,10 +99,7 @@ public final class StoragePoolImpl implements StoragePool, StoragePool.Definitio
     }
 
     public StoragePool create() {
-        this.innerObject = serviceManager.serviceClient()
-            .getStoragePools()
-            .create(resourceGroupName, storagePoolName, this.innerModel(), Context.NONE);
-        return this;
+        return this.create(Context.NONE);
     }
 
     public StoragePool create(Context context) {
@@ -121,10 +121,7 @@ public final class StoragePoolImpl implements StoragePool, StoragePool.Definitio
     }
 
     public StoragePool apply() {
-        this.innerObject = serviceManager.serviceClient()
-            .getStoragePools()
-            .update(resourceGroupName, storagePoolName, updateProperties, Context.NONE);
-        return this;
+        return this.apply(Context.NONE);
     }
 
     public StoragePool apply(Context context) {
@@ -138,16 +135,16 @@ public final class StoragePoolImpl implements StoragePool, StoragePool.Definitio
         com.azure.resourcemanager.purestorageblock.PureStorageBlockManager serviceManager) {
         this.innerObject = innerObject;
         this.serviceManager = serviceManager;
-        this.resourceGroupName = ResourceManagerUtils.getValueFromIdByName(innerObject.id(), "resourceGroups");
-        this.storagePoolName = ResourceManagerUtils.getValueFromIdByName(innerObject.id(), "storagePools");
+        this.resourceGroupName = ResourceManagerUtils.getValueFromIdByParameterName(innerObject.id(),
+            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/PureStorage.Block/storagePools/{storagePoolName}",
+            "resourceGroupName");
+        this.storagePoolName = ResourceManagerUtils.getValueFromIdByParameterName(innerObject.id(),
+            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/PureStorage.Block/storagePools/{storagePoolName}",
+            "storagePoolName");
     }
 
     public StoragePool refresh() {
-        this.innerObject = serviceManager.serviceClient()
-            .getStoragePools()
-            .getByResourceGroupWithResponse(resourceGroupName, storagePoolName, Context.NONE)
-            .getValue();
-        return this;
+        return this.refresh(Context.NONE);
     }
 
     public StoragePool refresh(Context context) {
@@ -212,6 +209,25 @@ public final class StoragePoolImpl implements StoragePool, StoragePool.Definitio
 
     public void repairAvsConnection(Context context) {
         serviceManager.storagePools().repairAvsConnection(resourceGroupName, storagePoolName, context);
+    }
+
+    public Response<PlatformConsoleActivationCode> listPlatformConsoleActivationCodeWithResponse(Context context) {
+        return serviceManager.storagePools()
+            .listPlatformConsoleActivationCodeWithResponse(resourceGroupName, storagePoolName, context);
+    }
+
+    public PlatformConsoleActivationCode listPlatformConsoleActivationCode() {
+        return serviceManager.storagePools().listPlatformConsoleActivationCode(resourceGroupName, storagePoolName);
+    }
+
+    public Response<PlatformConsoleAuthResult>
+        configurePlatformConsoleAuthWithResponse(PlatformConsoleAuthConfig config, Context context) {
+        return serviceManager.storagePools()
+            .configurePlatformConsoleAuthWithResponse(resourceGroupName, storagePoolName, config, context);
+    }
+
+    public PlatformConsoleAuthResult configurePlatformConsoleAuth(PlatformConsoleAuthConfig config) {
+        return serviceManager.storagePools().configurePlatformConsoleAuth(resourceGroupName, storagePoolName, config);
     }
 
     public StoragePoolImpl withRegion(Region location) {

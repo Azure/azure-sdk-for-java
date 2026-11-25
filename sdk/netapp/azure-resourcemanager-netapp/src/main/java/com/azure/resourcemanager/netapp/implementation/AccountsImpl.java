@@ -49,7 +49,7 @@ public final class AccountsImpl implements Accounts {
     }
 
     public void deleteByResourceGroup(String resourceGroupName, String accountName) {
-        this.serviceClient().delete(resourceGroupName, accountName);
+        this.delete(resourceGroupName, accountName, Context.NONE);
     }
 
     public void delete(String resourceGroupName, String accountName, Context context) {
@@ -57,8 +57,7 @@ public final class AccountsImpl implements Accounts {
     }
 
     public PagedIterable<NetAppAccount> listByResourceGroup(String resourceGroupName) {
-        PagedIterable<NetAppAccountInner> inner = this.serviceClient().listByResourceGroup(resourceGroupName);
-        return ResourceManagerUtils.mapPage(inner, inner1 -> new NetAppAccountImpl(inner1, this.manager()));
+        return this.listByResourceGroup(resourceGroupName, Context.NONE);
     }
 
     public PagedIterable<NetAppAccount> listByResourceGroup(String resourceGroupName, Context context) {
@@ -67,8 +66,7 @@ public final class AccountsImpl implements Accounts {
     }
 
     public PagedIterable<NetAppAccount> list() {
-        PagedIterable<NetAppAccountInner> inner = this.serviceClient().list();
-        return ResourceManagerUtils.mapPage(inner, inner1 -> new NetAppAccountImpl(inner1, this.manager()));
+        return this.list(Context.NONE);
     }
 
     public PagedIterable<NetAppAccount> list(Context context) {
@@ -77,7 +75,7 @@ public final class AccountsImpl implements Accounts {
     }
 
     public void renewCredentials(String resourceGroupName, String accountName) {
-        this.serviceClient().renewCredentials(resourceGroupName, accountName);
+        this.renewCredentials(resourceGroupName, accountName, Context.NONE);
     }
 
     public void renewCredentials(String resourceGroupName, String accountName, Context context) {
@@ -94,13 +92,7 @@ public final class AccountsImpl implements Accounts {
     }
 
     public GetKeyVaultStatusResponse getChangeKeyVaultInformation(String resourceGroupName, String accountName) {
-        GetKeyVaultStatusResponseInner inner
-            = this.serviceClient().getChangeKeyVaultInformation(resourceGroupName, accountName);
-        if (inner != null) {
-            return new GetKeyVaultStatusResponseImpl(inner, this.manager());
-        } else {
-            return null;
-        }
+        return this.getChangeKeyVaultInformation(resourceGroupName, accountName, Context.NONE);
     }
 
     public GetKeyVaultStatusResponse getChangeKeyVaultInformation(String resourceGroupName, String accountName,
@@ -122,59 +114,39 @@ public final class AccountsImpl implements Accounts {
         this.serviceClient().changeKeyVault(resourceGroupName, accountName, body, context);
     }
 
+    public void refreshLdapBindPassword(String resourceGroupName, String accountName) {
+        this.refreshLdapBindPassword(resourceGroupName, accountName, Context.NONE);
+    }
+
+    public void refreshLdapBindPassword(String resourceGroupName, String accountName, Context context) {
+        this.serviceClient().refreshLdapBindPassword(resourceGroupName, accountName, context);
+    }
+
     public NetAppAccount getById(String id) {
-        String resourceGroupName = ResourceManagerUtils.getValueFromIdByName(id, "resourceGroups");
-        if (resourceGroupName == null) {
-            throw LOGGER.logExceptionAsError(new IllegalArgumentException(
-                String.format("The resource ID '%s' is not valid. Missing path segment 'resourceGroups'.", id)));
-        }
-        String accountName = ResourceManagerUtils.getValueFromIdByName(id, "netAppAccounts");
-        if (accountName == null) {
-            throw LOGGER.logExceptionAsError(new IllegalArgumentException(
-                String.format("The resource ID '%s' is not valid. Missing path segment 'netAppAccounts'.", id)));
-        }
-        return this.getByResourceGroupWithResponse(resourceGroupName, accountName, Context.NONE).getValue();
+        return this.getByIdWithResponse(id, Context.NONE).getValue();
     }
 
     public Response<NetAppAccount> getByIdWithResponse(String id, Context context) {
-        String resourceGroupName = ResourceManagerUtils.getValueFromIdByName(id, "resourceGroups");
-        if (resourceGroupName == null) {
-            throw LOGGER.logExceptionAsError(new IllegalArgumentException(
-                String.format("The resource ID '%s' is not valid. Missing path segment 'resourceGroups'.", id)));
-        }
-        String accountName = ResourceManagerUtils.getValueFromIdByName(id, "netAppAccounts");
-        if (accountName == null) {
-            throw LOGGER.logExceptionAsError(new IllegalArgumentException(
-                String.format("The resource ID '%s' is not valid. Missing path segment 'netAppAccounts'.", id)));
-        }
+        String resourceGroupName = ResourceManagerUtils.getRequiredValueFromIdByParameterName(id,
+            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.NetApp/netAppAccounts/{accountName}",
+            "resourceGroupName", "resourceGroups", LOGGER);
+        String accountName = ResourceManagerUtils.getRequiredValueFromIdByParameterName(id,
+            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.NetApp/netAppAccounts/{accountName}",
+            "accountName", "netAppAccounts", LOGGER);
         return this.getByResourceGroupWithResponse(resourceGroupName, accountName, context);
     }
 
     public void deleteById(String id) {
-        String resourceGroupName = ResourceManagerUtils.getValueFromIdByName(id, "resourceGroups");
-        if (resourceGroupName == null) {
-            throw LOGGER.logExceptionAsError(new IllegalArgumentException(
-                String.format("The resource ID '%s' is not valid. Missing path segment 'resourceGroups'.", id)));
-        }
-        String accountName = ResourceManagerUtils.getValueFromIdByName(id, "netAppAccounts");
-        if (accountName == null) {
-            throw LOGGER.logExceptionAsError(new IllegalArgumentException(
-                String.format("The resource ID '%s' is not valid. Missing path segment 'netAppAccounts'.", id)));
-        }
-        this.delete(resourceGroupName, accountName, Context.NONE);
+        this.deleteByIdWithResponse(id, Context.NONE);
     }
 
     public void deleteByIdWithResponse(String id, Context context) {
-        String resourceGroupName = ResourceManagerUtils.getValueFromIdByName(id, "resourceGroups");
-        if (resourceGroupName == null) {
-            throw LOGGER.logExceptionAsError(new IllegalArgumentException(
-                String.format("The resource ID '%s' is not valid. Missing path segment 'resourceGroups'.", id)));
-        }
-        String accountName = ResourceManagerUtils.getValueFromIdByName(id, "netAppAccounts");
-        if (accountName == null) {
-            throw LOGGER.logExceptionAsError(new IllegalArgumentException(
-                String.format("The resource ID '%s' is not valid. Missing path segment 'netAppAccounts'.", id)));
-        }
+        String resourceGroupName = ResourceManagerUtils.getRequiredValueFromIdByParameterName(id,
+            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.NetApp/netAppAccounts/{accountName}",
+            "resourceGroupName", "resourceGroups", LOGGER);
+        String accountName = ResourceManagerUtils.getRequiredValueFromIdByParameterName(id,
+            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.NetApp/netAppAccounts/{accountName}",
+            "accountName", "netAppAccounts", LOGGER);
         this.delete(resourceGroupName, accountName, context);
     }
 

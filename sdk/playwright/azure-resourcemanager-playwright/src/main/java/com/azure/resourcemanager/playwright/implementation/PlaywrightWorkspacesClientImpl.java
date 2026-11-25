@@ -274,17 +274,7 @@ public final class PlaywrightWorkspacesClientImpl implements PlaywrightWorkspace
             .flatMap(res -> Mono.justOrEmpty(res.getValue()));
     }
 
-    /**
-     * Get a PlaywrightWorkspace.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param playwrightWorkspaceName The name of the PlaywrightWorkspace.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return a PlaywrightWorkspace along with {@link Response}.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Response<PlaywrightWorkspaceInner> getByResourceGroupWithResponse(String resourceGroupName,
         String playwrightWorkspaceName, Context context) {
@@ -293,16 +283,7 @@ public final class PlaywrightWorkspacesClientImpl implements PlaywrightWorkspace
             this.client.getSubscriptionId(), resourceGroupName, playwrightWorkspaceName, accept, context);
     }
 
-    /**
-     * Get a PlaywrightWorkspace.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param playwrightWorkspaceName The name of the PlaywrightWorkspace.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return a PlaywrightWorkspace.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public PlaywrightWorkspaceInner getByResourceGroup(String resourceGroupName, String playwrightWorkspaceName) {
         return getByResourceGroupWithResponse(resourceGroupName, playwrightWorkspaceName, Context.NONE).getValue();
@@ -345,11 +326,7 @@ public final class PlaywrightWorkspacesClientImpl implements PlaywrightWorkspace
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Response<BinaryData> createOrUpdateWithResponse(String resourceGroupName, String playwrightWorkspaceName,
         PlaywrightWorkspaceInner resource) {
-        final String contentType = "application/json";
-        final String accept = "application/json";
-        return service.createOrUpdateSync(this.client.getEndpoint(), this.client.getApiVersion(),
-            this.client.getSubscriptionId(), resourceGroupName, playwrightWorkspaceName, contentType, accept, resource,
-            Context.NONE);
+        return createOrUpdateWithResponse(resourceGroupName, playwrightWorkspaceName, resource, Context.NONE);
     }
 
     /**
@@ -395,38 +372,14 @@ public final class PlaywrightWorkspacesClientImpl implements PlaywrightWorkspace
             this.client.getContext());
     }
 
-    /**
-     * Create a PlaywrightWorkspace.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param playwrightWorkspaceName The name of the PlaywrightWorkspace.
-     * @param resource Resource create parameters.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the {@link SyncPoller} for polling of playwright workspace resource.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public SyncPoller<PollResult<PlaywrightWorkspaceInner>, PlaywrightWorkspaceInner> beginCreateOrUpdate(
         String resourceGroupName, String playwrightWorkspaceName, PlaywrightWorkspaceInner resource) {
-        Response<BinaryData> response
-            = createOrUpdateWithResponse(resourceGroupName, playwrightWorkspaceName, resource);
-        return this.client.<PlaywrightWorkspaceInner, PlaywrightWorkspaceInner>getLroResult(response,
-            PlaywrightWorkspaceInner.class, PlaywrightWorkspaceInner.class, Context.NONE);
+        return beginCreateOrUpdate(resourceGroupName, playwrightWorkspaceName, resource, Context.NONE);
     }
 
-    /**
-     * Create a PlaywrightWorkspace.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param playwrightWorkspaceName The name of the PlaywrightWorkspace.
-     * @param resource Resource create parameters.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the {@link SyncPoller} for polling of playwright workspace resource.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public SyncPoller<PollResult<PlaywrightWorkspaceInner>, PlaywrightWorkspaceInner> beginCreateOrUpdate(
         String resourceGroupName, String playwrightWorkspaceName, PlaywrightWorkspaceInner resource, Context context) {
@@ -454,39 +407,19 @@ public final class PlaywrightWorkspacesClientImpl implements PlaywrightWorkspace
             .flatMap(this.client::getLroFinalResultOrError);
     }
 
-    /**
-     * Create a PlaywrightWorkspace.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param playwrightWorkspaceName The name of the PlaywrightWorkspace.
-     * @param resource Resource create parameters.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return playwright workspace resource.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public PlaywrightWorkspaceInner createOrUpdate(String resourceGroupName, String playwrightWorkspaceName,
         PlaywrightWorkspaceInner resource) {
-        return beginCreateOrUpdate(resourceGroupName, playwrightWorkspaceName, resource).getFinalResult();
+        return createOrUpdate(resourceGroupName, playwrightWorkspaceName, resource, Context.NONE);
     }
 
-    /**
-     * Create a PlaywrightWorkspace.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param playwrightWorkspaceName The name of the PlaywrightWorkspace.
-     * @param resource Resource create parameters.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return playwright workspace resource.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public PlaywrightWorkspaceInner createOrUpdate(String resourceGroupName, String playwrightWorkspaceName,
         PlaywrightWorkspaceInner resource, Context context) {
-        return beginCreateOrUpdate(resourceGroupName, playwrightWorkspaceName, resource, context).getFinalResult();
+        return this.client.getLroFinalResultOrError(
+            beginCreateOrUpdate(resourceGroupName, playwrightWorkspaceName, resource, context));
     }
 
     /**
@@ -530,18 +463,7 @@ public final class PlaywrightWorkspacesClientImpl implements PlaywrightWorkspace
             .flatMap(res -> Mono.justOrEmpty(res.getValue()));
     }
 
-    /**
-     * Updates a Playwright workspace resource synchronously.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param playwrightWorkspaceName The name of the PlaywrightWorkspace.
-     * @param properties The resource properties to be updated.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return playwright workspace resource along with {@link Response}.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Response<PlaywrightWorkspaceInner> updateWithResponse(String resourceGroupName,
         String playwrightWorkspaceName, PlaywrightWorkspaceUpdate properties, Context context) {
@@ -552,17 +474,7 @@ public final class PlaywrightWorkspacesClientImpl implements PlaywrightWorkspace
             properties, context);
     }
 
-    /**
-     * Updates a Playwright workspace resource synchronously.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param playwrightWorkspaceName The name of the PlaywrightWorkspace.
-     * @param properties The resource properties to be updated.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return playwright workspace resource.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public PlaywrightWorkspaceInner update(String resourceGroupName, String playwrightWorkspaceName,
         PlaywrightWorkspaceUpdate properties) {
@@ -600,8 +512,7 @@ public final class PlaywrightWorkspacesClientImpl implements PlaywrightWorkspace
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Response<BinaryData> deleteWithResponse(String resourceGroupName, String playwrightWorkspaceName) {
-        return service.deleteSync(this.client.getEndpoint(), this.client.getApiVersion(),
-            this.client.getSubscriptionId(), resourceGroupName, playwrightWorkspaceName, Context.NONE);
+        return deleteWithResponse(resourceGroupName, playwrightWorkspaceName, Context.NONE);
     }
 
     /**
@@ -640,33 +551,13 @@ public final class PlaywrightWorkspacesClientImpl implements PlaywrightWorkspace
             this.client.getContext());
     }
 
-    /**
-     * Deletes a Playwright workspace resource asynchronously.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param playwrightWorkspaceName The name of the PlaywrightWorkspace.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the {@link SyncPoller} for polling of long-running operation.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public SyncPoller<PollResult<Void>, Void> beginDelete(String resourceGroupName, String playwrightWorkspaceName) {
-        Response<BinaryData> response = deleteWithResponse(resourceGroupName, playwrightWorkspaceName);
-        return this.client.<Void, Void>getLroResult(response, Void.class, Void.class, Context.NONE);
+        return beginDelete(resourceGroupName, playwrightWorkspaceName, Context.NONE);
     }
 
-    /**
-     * Deletes a Playwright workspace resource asynchronously.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param playwrightWorkspaceName The name of the PlaywrightWorkspace.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the {@link SyncPoller} for polling of long-running operation.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public SyncPoller<PollResult<Void>, Void> beginDelete(String resourceGroupName, String playwrightWorkspaceName,
         Context context) {
@@ -690,33 +581,16 @@ public final class PlaywrightWorkspacesClientImpl implements PlaywrightWorkspace
             .flatMap(this.client::getLroFinalResultOrError);
     }
 
-    /**
-     * Deletes a Playwright workspace resource asynchronously.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param playwrightWorkspaceName The name of the PlaywrightWorkspace.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public void delete(String resourceGroupName, String playwrightWorkspaceName) {
-        beginDelete(resourceGroupName, playwrightWorkspaceName).getFinalResult();
+        delete(resourceGroupName, playwrightWorkspaceName, Context.NONE);
     }
 
-    /**
-     * Deletes a Playwright workspace resource asynchronously.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param playwrightWorkspaceName The name of the PlaywrightWorkspace.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public void delete(String resourceGroupName, String playwrightWorkspaceName, Context context) {
-        beginDelete(resourceGroupName, playwrightWorkspaceName, context).getFinalResult();
+        this.client.getLroFinalResultOrError(beginDelete(resourceGroupName, playwrightWorkspaceName, context));
     }
 
     /**
@@ -766,11 +640,7 @@ public final class PlaywrightWorkspacesClientImpl implements PlaywrightWorkspace
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private PagedResponse<PlaywrightWorkspaceInner> listByResourceGroupSinglePage(String resourceGroupName) {
-        final String accept = "application/json";
-        Response<PlaywrightWorkspaceListResult> res = service.listByResourceGroupSync(this.client.getEndpoint(),
-            this.client.getApiVersion(), this.client.getSubscriptionId(), resourceGroupName, accept, Context.NONE);
-        return new PagedResponseBase<>(res.getRequest(), res.getStatusCode(), res.getHeaders(), res.getValue().value(),
-            res.getValue().nextLink(), null);
+        return listByResourceGroupSinglePage(resourceGroupName, Context.NONE);
     }
 
     /**
@@ -793,31 +663,13 @@ public final class PlaywrightWorkspacesClientImpl implements PlaywrightWorkspace
             res.getValue().nextLink(), null);
     }
 
-    /**
-     * List PlaywrightWorkspace resources by resource group.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the response of a PlaywrightWorkspace list operation as paginated response with {@link PagedIterable}.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.COLLECTION)
     public PagedIterable<PlaywrightWorkspaceInner> listByResourceGroup(String resourceGroupName) {
-        return new PagedIterable<>(() -> listByResourceGroupSinglePage(resourceGroupName),
-            nextLink -> listByResourceGroupNextSinglePage(nextLink));
+        return listByResourceGroup(resourceGroupName, Context.NONE);
     }
 
-    /**
-     * List PlaywrightWorkspace resources by resource group.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the response of a PlaywrightWorkspace list operation as paginated response with {@link PagedIterable}.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.COLLECTION)
     public PagedIterable<PlaywrightWorkspaceInner> listByResourceGroup(String resourceGroupName, Context context) {
         return new PagedIterable<>(() -> listByResourceGroupSinglePage(resourceGroupName, context),
@@ -865,11 +717,7 @@ public final class PlaywrightWorkspacesClientImpl implements PlaywrightWorkspace
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private PagedResponse<PlaywrightWorkspaceInner> listSinglePage() {
-        final String accept = "application/json";
-        Response<PlaywrightWorkspaceListResult> res = service.listSync(this.client.getEndpoint(),
-            this.client.getApiVersion(), this.client.getSubscriptionId(), accept, Context.NONE);
-        return new PagedResponseBase<>(res.getRequest(), res.getStatusCode(), res.getHeaders(), res.getValue().value(),
-            res.getValue().nextLink(), null);
+        return listSinglePage(Context.NONE);
     }
 
     /**
@@ -890,27 +738,13 @@ public final class PlaywrightWorkspacesClientImpl implements PlaywrightWorkspace
             res.getValue().nextLink(), null);
     }
 
-    /**
-     * List PlaywrightWorkspace resources by subscription ID.
-     * 
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the response of a PlaywrightWorkspace list operation as paginated response with {@link PagedIterable}.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.COLLECTION)
     public PagedIterable<PlaywrightWorkspaceInner> list() {
-        return new PagedIterable<>(() -> listSinglePage(), nextLink -> listBySubscriptionNextSinglePage(nextLink));
+        return list(Context.NONE);
     }
 
-    /**
-     * List PlaywrightWorkspace resources by subscription ID.
-     * 
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the response of a PlaywrightWorkspace list operation as paginated response with {@link PagedIterable}.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.COLLECTION)
     public PagedIterable<PlaywrightWorkspaceInner> list(Context context) {
         return new PagedIterable<>(() -> listSinglePage(context),
@@ -951,16 +785,7 @@ public final class PlaywrightWorkspacesClientImpl implements PlaywrightWorkspace
         return checkNameAvailabilityWithResponseAsync(body).flatMap(res -> Mono.justOrEmpty(res.getValue()));
     }
 
-    /**
-     * Checks if a Playwright workspace name is available globally.
-     * 
-     * @param body The CheckAvailability request.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the check availability result along with {@link Response}.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Response<CheckNameAvailabilityResponseInner>
         checkNameAvailabilityWithResponse(CheckNameAvailabilityRequest body, Context context) {
@@ -970,15 +795,7 @@ public final class PlaywrightWorkspacesClientImpl implements PlaywrightWorkspace
             this.client.getSubscriptionId(), contentType, accept, body, context);
     }
 
-    /**
-     * Checks if a Playwright workspace name is available globally.
-     * 
-     * @param body The CheckAvailability request.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the check availability result.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public CheckNameAvailabilityResponseInner checkNameAvailability(CheckNameAvailabilityRequest body) {
         return checkNameAvailabilityWithResponse(body, Context.NONE).getValue();
@@ -1016,11 +833,7 @@ public final class PlaywrightWorkspacesClientImpl implements PlaywrightWorkspace
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private PagedResponse<PlaywrightWorkspaceInner> listByResourceGroupNextSinglePage(String nextLink) {
-        final String accept = "application/json";
-        Response<PlaywrightWorkspaceListResult> res
-            = service.listByResourceGroupNextSync(nextLink, this.client.getEndpoint(), accept, Context.NONE);
-        return new PagedResponseBase<>(res.getRequest(), res.getStatusCode(), res.getHeaders(), res.getValue().value(),
-            res.getValue().nextLink(), null);
+        return listByResourceGroupNextSinglePage(nextLink, Context.NONE);
     }
 
     /**
@@ -1075,11 +888,7 @@ public final class PlaywrightWorkspacesClientImpl implements PlaywrightWorkspace
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private PagedResponse<PlaywrightWorkspaceInner> listBySubscriptionNextSinglePage(String nextLink) {
-        final String accept = "application/json";
-        Response<PlaywrightWorkspaceListResult> res
-            = service.listBySubscriptionNextSync(nextLink, this.client.getEndpoint(), accept, Context.NONE);
-        return new PagedResponseBase<>(res.getRequest(), res.getStatusCode(), res.getHeaders(), res.getValue().value(),
-            res.getValue().nextLink(), null);
+        return listBySubscriptionNextSinglePage(nextLink, Context.NONE);
     }
 
     /**

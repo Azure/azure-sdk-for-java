@@ -28,7 +28,7 @@ public final class ManagedPrivateEndpointsImpl implements ManagedPrivateEndpoint
     }
 
     public void refresh(String resourceGroupName, String workspaceName) {
-        this.serviceClient().refresh(resourceGroupName, workspaceName);
+        this.refresh(resourceGroupName, workspaceName, Context.NONE);
     }
 
     public void refresh(String resourceGroupName, String workspaceName, Context context) {
@@ -55,7 +55,7 @@ public final class ManagedPrivateEndpointsImpl implements ManagedPrivateEndpoint
     }
 
     public void delete(String resourceGroupName, String workspaceName, String managedPrivateEndpointName) {
-        this.serviceClient().delete(resourceGroupName, workspaceName, managedPrivateEndpointName);
+        this.delete(resourceGroupName, workspaceName, managedPrivateEndpointName, Context.NONE);
     }
 
     public void delete(String resourceGroupName, String workspaceName, String managedPrivateEndpointName,
@@ -64,10 +64,7 @@ public final class ManagedPrivateEndpointsImpl implements ManagedPrivateEndpoint
     }
 
     public PagedIterable<ManagedPrivateEndpointModel> list(String resourceGroupName, String workspaceName) {
-        PagedIterable<ManagedPrivateEndpointModelInner> inner
-            = this.serviceClient().list(resourceGroupName, workspaceName);
-        return ResourceManagerUtils.mapPage(inner,
-            inner1 -> new ManagedPrivateEndpointModelImpl(inner1, this.manager()));
+        return this.list(resourceGroupName, workspaceName, Context.NONE);
     }
 
     public PagedIterable<ManagedPrivateEndpointModel> list(String resourceGroupName, String workspaceName,
@@ -79,79 +76,36 @@ public final class ManagedPrivateEndpointsImpl implements ManagedPrivateEndpoint
     }
 
     public ManagedPrivateEndpointModel getById(String id) {
-        String resourceGroupName = ResourceManagerUtils.getValueFromIdByName(id, "resourceGroups");
-        if (resourceGroupName == null) {
-            throw LOGGER.logExceptionAsError(new IllegalArgumentException(
-                String.format("The resource ID '%s' is not valid. Missing path segment 'resourceGroups'.", id)));
-        }
-        String workspaceName = ResourceManagerUtils.getValueFromIdByName(id, "grafana");
-        if (workspaceName == null) {
-            throw LOGGER.logExceptionAsError(new IllegalArgumentException(
-                String.format("The resource ID '%s' is not valid. Missing path segment 'grafana'.", id)));
-        }
-        String managedPrivateEndpointName = ResourceManagerUtils.getValueFromIdByName(id, "managedPrivateEndpoints");
-        if (managedPrivateEndpointName == null) {
-            throw LOGGER.logExceptionAsError(new IllegalArgumentException(String
-                .format("The resource ID '%s' is not valid. Missing path segment 'managedPrivateEndpoints'.", id)));
-        }
-        return this.getWithResponse(resourceGroupName, workspaceName, managedPrivateEndpointName, Context.NONE)
-            .getValue();
+        return this.getByIdWithResponse(id, Context.NONE).getValue();
     }
 
     public Response<ManagedPrivateEndpointModel> getByIdWithResponse(String id, Context context) {
-        String resourceGroupName = ResourceManagerUtils.getValueFromIdByName(id, "resourceGroups");
-        if (resourceGroupName == null) {
-            throw LOGGER.logExceptionAsError(new IllegalArgumentException(
-                String.format("The resource ID '%s' is not valid. Missing path segment 'resourceGroups'.", id)));
-        }
-        String workspaceName = ResourceManagerUtils.getValueFromIdByName(id, "grafana");
-        if (workspaceName == null) {
-            throw LOGGER.logExceptionAsError(new IllegalArgumentException(
-                String.format("The resource ID '%s' is not valid. Missing path segment 'grafana'.", id)));
-        }
-        String managedPrivateEndpointName = ResourceManagerUtils.getValueFromIdByName(id, "managedPrivateEndpoints");
-        if (managedPrivateEndpointName == null) {
-            throw LOGGER.logExceptionAsError(new IllegalArgumentException(String
-                .format("The resource ID '%s' is not valid. Missing path segment 'managedPrivateEndpoints'.", id)));
-        }
+        String resourceGroupName = ResourceManagerUtils.getRequiredValueFromIdByParameterName(id,
+            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Dashboard/grafana/{workspaceName}/managedPrivateEndpoints/{managedPrivateEndpointName}",
+            "resourceGroupName", "resourceGroups", LOGGER);
+        String workspaceName = ResourceManagerUtils.getRequiredValueFromIdByParameterName(id,
+            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Dashboard/grafana/{workspaceName}/managedPrivateEndpoints/{managedPrivateEndpointName}",
+            "workspaceName", "grafana", LOGGER);
+        String managedPrivateEndpointName = ResourceManagerUtils.getRequiredValueFromIdByParameterName(id,
+            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Dashboard/grafana/{workspaceName}/managedPrivateEndpoints/{managedPrivateEndpointName}",
+            "managedPrivateEndpointName", "managedPrivateEndpoints", LOGGER);
         return this.getWithResponse(resourceGroupName, workspaceName, managedPrivateEndpointName, context);
     }
 
     public void deleteById(String id) {
-        String resourceGroupName = ResourceManagerUtils.getValueFromIdByName(id, "resourceGroups");
-        if (resourceGroupName == null) {
-            throw LOGGER.logExceptionAsError(new IllegalArgumentException(
-                String.format("The resource ID '%s' is not valid. Missing path segment 'resourceGroups'.", id)));
-        }
-        String workspaceName = ResourceManagerUtils.getValueFromIdByName(id, "grafana");
-        if (workspaceName == null) {
-            throw LOGGER.logExceptionAsError(new IllegalArgumentException(
-                String.format("The resource ID '%s' is not valid. Missing path segment 'grafana'.", id)));
-        }
-        String managedPrivateEndpointName = ResourceManagerUtils.getValueFromIdByName(id, "managedPrivateEndpoints");
-        if (managedPrivateEndpointName == null) {
-            throw LOGGER.logExceptionAsError(new IllegalArgumentException(String
-                .format("The resource ID '%s' is not valid. Missing path segment 'managedPrivateEndpoints'.", id)));
-        }
-        this.delete(resourceGroupName, workspaceName, managedPrivateEndpointName, Context.NONE);
+        this.deleteByIdWithResponse(id, Context.NONE);
     }
 
     public void deleteByIdWithResponse(String id, Context context) {
-        String resourceGroupName = ResourceManagerUtils.getValueFromIdByName(id, "resourceGroups");
-        if (resourceGroupName == null) {
-            throw LOGGER.logExceptionAsError(new IllegalArgumentException(
-                String.format("The resource ID '%s' is not valid. Missing path segment 'resourceGroups'.", id)));
-        }
-        String workspaceName = ResourceManagerUtils.getValueFromIdByName(id, "grafana");
-        if (workspaceName == null) {
-            throw LOGGER.logExceptionAsError(new IllegalArgumentException(
-                String.format("The resource ID '%s' is not valid. Missing path segment 'grafana'.", id)));
-        }
-        String managedPrivateEndpointName = ResourceManagerUtils.getValueFromIdByName(id, "managedPrivateEndpoints");
-        if (managedPrivateEndpointName == null) {
-            throw LOGGER.logExceptionAsError(new IllegalArgumentException(String
-                .format("The resource ID '%s' is not valid. Missing path segment 'managedPrivateEndpoints'.", id)));
-        }
+        String resourceGroupName = ResourceManagerUtils.getRequiredValueFromIdByParameterName(id,
+            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Dashboard/grafana/{workspaceName}/managedPrivateEndpoints/{managedPrivateEndpointName}",
+            "resourceGroupName", "resourceGroups", LOGGER);
+        String workspaceName = ResourceManagerUtils.getRequiredValueFromIdByParameterName(id,
+            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Dashboard/grafana/{workspaceName}/managedPrivateEndpoints/{managedPrivateEndpointName}",
+            "workspaceName", "grafana", LOGGER);
+        String managedPrivateEndpointName = ResourceManagerUtils.getRequiredValueFromIdByParameterName(id,
+            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Dashboard/grafana/{workspaceName}/managedPrivateEndpoints/{managedPrivateEndpointName}",
+            "managedPrivateEndpointName", "managedPrivateEndpoints", LOGGER);
         this.delete(resourceGroupName, workspaceName, managedPrivateEndpointName, context);
     }
 

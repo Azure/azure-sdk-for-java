@@ -13,21 +13,21 @@ public final class MaterializedViewsBuilderServiceResourceCreateUpdateParameters
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
         MaterializedViewsBuilderServiceResourceCreateUpdateParameters model = BinaryData.fromString(
-            "{\"serviceType\":\"MaterializedViewsBuilder\",\"instanceSize\":\"Cosmos.D16s\",\"instanceCount\":1078954757}")
+            "{\"serviceType\":\"MaterializedViewsBuilder\",\"instanceSize\":\"Cosmos.D8s\",\"instanceCount\":804575113}")
             .toObject(MaterializedViewsBuilderServiceResourceCreateUpdateParameters.class);
-        Assertions.assertEquals(ServiceSize.COSMOS_D16S, model.instanceSize());
-        Assertions.assertEquals(1078954757, model.instanceCount());
+        Assertions.assertEquals(ServiceSize.COSMOS_D8S, model.instanceSize());
+        Assertions.assertEquals(804575113, model.instanceCount());
     }
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
         MaterializedViewsBuilderServiceResourceCreateUpdateParameters model
             = new MaterializedViewsBuilderServiceResourceCreateUpdateParameters()
-                .withInstanceSize(ServiceSize.COSMOS_D16S)
-                .withInstanceCount(1078954757);
+                .withInstanceSize(ServiceSize.COSMOS_D8S)
+                .withInstanceCount(804575113);
         model = BinaryData.fromObject(model)
             .toObject(MaterializedViewsBuilderServiceResourceCreateUpdateParameters.class);
-        Assertions.assertEquals(ServiceSize.COSMOS_D16S, model.instanceSize());
-        Assertions.assertEquals(1078954757, model.instanceCount());
+        Assertions.assertEquals(ServiceSize.COSMOS_D8S, model.instanceSize());
+        Assertions.assertEquals(804575113, model.instanceCount());
     }
 }

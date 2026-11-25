@@ -72,12 +72,7 @@ public final class GlobalParameterResourceImpl
     }
 
     public GlobalParameterResource create() {
-        this.innerObject = serviceManager.serviceClient()
-            .getGlobalParameters()
-            .createOrUpdateWithResponse(resourceGroupName, factoryName, globalParameterName, this.innerModel(),
-                Context.NONE)
-            .getValue();
-        return this;
+        return this.create(Context.NONE);
     }
 
     public GlobalParameterResource create(Context context) {
@@ -99,12 +94,7 @@ public final class GlobalParameterResourceImpl
     }
 
     public GlobalParameterResource apply() {
-        this.innerObject = serviceManager.serviceClient()
-            .getGlobalParameters()
-            .createOrUpdateWithResponse(resourceGroupName, factoryName, globalParameterName, this.innerModel(),
-                Context.NONE)
-            .getValue();
-        return this;
+        return this.apply(Context.NONE);
     }
 
     public GlobalParameterResource apply(Context context) {
@@ -119,17 +109,19 @@ public final class GlobalParameterResourceImpl
         com.azure.resourcemanager.datafactory.DataFactoryManager serviceManager) {
         this.innerObject = innerObject;
         this.serviceManager = serviceManager;
-        this.resourceGroupName = ResourceManagerUtils.getValueFromIdByName(innerObject.id(), "resourceGroups");
-        this.factoryName = ResourceManagerUtils.getValueFromIdByName(innerObject.id(), "factories");
-        this.globalParameterName = ResourceManagerUtils.getValueFromIdByName(innerObject.id(), "globalParameters");
+        this.resourceGroupName = ResourceManagerUtils.getValueFromIdByParameterName(innerObject.id(),
+            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.DataFactory/factories/{factoryName}/globalParameters/{globalParameterName}",
+            "resourceGroupName");
+        this.factoryName = ResourceManagerUtils.getValueFromIdByParameterName(innerObject.id(),
+            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.DataFactory/factories/{factoryName}/globalParameters/{globalParameterName}",
+            "factoryName");
+        this.globalParameterName = ResourceManagerUtils.getValueFromIdByParameterName(innerObject.id(),
+            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.DataFactory/factories/{factoryName}/globalParameters/{globalParameterName}",
+            "globalParameterName");
     }
 
     public GlobalParameterResource refresh() {
-        this.innerObject = serviceManager.serviceClient()
-            .getGlobalParameters()
-            .getWithResponse(resourceGroupName, factoryName, globalParameterName, Context.NONE)
-            .getValue();
-        return this;
+        return this.refresh(Context.NONE);
     }
 
     public GlobalParameterResource refresh(Context context) {

@@ -101,10 +101,7 @@ public final class VirtualNetworkPeeringImpl
     }
 
     public VirtualNetworkPeering create() {
-        this.innerObject = serviceManager.serviceClient()
-            .getVNetPeerings()
-            .createOrUpdate(resourceGroupName, workspaceName, peeringName, this.innerModel(), Context.NONE);
-        return this;
+        return this.create(Context.NONE);
     }
 
     public VirtualNetworkPeering create(Context context) {
@@ -125,10 +122,7 @@ public final class VirtualNetworkPeeringImpl
     }
 
     public VirtualNetworkPeering apply() {
-        this.innerObject = serviceManager.serviceClient()
-            .getVNetPeerings()
-            .createOrUpdate(resourceGroupName, workspaceName, peeringName, this.innerModel(), Context.NONE);
-        return this;
+        return this.apply(Context.NONE);
     }
 
     public VirtualNetworkPeering apply(Context context) {
@@ -142,17 +136,19 @@ public final class VirtualNetworkPeeringImpl
         com.azure.resourcemanager.databricks.AzureDatabricksManager serviceManager) {
         this.innerObject = innerObject;
         this.serviceManager = serviceManager;
-        this.resourceGroupName = ResourceManagerUtils.getValueFromIdByName(innerObject.id(), "resourceGroups");
-        this.workspaceName = ResourceManagerUtils.getValueFromIdByName(innerObject.id(), "workspaces");
-        this.peeringName = ResourceManagerUtils.getValueFromIdByName(innerObject.id(), "virtualNetworkPeerings");
+        this.resourceGroupName = ResourceManagerUtils.getValueFromIdByParameterName(innerObject.id(),
+            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Databricks/workspaces/{workspaceName}/virtualNetworkPeerings/{peeringName}",
+            "resourceGroupName");
+        this.workspaceName = ResourceManagerUtils.getValueFromIdByParameterName(innerObject.id(),
+            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Databricks/workspaces/{workspaceName}/virtualNetworkPeerings/{peeringName}",
+            "workspaceName");
+        this.peeringName = ResourceManagerUtils.getValueFromIdByParameterName(innerObject.id(),
+            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Databricks/workspaces/{workspaceName}/virtualNetworkPeerings/{peeringName}",
+            "peeringName");
     }
 
     public VirtualNetworkPeering refresh() {
-        this.innerObject = serviceManager.serviceClient()
-            .getVNetPeerings()
-            .getWithResponse(resourceGroupName, workspaceName, peeringName, Context.NONE)
-            .getValue();
-        return this;
+        return this.refresh(Context.NONE);
     }
 
     public VirtualNetworkPeering refresh(Context context) {

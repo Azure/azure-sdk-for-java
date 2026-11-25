@@ -47,7 +47,7 @@ public final class PrivateEndpointConnProxiesImpl implements PrivateEndpointConn
     }
 
     public void delete(String resourceGroupName, String vaultName, String privateEndpointConnectionProxyName) {
-        this.serviceClient().delete(resourceGroupName, vaultName, privateEndpointConnectionProxyName);
+        this.delete(resourceGroupName, vaultName, privateEndpointConnectionProxyName, Context.NONE);
     }
 
     public void delete(String resourceGroupName, String vaultName, String privateEndpointConnectionProxyName,
@@ -56,10 +56,7 @@ public final class PrivateEndpointConnProxiesImpl implements PrivateEndpointConn
     }
 
     public PagedIterable<PrivateEndpointConnectionProxy> list(String resourceGroupName, String vaultName) {
-        PagedIterable<PrivateEndpointConnectionProxyInner> inner
-            = this.serviceClient().list(resourceGroupName, vaultName);
-        return ResourceManagerUtils.mapPage(inner,
-            inner1 -> new PrivateEndpointConnectionProxyImpl(inner1, this.manager()));
+        return this.list(resourceGroupName, vaultName, Context.NONE);
     }
 
     public PagedIterable<PrivateEndpointConnectionProxy> list(String resourceGroupName, String vaultName,
@@ -90,83 +87,36 @@ public final class PrivateEndpointConnProxiesImpl implements PrivateEndpointConn
     }
 
     public PrivateEndpointConnectionProxy getById(String id) {
-        String resourceGroupName = ResourceManagerUtils.getValueFromIdByName(id, "resourceGroups");
-        if (resourceGroupName == null) {
-            throw LOGGER.logExceptionAsError(new IllegalArgumentException(
-                String.format("The resource ID '%s' is not valid. Missing path segment 'resourceGroups'.", id)));
-        }
-        String vaultName = ResourceManagerUtils.getValueFromIdByName(id, "replicationVaults");
-        if (vaultName == null) {
-            throw LOGGER.logExceptionAsError(new IllegalArgumentException(
-                String.format("The resource ID '%s' is not valid. Missing path segment 'replicationVaults'.", id)));
-        }
-        String privateEndpointConnectionProxyName
-            = ResourceManagerUtils.getValueFromIdByName(id, "privateEndpointConnectionProxies");
-        if (privateEndpointConnectionProxyName == null) {
-            throw LOGGER.logExceptionAsError(new IllegalArgumentException(String.format(
-                "The resource ID '%s' is not valid. Missing path segment 'privateEndpointConnectionProxies'.", id)));
-        }
-        return this.getWithResponse(resourceGroupName, vaultName, privateEndpointConnectionProxyName, Context.NONE)
-            .getValue();
+        return this.getByIdWithResponse(id, Context.NONE).getValue();
     }
 
     public Response<PrivateEndpointConnectionProxy> getByIdWithResponse(String id, Context context) {
-        String resourceGroupName = ResourceManagerUtils.getValueFromIdByName(id, "resourceGroups");
-        if (resourceGroupName == null) {
-            throw LOGGER.logExceptionAsError(new IllegalArgumentException(
-                String.format("The resource ID '%s' is not valid. Missing path segment 'resourceGroups'.", id)));
-        }
-        String vaultName = ResourceManagerUtils.getValueFromIdByName(id, "replicationVaults");
-        if (vaultName == null) {
-            throw LOGGER.logExceptionAsError(new IllegalArgumentException(
-                String.format("The resource ID '%s' is not valid. Missing path segment 'replicationVaults'.", id)));
-        }
-        String privateEndpointConnectionProxyName
-            = ResourceManagerUtils.getValueFromIdByName(id, "privateEndpointConnectionProxies");
-        if (privateEndpointConnectionProxyName == null) {
-            throw LOGGER.logExceptionAsError(new IllegalArgumentException(String.format(
-                "The resource ID '%s' is not valid. Missing path segment 'privateEndpointConnectionProxies'.", id)));
-        }
+        String resourceGroupName = ResourceManagerUtils.getRequiredValueFromIdByParameterName(id,
+            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.DataReplication/replicationVaults/{vaultName}/privateEndpointConnectionProxies/{privateEndpointConnectionProxyName}",
+            "resourceGroupName", "resourceGroups", LOGGER);
+        String vaultName = ResourceManagerUtils.getRequiredValueFromIdByParameterName(id,
+            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.DataReplication/replicationVaults/{vaultName}/privateEndpointConnectionProxies/{privateEndpointConnectionProxyName}",
+            "vaultName", "replicationVaults", LOGGER);
+        String privateEndpointConnectionProxyName = ResourceManagerUtils.getRequiredValueFromIdByParameterName(id,
+            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.DataReplication/replicationVaults/{vaultName}/privateEndpointConnectionProxies/{privateEndpointConnectionProxyName}",
+            "privateEndpointConnectionProxyName", "privateEndpointConnectionProxies", LOGGER);
         return this.getWithResponse(resourceGroupName, vaultName, privateEndpointConnectionProxyName, context);
     }
 
     public void deleteById(String id) {
-        String resourceGroupName = ResourceManagerUtils.getValueFromIdByName(id, "resourceGroups");
-        if (resourceGroupName == null) {
-            throw LOGGER.logExceptionAsError(new IllegalArgumentException(
-                String.format("The resource ID '%s' is not valid. Missing path segment 'resourceGroups'.", id)));
-        }
-        String vaultName = ResourceManagerUtils.getValueFromIdByName(id, "replicationVaults");
-        if (vaultName == null) {
-            throw LOGGER.logExceptionAsError(new IllegalArgumentException(
-                String.format("The resource ID '%s' is not valid. Missing path segment 'replicationVaults'.", id)));
-        }
-        String privateEndpointConnectionProxyName
-            = ResourceManagerUtils.getValueFromIdByName(id, "privateEndpointConnectionProxies");
-        if (privateEndpointConnectionProxyName == null) {
-            throw LOGGER.logExceptionAsError(new IllegalArgumentException(String.format(
-                "The resource ID '%s' is not valid. Missing path segment 'privateEndpointConnectionProxies'.", id)));
-        }
-        this.delete(resourceGroupName, vaultName, privateEndpointConnectionProxyName, Context.NONE);
+        this.deleteByIdWithResponse(id, Context.NONE);
     }
 
     public void deleteByIdWithResponse(String id, Context context) {
-        String resourceGroupName = ResourceManagerUtils.getValueFromIdByName(id, "resourceGroups");
-        if (resourceGroupName == null) {
-            throw LOGGER.logExceptionAsError(new IllegalArgumentException(
-                String.format("The resource ID '%s' is not valid. Missing path segment 'resourceGroups'.", id)));
-        }
-        String vaultName = ResourceManagerUtils.getValueFromIdByName(id, "replicationVaults");
-        if (vaultName == null) {
-            throw LOGGER.logExceptionAsError(new IllegalArgumentException(
-                String.format("The resource ID '%s' is not valid. Missing path segment 'replicationVaults'.", id)));
-        }
-        String privateEndpointConnectionProxyName
-            = ResourceManagerUtils.getValueFromIdByName(id, "privateEndpointConnectionProxies");
-        if (privateEndpointConnectionProxyName == null) {
-            throw LOGGER.logExceptionAsError(new IllegalArgumentException(String.format(
-                "The resource ID '%s' is not valid. Missing path segment 'privateEndpointConnectionProxies'.", id)));
-        }
+        String resourceGroupName = ResourceManagerUtils.getRequiredValueFromIdByParameterName(id,
+            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.DataReplication/replicationVaults/{vaultName}/privateEndpointConnectionProxies/{privateEndpointConnectionProxyName}",
+            "resourceGroupName", "resourceGroups", LOGGER);
+        String vaultName = ResourceManagerUtils.getRequiredValueFromIdByParameterName(id,
+            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.DataReplication/replicationVaults/{vaultName}/privateEndpointConnectionProxies/{privateEndpointConnectionProxyName}",
+            "vaultName", "replicationVaults", LOGGER);
+        String privateEndpointConnectionProxyName = ResourceManagerUtils.getRequiredValueFromIdByParameterName(id,
+            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.DataReplication/replicationVaults/{vaultName}/privateEndpointConnectionProxies/{privateEndpointConnectionProxyName}",
+            "privateEndpointConnectionProxyName", "privateEndpointConnectionProxies", LOGGER);
         this.delete(resourceGroupName, vaultName, privateEndpointConnectionProxyName, context);
     }
 

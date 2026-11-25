@@ -94,19 +94,7 @@ public final class LoadBalancerFrontendIpConfigurationsClientImpl
             @HeaderParam("Accept") String accept, Context context);
     }
 
-    /**
-     * Gets load balancer frontend IP configuration.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param loadBalancerName The name of the load balancer.
-     * @param frontendIPConfigurationName The name of the resource that is unique within the set of frontend IP
-     * configurations used by the load balancer. This name can be used to access the resource.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return load balancer frontend IP configuration along with {@link Response} on successful completion of
-     * {@link Mono}.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Response<FrontendIpConfigurationInner>> getWithResponseAsync(String resourceGroupName,
         String loadBalancerName, String frontendIPConfigurationName) {
@@ -130,7 +118,7 @@ public final class LoadBalancerFrontendIpConfigurationsClientImpl
             return Mono.error(
                 new IllegalArgumentException("Parameter frontendIPConfigurationName is required and cannot be null."));
         }
-        final String apiVersion = "2025-07-01";
+        final String apiVersion = "2026-05-01";
         final String accept = "application/json";
         return FluxUtil
             .withContext(context -> service.get(this.client.getEndpoint(), apiVersion, this.client.getSubscriptionId(),
@@ -175,25 +163,14 @@ public final class LoadBalancerFrontendIpConfigurationsClientImpl
             return Mono.error(
                 new IllegalArgumentException("Parameter frontendIPConfigurationName is required and cannot be null."));
         }
-        final String apiVersion = "2025-07-01";
+        final String apiVersion = "2026-05-01";
         final String accept = "application/json";
         context = this.client.mergeContext(context);
         return service.get(this.client.getEndpoint(), apiVersion, this.client.getSubscriptionId(), resourceGroupName,
             loadBalancerName, frontendIPConfigurationName, accept, context);
     }
 
-    /**
-     * Gets load balancer frontend IP configuration.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param loadBalancerName The name of the load balancer.
-     * @param frontendIPConfigurationName The name of the resource that is unique within the set of frontend IP
-     * configurations used by the load balancer. This name can be used to access the resource.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return load balancer frontend IP configuration on successful completion of {@link Mono}.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<FrontendIpConfigurationInner> getAsync(String resourceGroupName, String loadBalancerName,
         String frontendIPConfigurationName) {
@@ -201,37 +178,14 @@ public final class LoadBalancerFrontendIpConfigurationsClientImpl
             .flatMap(res -> Mono.justOrEmpty(res.getValue()));
     }
 
-    /**
-     * Gets load balancer frontend IP configuration.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param loadBalancerName The name of the load balancer.
-     * @param frontendIPConfigurationName The name of the resource that is unique within the set of frontend IP
-     * configurations used by the load balancer. This name can be used to access the resource.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return load balancer frontend IP configuration along with {@link Response}.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Response<FrontendIpConfigurationInner> getWithResponse(String resourceGroupName, String loadBalancerName,
         String frontendIPConfigurationName, Context context) {
         return getWithResponseAsync(resourceGroupName, loadBalancerName, frontendIPConfigurationName, context).block();
     }
 
-    /**
-     * Gets load balancer frontend IP configuration.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param loadBalancerName The name of the load balancer.
-     * @param frontendIPConfigurationName The name of the resource that is unique within the set of frontend IP
-     * configurations used by the load balancer. This name can be used to access the resource.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return load balancer frontend IP configuration.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public FrontendIpConfigurationInner get(String resourceGroupName, String loadBalancerName,
         String frontendIPConfigurationName) {
@@ -269,7 +223,7 @@ public final class LoadBalancerFrontendIpConfigurationsClientImpl
             return Mono
                 .error(new IllegalArgumentException("Parameter loadBalancerName is required and cannot be null."));
         }
-        final String apiVersion = "2025-07-01";
+        final String apiVersion = "2026-05-01";
         final String accept = "application/json";
         return FluxUtil
             .withContext(context -> service.list(this.client.getEndpoint(), apiVersion, this.client.getSubscriptionId(),
@@ -310,7 +264,7 @@ public final class LoadBalancerFrontendIpConfigurationsClientImpl
             return Mono
                 .error(new IllegalArgumentException("Parameter loadBalancerName is required and cannot be null."));
         }
-        final String apiVersion = "2025-07-01";
+        final String apiVersion = "2026-05-01";
         final String accept = "application/json";
         context = this.client.mergeContext(context);
         return service
@@ -320,16 +274,7 @@ public final class LoadBalancerFrontendIpConfigurationsClientImpl
                 res.getValue().value(), res.getValue().nextLink(), null));
     }
 
-    /**
-     * Gets all the load balancer frontend IP configurations.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param loadBalancerName The name of the load balancer.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return all the load balancer frontend IP configurations as paginated response with {@link PagedFlux}.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.COLLECTION)
     public PagedFlux<FrontendIpConfigurationInner> listAsync(String resourceGroupName, String loadBalancerName) {
         return new PagedFlux<>(() -> listSinglePageAsync(resourceGroupName, loadBalancerName),
@@ -354,32 +299,13 @@ public final class LoadBalancerFrontendIpConfigurationsClientImpl
             nextLink -> listNextSinglePageAsync(nextLink, context));
     }
 
-    /**
-     * Gets all the load balancer frontend IP configurations.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param loadBalancerName The name of the load balancer.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return all the load balancer frontend IP configurations as paginated response with {@link PagedIterable}.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.COLLECTION)
     public PagedIterable<FrontendIpConfigurationInner> list(String resourceGroupName, String loadBalancerName) {
         return new PagedIterable<>(listAsync(resourceGroupName, loadBalancerName));
     }
 
-    /**
-     * Gets all the load balancer frontend IP configurations.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param loadBalancerName The name of the load balancer.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return all the load balancer frontend IP configurations as paginated response with {@link PagedIterable}.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.COLLECTION)
     public PagedIterable<FrontendIpConfigurationInner> list(String resourceGroupName, String loadBalancerName,
         Context context) {

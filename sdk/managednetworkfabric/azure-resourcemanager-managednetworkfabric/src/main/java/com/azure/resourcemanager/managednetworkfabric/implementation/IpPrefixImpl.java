@@ -118,10 +118,7 @@ public final class IpPrefixImpl implements IpPrefix, IpPrefix.Definition, IpPref
     }
 
     public IpPrefix create() {
-        this.innerObject = serviceManager.serviceClient()
-            .getIpPrefixes()
-            .create(resourceGroupName, ipPrefixName, this.innerModel(), Context.NONE);
-        return this;
+        return this.create(Context.NONE);
     }
 
     public IpPrefix create(Context context) {
@@ -144,10 +141,7 @@ public final class IpPrefixImpl implements IpPrefix, IpPrefix.Definition, IpPref
     }
 
     public IpPrefix apply() {
-        this.innerObject = serviceManager.serviceClient()
-            .getIpPrefixes()
-            .update(resourceGroupName, ipPrefixName, updateBody, Context.NONE);
-        return this;
+        return this.apply(Context.NONE);
     }
 
     public IpPrefix apply(Context context) {
@@ -161,16 +155,16 @@ public final class IpPrefixImpl implements IpPrefix, IpPrefix.Definition, IpPref
         com.azure.resourcemanager.managednetworkfabric.ManagedNetworkFabricManager serviceManager) {
         this.innerObject = innerObject;
         this.serviceManager = serviceManager;
-        this.resourceGroupName = ResourceManagerUtils.getValueFromIdByName(innerObject.id(), "resourceGroups");
-        this.ipPrefixName = ResourceManagerUtils.getValueFromIdByName(innerObject.id(), "ipPrefixes");
+        this.resourceGroupName = ResourceManagerUtils.getValueFromIdByParameterName(innerObject.id(),
+            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.ManagedNetworkFabric/ipPrefixes/{ipPrefixName}",
+            "resourceGroupName");
+        this.ipPrefixName = ResourceManagerUtils.getValueFromIdByParameterName(innerObject.id(),
+            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.ManagedNetworkFabric/ipPrefixes/{ipPrefixName}",
+            "ipPrefixName");
     }
 
     public IpPrefix refresh() {
-        this.innerObject = serviceManager.serviceClient()
-            .getIpPrefixes()
-            .getByResourceGroupWithResponse(resourceGroupName, ipPrefixName, Context.NONE)
-            .getValue();
-        return this;
+        return this.refresh(Context.NONE);
     }
 
     public IpPrefix refresh(Context context) {

@@ -41,6 +41,7 @@ import com.azure.resourcemanager.network.fluent.models.VirtualNetworkUsageInner;
 import com.azure.resourcemanager.network.implementation.models.VirtualNetworkDdosProtectionStatusResult;
 import com.azure.resourcemanager.network.implementation.models.VirtualNetworkListResult;
 import com.azure.resourcemanager.network.implementation.models.VirtualNetworkListUsageResult;
+import com.azure.resourcemanager.network.models.MoveIpConfigurationsRequest;
 import com.azure.resourcemanager.network.models.TagsObject;
 import com.azure.resourcemanager.resources.fluentcore.collection.InnerSupportsDelete;
 import com.azure.resourcemanager.resources.fluentcore.collection.InnerSupportsGet;
@@ -169,6 +170,16 @@ public final class VirtualNetworksClientImpl implements InnerSupportsGet<Virtual
             @PathParam("virtualNetworkName") String virtualNetworkName, @QueryParam("top") Integer top,
             @QueryParam("skipToken") String skipToken, @HeaderParam("Accept") String accept, Context context);
 
+        @Headers({ "Accept: application/json;q=0.9" })
+        @Post("/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Network/virtualNetworks/{virtualNetworkName}/moveIpConfigurations")
+        @ExpectedResponses({ 200, 202 })
+        @UnexpectedResponseExceptionType(ManagementException.class)
+        Mono<Response<Flux<ByteBuffer>>> moveIpConfigurations(@HostParam("endpoint") String endpoint,
+            @QueryParam("api-version") String apiVersion, @PathParam("subscriptionId") String subscriptionId,
+            @PathParam("resourceGroupName") String resourceGroupName,
+            @PathParam("virtualNetworkName") String virtualNetworkName, @HeaderParam("Content-Type") String contentType,
+            @BodyParam("application/json") MoveIpConfigurationsRequest body, Context context);
+
         @Headers({ "Content-Type: application/json" })
         @Get("{nextLink}")
         @ExpectedResponses({ 200 })
@@ -202,18 +213,7 @@ public final class VirtualNetworksClientImpl implements InnerSupportsGet<Virtual
             @HeaderParam("Accept") String accept, Context context);
     }
 
-    /**
-     * Gets the specified virtual network by resource group.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param virtualNetworkName The name of the virtual network.
-     * @param expand Expands referenced resources.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the specified virtual network by resource group along with {@link Response} on successful completion of
-     * {@link Mono}.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Response<VirtualNetworkInner>> getByResourceGroupWithResponseAsync(String resourceGroupName,
         String virtualNetworkName, String expand) {
@@ -233,7 +233,7 @@ public final class VirtualNetworksClientImpl implements InnerSupportsGet<Virtual
             return Mono
                 .error(new IllegalArgumentException("Parameter virtualNetworkName is required and cannot be null."));
         }
-        final String apiVersion = "2025-07-01";
+        final String apiVersion = "2026-05-01";
         final String accept = "application/json";
         return FluxUtil
             .withContext(context -> service.getByResourceGroup(this.client.getEndpoint(), apiVersion,
@@ -273,23 +273,14 @@ public final class VirtualNetworksClientImpl implements InnerSupportsGet<Virtual
             return Mono
                 .error(new IllegalArgumentException("Parameter virtualNetworkName is required and cannot be null."));
         }
-        final String apiVersion = "2025-07-01";
+        final String apiVersion = "2026-05-01";
         final String accept = "application/json";
         context = this.client.mergeContext(context);
         return service.getByResourceGroup(this.client.getEndpoint(), apiVersion, this.client.getSubscriptionId(),
             resourceGroupName, virtualNetworkName, expand, accept, context);
     }
 
-    /**
-     * Gets the specified virtual network by resource group.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param virtualNetworkName The name of the virtual network.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the specified virtual network by resource group on successful completion of {@link Mono}.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<VirtualNetworkInner> getByResourceGroupAsync(String resourceGroupName, String virtualNetworkName) {
         final String expand = null;
@@ -297,51 +288,21 @@ public final class VirtualNetworksClientImpl implements InnerSupportsGet<Virtual
             .flatMap(res -> Mono.justOrEmpty(res.getValue()));
     }
 
-    /**
-     * Gets the specified virtual network by resource group.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param virtualNetworkName The name of the virtual network.
-     * @param expand Expands referenced resources.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the specified virtual network by resource group along with {@link Response}.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Response<VirtualNetworkInner> getByResourceGroupWithResponse(String resourceGroupName,
         String virtualNetworkName, String expand, Context context) {
         return getByResourceGroupWithResponseAsync(resourceGroupName, virtualNetworkName, expand, context).block();
     }
 
-    /**
-     * Gets the specified virtual network by resource group.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param virtualNetworkName The name of the virtual network.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the specified virtual network by resource group.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public VirtualNetworkInner getByResourceGroup(String resourceGroupName, String virtualNetworkName) {
         final String expand = null;
         return getByResourceGroupWithResponse(resourceGroupName, virtualNetworkName, expand, Context.NONE).getValue();
     }
 
-    /**
-     * Creates or updates a virtual network in the specified resource group.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param virtualNetworkName The name of the virtual network.
-     * @param parameters Parameters supplied to the create or update virtual network operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return virtual Network resource along with {@link Response} on successful completion of {@link Mono}.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Response<Flux<ByteBuffer>>> createOrUpdateWithResponseAsync(String resourceGroupName,
         String virtualNetworkName, VirtualNetworkInner parameters) {
@@ -366,7 +327,7 @@ public final class VirtualNetworksClientImpl implements InnerSupportsGet<Virtual
         } else {
             parameters.validate();
         }
-        final String apiVersion = "2025-07-01";
+        final String apiVersion = "2026-05-01";
         final String contentType = "application/json";
         final String accept = "application/json";
         return FluxUtil
@@ -412,7 +373,7 @@ public final class VirtualNetworksClientImpl implements InnerSupportsGet<Virtual
         } else {
             parameters.validate();
         }
-        final String apiVersion = "2025-07-01";
+        final String apiVersion = "2026-05-01";
         final String contentType = "application/json";
         final String accept = "application/json";
         context = this.client.mergeContext(context);
@@ -420,17 +381,7 @@ public final class VirtualNetworksClientImpl implements InnerSupportsGet<Virtual
             resourceGroupName, virtualNetworkName, contentType, accept, parameters, context);
     }
 
-    /**
-     * Creates or updates a virtual network in the specified resource group.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param virtualNetworkName The name of the virtual network.
-     * @param parameters Parameters supplied to the create or update virtual network operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the {@link PollerFlux} for polling of virtual Network resource.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public PollerFlux<PollResult<VirtualNetworkInner>, VirtualNetworkInner>
         beginCreateOrUpdateAsync(String resourceGroupName, String virtualNetworkName, VirtualNetworkInner parameters) {
@@ -462,35 +413,14 @@ public final class VirtualNetworksClientImpl implements InnerSupportsGet<Virtual
             VirtualNetworkInner.class, VirtualNetworkInner.class, context);
     }
 
-    /**
-     * Creates or updates a virtual network in the specified resource group.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param virtualNetworkName The name of the virtual network.
-     * @param parameters Parameters supplied to the create or update virtual network operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the {@link SyncPoller} for polling of virtual Network resource.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public SyncPoller<PollResult<VirtualNetworkInner>, VirtualNetworkInner>
         beginCreateOrUpdate(String resourceGroupName, String virtualNetworkName, VirtualNetworkInner parameters) {
         return this.beginCreateOrUpdateAsync(resourceGroupName, virtualNetworkName, parameters).getSyncPoller();
     }
 
-    /**
-     * Creates or updates a virtual network in the specified resource group.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param virtualNetworkName The name of the virtual network.
-     * @param parameters Parameters supplied to the create or update virtual network operation.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the {@link SyncPoller} for polling of virtual Network resource.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public SyncPoller<PollResult<VirtualNetworkInner>, VirtualNetworkInner> beginCreateOrUpdate(
         String resourceGroupName, String virtualNetworkName, VirtualNetworkInner parameters, Context context) {
@@ -498,17 +428,7 @@ public final class VirtualNetworksClientImpl implements InnerSupportsGet<Virtual
             .getSyncPoller();
     }
 
-    /**
-     * Creates or updates a virtual network in the specified resource group.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param virtualNetworkName The name of the virtual network.
-     * @param parameters Parameters supplied to the create or update virtual network operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return virtual Network resource on successful completion of {@link Mono}.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<VirtualNetworkInner> createOrUpdateAsync(String resourceGroupName, String virtualNetworkName,
         VirtualNetworkInner parameters) {
@@ -535,52 +455,21 @@ public final class VirtualNetworksClientImpl implements InnerSupportsGet<Virtual
             .flatMap(this.client::getLroFinalResultOrError);
     }
 
-    /**
-     * Creates or updates a virtual network in the specified resource group.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param virtualNetworkName The name of the virtual network.
-     * @param parameters Parameters supplied to the create or update virtual network operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return virtual Network resource.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public VirtualNetworkInner createOrUpdate(String resourceGroupName, String virtualNetworkName,
         VirtualNetworkInner parameters) {
         return createOrUpdateAsync(resourceGroupName, virtualNetworkName, parameters).block();
     }
 
-    /**
-     * Creates or updates a virtual network in the specified resource group.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param virtualNetworkName The name of the virtual network.
-     * @param parameters Parameters supplied to the create or update virtual network operation.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return virtual Network resource.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public VirtualNetworkInner createOrUpdate(String resourceGroupName, String virtualNetworkName,
         VirtualNetworkInner parameters, Context context) {
         return createOrUpdateAsync(resourceGroupName, virtualNetworkName, parameters, context).block();
     }
 
-    /**
-     * Updates a virtual network tags.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param virtualNetworkName The name of the virtual network.
-     * @param parameters Parameters supplied to update virtual network tags.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return virtual Network resource along with {@link Response} on successful completion of {@link Mono}.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Response<VirtualNetworkInner>> updateTagsWithResponseAsync(String resourceGroupName,
         String virtualNetworkName, TagsObject parameters) {
@@ -605,7 +494,7 @@ public final class VirtualNetworksClientImpl implements InnerSupportsGet<Virtual
         } else {
             parameters.validate();
         }
-        final String apiVersion = "2025-07-01";
+        final String apiVersion = "2026-05-01";
         final String contentType = "application/json";
         final String accept = "application/json";
         return FluxUtil
@@ -651,7 +540,7 @@ public final class VirtualNetworksClientImpl implements InnerSupportsGet<Virtual
         } else {
             parameters.validate();
         }
-        final String apiVersion = "2025-07-01";
+        final String apiVersion = "2026-05-01";
         final String contentType = "application/json";
         final String accept = "application/json";
         context = this.client.mergeContext(context);
@@ -659,17 +548,7 @@ public final class VirtualNetworksClientImpl implements InnerSupportsGet<Virtual
             resourceGroupName, virtualNetworkName, contentType, accept, parameters, context);
     }
 
-    /**
-     * Updates a virtual network tags.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param virtualNetworkName The name of the virtual network.
-     * @param parameters Parameters supplied to update virtual network tags.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return virtual Network resource on successful completion of {@link Mono}.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<VirtualNetworkInner> updateTagsAsync(String resourceGroupName, String virtualNetworkName,
         TagsObject parameters) {
@@ -677,50 +556,20 @@ public final class VirtualNetworksClientImpl implements InnerSupportsGet<Virtual
             .flatMap(res -> Mono.justOrEmpty(res.getValue()));
     }
 
-    /**
-     * Updates a virtual network tags.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param virtualNetworkName The name of the virtual network.
-     * @param parameters Parameters supplied to update virtual network tags.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return virtual Network resource along with {@link Response}.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Response<VirtualNetworkInner> updateTagsWithResponse(String resourceGroupName, String virtualNetworkName,
         TagsObject parameters, Context context) {
         return updateTagsWithResponseAsync(resourceGroupName, virtualNetworkName, parameters, context).block();
     }
 
-    /**
-     * Updates a virtual network tags.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param virtualNetworkName The name of the virtual network.
-     * @param parameters Parameters supplied to update virtual network tags.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return virtual Network resource.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public VirtualNetworkInner updateTags(String resourceGroupName, String virtualNetworkName, TagsObject parameters) {
         return updateTagsWithResponse(resourceGroupName, virtualNetworkName, parameters, Context.NONE).getValue();
     }
 
-    /**
-     * Deletes the specified virtual network.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param virtualNetworkName The name of the virtual network.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the {@link Response} on successful completion of {@link Mono}.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Response<Flux<ByteBuffer>>> deleteWithResponseAsync(String resourceGroupName,
         String virtualNetworkName) {
@@ -740,7 +589,7 @@ public final class VirtualNetworksClientImpl implements InnerSupportsGet<Virtual
             return Mono
                 .error(new IllegalArgumentException("Parameter virtualNetworkName is required and cannot be null."));
         }
-        final String apiVersion = "2025-07-01";
+        final String apiVersion = "2026-05-01";
         return FluxUtil
             .withContext(context -> service.delete(this.client.getEndpoint(), apiVersion,
                 this.client.getSubscriptionId(), resourceGroupName, virtualNetworkName, context))
@@ -777,22 +626,13 @@ public final class VirtualNetworksClientImpl implements InnerSupportsGet<Virtual
             return Mono
                 .error(new IllegalArgumentException("Parameter virtualNetworkName is required and cannot be null."));
         }
-        final String apiVersion = "2025-07-01";
+        final String apiVersion = "2026-05-01";
         context = this.client.mergeContext(context);
         return service.delete(this.client.getEndpoint(), apiVersion, this.client.getSubscriptionId(), resourceGroupName,
             virtualNetworkName, context);
     }
 
-    /**
-     * Deletes the specified virtual network.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param virtualNetworkName The name of the virtual network.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the {@link PollerFlux} for polling of long-running operation.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public PollerFlux<PollResult<Void>, Void> beginDeleteAsync(String resourceGroupName, String virtualNetworkName) {
         Mono<Response<Flux<ByteBuffer>>> mono = deleteWithResponseAsync(resourceGroupName, virtualNetworkName);
@@ -820,48 +660,20 @@ public final class VirtualNetworksClientImpl implements InnerSupportsGet<Virtual
             context);
     }
 
-    /**
-     * Deletes the specified virtual network.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param virtualNetworkName The name of the virtual network.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the {@link SyncPoller} for polling of long-running operation.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public SyncPoller<PollResult<Void>, Void> beginDelete(String resourceGroupName, String virtualNetworkName) {
         return this.beginDeleteAsync(resourceGroupName, virtualNetworkName).getSyncPoller();
     }
 
-    /**
-     * Deletes the specified virtual network.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param virtualNetworkName The name of the virtual network.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the {@link SyncPoller} for polling of long-running operation.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public SyncPoller<PollResult<Void>, Void> beginDelete(String resourceGroupName, String virtualNetworkName,
         Context context) {
         return this.beginDeleteAsync(resourceGroupName, virtualNetworkName, context).getSyncPoller();
     }
 
-    /**
-     * Deletes the specified virtual network.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param virtualNetworkName The name of the virtual network.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return A {@link Mono} that completes when a successful response is received.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Void> deleteAsync(String resourceGroupName, String virtualNetworkName) {
         return beginDeleteAsync(resourceGroupName, virtualNetworkName).last()
@@ -885,30 +697,13 @@ public final class VirtualNetworksClientImpl implements InnerSupportsGet<Virtual
             .flatMap(this.client::getLroFinalResultOrError);
     }
 
-    /**
-     * Deletes the specified virtual network.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param virtualNetworkName The name of the virtual network.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public void delete(String resourceGroupName, String virtualNetworkName) {
         deleteAsync(resourceGroupName, virtualNetworkName).block();
     }
 
-    /**
-     * Deletes the specified virtual network.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param virtualNetworkName The name of the virtual network.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public void delete(String resourceGroupName, String virtualNetworkName, Context context) {
         deleteAsync(resourceGroupName, virtualNetworkName, context).block();
@@ -938,7 +733,7 @@ public final class VirtualNetworksClientImpl implements InnerSupportsGet<Virtual
             return Mono
                 .error(new IllegalArgumentException("Parameter resourceGroupName is required and cannot be null."));
         }
-        final String apiVersion = "2025-07-01";
+        final String apiVersion = "2026-05-01";
         final String accept = "application/json";
         return FluxUtil
             .withContext(context -> service.listByResourceGroup(this.client.getEndpoint(), apiVersion,
@@ -974,7 +769,7 @@ public final class VirtualNetworksClientImpl implements InnerSupportsGet<Virtual
             return Mono
                 .error(new IllegalArgumentException("Parameter resourceGroupName is required and cannot be null."));
         }
-        final String apiVersion = "2025-07-01";
+        final String apiVersion = "2026-05-01";
         final String accept = "application/json";
         context = this.client.mergeContext(context);
         return service
@@ -984,15 +779,7 @@ public final class VirtualNetworksClientImpl implements InnerSupportsGet<Virtual
                 res.getValue().value(), res.getValue().nextLink(), null));
     }
 
-    /**
-     * Gets all virtual networks in a resource group.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return all virtual networks in a resource group as paginated response with {@link PagedFlux}.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.COLLECTION)
     public PagedFlux<VirtualNetworkInner> listByResourceGroupAsync(String resourceGroupName) {
         return new PagedFlux<>(() -> listByResourceGroupSinglePageAsync(resourceGroupName),
@@ -1015,30 +802,13 @@ public final class VirtualNetworksClientImpl implements InnerSupportsGet<Virtual
             nextLink -> listNextSinglePageAsync(nextLink, context));
     }
 
-    /**
-     * Gets all virtual networks in a resource group.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return all virtual networks in a resource group as paginated response with {@link PagedIterable}.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.COLLECTION)
     public PagedIterable<VirtualNetworkInner> listByResourceGroup(String resourceGroupName) {
         return new PagedIterable<>(listByResourceGroupAsync(resourceGroupName));
     }
 
-    /**
-     * Gets all virtual networks in a resource group.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return all virtual networks in a resource group as paginated response with {@link PagedIterable}.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.COLLECTION)
     public PagedIterable<VirtualNetworkInner> listByResourceGroup(String resourceGroupName, Context context) {
         return new PagedIterable<>(listByResourceGroupAsync(resourceGroupName, context));
@@ -1062,7 +832,7 @@ public final class VirtualNetworksClientImpl implements InnerSupportsGet<Virtual
             return Mono.error(new IllegalArgumentException(
                 "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
-        final String apiVersion = "2025-07-01";
+        final String apiVersion = "2026-05-01";
         final String accept = "application/json";
         return FluxUtil
             .withContext(context -> service.list(this.client.getEndpoint(), apiVersion, this.client.getSubscriptionId(),
@@ -1092,7 +862,7 @@ public final class VirtualNetworksClientImpl implements InnerSupportsGet<Virtual
             return Mono.error(new IllegalArgumentException(
                 "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
-        final String apiVersion = "2025-07-01";
+        final String apiVersion = "2026-05-01";
         final String accept = "application/json";
         context = this.client.mergeContext(context);
         return service.list(this.client.getEndpoint(), apiVersion, this.client.getSubscriptionId(), accept, context)
@@ -1100,13 +870,7 @@ public final class VirtualNetworksClientImpl implements InnerSupportsGet<Virtual
                 res.getValue().value(), res.getValue().nextLink(), null));
     }
 
-    /**
-     * Gets all virtual networks in a subscription.
-     * 
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return all virtual networks in a subscription as paginated response with {@link PagedFlux}.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.COLLECTION)
     public PagedFlux<VirtualNetworkInner> listAsync() {
         return new PagedFlux<>(() -> listSinglePageAsync(), nextLink -> listAllNextSinglePageAsync(nextLink));
@@ -1127,44 +891,19 @@ public final class VirtualNetworksClientImpl implements InnerSupportsGet<Virtual
             nextLink -> listAllNextSinglePageAsync(nextLink, context));
     }
 
-    /**
-     * Gets all virtual networks in a subscription.
-     * 
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return all virtual networks in a subscription as paginated response with {@link PagedIterable}.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.COLLECTION)
     public PagedIterable<VirtualNetworkInner> list() {
         return new PagedIterable<>(listAsync());
     }
 
-    /**
-     * Gets all virtual networks in a subscription.
-     * 
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return all virtual networks in a subscription as paginated response with {@link PagedIterable}.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.COLLECTION)
     public PagedIterable<VirtualNetworkInner> list(Context context) {
         return new PagedIterable<>(listAsync(context));
     }
 
-    /**
-     * Checks whether a private IP address is available for use.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param virtualNetworkName The name of the virtual network.
-     * @param ipAddress The private IP address to be verified.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return response for CheckIPAddressAvailability API service call along with {@link Response} on successful
-     * completion of {@link Mono}.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Response<IpAddressAvailabilityResultInner>> checkIpAddressAvailabilityWithResponseAsync(
         String resourceGroupName, String virtualNetworkName, String ipAddress) {
@@ -1187,7 +926,7 @@ public final class VirtualNetworksClientImpl implements InnerSupportsGet<Virtual
         if (ipAddress == null) {
             return Mono.error(new IllegalArgumentException("Parameter ipAddress is required and cannot be null."));
         }
-        final String apiVersion = "2025-07-01";
+        final String apiVersion = "2026-05-01";
         final String accept = "application/json";
         return FluxUtil
             .withContext(context -> service.checkIpAddressAvailability(this.client.getEndpoint(), apiVersion,
@@ -1230,24 +969,14 @@ public final class VirtualNetworksClientImpl implements InnerSupportsGet<Virtual
         if (ipAddress == null) {
             return Mono.error(new IllegalArgumentException("Parameter ipAddress is required and cannot be null."));
         }
-        final String apiVersion = "2025-07-01";
+        final String apiVersion = "2026-05-01";
         final String accept = "application/json";
         context = this.client.mergeContext(context);
         return service.checkIpAddressAvailability(this.client.getEndpoint(), apiVersion,
             this.client.getSubscriptionId(), resourceGroupName, virtualNetworkName, ipAddress, accept, context);
     }
 
-    /**
-     * Checks whether a private IP address is available for use.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param virtualNetworkName The name of the virtual network.
-     * @param ipAddress The private IP address to be verified.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return response for CheckIPAddressAvailability API service call on successful completion of {@link Mono}.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<IpAddressAvailabilityResultInner> checkIpAddressAvailabilityAsync(String resourceGroupName,
         String virtualNetworkName, String ipAddress) {
@@ -1255,18 +984,7 @@ public final class VirtualNetworksClientImpl implements InnerSupportsGet<Virtual
             .flatMap(res -> Mono.justOrEmpty(res.getValue()));
     }
 
-    /**
-     * Checks whether a private IP address is available for use.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param virtualNetworkName The name of the virtual network.
-     * @param ipAddress The private IP address to be verified.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return response for CheckIPAddressAvailability API service call along with {@link Response}.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Response<IpAddressAvailabilityResultInner> checkIpAddressAvailabilityWithResponse(String resourceGroupName,
         String virtualNetworkName, String ipAddress, Context context) {
@@ -1274,17 +992,7 @@ public final class VirtualNetworksClientImpl implements InnerSupportsGet<Virtual
             .block();
     }
 
-    /**
-     * Checks whether a private IP address is available for use.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param virtualNetworkName The name of the virtual network.
-     * @param ipAddress The private IP address to be verified.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return response for CheckIPAddressAvailability API service call.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public IpAddressAvailabilityResultInner checkIpAddressAvailability(String resourceGroupName,
         String virtualNetworkName, String ipAddress) {
@@ -1322,7 +1030,7 @@ public final class VirtualNetworksClientImpl implements InnerSupportsGet<Virtual
             return Mono
                 .error(new IllegalArgumentException("Parameter virtualNetworkName is required and cannot be null."));
         }
-        final String apiVersion = "2025-07-01";
+        final String apiVersion = "2026-05-01";
         final String accept = "application/json";
         return FluxUtil
             .withContext(context -> service.listUsage(this.client.getEndpoint(), apiVersion,
@@ -1363,7 +1071,7 @@ public final class VirtualNetworksClientImpl implements InnerSupportsGet<Virtual
             return Mono
                 .error(new IllegalArgumentException("Parameter virtualNetworkName is required and cannot be null."));
         }
-        final String apiVersion = "2025-07-01";
+        final String apiVersion = "2026-05-01";
         final String accept = "application/json";
         context = this.client.mergeContext(context);
         return service
@@ -1373,16 +1081,7 @@ public final class VirtualNetworksClientImpl implements InnerSupportsGet<Virtual
                 res.getValue().value(), res.getValue().nextLink(), null));
     }
 
-    /**
-     * Lists usage stats.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param virtualNetworkName The name of the virtual network.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return response for the virtual networks GetUsage API service call as paginated response with {@link PagedFlux}.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.COLLECTION)
     public PagedFlux<VirtualNetworkUsageInner> listUsageAsync(String resourceGroupName, String virtualNetworkName) {
         return new PagedFlux<>(() -> listUsageSinglePageAsync(resourceGroupName, virtualNetworkName),
@@ -1407,34 +1106,13 @@ public final class VirtualNetworksClientImpl implements InnerSupportsGet<Virtual
             nextLink -> listUsageNextSinglePageAsync(nextLink, context));
     }
 
-    /**
-     * Lists usage stats.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param virtualNetworkName The name of the virtual network.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return response for the virtual networks GetUsage API service call as paginated response with
-     * {@link PagedIterable}.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.COLLECTION)
     public PagedIterable<VirtualNetworkUsageInner> listUsage(String resourceGroupName, String virtualNetworkName) {
         return new PagedIterable<>(listUsageAsync(resourceGroupName, virtualNetworkName));
     }
 
-    /**
-     * Lists usage stats.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param virtualNetworkName The name of the virtual network.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return response for the virtual networks GetUsage API service call as paginated response with
-     * {@link PagedIterable}.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.COLLECTION)
     public PagedIterable<VirtualNetworkUsageInner> listUsage(String resourceGroupName, String virtualNetworkName,
         Context context) {
@@ -1473,7 +1151,7 @@ public final class VirtualNetworksClientImpl implements InnerSupportsGet<Virtual
             return Mono
                 .error(new IllegalArgumentException("Parameter virtualNetworkName is required and cannot be null."));
         }
-        final String apiVersion = "2025-07-01";
+        final String apiVersion = "2026-05-01";
         final String accept = "application/json";
         return FluxUtil.withContext(context -> {
             Mono<Response<Flux<ByteBuffer>>> mono = service
@@ -1527,7 +1205,7 @@ public final class VirtualNetworksClientImpl implements InnerSupportsGet<Virtual
             return Mono
                 .error(new IllegalArgumentException("Parameter virtualNetworkName is required and cannot be null."));
         }
-        final String apiVersion = "2025-07-01";
+        final String apiVersion = "2026-05-01";
         final String accept = "application/json";
         context = this.client.mergeContext(context);
         Mono<Response<Flux<ByteBuffer>>> mono
@@ -1547,19 +1225,7 @@ public final class VirtualNetworksClientImpl implements InnerSupportsGet<Virtual
                 res.getT1().getHeaders(), res.getT2().value(), res.getT2().nextLink(), null));
     }
 
-    /**
-     * Gets the Ddos Protection Status of all IP Addresses under the Virtual Network.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param virtualNetworkName The name of the virtual network.
-     * @param top The max number of ip addresses to return.
-     * @param skipToken The skipToken that is given with nextLink.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the Ddos Protection Status of all IP Addresses under the Virtual Network as paginated response with
-     * {@link PagedFlux}.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.COLLECTION)
     public PagedFlux<PublicIpDdosProtectionStatusResultInner> listDdosProtectionStatusAsync(String resourceGroupName,
         String virtualNetworkName, Integer top, String skipToken) {
@@ -1568,17 +1234,7 @@ public final class VirtualNetworksClientImpl implements InnerSupportsGet<Virtual
             nextLink -> listDdosProtectionStatusNextSinglePageAsync(nextLink));
     }
 
-    /**
-     * Gets the Ddos Protection Status of all IP Addresses under the Virtual Network.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param virtualNetworkName The name of the virtual network.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the Ddos Protection Status of all IP Addresses under the Virtual Network as paginated response with
-     * {@link PagedFlux}.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.COLLECTION)
     public PagedFlux<PublicIpDdosProtectionStatusResultInner> listDdosProtectionStatusAsync(String resourceGroupName,
         String virtualNetworkName) {
@@ -1610,17 +1266,7 @@ public final class VirtualNetworksClientImpl implements InnerSupportsGet<Virtual
             skipToken, context), nextLink -> listDdosProtectionStatusNextSinglePageAsync(nextLink, context));
     }
 
-    /**
-     * Gets the Ddos Protection Status of all IP Addresses under the Virtual Network.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param virtualNetworkName The name of the virtual network.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the Ddos Protection Status of all IP Addresses under the Virtual Network as paginated response with
-     * {@link PagedIterable}.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.COLLECTION)
     public PagedIterable<PublicIpDdosProtectionStatusResultInner> listDdosProtectionStatus(String resourceGroupName,
         String virtualNetworkName) {
@@ -1630,25 +1276,176 @@ public final class VirtualNetworksClientImpl implements InnerSupportsGet<Virtual
             listDdosProtectionStatusAsync(resourceGroupName, virtualNetworkName, top, skipToken));
     }
 
-    /**
-     * Gets the Ddos Protection Status of all IP Addresses under the Virtual Network.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param virtualNetworkName The name of the virtual network.
-     * @param top The max number of ip addresses to return.
-     * @param skipToken The skipToken that is given with nextLink.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the Ddos Protection Status of all IP Addresses under the Virtual Network as paginated response with
-     * {@link PagedIterable}.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.COLLECTION)
     public PagedIterable<PublicIpDdosProtectionStatusResultInner> listDdosProtectionStatus(String resourceGroupName,
         String virtualNetworkName, Integer top, String skipToken, Context context) {
         return new PagedIterable<>(
             listDdosProtectionStatusAsync(resourceGroupName, virtualNetworkName, top, skipToken, context));
+    }
+
+    @Override
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public Mono<Response<Flux<ByteBuffer>>> moveIpConfigurationsWithResponseAsync(String resourceGroupName,
+        String virtualNetworkName, MoveIpConfigurationsRequest body) {
+        if (this.client.getEndpoint() == null) {
+            return Mono.error(
+                new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
+        }
+        if (this.client.getSubscriptionId() == null) {
+            return Mono.error(new IllegalArgumentException(
+                "Parameter this.client.getSubscriptionId() is required and cannot be null."));
+        }
+        if (resourceGroupName == null) {
+            return Mono
+                .error(new IllegalArgumentException("Parameter resourceGroupName is required and cannot be null."));
+        }
+        if (virtualNetworkName == null) {
+            return Mono
+                .error(new IllegalArgumentException("Parameter virtualNetworkName is required and cannot be null."));
+        }
+        if (body == null) {
+            return Mono.error(new IllegalArgumentException("Parameter body is required and cannot be null."));
+        } else {
+            body.validate();
+        }
+        final String apiVersion = "2026-05-01";
+        final String contentType = "application/json";
+        return FluxUtil
+            .withContext(context -> service.moveIpConfigurations(this.client.getEndpoint(), apiVersion,
+                this.client.getSubscriptionId(), resourceGroupName, virtualNetworkName, contentType, body, context))
+            .contextWrite(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext()).readOnly()));
+    }
+
+    /**
+     * Move IP configurations from one virtual network to another.
+     * 
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
+     * @param virtualNetworkName The name of the virtual network.
+     * @param body Parameters supplied to move IP configurations from one virtual network to another.
+     * @param context The context to associate with this operation.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return the {@link Response} on successful completion of {@link Mono}.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    private Mono<Response<Flux<ByteBuffer>>> moveIpConfigurationsWithResponseAsync(String resourceGroupName,
+        String virtualNetworkName, MoveIpConfigurationsRequest body, Context context) {
+        if (this.client.getEndpoint() == null) {
+            return Mono.error(
+                new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
+        }
+        if (this.client.getSubscriptionId() == null) {
+            return Mono.error(new IllegalArgumentException(
+                "Parameter this.client.getSubscriptionId() is required and cannot be null."));
+        }
+        if (resourceGroupName == null) {
+            return Mono
+                .error(new IllegalArgumentException("Parameter resourceGroupName is required and cannot be null."));
+        }
+        if (virtualNetworkName == null) {
+            return Mono
+                .error(new IllegalArgumentException("Parameter virtualNetworkName is required and cannot be null."));
+        }
+        if (body == null) {
+            return Mono.error(new IllegalArgumentException("Parameter body is required and cannot be null."));
+        } else {
+            body.validate();
+        }
+        final String apiVersion = "2026-05-01";
+        final String contentType = "application/json";
+        context = this.client.mergeContext(context);
+        return service.moveIpConfigurations(this.client.getEndpoint(), apiVersion, this.client.getSubscriptionId(),
+            resourceGroupName, virtualNetworkName, contentType, body, context);
+    }
+
+    @Override
+    @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
+    public PollerFlux<PollResult<Void>, Void> beginMoveIpConfigurationsAsync(String resourceGroupName,
+        String virtualNetworkName, MoveIpConfigurationsRequest body) {
+        Mono<Response<Flux<ByteBuffer>>> mono
+            = moveIpConfigurationsWithResponseAsync(resourceGroupName, virtualNetworkName, body);
+        return this.client.<Void, Void>getLroResult(mono, this.client.getHttpPipeline(), Void.class, Void.class,
+            this.client.getContext());
+    }
+
+    /**
+     * Move IP configurations from one virtual network to another.
+     * 
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
+     * @param virtualNetworkName The name of the virtual network.
+     * @param body Parameters supplied to move IP configurations from one virtual network to another.
+     * @param context The context to associate with this operation.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return the {@link PollerFlux} for polling of long-running operation.
+     */
+    @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
+    private PollerFlux<PollResult<Void>, Void> beginMoveIpConfigurationsAsync(String resourceGroupName,
+        String virtualNetworkName, MoveIpConfigurationsRequest body, Context context) {
+        context = this.client.mergeContext(context);
+        Mono<Response<Flux<ByteBuffer>>> mono
+            = moveIpConfigurationsWithResponseAsync(resourceGroupName, virtualNetworkName, body, context);
+        return this.client.<Void, Void>getLroResult(mono, this.client.getHttpPipeline(), Void.class, Void.class,
+            context);
+    }
+
+    @Override
+    @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
+    public SyncPoller<PollResult<Void>, Void> beginMoveIpConfigurations(String resourceGroupName,
+        String virtualNetworkName, MoveIpConfigurationsRequest body) {
+        return this.beginMoveIpConfigurationsAsync(resourceGroupName, virtualNetworkName, body).getSyncPoller();
+    }
+
+    @Override
+    @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
+    public SyncPoller<PollResult<Void>, Void> beginMoveIpConfigurations(String resourceGroupName,
+        String virtualNetworkName, MoveIpConfigurationsRequest body, Context context) {
+        return this.beginMoveIpConfigurationsAsync(resourceGroupName, virtualNetworkName, body, context)
+            .getSyncPoller();
+    }
+
+    @Override
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public Mono<Void> moveIpConfigurationsAsync(String resourceGroupName, String virtualNetworkName,
+        MoveIpConfigurationsRequest body) {
+        return beginMoveIpConfigurationsAsync(resourceGroupName, virtualNetworkName, body).last()
+            .flatMap(this.client::getLroFinalResultOrError);
+    }
+
+    /**
+     * Move IP configurations from one virtual network to another.
+     * 
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
+     * @param virtualNetworkName The name of the virtual network.
+     * @param body Parameters supplied to move IP configurations from one virtual network to another.
+     * @param context The context to associate with this operation.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return A {@link Mono} that completes when a successful response is received.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    private Mono<Void> moveIpConfigurationsAsync(String resourceGroupName, String virtualNetworkName,
+        MoveIpConfigurationsRequest body, Context context) {
+        return beginMoveIpConfigurationsAsync(resourceGroupName, virtualNetworkName, body, context).last()
+            .flatMap(this.client::getLroFinalResultOrError);
+    }
+
+    @Override
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public void moveIpConfigurations(String resourceGroupName, String virtualNetworkName,
+        MoveIpConfigurationsRequest body) {
+        moveIpConfigurationsAsync(resourceGroupName, virtualNetworkName, body).block();
+    }
+
+    @Override
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public void moveIpConfigurations(String resourceGroupName, String virtualNetworkName,
+        MoveIpConfigurationsRequest body, Context context) {
+        moveIpConfigurationsAsync(resourceGroupName, virtualNetworkName, body, context).block();
     }
 
     /**

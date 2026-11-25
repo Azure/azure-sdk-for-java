@@ -207,7 +207,9 @@ public final class VolumePatch implements JsonSerializable<VolumePatch> {
     }
 
     /**
-     * Get the protocolTypes property: Set of protocol types, default NFSv3, CIFS for SMB protocol.
+     * Get the protocolTypes property: Specify the protocol types for the volume. Supported values are NFSv3, NFSv4.1,
+     * and CIFS. For SMB volumes, specify CIFS.
+     * The value SMB isn't supported in the protocolTypes property. Default: NFSv3.
      * 
      * @return the protocolTypes value.
      */
@@ -216,7 +218,9 @@ public final class VolumePatch implements JsonSerializable<VolumePatch> {
     }
 
     /**
-     * Set the protocolTypes property: Set of protocol types, default NFSv3, CIFS for SMB protocol.
+     * Set the protocolTypes property: Specify the protocol types for the volume. Supported values are NFSv3, NFSv4.1,
+     * and CIFS. For SMB volumes, specify CIFS.
+     * The value SMB isn't supported in the protocolTypes property. Default: NFSv3.
      * 
      * @param protocolTypes the protocolTypes value to set.
      * @return the VolumePatch object itself.
@@ -567,6 +571,31 @@ public final class VolumePatch implements JsonSerializable<VolumePatch> {
             this.innerProperties = new VolumePatchProperties();
         }
         this.innerProperties().withSmbNonBrowsable(smbNonBrowsable);
+        return this;
+    }
+
+    /**
+     * Get the smbOplocks property: Enables or disables SMB opportunistic lock property for SMB Shares. Only applicable
+     * for SMB/DualProtocol volume.
+     * 
+     * @return the smbOplocks value.
+     */
+    public SmbOplocks smbOplocks() {
+        return this.innerProperties() == null ? null : this.innerProperties().smbOplocks();
+    }
+
+    /**
+     * Set the smbOplocks property: Enables or disables SMB opportunistic lock property for SMB Shares. Only applicable
+     * for SMB/DualProtocol volume.
+     * 
+     * @param smbOplocks the smbOplocks value to set.
+     * @return the VolumePatch object itself.
+     */
+    public VolumePatch withSmbOplocks(SmbOplocks smbOplocks) {
+        if (this.innerProperties() == null) {
+            this.innerProperties = new VolumePatchProperties();
+        }
+        this.innerProperties().withSmbOplocks(smbOplocks);
         return this;
     }
 

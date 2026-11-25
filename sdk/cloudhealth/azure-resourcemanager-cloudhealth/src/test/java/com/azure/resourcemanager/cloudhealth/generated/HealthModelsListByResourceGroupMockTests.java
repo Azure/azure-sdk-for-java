@@ -23,7 +23,7 @@ public final class HealthModelsListByResourceGroupMockTests {
     @Test
     public void testListByResourceGroup() throws Exception {
         String responseStr
-            = "{\"value\":[{\"properties\":{\"provisioningState\":\"Succeeded\"},\"identity\":{\"principalId\":\"zhokvbwnhh\",\"tenantId\":\"lgehg\",\"type\":\"SystemAssigned\",\"userAssignedIdentities\":{\"tugsresmkssjh\":{\"principalId\":\"fhpfeoajvgcxtx\",\"clientId\":\"sheafid\"},\"ptil\":{\"principalId\":\"ftxfkf\",\"clientId\":\"gpr\"},\"lllibph\":{\"principalId\":\"cbiqtgdqoh\",\"clientId\":\"wsldrizetpwbr\"},\"n\":{\"principalId\":\"zmizakakan\",\"clientId\":\"p\"}}},\"location\":\"ha\",\"tags\":{\"opteecj\":\"lhjlmuoyxprimr\",\"zaum\":\"eislstvasylwx\"},\"id\":\"eoohguufuzboyj\",\"name\":\"thwtzol\",\"type\":\"a\"}]}";
+            = "{\"value\":[{\"properties\":{\"provisioningState\":\"Succeeded\"},\"identity\":{\"principalId\":\"xfkfwegprhptill\",\"tenantId\":\"biqtgdq\",\"type\":\"None\",\"userAssignedIdentities\":{\"qzmiza\":{\"principalId\":\"sldrizetpwbral\",\"clientId\":\"ibph\"},\"n\":{\"principalId\":\"kan\",\"clientId\":\"p\"}}},\"location\":\"ha\",\"tags\":{\"opteecj\":\"lhjlmuoyxprimr\",\"zaum\":\"eislstvasylwx\"},\"id\":\"eoohguufuzboyj\",\"name\":\"thwtzol\",\"type\":\"a\"}]}";
 
         HttpClient httpClient
             = response -> Mono.just(new MockHttpResponse(response, 200, responseStr.getBytes(StandardCharsets.UTF_8)));
@@ -33,11 +33,10 @@ public final class HealthModelsListByResourceGroupMockTests {
                 new AzureProfile("", "", AzureCloud.AZURE_PUBLIC_CLOUD));
 
         PagedIterable<HealthModel> response
-            = manager.healthModels().listByResourceGroup("rjeuut", com.azure.core.util.Context.NONE);
+            = manager.healthModels().listByResourceGroup("smkss", com.azure.core.util.Context.NONE);
 
         Assertions.assertEquals("ha", response.iterator().next().location());
         Assertions.assertEquals("lhjlmuoyxprimr", response.iterator().next().tags().get("opteecj"));
-        Assertions.assertEquals(ManagedServiceIdentityType.SYSTEM_ASSIGNED,
-            response.iterator().next().identity().type());
+        Assertions.assertEquals(ManagedServiceIdentityType.NONE, response.iterator().next().identity().type());
     }
 }

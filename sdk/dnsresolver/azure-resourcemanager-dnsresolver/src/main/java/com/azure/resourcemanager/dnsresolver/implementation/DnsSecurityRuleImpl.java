@@ -132,11 +132,7 @@ public final class DnsSecurityRuleImpl implements DnsSecurityRule, DnsSecurityRu
     }
 
     public DnsSecurityRule create() {
-        this.innerObject = serviceManager.serviceClient()
-            .getDnsSecurityRules()
-            .createOrUpdate(resourceGroupName, dnsResolverPolicyName, dnsSecurityRuleName, this.innerModel(),
-                createIfMatch, createIfNoneMatch, Context.NONE);
-        return this;
+        return this.create(Context.NONE);
     }
 
     public DnsSecurityRule create(Context context) {
@@ -162,11 +158,7 @@ public final class DnsSecurityRuleImpl implements DnsSecurityRule, DnsSecurityRu
     }
 
     public DnsSecurityRule apply() {
-        this.innerObject = serviceManager.serviceClient()
-            .getDnsSecurityRules()
-            .update(resourceGroupName, dnsResolverPolicyName, dnsSecurityRuleName, updateParameters, updateIfMatch,
-                Context.NONE);
-        return this;
+        return this.apply(Context.NONE);
     }
 
     public DnsSecurityRule apply(Context context) {
@@ -181,17 +173,19 @@ public final class DnsSecurityRuleImpl implements DnsSecurityRule, DnsSecurityRu
         com.azure.resourcemanager.dnsresolver.DnsResolverManager serviceManager) {
         this.innerObject = innerObject;
         this.serviceManager = serviceManager;
-        this.resourceGroupName = ResourceManagerUtils.getValueFromIdByName(innerObject.id(), "resourceGroups");
-        this.dnsResolverPolicyName = ResourceManagerUtils.getValueFromIdByName(innerObject.id(), "dnsResolverPolicies");
-        this.dnsSecurityRuleName = ResourceManagerUtils.getValueFromIdByName(innerObject.id(), "dnsSecurityRules");
+        this.resourceGroupName = ResourceManagerUtils.getValueFromIdByParameterName(innerObject.id(),
+            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Network/dnsResolverPolicies/{dnsResolverPolicyName}/dnsSecurityRules/{dnsSecurityRuleName}",
+            "resourceGroupName");
+        this.dnsResolverPolicyName = ResourceManagerUtils.getValueFromIdByParameterName(innerObject.id(),
+            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Network/dnsResolverPolicies/{dnsResolverPolicyName}/dnsSecurityRules/{dnsSecurityRuleName}",
+            "dnsResolverPolicyName");
+        this.dnsSecurityRuleName = ResourceManagerUtils.getValueFromIdByParameterName(innerObject.id(),
+            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Network/dnsResolverPolicies/{dnsResolverPolicyName}/dnsSecurityRules/{dnsSecurityRuleName}",
+            "dnsSecurityRuleName");
     }
 
     public DnsSecurityRule refresh() {
-        this.innerObject = serviceManager.serviceClient()
-            .getDnsSecurityRules()
-            .getWithResponse(resourceGroupName, dnsResolverPolicyName, dnsSecurityRuleName, Context.NONE)
-            .getValue();
-        return this;
+        return this.refresh(Context.NONE);
     }
 
     public DnsSecurityRule refresh(Context context) {

@@ -54,7 +54,7 @@ public final class FabricCapacitiesImpl implements FabricCapacities {
     }
 
     public void deleteByResourceGroup(String resourceGroupName, String capacityName) {
-        this.serviceClient().delete(resourceGroupName, capacityName);
+        this.delete(resourceGroupName, capacityName, Context.NONE);
     }
 
     public void delete(String resourceGroupName, String capacityName, Context context) {
@@ -62,8 +62,7 @@ public final class FabricCapacitiesImpl implements FabricCapacities {
     }
 
     public PagedIterable<FabricCapacity> listByResourceGroup(String resourceGroupName) {
-        PagedIterable<FabricCapacityInner> inner = this.serviceClient().listByResourceGroup(resourceGroupName);
-        return ResourceManagerUtils.mapPage(inner, inner1 -> new FabricCapacityImpl(inner1, this.manager()));
+        return this.listByResourceGroup(resourceGroupName, Context.NONE);
     }
 
     public PagedIterable<FabricCapacity> listByResourceGroup(String resourceGroupName, Context context) {
@@ -72,8 +71,7 @@ public final class FabricCapacitiesImpl implements FabricCapacities {
     }
 
     public PagedIterable<FabricCapacity> list() {
-        PagedIterable<FabricCapacityInner> inner = this.serviceClient().list();
-        return ResourceManagerUtils.mapPage(inner, inner1 -> new FabricCapacityImpl(inner1, this.manager()));
+        return this.list(Context.NONE);
     }
 
     public PagedIterable<FabricCapacity> list(Context context) {
@@ -82,7 +80,7 @@ public final class FabricCapacitiesImpl implements FabricCapacities {
     }
 
     public void resume(String resourceGroupName, String capacityName) {
-        this.serviceClient().resume(resourceGroupName, capacityName);
+        this.resume(resourceGroupName, capacityName, Context.NONE);
     }
 
     public void resume(String resourceGroupName, String capacityName, Context context) {
@@ -90,7 +88,7 @@ public final class FabricCapacitiesImpl implements FabricCapacities {
     }
 
     public void suspend(String resourceGroupName, String capacityName) {
-        this.serviceClient().suspend(resourceGroupName, capacityName);
+        this.suspend(resourceGroupName, capacityName, Context.NONE);
     }
 
     public void suspend(String resourceGroupName, String capacityName, Context context) {
@@ -116,10 +114,7 @@ public final class FabricCapacitiesImpl implements FabricCapacities {
 
     public PagedIterable<RpSkuDetailsForExistingResource> listSkusForCapacity(String resourceGroupName,
         String capacityName) {
-        PagedIterable<RpSkuDetailsForExistingResourceInner> inner
-            = this.serviceClient().listSkusForCapacity(resourceGroupName, capacityName);
-        return ResourceManagerUtils.mapPage(inner,
-            inner1 -> new RpSkuDetailsForExistingResourceImpl(inner1, this.manager()));
+        return this.listSkusForCapacity(resourceGroupName, capacityName, Context.NONE);
     }
 
     public PagedIterable<RpSkuDetailsForExistingResource> listSkusForCapacity(String resourceGroupName,
@@ -131,9 +126,7 @@ public final class FabricCapacitiesImpl implements FabricCapacities {
     }
 
     public PagedIterable<RpSkuDetailsForNewResource> listSkus() {
-        PagedIterable<RpSkuDetailsForNewResourceInner> inner = this.serviceClient().listSkus();
-        return ResourceManagerUtils.mapPage(inner,
-            inner1 -> new RpSkuDetailsForNewResourceImpl(inner1, this.manager()));
+        return this.listSkus(Context.NONE);
     }
 
     public PagedIterable<RpSkuDetailsForNewResource> listSkus(Context context) {
@@ -143,8 +136,7 @@ public final class FabricCapacitiesImpl implements FabricCapacities {
     }
 
     public PagedIterable<Quota> listUsages(String location) {
-        PagedIterable<QuotaInner> inner = this.serviceClient().listUsages(location);
-        return ResourceManagerUtils.mapPage(inner, inner1 -> new QuotaImpl(inner1, this.manager()));
+        return this.listUsages(location, Context.NONE);
     }
 
     public PagedIterable<Quota> listUsages(String location, Context context) {
@@ -153,58 +145,30 @@ public final class FabricCapacitiesImpl implements FabricCapacities {
     }
 
     public FabricCapacity getById(String id) {
-        String resourceGroupName = ResourceManagerUtils.getValueFromIdByName(id, "resourceGroups");
-        if (resourceGroupName == null) {
-            throw LOGGER.logExceptionAsError(new IllegalArgumentException(
-                String.format("The resource ID '%s' is not valid. Missing path segment 'resourceGroups'.", id)));
-        }
-        String capacityName = ResourceManagerUtils.getValueFromIdByName(id, "capacities");
-        if (capacityName == null) {
-            throw LOGGER.logExceptionAsError(new IllegalArgumentException(
-                String.format("The resource ID '%s' is not valid. Missing path segment 'capacities'.", id)));
-        }
-        return this.getByResourceGroupWithResponse(resourceGroupName, capacityName, Context.NONE).getValue();
+        return this.getByIdWithResponse(id, Context.NONE).getValue();
     }
 
     public Response<FabricCapacity> getByIdWithResponse(String id, Context context) {
-        String resourceGroupName = ResourceManagerUtils.getValueFromIdByName(id, "resourceGroups");
-        if (resourceGroupName == null) {
-            throw LOGGER.logExceptionAsError(new IllegalArgumentException(
-                String.format("The resource ID '%s' is not valid. Missing path segment 'resourceGroups'.", id)));
-        }
-        String capacityName = ResourceManagerUtils.getValueFromIdByName(id, "capacities");
-        if (capacityName == null) {
-            throw LOGGER.logExceptionAsError(new IllegalArgumentException(
-                String.format("The resource ID '%s' is not valid. Missing path segment 'capacities'.", id)));
-        }
+        String resourceGroupName = ResourceManagerUtils.getRequiredValueFromIdByParameterName(id,
+            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Fabric/capacities/{capacityName}",
+            "resourceGroupName", "resourceGroups", LOGGER);
+        String capacityName = ResourceManagerUtils.getRequiredValueFromIdByParameterName(id,
+            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Fabric/capacities/{capacityName}",
+            "capacityName", "capacities", LOGGER);
         return this.getByResourceGroupWithResponse(resourceGroupName, capacityName, context);
     }
 
     public void deleteById(String id) {
-        String resourceGroupName = ResourceManagerUtils.getValueFromIdByName(id, "resourceGroups");
-        if (resourceGroupName == null) {
-            throw LOGGER.logExceptionAsError(new IllegalArgumentException(
-                String.format("The resource ID '%s' is not valid. Missing path segment 'resourceGroups'.", id)));
-        }
-        String capacityName = ResourceManagerUtils.getValueFromIdByName(id, "capacities");
-        if (capacityName == null) {
-            throw LOGGER.logExceptionAsError(new IllegalArgumentException(
-                String.format("The resource ID '%s' is not valid. Missing path segment 'capacities'.", id)));
-        }
-        this.delete(resourceGroupName, capacityName, Context.NONE);
+        this.deleteByIdWithResponse(id, Context.NONE);
     }
 
     public void deleteByIdWithResponse(String id, Context context) {
-        String resourceGroupName = ResourceManagerUtils.getValueFromIdByName(id, "resourceGroups");
-        if (resourceGroupName == null) {
-            throw LOGGER.logExceptionAsError(new IllegalArgumentException(
-                String.format("The resource ID '%s' is not valid. Missing path segment 'resourceGroups'.", id)));
-        }
-        String capacityName = ResourceManagerUtils.getValueFromIdByName(id, "capacities");
-        if (capacityName == null) {
-            throw LOGGER.logExceptionAsError(new IllegalArgumentException(
-                String.format("The resource ID '%s' is not valid. Missing path segment 'capacities'.", id)));
-        }
+        String resourceGroupName = ResourceManagerUtils.getRequiredValueFromIdByParameterName(id,
+            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Fabric/capacities/{capacityName}",
+            "resourceGroupName", "resourceGroups", LOGGER);
+        String capacityName = ResourceManagerUtils.getRequiredValueFromIdByParameterName(id,
+            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Fabric/capacities/{capacityName}",
+            "capacityName", "capacities", LOGGER);
         this.delete(resourceGroupName, capacityName, context);
     }
 

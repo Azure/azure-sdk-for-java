@@ -9,7 +9,7 @@ package com.azure.resourcemanager.search.generated;
  */
 public final class NetworkSecurityPerimeterConfigurationsGetSamples {
     /*
-     * x-ms-original-file: 2026-03-01-preview/NetworkSecurityPerimeterConfigurationsGet.json
+     * x-ms-original-file: 2026-11-01/NetworkSecurityPerimeterConfigurationsGet.json
      */
     /**
      * Sample code: Get an NSP config by name.

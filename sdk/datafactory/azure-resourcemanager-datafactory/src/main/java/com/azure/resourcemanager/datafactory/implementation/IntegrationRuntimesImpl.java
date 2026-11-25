@@ -64,14 +64,11 @@ public final class IntegrationRuntimesImpl implements IntegrationRuntimes {
     }
 
     public void delete(String resourceGroupName, String factoryName, String integrationRuntimeName) {
-        this.serviceClient().delete(resourceGroupName, factoryName, integrationRuntimeName);
+        this.deleteWithResponse(resourceGroupName, factoryName, integrationRuntimeName, Context.NONE);
     }
 
     public PagedIterable<IntegrationRuntimeResource> listByFactory(String resourceGroupName, String factoryName) {
-        PagedIterable<IntegrationRuntimeResourceInner> inner
-            = this.serviceClient().listByFactory(resourceGroupName, factoryName);
-        return ResourceManagerUtils.mapPage(inner,
-            inner1 -> new IntegrationRuntimeResourceImpl(inner1, this.manager()));
+        return this.listByFactory(resourceGroupName, factoryName, Context.NONE);
     }
 
     public PagedIterable<IntegrationRuntimeResource> listByFactory(String resourceGroupName, String factoryName,
@@ -183,13 +180,7 @@ public final class IntegrationRuntimesImpl implements IntegrationRuntimes {
 
     public IntegrationRuntimeStatusResponse start(String resourceGroupName, String factoryName,
         String integrationRuntimeName) {
-        IntegrationRuntimeStatusResponseInner inner
-            = this.serviceClient().start(resourceGroupName, factoryName, integrationRuntimeName);
-        if (inner != null) {
-            return new IntegrationRuntimeStatusResponseImpl(inner, this.manager());
-        } else {
-            return null;
-        }
+        return this.start(resourceGroupName, factoryName, integrationRuntimeName, Context.NONE);
     }
 
     public IntegrationRuntimeStatusResponse start(String resourceGroupName, String factoryName,
@@ -204,7 +195,7 @@ public final class IntegrationRuntimesImpl implements IntegrationRuntimes {
     }
 
     public void stop(String resourceGroupName, String factoryName, String integrationRuntimeName) {
-        this.serviceClient().stop(resourceGroupName, factoryName, integrationRuntimeName);
+        this.stop(resourceGroupName, factoryName, integrationRuntimeName, Context.NONE);
     }
 
     public void stop(String resourceGroupName, String factoryName, String integrationRuntimeName, Context context) {
@@ -218,7 +209,7 @@ public final class IntegrationRuntimesImpl implements IntegrationRuntimes {
     }
 
     public void syncCredentials(String resourceGroupName, String factoryName, String integrationRuntimeName) {
-        this.serviceClient().syncCredentials(resourceGroupName, factoryName, integrationRuntimeName);
+        this.syncCredentialsWithResponse(resourceGroupName, factoryName, integrationRuntimeName, Context.NONE);
     }
 
     public Response<IntegrationRuntimeMonitoringData> getMonitoringDataWithResponse(String resourceGroupName,
@@ -247,7 +238,7 @@ public final class IntegrationRuntimesImpl implements IntegrationRuntimes {
     }
 
     public void upgrade(String resourceGroupName, String factoryName, String integrationRuntimeName) {
-        this.serviceClient().upgrade(resourceGroupName, factoryName, integrationRuntimeName);
+        this.upgradeWithResponse(resourceGroupName, factoryName, integrationRuntimeName, Context.NONE);
     }
 
     public Response<Void> removeLinksWithResponse(String resourceGroupName, String factoryName,
@@ -260,8 +251,8 @@ public final class IntegrationRuntimesImpl implements IntegrationRuntimes {
 
     public void removeLinks(String resourceGroupName, String factoryName, String integrationRuntimeName,
         LinkedIntegrationRuntimeRequest linkedIntegrationRuntimeRequest) {
-        this.serviceClient()
-            .removeLinks(resourceGroupName, factoryName, integrationRuntimeName, linkedIntegrationRuntimeRequest);
+        this.removeLinksWithResponse(resourceGroupName, factoryName, integrationRuntimeName,
+            linkedIntegrationRuntimeRequest, Context.NONE);
     }
 
     public Response<IntegrationRuntimeStatusResponse> createLinkedIntegrationRuntimeWithResponse(
@@ -287,81 +278,37 @@ public final class IntegrationRuntimesImpl implements IntegrationRuntimes {
     }
 
     public IntegrationRuntimeResource getById(String id) {
-        String resourceGroupName = ResourceManagerUtils.getValueFromIdByName(id, "resourceGroups");
-        if (resourceGroupName == null) {
-            throw LOGGER.logExceptionAsError(new IllegalArgumentException(
-                String.format("The resource ID '%s' is not valid. Missing path segment 'resourceGroups'.", id)));
-        }
-        String factoryName = ResourceManagerUtils.getValueFromIdByName(id, "factories");
-        if (factoryName == null) {
-            throw LOGGER.logExceptionAsError(new IllegalArgumentException(
-                String.format("The resource ID '%s' is not valid. Missing path segment 'factories'.", id)));
-        }
-        String integrationRuntimeName = ResourceManagerUtils.getValueFromIdByName(id, "integrationRuntimes");
-        if (integrationRuntimeName == null) {
-            throw LOGGER.logExceptionAsError(new IllegalArgumentException(
-                String.format("The resource ID '%s' is not valid. Missing path segment 'integrationRuntimes'.", id)));
-        }
         String localIfNoneMatch = null;
-        return this
-            .getWithResponse(resourceGroupName, factoryName, integrationRuntimeName, localIfNoneMatch, Context.NONE)
-            .getValue();
+        return this.getByIdWithResponse(id, localIfNoneMatch, Context.NONE).getValue();
     }
 
     public Response<IntegrationRuntimeResource> getByIdWithResponse(String id, String ifNoneMatch, Context context) {
-        String resourceGroupName = ResourceManagerUtils.getValueFromIdByName(id, "resourceGroups");
-        if (resourceGroupName == null) {
-            throw LOGGER.logExceptionAsError(new IllegalArgumentException(
-                String.format("The resource ID '%s' is not valid. Missing path segment 'resourceGroups'.", id)));
-        }
-        String factoryName = ResourceManagerUtils.getValueFromIdByName(id, "factories");
-        if (factoryName == null) {
-            throw LOGGER.logExceptionAsError(new IllegalArgumentException(
-                String.format("The resource ID '%s' is not valid. Missing path segment 'factories'.", id)));
-        }
-        String integrationRuntimeName = ResourceManagerUtils.getValueFromIdByName(id, "integrationRuntimes");
-        if (integrationRuntimeName == null) {
-            throw LOGGER.logExceptionAsError(new IllegalArgumentException(
-                String.format("The resource ID '%s' is not valid. Missing path segment 'integrationRuntimes'.", id)));
-        }
+        String resourceGroupName = ResourceManagerUtils.getRequiredValueFromIdByParameterName(id,
+            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.DataFactory/factories/{factoryName}/integrationRuntimes/{integrationRuntimeName}",
+            "resourceGroupName", "resourceGroups", LOGGER);
+        String factoryName = ResourceManagerUtils.getRequiredValueFromIdByParameterName(id,
+            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.DataFactory/factories/{factoryName}/integrationRuntimes/{integrationRuntimeName}",
+            "factoryName", "factories", LOGGER);
+        String integrationRuntimeName = ResourceManagerUtils.getRequiredValueFromIdByParameterName(id,
+            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.DataFactory/factories/{factoryName}/integrationRuntimes/{integrationRuntimeName}",
+            "integrationRuntimeName", "integrationRuntimes", LOGGER);
         return this.getWithResponse(resourceGroupName, factoryName, integrationRuntimeName, ifNoneMatch, context);
     }
 
     public void deleteById(String id) {
-        String resourceGroupName = ResourceManagerUtils.getValueFromIdByName(id, "resourceGroups");
-        if (resourceGroupName == null) {
-            throw LOGGER.logExceptionAsError(new IllegalArgumentException(
-                String.format("The resource ID '%s' is not valid. Missing path segment 'resourceGroups'.", id)));
-        }
-        String factoryName = ResourceManagerUtils.getValueFromIdByName(id, "factories");
-        if (factoryName == null) {
-            throw LOGGER.logExceptionAsError(new IllegalArgumentException(
-                String.format("The resource ID '%s' is not valid. Missing path segment 'factories'.", id)));
-        }
-        String integrationRuntimeName = ResourceManagerUtils.getValueFromIdByName(id, "integrationRuntimes");
-        if (integrationRuntimeName == null) {
-            throw LOGGER.logExceptionAsError(new IllegalArgumentException(
-                String.format("The resource ID '%s' is not valid. Missing path segment 'integrationRuntimes'.", id)));
-        }
-        this.deleteWithResponse(resourceGroupName, factoryName, integrationRuntimeName, Context.NONE);
+        this.deleteByIdWithResponse(id, Context.NONE);
     }
 
     public Response<Void> deleteByIdWithResponse(String id, Context context) {
-        String resourceGroupName = ResourceManagerUtils.getValueFromIdByName(id, "resourceGroups");
-        if (resourceGroupName == null) {
-            throw LOGGER.logExceptionAsError(new IllegalArgumentException(
-                String.format("The resource ID '%s' is not valid. Missing path segment 'resourceGroups'.", id)));
-        }
-        String factoryName = ResourceManagerUtils.getValueFromIdByName(id, "factories");
-        if (factoryName == null) {
-            throw LOGGER.logExceptionAsError(new IllegalArgumentException(
-                String.format("The resource ID '%s' is not valid. Missing path segment 'factories'.", id)));
-        }
-        String integrationRuntimeName = ResourceManagerUtils.getValueFromIdByName(id, "integrationRuntimes");
-        if (integrationRuntimeName == null) {
-            throw LOGGER.logExceptionAsError(new IllegalArgumentException(
-                String.format("The resource ID '%s' is not valid. Missing path segment 'integrationRuntimes'.", id)));
-        }
+        String resourceGroupName = ResourceManagerUtils.getRequiredValueFromIdByParameterName(id,
+            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.DataFactory/factories/{factoryName}/integrationRuntimes/{integrationRuntimeName}",
+            "resourceGroupName", "resourceGroups", LOGGER);
+        String factoryName = ResourceManagerUtils.getRequiredValueFromIdByParameterName(id,
+            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.DataFactory/factories/{factoryName}/integrationRuntimes/{integrationRuntimeName}",
+            "factoryName", "factories", LOGGER);
+        String integrationRuntimeName = ResourceManagerUtils.getRequiredValueFromIdByParameterName(id,
+            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.DataFactory/factories/{factoryName}/integrationRuntimes/{integrationRuntimeName}",
+            "integrationRuntimeName", "integrationRuntimes", LOGGER);
         return this.deleteWithResponse(resourceGroupName, factoryName, integrationRuntimeName, context);
     }
 

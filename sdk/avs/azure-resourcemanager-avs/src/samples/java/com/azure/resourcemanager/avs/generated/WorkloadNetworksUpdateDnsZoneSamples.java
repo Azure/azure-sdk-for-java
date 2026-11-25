@@ -12,7 +12,7 @@ import java.util.Arrays;
  */
 public final class WorkloadNetworksUpdateDnsZoneSamples {
     /*
-     * x-ms-original-file: 2025-09-01/WorkloadNetworks_UpdateDnsZone.json
+     * x-ms-original-file: 2026-03-01/WorkloadNetworks_UpdateDnsZone.json
      */
     /**
      * Sample code: WorkloadNetworks_UpdateDnsZone.

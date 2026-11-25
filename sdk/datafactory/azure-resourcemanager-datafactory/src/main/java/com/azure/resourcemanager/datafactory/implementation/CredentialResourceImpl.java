@@ -69,12 +69,7 @@ public final class CredentialResourceImpl
     }
 
     public CredentialResource create() {
-        this.innerObject = serviceManager.serviceClient()
-            .getCredentialOperations()
-            .createOrUpdateWithResponse(resourceGroupName, factoryName, credentialName, this.innerModel(),
-                createIfMatch, Context.NONE)
-            .getValue();
-        return this;
+        return this.create(Context.NONE);
     }
 
     public CredentialResource create(Context context) {
@@ -99,12 +94,7 @@ public final class CredentialResourceImpl
     }
 
     public CredentialResource apply() {
-        this.innerObject = serviceManager.serviceClient()
-            .getCredentialOperations()
-            .createOrUpdateWithResponse(resourceGroupName, factoryName, credentialName, this.innerModel(),
-                updateIfMatch, Context.NONE)
-            .getValue();
-        return this;
+        return this.apply(Context.NONE);
     }
 
     public CredentialResource apply(Context context) {
@@ -120,18 +110,19 @@ public final class CredentialResourceImpl
         com.azure.resourcemanager.datafactory.DataFactoryManager serviceManager) {
         this.innerObject = innerObject;
         this.serviceManager = serviceManager;
-        this.resourceGroupName = ResourceManagerUtils.getValueFromIdByName(innerObject.id(), "resourceGroups");
-        this.factoryName = ResourceManagerUtils.getValueFromIdByName(innerObject.id(), "factories");
-        this.credentialName = ResourceManagerUtils.getValueFromIdByName(innerObject.id(), "credentials");
+        this.resourceGroupName = ResourceManagerUtils.getValueFromIdByParameterName(innerObject.id(),
+            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.DataFactory/factories/{factoryName}/credentials/{credentialName}",
+            "resourceGroupName");
+        this.factoryName = ResourceManagerUtils.getValueFromIdByParameterName(innerObject.id(),
+            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.DataFactory/factories/{factoryName}/credentials/{credentialName}",
+            "factoryName");
+        this.credentialName = ResourceManagerUtils.getValueFromIdByParameterName(innerObject.id(),
+            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.DataFactory/factories/{factoryName}/credentials/{credentialName}",
+            "credentialName");
     }
 
     public CredentialResource refresh() {
-        String localIfNoneMatch = null;
-        this.innerObject = serviceManager.serviceClient()
-            .getCredentialOperations()
-            .getWithResponse(resourceGroupName, factoryName, credentialName, localIfNoneMatch, Context.NONE)
-            .getValue();
-        return this;
+        return this.refresh(Context.NONE);
     }
 
     public CredentialResource refresh(Context context) {

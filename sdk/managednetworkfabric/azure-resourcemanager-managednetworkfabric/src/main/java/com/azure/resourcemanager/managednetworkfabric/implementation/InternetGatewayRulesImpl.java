@@ -46,7 +46,7 @@ public final class InternetGatewayRulesImpl implements InternetGatewayRules {
     }
 
     public void deleteByResourceGroup(String resourceGroupName, String internetGatewayRuleName) {
-        this.serviceClient().delete(resourceGroupName, internetGatewayRuleName);
+        this.delete(resourceGroupName, internetGatewayRuleName, Context.NONE);
     }
 
     public void delete(String resourceGroupName, String internetGatewayRuleName, Context context) {
@@ -54,8 +54,7 @@ public final class InternetGatewayRulesImpl implements InternetGatewayRules {
     }
 
     public PagedIterable<InternetGatewayRule> listByResourceGroup(String resourceGroupName) {
-        PagedIterable<InternetGatewayRuleInner> inner = this.serviceClient().listByResourceGroup(resourceGroupName);
-        return ResourceManagerUtils.mapPage(inner, inner1 -> new InternetGatewayRuleImpl(inner1, this.manager()));
+        return this.listByResourceGroup(resourceGroupName, Context.NONE);
     }
 
     public PagedIterable<InternetGatewayRule> listByResourceGroup(String resourceGroupName, Context context) {
@@ -65,8 +64,7 @@ public final class InternetGatewayRulesImpl implements InternetGatewayRules {
     }
 
     public PagedIterable<InternetGatewayRule> list() {
-        PagedIterable<InternetGatewayRuleInner> inner = this.serviceClient().list();
-        return ResourceManagerUtils.mapPage(inner, inner1 -> new InternetGatewayRuleImpl(inner1, this.manager()));
+        return this.list(Context.NONE);
     }
 
     public PagedIterable<InternetGatewayRule> list(Context context) {
@@ -75,58 +73,30 @@ public final class InternetGatewayRulesImpl implements InternetGatewayRules {
     }
 
     public InternetGatewayRule getById(String id) {
-        String resourceGroupName = ResourceManagerUtils.getValueFromIdByName(id, "resourceGroups");
-        if (resourceGroupName == null) {
-            throw LOGGER.logExceptionAsError(new IllegalArgumentException(
-                String.format("The resource ID '%s' is not valid. Missing path segment 'resourceGroups'.", id)));
-        }
-        String internetGatewayRuleName = ResourceManagerUtils.getValueFromIdByName(id, "internetGatewayRules");
-        if (internetGatewayRuleName == null) {
-            throw LOGGER.logExceptionAsError(new IllegalArgumentException(
-                String.format("The resource ID '%s' is not valid. Missing path segment 'internetGatewayRules'.", id)));
-        }
-        return this.getByResourceGroupWithResponse(resourceGroupName, internetGatewayRuleName, Context.NONE).getValue();
+        return this.getByIdWithResponse(id, Context.NONE).getValue();
     }
 
     public Response<InternetGatewayRule> getByIdWithResponse(String id, Context context) {
-        String resourceGroupName = ResourceManagerUtils.getValueFromIdByName(id, "resourceGroups");
-        if (resourceGroupName == null) {
-            throw LOGGER.logExceptionAsError(new IllegalArgumentException(
-                String.format("The resource ID '%s' is not valid. Missing path segment 'resourceGroups'.", id)));
-        }
-        String internetGatewayRuleName = ResourceManagerUtils.getValueFromIdByName(id, "internetGatewayRules");
-        if (internetGatewayRuleName == null) {
-            throw LOGGER.logExceptionAsError(new IllegalArgumentException(
-                String.format("The resource ID '%s' is not valid. Missing path segment 'internetGatewayRules'.", id)));
-        }
+        String resourceGroupName = ResourceManagerUtils.getRequiredValueFromIdByParameterName(id,
+            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.ManagedNetworkFabric/internetGatewayRules/{internetGatewayRuleName}",
+            "resourceGroupName", "resourceGroups", LOGGER);
+        String internetGatewayRuleName = ResourceManagerUtils.getRequiredValueFromIdByParameterName(id,
+            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.ManagedNetworkFabric/internetGatewayRules/{internetGatewayRuleName}",
+            "internetGatewayRuleName", "internetGatewayRules", LOGGER);
         return this.getByResourceGroupWithResponse(resourceGroupName, internetGatewayRuleName, context);
     }
 
     public void deleteById(String id) {
-        String resourceGroupName = ResourceManagerUtils.getValueFromIdByName(id, "resourceGroups");
-        if (resourceGroupName == null) {
-            throw LOGGER.logExceptionAsError(new IllegalArgumentException(
-                String.format("The resource ID '%s' is not valid. Missing path segment 'resourceGroups'.", id)));
-        }
-        String internetGatewayRuleName = ResourceManagerUtils.getValueFromIdByName(id, "internetGatewayRules");
-        if (internetGatewayRuleName == null) {
-            throw LOGGER.logExceptionAsError(new IllegalArgumentException(
-                String.format("The resource ID '%s' is not valid. Missing path segment 'internetGatewayRules'.", id)));
-        }
-        this.delete(resourceGroupName, internetGatewayRuleName, Context.NONE);
+        this.deleteByIdWithResponse(id, Context.NONE);
     }
 
     public void deleteByIdWithResponse(String id, Context context) {
-        String resourceGroupName = ResourceManagerUtils.getValueFromIdByName(id, "resourceGroups");
-        if (resourceGroupName == null) {
-            throw LOGGER.logExceptionAsError(new IllegalArgumentException(
-                String.format("The resource ID '%s' is not valid. Missing path segment 'resourceGroups'.", id)));
-        }
-        String internetGatewayRuleName = ResourceManagerUtils.getValueFromIdByName(id, "internetGatewayRules");
-        if (internetGatewayRuleName == null) {
-            throw LOGGER.logExceptionAsError(new IllegalArgumentException(
-                String.format("The resource ID '%s' is not valid. Missing path segment 'internetGatewayRules'.", id)));
-        }
+        String resourceGroupName = ResourceManagerUtils.getRequiredValueFromIdByParameterName(id,
+            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.ManagedNetworkFabric/internetGatewayRules/{internetGatewayRuleName}",
+            "resourceGroupName", "resourceGroups", LOGGER);
+        String internetGatewayRuleName = ResourceManagerUtils.getRequiredValueFromIdByParameterName(id,
+            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.ManagedNetworkFabric/internetGatewayRules/{internetGatewayRuleName}",
+            "internetGatewayRuleName", "internetGatewayRules", LOGGER);
         this.delete(resourceGroupName, internetGatewayRuleName, context);
     }
 

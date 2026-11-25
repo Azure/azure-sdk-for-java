@@ -54,9 +54,7 @@ public final class FleetManagedNamespacesImpl implements FleetManagedNamespaces 
     }
 
     public PagedIterable<FleetManagedNamespace> listByFleet(String resourceGroupName, String fleetName) {
-        PagedIterable<FleetManagedNamespaceInner> inner
-            = this.serviceClient().listByFleet(resourceGroupName, fleetName);
-        return ResourceManagerUtils.mapPage(inner, inner1 -> new FleetManagedNamespaceImpl(inner1, this.manager()));
+        return this.listByFleet(resourceGroupName, fleetName, Context.NONE);
     }
 
     public PagedIterable<FleetManagedNamespace> listByFleet(String resourceGroupName, String fleetName,
@@ -67,79 +65,37 @@ public final class FleetManagedNamespacesImpl implements FleetManagedNamespaces 
     }
 
     public FleetManagedNamespace getById(String id) {
-        String resourceGroupName = ResourceManagerUtils.getValueFromIdByName(id, "resourceGroups");
-        if (resourceGroupName == null) {
-            throw LOGGER.logExceptionAsError(new IllegalArgumentException(
-                String.format("The resource ID '%s' is not valid. Missing path segment 'resourceGroups'.", id)));
-        }
-        String fleetName = ResourceManagerUtils.getValueFromIdByName(id, "fleets");
-        if (fleetName == null) {
-            throw LOGGER.logExceptionAsError(new IllegalArgumentException(
-                String.format("The resource ID '%s' is not valid. Missing path segment 'fleets'.", id)));
-        }
-        String managedNamespaceName = ResourceManagerUtils.getValueFromIdByName(id, "managedNamespaces");
-        if (managedNamespaceName == null) {
-            throw LOGGER.logExceptionAsError(new IllegalArgumentException(
-                String.format("The resource ID '%s' is not valid. Missing path segment 'managedNamespaces'.", id)));
-        }
-        return this.getWithResponse(resourceGroupName, fleetName, managedNamespaceName, Context.NONE).getValue();
+        return this.getByIdWithResponse(id, Context.NONE).getValue();
     }
 
     public Response<FleetManagedNamespace> getByIdWithResponse(String id, Context context) {
-        String resourceGroupName = ResourceManagerUtils.getValueFromIdByName(id, "resourceGroups");
-        if (resourceGroupName == null) {
-            throw LOGGER.logExceptionAsError(new IllegalArgumentException(
-                String.format("The resource ID '%s' is not valid. Missing path segment 'resourceGroups'.", id)));
-        }
-        String fleetName = ResourceManagerUtils.getValueFromIdByName(id, "fleets");
-        if (fleetName == null) {
-            throw LOGGER.logExceptionAsError(new IllegalArgumentException(
-                String.format("The resource ID '%s' is not valid. Missing path segment 'fleets'.", id)));
-        }
-        String managedNamespaceName = ResourceManagerUtils.getValueFromIdByName(id, "managedNamespaces");
-        if (managedNamespaceName == null) {
-            throw LOGGER.logExceptionAsError(new IllegalArgumentException(
-                String.format("The resource ID '%s' is not valid. Missing path segment 'managedNamespaces'.", id)));
-        }
+        String resourceGroupName = ResourceManagerUtils.getRequiredValueFromIdByParameterName(id,
+            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.ContainerService/fleets/{fleetName}/managedNamespaces/{managedNamespaceName}",
+            "resourceGroupName", "resourceGroups", LOGGER);
+        String fleetName = ResourceManagerUtils.getRequiredValueFromIdByParameterName(id,
+            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.ContainerService/fleets/{fleetName}/managedNamespaces/{managedNamespaceName}",
+            "fleetName", "fleets", LOGGER);
+        String managedNamespaceName = ResourceManagerUtils.getRequiredValueFromIdByParameterName(id,
+            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.ContainerService/fleets/{fleetName}/managedNamespaces/{managedNamespaceName}",
+            "managedNamespaceName", "managedNamespaces", LOGGER);
         return this.getWithResponse(resourceGroupName, fleetName, managedNamespaceName, context);
     }
 
     public void deleteById(String id) {
-        String resourceGroupName = ResourceManagerUtils.getValueFromIdByName(id, "resourceGroups");
-        if (resourceGroupName == null) {
-            throw LOGGER.logExceptionAsError(new IllegalArgumentException(
-                String.format("The resource ID '%s' is not valid. Missing path segment 'resourceGroups'.", id)));
-        }
-        String fleetName = ResourceManagerUtils.getValueFromIdByName(id, "fleets");
-        if (fleetName == null) {
-            throw LOGGER.logExceptionAsError(new IllegalArgumentException(
-                String.format("The resource ID '%s' is not valid. Missing path segment 'fleets'.", id)));
-        }
-        String managedNamespaceName = ResourceManagerUtils.getValueFromIdByName(id, "managedNamespaces");
-        if (managedNamespaceName == null) {
-            throw LOGGER.logExceptionAsError(new IllegalArgumentException(
-                String.format("The resource ID '%s' is not valid. Missing path segment 'managedNamespaces'.", id)));
-        }
         String localIfMatch = null;
-        this.delete(resourceGroupName, fleetName, managedNamespaceName, localIfMatch, Context.NONE);
+        this.deleteByIdWithResponse(id, localIfMatch, Context.NONE);
     }
 
     public void deleteByIdWithResponse(String id, String ifMatch, Context context) {
-        String resourceGroupName = ResourceManagerUtils.getValueFromIdByName(id, "resourceGroups");
-        if (resourceGroupName == null) {
-            throw LOGGER.logExceptionAsError(new IllegalArgumentException(
-                String.format("The resource ID '%s' is not valid. Missing path segment 'resourceGroups'.", id)));
-        }
-        String fleetName = ResourceManagerUtils.getValueFromIdByName(id, "fleets");
-        if (fleetName == null) {
-            throw LOGGER.logExceptionAsError(new IllegalArgumentException(
-                String.format("The resource ID '%s' is not valid. Missing path segment 'fleets'.", id)));
-        }
-        String managedNamespaceName = ResourceManagerUtils.getValueFromIdByName(id, "managedNamespaces");
-        if (managedNamespaceName == null) {
-            throw LOGGER.logExceptionAsError(new IllegalArgumentException(
-                String.format("The resource ID '%s' is not valid. Missing path segment 'managedNamespaces'.", id)));
-        }
+        String resourceGroupName = ResourceManagerUtils.getRequiredValueFromIdByParameterName(id,
+            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.ContainerService/fleets/{fleetName}/managedNamespaces/{managedNamespaceName}",
+            "resourceGroupName", "resourceGroups", LOGGER);
+        String fleetName = ResourceManagerUtils.getRequiredValueFromIdByParameterName(id,
+            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.ContainerService/fleets/{fleetName}/managedNamespaces/{managedNamespaceName}",
+            "fleetName", "fleets", LOGGER);
+        String managedNamespaceName = ResourceManagerUtils.getRequiredValueFromIdByParameterName(id,
+            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.ContainerService/fleets/{fleetName}/managedNamespaces/{managedNamespaceName}",
+            "managedNamespaceName", "managedNamespaces", LOGGER);
         this.delete(resourceGroupName, fleetName, managedNamespaceName, ifMatch, context);
     }
 

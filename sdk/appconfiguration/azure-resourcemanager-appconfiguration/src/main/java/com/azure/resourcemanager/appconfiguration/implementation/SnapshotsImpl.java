@@ -44,40 +44,19 @@ public final class SnapshotsImpl implements Snapshots {
     }
 
     public Snapshot getById(String id) {
-        String resourceGroupName = ResourceManagerUtils.getValueFromIdByName(id, "resourceGroups");
-        if (resourceGroupName == null) {
-            throw LOGGER.logExceptionAsError(new IllegalArgumentException(
-                String.format("The resource ID '%s' is not valid. Missing path segment 'resourceGroups'.", id)));
-        }
-        String configStoreName = ResourceManagerUtils.getValueFromIdByName(id, "configurationStores");
-        if (configStoreName == null) {
-            throw LOGGER.logExceptionAsError(new IllegalArgumentException(
-                String.format("The resource ID '%s' is not valid. Missing path segment 'configurationStores'.", id)));
-        }
-        String snapshotName = ResourceManagerUtils.getValueFromIdByName(id, "snapshots");
-        if (snapshotName == null) {
-            throw LOGGER.logExceptionAsError(new IllegalArgumentException(
-                String.format("The resource ID '%s' is not valid. Missing path segment 'snapshots'.", id)));
-        }
-        return this.getWithResponse(resourceGroupName, configStoreName, snapshotName, Context.NONE).getValue();
+        return this.getByIdWithResponse(id, Context.NONE).getValue();
     }
 
     public Response<Snapshot> getByIdWithResponse(String id, Context context) {
-        String resourceGroupName = ResourceManagerUtils.getValueFromIdByName(id, "resourceGroups");
-        if (resourceGroupName == null) {
-            throw LOGGER.logExceptionAsError(new IllegalArgumentException(
-                String.format("The resource ID '%s' is not valid. Missing path segment 'resourceGroups'.", id)));
-        }
-        String configStoreName = ResourceManagerUtils.getValueFromIdByName(id, "configurationStores");
-        if (configStoreName == null) {
-            throw LOGGER.logExceptionAsError(new IllegalArgumentException(
-                String.format("The resource ID '%s' is not valid. Missing path segment 'configurationStores'.", id)));
-        }
-        String snapshotName = ResourceManagerUtils.getValueFromIdByName(id, "snapshots");
-        if (snapshotName == null) {
-            throw LOGGER.logExceptionAsError(new IllegalArgumentException(
-                String.format("The resource ID '%s' is not valid. Missing path segment 'snapshots'.", id)));
-        }
+        String resourceGroupName = ResourceManagerUtils.getRequiredValueFromIdByParameterName(id,
+            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.AppConfiguration/configurationStores/{configStoreName}/snapshots/{snapshotName}",
+            "resourceGroupName", "resourceGroups", LOGGER);
+        String configStoreName = ResourceManagerUtils.getRequiredValueFromIdByParameterName(id,
+            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.AppConfiguration/configurationStores/{configStoreName}/snapshots/{snapshotName}",
+            "configStoreName", "configurationStores", LOGGER);
+        String snapshotName = ResourceManagerUtils.getRequiredValueFromIdByParameterName(id,
+            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.AppConfiguration/configurationStores/{configStoreName}/snapshots/{snapshotName}",
+            "snapshotName", "snapshots", LOGGER);
         return this.getWithResponse(resourceGroupName, configStoreName, snapshotName, context);
     }
 

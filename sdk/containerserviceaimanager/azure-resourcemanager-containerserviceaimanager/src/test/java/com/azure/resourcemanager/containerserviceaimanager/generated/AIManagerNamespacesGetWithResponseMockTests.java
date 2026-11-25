@@ -21,7 +21,7 @@ public final class AIManagerNamespacesGetWithResponseMockTests {
     @Test
     public void testGetWithResponse() throws Exception {
         String responseStr
-            = "{\"properties\":{\"provisioningState\":\"Canceled\",\"labels\":{\"flcxoga\":\"pp\",\"mkqzeqqkdltfzxmh\":\"konzmnsik\"},\"annotations\":{\"tibqdxbxwakb\":\"gureodkwobdag\",\"podxunkb\":\"gqxndlkzgxhuripl\"}},\"eTag\":\"xmubyyntwlrbq\",\"id\":\"oievseotgqrlltm\",\"name\":\"wlauwzizxbmpg\",\"type\":\"jefuzmuvpbttdumo\"}";
+            = "{\"properties\":{\"provisioningState\":\"Succeeded\",\"labels\":{\"wsbpfvm\":\"lvmbmpaxmodfvuef\"},\"annotations\":{\"yzvqt\":\"rfouyftaakcpw\",\"zksmondj\":\"nubexk\"}},\"eTag\":\"uxvypomgkopkwh\",\"id\":\"v\",\"name\":\"ajqgxy\",\"type\":\"mocmbqfqvmk\"}";
 
         HttpClient httpClient
             = response -> Mono.just(new MockHttpResponse(response, 200, responseStr.getBytes(StandardCharsets.UTF_8)));
@@ -31,10 +31,10 @@ public final class AIManagerNamespacesGetWithResponseMockTests {
                 new AzureProfile("", "", AzureCloud.AZURE_PUBLIC_CLOUD));
 
         AIManagerNamespace response = manager.aIManagerNamespaces()
-            .getWithResponse("hhszh", "d", "lvwiwubmwmbesl", com.azure.core.util.Context.NONE)
+            .getWithResponse("mgxcxrslpm", "twuoegrpkhjwni", "qsluicp", com.azure.core.util.Context.NONE)
             .getValue();
 
-        Assertions.assertEquals("pp", response.properties().labels().get("flcxoga"));
-        Assertions.assertEquals("gureodkwobdag", response.properties().annotations().get("tibqdxbxwakb"));
+        Assertions.assertEquals("lvmbmpaxmodfvuef", response.properties().labels().get("wsbpfvm"));
+        Assertions.assertEquals("rfouyftaakcpw", response.properties().annotations().get("yzvqt"));
     }
 }

@@ -60,10 +60,7 @@ public final class RelationshipImpl implements Relationship, Relationship.Defini
     }
 
     public Relationship create() {
-        this.innerObject = serviceManager.serviceClient()
-            .getRelationships()
-            .createOrUpdate(resourceGroupName, healthModelName, relationshipName, this.innerModel(), Context.NONE);
-        return this;
+        return this.create(Context.NONE);
     }
 
     public Relationship create(Context context) {
@@ -84,10 +81,7 @@ public final class RelationshipImpl implements Relationship, Relationship.Defini
     }
 
     public Relationship apply() {
-        this.innerObject = serviceManager.serviceClient()
-            .getRelationships()
-            .createOrUpdate(resourceGroupName, healthModelName, relationshipName, this.innerModel(), Context.NONE);
-        return this;
+        return this.apply(Context.NONE);
     }
 
     public Relationship apply(Context context) {
@@ -101,17 +95,19 @@ public final class RelationshipImpl implements Relationship, Relationship.Defini
         com.azure.resourcemanager.cloudhealth.CloudHealthManager serviceManager) {
         this.innerObject = innerObject;
         this.serviceManager = serviceManager;
-        this.resourceGroupName = ResourceManagerUtils.getValueFromIdByName(innerObject.id(), "resourceGroups");
-        this.healthModelName = ResourceManagerUtils.getValueFromIdByName(innerObject.id(), "healthmodels");
-        this.relationshipName = ResourceManagerUtils.getValueFromIdByName(innerObject.id(), "relationships");
+        this.resourceGroupName = ResourceManagerUtils.getValueFromIdByParameterName(innerObject.id(),
+            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.CloudHealth/healthmodels/{healthModelName}/relationships/{relationshipName}",
+            "resourceGroupName");
+        this.healthModelName = ResourceManagerUtils.getValueFromIdByParameterName(innerObject.id(),
+            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.CloudHealth/healthmodels/{healthModelName}/relationships/{relationshipName}",
+            "healthModelName");
+        this.relationshipName = ResourceManagerUtils.getValueFromIdByParameterName(innerObject.id(),
+            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.CloudHealth/healthmodels/{healthModelName}/relationships/{relationshipName}",
+            "relationshipName");
     }
 
     public Relationship refresh() {
-        this.innerObject = serviceManager.serviceClient()
-            .getRelationships()
-            .getWithResponse(resourceGroupName, healthModelName, relationshipName, Context.NONE)
-            .getValue();
-        return this;
+        return this.refresh(Context.NONE);
     }
 
     public Relationship refresh(Context context) {

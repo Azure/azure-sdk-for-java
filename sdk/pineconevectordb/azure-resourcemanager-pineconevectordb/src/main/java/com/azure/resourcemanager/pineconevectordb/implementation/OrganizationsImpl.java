@@ -45,7 +45,7 @@ public final class OrganizationsImpl implements Organizations {
     }
 
     public void deleteByResourceGroup(String resourceGroupName, String organizationname) {
-        this.serviceClient().delete(resourceGroupName, organizationname);
+        this.delete(resourceGroupName, organizationname, Context.NONE);
     }
 
     public void delete(String resourceGroupName, String organizationname, Context context) {
@@ -53,8 +53,7 @@ public final class OrganizationsImpl implements Organizations {
     }
 
     public PagedIterable<OrganizationResource> listByResourceGroup(String resourceGroupName) {
-        PagedIterable<OrganizationResourceInner> inner = this.serviceClient().listByResourceGroup(resourceGroupName);
-        return ResourceManagerUtils.mapPage(inner, inner1 -> new OrganizationResourceImpl(inner1, this.manager()));
+        return this.listByResourceGroup(resourceGroupName, Context.NONE);
     }
 
     public PagedIterable<OrganizationResource> listByResourceGroup(String resourceGroupName, Context context) {
@@ -64,8 +63,7 @@ public final class OrganizationsImpl implements Organizations {
     }
 
     public PagedIterable<OrganizationResource> list() {
-        PagedIterable<OrganizationResourceInner> inner = this.serviceClient().list();
-        return ResourceManagerUtils.mapPage(inner, inner1 -> new OrganizationResourceImpl(inner1, this.manager()));
+        return this.list(Context.NONE);
     }
 
     public PagedIterable<OrganizationResource> list(Context context) {
@@ -74,58 +72,30 @@ public final class OrganizationsImpl implements Organizations {
     }
 
     public OrganizationResource getById(String id) {
-        String resourceGroupName = ResourceManagerUtils.getValueFromIdByName(id, "resourceGroups");
-        if (resourceGroupName == null) {
-            throw LOGGER.logExceptionAsError(new IllegalArgumentException(
-                String.format("The resource ID '%s' is not valid. Missing path segment 'resourceGroups'.", id)));
-        }
-        String organizationname = ResourceManagerUtils.getValueFromIdByName(id, "organizations");
-        if (organizationname == null) {
-            throw LOGGER.logExceptionAsError(new IllegalArgumentException(
-                String.format("The resource ID '%s' is not valid. Missing path segment 'organizations'.", id)));
-        }
-        return this.getByResourceGroupWithResponse(resourceGroupName, organizationname, Context.NONE).getValue();
+        return this.getByIdWithResponse(id, Context.NONE).getValue();
     }
 
     public Response<OrganizationResource> getByIdWithResponse(String id, Context context) {
-        String resourceGroupName = ResourceManagerUtils.getValueFromIdByName(id, "resourceGroups");
-        if (resourceGroupName == null) {
-            throw LOGGER.logExceptionAsError(new IllegalArgumentException(
-                String.format("The resource ID '%s' is not valid. Missing path segment 'resourceGroups'.", id)));
-        }
-        String organizationname = ResourceManagerUtils.getValueFromIdByName(id, "organizations");
-        if (organizationname == null) {
-            throw LOGGER.logExceptionAsError(new IllegalArgumentException(
-                String.format("The resource ID '%s' is not valid. Missing path segment 'organizations'.", id)));
-        }
+        String resourceGroupName = ResourceManagerUtils.getRequiredValueFromIdByParameterName(id,
+            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Pinecone.VectorDb/organizations/{organizationname}",
+            "resourceGroupName", "resourceGroups", LOGGER);
+        String organizationname = ResourceManagerUtils.getRequiredValueFromIdByParameterName(id,
+            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Pinecone.VectorDb/organizations/{organizationname}",
+            "organizationname", "organizations", LOGGER);
         return this.getByResourceGroupWithResponse(resourceGroupName, organizationname, context);
     }
 
     public void deleteById(String id) {
-        String resourceGroupName = ResourceManagerUtils.getValueFromIdByName(id, "resourceGroups");
-        if (resourceGroupName == null) {
-            throw LOGGER.logExceptionAsError(new IllegalArgumentException(
-                String.format("The resource ID '%s' is not valid. Missing path segment 'resourceGroups'.", id)));
-        }
-        String organizationname = ResourceManagerUtils.getValueFromIdByName(id, "organizations");
-        if (organizationname == null) {
-            throw LOGGER.logExceptionAsError(new IllegalArgumentException(
-                String.format("The resource ID '%s' is not valid. Missing path segment 'organizations'.", id)));
-        }
-        this.delete(resourceGroupName, organizationname, Context.NONE);
+        this.deleteByIdWithResponse(id, Context.NONE);
     }
 
     public void deleteByIdWithResponse(String id, Context context) {
-        String resourceGroupName = ResourceManagerUtils.getValueFromIdByName(id, "resourceGroups");
-        if (resourceGroupName == null) {
-            throw LOGGER.logExceptionAsError(new IllegalArgumentException(
-                String.format("The resource ID '%s' is not valid. Missing path segment 'resourceGroups'.", id)));
-        }
-        String organizationname = ResourceManagerUtils.getValueFromIdByName(id, "organizations");
-        if (organizationname == null) {
-            throw LOGGER.logExceptionAsError(new IllegalArgumentException(
-                String.format("The resource ID '%s' is not valid. Missing path segment 'organizations'.", id)));
-        }
+        String resourceGroupName = ResourceManagerUtils.getRequiredValueFromIdByParameterName(id,
+            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Pinecone.VectorDb/organizations/{organizationname}",
+            "resourceGroupName", "resourceGroups", LOGGER);
+        String organizationname = ResourceManagerUtils.getRequiredValueFromIdByParameterName(id,
+            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Pinecone.VectorDb/organizations/{organizationname}",
+            "organizationname", "organizations", LOGGER);
         this.delete(resourceGroupName, organizationname, context);
     }
 

@@ -7,18 +7,21 @@ import com.azure.ai.contentunderstanding.ContentUnderstandingClient;
 import com.azure.ai.contentunderstanding.ContentUnderstandingClientBuilder;
 import com.azure.ai.contentunderstanding.models.AnalysisInput;
 import com.azure.ai.contentunderstanding.models.AnalysisResult;
-import com.azure.ai.contentunderstanding.models.AudioVisualContent;
 import com.azure.ai.contentunderstanding.models.ContentAnalyzerAnalyzeOperationStatus;
 import com.azure.ai.contentunderstanding.models.ContentRange;
 import com.azure.ai.contentunderstanding.LlmInputHelper;
 import com.azure.ai.contentunderstanding.ToLlmInputOptions;
 import com.azure.core.credential.AzureKeyCredential;
+import com.azure.core.util.BinaryData;
+import com.azure.core.util.polling.LongRunningOperationStatus;
 import com.azure.core.util.polling.SyncPoller;
 import com.azure.identity.DefaultAzureCredentialBuilder;
 
 import java.util.Arrays;
+import java.nio.file.Paths;
 import java.util.LinkedHashMap;
 import java.util.Map;
+import java.util.function.Supplier;
 
 /**
  * Sample demonstrating advanced usage of the {@link LlmInputHelper#toLlmInput} helper.
@@ -30,10 +33,11 @@ import java.util.Map;
  *
  * <p>When using Content Understanding with large language models, you typically need to convert the
  * structured {@link AnalysisResult} into a text format that an LLM can consume. The
- * {@code toLlmInput} helper handles this conversion automatically:
+ * {@code toLlmInput} output is suitable for injecting into LLM prompts, storing in vector databases, or returning as
+ * tool output in agentic workflows. The helper handles this conversion automatically:
  *
  * <ul>
- *   <li><b>YAML front matter</b> with content type, extracted fields, page numbers, and optional metadata</li>
+ *   <li><b>YAML front matter</b> with MIME type, extracted fields, page numbers, and optional metadata</li>
  *   <li><b>Markdown body</b> with the document content and page markers</li>
  * </ul>
  *
@@ -46,18 +50,43 @@ import java.util.Map;
  *
  * <ol>
  *   <li><b>Output options</b> — Fields-only, markdown-only, and custom metadata</li>
+ *   <li><b>Preview metadata from analysis result</b> — Analyze a sample PDF with embedded metadata and
+ *       include it in {@code toLlmInput} output (requires the preview service version)</li>
  *   <li><b>Multi-page PDF with content range</b> — Analyze specific pages and verify page markers</li>
  *   <li><b>Multi-segment video</b> — Analyze a video with multiple segments and time ranges</li>
  *   <li><b>Audio with content range</b> — Analyze a specific time range of an audio file</li>
  * </ol>
  *
+ * <p><b>Preview-only:</b> Only the service-extracted analysis-result metadata scenario requires service API version
+ * {@code 2026-06-01-preview}; the other scenarios use the service version configured on the client.</p>
+ *
  * <p>For classification results, see Sample05_CreateClassifier.
+ *
+ * <p>Service-extracted values and caller-provided values remain separate in the YAML front matter:</p>
+ * <pre>{@code
+ * ---
+ * metadata:
+ *   author: Megan Bowen
+ *   contentType: application/pdf
+ *   language: en-US
+ *   pageCount: 1
+ *   title: Contoso Metadata Extraction Sample
+ * customMetadata:
+ *   source: invoice.pdf
+ *   department: finance
+ * ---
+ * }</pre>
+ *
+ * <p>Configure model deployment defaults before running the document search, video, and audio scenarios; see
+ * {@link Sample00_UpdateDefaults}. API key authentication is intended for local testing; prefer
+ * {@link DefaultAzureCredentialBuilder} for production applications.</p>
  */
 public class Sample_Advanced_ToLlmInput {
 
     public static void main(String[] args) {
         // BEGIN: com.azure.ai.contentunderstanding.sampleAdvanced.buildClient
-        String endpoint = System.getenv("CONTENTUNDERSTANDING_ENDPOINT");
+        String endpoint = SampleEnvironmentConfiguration.requireEnvironmentValue("CONTENTUNDERSTANDING_ENDPOINT",
+            System.getenv("CONTENTUNDERSTANDING_ENDPOINT"));
         String key = System.getenv("CONTENTUNDERSTANDING_KEY");
 
         ContentUnderstandingClientBuilder builder = new ContentUnderstandingClientBuilder().endpoint(endpoint);
@@ -71,7 +100,7 @@ public class Sample_Advanced_ToLlmInput {
         // END: com.azure.ai.contentunderstanding.sampleAdvanced.buildClient
 
         // ================================================================
-        // 1. OUTPUT OPTIONS — Fields-only, markdown-only, metadata
+        // 1. OUTPUT OPTIONS — Fields-only, markdown-only, custom metadata
         // ================================================================
 
         // BEGIN:ContentUnderstandingToLlmInput
@@ -88,7 +117,10 @@ public class Sample_Advanced_ToLlmInput {
         SyncPoller<ContentAnalyzerAnalyzeOperationStatus, AnalysisResult> invoicePoller
             = client.beginAnalyze("prebuilt-invoice", Arrays.asList(new AnalysisInput().setUrl(invoiceUrl)));
 
-        AnalysisResult result = invoicePoller.getFinalResult();
+        AnalysisResult result = requireAnalysisContents(
+            requireSuccessfulResult(invoicePoller.waitForCompletion().getStatus(), invoicePoller::getFinalResult,
+                "Invoice analysis"),
+            "Invoice analysis");
 
         // Convert to LLM-ready text (YAML front matter + markdown)
         String text = LlmInputHelper.toLlmInput(result);
@@ -111,15 +143,28 @@ public class Sample_Advanced_ToLlmInput {
         System.out.println("\n--- Markdown only (includeFields=false) ---");
         System.out.println(markdownOnly);
 
-        // Custom metadata — add your own key-value pairs to the YAML front matter.
-        // Useful for RAG pipelines to track document source, department, batch, etc.
-        Map<String, Object> metadata = new LinkedHashMap<>();
-        metadata.put("source", "invoice.pdf");
-        metadata.put("department", "finance");
-        String withMetadata = LlmInputHelper.toLlmInput(result, metadata);
-        System.out.println("\n--- With metadata ---");
-        System.out.println(withMetadata);
+        // Custom metadata is nested under customMetadata, separate from service-extracted metadata.
+        // This avoids collisions with helper-owned keys such as mimeType, fields, and pages.
+        Map<String, Object> customMetadata = new LinkedHashMap<>();
+        customMetadata.put("source", "invoice.pdf");
+        customMetadata.put("department", "finance");
+        String withCustomMetadata = LlmInputHelper.toLlmInput(result, customMetadata);
+        System.out.println("\n--- With customMetadata ---");
+        System.out.println(withCustomMetadata);
         // END:ContentUnderstandingToLlmInputOptions
+
+        // BEGIN:ContentUnderstandingToLlmInputMetadataFromAnalysisResultPreview
+        BinaryData metadataPdf = BinaryData.fromFile(Paths.get("src/samples/resources/sample_metadata.pdf"));
+        SyncPoller<ContentAnalyzerAnalyzeOperationStatus, AnalysisResult> metadataPoller
+            = client.beginAnalyzeBinary("prebuilt-layout", metadataPdf);
+        AnalysisResult metadataResult = requireAnalysisContents(
+            requireSuccessfulResult(metadataPoller.waitForCompletion().getStatus(), metadataPoller::getFinalResult,
+                "Metadata analysis"),
+            "Metadata analysis");
+        String analysisMetadataText = LlmInputHelper.toLlmInput(metadataResult);
+        System.out.println("\n--- Preview metadata from analysis result ---");
+        System.out.println(analysisMetadataText);
+        // END:ContentUnderstandingToLlmInputMetadataFromAnalysisResultPreview
 
         // ================================================================
         // 2. MULTI-PAGE PDF WITH CONTENT RANGE
@@ -141,11 +186,15 @@ public class Sample_Advanced_ToLlmInput {
         System.out.println("  URL: " + multiPageUrl);
         System.out.println("  contentRange: '2-3,5'\n");
 
-        SyncPoller<ContentAnalyzerAnalyzeOperationStatus, AnalysisResult> multiPagePoller
-            = client.beginAnalyze("prebuilt-documentSearch",
-                Arrays.asList(new AnalysisInput().setUrl(multiPageUrl).setContentRange(new ContentRange("2-3,5"))));
+        SyncPoller<ContentAnalyzerAnalyzeOperationStatus, AnalysisResult> multiPagePoller = client.beginAnalyze(
+            "prebuilt-documentSearch",
+            Arrays.asList(new AnalysisInput().setUrl(multiPageUrl)
+                .setContentRange(ContentRange.combine(ContentRange.pages(2, 3), ContentRange.page(5)))));
 
-        AnalysisResult multiPageResult = multiPagePoller.getFinalResult();
+        AnalysisResult multiPageResult = requireAnalysisContents(
+            requireSuccessfulResult(multiPagePoller.waitForCompletion().getStatus(), multiPagePoller::getFinalResult,
+                "Multi-page analysis"),
+            "Multi-page analysis");
 
         String multiPageText = LlmInputHelper.toLlmInput(multiPageResult);
         System.out.println("Output:");
@@ -173,7 +222,10 @@ public class Sample_Advanced_ToLlmInput {
         SyncPoller<ContentAnalyzerAnalyzeOperationStatus, AnalysisResult> videoPoller
             = client.beginAnalyze("prebuilt-videoSearch", Arrays.asList(new AnalysisInput().setUrl(videoUrl)));
 
-        AnalysisResult videoResult = videoPoller.getFinalResult();
+        AnalysisResult videoResult = requireAnalysisContents(
+            requireSuccessfulResult(videoPoller.waitForCompletion().getStatus(), videoPoller::getFinalResult,
+                "Video analysis"),
+            "Video analysis");
 
         String videoText = LlmInputHelper.toLlmInput(videoResult);
         System.out.println("Video produced " + videoResult.getContents().size() + " segment(s)");
@@ -203,15 +255,37 @@ public class Sample_Advanced_ToLlmInput {
             "prebuilt-audioSearch",
             Arrays.asList(new AnalysisInput().setUrl(audioUrl).setContentRange(new ContentRange("0-10000"))));
 
-        AnalysisResult audioResult = audioPoller.getFinalResult();
+        AnalysisResult audioResult = requireAnalysisContents(
+            requireSuccessfulResult(audioPoller.waitForCompletion().getStatus(), audioPoller::getFinalResult,
+                "Audio analysis"),
+            "Audio analysis");
 
-        // Include metadata to track the source file in RAG pipelines
-        Map<String, Object> audioMetadata = new LinkedHashMap<>();
-        audioMetadata.put("source", "callCenterRecording.mp3");
+        // Include custom metadata to track the source file in RAG pipelines.
+        Map<String, Object> audioCustomMetadata = new LinkedHashMap<>();
+        audioCustomMetadata.put("source", "callCenterRecording.mp3");
         String audioText
-            = LlmInputHelper.toLlmInput(audioResult, audioMetadata);
+            = LlmInputHelper.toLlmInput(audioResult, audioCustomMetadata);
         System.out.println("Output:");
         System.out.println(audioText);
         // END:ContentUnderstandingToLlmInputAudio
+    }
+
+    static <T> T requireSuccessfulResult(LongRunningOperationStatus status, Supplier<T> finalResult,
+        String operationName) {
+        if (status != LongRunningOperationStatus.SUCCESSFULLY_COMPLETED) {
+            throw new IllegalStateException(operationName + " completed unsuccessfully with status: " + status);
+        }
+        T result = finalResult.get();
+        if (result == null) {
+            throw new IllegalStateException(operationName + " completed without a final result.");
+        }
+        return result;
+    }
+
+    static AnalysisResult requireAnalysisContents(AnalysisResult result, String operationName) {
+        if (result.getContents() == null || result.getContents().isEmpty()) {
+            throw new IllegalStateException(operationName + " completed without analysis contents.");
+        }
+        return result;
     }
 }

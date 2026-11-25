@@ -16,10 +16,10 @@ public final class UserAssignedIdentityTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
         UserAssignedIdentity model = BinaryData.fromString(
-            "{\"userAssignedIdentities\":{\"z\":{\"principalId\":\"qrhhu\",\"clientId\":\"pppcqeqxo\"}},\"principalId\":\"hzxct\",\"type\":\"SystemAssigned,UserAssigned\",\"tenantId\":\"bkdmo\"}")
+            "{\"userAssignedIdentities\":{\"tfdygpfqb\":{\"principalId\":\"wncwzzhxgktrmg\",\"clientId\":\"napkteoellw\"},\"z\":{\"principalId\":\"ceopzfqrhhuaopp\",\"clientId\":\"qeqxo\"}},\"principalId\":\"hzxct\",\"type\":\"SystemAssigned,UserAssigned\",\"tenantId\":\"bkdmo\"}")
             .toObject(UserAssignedIdentity.class);
-        Assertions.assertEquals("qrhhu", model.userAssignedIdentities().get("z").principalId());
-        Assertions.assertEquals("pppcqeqxo", model.userAssignedIdentities().get("z").clientId());
+        Assertions.assertEquals("wncwzzhxgktrmg", model.userAssignedIdentities().get("tfdygpfqb").principalId());
+        Assertions.assertEquals("napkteoellw", model.userAssignedIdentities().get("tfdygpfqb").clientId());
         Assertions.assertEquals("hzxct", model.principalId());
         Assertions.assertEquals(IdentityType.SYSTEM_ASSIGNED_USER_ASSIGNED, model.type());
     }
@@ -28,12 +28,13 @@ public final class UserAssignedIdentityTests {
     public void testSerialize() throws Exception {
         UserAssignedIdentity model = new UserAssignedIdentity()
             .withUserAssignedIdentities(
-                mapOf("z", new UserIdentity().withPrincipalId("qrhhu").withClientId("pppcqeqxo")))
+                mapOf("tfdygpfqb", new UserIdentity().withPrincipalId("wncwzzhxgktrmg").withClientId("napkteoellw"),
+                    "z", new UserIdentity().withPrincipalId("ceopzfqrhhuaopp").withClientId("qeqxo")))
             .withPrincipalId("hzxct")
             .withType(IdentityType.SYSTEM_ASSIGNED_USER_ASSIGNED);
         model = BinaryData.fromObject(model).toObject(UserAssignedIdentity.class);
-        Assertions.assertEquals("qrhhu", model.userAssignedIdentities().get("z").principalId());
-        Assertions.assertEquals("pppcqeqxo", model.userAssignedIdentities().get("z").clientId());
+        Assertions.assertEquals("wncwzzhxgktrmg", model.userAssignedIdentities().get("tfdygpfqb").principalId());
+        Assertions.assertEquals("napkteoellw", model.userAssignedIdentities().get("tfdygpfqb").clientId());
         Assertions.assertEquals("hzxct", model.principalId());
         Assertions.assertEquals(IdentityType.SYSTEM_ASSIGNED_USER_ASSIGNED, model.type());
     }

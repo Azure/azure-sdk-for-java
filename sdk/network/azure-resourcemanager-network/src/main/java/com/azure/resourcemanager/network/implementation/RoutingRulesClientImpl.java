@@ -126,20 +126,7 @@ public final class RoutingRulesClientImpl implements RoutingRulesClient {
             @HostParam("endpoint") String endpoint, @HeaderParam("Accept") String accept, Context context);
     }
 
-    /**
-     * Gets a network manager routing configuration routing rule.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param networkManagerName The name of the network manager.
-     * @param configurationName The name of the network manager Routing Configuration.
-     * @param ruleCollectionName The name of the network manager routing Configuration rule collection.
-     * @param ruleName The name of the rule.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return a network manager routing configuration routing rule along with {@link Response} on successful completion
-     * of {@link Mono}.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Response<RoutingRuleInner>> getWithResponseAsync(String resourceGroupName, String networkManagerName,
         String configurationName, String ruleCollectionName, String ruleName) {
@@ -170,7 +157,7 @@ public final class RoutingRulesClientImpl implements RoutingRulesClient {
         if (ruleName == null) {
             return Mono.error(new IllegalArgumentException("Parameter ruleName is required and cannot be null."));
         }
-        final String apiVersion = "2025-07-01";
+        final String apiVersion = "2026-05-01";
         final String accept = "application/json";
         return FluxUtil
             .withContext(context -> service.get(this.client.getEndpoint(), apiVersion, this.client.getSubscriptionId(),
@@ -224,26 +211,14 @@ public final class RoutingRulesClientImpl implements RoutingRulesClient {
         if (ruleName == null) {
             return Mono.error(new IllegalArgumentException("Parameter ruleName is required and cannot be null."));
         }
-        final String apiVersion = "2025-07-01";
+        final String apiVersion = "2026-05-01";
         final String accept = "application/json";
         context = this.client.mergeContext(context);
         return service.get(this.client.getEndpoint(), apiVersion, this.client.getSubscriptionId(), resourceGroupName,
             networkManagerName, configurationName, ruleCollectionName, ruleName, accept, context);
     }
 
-    /**
-     * Gets a network manager routing configuration routing rule.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param networkManagerName The name of the network manager.
-     * @param configurationName The name of the network manager Routing Configuration.
-     * @param ruleCollectionName The name of the network manager routing Configuration rule collection.
-     * @param ruleName The name of the rule.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return a network manager routing configuration routing rule on successful completion of {@link Mono}.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<RoutingRuleInner> getAsync(String resourceGroupName, String networkManagerName,
         String configurationName, String ruleCollectionName, String ruleName) {
@@ -251,20 +226,7 @@ public final class RoutingRulesClientImpl implements RoutingRulesClient {
             ruleName).flatMap(res -> Mono.justOrEmpty(res.getValue()));
     }
 
-    /**
-     * Gets a network manager routing configuration routing rule.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param networkManagerName The name of the network manager.
-     * @param configurationName The name of the network manager Routing Configuration.
-     * @param ruleCollectionName The name of the network manager routing Configuration rule collection.
-     * @param ruleName The name of the rule.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return a network manager routing configuration routing rule along with {@link Response}.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Response<RoutingRuleInner> getWithResponse(String resourceGroupName, String networkManagerName,
         String configurationName, String ruleCollectionName, String ruleName, Context context) {
@@ -272,19 +234,7 @@ public final class RoutingRulesClientImpl implements RoutingRulesClient {
             ruleName, context).block();
     }
 
-    /**
-     * Gets a network manager routing configuration routing rule.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param networkManagerName The name of the network manager.
-     * @param configurationName The name of the network manager Routing Configuration.
-     * @param ruleCollectionName The name of the network manager routing Configuration rule collection.
-     * @param ruleName The name of the rule.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return a network manager routing configuration routing rule.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public RoutingRuleInner get(String resourceGroupName, String networkManagerName, String configurationName,
         String ruleCollectionName, String ruleName) {
@@ -292,20 +242,7 @@ public final class RoutingRulesClientImpl implements RoutingRulesClient {
             Context.NONE).getValue();
     }
 
-    /**
-     * Creates or updates an routing rule.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param networkManagerName The name of the network manager.
-     * @param configurationName The name of the network manager Routing Configuration.
-     * @param ruleCollectionName The name of the network manager routing Configuration rule collection.
-     * @param ruleName The name of the rule.
-     * @param routingRule The routing rule to create or update.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return network routing rule along with {@link Response} on successful completion of {@link Mono}.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Response<RoutingRuleInner>> createOrUpdateWithResponseAsync(String resourceGroupName,
         String networkManagerName, String configurationName, String ruleCollectionName, String ruleName,
@@ -342,7 +279,7 @@ public final class RoutingRulesClientImpl implements RoutingRulesClient {
         } else {
             routingRule.validate();
         }
-        final String apiVersion = "2025-07-01";
+        final String apiVersion = "2026-05-01";
         final String contentType = "application/json";
         final String accept = "application/json";
         return FluxUtil
@@ -403,7 +340,7 @@ public final class RoutingRulesClientImpl implements RoutingRulesClient {
         } else {
             routingRule.validate();
         }
-        final String apiVersion = "2025-07-01";
+        final String apiVersion = "2026-05-01";
         final String contentType = "application/json";
         final String accept = "application/json";
         context = this.client.mergeContext(context);
@@ -412,20 +349,7 @@ public final class RoutingRulesClientImpl implements RoutingRulesClient {
             routingRule, context);
     }
 
-    /**
-     * Creates or updates an routing rule.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param networkManagerName The name of the network manager.
-     * @param configurationName The name of the network manager Routing Configuration.
-     * @param ruleCollectionName The name of the network manager routing Configuration rule collection.
-     * @param ruleName The name of the rule.
-     * @param routingRule The routing rule to create or update.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return network routing rule on successful completion of {@link Mono}.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<RoutingRuleInner> createOrUpdateAsync(String resourceGroupName, String networkManagerName,
         String configurationName, String ruleCollectionName, String ruleName, RoutingRuleInner routingRule) {
@@ -433,21 +357,7 @@ public final class RoutingRulesClientImpl implements RoutingRulesClient {
             ruleCollectionName, ruleName, routingRule).flatMap(res -> Mono.justOrEmpty(res.getValue()));
     }
 
-    /**
-     * Creates or updates an routing rule.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param networkManagerName The name of the network manager.
-     * @param configurationName The name of the network manager Routing Configuration.
-     * @param ruleCollectionName The name of the network manager routing Configuration rule collection.
-     * @param ruleName The name of the rule.
-     * @param routingRule The routing rule to create or update.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return network routing rule along with {@link Response}.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Response<RoutingRuleInner> createOrUpdateWithResponse(String resourceGroupName, String networkManagerName,
         String configurationName, String ruleCollectionName, String ruleName, RoutingRuleInner routingRule,
@@ -456,20 +366,7 @@ public final class RoutingRulesClientImpl implements RoutingRulesClient {
             ruleCollectionName, ruleName, routingRule, context).block();
     }
 
-    /**
-     * Creates or updates an routing rule.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param networkManagerName The name of the network manager.
-     * @param configurationName The name of the network manager Routing Configuration.
-     * @param ruleCollectionName The name of the network manager routing Configuration rule collection.
-     * @param ruleName The name of the rule.
-     * @param routingRule The routing rule to create or update.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return network routing rule.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public RoutingRuleInner createOrUpdate(String resourceGroupName, String networkManagerName,
         String configurationName, String ruleCollectionName, String ruleName, RoutingRuleInner routingRule) {
@@ -477,21 +374,7 @@ public final class RoutingRulesClientImpl implements RoutingRulesClient {
             ruleName, routingRule, Context.NONE).getValue();
     }
 
-    /**
-     * Deletes a routing rule.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param networkManagerName The name of the network manager.
-     * @param configurationName The name of the network manager Routing Configuration.
-     * @param ruleCollectionName The name of the network manager routing Configuration rule collection.
-     * @param ruleName The name of the rule.
-     * @param force Deletes the resource even if it is part of a deployed configuration. If the configuration has been
-     * deployed, the service will do a cleanup deployment in the background, prior to the delete.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the {@link Response} on successful completion of {@link Mono}.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Response<Flux<ByteBuffer>>> deleteWithResponseAsync(String resourceGroupName, String networkManagerName,
         String configurationName, String ruleCollectionName, String ruleName, Boolean force) {
@@ -522,7 +405,7 @@ public final class RoutingRulesClientImpl implements RoutingRulesClient {
         if (ruleName == null) {
             return Mono.error(new IllegalArgumentException("Parameter ruleName is required and cannot be null."));
         }
-        final String apiVersion = "2025-07-01";
+        final String apiVersion = "2026-05-01";
         return FluxUtil
             .withContext(context -> service.delete(this.client.getEndpoint(), apiVersion,
                 this.client.getSubscriptionId(), resourceGroupName, networkManagerName, configurationName,
@@ -577,27 +460,13 @@ public final class RoutingRulesClientImpl implements RoutingRulesClient {
         if (ruleName == null) {
             return Mono.error(new IllegalArgumentException("Parameter ruleName is required and cannot be null."));
         }
-        final String apiVersion = "2025-07-01";
+        final String apiVersion = "2026-05-01";
         context = this.client.mergeContext(context);
         return service.delete(this.client.getEndpoint(), apiVersion, this.client.getSubscriptionId(), resourceGroupName,
             networkManagerName, configurationName, ruleCollectionName, ruleName, force, context);
     }
 
-    /**
-     * Deletes a routing rule.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param networkManagerName The name of the network manager.
-     * @param configurationName The name of the network manager Routing Configuration.
-     * @param ruleCollectionName The name of the network manager routing Configuration rule collection.
-     * @param ruleName The name of the rule.
-     * @param force Deletes the resource even if it is part of a deployed configuration. If the configuration has been
-     * deployed, the service will do a cleanup deployment in the background, prior to the delete.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the {@link PollerFlux} for polling of long-running operation.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public PollerFlux<PollResult<Void>, Void> beginDeleteAsync(String resourceGroupName, String networkManagerName,
         String configurationName, String ruleCollectionName, String ruleName, Boolean force) {
@@ -607,19 +476,7 @@ public final class RoutingRulesClientImpl implements RoutingRulesClient {
             this.client.getContext());
     }
 
-    /**
-     * Deletes a routing rule.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param networkManagerName The name of the network manager.
-     * @param configurationName The name of the network manager Routing Configuration.
-     * @param ruleCollectionName The name of the network manager routing Configuration rule collection.
-     * @param ruleName The name of the rule.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the {@link PollerFlux} for polling of long-running operation.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public PollerFlux<PollResult<Void>, Void> beginDeleteAsync(String resourceGroupName, String networkManagerName,
         String configurationName, String ruleCollectionName, String ruleName) {
@@ -656,19 +513,7 @@ public final class RoutingRulesClientImpl implements RoutingRulesClient {
             context);
     }
 
-    /**
-     * Deletes a routing rule.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param networkManagerName The name of the network manager.
-     * @param configurationName The name of the network manager Routing Configuration.
-     * @param ruleCollectionName The name of the network manager routing Configuration rule collection.
-     * @param ruleName The name of the rule.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the {@link SyncPoller} for polling of long-running operation.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public SyncPoller<PollResult<Void>, Void> beginDelete(String resourceGroupName, String networkManagerName,
         String configurationName, String ruleCollectionName, String ruleName) {
@@ -679,22 +524,7 @@ public final class RoutingRulesClientImpl implements RoutingRulesClient {
             .getSyncPoller();
     }
 
-    /**
-     * Deletes a routing rule.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param networkManagerName The name of the network manager.
-     * @param configurationName The name of the network manager Routing Configuration.
-     * @param ruleCollectionName The name of the network manager routing Configuration rule collection.
-     * @param ruleName The name of the rule.
-     * @param force Deletes the resource even if it is part of a deployed configuration. If the configuration has been
-     * deployed, the service will do a cleanup deployment in the background, prior to the delete.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the {@link SyncPoller} for polling of long-running operation.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public SyncPoller<PollResult<Void>, Void> beginDelete(String resourceGroupName, String networkManagerName,
         String configurationName, String ruleCollectionName, String ruleName, Boolean force, Context context) {
@@ -704,21 +534,7 @@ public final class RoutingRulesClientImpl implements RoutingRulesClient {
             .getSyncPoller();
     }
 
-    /**
-     * Deletes a routing rule.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param networkManagerName The name of the network manager.
-     * @param configurationName The name of the network manager Routing Configuration.
-     * @param ruleCollectionName The name of the network manager routing Configuration rule collection.
-     * @param ruleName The name of the rule.
-     * @param force Deletes the resource even if it is part of a deployed configuration. If the configuration has been
-     * deployed, the service will do a cleanup deployment in the background, prior to the delete.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return A {@link Mono} that completes when a successful response is received.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Void> deleteAsync(String resourceGroupName, String networkManagerName, String configurationName,
         String ruleCollectionName, String ruleName, Boolean force) {
@@ -726,19 +542,7 @@ public final class RoutingRulesClientImpl implements RoutingRulesClient {
             force).last().flatMap(this.client::getLroFinalResultOrError);
     }
 
-    /**
-     * Deletes a routing rule.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param networkManagerName The name of the network manager.
-     * @param configurationName The name of the network manager Routing Configuration.
-     * @param ruleCollectionName The name of the network manager routing Configuration rule collection.
-     * @param ruleName The name of the rule.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return A {@link Mono} that completes when a successful response is received.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Void> deleteAsync(String resourceGroupName, String networkManagerName, String configurationName,
         String ruleCollectionName, String ruleName) {
@@ -770,18 +574,7 @@ public final class RoutingRulesClientImpl implements RoutingRulesClient {
             force, context).last().flatMap(this.client::getLroFinalResultOrError);
     }
 
-    /**
-     * Deletes a routing rule.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param networkManagerName The name of the network manager.
-     * @param configurationName The name of the network manager Routing Configuration.
-     * @param ruleCollectionName The name of the network manager routing Configuration rule collection.
-     * @param ruleName The name of the rule.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public void delete(String resourceGroupName, String networkManagerName, String configurationName,
         String ruleCollectionName, String ruleName) {
@@ -790,21 +583,7 @@ public final class RoutingRulesClientImpl implements RoutingRulesClient {
             .block();
     }
 
-    /**
-     * Deletes a routing rule.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param networkManagerName The name of the network manager.
-     * @param configurationName The name of the network manager Routing Configuration.
-     * @param ruleCollectionName The name of the network manager routing Configuration rule collection.
-     * @param ruleName The name of the rule.
-     * @param force Deletes the resource even if it is part of a deployed configuration. If the configuration has been
-     * deployed, the service will do a cleanup deployment in the background, prior to the delete.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public void delete(String resourceGroupName, String networkManagerName, String configurationName,
         String ruleCollectionName, String ruleName, Boolean force, Context context) {
@@ -857,7 +636,7 @@ public final class RoutingRulesClientImpl implements RoutingRulesClient {
             return Mono
                 .error(new IllegalArgumentException("Parameter ruleCollectionName is required and cannot be null."));
         }
-        final String apiVersion = "2025-07-01";
+        final String apiVersion = "2026-05-01";
         final String accept = "application/json";
         return FluxUtil
             .withContext(context -> service.list(this.client.getEndpoint(), apiVersion, this.client.getSubscriptionId(),
@@ -915,7 +694,7 @@ public final class RoutingRulesClientImpl implements RoutingRulesClient {
             return Mono
                 .error(new IllegalArgumentException("Parameter ruleCollectionName is required and cannot be null."));
         }
-        final String apiVersion = "2025-07-01";
+        final String apiVersion = "2026-05-01";
         final String accept = "application/json";
         context = this.client.mergeContext(context);
         return service
@@ -925,23 +704,7 @@ public final class RoutingRulesClientImpl implements RoutingRulesClient {
                 res.getValue().value(), res.getValue().nextLink(), null));
     }
 
-    /**
-     * List all network manager routing configuration routing rules.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param networkManagerName The name of the network manager.
-     * @param configurationName The name of the network manager Routing Configuration.
-     * @param ruleCollectionName The name of the network manager routing Configuration rule collection.
-     * @param top An optional query parameter which specifies the maximum number of records to be returned by the
-     * server.
-     * @param skipToken SkipToken is only used if a previous operation returned a partial result. If a previous response
-     * contains a nextLink element, the value of the nextLink element will include a skipToken parameter that specifies
-     * a starting point to use for subsequent calls.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the response of a RoutingRule list operation as paginated response with {@link PagedFlux}.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.COLLECTION)
     public PagedFlux<RoutingRuleInner> listAsync(String resourceGroupName, String networkManagerName,
         String configurationName, String ruleCollectionName, Integer top, String skipToken) {
@@ -949,18 +712,7 @@ public final class RoutingRulesClientImpl implements RoutingRulesClient {
             ruleCollectionName, top, skipToken), nextLink -> listNextSinglePageAsync(nextLink));
     }
 
-    /**
-     * List all network manager routing configuration routing rules.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param networkManagerName The name of the network manager.
-     * @param configurationName The name of the network manager Routing Configuration.
-     * @param ruleCollectionName The name of the network manager routing Configuration rule collection.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the response of a RoutingRule list operation as paginated response with {@link PagedFlux}.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.COLLECTION)
     public PagedFlux<RoutingRuleInner> listAsync(String resourceGroupName, String networkManagerName,
         String configurationName, String ruleCollectionName) {
@@ -995,18 +747,7 @@ public final class RoutingRulesClientImpl implements RoutingRulesClient {
             ruleCollectionName, top, skipToken, context), nextLink -> listNextSinglePageAsync(nextLink, context));
     }
 
-    /**
-     * List all network manager routing configuration routing rules.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param networkManagerName The name of the network manager.
-     * @param configurationName The name of the network manager Routing Configuration.
-     * @param ruleCollectionName The name of the network manager routing Configuration rule collection.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the response of a RoutingRule list operation as paginated response with {@link PagedIterable}.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.COLLECTION)
     public PagedIterable<RoutingRuleInner> list(String resourceGroupName, String networkManagerName,
         String configurationName, String ruleCollectionName) {
@@ -1016,24 +757,7 @@ public final class RoutingRulesClientImpl implements RoutingRulesClient {
             listAsync(resourceGroupName, networkManagerName, configurationName, ruleCollectionName, top, skipToken));
     }
 
-    /**
-     * List all network manager routing configuration routing rules.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param networkManagerName The name of the network manager.
-     * @param configurationName The name of the network manager Routing Configuration.
-     * @param ruleCollectionName The name of the network manager routing Configuration rule collection.
-     * @param top An optional query parameter which specifies the maximum number of records to be returned by the
-     * server.
-     * @param skipToken SkipToken is only used if a previous operation returned a partial result. If a previous response
-     * contains a nextLink element, the value of the nextLink element will include a skipToken parameter that specifies
-     * a starting point to use for subsequent calls.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the response of a RoutingRule list operation as paginated response with {@link PagedIterable}.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.COLLECTION)
     public PagedIterable<RoutingRuleInner> list(String resourceGroupName, String networkManagerName,
         String configurationName, String ruleCollectionName, Integer top, String skipToken, Context context) {

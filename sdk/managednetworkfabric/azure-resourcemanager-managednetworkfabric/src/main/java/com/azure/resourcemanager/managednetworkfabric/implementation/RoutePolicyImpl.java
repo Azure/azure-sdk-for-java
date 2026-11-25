@@ -133,10 +133,7 @@ public final class RoutePolicyImpl implements RoutePolicy, RoutePolicy.Definitio
     }
 
     public RoutePolicy create() {
-        this.innerObject = serviceManager.serviceClient()
-            .getRoutePolicies()
-            .create(resourceGroupName, routePolicyName, this.innerModel(), Context.NONE);
-        return this;
+        return this.create(Context.NONE);
     }
 
     public RoutePolicy create(Context context) {
@@ -159,10 +156,7 @@ public final class RoutePolicyImpl implements RoutePolicy, RoutePolicy.Definitio
     }
 
     public RoutePolicy apply() {
-        this.innerObject = serviceManager.serviceClient()
-            .getRoutePolicies()
-            .update(resourceGroupName, routePolicyName, updateBody, Context.NONE);
-        return this;
+        return this.apply(Context.NONE);
     }
 
     public RoutePolicy apply(Context context) {
@@ -176,16 +170,16 @@ public final class RoutePolicyImpl implements RoutePolicy, RoutePolicy.Definitio
         com.azure.resourcemanager.managednetworkfabric.ManagedNetworkFabricManager serviceManager) {
         this.innerObject = innerObject;
         this.serviceManager = serviceManager;
-        this.resourceGroupName = ResourceManagerUtils.getValueFromIdByName(innerObject.id(), "resourceGroups");
-        this.routePolicyName = ResourceManagerUtils.getValueFromIdByName(innerObject.id(), "routePolicies");
+        this.resourceGroupName = ResourceManagerUtils.getValueFromIdByParameterName(innerObject.id(),
+            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.ManagedNetworkFabric/routePolicies/{routePolicyName}",
+            "resourceGroupName");
+        this.routePolicyName = ResourceManagerUtils.getValueFromIdByParameterName(innerObject.id(),
+            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.ManagedNetworkFabric/routePolicies/{routePolicyName}",
+            "routePolicyName");
     }
 
     public RoutePolicy refresh() {
-        this.innerObject = serviceManager.serviceClient()
-            .getRoutePolicies()
-            .getByResourceGroupWithResponse(resourceGroupName, routePolicyName, Context.NONE)
-            .getValue();
-        return this;
+        return this.refresh(Context.NONE);
     }
 
     public RoutePolicy refresh(Context context) {

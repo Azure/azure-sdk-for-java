@@ -121,19 +121,7 @@ public final class VirtualNetworkGatewayNatRulesClientImpl implements VirtualNet
             @HeaderParam("Accept") String accept, Context context);
     }
 
-    /**
-     * Retrieves the details of a nat rule.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param virtualNetworkGatewayName The name of the virtual network gateway.
-     * @param natRuleName The name of the resource that is unique within a resource group. This name can be used to
-     * access the resource.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return virtualNetworkGatewayNatRule Resource along with {@link Response} on successful completion of
-     * {@link Mono}.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Response<VirtualNetworkGatewayNatRuleInner>> getWithResponseAsync(String resourceGroupName,
         String virtualNetworkGatewayName, String natRuleName) {
@@ -156,7 +144,7 @@ public final class VirtualNetworkGatewayNatRulesClientImpl implements VirtualNet
         if (natRuleName == null) {
             return Mono.error(new IllegalArgumentException("Parameter natRuleName is required and cannot be null."));
         }
-        final String apiVersion = "2025-07-01";
+        final String apiVersion = "2026-05-01";
         final String accept = "application/json";
         return FluxUtil
             .withContext(context -> service.get(this.client.getEndpoint(), apiVersion, this.client.getSubscriptionId(),
@@ -200,25 +188,14 @@ public final class VirtualNetworkGatewayNatRulesClientImpl implements VirtualNet
         if (natRuleName == null) {
             return Mono.error(new IllegalArgumentException("Parameter natRuleName is required and cannot be null."));
         }
-        final String apiVersion = "2025-07-01";
+        final String apiVersion = "2026-05-01";
         final String accept = "application/json";
         context = this.client.mergeContext(context);
         return service.get(this.client.getEndpoint(), apiVersion, this.client.getSubscriptionId(), resourceGroupName,
             virtualNetworkGatewayName, natRuleName, accept, context);
     }
 
-    /**
-     * Retrieves the details of a nat rule.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param virtualNetworkGatewayName The name of the virtual network gateway.
-     * @param natRuleName The name of the resource that is unique within a resource group. This name can be used to
-     * access the resource.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return virtualNetworkGatewayNatRule Resource on successful completion of {@link Mono}.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<VirtualNetworkGatewayNatRuleInner> getAsync(String resourceGroupName, String virtualNetworkGatewayName,
         String natRuleName) {
@@ -226,57 +203,21 @@ public final class VirtualNetworkGatewayNatRulesClientImpl implements VirtualNet
             .flatMap(res -> Mono.justOrEmpty(res.getValue()));
     }
 
-    /**
-     * Retrieves the details of a nat rule.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param virtualNetworkGatewayName The name of the virtual network gateway.
-     * @param natRuleName The name of the resource that is unique within a resource group. This name can be used to
-     * access the resource.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return virtualNetworkGatewayNatRule Resource along with {@link Response}.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Response<VirtualNetworkGatewayNatRuleInner> getWithResponse(String resourceGroupName,
         String virtualNetworkGatewayName, String natRuleName, Context context) {
         return getWithResponseAsync(resourceGroupName, virtualNetworkGatewayName, natRuleName, context).block();
     }
 
-    /**
-     * Retrieves the details of a nat rule.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param virtualNetworkGatewayName The name of the virtual network gateway.
-     * @param natRuleName The name of the resource that is unique within a resource group. This name can be used to
-     * access the resource.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return virtualNetworkGatewayNatRule Resource.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public VirtualNetworkGatewayNatRuleInner get(String resourceGroupName, String virtualNetworkGatewayName,
         String natRuleName) {
         return getWithResponse(resourceGroupName, virtualNetworkGatewayName, natRuleName, Context.NONE).getValue();
     }
 
-    /**
-     * Creates a nat rule to a scalable virtual network gateway if it doesn't exist else updates the existing nat rules.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param virtualNetworkGatewayName The name of the virtual network gateway.
-     * @param natRuleName The name of the resource that is unique within a resource group. This name can be used to
-     * access the resource.
-     * @param natRuleParameters Parameters supplied to create or Update a Nat Rule.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return virtualNetworkGatewayNatRule Resource along with {@link Response} on successful completion of
-     * {@link Mono}.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Response<Flux<ByteBuffer>>> createOrUpdateWithResponseAsync(String resourceGroupName,
         String virtualNetworkGatewayName, String natRuleName, VirtualNetworkGatewayNatRuleInner natRuleParameters) {
@@ -305,7 +246,7 @@ public final class VirtualNetworkGatewayNatRulesClientImpl implements VirtualNet
         } else {
             natRuleParameters.validate();
         }
-        final String apiVersion = "2025-07-01";
+        final String apiVersion = "2026-05-01";
         final String contentType = "application/json";
         final String accept = "application/json";
         return FluxUtil
@@ -359,7 +300,7 @@ public final class VirtualNetworkGatewayNatRulesClientImpl implements VirtualNet
         } else {
             natRuleParameters.validate();
         }
-        final String apiVersion = "2025-07-01";
+        final String apiVersion = "2026-05-01";
         final String contentType = "application/json";
         final String accept = "application/json";
         context = this.client.mergeContext(context);
@@ -367,19 +308,7 @@ public final class VirtualNetworkGatewayNatRulesClientImpl implements VirtualNet
             resourceGroupName, virtualNetworkGatewayName, natRuleName, contentType, accept, natRuleParameters, context);
     }
 
-    /**
-     * Creates a nat rule to a scalable virtual network gateway if it doesn't exist else updates the existing nat rules.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param virtualNetworkGatewayName The name of the virtual network gateway.
-     * @param natRuleName The name of the resource that is unique within a resource group. This name can be used to
-     * access the resource.
-     * @param natRuleParameters Parameters supplied to create or Update a Nat Rule.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the {@link PollerFlux} for polling of virtualNetworkGatewayNatRule Resource.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public PollerFlux<PollResult<VirtualNetworkGatewayNatRuleInner>, VirtualNetworkGatewayNatRuleInner>
         beginCreateOrUpdateAsync(String resourceGroupName, String virtualNetworkGatewayName, String natRuleName,
@@ -417,19 +346,7 @@ public final class VirtualNetworkGatewayNatRulesClientImpl implements VirtualNet
             VirtualNetworkGatewayNatRuleInner.class, context);
     }
 
-    /**
-     * Creates a nat rule to a scalable virtual network gateway if it doesn't exist else updates the existing nat rules.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param virtualNetworkGatewayName The name of the virtual network gateway.
-     * @param natRuleName The name of the resource that is unique within a resource group. This name can be used to
-     * access the resource.
-     * @param natRuleParameters Parameters supplied to create or Update a Nat Rule.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the {@link SyncPoller} for polling of virtualNetworkGatewayNatRule Resource.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public SyncPoller<PollResult<VirtualNetworkGatewayNatRuleInner>, VirtualNetworkGatewayNatRuleInner>
         beginCreateOrUpdate(String resourceGroupName, String virtualNetworkGatewayName, String natRuleName,
@@ -439,20 +356,7 @@ public final class VirtualNetworkGatewayNatRulesClientImpl implements VirtualNet
             .getSyncPoller();
     }
 
-    /**
-     * Creates a nat rule to a scalable virtual network gateway if it doesn't exist else updates the existing nat rules.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param virtualNetworkGatewayName The name of the virtual network gateway.
-     * @param natRuleName The name of the resource that is unique within a resource group. This name can be used to
-     * access the resource.
-     * @param natRuleParameters Parameters supplied to create or Update a Nat Rule.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the {@link SyncPoller} for polling of virtualNetworkGatewayNatRule Resource.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public SyncPoller<PollResult<VirtualNetworkGatewayNatRuleInner>, VirtualNetworkGatewayNatRuleInner>
         beginCreateOrUpdate(String resourceGroupName, String virtualNetworkGatewayName, String natRuleName,
@@ -463,19 +367,7 @@ public final class VirtualNetworkGatewayNatRulesClientImpl implements VirtualNet
             .getSyncPoller();
     }
 
-    /**
-     * Creates a nat rule to a scalable virtual network gateway if it doesn't exist else updates the existing nat rules.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param virtualNetworkGatewayName The name of the virtual network gateway.
-     * @param natRuleName The name of the resource that is unique within a resource group. This name can be used to
-     * access the resource.
-     * @param natRuleParameters Parameters supplied to create or Update a Nat Rule.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return virtualNetworkGatewayNatRule Resource on successful completion of {@link Mono}.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<VirtualNetworkGatewayNatRuleInner> createOrUpdateAsync(String resourceGroupName,
         String virtualNetworkGatewayName, String natRuleName, VirtualNetworkGatewayNatRuleInner natRuleParameters) {
@@ -506,19 +398,7 @@ public final class VirtualNetworkGatewayNatRulesClientImpl implements VirtualNet
             context).last().flatMap(this.client::getLroFinalResultOrError);
     }
 
-    /**
-     * Creates a nat rule to a scalable virtual network gateway if it doesn't exist else updates the existing nat rules.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param virtualNetworkGatewayName The name of the virtual network gateway.
-     * @param natRuleName The name of the resource that is unique within a resource group. This name can be used to
-     * access the resource.
-     * @param natRuleParameters Parameters supplied to create or Update a Nat Rule.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return virtualNetworkGatewayNatRule Resource.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public VirtualNetworkGatewayNatRuleInner createOrUpdate(String resourceGroupName, String virtualNetworkGatewayName,
         String natRuleName, VirtualNetworkGatewayNatRuleInner natRuleParameters) {
@@ -526,20 +406,7 @@ public final class VirtualNetworkGatewayNatRulesClientImpl implements VirtualNet
             .block();
     }
 
-    /**
-     * Creates a nat rule to a scalable virtual network gateway if it doesn't exist else updates the existing nat rules.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param virtualNetworkGatewayName The name of the virtual network gateway.
-     * @param natRuleName The name of the resource that is unique within a resource group. This name can be used to
-     * access the resource.
-     * @param natRuleParameters Parameters supplied to create or Update a Nat Rule.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return virtualNetworkGatewayNatRule Resource.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public VirtualNetworkGatewayNatRuleInner createOrUpdate(String resourceGroupName, String virtualNetworkGatewayName,
         String natRuleName, VirtualNetworkGatewayNatRuleInner natRuleParameters, Context context) {
@@ -547,18 +414,7 @@ public final class VirtualNetworkGatewayNatRulesClientImpl implements VirtualNet
             context).block();
     }
 
-    /**
-     * Deletes a nat rule.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param virtualNetworkGatewayName The name of the virtual network gateway.
-     * @param natRuleName The name of the resource that is unique within a resource group. This name can be used to
-     * access the resource.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the {@link Response} on successful completion of {@link Mono}.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Response<Flux<ByteBuffer>>> deleteWithResponseAsync(String resourceGroupName,
         String virtualNetworkGatewayName, String natRuleName) {
@@ -581,7 +437,7 @@ public final class VirtualNetworkGatewayNatRulesClientImpl implements VirtualNet
         if (natRuleName == null) {
             return Mono.error(new IllegalArgumentException("Parameter natRuleName is required and cannot be null."));
         }
-        final String apiVersion = "2025-07-01";
+        final String apiVersion = "2026-05-01";
         return FluxUtil
             .withContext(context -> service.delete(this.client.getEndpoint(), apiVersion,
                 this.client.getSubscriptionId(), resourceGroupName, virtualNetworkGatewayName, natRuleName, context))
@@ -623,24 +479,13 @@ public final class VirtualNetworkGatewayNatRulesClientImpl implements VirtualNet
         if (natRuleName == null) {
             return Mono.error(new IllegalArgumentException("Parameter natRuleName is required and cannot be null."));
         }
-        final String apiVersion = "2025-07-01";
+        final String apiVersion = "2026-05-01";
         context = this.client.mergeContext(context);
         return service.delete(this.client.getEndpoint(), apiVersion, this.client.getSubscriptionId(), resourceGroupName,
             virtualNetworkGatewayName, natRuleName, context);
     }
 
-    /**
-     * Deletes a nat rule.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param virtualNetworkGatewayName The name of the virtual network gateway.
-     * @param natRuleName The name of the resource that is unique within a resource group. This name can be used to
-     * access the resource.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the {@link PollerFlux} for polling of long-running operation.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public PollerFlux<PollResult<Void>, Void> beginDeleteAsync(String resourceGroupName,
         String virtualNetworkGatewayName, String natRuleName) {
@@ -673,37 +518,14 @@ public final class VirtualNetworkGatewayNatRulesClientImpl implements VirtualNet
             context);
     }
 
-    /**
-     * Deletes a nat rule.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param virtualNetworkGatewayName The name of the virtual network gateway.
-     * @param natRuleName The name of the resource that is unique within a resource group. This name can be used to
-     * access the resource.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the {@link SyncPoller} for polling of long-running operation.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public SyncPoller<PollResult<Void>, Void> beginDelete(String resourceGroupName, String virtualNetworkGatewayName,
         String natRuleName) {
         return this.beginDeleteAsync(resourceGroupName, virtualNetworkGatewayName, natRuleName).getSyncPoller();
     }
 
-    /**
-     * Deletes a nat rule.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param virtualNetworkGatewayName The name of the virtual network gateway.
-     * @param natRuleName The name of the resource that is unique within a resource group. This name can be used to
-     * access the resource.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the {@link SyncPoller} for polling of long-running operation.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public SyncPoller<PollResult<Void>, Void> beginDelete(String resourceGroupName, String virtualNetworkGatewayName,
         String natRuleName, Context context) {
@@ -711,18 +533,7 @@ public final class VirtualNetworkGatewayNatRulesClientImpl implements VirtualNet
             .getSyncPoller();
     }
 
-    /**
-     * Deletes a nat rule.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param virtualNetworkGatewayName The name of the virtual network gateway.
-     * @param natRuleName The name of the resource that is unique within a resource group. This name can be used to
-     * access the resource.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return A {@link Mono} that completes when a successful response is received.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Void> deleteAsync(String resourceGroupName, String virtualNetworkGatewayName, String natRuleName) {
         return beginDeleteAsync(resourceGroupName, virtualNetworkGatewayName, natRuleName).last()
@@ -749,34 +560,13 @@ public final class VirtualNetworkGatewayNatRulesClientImpl implements VirtualNet
             .flatMap(this.client::getLroFinalResultOrError);
     }
 
-    /**
-     * Deletes a nat rule.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param virtualNetworkGatewayName The name of the virtual network gateway.
-     * @param natRuleName The name of the resource that is unique within a resource group. This name can be used to
-     * access the resource.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public void delete(String resourceGroupName, String virtualNetworkGatewayName, String natRuleName) {
         deleteAsync(resourceGroupName, virtualNetworkGatewayName, natRuleName).block();
     }
 
-    /**
-     * Deletes a nat rule.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param virtualNetworkGatewayName The name of the virtual network gateway.
-     * @param natRuleName The name of the resource that is unique within a resource group. This name can be used to
-     * access the resource.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public void delete(String resourceGroupName, String virtualNetworkGatewayName, String natRuleName,
         Context context) {
@@ -813,7 +603,7 @@ public final class VirtualNetworkGatewayNatRulesClientImpl implements VirtualNet
             return Mono.error(
                 new IllegalArgumentException("Parameter virtualNetworkGatewayName is required and cannot be null."));
         }
-        final String apiVersion = "2025-07-01";
+        final String apiVersion = "2026-05-01";
         final String accept = "application/json";
         return FluxUtil
             .withContext(context -> service.listByVirtualNetworkGateway(this.client.getEndpoint(), apiVersion,
@@ -854,7 +644,7 @@ public final class VirtualNetworkGatewayNatRulesClientImpl implements VirtualNet
             return Mono.error(
                 new IllegalArgumentException("Parameter virtualNetworkGatewayName is required and cannot be null."));
         }
-        final String apiVersion = "2025-07-01";
+        final String apiVersion = "2026-05-01";
         final String accept = "application/json";
         context = this.client.mergeContext(context);
         return service
@@ -864,17 +654,7 @@ public final class VirtualNetworkGatewayNatRulesClientImpl implements VirtualNet
                 res.getValue().value(), res.getValue().nextLink(), null));
     }
 
-    /**
-     * Retrieves all nat rules for a particular virtual network gateway.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param virtualNetworkGatewayName The name of the virtual network gateway.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return result of the request to list all nat rules to a virtual network gateway as paginated response with
-     * {@link PagedFlux}.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.COLLECTION)
     public PagedFlux<VirtualNetworkGatewayNatRuleInner> listByVirtualNetworkGatewayAsync(String resourceGroupName,
         String virtualNetworkGatewayName) {
@@ -903,35 +683,14 @@ public final class VirtualNetworkGatewayNatRulesClientImpl implements VirtualNet
             nextLink -> listByVirtualNetworkGatewayNextSinglePageAsync(nextLink, context));
     }
 
-    /**
-     * Retrieves all nat rules for a particular virtual network gateway.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param virtualNetworkGatewayName The name of the virtual network gateway.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return result of the request to list all nat rules to a virtual network gateway as paginated response with
-     * {@link PagedIterable}.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.COLLECTION)
     public PagedIterable<VirtualNetworkGatewayNatRuleInner> listByVirtualNetworkGateway(String resourceGroupName,
         String virtualNetworkGatewayName) {
         return new PagedIterable<>(listByVirtualNetworkGatewayAsync(resourceGroupName, virtualNetworkGatewayName));
     }
 
-    /**
-     * Retrieves all nat rules for a particular virtual network gateway.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param virtualNetworkGatewayName The name of the virtual network gateway.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return result of the request to list all nat rules to a virtual network gateway as paginated response with
-     * {@link PagedIterable}.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.COLLECTION)
     public PagedIterable<VirtualNetworkGatewayNatRuleInner> listByVirtualNetworkGateway(String resourceGroupName,
         String virtualNetworkGatewayName, Context context) {

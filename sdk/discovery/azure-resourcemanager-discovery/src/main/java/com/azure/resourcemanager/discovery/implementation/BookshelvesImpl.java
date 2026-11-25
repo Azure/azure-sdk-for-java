@@ -45,7 +45,7 @@ public final class BookshelvesImpl implements Bookshelves {
     }
 
     public void deleteByResourceGroup(String resourceGroupName, String bookshelfName) {
-        this.serviceClient().delete(resourceGroupName, bookshelfName);
+        this.delete(resourceGroupName, bookshelfName, Context.NONE);
     }
 
     public void delete(String resourceGroupName, String bookshelfName, Context context) {
@@ -53,8 +53,7 @@ public final class BookshelvesImpl implements Bookshelves {
     }
 
     public PagedIterable<Bookshelf> listByResourceGroup(String resourceGroupName) {
-        PagedIterable<BookshelfInner> inner = this.serviceClient().listByResourceGroup(resourceGroupName);
-        return ResourceManagerUtils.mapPage(inner, inner1 -> new BookshelfImpl(inner1, this.manager()));
+        return this.listByResourceGroup(resourceGroupName, Context.NONE);
     }
 
     public PagedIterable<Bookshelf> listByResourceGroup(String resourceGroupName, Context context) {
@@ -63,8 +62,7 @@ public final class BookshelvesImpl implements Bookshelves {
     }
 
     public PagedIterable<Bookshelf> list() {
-        PagedIterable<BookshelfInner> inner = this.serviceClient().list();
-        return ResourceManagerUtils.mapPage(inner, inner1 -> new BookshelfImpl(inner1, this.manager()));
+        return this.list(Context.NONE);
     }
 
     public PagedIterable<Bookshelf> list(Context context) {
@@ -73,58 +71,30 @@ public final class BookshelvesImpl implements Bookshelves {
     }
 
     public Bookshelf getById(String id) {
-        String resourceGroupName = ResourceManagerUtils.getValueFromIdByName(id, "resourceGroups");
-        if (resourceGroupName == null) {
-            throw LOGGER.logExceptionAsError(new IllegalArgumentException(
-                String.format("The resource ID '%s' is not valid. Missing path segment 'resourceGroups'.", id)));
-        }
-        String bookshelfName = ResourceManagerUtils.getValueFromIdByName(id, "bookshelves");
-        if (bookshelfName == null) {
-            throw LOGGER.logExceptionAsError(new IllegalArgumentException(
-                String.format("The resource ID '%s' is not valid. Missing path segment 'bookshelves'.", id)));
-        }
-        return this.getByResourceGroupWithResponse(resourceGroupName, bookshelfName, Context.NONE).getValue();
+        return this.getByIdWithResponse(id, Context.NONE).getValue();
     }
 
     public Response<Bookshelf> getByIdWithResponse(String id, Context context) {
-        String resourceGroupName = ResourceManagerUtils.getValueFromIdByName(id, "resourceGroups");
-        if (resourceGroupName == null) {
-            throw LOGGER.logExceptionAsError(new IllegalArgumentException(
-                String.format("The resource ID '%s' is not valid. Missing path segment 'resourceGroups'.", id)));
-        }
-        String bookshelfName = ResourceManagerUtils.getValueFromIdByName(id, "bookshelves");
-        if (bookshelfName == null) {
-            throw LOGGER.logExceptionAsError(new IllegalArgumentException(
-                String.format("The resource ID '%s' is not valid. Missing path segment 'bookshelves'.", id)));
-        }
+        String resourceGroupName = ResourceManagerUtils.getRequiredValueFromIdByParameterName(id,
+            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Discovery/bookshelves/{bookshelfName}",
+            "resourceGroupName", "resourceGroups", LOGGER);
+        String bookshelfName = ResourceManagerUtils.getRequiredValueFromIdByParameterName(id,
+            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Discovery/bookshelves/{bookshelfName}",
+            "bookshelfName", "bookshelves", LOGGER);
         return this.getByResourceGroupWithResponse(resourceGroupName, bookshelfName, context);
     }
 
     public void deleteById(String id) {
-        String resourceGroupName = ResourceManagerUtils.getValueFromIdByName(id, "resourceGroups");
-        if (resourceGroupName == null) {
-            throw LOGGER.logExceptionAsError(new IllegalArgumentException(
-                String.format("The resource ID '%s' is not valid. Missing path segment 'resourceGroups'.", id)));
-        }
-        String bookshelfName = ResourceManagerUtils.getValueFromIdByName(id, "bookshelves");
-        if (bookshelfName == null) {
-            throw LOGGER.logExceptionAsError(new IllegalArgumentException(
-                String.format("The resource ID '%s' is not valid. Missing path segment 'bookshelves'.", id)));
-        }
-        this.delete(resourceGroupName, bookshelfName, Context.NONE);
+        this.deleteByIdWithResponse(id, Context.NONE);
     }
 
     public void deleteByIdWithResponse(String id, Context context) {
-        String resourceGroupName = ResourceManagerUtils.getValueFromIdByName(id, "resourceGroups");
-        if (resourceGroupName == null) {
-            throw LOGGER.logExceptionAsError(new IllegalArgumentException(
-                String.format("The resource ID '%s' is not valid. Missing path segment 'resourceGroups'.", id)));
-        }
-        String bookshelfName = ResourceManagerUtils.getValueFromIdByName(id, "bookshelves");
-        if (bookshelfName == null) {
-            throw LOGGER.logExceptionAsError(new IllegalArgumentException(
-                String.format("The resource ID '%s' is not valid. Missing path segment 'bookshelves'.", id)));
-        }
+        String resourceGroupName = ResourceManagerUtils.getRequiredValueFromIdByParameterName(id,
+            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Discovery/bookshelves/{bookshelfName}",
+            "resourceGroupName", "resourceGroups", LOGGER);
+        String bookshelfName = ResourceManagerUtils.getRequiredValueFromIdByParameterName(id,
+            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Discovery/bookshelves/{bookshelfName}",
+            "bookshelfName", "bookshelves", LOGGER);
         this.delete(resourceGroupName, bookshelfName, context);
     }
 

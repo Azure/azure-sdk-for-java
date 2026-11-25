@@ -9,7 +9,7 @@ package com.azure.resourcemanager.hybridcompute.generated;
  */
 public final class ExtensionMetadataV2ListSamples {
     /*
-     * x-ms-original-file: 2026-06-16-preview/extension/ExtensionMetadataV2_List.json
+     * x-ms-original-file: 2026-09-01/extension/ExtensionMetadataV2_List.json
      */
     /**
      * Sample code: GET a list of extension metadata.

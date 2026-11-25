@@ -107,10 +107,7 @@ public final class DatadogMonitorResourceImpl
     }
 
     public DatadogMonitorResource create() {
-        this.innerObject = serviceManager.serviceClient()
-            .getMonitors()
-            .create(resourceGroupName, monitorName, this.innerModel(), Context.NONE);
-        return this;
+        return this.create(Context.NONE);
     }
 
     public DatadogMonitorResource create(Context context) {
@@ -132,10 +129,7 @@ public final class DatadogMonitorResourceImpl
     }
 
     public DatadogMonitorResource apply() {
-        this.innerObject = serviceManager.serviceClient()
-            .getMonitors()
-            .update(resourceGroupName, monitorName, updateBody, Context.NONE);
-        return this;
+        return this.apply(Context.NONE);
     }
 
     public DatadogMonitorResource apply(Context context) {
@@ -148,16 +142,16 @@ public final class DatadogMonitorResourceImpl
         com.azure.resourcemanager.datadog.MicrosoftDatadogManager serviceManager) {
         this.innerObject = innerObject;
         this.serviceManager = serviceManager;
-        this.resourceGroupName = ResourceManagerUtils.getValueFromIdByName(innerObject.id(), "resourceGroups");
-        this.monitorName = ResourceManagerUtils.getValueFromIdByName(innerObject.id(), "monitors");
+        this.resourceGroupName = ResourceManagerUtils.getValueFromIdByParameterName(innerObject.id(),
+            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Datadog/monitors/{monitorName}",
+            "resourceGroupName");
+        this.monitorName = ResourceManagerUtils.getValueFromIdByParameterName(innerObject.id(),
+            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Datadog/monitors/{monitorName}",
+            "monitorName");
     }
 
     public DatadogMonitorResource refresh() {
-        this.innerObject = serviceManager.serviceClient()
-            .getMonitors()
-            .getByResourceGroupWithResponse(resourceGroupName, monitorName, Context.NONE)
-            .getValue();
-        return this;
+        return this.refresh(Context.NONE);
     }
 
     public DatadogMonitorResource refresh(Context context) {

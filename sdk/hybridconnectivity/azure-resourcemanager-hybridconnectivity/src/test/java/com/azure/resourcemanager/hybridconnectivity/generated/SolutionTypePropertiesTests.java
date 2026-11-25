@@ -5,6 +5,7 @@
 package com.azure.resourcemanager.hybridconnectivity.generated;
 
 import com.azure.core.util.BinaryData;
+import com.azure.resourcemanager.hybridconnectivity.models.HostType;
 import com.azure.resourcemanager.hybridconnectivity.models.SolutionTypeProperties;
 import org.junit.jupiter.api.Assertions;
 
@@ -12,16 +13,18 @@ public final class SolutionTypePropertiesTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
         SolutionTypeProperties model = BinaryData.fromString(
-            "{\"solutionType\":\"mg\",\"description\":\"nkjzkdeslpvlop\",\"supportedAzureRegions\":[\"ighxpk\",\"wzbaiue\"],\"solutionSettings\":[{\"name\":\"umnyqu\",\"displayName\":\"edeojnabc\",\"type\":\"hsmtxpsiebtfhvp\",\"description\":\"sapskr\",\"allowedValues\":[\"mhjjdhtldwkyzx\",\"utknc\",\"scwsv\"],\"defaultValue\":\"xotogtwrupqsxv\"}]}")
+            "{\"solutionType\":\"ibtnmxiebwwaloay\",\"description\":\"gwrtzju\",\"supportedAzureRegions\":[\"yzm\",\"txon\",\"mtsavjcbpwxqp\"],\"hostTypes\":[\"GCP\",\"AWS\",\"GCP\"],\"solutionSettings\":[{\"name\":\"vriuhprwmdyvx\",\"displayName\":\"tayriwwroyqbex\",\"type\":\"mcqibycnojv\",\"description\":\"nmefqsgzvahapj\",\"allowedValues\":[\"hpvgqz\",\"j\",\"vxdjzlmwlxkvugf\",\"zovawjvz\"],\"hostTypes\":[\"AWS\",\"GCP\"],\"defaultValue\":\"thnnpr\"},{\"name\":\"xipeilpjzuaejx\",\"displayName\":\"ultskzbbtdz\",\"type\":\"mv\",\"description\":\"ekg\",\"allowedValues\":[\"ozuhkfp\",\"sjyofdx\"],\"hostTypes\":[\"AWS\",\"AWS\",\"GCP\"],\"defaultValue\":\"ttouwaboekqvkel\"},{\"name\":\"smv\",\"displayName\":\"xwyjsflhhc\",\"type\":\"aln\",\"description\":\"ixisxyawjoy\",\"allowedValues\":[\"cslyjpk\",\"idzyexznelixhnr\",\"tfolhbnx\"],\"hostTypes\":[\"GCP\",\"AWS\",\"AWS\"],\"defaultValue\":\"ulppggdtpnapnyir\"}]}")
             .toObject(SolutionTypeProperties.class);
-        Assertions.assertEquals("mg", model.solutionType());
-        Assertions.assertEquals("nkjzkdeslpvlop", model.description());
-        Assertions.assertEquals("ighxpk", model.supportedAzureRegions().get(0));
-        Assertions.assertEquals("umnyqu", model.solutionSettings().get(0).name());
-        Assertions.assertEquals("edeojnabc", model.solutionSettings().get(0).displayName());
-        Assertions.assertEquals("hsmtxpsiebtfhvp", model.solutionSettings().get(0).type());
-        Assertions.assertEquals("sapskr", model.solutionSettings().get(0).description());
-        Assertions.assertEquals("mhjjdhtldwkyzx", model.solutionSettings().get(0).allowedValues().get(0));
-        Assertions.assertEquals("xotogtwrupqsxv", model.solutionSettings().get(0).defaultValue());
+        Assertions.assertEquals("ibtnmxiebwwaloay", model.solutionType());
+        Assertions.assertEquals("gwrtzju", model.description());
+        Assertions.assertEquals("yzm", model.supportedAzureRegions().get(0));
+        Assertions.assertEquals(HostType.GCP, model.hostTypes().get(0));
+        Assertions.assertEquals("vriuhprwmdyvx", model.solutionSettings().get(0).name());
+        Assertions.assertEquals("tayriwwroyqbex", model.solutionSettings().get(0).displayName());
+        Assertions.assertEquals("mcqibycnojv", model.solutionSettings().get(0).type());
+        Assertions.assertEquals("nmefqsgzvahapj", model.solutionSettings().get(0).description());
+        Assertions.assertEquals("hpvgqz", model.solutionSettings().get(0).allowedValues().get(0));
+        Assertions.assertEquals(HostType.AWS, model.solutionSettings().get(0).hostTypes().get(0));
+        Assertions.assertEquals("thnnpr", model.solutionSettings().get(0).defaultValue());
     }
 }

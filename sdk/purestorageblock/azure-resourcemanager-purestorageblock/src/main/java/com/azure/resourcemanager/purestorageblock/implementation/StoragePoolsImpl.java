@@ -12,10 +12,15 @@ import com.azure.core.util.logging.ClientLogger;
 import com.azure.resourcemanager.purestorageblock.fluent.StoragePoolsClient;
 import com.azure.resourcemanager.purestorageblock.fluent.models.AvsConnectionInner;
 import com.azure.resourcemanager.purestorageblock.fluent.models.AvsStatusInner;
+import com.azure.resourcemanager.purestorageblock.fluent.models.PlatformConsoleActivationCodeInner;
+import com.azure.resourcemanager.purestorageblock.fluent.models.PlatformConsoleAuthResultInner;
 import com.azure.resourcemanager.purestorageblock.fluent.models.StoragePoolHealthInfoInner;
 import com.azure.resourcemanager.purestorageblock.fluent.models.StoragePoolInner;
 import com.azure.resourcemanager.purestorageblock.models.AvsConnection;
 import com.azure.resourcemanager.purestorageblock.models.AvsStatus;
+import com.azure.resourcemanager.purestorageblock.models.PlatformConsoleActivationCode;
+import com.azure.resourcemanager.purestorageblock.models.PlatformConsoleAuthConfig;
+import com.azure.resourcemanager.purestorageblock.models.PlatformConsoleAuthResult;
 import com.azure.resourcemanager.purestorageblock.models.StoragePool;
 import com.azure.resourcemanager.purestorageblock.models.StoragePoolEnableAvsConnectionPost;
 import com.azure.resourcemanager.purestorageblock.models.StoragePoolFinalizeAvsConnectionPost;
@@ -53,7 +58,7 @@ public final class StoragePoolsImpl implements StoragePools {
     }
 
     public void deleteByResourceGroup(String resourceGroupName, String storagePoolName) {
-        this.serviceClient().delete(resourceGroupName, storagePoolName);
+        this.delete(resourceGroupName, storagePoolName, Context.NONE);
     }
 
     public void delete(String resourceGroupName, String storagePoolName, Context context) {
@@ -61,8 +66,7 @@ public final class StoragePoolsImpl implements StoragePools {
     }
 
     public PagedIterable<StoragePool> listByResourceGroup(String resourceGroupName) {
-        PagedIterable<StoragePoolInner> inner = this.serviceClient().listByResourceGroup(resourceGroupName);
-        return ResourceManagerUtils.mapPage(inner, inner1 -> new StoragePoolImpl(inner1, this.manager()));
+        return this.listByResourceGroup(resourceGroupName, Context.NONE);
     }
 
     public PagedIterable<StoragePool> listByResourceGroup(String resourceGroupName, Context context) {
@@ -71,8 +75,7 @@ public final class StoragePoolsImpl implements StoragePools {
     }
 
     public PagedIterable<StoragePool> list() {
-        PagedIterable<StoragePoolInner> inner = this.serviceClient().list();
-        return ResourceManagerUtils.mapPage(inner, inner1 -> new StoragePoolImpl(inner1, this.manager()));
+        return this.list(Context.NONE);
     }
 
     public PagedIterable<StoragePool> list(Context context) {
@@ -133,7 +136,7 @@ public final class StoragePoolsImpl implements StoragePools {
 
     public void enableAvsConnection(String resourceGroupName, String storagePoolName,
         StoragePoolEnableAvsConnectionPost properties) {
-        this.serviceClient().enableAvsConnection(resourceGroupName, storagePoolName, properties);
+        this.enableAvsConnection(resourceGroupName, storagePoolName, properties, Context.NONE);
     }
 
     public void enableAvsConnection(String resourceGroupName, String storagePoolName,
@@ -142,7 +145,7 @@ public final class StoragePoolsImpl implements StoragePools {
     }
 
     public void disableAvsConnection(String resourceGroupName, String storagePoolName) {
-        this.serviceClient().disableAvsConnection(resourceGroupName, storagePoolName);
+        this.disableAvsConnection(resourceGroupName, storagePoolName, Context.NONE);
     }
 
     public void disableAvsConnection(String resourceGroupName, String storagePoolName, Context context) {
@@ -151,7 +154,7 @@ public final class StoragePoolsImpl implements StoragePools {
 
     public void finalizeAvsConnection(String resourceGroupName, String storagePoolName,
         StoragePoolFinalizeAvsConnectionPost properties) {
-        this.serviceClient().finalizeAvsConnection(resourceGroupName, storagePoolName, properties);
+        this.finalizeAvsConnection(resourceGroupName, storagePoolName, properties, Context.NONE);
     }
 
     public void finalizeAvsConnection(String resourceGroupName, String storagePoolName,
@@ -160,66 +163,76 @@ public final class StoragePoolsImpl implements StoragePools {
     }
 
     public void repairAvsConnection(String resourceGroupName, String storagePoolName) {
-        this.serviceClient().repairAvsConnection(resourceGroupName, storagePoolName);
+        this.repairAvsConnection(resourceGroupName, storagePoolName, Context.NONE);
     }
 
     public void repairAvsConnection(String resourceGroupName, String storagePoolName, Context context) {
         this.serviceClient().repairAvsConnection(resourceGroupName, storagePoolName, context);
     }
 
+    public Response<PlatformConsoleActivationCode> listPlatformConsoleActivationCodeWithResponse(
+        String resourceGroupName, String storagePoolName, Context context) {
+        Response<PlatformConsoleActivationCodeInner> inner = this.serviceClient()
+            .listPlatformConsoleActivationCodeWithResponse(resourceGroupName, storagePoolName, context);
+        return new SimpleResponse<>(inner.getRequest(), inner.getStatusCode(), inner.getHeaders(),
+            new PlatformConsoleActivationCodeImpl(inner.getValue(), this.manager()));
+    }
+
+    public PlatformConsoleActivationCode listPlatformConsoleActivationCode(String resourceGroupName,
+        String storagePoolName) {
+        PlatformConsoleActivationCodeInner inner
+            = this.serviceClient().listPlatformConsoleActivationCode(resourceGroupName, storagePoolName);
+        if (inner != null) {
+            return new PlatformConsoleActivationCodeImpl(inner, this.manager());
+        } else {
+            return null;
+        }
+    }
+
+    public Response<PlatformConsoleAuthResult> configurePlatformConsoleAuthWithResponse(String resourceGroupName,
+        String storagePoolName, PlatformConsoleAuthConfig config, Context context) {
+        Response<PlatformConsoleAuthResultInner> inner = this.serviceClient()
+            .configurePlatformConsoleAuthWithResponse(resourceGroupName, storagePoolName, config, context);
+        return new SimpleResponse<>(inner.getRequest(), inner.getStatusCode(), inner.getHeaders(),
+            new PlatformConsoleAuthResultImpl(inner.getValue(), this.manager()));
+    }
+
+    public PlatformConsoleAuthResult configurePlatformConsoleAuth(String resourceGroupName, String storagePoolName,
+        PlatformConsoleAuthConfig config) {
+        PlatformConsoleAuthResultInner inner
+            = this.serviceClient().configurePlatformConsoleAuth(resourceGroupName, storagePoolName, config);
+        if (inner != null) {
+            return new PlatformConsoleAuthResultImpl(inner, this.manager());
+        } else {
+            return null;
+        }
+    }
+
     public StoragePool getById(String id) {
-        String resourceGroupName = ResourceManagerUtils.getValueFromIdByName(id, "resourceGroups");
-        if (resourceGroupName == null) {
-            throw LOGGER.logExceptionAsError(new IllegalArgumentException(
-                String.format("The resource ID '%s' is not valid. Missing path segment 'resourceGroups'.", id)));
-        }
-        String storagePoolName = ResourceManagerUtils.getValueFromIdByName(id, "storagePools");
-        if (storagePoolName == null) {
-            throw LOGGER.logExceptionAsError(new IllegalArgumentException(
-                String.format("The resource ID '%s' is not valid. Missing path segment 'storagePools'.", id)));
-        }
-        return this.getByResourceGroupWithResponse(resourceGroupName, storagePoolName, Context.NONE).getValue();
+        return this.getByIdWithResponse(id, Context.NONE).getValue();
     }
 
     public Response<StoragePool> getByIdWithResponse(String id, Context context) {
-        String resourceGroupName = ResourceManagerUtils.getValueFromIdByName(id, "resourceGroups");
-        if (resourceGroupName == null) {
-            throw LOGGER.logExceptionAsError(new IllegalArgumentException(
-                String.format("The resource ID '%s' is not valid. Missing path segment 'resourceGroups'.", id)));
-        }
-        String storagePoolName = ResourceManagerUtils.getValueFromIdByName(id, "storagePools");
-        if (storagePoolName == null) {
-            throw LOGGER.logExceptionAsError(new IllegalArgumentException(
-                String.format("The resource ID '%s' is not valid. Missing path segment 'storagePools'.", id)));
-        }
+        String resourceGroupName = ResourceManagerUtils.getRequiredValueFromIdByParameterName(id,
+            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/PureStorage.Block/storagePools/{storagePoolName}",
+            "resourceGroupName", "resourceGroups", LOGGER);
+        String storagePoolName = ResourceManagerUtils.getRequiredValueFromIdByParameterName(id,
+            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/PureStorage.Block/storagePools/{storagePoolName}",
+            "storagePoolName", "storagePools", LOGGER);
         return this.getByResourceGroupWithResponse(resourceGroupName, storagePoolName, context);
     }
 
     public void deleteById(String id) {
-        String resourceGroupName = ResourceManagerUtils.getValueFromIdByName(id, "resourceGroups");
-        if (resourceGroupName == null) {
-            throw LOGGER.logExceptionAsError(new IllegalArgumentException(
-                String.format("The resource ID '%s' is not valid. Missing path segment 'resourceGroups'.", id)));
-        }
-        String storagePoolName = ResourceManagerUtils.getValueFromIdByName(id, "storagePools");
-        if (storagePoolName == null) {
-            throw LOGGER.logExceptionAsError(new IllegalArgumentException(
-                String.format("The resource ID '%s' is not valid. Missing path segment 'storagePools'.", id)));
-        }
-        this.delete(resourceGroupName, storagePoolName, Context.NONE);
+        this.deleteByIdWithResponse(id, Context.NONE);
     }
 
     public void deleteByIdWithResponse(String id, Context context) {
-        String resourceGroupName = ResourceManagerUtils.getValueFromIdByName(id, "resourceGroups");
-        if (resourceGroupName == null) {
-            throw LOGGER.logExceptionAsError(new IllegalArgumentException(
-                String.format("The resource ID '%s' is not valid. Missing path segment 'resourceGroups'.", id)));
-        }
-        String storagePoolName = ResourceManagerUtils.getValueFromIdByName(id, "storagePools");
-        if (storagePoolName == null) {
-            throw LOGGER.logExceptionAsError(new IllegalArgumentException(
-                String.format("The resource ID '%s' is not valid. Missing path segment 'storagePools'.", id)));
-        }
+        String resourceGroupName = ResourceManagerUtils.getRequiredValueFromIdByParameterName(id,
+            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/PureStorage.Block/storagePools/{storagePoolName}",
+            "resourceGroupName", "resourceGroups", LOGGER);
+        String storagePoolName = ResourceManagerUtils.getRequiredValueFromIdByParameterName(id,
+            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/PureStorage.Block/storagePools/{storagePoolName}",
+            "storagePoolName", "storagePools", LOGGER);
         this.delete(resourceGroupName, storagePoolName, context);
     }
 

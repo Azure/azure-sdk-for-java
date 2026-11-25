@@ -13,7 +13,7 @@ import java.util.Map;
  */
 public final class PrivateLinkScopesUpdateTagsSamples {
     /*
-     * x-ms-original-file: 2026-06-16-preview/privateLinkScope/PrivateLinkScopes_UpdateTagsOnly.json
+     * x-ms-original-file: 2026-09-01/privateLinkScope/PrivateLinkScopes_UpdateTagsOnly.json
      */
     /**
      * Sample code: PrivateLinkScopeUpdateTagsOnly.

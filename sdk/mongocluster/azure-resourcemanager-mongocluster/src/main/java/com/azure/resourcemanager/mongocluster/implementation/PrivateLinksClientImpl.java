@@ -103,7 +103,7 @@ public final class PrivateLinksClientImpl implements PrivateLinksClient {
      * list private links on the given resource.
      * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param mongoClusterName The name of the mongo cluster.
+     * @param mongoClusterName The name of the DocumentDB cluster.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
@@ -126,7 +126,7 @@ public final class PrivateLinksClientImpl implements PrivateLinksClient {
      * list private links on the given resource.
      * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param mongoClusterName The name of the mongo cluster.
+     * @param mongoClusterName The name of the DocumentDB cluster.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
@@ -143,7 +143,7 @@ public final class PrivateLinksClientImpl implements PrivateLinksClient {
      * list private links on the given resource.
      * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param mongoClusterName The name of the mongo cluster.
+     * @param mongoClusterName The name of the DocumentDB cluster.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
@@ -152,19 +152,14 @@ public final class PrivateLinksClientImpl implements PrivateLinksClient {
     @ServiceMethod(returns = ReturnType.SINGLE)
     private PagedResponse<PrivateLinkResourceInner> listByMongoClusterSinglePage(String resourceGroupName,
         String mongoClusterName) {
-        final String accept = "application/json";
-        Response<PrivateLinkResourceListResult> res
-            = service.listByMongoClusterSync(this.client.getEndpoint(), this.client.getApiVersion(),
-                this.client.getSubscriptionId(), resourceGroupName, mongoClusterName, accept, Context.NONE);
-        return new PagedResponseBase<>(res.getRequest(), res.getStatusCode(), res.getHeaders(), res.getValue().value(),
-            res.getValue().nextLink(), null);
+        return listByMongoClusterSinglePage(resourceGroupName, mongoClusterName, Context.NONE);
     }
 
     /**
      * list private links on the given resource.
      * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param mongoClusterName The name of the mongo cluster.
+     * @param mongoClusterName The name of the DocumentDB cluster.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
@@ -182,34 +177,14 @@ public final class PrivateLinksClientImpl implements PrivateLinksClient {
             res.getValue().nextLink(), null);
     }
 
-    /**
-     * list private links on the given resource.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param mongoClusterName The name of the mongo cluster.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the response of a PrivateLinkResource list operation as paginated response with {@link PagedIterable}.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.COLLECTION)
     public PagedIterable<PrivateLinkResourceInner> listByMongoCluster(String resourceGroupName,
         String mongoClusterName) {
-        return new PagedIterable<>(() -> listByMongoClusterSinglePage(resourceGroupName, mongoClusterName),
-            nextLink -> listByMongoClusterNextSinglePage(nextLink));
+        return listByMongoCluster(resourceGroupName, mongoClusterName, Context.NONE);
     }
 
-    /**
-     * list private links on the given resource.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param mongoClusterName The name of the mongo cluster.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the response of a PrivateLinkResource list operation as paginated response with {@link PagedIterable}.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.COLLECTION)
     public PagedIterable<PrivateLinkResourceInner> listByMongoCluster(String resourceGroupName, String mongoClusterName,
         Context context) {
@@ -249,11 +224,7 @@ public final class PrivateLinksClientImpl implements PrivateLinksClient {
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private PagedResponse<PrivateLinkResourceInner> listByMongoClusterNextSinglePage(String nextLink) {
-        final String accept = "application/json";
-        Response<PrivateLinkResourceListResult> res
-            = service.listByMongoClusterNextSync(nextLink, this.client.getEndpoint(), accept, Context.NONE);
-        return new PagedResponseBase<>(res.getRequest(), res.getStatusCode(), res.getHeaders(), res.getValue().value(),
-            res.getValue().nextLink(), null);
+        return listByMongoClusterNextSinglePage(nextLink, Context.NONE);
     }
 
     /**

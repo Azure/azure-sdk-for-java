@@ -60,10 +60,7 @@ public final class ApprovalResourceImpl
     }
 
     public ApprovalResource create() {
-        this.innerObject = serviceManager.serviceClient()
-            .getApprovals()
-            .createOrUpdate(resourceUri, approvalName, this.innerModel(), Context.NONE);
-        return this;
+        return this.create(Context.NONE);
     }
 
     public ApprovalResource create(Context context) {
@@ -85,10 +82,7 @@ public final class ApprovalResourceImpl
     }
 
     public ApprovalResource apply() {
-        this.innerObject = serviceManager.serviceClient()
-            .getApprovals()
-            .update(resourceUri, approvalName, updateProperties, Context.NONE);
-        return this;
+        return this.apply(Context.NONE);
     }
 
     public ApprovalResource apply(Context context) {
@@ -109,11 +103,7 @@ public final class ApprovalResourceImpl
     }
 
     public ApprovalResource refresh() {
-        this.innerObject = serviceManager.serviceClient()
-            .getApprovals()
-            .getWithResponse(resourceUri, approvalName, Context.NONE)
-            .getValue();
-        return this;
+        return this.refresh(Context.NONE);
     }
 
     public ApprovalResource refresh(Context context) {

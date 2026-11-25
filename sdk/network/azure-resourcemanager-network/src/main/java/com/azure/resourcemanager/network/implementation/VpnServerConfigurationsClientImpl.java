@@ -162,17 +162,7 @@ public final class VpnServerConfigurationsClientImpl implements InnerSupportsGet
             @HeaderParam("Accept") String accept, Context context);
     }
 
-    /**
-     * Retrieves the details of a VpnServerConfiguration.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param vpnServerConfigurationName The name of the resource that is unique within a resource group. This name can
-     * be used to access the resource.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return vpnServerConfiguration Resource along with {@link Response} on successful completion of {@link Mono}.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Response<VpnServerConfigurationInner>> getByResourceGroupWithResponseAsync(String resourceGroupName,
         String vpnServerConfigurationName) {
@@ -192,7 +182,7 @@ public final class VpnServerConfigurationsClientImpl implements InnerSupportsGet
             return Mono.error(
                 new IllegalArgumentException("Parameter vpnServerConfigurationName is required and cannot be null."));
         }
-        final String apiVersion = "2025-07-01";
+        final String apiVersion = "2026-05-01";
         final String accept = "application/json";
         return FluxUtil
             .withContext(context -> service.getByResourceGroup(this.client.getEndpoint(), apiVersion,
@@ -231,24 +221,14 @@ public final class VpnServerConfigurationsClientImpl implements InnerSupportsGet
             return Mono.error(
                 new IllegalArgumentException("Parameter vpnServerConfigurationName is required and cannot be null."));
         }
-        final String apiVersion = "2025-07-01";
+        final String apiVersion = "2026-05-01";
         final String accept = "application/json";
         context = this.client.mergeContext(context);
         return service.getByResourceGroup(this.client.getEndpoint(), apiVersion, this.client.getSubscriptionId(),
             resourceGroupName, vpnServerConfigurationName, accept, context);
     }
 
-    /**
-     * Retrieves the details of a VpnServerConfiguration.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param vpnServerConfigurationName The name of the resource that is unique within a resource group. This name can
-     * be used to access the resource.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return vpnServerConfiguration Resource on successful completion of {@link Mono}.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<VpnServerConfigurationInner> getByResourceGroupAsync(String resourceGroupName,
         String vpnServerConfigurationName) {
@@ -256,52 +236,20 @@ public final class VpnServerConfigurationsClientImpl implements InnerSupportsGet
             .flatMap(res -> Mono.justOrEmpty(res.getValue()));
     }
 
-    /**
-     * Retrieves the details of a VpnServerConfiguration.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param vpnServerConfigurationName The name of the resource that is unique within a resource group. This name can
-     * be used to access the resource.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return vpnServerConfiguration Resource along with {@link Response}.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Response<VpnServerConfigurationInner> getByResourceGroupWithResponse(String resourceGroupName,
         String vpnServerConfigurationName, Context context) {
         return getByResourceGroupWithResponseAsync(resourceGroupName, vpnServerConfigurationName, context).block();
     }
 
-    /**
-     * Retrieves the details of a VpnServerConfiguration.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param vpnServerConfigurationName The name of the resource that is unique within a resource group. This name can
-     * be used to access the resource.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return vpnServerConfiguration Resource.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public VpnServerConfigurationInner getByResourceGroup(String resourceGroupName, String vpnServerConfigurationName) {
         return getByResourceGroupWithResponse(resourceGroupName, vpnServerConfigurationName, Context.NONE).getValue();
     }
 
-    /**
-     * Creates a VpnServerConfiguration resource if it doesn't exist else updates the existing VpnServerConfiguration.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param vpnServerConfigurationName The name of the resource that is unique within a resource group. This name can
-     * be used to access the resource.
-     * @param vpnServerConfigurationParameters Parameters supplied to create or update VpnServerConfiguration.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return vpnServerConfiguration Resource along with {@link Response} on successful completion of {@link Mono}.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Response<Flux<ByteBuffer>>> createOrUpdateWithResponseAsync(String resourceGroupName,
         String vpnServerConfigurationName, VpnServerConfigurationInner vpnServerConfigurationParameters) {
@@ -327,7 +275,7 @@ public final class VpnServerConfigurationsClientImpl implements InnerSupportsGet
         } else {
             vpnServerConfigurationParameters.validate();
         }
-        final String apiVersion = "2025-07-01";
+        final String apiVersion = "2026-05-01";
         final String contentType = "application/json";
         final String accept = "application/json";
         return FluxUtil
@@ -376,7 +324,7 @@ public final class VpnServerConfigurationsClientImpl implements InnerSupportsGet
         } else {
             vpnServerConfigurationParameters.validate();
         }
-        final String apiVersion = "2025-07-01";
+        final String apiVersion = "2026-05-01";
         final String contentType = "application/json";
         final String accept = "application/json";
         context = this.client.mergeContext(context);
@@ -385,18 +333,7 @@ public final class VpnServerConfigurationsClientImpl implements InnerSupportsGet
             context);
     }
 
-    /**
-     * Creates a VpnServerConfiguration resource if it doesn't exist else updates the existing VpnServerConfiguration.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param vpnServerConfigurationName The name of the resource that is unique within a resource group. This name can
-     * be used to access the resource.
-     * @param vpnServerConfigurationParameters Parameters supplied to create or update VpnServerConfiguration.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the {@link PollerFlux} for polling of vpnServerConfiguration Resource.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public PollerFlux<PollResult<VpnServerConfigurationInner>, VpnServerConfigurationInner> beginCreateOrUpdateAsync(
         String resourceGroupName, String vpnServerConfigurationName,
@@ -433,18 +370,7 @@ public final class VpnServerConfigurationsClientImpl implements InnerSupportsGet
             context);
     }
 
-    /**
-     * Creates a VpnServerConfiguration resource if it doesn't exist else updates the existing VpnServerConfiguration.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param vpnServerConfigurationName The name of the resource that is unique within a resource group. This name can
-     * be used to access the resource.
-     * @param vpnServerConfigurationParameters Parameters supplied to create or update VpnServerConfiguration.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the {@link SyncPoller} for polling of vpnServerConfiguration Resource.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public SyncPoller<PollResult<VpnServerConfigurationInner>, VpnServerConfigurationInner> beginCreateOrUpdate(
         String resourceGroupName, String vpnServerConfigurationName,
@@ -454,19 +380,7 @@ public final class VpnServerConfigurationsClientImpl implements InnerSupportsGet
             .getSyncPoller();
     }
 
-    /**
-     * Creates a VpnServerConfiguration resource if it doesn't exist else updates the existing VpnServerConfiguration.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param vpnServerConfigurationName The name of the resource that is unique within a resource group. This name can
-     * be used to access the resource.
-     * @param vpnServerConfigurationParameters Parameters supplied to create or update VpnServerConfiguration.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the {@link SyncPoller} for polling of vpnServerConfiguration Resource.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public SyncPoller<PollResult<VpnServerConfigurationInner>, VpnServerConfigurationInner> beginCreateOrUpdate(
         String resourceGroupName, String vpnServerConfigurationName,
@@ -477,18 +391,7 @@ public final class VpnServerConfigurationsClientImpl implements InnerSupportsGet
             .getSyncPoller();
     }
 
-    /**
-     * Creates a VpnServerConfiguration resource if it doesn't exist else updates the existing VpnServerConfiguration.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param vpnServerConfigurationName The name of the resource that is unique within a resource group. This name can
-     * be used to access the resource.
-     * @param vpnServerConfigurationParameters Parameters supplied to create or update VpnServerConfiguration.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return vpnServerConfiguration Resource on successful completion of {@link Mono}.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<VpnServerConfigurationInner> createOrUpdateAsync(String resourceGroupName,
         String vpnServerConfigurationName, VpnServerConfigurationInner vpnServerConfigurationParameters) {
@@ -518,18 +421,7 @@ public final class VpnServerConfigurationsClientImpl implements InnerSupportsGet
             context).last().flatMap(this.client::getLroFinalResultOrError);
     }
 
-    /**
-     * Creates a VpnServerConfiguration resource if it doesn't exist else updates the existing VpnServerConfiguration.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param vpnServerConfigurationName The name of the resource that is unique within a resource group. This name can
-     * be used to access the resource.
-     * @param vpnServerConfigurationParameters Parameters supplied to create or update VpnServerConfiguration.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return vpnServerConfiguration Resource.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public VpnServerConfigurationInner createOrUpdate(String resourceGroupName, String vpnServerConfigurationName,
         VpnServerConfigurationInner vpnServerConfigurationParameters) {
@@ -537,19 +429,7 @@ public final class VpnServerConfigurationsClientImpl implements InnerSupportsGet
             .block();
     }
 
-    /**
-     * Creates a VpnServerConfiguration resource if it doesn't exist else updates the existing VpnServerConfiguration.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param vpnServerConfigurationName The name of the resource that is unique within a resource group. This name can
-     * be used to access the resource.
-     * @param vpnServerConfigurationParameters Parameters supplied to create or update VpnServerConfiguration.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return vpnServerConfiguration Resource.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public VpnServerConfigurationInner createOrUpdate(String resourceGroupName, String vpnServerConfigurationName,
         VpnServerConfigurationInner vpnServerConfigurationParameters, Context context) {
@@ -557,18 +437,7 @@ public final class VpnServerConfigurationsClientImpl implements InnerSupportsGet
             context).block();
     }
 
-    /**
-     * Updates VpnServerConfiguration tags.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param vpnServerConfigurationName The name of the resource that is unique within a resource group. This name can
-     * be used to access the resource.
-     * @param vpnServerConfigurationParameters Parameters supplied to update VpnServerConfiguration tags.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return vpnServerConfiguration Resource along with {@link Response} on successful completion of {@link Mono}.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Response<VpnServerConfigurationInner>> updateTagsWithResponseAsync(String resourceGroupName,
         String vpnServerConfigurationName, TagsObject vpnServerConfigurationParameters) {
@@ -594,7 +463,7 @@ public final class VpnServerConfigurationsClientImpl implements InnerSupportsGet
         } else {
             vpnServerConfigurationParameters.validate();
         }
-        final String apiVersion = "2025-07-01";
+        final String apiVersion = "2026-05-01";
         final String contentType = "application/json";
         final String accept = "application/json";
         return FluxUtil
@@ -642,7 +511,7 @@ public final class VpnServerConfigurationsClientImpl implements InnerSupportsGet
         } else {
             vpnServerConfigurationParameters.validate();
         }
-        final String apiVersion = "2025-07-01";
+        final String apiVersion = "2026-05-01";
         final String contentType = "application/json";
         final String accept = "application/json";
         context = this.client.mergeContext(context);
@@ -651,18 +520,7 @@ public final class VpnServerConfigurationsClientImpl implements InnerSupportsGet
             context);
     }
 
-    /**
-     * Updates VpnServerConfiguration tags.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param vpnServerConfigurationName The name of the resource that is unique within a resource group. This name can
-     * be used to access the resource.
-     * @param vpnServerConfigurationParameters Parameters supplied to update VpnServerConfiguration tags.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return vpnServerConfiguration Resource on successful completion of {@link Mono}.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<VpnServerConfigurationInner> updateTagsAsync(String resourceGroupName,
         String vpnServerConfigurationName, TagsObject vpnServerConfigurationParameters) {
@@ -670,19 +528,7 @@ public final class VpnServerConfigurationsClientImpl implements InnerSupportsGet
             vpnServerConfigurationParameters).flatMap(res -> Mono.justOrEmpty(res.getValue()));
     }
 
-    /**
-     * Updates VpnServerConfiguration tags.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param vpnServerConfigurationName The name of the resource that is unique within a resource group. This name can
-     * be used to access the resource.
-     * @param vpnServerConfigurationParameters Parameters supplied to update VpnServerConfiguration tags.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return vpnServerConfiguration Resource along with {@link Response}.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Response<VpnServerConfigurationInner> updateTagsWithResponse(String resourceGroupName,
         String vpnServerConfigurationName, TagsObject vpnServerConfigurationParameters, Context context) {
@@ -690,18 +536,7 @@ public final class VpnServerConfigurationsClientImpl implements InnerSupportsGet
             vpnServerConfigurationParameters, context).block();
     }
 
-    /**
-     * Updates VpnServerConfiguration tags.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param vpnServerConfigurationName The name of the resource that is unique within a resource group. This name can
-     * be used to access the resource.
-     * @param vpnServerConfigurationParameters Parameters supplied to update VpnServerConfiguration tags.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return vpnServerConfiguration Resource.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public VpnServerConfigurationInner updateTags(String resourceGroupName, String vpnServerConfigurationName,
         TagsObject vpnServerConfigurationParameters) {
@@ -709,17 +544,7 @@ public final class VpnServerConfigurationsClientImpl implements InnerSupportsGet
             Context.NONE).getValue();
     }
 
-    /**
-     * Deletes a VpnServerConfiguration.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param vpnServerConfigurationName The name of the resource that is unique within a resource group. This name can
-     * be used to access the resource.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the {@link Response} on successful completion of {@link Mono}.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Response<Flux<ByteBuffer>>> deleteWithResponseAsync(String resourceGroupName,
         String vpnServerConfigurationName) {
@@ -739,7 +564,7 @@ public final class VpnServerConfigurationsClientImpl implements InnerSupportsGet
             return Mono.error(
                 new IllegalArgumentException("Parameter vpnServerConfigurationName is required and cannot be null."));
         }
-        final String apiVersion = "2025-07-01";
+        final String apiVersion = "2026-05-01";
         return FluxUtil
             .withContext(context -> service.delete(this.client.getEndpoint(), apiVersion,
                 this.client.getSubscriptionId(), resourceGroupName, vpnServerConfigurationName, context))
@@ -777,23 +602,13 @@ public final class VpnServerConfigurationsClientImpl implements InnerSupportsGet
             return Mono.error(
                 new IllegalArgumentException("Parameter vpnServerConfigurationName is required and cannot be null."));
         }
-        final String apiVersion = "2025-07-01";
+        final String apiVersion = "2026-05-01";
         context = this.client.mergeContext(context);
         return service.delete(this.client.getEndpoint(), apiVersion, this.client.getSubscriptionId(), resourceGroupName,
             vpnServerConfigurationName, context);
     }
 
-    /**
-     * Deletes a VpnServerConfiguration.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param vpnServerConfigurationName The name of the resource that is unique within a resource group. This name can
-     * be used to access the resource.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the {@link PollerFlux} for polling of long-running operation.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public PollerFlux<PollResult<Void>, Void> beginDeleteAsync(String resourceGroupName,
         String vpnServerConfigurationName) {
@@ -824,51 +639,20 @@ public final class VpnServerConfigurationsClientImpl implements InnerSupportsGet
             context);
     }
 
-    /**
-     * Deletes a VpnServerConfiguration.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param vpnServerConfigurationName The name of the resource that is unique within a resource group. This name can
-     * be used to access the resource.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the {@link SyncPoller} for polling of long-running operation.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public SyncPoller<PollResult<Void>, Void> beginDelete(String resourceGroupName, String vpnServerConfigurationName) {
         return this.beginDeleteAsync(resourceGroupName, vpnServerConfigurationName).getSyncPoller();
     }
 
-    /**
-     * Deletes a VpnServerConfiguration.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param vpnServerConfigurationName The name of the resource that is unique within a resource group. This name can
-     * be used to access the resource.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the {@link SyncPoller} for polling of long-running operation.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public SyncPoller<PollResult<Void>, Void> beginDelete(String resourceGroupName, String vpnServerConfigurationName,
         Context context) {
         return this.beginDeleteAsync(resourceGroupName, vpnServerConfigurationName, context).getSyncPoller();
     }
 
-    /**
-     * Deletes a VpnServerConfiguration.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param vpnServerConfigurationName The name of the resource that is unique within a resource group. This name can
-     * be used to access the resource.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return A {@link Mono} that completes when a successful response is received.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Void> deleteAsync(String resourceGroupName, String vpnServerConfigurationName) {
         return beginDeleteAsync(resourceGroupName, vpnServerConfigurationName).last()
@@ -893,32 +677,13 @@ public final class VpnServerConfigurationsClientImpl implements InnerSupportsGet
             .flatMap(this.client::getLroFinalResultOrError);
     }
 
-    /**
-     * Deletes a VpnServerConfiguration.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param vpnServerConfigurationName The name of the resource that is unique within a resource group. This name can
-     * be used to access the resource.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public void delete(String resourceGroupName, String vpnServerConfigurationName) {
         deleteAsync(resourceGroupName, vpnServerConfigurationName).block();
     }
 
-    /**
-     * Deletes a VpnServerConfiguration.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param vpnServerConfigurationName The name of the resource that is unique within a resource group. This name can
-     * be used to access the resource.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public void delete(String resourceGroupName, String vpnServerConfigurationName, Context context) {
         deleteAsync(resourceGroupName, vpnServerConfigurationName, context).block();
@@ -949,7 +714,7 @@ public final class VpnServerConfigurationsClientImpl implements InnerSupportsGet
             return Mono
                 .error(new IllegalArgumentException("Parameter resourceGroupName is required and cannot be null."));
         }
-        final String apiVersion = "2025-07-01";
+        final String apiVersion = "2026-05-01";
         final String accept = "application/json";
         return FluxUtil
             .withContext(context -> service.listByResourceGroup(this.client.getEndpoint(), apiVersion,
@@ -985,7 +750,7 @@ public final class VpnServerConfigurationsClientImpl implements InnerSupportsGet
             return Mono
                 .error(new IllegalArgumentException("Parameter resourceGroupName is required and cannot be null."));
         }
-        final String apiVersion = "2025-07-01";
+        final String apiVersion = "2026-05-01";
         final String accept = "application/json";
         context = this.client.mergeContext(context);
         return service
@@ -995,15 +760,7 @@ public final class VpnServerConfigurationsClientImpl implements InnerSupportsGet
                 res.getValue().value(), res.getValue().nextLink(), null));
     }
 
-    /**
-     * Lists all the vpnServerConfigurations in a resource group.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return result of the request to list all VpnServerConfigurations as paginated response with {@link PagedFlux}.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.COLLECTION)
     public PagedFlux<VpnServerConfigurationInner> listByResourceGroupAsync(String resourceGroupName) {
         return new PagedFlux<>(() -> listByResourceGroupSinglePageAsync(resourceGroupName),
@@ -1026,32 +783,13 @@ public final class VpnServerConfigurationsClientImpl implements InnerSupportsGet
             nextLink -> listByResourceGroupNextSinglePageAsync(nextLink, context));
     }
 
-    /**
-     * Lists all the vpnServerConfigurations in a resource group.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return result of the request to list all VpnServerConfigurations as paginated response with
-     * {@link PagedIterable}.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.COLLECTION)
     public PagedIterable<VpnServerConfigurationInner> listByResourceGroup(String resourceGroupName) {
         return new PagedIterable<>(listByResourceGroupAsync(resourceGroupName));
     }
 
-    /**
-     * Lists all the vpnServerConfigurations in a resource group.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return result of the request to list all VpnServerConfigurations as paginated response with
-     * {@link PagedIterable}.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.COLLECTION)
     public PagedIterable<VpnServerConfigurationInner> listByResourceGroup(String resourceGroupName, Context context) {
         return new PagedIterable<>(listByResourceGroupAsync(resourceGroupName, context));
@@ -1075,7 +813,7 @@ public final class VpnServerConfigurationsClientImpl implements InnerSupportsGet
             return Mono.error(new IllegalArgumentException(
                 "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
-        final String apiVersion = "2025-07-01";
+        final String apiVersion = "2026-05-01";
         final String accept = "application/json";
         return FluxUtil
             .withContext(context -> service.list(this.client.getEndpoint(), apiVersion, this.client.getSubscriptionId(),
@@ -1105,7 +843,7 @@ public final class VpnServerConfigurationsClientImpl implements InnerSupportsGet
             return Mono.error(new IllegalArgumentException(
                 "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
-        final String apiVersion = "2025-07-01";
+        final String apiVersion = "2026-05-01";
         final String accept = "application/json";
         context = this.client.mergeContext(context);
         return service.list(this.client.getEndpoint(), apiVersion, this.client.getSubscriptionId(), accept, context)
@@ -1113,13 +851,7 @@ public final class VpnServerConfigurationsClientImpl implements InnerSupportsGet
                 res.getValue().value(), res.getValue().nextLink(), null));
     }
 
-    /**
-     * Lists all the VpnServerConfigurations in a subscription.
-     * 
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return result of the request to list all VpnServerConfigurations as paginated response with {@link PagedFlux}.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.COLLECTION)
     public PagedFlux<VpnServerConfigurationInner> listAsync() {
         return new PagedFlux<>(() -> listSinglePageAsync(), nextLink -> listNextSinglePageAsync(nextLink));
@@ -1140,46 +872,19 @@ public final class VpnServerConfigurationsClientImpl implements InnerSupportsGet
             nextLink -> listNextSinglePageAsync(nextLink, context));
     }
 
-    /**
-     * Lists all the VpnServerConfigurations in a subscription.
-     * 
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return result of the request to list all VpnServerConfigurations as paginated response with
-     * {@link PagedIterable}.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.COLLECTION)
     public PagedIterable<VpnServerConfigurationInner> list() {
         return new PagedIterable<>(listAsync());
     }
 
-    /**
-     * Lists all the VpnServerConfigurations in a subscription.
-     * 
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return result of the request to list all VpnServerConfigurations as paginated response with
-     * {@link PagedIterable}.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.COLLECTION)
     public PagedIterable<VpnServerConfigurationInner> list(Context context) {
         return new PagedIterable<>(listAsync(context));
     }
 
-    /**
-     * List all Radius servers with respective radius secrets from VpnServerConfiguration.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param vpnServerConfigurationName The name of the resource that is unique within a resource group. This name can
-     * be used to access the resource.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return list of Radius servers with respective radius secrets along with {@link Response} on successful
-     * completion of {@link Mono}.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Response<RadiusAuthServerListResultInner>> listRadiusSecretsWithResponseAsync(String resourceGroupName,
         String vpnServerConfigurationName) {
@@ -1199,7 +904,7 @@ public final class VpnServerConfigurationsClientImpl implements InnerSupportsGet
             return Mono.error(
                 new IllegalArgumentException("Parameter vpnServerConfigurationName is required and cannot be null."));
         }
-        final String apiVersion = "2025-07-01";
+        final String apiVersion = "2026-05-01";
         final String accept = "application/json";
         return FluxUtil
             .withContext(context -> service.listRadiusSecrets(this.client.getEndpoint(), apiVersion,
@@ -1239,24 +944,14 @@ public final class VpnServerConfigurationsClientImpl implements InnerSupportsGet
             return Mono.error(
                 new IllegalArgumentException("Parameter vpnServerConfigurationName is required and cannot be null."));
         }
-        final String apiVersion = "2025-07-01";
+        final String apiVersion = "2026-05-01";
         final String accept = "application/json";
         context = this.client.mergeContext(context);
         return service.listRadiusSecrets(this.client.getEndpoint(), apiVersion, this.client.getSubscriptionId(),
             resourceGroupName, vpnServerConfigurationName, accept, context);
     }
 
-    /**
-     * List all Radius servers with respective radius secrets from VpnServerConfiguration.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param vpnServerConfigurationName The name of the resource that is unique within a resource group. This name can
-     * be used to access the resource.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return list of Radius servers with respective radius secrets on successful completion of {@link Mono}.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<RadiusAuthServerListResultInner> listRadiusSecretsAsync(String resourceGroupName,
         String vpnServerConfigurationName) {
@@ -1264,35 +959,14 @@ public final class VpnServerConfigurationsClientImpl implements InnerSupportsGet
             .flatMap(res -> Mono.justOrEmpty(res.getValue()));
     }
 
-    /**
-     * List all Radius servers with respective radius secrets from VpnServerConfiguration.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param vpnServerConfigurationName The name of the resource that is unique within a resource group. This name can
-     * be used to access the resource.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return list of Radius servers with respective radius secrets along with {@link Response}.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Response<RadiusAuthServerListResultInner> listRadiusSecretsWithResponse(String resourceGroupName,
         String vpnServerConfigurationName, Context context) {
         return listRadiusSecretsWithResponseAsync(resourceGroupName, vpnServerConfigurationName, context).block();
     }
 
-    /**
-     * List all Radius servers with respective radius secrets from VpnServerConfiguration.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param vpnServerConfigurationName The name of the resource that is unique within a resource group. This name can
-     * be used to access the resource.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return list of Radius servers with respective radius secrets.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public RadiusAuthServerListResultInner listRadiusSecrets(String resourceGroupName,
         String vpnServerConfigurationName) {

@@ -60,10 +60,7 @@ public final class SiteReferenceImpl implements SiteReference, SiteReference.Def
     }
 
     public SiteReference create() {
-        this.innerObject = serviceManager.serviceClient()
-            .getSiteReferences()
-            .createOrUpdate(resourceGroupName, contextName, siteReferenceName, this.innerModel(), Context.NONE);
-        return this;
+        return this.create(Context.NONE);
     }
 
     public SiteReference create(Context context) {
@@ -85,10 +82,7 @@ public final class SiteReferenceImpl implements SiteReference, SiteReference.Def
     }
 
     public SiteReference apply() {
-        this.innerObject = serviceManager.serviceClient()
-            .getSiteReferences()
-            .update(resourceGroupName, contextName, siteReferenceName, this.innerModel(), Context.NONE);
-        return this;
+        return this.apply(Context.NONE);
     }
 
     public SiteReference apply(Context context) {
@@ -102,17 +96,19 @@ public final class SiteReferenceImpl implements SiteReference, SiteReference.Def
         com.azure.resourcemanager.workloadorchestration.WorkloadOrchestrationManager serviceManager) {
         this.innerObject = innerObject;
         this.serviceManager = serviceManager;
-        this.resourceGroupName = ResourceManagerUtils.getValueFromIdByName(innerObject.id(), "resourceGroups");
-        this.contextName = ResourceManagerUtils.getValueFromIdByName(innerObject.id(), "contexts");
-        this.siteReferenceName = ResourceManagerUtils.getValueFromIdByName(innerObject.id(), "siteReferences");
+        this.resourceGroupName = ResourceManagerUtils.getValueFromIdByParameterName(innerObject.id(),
+            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Edge/contexts/{contextName}/siteReferences/{siteReferenceName}",
+            "resourceGroupName");
+        this.contextName = ResourceManagerUtils.getValueFromIdByParameterName(innerObject.id(),
+            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Edge/contexts/{contextName}/siteReferences/{siteReferenceName}",
+            "contextName");
+        this.siteReferenceName = ResourceManagerUtils.getValueFromIdByParameterName(innerObject.id(),
+            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Edge/contexts/{contextName}/siteReferences/{siteReferenceName}",
+            "siteReferenceName");
     }
 
     public SiteReference refresh() {
-        this.innerObject = serviceManager.serviceClient()
-            .getSiteReferences()
-            .getWithResponse(resourceGroupName, contextName, siteReferenceName, Context.NONE)
-            .getValue();
-        return this;
+        return this.refresh(Context.NONE);
     }
 
     public SiteReference refresh(Context context) {

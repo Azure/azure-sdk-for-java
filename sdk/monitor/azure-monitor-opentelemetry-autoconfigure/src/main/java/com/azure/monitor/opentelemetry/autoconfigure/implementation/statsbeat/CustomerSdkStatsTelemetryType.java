@@ -10,7 +10,7 @@ import java.util.HashMap;
 import java.util.Map;
 
 /**
- * Maps TelemetryItem.getName() values to the telemetry_type dimension values
+ * Maps TelemetryItem.getName() values to the telemetryType dimension values
  * used in customer-facing SDKStats metrics.
  */
 public final class CustomerSdkStatsTelemetryType {
@@ -31,10 +31,10 @@ public final class CustomerSdkStatsTelemetryType {
     }
 
     /**
-     * Maps a TelemetryItem name to its customer-facing telemetry_type value.
+     * Maps a TelemetryItem name to its customer-facing telemetryType value.
      *
      * @param telemetryItemName the value from TelemetryItem.getName()
-     * @return the telemetry_type dimension value, or null if the item should be skipped
+     * @return the telemetryType dimension value, or null if the item should be skipped
      *         (e.g. "Statsbeat" internal metrics)
      */
     @Nullable

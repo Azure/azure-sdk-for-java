@@ -22,7 +22,7 @@ public final class TrafficControllerInterfacesListByResourceGroupMockTests {
     @Test
     public void testListByResourceGroup() throws Exception {
         String responseStr
-            = "{\"value\":[{\"properties\":{\"configurationEndpoints\":[\"lvithhqzonosgg\",\"hcohfwdsjnk\"],\"frontends\":[{\"id\":\"utiiswacf\"},{\"id\":\"gdkz\"},{\"id\":\"ewkfvhqcrai\"}],\"associations\":[{\"id\":\"n\"},{\"id\":\"pfuflrw\"}],\"securityPolicies\":[{\"id\":\"dlxyjrxs\"},{\"id\":\"gafcnihgwqapnedg\"},{\"id\":\"bcvkcvqvpkeq\"},{\"id\":\"cvdrhvoodsot\"}],\"securityPolicyConfigurations\":{\"wafSecurityPolicy\":{\"id\":\"zdopcjwvnhd\"},\"ipAccessRulesSecurityPolicy\":{\"id\":\"wmgxcxrsl\"}},\"provisioningState\":\"Deleting\"},\"location\":\"wuoegrpk\",\"tags\":{\"pdggkzzlvm\":\"niyqslui\",\"fvmwy\":\"mpaxmodfvuefywsb\",\"yzvqt\":\"rfouyftaakcpw\"},\"id\":\"nubexk\",\"name\":\"zksmondj\",\"type\":\"quxvypomgkop\"}]}";
+            = "{\"value\":[{\"properties\":{\"configurationEndpoints\":[\"h\",\"xiilivpdtiirqt\",\"qoaxoruzfgs\",\"uyfxrxxleptramxj\"],\"frontends\":[{\"id\":\"lwnwxuqlcvydyp\"},{\"id\":\"tdooaoj\"},{\"id\":\"niodkooeb\"}],\"associations\":[{\"id\":\"jhemms\"},{\"id\":\"vdkcrodtj\"},{\"id\":\"nfwjlfltkacjvefk\"},{\"id\":\"lfoakg\"}],\"securityPolicies\":[{\"id\":\"pagao\"},{\"id\":\"pulpqblylsyxk\"},{\"id\":\"jnsjervtiagxsd\"}],\"privateEndpointConnections\":[{\"id\":\"e\"}],\"securityPolicyConfigurations\":{\"wafSecurityPolicy\":{\"id\":\"bzkfzbeyvpn\"},\"ipAccessRulesSecurityPolicy\":{\"id\":\"cvinvkjjxdxrbuuk\"}},\"provisioningState\":\"Failed\"},\"location\":\"wyhmlw\",\"tags\":{\"hxx\":\"tzpofncckwyfzq\"},\"id\":\"uyqaxzfeqztppr\",\"name\":\"o\",\"type\":\"xorjaltolmncwsob\"}]}";
 
         HttpClient httpClient
             = response -> Mono.just(new MockHttpResponse(response, 200, responseStr.getBytes(StandardCharsets.UTF_8)));
@@ -31,14 +31,14 @@ public final class TrafficControllerInterfacesListByResourceGroupMockTests {
             .authenticate(tokenRequestContext -> Mono.just(new AccessToken("this_is_a_token", OffsetDateTime.MAX)),
                 new AzureProfile("", "", AzureCloud.AZURE_PUBLIC_CLOUD));
 
-        PagedIterable<TrafficController> response
-            = manager.trafficControllerInterfaces().listByResourceGroup("v", com.azure.core.util.Context.NONE);
+        PagedIterable<TrafficController> response = manager.trafficControllerInterfaces()
+            .listByResourceGroup("thzvaytdwkqbrqu", com.azure.core.util.Context.NONE);
 
-        Assertions.assertEquals("wuoegrpk", response.iterator().next().location());
-        Assertions.assertEquals("niyqslui", response.iterator().next().tags().get("pdggkzzlvm"));
-        Assertions.assertEquals("zdopcjwvnhd",
+        Assertions.assertEquals("wyhmlw", response.iterator().next().location());
+        Assertions.assertEquals("tzpofncckwyfzq", response.iterator().next().tags().get("hxx"));
+        Assertions.assertEquals("bzkfzbeyvpn",
             response.iterator().next().properties().securityPolicyConfigurations().wafSecurityPolicy().id());
-        Assertions.assertEquals("wmgxcxrsl",
+        Assertions.assertEquals("cvinvkjjxdxrbuuk",
             response.iterator().next().properties().securityPolicyConfigurations().ipAccessRulesSecurityPolicy().id());
     }
 }

@@ -18,11 +18,11 @@ import com.azure.resourcemanager.netapp.models.BreakthroughMode;
 import com.azure.resourcemanager.netapp.models.ClusterPeerCommandResponse;
 import com.azure.resourcemanager.netapp.models.CoolAccessRetrievalPolicy;
 import com.azure.resourcemanager.netapp.models.CoolAccessTieringPolicy;
-import com.azure.resourcemanager.netapp.models.EnableSubvolumes;
 import com.azure.resourcemanager.netapp.models.EncryptionKeySource;
 import com.azure.resourcemanager.netapp.models.FileAccessLogs;
 import com.azure.resourcemanager.netapp.models.GetGroupIdListForLdapUserRequest;
 import com.azure.resourcemanager.netapp.models.GetGroupIdListForLdapUserResponse;
+import com.azure.resourcemanager.netapp.models.LdapServerType;
 import com.azure.resourcemanager.netapp.models.ListQuotaReportResult;
 import com.azure.resourcemanager.netapp.models.ListReplicationsRequest;
 import com.azure.resourcemanager.netapp.models.MountTargetProperties;
@@ -38,6 +38,7 @@ import com.azure.resourcemanager.netapp.models.SecurityStyle;
 import com.azure.resourcemanager.netapp.models.ServiceLevel;
 import com.azure.resourcemanager.netapp.models.SmbAccessBasedEnumeration;
 import com.azure.resourcemanager.netapp.models.SmbNonBrowsable;
+import com.azure.resourcemanager.netapp.models.SmbOplocks;
 import com.azure.resourcemanager.netapp.models.SvmPeerCommandResponse;
 import com.azure.resourcemanager.netapp.models.Volume;
 import com.azure.resourcemanager.netapp.models.VolumePatch;
@@ -220,6 +221,10 @@ public final class VolumeImpl implements Volume, Volume.Definition, Volume.Updat
         return this.innerModel().smbContinuouslyAvailable();
     }
 
+    public SmbOplocks smbOplocks() {
+        return this.innerModel().smbOplocks();
+    }
+
     public Float throughputMibps() {
         return this.innerModel().throughputMibps();
     }
@@ -238,6 +243,10 @@ public final class VolumeImpl implements Volume, Volume.Definition, Volume.Updat
 
     public Boolean ldapEnabled() {
         return this.innerModel().ldapEnabled();
+    }
+
+    public LdapServerType ldapServerType() {
+        return this.innerModel().ldapServerType();
     }
 
     public Boolean coolAccess() {
@@ -330,10 +339,6 @@ public final class VolumeImpl implements Volume, Volume.Definition, Volume.Updat
         }
     }
 
-    public EnableSubvolumes enableSubvolumes() {
-        return this.innerModel().enableSubvolumes();
-    }
-
     public String provisionedAvailabilityZone() {
         return this.innerModel().provisionedAvailabilityZone();
     }
@@ -392,10 +397,7 @@ public final class VolumeImpl implements Volume, Volume.Definition, Volume.Updat
     }
 
     public Volume create() {
-        this.innerObject = serviceManager.serviceClient()
-            .getVolumes()
-            .createOrUpdate(resourceGroupName, accountName, poolName, volumeName, this.innerModel(), Context.NONE);
-        return this;
+        return this.create(Context.NONE);
     }
 
     public Volume create(Context context) {
@@ -417,10 +419,7 @@ public final class VolumeImpl implements Volume, Volume.Definition, Volume.Updat
     }
 
     public Volume apply() {
-        this.innerObject = serviceManager.serviceClient()
-            .getVolumes()
-            .update(resourceGroupName, accountName, poolName, volumeName, updateBody, Context.NONE);
-        return this;
+        return this.apply(Context.NONE);
     }
 
     public Volume apply(Context context) {
@@ -433,18 +432,22 @@ public final class VolumeImpl implements Volume, Volume.Definition, Volume.Updat
     VolumeImpl(VolumeInner innerObject, com.azure.resourcemanager.netapp.NetAppFilesManager serviceManager) {
         this.innerObject = innerObject;
         this.serviceManager = serviceManager;
-        this.resourceGroupName = ResourceManagerUtils.getValueFromIdByName(innerObject.id(), "resourceGroups");
-        this.accountName = ResourceManagerUtils.getValueFromIdByName(innerObject.id(), "netAppAccounts");
-        this.poolName = ResourceManagerUtils.getValueFromIdByName(innerObject.id(), "capacityPools");
-        this.volumeName = ResourceManagerUtils.getValueFromIdByName(innerObject.id(), "volumes");
+        this.resourceGroupName = ResourceManagerUtils.getValueFromIdByParameterName(innerObject.id(),
+            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.NetApp/netAppAccounts/{accountName}/capacityPools/{poolName}/volumes/{volumeName}",
+            "resourceGroupName");
+        this.accountName = ResourceManagerUtils.getValueFromIdByParameterName(innerObject.id(),
+            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.NetApp/netAppAccounts/{accountName}/capacityPools/{poolName}/volumes/{volumeName}",
+            "accountName");
+        this.poolName = ResourceManagerUtils.getValueFromIdByParameterName(innerObject.id(),
+            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.NetApp/netAppAccounts/{accountName}/capacityPools/{poolName}/volumes/{volumeName}",
+            "poolName");
+        this.volumeName = ResourceManagerUtils.getValueFromIdByParameterName(innerObject.id(),
+            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.NetApp/netAppAccounts/{accountName}/capacityPools/{poolName}/volumes/{volumeName}",
+            "volumeName");
     }
 
     public Volume refresh() {
-        this.innerObject = serviceManager.serviceClient()
-            .getVolumes()
-            .getWithResponse(resourceGroupName, accountName, poolName, volumeName, Context.NONE)
-            .getValue();
-        return this;
+        return this.refresh(Context.NONE);
     }
 
     public Volume refresh(Context context) {
@@ -797,6 +800,16 @@ public final class VolumeImpl implements Volume, Volume.Definition, Volume.Updat
         return this;
     }
 
+    public VolumeImpl withSmbOplocks(SmbOplocks smbOplocks) {
+        if (isInCreateMode()) {
+            this.innerModel().withSmbOplocks(smbOplocks);
+            return this;
+        } else {
+            this.updateBody.withSmbOplocks(smbOplocks);
+            return this;
+        }
+    }
+
     public VolumeImpl withThroughputMibps(Float throughputMibps) {
         if (isInCreateMode()) {
             this.innerModel().withThroughputMibps(throughputMibps);
@@ -819,6 +832,11 @@ public final class VolumeImpl implements Volume, Volume.Definition, Volume.Updat
 
     public VolumeImpl withLdapEnabled(Boolean ldapEnabled) {
         this.innerModel().withLdapEnabled(ldapEnabled);
+        return this;
+    }
+
+    public VolumeImpl withLdapServerType(LdapServerType ldapServerType) {
+        this.innerModel().withLdapServerType(ldapServerType);
         return this;
     }
 
@@ -924,11 +942,6 @@ public final class VolumeImpl implements Volume, Volume.Definition, Volume.Updat
 
     public VolumeImpl withPlacementRules(List<PlacementKeyValuePairs> placementRules) {
         this.innerModel().withPlacementRules(placementRules);
-        return this;
-    }
-
-    public VolumeImpl withEnableSubvolumes(EnableSubvolumes enableSubvolumes) {
-        this.innerModel().withEnableSubvolumes(enableSubvolumes);
         return this;
     }
 

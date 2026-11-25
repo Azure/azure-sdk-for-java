@@ -213,11 +213,7 @@ public final class MigrationImpl implements Migration, Migration.Definition, Mig
     }
 
     public Migration create() {
-        this.innerObject = serviceManager.serviceClient()
-            .getMigrations()
-            .createWithResponse(resourceGroupName, serverName, migrationName, this.innerModel(), Context.NONE)
-            .getValue();
-        return this;
+        return this.create(Context.NONE);
     }
 
     public Migration create(Context context) {
@@ -240,11 +236,7 @@ public final class MigrationImpl implements Migration, Migration.Definition, Mig
     }
 
     public Migration apply() {
-        this.innerObject = serviceManager.serviceClient()
-            .getMigrations()
-            .updateWithResponse(resourceGroupName, serverName, migrationName, updateParameters, Context.NONE)
-            .getValue();
-        return this;
+        return this.apply(Context.NONE);
     }
 
     public Migration apply(Context context) {
@@ -259,17 +251,19 @@ public final class MigrationImpl implements Migration, Migration.Definition, Mig
         com.azure.resourcemanager.postgresqlflexibleserver.PostgreSqlManager serviceManager) {
         this.innerObject = innerObject;
         this.serviceManager = serviceManager;
-        this.resourceGroupName = ResourceManagerUtils.getValueFromIdByName(innerObject.id(), "resourceGroups");
-        this.serverName = ResourceManagerUtils.getValueFromIdByName(innerObject.id(), "flexibleServers");
-        this.migrationName = ResourceManagerUtils.getValueFromIdByName(innerObject.id(), "migrations");
+        this.resourceGroupName = ResourceManagerUtils.getValueFromIdByParameterName(innerObject.id(),
+            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.DBforPostgreSQL/flexibleServers/{serverName}/migrations/{migrationName}",
+            "resourceGroupName");
+        this.serverName = ResourceManagerUtils.getValueFromIdByParameterName(innerObject.id(),
+            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.DBforPostgreSQL/flexibleServers/{serverName}/migrations/{migrationName}",
+            "serverName");
+        this.migrationName = ResourceManagerUtils.getValueFromIdByParameterName(innerObject.id(),
+            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.DBforPostgreSQL/flexibleServers/{serverName}/migrations/{migrationName}",
+            "migrationName");
     }
 
     public Migration refresh() {
-        this.innerObject = serviceManager.serviceClient()
-            .getMigrations()
-            .getWithResponse(resourceGroupName, serverName, migrationName, Context.NONE)
-            .getValue();
-        return this;
+        return this.refresh(Context.NONE);
     }
 
     public Migration refresh(Context context) {

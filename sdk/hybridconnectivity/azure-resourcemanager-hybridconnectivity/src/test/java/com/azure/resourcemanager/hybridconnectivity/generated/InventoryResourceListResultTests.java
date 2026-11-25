@@ -14,13 +14,13 @@ public final class InventoryResourceListResultTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
         InventoryResourceListResult model = BinaryData.fromString(
-            "{\"value\":[{\"properties\":{\"cloudNativeType\":\"ec2\",\"cloudNativeResourceId\":\"senhwlrs\",\"azureResourceId\":\"rzpwvlqdqgbiq\",\"status\":\"Completed\",\"statusDetails\":\"kaet\",\"provisioningState\":\"Failed\"},\"id\":\"fcivfsnkym\",\"name\":\"ctq\",\"type\":\"jf\"},{\"properties\":{\"cloudNativeType\":\"ec2\",\"cloudNativeResourceId\":\"cxerf\",\"azureResourceId\":\"utttxfvjrbirp\",\"status\":\"Completed\",\"statusDetails\":\"c\",\"provisioningState\":\"Succeeded\"},\"id\":\"fnljky\",\"name\":\"xjvuujqgidokg\",\"type\":\"ljyoxgvcltb\"}],\"nextLink\":\"ncghkje\"}")
+            "{\"value\":[{\"properties\":{\"cloudNativeType\":\"ec2\",\"cloudNativeResourceId\":\"qnermclfplphoxu\",\"azureResourceId\":\"rpabg\",\"status\":\"InProgress\",\"statusDetails\":\"bjtazqugxywpmu\",\"provisioningState\":\"Succeeded\"},\"id\":\"zwfqkqujidsuyon\",\"name\":\"bglaocqxtccm\",\"type\":\"yudxytlmoy\"}],\"nextLink\":\"vwfudwpzntxhd\"}")
             .toObject(InventoryResourceListResult.class);
         Assertions.assertEquals(CloudNativeType.EC2, model.value().get(0).properties().cloudNativeType());
-        Assertions.assertEquals("senhwlrs", model.value().get(0).properties().cloudNativeResourceId());
-        Assertions.assertEquals("rzpwvlqdqgbiq", model.value().get(0).properties().azureResourceId());
-        Assertions.assertEquals(SolutionConfigurationStatus.COMPLETED, model.value().get(0).properties().status());
-        Assertions.assertEquals("kaet", model.value().get(0).properties().statusDetails());
-        Assertions.assertEquals("ncghkje", model.nextLink());
+        Assertions.assertEquals("qnermclfplphoxu", model.value().get(0).properties().cloudNativeResourceId());
+        Assertions.assertEquals("rpabg", model.value().get(0).properties().azureResourceId());
+        Assertions.assertEquals(SolutionConfigurationStatus.IN_PROGRESS, model.value().get(0).properties().status());
+        Assertions.assertEquals("bjtazqugxywpmu", model.value().get(0).properties().statusDetails());
+        Assertions.assertEquals("vwfudwpzntxhd", model.nextLink());
     }
 }

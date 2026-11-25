@@ -22,15 +22,22 @@ import com.azure.core.util.CoreUtils;
 import com.azure.core.util.logging.ClientLogger;
 import com.azure.core.util.polling.AsyncPollResponse;
 import com.azure.core.util.polling.LongRunningOperationStatus;
+import com.azure.core.util.polling.PollResponse;
 import com.azure.core.util.polling.PollerFlux;
 import com.azure.core.util.polling.SyncPoller;
 import com.azure.core.util.serializer.SerializerAdapter;
 import com.azure.core.util.serializer.SerializerEncoding;
 import com.azure.resourcemanager.monitor.workspaces.fluent.AzureMonitorWorkspacesClient;
 import com.azure.resourcemanager.monitor.workspaces.fluent.IssuesClient;
+import com.azure.resourcemanager.monitor.workspaces.fluent.MetricConfigurationsClient;
+import com.azure.resourcemanager.monitor.workspaces.fluent.MetricNamespacesClient;
 import com.azure.resourcemanager.monitor.workspaces.fluent.MetricsContainersClient;
 import com.azure.resourcemanager.monitor.workspaces.fluent.MonitorWorkspacesManagementClient;
 import com.azure.resourcemanager.monitor.workspaces.fluent.OperationsClient;
+import com.azure.resourcemanager.monitor.workspaces.fluent.TraceAssociationsAtResourceGroupsClient;
+import com.azure.resourcemanager.monitor.workspaces.fluent.TraceAssociationsAtSubscriptionsClient;
+import com.azure.resourcemanager.monitor.workspaces.fluent.TraceAssociationsClient;
+import com.azure.resourcemanager.monitor.workspaces.fluent.TraceContainersClient;
 import java.io.IOException;
 import java.lang.reflect.Type;
 import java.nio.ByteBuffer;
@@ -186,6 +193,90 @@ public final class MonitorWorkspacesManagementClientImpl implements MonitorWorks
     }
 
     /**
+     * The MetricNamespacesClient object to access its operations.
+     */
+    private final MetricNamespacesClient metricNamespaces;
+
+    /**
+     * Gets the MetricNamespacesClient object to access its operations.
+     * 
+     * @return the MetricNamespacesClient object.
+     */
+    public MetricNamespacesClient getMetricNamespaces() {
+        return this.metricNamespaces;
+    }
+
+    /**
+     * The MetricConfigurationsClient object to access its operations.
+     */
+    private final MetricConfigurationsClient metricConfigurations;
+
+    /**
+     * Gets the MetricConfigurationsClient object to access its operations.
+     * 
+     * @return the MetricConfigurationsClient object.
+     */
+    public MetricConfigurationsClient getMetricConfigurations() {
+        return this.metricConfigurations;
+    }
+
+    /**
+     * The TraceContainersClient object to access its operations.
+     */
+    private final TraceContainersClient traceContainers;
+
+    /**
+     * Gets the TraceContainersClient object to access its operations.
+     * 
+     * @return the TraceContainersClient object.
+     */
+    public TraceContainersClient getTraceContainers() {
+        return this.traceContainers;
+    }
+
+    /**
+     * The TraceAssociationsAtResourceGroupsClient object to access its operations.
+     */
+    private final TraceAssociationsAtResourceGroupsClient traceAssociationsAtResourceGroups;
+
+    /**
+     * Gets the TraceAssociationsAtResourceGroupsClient object to access its operations.
+     * 
+     * @return the TraceAssociationsAtResourceGroupsClient object.
+     */
+    public TraceAssociationsAtResourceGroupsClient getTraceAssociationsAtResourceGroups() {
+        return this.traceAssociationsAtResourceGroups;
+    }
+
+    /**
+     * The TraceAssociationsAtSubscriptionsClient object to access its operations.
+     */
+    private final TraceAssociationsAtSubscriptionsClient traceAssociationsAtSubscriptions;
+
+    /**
+     * Gets the TraceAssociationsAtSubscriptionsClient object to access its operations.
+     * 
+     * @return the TraceAssociationsAtSubscriptionsClient object.
+     */
+    public TraceAssociationsAtSubscriptionsClient getTraceAssociationsAtSubscriptions() {
+        return this.traceAssociationsAtSubscriptions;
+    }
+
+    /**
+     * The TraceAssociationsClient object to access its operations.
+     */
+    private final TraceAssociationsClient traceAssociations;
+
+    /**
+     * Gets the TraceAssociationsClient object to access its operations.
+     * 
+     * @return the TraceAssociationsClient object.
+     */
+    public TraceAssociationsClient getTraceAssociations() {
+        return this.traceAssociations;
+    }
+
+    /**
      * Initializes an instance of MonitorWorkspacesManagementClient client.
      * 
      * @param httpPipeline The HTTP pipeline to send requests through.
@@ -202,11 +293,17 @@ public final class MonitorWorkspacesManagementClientImpl implements MonitorWorks
         this.defaultPollInterval = defaultPollInterval;
         this.endpoint = endpoint;
         this.subscriptionId = subscriptionId;
-        this.apiVersion = "2025-10-03";
+        this.apiVersion = "2026-09-03-preview";
         this.operations = new OperationsClientImpl(this);
         this.azureMonitorWorkspaces = new AzureMonitorWorkspacesClientImpl(this);
         this.issues = new IssuesClientImpl(this);
         this.metricsContainers = new MetricsContainersClientImpl(this);
+        this.metricNamespaces = new MetricNamespacesClientImpl(this);
+        this.metricConfigurations = new MetricConfigurationsClientImpl(this);
+        this.traceContainers = new TraceContainersClientImpl(this);
+        this.traceAssociationsAtResourceGroups = new TraceAssociationsAtResourceGroupsClientImpl(this);
+        this.traceAssociationsAtSubscriptions = new TraceAssociationsAtSubscriptionsClientImpl(this);
+        this.traceAssociations = new TraceAssociationsClientImpl(this);
     }
 
     /**
@@ -264,6 +361,24 @@ public final class MonitorWorkspacesManagementClientImpl implements MonitorWorks
     }
 
     /**
+     * Waits for completion and gets the final result, or throws an error.
+     * 
+     * @param poller the synchronous poller.
+     * @param <T> type of poll result.
+     * @param <U> type of final result.
+     * @return the final result.
+     * @throws ManagementException if the long running operation fails.
+     */
+    public <T, U> U getLroFinalResultOrError(SyncPoller<PollResult<T>, U> poller) {
+        PollResponse<PollResult<T>> response = poller.waitForCompletion();
+        ManagementException exception = getLroException(response.getStatus(), response.getValue());
+        if (exception != null) {
+            throw exception;
+        }
+        return poller.getFinalResult();
+    }
+
+    /**
      * Gets the final result, or an error, based on last async poll response.
      * 
      * @param response the last async poll response.
@@ -272,17 +387,25 @@ public final class MonitorWorkspacesManagementClientImpl implements MonitorWorks
      * @return the final result, or an error.
      */
     public <T, U> Mono<U> getLroFinalResultOrError(AsyncPollResponse<PollResult<T>, U> response) {
-        if (response.getStatus() != LongRunningOperationStatus.SUCCESSFULLY_COMPLETED) {
+        ManagementException exception = getLroException(response.getStatus(), response.getValue());
+        if (exception != null) {
+            return Mono.error(exception);
+        }
+        return response.getFinalResult();
+    }
+
+    private ManagementException getLroException(LongRunningOperationStatus status, PollResult<?> result) {
+        PollResult.Error lroError = result == null ? null : result.getError();
+        if (status != LongRunningOperationStatus.SUCCESSFULLY_COMPLETED || lroError != null) {
             String errorMessage;
             ManagementError managementError = null;
             HttpResponse errorResponse = null;
-            PollResult.Error lroError = response.getValue().getError();
             if (lroError != null) {
                 errorResponse = new HttpResponseImpl(lroError.getResponseStatusCode(), lroError.getResponseHeaders(),
                     lroError.getResponseBody());
 
-                errorMessage = response.getValue().getError().getMessage();
-                String errorBody = response.getValue().getError().getResponseBody();
+                errorMessage = lroError.getMessage();
+                String errorBody = lroError.getResponseBody();
                 if (errorBody != null) {
                     // try to deserialize error body to ManagementError
                     try {
@@ -301,12 +424,11 @@ public final class MonitorWorkspacesManagementClientImpl implements MonitorWorks
             }
             if (managementError == null) {
                 // fallback to default ManagementError
-                managementError = new ManagementError(response.getStatus().toString(), errorMessage);
+                managementError = new ManagementError(status.toString(), errorMessage);
             }
-            return Mono.error(new ManagementException(errorMessage, errorResponse, managementError));
-        } else {
-            return response.getFinalResult();
+            return new ManagementException(errorMessage, errorResponse, managementError);
         }
+        return null;
     }
 
     private static final class HttpResponseImpl extends HttpResponse {

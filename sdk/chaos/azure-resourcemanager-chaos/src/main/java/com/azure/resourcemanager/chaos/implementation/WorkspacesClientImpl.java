@@ -35,9 +35,10 @@ import com.azure.core.util.FluxUtil;
 import com.azure.core.util.polling.PollerFlux;
 import com.azure.core.util.polling.SyncPoller;
 import com.azure.resourcemanager.chaos.fluent.WorkspacesClient;
+import com.azure.resourcemanager.chaos.fluent.models.WorkspaceDiscoveryInner;
+import com.azure.resourcemanager.chaos.fluent.models.WorkspaceEvaluationInner;
 import com.azure.resourcemanager.chaos.fluent.models.WorkspaceInner;
 import com.azure.resourcemanager.chaos.implementation.models.WorkspaceListResult;
-import com.azure.resourcemanager.chaos.models.WorkspaceEvaluation;
 import com.azure.resourcemanager.chaos.models.WorkspaceUpdate;
 import java.nio.ByteBuffer;
 import reactor.core.publisher.Flux;
@@ -99,6 +100,7 @@ public final class WorkspacesClientImpl implements WorkspacesClient {
         Mono<Response<Flux<ByteBuffer>>> createOrUpdate(@HostParam("endpoint") String endpoint,
             @QueryParam("api-version") String apiVersion, @PathParam("subscriptionId") String subscriptionId,
             @PathParam("resourceGroupName") String resourceGroupName, @PathParam("workspaceName") String workspaceName,
+            @HeaderParam("If-None-Match") String ifNoneMatch, @HeaderParam("If-Match") String ifMatch,
             @HeaderParam("Content-Type") String contentType, @HeaderParam("Accept") String accept,
             @BodyParam("application/json") WorkspaceInner resource, Context context);
 
@@ -108,6 +110,7 @@ public final class WorkspacesClientImpl implements WorkspacesClient {
         Response<BinaryData> createOrUpdateSync(@HostParam("endpoint") String endpoint,
             @QueryParam("api-version") String apiVersion, @PathParam("subscriptionId") String subscriptionId,
             @PathParam("resourceGroupName") String resourceGroupName, @PathParam("workspaceName") String workspaceName,
+            @HeaderParam("If-None-Match") String ifNoneMatch, @HeaderParam("If-Match") String ifMatch,
             @HeaderParam("Content-Type") String contentType, @HeaderParam("Accept") String accept,
             @BodyParam("application/json") WorkspaceInner resource, Context context);
 
@@ -185,23 +188,41 @@ public final class WorkspacesClientImpl implements WorkspacesClient {
             @QueryParam("continuationToken") String continuationToken, @HeaderParam("Accept") String accept,
             Context context);
 
-        @Headers({ "Accept: application/json;q=0.9", "Content-Type: application/json" })
-        @Post("/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Chaos/workspaces/{workspaceName}/refreshRecommendations")
-        @ExpectedResponses({ 202 })
+        @Headers({ "Content-Type: application/json" })
+        @Post("/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Chaos/workspaces/{workspaceName}/discover")
+        @ExpectedResponses({ 200, 202 })
         @UnexpectedResponseExceptionType(ManagementException.class)
-        Mono<Response<Flux<ByteBuffer>>> refreshRecommendations(@HostParam("endpoint") String endpoint,
+        Mono<Response<Flux<ByteBuffer>>> discover(@HostParam("endpoint") String endpoint,
             @QueryParam("api-version") String apiVersion, @PathParam("subscriptionId") String subscriptionId,
             @PathParam("resourceGroupName") String resourceGroupName, @PathParam("workspaceName") String workspaceName,
-            Context context);
+            @HeaderParam("Accept") String accept, Context context);
 
-        @Headers({ "Accept: application/json;q=0.9", "Content-Type: application/json" })
-        @Post("/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Chaos/workspaces/{workspaceName}/refreshRecommendations")
-        @ExpectedResponses({ 202 })
+        @Headers({ "Content-Type: application/json" })
+        @Post("/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Chaos/workspaces/{workspaceName}/discover")
+        @ExpectedResponses({ 200, 202 })
         @UnexpectedResponseExceptionType(ManagementException.class)
-        Response<BinaryData> refreshRecommendationsSync(@HostParam("endpoint") String endpoint,
+        Response<BinaryData> discoverSync(@HostParam("endpoint") String endpoint,
             @QueryParam("api-version") String apiVersion, @PathParam("subscriptionId") String subscriptionId,
             @PathParam("resourceGroupName") String resourceGroupName, @PathParam("workspaceName") String workspaceName,
-            Context context);
+            @HeaderParam("Accept") String accept, Context context);
+
+        @Headers({ "Content-Type: application/json" })
+        @Post("/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Chaos/workspaces/{workspaceName}/evaluate")
+        @ExpectedResponses({ 200, 202 })
+        @UnexpectedResponseExceptionType(ManagementException.class)
+        Mono<Response<Flux<ByteBuffer>>> evaluate(@HostParam("endpoint") String endpoint,
+            @QueryParam("api-version") String apiVersion, @PathParam("subscriptionId") String subscriptionId,
+            @PathParam("resourceGroupName") String resourceGroupName, @PathParam("workspaceName") String workspaceName,
+            @HeaderParam("Accept") String accept, Context context);
+
+        @Headers({ "Content-Type: application/json" })
+        @Post("/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Chaos/workspaces/{workspaceName}/evaluate")
+        @ExpectedResponses({ 200, 202 })
+        @UnexpectedResponseExceptionType(ManagementException.class)
+        Response<BinaryData> evaluateSync(@HostParam("endpoint") String endpoint,
+            @QueryParam("api-version") String apiVersion, @PathParam("subscriptionId") String subscriptionId,
+            @PathParam("resourceGroupName") String resourceGroupName, @PathParam("workspaceName") String workspaceName,
+            @HeaderParam("Accept") String accept, Context context);
 
         @Headers({ "Content-Type: application/json" })
         @Get("{nextLink}")
@@ -268,17 +289,7 @@ public final class WorkspacesClientImpl implements WorkspacesClient {
             .flatMap(res -> Mono.justOrEmpty(res.getValue()));
     }
 
-    /**
-     * Get a Workspace resource.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param workspaceName String that represents a Workspace resource name.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return a Workspace resource along with {@link Response}.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Response<WorkspaceInner> getByResourceGroupWithResponse(String resourceGroupName, String workspaceName,
         Context context) {
@@ -287,16 +298,7 @@ public final class WorkspacesClientImpl implements WorkspacesClient {
             this.client.getSubscriptionId(), resourceGroupName, workspaceName, accept, context);
     }
 
-    /**
-     * Get a Workspace resource.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param workspaceName String that represents a Workspace resource name.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return a Workspace resource.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public WorkspaceInner getByResourceGroup(String resourceGroupName, String workspaceName) {
         return getByResourceGroupWithResponse(resourceGroupName, workspaceName, Context.NONE).getValue();
@@ -308,6 +310,16 @@ public final class WorkspacesClientImpl implements WorkspacesClient {
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param workspaceName String that represents a Workspace resource name.
      * @param resource Workspace resource to be created or updated.
+     * @param ifNoneMatch Use '*' to create the resource only if it does not exist. If the resource exists, the request
+     * fails with HTTP 412 and error code PreconditionFailed in the standard Azure error body. A failed condition starts
+     * no resource change or asynchronous operation. Omit both condition headers for an unconditional create or update.
+     * Other effective conditions must be honored if supported or rejected with 412 if they cannot be verified; they
+     * must not be silently ignored. This contract does not introduce entity-tag matching.
+     * @param ifMatch Use '*' to update the resource only if it exists. If the resource does not exist, the request
+     * fails with HTTP 412 and error code PreconditionFailed in the standard Azure error body. A failed condition starts
+     * no resource change or asynchronous operation. Omit both condition headers for an unconditional create or update.
+     * Other effective conditions must be honored if supported or rejected with 412 if they cannot be verified; they
+     * must not be silently ignored. This contract does not introduce entity-tag matching.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
@@ -316,13 +328,13 @@ public final class WorkspacesClientImpl implements WorkspacesClient {
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<Response<Flux<ByteBuffer>>> createOrUpdateWithResponseAsync(String resourceGroupName,
-        String workspaceName, WorkspaceInner resource) {
+        String workspaceName, WorkspaceInner resource, String ifNoneMatch, String ifMatch) {
         final String contentType = "application/json";
         final String accept = "application/json";
         return FluxUtil
             .withContext(context -> service.createOrUpdate(this.client.getEndpoint(), this.client.getApiVersion(),
-                this.client.getSubscriptionId(), resourceGroupName, workspaceName, contentType, accept, resource,
-                context))
+                this.client.getSubscriptionId(), resourceGroupName, workspaceName, ifNoneMatch, ifMatch, contentType,
+                accept, resource, context))
             .contextWrite(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext()).readOnly()));
     }
 
@@ -332,6 +344,16 @@ public final class WorkspacesClientImpl implements WorkspacesClient {
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param workspaceName String that represents a Workspace resource name.
      * @param resource Workspace resource to be created or updated.
+     * @param ifNoneMatch Use '*' to create the resource only if it does not exist. If the resource exists, the request
+     * fails with HTTP 412 and error code PreconditionFailed in the standard Azure error body. A failed condition starts
+     * no resource change or asynchronous operation. Omit both condition headers for an unconditional create or update.
+     * Other effective conditions must be honored if supported or rejected with 412 if they cannot be verified; they
+     * must not be silently ignored. This contract does not introduce entity-tag matching.
+     * @param ifMatch Use '*' to update the resource only if it exists. If the resource does not exist, the request
+     * fails with HTTP 412 and error code PreconditionFailed in the standard Azure error body. A failed condition starts
+     * no resource change or asynchronous operation. Omit both condition headers for an unconditional create or update.
+     * Other effective conditions must be honored if supported or rejected with 412 if they cannot be verified; they
+     * must not be silently ignored. This contract does not introduce entity-tag matching.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
@@ -339,11 +361,8 @@ public final class WorkspacesClientImpl implements WorkspacesClient {
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Response<BinaryData> createOrUpdateWithResponse(String resourceGroupName, String workspaceName,
-        WorkspaceInner resource) {
-        final String contentType = "application/json";
-        final String accept = "application/json";
-        return service.createOrUpdateSync(this.client.getEndpoint(), this.client.getApiVersion(),
-            this.client.getSubscriptionId(), resourceGroupName, workspaceName, contentType, accept, resource,
+        WorkspaceInner resource, String ifNoneMatch, String ifMatch) {
+        return createOrUpdateWithResponse(resourceGroupName, workspaceName, resource, ifNoneMatch, ifMatch,
             Context.NONE);
     }
 
@@ -353,6 +372,16 @@ public final class WorkspacesClientImpl implements WorkspacesClient {
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param workspaceName String that represents a Workspace resource name.
      * @param resource Workspace resource to be created or updated.
+     * @param ifNoneMatch Use '*' to create the resource only if it does not exist. If the resource exists, the request
+     * fails with HTTP 412 and error code PreconditionFailed in the standard Azure error body. A failed condition starts
+     * no resource change or asynchronous operation. Omit both condition headers for an unconditional create or update.
+     * Other effective conditions must be honored if supported or rejected with 412 if they cannot be verified; they
+     * must not be silently ignored. This contract does not introduce entity-tag matching.
+     * @param ifMatch Use '*' to update the resource only if it exists. If the resource does not exist, the request
+     * fails with HTTP 412 and error code PreconditionFailed in the standard Azure error body. A failed condition starts
+     * no resource change or asynchronous operation. Omit both condition headers for an unconditional create or update.
+     * Other effective conditions must be honored if supported or rejected with 412 if they cannot be verified; they
+     * must not be silently ignored. This contract does not introduce entity-tag matching.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
@@ -361,11 +390,42 @@ public final class WorkspacesClientImpl implements WorkspacesClient {
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Response<BinaryData> createOrUpdateWithResponse(String resourceGroupName, String workspaceName,
-        WorkspaceInner resource, Context context) {
+        WorkspaceInner resource, String ifNoneMatch, String ifMatch, Context context) {
         final String contentType = "application/json";
         final String accept = "application/json";
         return service.createOrUpdateSync(this.client.getEndpoint(), this.client.getApiVersion(),
-            this.client.getSubscriptionId(), resourceGroupName, workspaceName, contentType, accept, resource, context);
+            this.client.getSubscriptionId(), resourceGroupName, workspaceName, ifNoneMatch, ifMatch, contentType,
+            accept, resource, context);
+    }
+
+    /**
+     * Create or update a Workspace resource.
+     * 
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
+     * @param workspaceName String that represents a Workspace resource name.
+     * @param resource Workspace resource to be created or updated.
+     * @param ifNoneMatch Use '*' to create the resource only if it does not exist. If the resource exists, the request
+     * fails with HTTP 412 and error code PreconditionFailed in the standard Azure error body. A failed condition starts
+     * no resource change or asynchronous operation. Omit both condition headers for an unconditional create or update.
+     * Other effective conditions must be honored if supported or rejected with 412 if they cannot be verified; they
+     * must not be silently ignored. This contract does not introduce entity-tag matching.
+     * @param ifMatch Use '*' to update the resource only if it exists. If the resource does not exist, the request
+     * fails with HTTP 412 and error code PreconditionFailed in the standard Azure error body. A failed condition starts
+     * no resource change or asynchronous operation. Omit both condition headers for an unconditional create or update.
+     * Other effective conditions must be honored if supported or rejected with 412 if they cannot be verified; they
+     * must not be silently ignored. This contract does not introduce entity-tag matching.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return the {@link PollerFlux} for polling of model that represents a Workspace resource.
+     */
+    @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
+    private PollerFlux<PollResult<WorkspaceInner>, WorkspaceInner> beginCreateOrUpdateAsync(String resourceGroupName,
+        String workspaceName, WorkspaceInner resource, String ifNoneMatch, String ifMatch) {
+        Mono<Response<Flux<ByteBuffer>>> mono
+            = createOrUpdateWithResponseAsync(resourceGroupName, workspaceName, resource, ifNoneMatch, ifMatch);
+        return this.client.<WorkspaceInner, WorkspaceInner>getLroResult(mono, this.client.getHttpPipeline(),
+            WorkspaceInner.class, WorkspaceInner.class, this.client.getContext());
     }
 
     /**
@@ -382,8 +442,10 @@ public final class WorkspacesClientImpl implements WorkspacesClient {
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     private PollerFlux<PollResult<WorkspaceInner>, WorkspaceInner> beginCreateOrUpdateAsync(String resourceGroupName,
         String workspaceName, WorkspaceInner resource) {
+        final String ifNoneMatch = null;
+        final String ifMatch = null;
         Mono<Response<Flux<ByteBuffer>>> mono
-            = createOrUpdateWithResponseAsync(resourceGroupName, workspaceName, resource);
+            = createOrUpdateWithResponseAsync(resourceGroupName, workspaceName, resource, ifNoneMatch, ifMatch);
         return this.client.<WorkspaceInner, WorkspaceInner>getLroResult(mono, this.client.getHttpPipeline(),
             WorkspaceInner.class, WorkspaceInner.class, this.client.getContext());
     }
@@ -394,17 +456,44 @@ public final class WorkspacesClientImpl implements WorkspacesClient {
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param workspaceName String that represents a Workspace resource name.
      * @param resource Workspace resource to be created or updated.
+     * @param ifNoneMatch Use '*' to create the resource only if it does not exist. If the resource exists, the request
+     * fails with HTTP 412 and error code PreconditionFailed in the standard Azure error body. A failed condition starts
+     * no resource change or asynchronous operation. Omit both condition headers for an unconditional create or update.
+     * Other effective conditions must be honored if supported or rejected with 412 if they cannot be verified; they
+     * must not be silently ignored. This contract does not introduce entity-tag matching.
+     * @param ifMatch Use '*' to update the resource only if it exists. If the resource does not exist, the request
+     * fails with HTTP 412 and error code PreconditionFailed in the standard Azure error body. A failed condition starts
+     * no resource change or asynchronous operation. Omit both condition headers for an unconditional create or update.
+     * Other effective conditions must be honored if supported or rejected with 412 if they cannot be verified; they
+     * must not be silently ignored. This contract does not introduce entity-tag matching.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return the {@link SyncPoller} for polling of model that represents a Workspace resource.
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
+    private SyncPoller<PollResult<WorkspaceInner>, WorkspaceInner> beginCreateOrUpdate(String resourceGroupName,
+        String workspaceName, WorkspaceInner resource, String ifNoneMatch, String ifMatch) {
+        return beginCreateOrUpdate(resourceGroupName, workspaceName, resource, ifNoneMatch, ifMatch, Context.NONE);
+    }
+
+    @Override
+    @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public SyncPoller<PollResult<WorkspaceInner>, WorkspaceInner> beginCreateOrUpdate(String resourceGroupName,
         String workspaceName, WorkspaceInner resource) {
-        Response<BinaryData> response = createOrUpdateWithResponse(resourceGroupName, workspaceName, resource);
+        final String ifNoneMatch = null;
+        final String ifMatch = null;
+        return beginCreateOrUpdate(resourceGroupName, workspaceName, resource, ifNoneMatch, ifMatch, Context.NONE);
+    }
+
+    @Override
+    @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
+    public SyncPoller<PollResult<WorkspaceInner>, WorkspaceInner> beginCreateOrUpdate(String resourceGroupName,
+        String workspaceName, WorkspaceInner resource, String ifNoneMatch, String ifMatch, Context context) {
+        Response<BinaryData> response
+            = createOrUpdateWithResponse(resourceGroupName, workspaceName, resource, ifNoneMatch, ifMatch, context);
         return this.client.<WorkspaceInner, WorkspaceInner>getLroResult(response, WorkspaceInner.class,
-            WorkspaceInner.class, Context.NONE);
+            WorkspaceInner.class, context);
     }
 
     /**
@@ -413,18 +502,26 @@ public final class WorkspacesClientImpl implements WorkspacesClient {
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param workspaceName String that represents a Workspace resource name.
      * @param resource Workspace resource to be created or updated.
-     * @param context The context to associate with this operation.
+     * @param ifNoneMatch Use '*' to create the resource only if it does not exist. If the resource exists, the request
+     * fails with HTTP 412 and error code PreconditionFailed in the standard Azure error body. A failed condition starts
+     * no resource change or asynchronous operation. Omit both condition headers for an unconditional create or update.
+     * Other effective conditions must be honored if supported or rejected with 412 if they cannot be verified; they
+     * must not be silently ignored. This contract does not introduce entity-tag matching.
+     * @param ifMatch Use '*' to update the resource only if it exists. If the resource does not exist, the request
+     * fails with HTTP 412 and error code PreconditionFailed in the standard Azure error body. A failed condition starts
+     * no resource change or asynchronous operation. Omit both condition headers for an unconditional create or update.
+     * Other effective conditions must be honored if supported or rejected with 412 if they cannot be verified; they
+     * must not be silently ignored. This contract does not introduce entity-tag matching.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the {@link SyncPoller} for polling of model that represents a Workspace resource.
+     * @return model that represents a Workspace resource on successful completion of {@link Mono}.
      */
-    @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
-    public SyncPoller<PollResult<WorkspaceInner>, WorkspaceInner> beginCreateOrUpdate(String resourceGroupName,
-        String workspaceName, WorkspaceInner resource, Context context) {
-        Response<BinaryData> response = createOrUpdateWithResponse(resourceGroupName, workspaceName, resource, context);
-        return this.client.<WorkspaceInner, WorkspaceInner>getLroResult(response, WorkspaceInner.class,
-            WorkspaceInner.class, context);
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    private Mono<WorkspaceInner> createOrUpdateAsync(String resourceGroupName, String workspaceName,
+        WorkspaceInner resource, String ifNoneMatch, String ifMatch) {
+        return beginCreateOrUpdateAsync(resourceGroupName, workspaceName, resource, ifNoneMatch, ifMatch).last()
+            .flatMap(this.client::getLroFinalResultOrError);
     }
 
     /**
@@ -441,46 +538,30 @@ public final class WorkspacesClientImpl implements WorkspacesClient {
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<WorkspaceInner> createOrUpdateAsync(String resourceGroupName, String workspaceName,
         WorkspaceInner resource) {
-        return beginCreateOrUpdateAsync(resourceGroupName, workspaceName, resource).last()
+        final String ifNoneMatch = null;
+        final String ifMatch = null;
+        return beginCreateOrUpdateAsync(resourceGroupName, workspaceName, resource, ifNoneMatch, ifMatch).last()
             .flatMap(this.client::getLroFinalResultOrError);
     }
 
-    /**
-     * Create or update a Workspace resource.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param workspaceName String that represents a Workspace resource name.
-     * @param resource Workspace resource to be created or updated.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return model that represents a Workspace resource.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public WorkspaceInner createOrUpdate(String resourceGroupName, String workspaceName, WorkspaceInner resource) {
-        return beginCreateOrUpdate(resourceGroupName, workspaceName, resource).getFinalResult();
+        final String ifNoneMatch = null;
+        final String ifMatch = null;
+        return createOrUpdate(resourceGroupName, workspaceName, resource, ifNoneMatch, ifMatch, Context.NONE);
     }
 
-    /**
-     * Create or update a Workspace resource.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param workspaceName String that represents a Workspace resource name.
-     * @param resource Workspace resource to be created or updated.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return model that represents a Workspace resource.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public WorkspaceInner createOrUpdate(String resourceGroupName, String workspaceName, WorkspaceInner resource,
-        Context context) {
-        return beginCreateOrUpdate(resourceGroupName, workspaceName, resource, context).getFinalResult();
+        String ifNoneMatch, String ifMatch, Context context) {
+        return this.client.getLroFinalResultOrError(
+            beginCreateOrUpdate(resourceGroupName, workspaceName, resource, ifNoneMatch, ifMatch, context));
     }
 
     /**
-     * The operation to update a Workspace.
+     * Update a Workspace.
      * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param workspaceName String that represents a Workspace resource name.
@@ -504,7 +585,7 @@ public final class WorkspacesClientImpl implements WorkspacesClient {
     }
 
     /**
-     * The operation to update a Workspace.
+     * Update a Workspace.
      * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param workspaceName String that represents a Workspace resource name.
@@ -517,15 +598,11 @@ public final class WorkspacesClientImpl implements WorkspacesClient {
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Response<BinaryData> updateWithResponse(String resourceGroupName, String workspaceName,
         WorkspaceUpdate properties) {
-        final String contentType = "application/json";
-        final String accept = "application/json";
-        return service.updateSync(this.client.getEndpoint(), this.client.getApiVersion(),
-            this.client.getSubscriptionId(), resourceGroupName, workspaceName, contentType, accept, properties,
-            Context.NONE);
+        return updateWithResponse(resourceGroupName, workspaceName, properties, Context.NONE);
     }
 
     /**
-     * The operation to update a Workspace.
+     * Update a Workspace.
      * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param workspaceName String that represents a Workspace resource name.
@@ -547,7 +624,7 @@ public final class WorkspacesClientImpl implements WorkspacesClient {
     }
 
     /**
-     * The operation to update a Workspace.
+     * Update a Workspace.
      * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param workspaceName String that represents a Workspace resource name.
@@ -565,37 +642,14 @@ public final class WorkspacesClientImpl implements WorkspacesClient {
             WorkspaceInner.class, WorkspaceInner.class, this.client.getContext());
     }
 
-    /**
-     * The operation to update a Workspace.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param workspaceName String that represents a Workspace resource name.
-     * @param properties Parameters supplied to the Update Workspace operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the {@link SyncPoller} for polling of model that represents a Workspace resource.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public SyncPoller<PollResult<WorkspaceInner>, WorkspaceInner> beginUpdate(String resourceGroupName,
         String workspaceName, WorkspaceUpdate properties) {
-        Response<BinaryData> response = updateWithResponse(resourceGroupName, workspaceName, properties);
-        return this.client.<WorkspaceInner, WorkspaceInner>getLroResult(response, WorkspaceInner.class,
-            WorkspaceInner.class, Context.NONE);
+        return beginUpdate(resourceGroupName, workspaceName, properties, Context.NONE);
     }
 
-    /**
-     * The operation to update a Workspace.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param workspaceName String that represents a Workspace resource name.
-     * @param properties Parameters supplied to the Update Workspace operation.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the {@link SyncPoller} for polling of model that represents a Workspace resource.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public SyncPoller<PollResult<WorkspaceInner>, WorkspaceInner> beginUpdate(String resourceGroupName,
         String workspaceName, WorkspaceUpdate properties, Context context) {
@@ -605,7 +659,7 @@ public final class WorkspacesClientImpl implements WorkspacesClient {
     }
 
     /**
-     * The operation to update a Workspace.
+     * Update a Workspace.
      * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param workspaceName String that represents a Workspace resource name.
@@ -622,38 +676,17 @@ public final class WorkspacesClientImpl implements WorkspacesClient {
             .flatMap(this.client::getLroFinalResultOrError);
     }
 
-    /**
-     * The operation to update a Workspace.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param workspaceName String that represents a Workspace resource name.
-     * @param properties Parameters supplied to the Update Workspace operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return model that represents a Workspace resource.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public WorkspaceInner update(String resourceGroupName, String workspaceName, WorkspaceUpdate properties) {
-        return beginUpdate(resourceGroupName, workspaceName, properties).getFinalResult();
+        return update(resourceGroupName, workspaceName, properties, Context.NONE);
     }
 
-    /**
-     * The operation to update a Workspace.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param workspaceName String that represents a Workspace resource name.
-     * @param properties Parameters supplied to the Update Workspace operation.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return model that represents a Workspace resource.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public WorkspaceInner update(String resourceGroupName, String workspaceName, WorkspaceUpdate properties,
         Context context) {
-        return beginUpdate(resourceGroupName, workspaceName, properties, context).getFinalResult();
+        return this.client.getLroFinalResultOrError(beginUpdate(resourceGroupName, workspaceName, properties, context));
     }
 
     /**
@@ -686,8 +719,7 @@ public final class WorkspacesClientImpl implements WorkspacesClient {
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Response<BinaryData> deleteWithResponse(String resourceGroupName, String workspaceName) {
-        return service.deleteSync(this.client.getEndpoint(), this.client.getApiVersion(),
-            this.client.getSubscriptionId(), resourceGroupName, workspaceName, Context.NONE);
+        return deleteWithResponse(resourceGroupName, workspaceName, Context.NONE);
     }
 
     /**
@@ -724,33 +756,13 @@ public final class WorkspacesClientImpl implements WorkspacesClient {
             this.client.getContext());
     }
 
-    /**
-     * Delete a Workspace resource.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param workspaceName String that represents a Workspace resource name.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the {@link SyncPoller} for polling of long-running operation.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public SyncPoller<PollResult<Void>, Void> beginDelete(String resourceGroupName, String workspaceName) {
-        Response<BinaryData> response = deleteWithResponse(resourceGroupName, workspaceName);
-        return this.client.<Void, Void>getLroResult(response, Void.class, Void.class, Context.NONE);
+        return beginDelete(resourceGroupName, workspaceName, Context.NONE);
     }
 
-    /**
-     * Delete a Workspace resource.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param workspaceName String that represents a Workspace resource name.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the {@link SyncPoller} for polling of long-running operation.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public SyncPoller<PollResult<Void>, Void> beginDelete(String resourceGroupName, String workspaceName,
         Context context) {
@@ -773,33 +785,16 @@ public final class WorkspacesClientImpl implements WorkspacesClient {
         return beginDeleteAsync(resourceGroupName, workspaceName).last().flatMap(this.client::getLroFinalResultOrError);
     }
 
-    /**
-     * Delete a Workspace resource.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param workspaceName String that represents a Workspace resource name.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public void delete(String resourceGroupName, String workspaceName) {
-        beginDelete(resourceGroupName, workspaceName).getFinalResult();
+        delete(resourceGroupName, workspaceName, Context.NONE);
     }
 
-    /**
-     * Delete a Workspace resource.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param workspaceName String that represents a Workspace resource name.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public void delete(String resourceGroupName, String workspaceName, Context context) {
-        beginDelete(resourceGroupName, workspaceName, context).getFinalResult();
+        this.client.getLroFinalResultOrError(beginDelete(resourceGroupName, workspaceName, context));
     }
 
     /**
@@ -870,12 +865,7 @@ public final class WorkspacesClientImpl implements WorkspacesClient {
     @ServiceMethod(returns = ReturnType.SINGLE)
     private PagedResponse<WorkspaceInner> listByResourceGroupSinglePage(String resourceGroupName,
         String continuationToken) {
-        final String accept = "application/json";
-        Response<WorkspaceListResult> res
-            = service.listByResourceGroupSync(this.client.getEndpoint(), this.client.getApiVersion(),
-                this.client.getSubscriptionId(), resourceGroupName, continuationToken, accept, Context.NONE);
-        return new PagedResponseBase<>(res.getRequest(), res.getStatusCode(), res.getHeaders(), res.getValue().value(),
-            res.getValue().nextLink(), null);
+        return listByResourceGroupSinglePage(resourceGroupName, continuationToken, Context.NONE);
     }
 
     /**
@@ -900,33 +890,14 @@ public final class WorkspacesClientImpl implements WorkspacesClient {
             res.getValue().nextLink(), null);
     }
 
-    /**
-     * Get a list of Workspace resources in a resource group.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return a list of Workspace resources in a resource group as paginated response with {@link PagedIterable}.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.COLLECTION)
     public PagedIterable<WorkspaceInner> listByResourceGroup(String resourceGroupName) {
         final String continuationToken = null;
-        return new PagedIterable<>(() -> listByResourceGroupSinglePage(resourceGroupName, continuationToken),
-            nextLink -> listNextSinglePage(nextLink));
+        return listByResourceGroup(resourceGroupName, continuationToken, Context.NONE);
     }
 
-    /**
-     * Get a list of Workspace resources in a resource group.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param continuationToken String that sets the continuation token.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return a list of Workspace resources in a resource group as paginated response with {@link PagedIterable}.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.COLLECTION)
     public PagedIterable<WorkspaceInner> listByResourceGroup(String resourceGroupName, String continuationToken,
         Context context) {
@@ -995,11 +966,7 @@ public final class WorkspacesClientImpl implements WorkspacesClient {
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private PagedResponse<WorkspaceInner> listSinglePage(String continuationToken) {
-        final String accept = "application/json";
-        Response<WorkspaceListResult> res = service.listSync(this.client.getEndpoint(), this.client.getApiVersion(),
-            this.client.getSubscriptionId(), continuationToken, accept, Context.NONE);
-        return new PagedResponseBase<>(res.getRequest(), res.getStatusCode(), res.getHeaders(), res.getValue().value(),
-            res.getValue().nextLink(), null);
+        return listSinglePage(continuationToken, Context.NONE);
     }
 
     /**
@@ -1021,30 +988,14 @@ public final class WorkspacesClientImpl implements WorkspacesClient {
             res.getValue().nextLink(), null);
     }
 
-    /**
-     * Get a list of all Workspace resources in a subscription.
-     * 
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return a list of all Workspace resources in a subscription as paginated response with {@link PagedIterable}.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.COLLECTION)
     public PagedIterable<WorkspaceInner> list() {
         final String continuationToken = null;
-        return new PagedIterable<>(() -> listSinglePage(continuationToken),
-            nextLink -> listAllNextSinglePage(nextLink));
+        return list(continuationToken, Context.NONE);
     }
 
-    /**
-     * Get a list of all Workspace resources in a subscription.
-     * 
-     * @param continuationToken String that sets the continuation token.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return a list of all Workspace resources in a subscription as paginated response with {@link PagedIterable}.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.COLLECTION)
     public PagedIterable<WorkspaceInner> list(String continuationToken, Context context) {
         return new PagedIterable<>(() -> listSinglePage(continuationToken, context),
@@ -1052,43 +1003,51 @@ public final class WorkspacesClientImpl implements WorkspacesClient {
     }
 
     /**
-     * Refreshes recommendation status for all scenarios in a given workspace.
+     * Starts discovery for the workspace. The initial 202 has no body. Poll the operation-bound Location URL until
+     * completion: a successful or partially successful discovery returns the typed result; failed or canceled
+     * processing returns an Azure error whose target identifies the discovery resource. Ordinary discovery reads return
+     * the current resource, including failed or canceled results, while retained.
      * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param workspaceName String that represents a Workspace resource name.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the {@link Response} on successful completion of {@link Mono}.
+     * @return a retained workspace discovery result and its accepted coverage facts along with {@link Response} on
+     * successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<Response<Flux<ByteBuffer>>> refreshRecommendationsWithResponseAsync(String resourceGroupName,
-        String workspaceName) {
+    private Mono<Response<Flux<ByteBuffer>>> discoverWithResponseAsync(String resourceGroupName, String workspaceName) {
+        final String accept = "application/json";
         return FluxUtil
-            .withContext(
-                context -> service.refreshRecommendations(this.client.getEndpoint(), this.client.getApiVersion(),
-                    this.client.getSubscriptionId(), resourceGroupName, workspaceName, context))
+            .withContext(context -> service.discover(this.client.getEndpoint(), this.client.getApiVersion(),
+                this.client.getSubscriptionId(), resourceGroupName, workspaceName, accept, context))
             .contextWrite(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext()).readOnly()));
     }
 
     /**
-     * Refreshes recommendation status for all scenarios in a given workspace.
+     * Starts discovery for the workspace. The initial 202 has no body. Poll the operation-bound Location URL until
+     * completion: a successful or partially successful discovery returns the typed result; failed or canceled
+     * processing returns an Azure error whose target identifies the discovery resource. Ordinary discovery reads return
+     * the current resource, including failed or canceled results, while retained.
      * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param workspaceName String that represents a Workspace resource name.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the response body along with {@link Response}.
+     * @return a retained workspace discovery result and its accepted coverage facts along with {@link Response}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    private Response<BinaryData> refreshRecommendationsWithResponse(String resourceGroupName, String workspaceName) {
-        return service.refreshRecommendationsSync(this.client.getEndpoint(), this.client.getApiVersion(),
-            this.client.getSubscriptionId(), resourceGroupName, workspaceName, Context.NONE);
+    private Response<BinaryData> discoverWithResponse(String resourceGroupName, String workspaceName) {
+        return discoverWithResponse(resourceGroupName, workspaceName, Context.NONE);
     }
 
     /**
-     * Refreshes recommendation status for all scenarios in a given workspace.
+     * Starts discovery for the workspace. The initial 202 has no body. Poll the operation-bound Location URL until
+     * completion: a successful or partially successful discovery returns the typed result; failed or canceled
+     * processing returns an Azure error whose target identifies the discovery resource. Ordinary discovery reads return
+     * the current resource, including failed or canceled results, while retained.
      * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param workspaceName String that represents a Workspace resource name.
@@ -1096,104 +1055,147 @@ public final class WorkspacesClientImpl implements WorkspacesClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the response body along with {@link Response}.
+     * @return a retained workspace discovery result and its accepted coverage facts along with {@link Response}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    private Response<BinaryData> refreshRecommendationsWithResponse(String resourceGroupName, String workspaceName,
-        Context context) {
-        return service.refreshRecommendationsSync(this.client.getEndpoint(), this.client.getApiVersion(),
-            this.client.getSubscriptionId(), resourceGroupName, workspaceName, context);
+    private Response<BinaryData> discoverWithResponse(String resourceGroupName, String workspaceName, Context context) {
+        final String accept = "application/json";
+        return service.discoverSync(this.client.getEndpoint(), this.client.getApiVersion(),
+            this.client.getSubscriptionId(), resourceGroupName, workspaceName, accept, context);
     }
 
     /**
-     * Refreshes recommendation status for all scenarios in a given workspace.
+     * Starts discovery for the workspace. The initial 202 has no body. Poll the operation-bound Location URL until
+     * completion: a successful or partially successful discovery returns the typed result; failed or canceled
+     * processing returns an Azure error whose target identifies the discovery resource. Ordinary discovery reads return
+     * the current resource, including failed or canceled results, while retained.
      * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param workspaceName String that represents a Workspace resource name.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the {@link PollerFlux} for polling of long-running operation.
+     * @return the {@link PollerFlux} for polling of a retained workspace discovery result and its accepted coverage
+     * facts.
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
-    private PollerFlux<PollResult<WorkspaceEvaluation>, WorkspaceEvaluation>
-        beginRefreshRecommendationsAsync(String resourceGroupName, String workspaceName) {
-        Mono<Response<Flux<ByteBuffer>>> mono
-            = refreshRecommendationsWithResponseAsync(resourceGroupName, workspaceName);
-        return this.client.<WorkspaceEvaluation, WorkspaceEvaluation>getLroResult(mono, this.client.getHttpPipeline(),
-            WorkspaceEvaluation.class, WorkspaceEvaluation.class, this.client.getContext());
+    private PollerFlux<PollResult<WorkspaceDiscoveryInner>, WorkspaceDiscoveryInner>
+        beginDiscoverAsync(String resourceGroupName, String workspaceName) {
+        Mono<Response<Flux<ByteBuffer>>> mono = discoverWithResponseAsync(resourceGroupName, workspaceName);
+        return this.client.<WorkspaceDiscoveryInner, WorkspaceDiscoveryInner>getLroResult(mono,
+            this.client.getHttpPipeline(), WorkspaceDiscoveryInner.class, WorkspaceDiscoveryInner.class,
+            this.client.getContext());
     }
 
-    /**
-     * Refreshes recommendation status for all scenarios in a given workspace.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param workspaceName String that represents a Workspace resource name.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the {@link SyncPoller} for polling of long-running operation.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
-    public SyncPoller<PollResult<WorkspaceEvaluation>, WorkspaceEvaluation>
-        beginRefreshRecommendations(String resourceGroupName, String workspaceName) {
-        Response<BinaryData> response = refreshRecommendationsWithResponse(resourceGroupName, workspaceName);
-        return this.client.<WorkspaceEvaluation, WorkspaceEvaluation>getLroResult(response, WorkspaceEvaluation.class,
-            WorkspaceEvaluation.class, Context.NONE);
+    public SyncPoller<PollResult<WorkspaceDiscoveryInner>, WorkspaceDiscoveryInner>
+        beginDiscover(String resourceGroupName, String workspaceName) {
+        return beginDiscover(resourceGroupName, workspaceName, Context.NONE);
     }
 
-    /**
-     * Refreshes recommendation status for all scenarios in a given workspace.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param workspaceName String that represents a Workspace resource name.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the {@link SyncPoller} for polling of long-running operation.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
-    public SyncPoller<PollResult<WorkspaceEvaluation>, WorkspaceEvaluation>
-        beginRefreshRecommendations(String resourceGroupName, String workspaceName, Context context) {
-        Response<BinaryData> response = refreshRecommendationsWithResponse(resourceGroupName, workspaceName, context);
-        return this.client.<WorkspaceEvaluation, WorkspaceEvaluation>getLroResult(response, WorkspaceEvaluation.class,
-            WorkspaceEvaluation.class, context);
+    public SyncPoller<PollResult<WorkspaceDiscoveryInner>, WorkspaceDiscoveryInner>
+        beginDiscover(String resourceGroupName, String workspaceName, Context context) {
+        Response<BinaryData> response = discoverWithResponse(resourceGroupName, workspaceName, context);
+        return this.client.<WorkspaceDiscoveryInner, WorkspaceDiscoveryInner>getLroResult(response,
+            WorkspaceDiscoveryInner.class, WorkspaceDiscoveryInner.class, context);
     }
 
     /**
-     * Refreshes recommendation status for all scenarios in a given workspace.
+     * Starts discovery for the workspace. The initial 202 has no body. Poll the operation-bound Location URL until
+     * completion: a successful or partially successful discovery returns the typed result; failed or canceled
+     * processing returns an Azure error whose target identifies the discovery resource. Ordinary discovery reads return
+     * the current resource, including failed or canceled results, while retained.
      * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param workspaceName String that represents a Workspace resource name.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the response body on successful completion of {@link Mono}.
+     * @return a retained workspace discovery result and its accepted coverage facts on successful completion of
+     * {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<WorkspaceEvaluation> refreshRecommendationsAsync(String resourceGroupName, String workspaceName) {
-        return beginRefreshRecommendationsAsync(resourceGroupName, workspaceName).last()
+    private Mono<WorkspaceDiscoveryInner> discoverAsync(String resourceGroupName, String workspaceName) {
+        return beginDiscoverAsync(resourceGroupName, workspaceName).last()
             .flatMap(this.client::getLroFinalResultOrError);
     }
 
+    @Override
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public WorkspaceDiscoveryInner discover(String resourceGroupName, String workspaceName) {
+        return discover(resourceGroupName, workspaceName, Context.NONE);
+    }
+
+    @Override
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public WorkspaceDiscoveryInner discover(String resourceGroupName, String workspaceName, Context context) {
+        return this.client.getLroFinalResultOrError(beginDiscover(resourceGroupName, workspaceName, context));
+    }
+
     /**
-     * Refreshes recommendation status for all scenarios in a given workspace.
+     * Starts evaluation of published scenario-template versions, including when the workspace has no scenarios.
+     * Acceptance fixes the selected template membership and total count, qualified resource snapshot and canonical
+     * discovery result reference. Without a usable discovery snapshot or valid catalog input, the request is rejected
+     * synchronously with an Azure error and no evaluation result is created. A valid empty catalog completes
+     * successfully with zero counts and an empty results array. Outcome counts reflect processing after acceptance. The
+     * initial 202 has no body. Poll the operation-bound Location URL until completion: a completed successful or
+     * partially successful assessment returns the typed result; failed or canceled processing returns an Azure error
+     * whose target identifies the evaluation resource. Ordinary evaluation reads return the current resource, including
+     * failed or canceled results, while retained.
      * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param workspaceName String that represents a Workspace resource name.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the response.
+     * @return a retained workspace evaluation of published scenario-template versions along with {@link Response} on
+     * successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public WorkspaceEvaluation refreshRecommendations(String resourceGroupName, String workspaceName) {
-        return beginRefreshRecommendations(resourceGroupName, workspaceName).getFinalResult();
+    private Mono<Response<Flux<ByteBuffer>>> evaluateWithResponseAsync(String resourceGroupName, String workspaceName) {
+        final String accept = "application/json";
+        return FluxUtil
+            .withContext(context -> service.evaluate(this.client.getEndpoint(), this.client.getApiVersion(),
+                this.client.getSubscriptionId(), resourceGroupName, workspaceName, accept, context))
+            .contextWrite(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext()).readOnly()));
     }
 
     /**
-     * Refreshes recommendation status for all scenarios in a given workspace.
+     * Starts evaluation of published scenario-template versions, including when the workspace has no scenarios.
+     * Acceptance fixes the selected template membership and total count, qualified resource snapshot and canonical
+     * discovery result reference. Without a usable discovery snapshot or valid catalog input, the request is rejected
+     * synchronously with an Azure error and no evaluation result is created. A valid empty catalog completes
+     * successfully with zero counts and an empty results array. Outcome counts reflect processing after acceptance. The
+     * initial 202 has no body. Poll the operation-bound Location URL until completion: a completed successful or
+     * partially successful assessment returns the typed result; failed or canceled processing returns an Azure error
+     * whose target identifies the evaluation resource. Ordinary evaluation reads return the current resource, including
+     * failed or canceled results, while retained.
+     * 
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
+     * @param workspaceName String that represents a Workspace resource name.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return a retained workspace evaluation of published scenario-template versions along with {@link Response}.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    private Response<BinaryData> evaluateWithResponse(String resourceGroupName, String workspaceName) {
+        return evaluateWithResponse(resourceGroupName, workspaceName, Context.NONE);
+    }
+
+    /**
+     * Starts evaluation of published scenario-template versions, including when the workspace has no scenarios.
+     * Acceptance fixes the selected template membership and total count, qualified resource snapshot and canonical
+     * discovery result reference. Without a usable discovery snapshot or valid catalog input, the request is rejected
+     * synchronously with an Azure error and no evaluation result is created. A valid empty catalog completes
+     * successfully with zero counts and an empty results array. Outcome counts reflect processing after acceptance. The
+     * initial 202 has no body. Poll the operation-bound Location URL until completion: a completed successful or
+     * partially successful assessment returns the typed result; failed or canceled processing returns an Azure error
+     * whose target identifies the evaluation resource. Ordinary evaluation reads return the current resource, including
+     * failed or canceled results, while retained.
      * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param workspaceName String that represents a Workspace resource name.
@@ -1201,11 +1203,94 @@ public final class WorkspacesClientImpl implements WorkspacesClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the response.
+     * @return a retained workspace evaluation of published scenario-template versions along with {@link Response}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public WorkspaceEvaluation refreshRecommendations(String resourceGroupName, String workspaceName, Context context) {
-        return beginRefreshRecommendations(resourceGroupName, workspaceName, context).getFinalResult();
+    private Response<BinaryData> evaluateWithResponse(String resourceGroupName, String workspaceName, Context context) {
+        final String accept = "application/json";
+        return service.evaluateSync(this.client.getEndpoint(), this.client.getApiVersion(),
+            this.client.getSubscriptionId(), resourceGroupName, workspaceName, accept, context);
+    }
+
+    /**
+     * Starts evaluation of published scenario-template versions, including when the workspace has no scenarios.
+     * Acceptance fixes the selected template membership and total count, qualified resource snapshot and canonical
+     * discovery result reference. Without a usable discovery snapshot or valid catalog input, the request is rejected
+     * synchronously with an Azure error and no evaluation result is created. A valid empty catalog completes
+     * successfully with zero counts and an empty results array. Outcome counts reflect processing after acceptance. The
+     * initial 202 has no body. Poll the operation-bound Location URL until completion: a completed successful or
+     * partially successful assessment returns the typed result; failed or canceled processing returns an Azure error
+     * whose target identifies the evaluation resource. Ordinary evaluation reads return the current resource, including
+     * failed or canceled results, while retained.
+     * 
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
+     * @param workspaceName String that represents a Workspace resource name.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return the {@link PollerFlux} for polling of a retained workspace evaluation of published scenario-template
+     * versions.
+     */
+    @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
+    private PollerFlux<PollResult<WorkspaceEvaluationInner>, WorkspaceEvaluationInner>
+        beginEvaluateAsync(String resourceGroupName, String workspaceName) {
+        Mono<Response<Flux<ByteBuffer>>> mono = evaluateWithResponseAsync(resourceGroupName, workspaceName);
+        return this.client.<WorkspaceEvaluationInner, WorkspaceEvaluationInner>getLroResult(mono,
+            this.client.getHttpPipeline(), WorkspaceEvaluationInner.class, WorkspaceEvaluationInner.class,
+            this.client.getContext());
+    }
+
+    @Override
+    @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
+    public SyncPoller<PollResult<WorkspaceEvaluationInner>, WorkspaceEvaluationInner>
+        beginEvaluate(String resourceGroupName, String workspaceName) {
+        return beginEvaluate(resourceGroupName, workspaceName, Context.NONE);
+    }
+
+    @Override
+    @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
+    public SyncPoller<PollResult<WorkspaceEvaluationInner>, WorkspaceEvaluationInner>
+        beginEvaluate(String resourceGroupName, String workspaceName, Context context) {
+        Response<BinaryData> response = evaluateWithResponse(resourceGroupName, workspaceName, context);
+        return this.client.<WorkspaceEvaluationInner, WorkspaceEvaluationInner>getLroResult(response,
+            WorkspaceEvaluationInner.class, WorkspaceEvaluationInner.class, context);
+    }
+
+    /**
+     * Starts evaluation of published scenario-template versions, including when the workspace has no scenarios.
+     * Acceptance fixes the selected template membership and total count, qualified resource snapshot and canonical
+     * discovery result reference. Without a usable discovery snapshot or valid catalog input, the request is rejected
+     * synchronously with an Azure error and no evaluation result is created. A valid empty catalog completes
+     * successfully with zero counts and an empty results array. Outcome counts reflect processing after acceptance. The
+     * initial 202 has no body. Poll the operation-bound Location URL until completion: a completed successful or
+     * partially successful assessment returns the typed result; failed or canceled processing returns an Azure error
+     * whose target identifies the evaluation resource. Ordinary evaluation reads return the current resource, including
+     * failed or canceled results, while retained.
+     * 
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
+     * @param workspaceName String that represents a Workspace resource name.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return a retained workspace evaluation of published scenario-template versions on successful completion of
+     * {@link Mono}.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    private Mono<WorkspaceEvaluationInner> evaluateAsync(String resourceGroupName, String workspaceName) {
+        return beginEvaluateAsync(resourceGroupName, workspaceName).last()
+            .flatMap(this.client::getLroFinalResultOrError);
+    }
+
+    @Override
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public WorkspaceEvaluationInner evaluate(String resourceGroupName, String workspaceName) {
+        return evaluate(resourceGroupName, workspaceName, Context.NONE);
+    }
+
+    @Override
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public WorkspaceEvaluationInner evaluate(String resourceGroupName, String workspaceName, Context context) {
+        return this.client.getLroFinalResultOrError(beginEvaluate(resourceGroupName, workspaceName, context));
     }
 
     /**
@@ -1238,11 +1323,7 @@ public final class WorkspacesClientImpl implements WorkspacesClient {
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private PagedResponse<WorkspaceInner> listNextSinglePage(String nextLink) {
-        final String accept = "application/json";
-        Response<WorkspaceListResult> res
-            = service.listNextSync(nextLink, this.client.getEndpoint(), accept, Context.NONE);
-        return new PagedResponseBase<>(res.getRequest(), res.getStatusCode(), res.getHeaders(), res.getValue().value(),
-            res.getValue().nextLink(), null);
+        return listNextSinglePage(nextLink, Context.NONE);
     }
 
     /**
@@ -1294,11 +1375,7 @@ public final class WorkspacesClientImpl implements WorkspacesClient {
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private PagedResponse<WorkspaceInner> listAllNextSinglePage(String nextLink) {
-        final String accept = "application/json";
-        Response<WorkspaceListResult> res
-            = service.listAllNextSync(nextLink, this.client.getEndpoint(), accept, Context.NONE);
-        return new PagedResponseBase<>(res.getRequest(), res.getStatusCode(), res.getHeaders(), res.getValue().value(),
-            res.getValue().nextLink(), null);
+        return listAllNextSinglePage(nextLink, Context.NONE);
     }
 
     /**

@@ -13,14 +13,14 @@ public final class ImportJobUpdatePropertiesTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
         ImportJobUpdateProperties model
-            = BinaryData.fromString("{\"adminStatus\":\"Cancel\"}").toObject(ImportJobUpdateProperties.class);
-        Assertions.assertEquals(ImportJobAdminStatus.CANCEL, model.adminStatus());
+            = BinaryData.fromString("{\"adminStatus\":\"Active\"}").toObject(ImportJobUpdateProperties.class);
+        Assertions.assertEquals(ImportJobAdminStatus.ACTIVE, model.adminStatus());
     }
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
-        ImportJobUpdateProperties model = new ImportJobUpdateProperties().withAdminStatus(ImportJobAdminStatus.CANCEL);
+        ImportJobUpdateProperties model = new ImportJobUpdateProperties().withAdminStatus(ImportJobAdminStatus.ACTIVE);
         model = BinaryData.fromObject(model).toObject(ImportJobUpdateProperties.class);
-        Assertions.assertEquals(ImportJobAdminStatus.CANCEL, model.adminStatus());
+        Assertions.assertEquals(ImportJobAdminStatus.ACTIVE, model.adminStatus());
     }
 }

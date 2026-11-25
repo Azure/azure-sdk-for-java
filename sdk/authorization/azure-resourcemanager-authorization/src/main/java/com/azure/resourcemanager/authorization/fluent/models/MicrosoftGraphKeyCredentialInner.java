@@ -47,7 +47,7 @@ public final class MicrosoftGraphKeyCredentialInner implements JsonSerializable<
      * The certificate's raw data in byte array converted to Base64 string; for example,
      * [System.Convert]::ToBase64String($Cert.GetRawCertData()).
      */
-    private Base64Url key;
+    private byte[] key;
 
     /*
      * The unique identifier (GUID) for the key.
@@ -163,7 +163,7 @@ public final class MicrosoftGraphKeyCredentialInner implements JsonSerializable<
         if (this.key == null) {
             return EMPTY_BYTE_ARRAY;
         }
-        return this.key.decodedBytes();
+        return CoreUtils.clone(this.key);
     }
 
     /**
@@ -174,11 +174,7 @@ public final class MicrosoftGraphKeyCredentialInner implements JsonSerializable<
      * @return the MicrosoftGraphKeyCredentialInner object itself.
      */
     public MicrosoftGraphKeyCredentialInner withKey(byte[] key) {
-        if (key == null) {
-            this.key = null;
-        } else {
-            this.key = Base64Url.encode(CoreUtils.clone(key));
-        }
+        this.key = CoreUtils.clone(key);
         return this;
     }
 
@@ -304,7 +300,7 @@ public final class MicrosoftGraphKeyCredentialInner implements JsonSerializable<
         jsonWriter.writeStringField("displayName", this.displayName);
         jsonWriter.writeStringField("endDateTime",
             this.endDateTime == null ? null : DateTimeFormatter.ISO_OFFSET_DATE_TIME.format(this.endDateTime));
-        jsonWriter.writeStringField("key", Objects.toString(this.key, null));
+        jsonWriter.writeBinaryField("key", this.key);
         jsonWriter.writeStringField("keyId", Objects.toString(this.keyId, null));
         jsonWriter.writeStringField("startDateTime",
             this.startDateTime == null ? null : DateTimeFormatter.ISO_OFFSET_DATE_TIME.format(this.startDateTime));
@@ -344,8 +340,7 @@ public final class MicrosoftGraphKeyCredentialInner implements JsonSerializable<
                     deserializedMicrosoftGraphKeyCredentialInner.endDateTime = reader
                         .getNullable(nonNullReader -> CoreUtils.parseBestOffsetDateTime(nonNullReader.getString()));
                 } else if ("key".equals(fieldName)) {
-                    deserializedMicrosoftGraphKeyCredentialInner.key
-                        = reader.getNullable(nonNullReader -> new Base64Url(nonNullReader.getString()));
+                    deserializedMicrosoftGraphKeyCredentialInner.key = reader.getBinary();
                 } else if ("keyId".equals(fieldName)) {
                     deserializedMicrosoftGraphKeyCredentialInner.keyId
                         = reader.getNullable(nonNullReader -> UUID.fromString(nonNullReader.getString()));

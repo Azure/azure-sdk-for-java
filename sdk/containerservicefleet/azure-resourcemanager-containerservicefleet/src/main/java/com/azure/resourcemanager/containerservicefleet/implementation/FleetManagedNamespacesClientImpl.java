@@ -229,18 +229,7 @@ public final class FleetManagedNamespacesClientImpl implements FleetManagedNames
             .flatMap(res -> Mono.justOrEmpty(res.getValue()));
     }
 
-    /**
-     * Get a FleetManagedNamespace.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param fleetName The name of the Fleet resource.
-     * @param managedNamespaceName The name of the fleet managed namespace resource.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return a FleetManagedNamespace along with {@link Response}.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Response<FleetManagedNamespaceInner> getWithResponse(String resourceGroupName, String fleetName,
         String managedNamespaceName, Context context) {
@@ -249,17 +238,7 @@ public final class FleetManagedNamespacesClientImpl implements FleetManagedNames
             resourceGroupName, fleetName, managedNamespaceName, accept, context);
     }
 
-    /**
-     * Get a FleetManagedNamespace.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param fleetName The name of the Fleet resource.
-     * @param managedNamespaceName The name of the fleet managed namespace resource.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return a FleetManagedNamespace.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public FleetManagedNamespaceInner get(String resourceGroupName, String fleetName, String managedNamespaceName) {
         return getWithResponse(resourceGroupName, fleetName, managedNamespaceName, Context.NONE).getValue();
@@ -308,11 +287,8 @@ public final class FleetManagedNamespacesClientImpl implements FleetManagedNames
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Response<BinaryData> createOrUpdateWithResponse(String resourceGroupName, String fleetName,
         String managedNamespaceName, FleetManagedNamespaceInner resource, String ifMatch, String ifNoneMatch) {
-        final String contentType = "application/json";
-        final String accept = "application/json";
-        return service.createOrUpdateSync(this.client.getEndpoint(), this.client.getApiVersion(),
-            this.client.getSubscriptionId(), resourceGroupName, ifMatch, ifNoneMatch, fleetName, managedNamespaceName,
-            contentType, accept, resource, Context.NONE);
+        return createOrUpdateWithResponse(resourceGroupName, fleetName, managedNamespaceName, resource, ifMatch,
+            ifNoneMatch, Context.NONE);
     }
 
     /**
@@ -405,53 +381,24 @@ public final class FleetManagedNamespacesClientImpl implements FleetManagedNames
      * @return the {@link SyncPoller} for polling of a fleet managed namespace.
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
-    public SyncPoller<PollResult<FleetManagedNamespaceInner>, FleetManagedNamespaceInner> beginCreateOrUpdate(
+    private SyncPoller<PollResult<FleetManagedNamespaceInner>, FleetManagedNamespaceInner> beginCreateOrUpdate(
         String resourceGroupName, String fleetName, String managedNamespaceName, FleetManagedNamespaceInner resource,
         String ifMatch, String ifNoneMatch) {
-        Response<BinaryData> response = createOrUpdateWithResponse(resourceGroupName, fleetName, managedNamespaceName,
-            resource, ifMatch, ifNoneMatch);
-        return this.client.<FleetManagedNamespaceInner, FleetManagedNamespaceInner>getLroResult(response,
-            FleetManagedNamespaceInner.class, FleetManagedNamespaceInner.class, Context.NONE);
+        return beginCreateOrUpdate(resourceGroupName, fleetName, managedNamespaceName, resource, ifMatch, ifNoneMatch,
+            Context.NONE);
     }
 
-    /**
-     * Create a FleetManagedNamespace.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param fleetName The name of the Fleet resource.
-     * @param managedNamespaceName The name of the fleet managed namespace resource.
-     * @param resource Resource create parameters.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the {@link SyncPoller} for polling of a fleet managed namespace.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public SyncPoller<PollResult<FleetManagedNamespaceInner>, FleetManagedNamespaceInner> beginCreateOrUpdate(
         String resourceGroupName, String fleetName, String managedNamespaceName, FleetManagedNamespaceInner resource) {
         final String ifMatch = null;
         final String ifNoneMatch = null;
-        Response<BinaryData> response = createOrUpdateWithResponse(resourceGroupName, fleetName, managedNamespaceName,
-            resource, ifMatch, ifNoneMatch);
-        return this.client.<FleetManagedNamespaceInner, FleetManagedNamespaceInner>getLroResult(response,
-            FleetManagedNamespaceInner.class, FleetManagedNamespaceInner.class, Context.NONE);
+        return beginCreateOrUpdate(resourceGroupName, fleetName, managedNamespaceName, resource, ifMatch, ifNoneMatch,
+            Context.NONE);
     }
 
-    /**
-     * Create a FleetManagedNamespace.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param fleetName The name of the Fleet resource.
-     * @param managedNamespaceName The name of the fleet managed namespace resource.
-     * @param resource Resource create parameters.
-     * @param ifMatch The request should only proceed if an entity matches this string.
-     * @param ifNoneMatch The request should only proceed if no entity matches this string.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the {@link SyncPoller} for polling of a fleet managed namespace.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public SyncPoller<PollResult<FleetManagedNamespaceInner>, FleetManagedNamespaceInner> beginCreateOrUpdate(
         String resourceGroupName, String fleetName, String managedNamespaceName, FleetManagedNamespaceInner resource,
@@ -504,48 +451,23 @@ public final class FleetManagedNamespacesClientImpl implements FleetManagedNames
             ifNoneMatch).last().flatMap(this.client::getLroFinalResultOrError);
     }
 
-    /**
-     * Create a FleetManagedNamespace.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param fleetName The name of the Fleet resource.
-     * @param managedNamespaceName The name of the fleet managed namespace resource.
-     * @param resource Resource create parameters.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return a fleet managed namespace.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public FleetManagedNamespaceInner createOrUpdate(String resourceGroupName, String fleetName,
         String managedNamespaceName, FleetManagedNamespaceInner resource) {
         final String ifMatch = null;
         final String ifNoneMatch = null;
-        return beginCreateOrUpdate(resourceGroupName, fleetName, managedNamespaceName, resource, ifMatch, ifNoneMatch)
-            .getFinalResult();
+        return createOrUpdate(resourceGroupName, fleetName, managedNamespaceName, resource, ifMatch, ifNoneMatch,
+            Context.NONE);
     }
 
-    /**
-     * Create a FleetManagedNamespace.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param fleetName The name of the Fleet resource.
-     * @param managedNamespaceName The name of the fleet managed namespace resource.
-     * @param resource Resource create parameters.
-     * @param ifMatch The request should only proceed if an entity matches this string.
-     * @param ifNoneMatch The request should only proceed if no entity matches this string.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return a fleet managed namespace.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public FleetManagedNamespaceInner createOrUpdate(String resourceGroupName, String fleetName,
         String managedNamespaceName, FleetManagedNamespaceInner resource, String ifMatch, String ifNoneMatch,
         Context context) {
-        return beginCreateOrUpdate(resourceGroupName, fleetName, managedNamespaceName, resource, ifMatch, ifNoneMatch,
-            context).getFinalResult();
+        return this.client.getLroFinalResultOrError(beginCreateOrUpdate(resourceGroupName, fleetName,
+            managedNamespaceName, resource, ifMatch, ifNoneMatch, context));
     }
 
     /**
@@ -584,8 +506,7 @@ public final class FleetManagedNamespacesClientImpl implements FleetManagedNames
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Response<BinaryData> deleteWithResponse(String resourceGroupName, String fleetName,
         String managedNamespaceName, String ifMatch) {
-        return service.deleteSync(this.client.getEndpoint(), this.client.getApiVersion(),
-            this.client.getSubscriptionId(), resourceGroupName, ifMatch, fleetName, managedNamespaceName, Context.NONE);
+        return deleteWithResponse(resourceGroupName, fleetName, managedNamespaceName, ifMatch, Context.NONE);
     }
 
     /**
@@ -663,44 +584,20 @@ public final class FleetManagedNamespacesClientImpl implements FleetManagedNames
      * @return the {@link SyncPoller} for polling of long-running operation.
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
-    public SyncPoller<PollResult<Void>, Void> beginDelete(String resourceGroupName, String fleetName,
+    private SyncPoller<PollResult<Void>, Void> beginDelete(String resourceGroupName, String fleetName,
         String managedNamespaceName, String ifMatch) {
-        Response<BinaryData> response = deleteWithResponse(resourceGroupName, fleetName, managedNamespaceName, ifMatch);
-        return this.client.<Void, Void>getLroResult(response, Void.class, Void.class, Context.NONE);
+        return beginDelete(resourceGroupName, fleetName, managedNamespaceName, ifMatch, Context.NONE);
     }
 
-    /**
-     * Delete a FleetManagedNamespace.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param fleetName The name of the Fleet resource.
-     * @param managedNamespaceName The name of the fleet managed namespace resource.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the {@link SyncPoller} for polling of long-running operation.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public SyncPoller<PollResult<Void>, Void> beginDelete(String resourceGroupName, String fleetName,
         String managedNamespaceName) {
         final String ifMatch = null;
-        Response<BinaryData> response = deleteWithResponse(resourceGroupName, fleetName, managedNamespaceName, ifMatch);
-        return this.client.<Void, Void>getLroResult(response, Void.class, Void.class, Context.NONE);
+        return beginDelete(resourceGroupName, fleetName, managedNamespaceName, ifMatch, Context.NONE);
     }
 
-    /**
-     * Delete a FleetManagedNamespace.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param fleetName The name of the Fleet resource.
-     * @param managedNamespaceName The name of the fleet managed namespace resource.
-     * @param ifMatch The request should only proceed if an entity matches this string.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the {@link SyncPoller} for polling of long-running operation.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public SyncPoller<PollResult<Void>, Void> beginDelete(String resourceGroupName, String fleetName,
         String managedNamespaceName, String ifMatch, Context context) {
@@ -746,38 +643,19 @@ public final class FleetManagedNamespacesClientImpl implements FleetManagedNames
             .flatMap(this.client::getLroFinalResultOrError);
     }
 
-    /**
-     * Delete a FleetManagedNamespace.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param fleetName The name of the Fleet resource.
-     * @param managedNamespaceName The name of the fleet managed namespace resource.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public void delete(String resourceGroupName, String fleetName, String managedNamespaceName) {
         final String ifMatch = null;
-        beginDelete(resourceGroupName, fleetName, managedNamespaceName, ifMatch).getFinalResult();
+        delete(resourceGroupName, fleetName, managedNamespaceName, ifMatch, Context.NONE);
     }
 
-    /**
-     * Delete a FleetManagedNamespace.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param fleetName The name of the Fleet resource.
-     * @param managedNamespaceName The name of the fleet managed namespace resource.
-     * @param ifMatch The request should only proceed if an entity matches this string.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public void delete(String resourceGroupName, String fleetName, String managedNamespaceName, String ifMatch,
         Context context) {
-        beginDelete(resourceGroupName, fleetName, managedNamespaceName, ifMatch, context).getFinalResult();
+        this.client.getLroFinalResultOrError(
+            beginDelete(resourceGroupName, fleetName, managedNamespaceName, ifMatch, context));
     }
 
     /**
@@ -832,12 +710,7 @@ public final class FleetManagedNamespacesClientImpl implements FleetManagedNames
     @ServiceMethod(returns = ReturnType.SINGLE)
     private PagedResponse<FleetManagedNamespaceInner> listByFleetSinglePage(String resourceGroupName,
         String fleetName) {
-        final String accept = "application/json";
-        Response<FleetManagedNamespaceListResult> res
-            = service.listByFleetSync(this.client.getEndpoint(), this.client.getApiVersion(),
-                this.client.getSubscriptionId(), resourceGroupName, fleetName, accept, Context.NONE);
-        return new PagedResponseBase<>(res.getRequest(), res.getStatusCode(), res.getHeaders(), res.getValue().value(),
-            res.getValue().nextLink(), null);
+        return listByFleetSinglePage(resourceGroupName, fleetName, Context.NONE);
     }
 
     /**
@@ -862,33 +735,13 @@ public final class FleetManagedNamespacesClientImpl implements FleetManagedNames
             res.getValue().nextLink(), null);
     }
 
-    /**
-     * List FleetManagedNamespace resources by Fleet.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param fleetName The name of the Fleet resource.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the response of a FleetManagedNamespace list operation as paginated response with {@link PagedIterable}.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.COLLECTION)
     public PagedIterable<FleetManagedNamespaceInner> listByFleet(String resourceGroupName, String fleetName) {
-        return new PagedIterable<>(() -> listByFleetSinglePage(resourceGroupName, fleetName),
-            nextLink -> listByFleetNextSinglePage(nextLink));
+        return listByFleet(resourceGroupName, fleetName, Context.NONE);
     }
 
-    /**
-     * List FleetManagedNamespace resources by Fleet.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param fleetName The name of the Fleet resource.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the response of a FleetManagedNamespace list operation as paginated response with {@link PagedIterable}.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.COLLECTION)
     public PagedIterable<FleetManagedNamespaceInner> listByFleet(String resourceGroupName, String fleetName,
         Context context) {
@@ -937,11 +790,8 @@ public final class FleetManagedNamespacesClientImpl implements FleetManagedNames
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Response<BinaryData> updateWithResponse(String resourceGroupName, String fleetName,
         String managedNamespaceName, FleetManagedNamespacePatch properties, String ifMatch) {
-        final String contentType = "application/json";
-        final String accept = "application/json";
-        return service.updateSync(this.client.getEndpoint(), this.client.getApiVersion(),
-            this.client.getSubscriptionId(), resourceGroupName, ifMatch, fleetName, managedNamespaceName, contentType,
-            accept, properties, Context.NONE);
+        return updateWithResponse(resourceGroupName, fleetName, managedNamespaceName, properties, ifMatch,
+            Context.NONE);
     }
 
     /**
@@ -1030,52 +880,22 @@ public final class FleetManagedNamespacesClientImpl implements FleetManagedNames
      * @return the {@link SyncPoller} for polling of a fleet managed namespace.
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
-    public SyncPoller<PollResult<FleetManagedNamespaceInner>, FleetManagedNamespaceInner> beginUpdate(
+    private SyncPoller<PollResult<FleetManagedNamespaceInner>, FleetManagedNamespaceInner> beginUpdate(
         String resourceGroupName, String fleetName, String managedNamespaceName, FleetManagedNamespacePatch properties,
         String ifMatch) {
-        Response<BinaryData> response
-            = updateWithResponse(resourceGroupName, fleetName, managedNamespaceName, properties, ifMatch);
-        return this.client.<FleetManagedNamespaceInner, FleetManagedNamespaceInner>getLroResult(response,
-            FleetManagedNamespaceInner.class, FleetManagedNamespaceInner.class, Context.NONE);
+        return beginUpdate(resourceGroupName, fleetName, managedNamespaceName, properties, ifMatch, Context.NONE);
     }
 
-    /**
-     * Update a FleetManagedNamespace.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param fleetName The name of the Fleet resource.
-     * @param managedNamespaceName The name of the fleet managed namespace resource.
-     * @param properties The resource properties to be updated.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the {@link SyncPoller} for polling of a fleet managed namespace.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public SyncPoller<PollResult<FleetManagedNamespaceInner>, FleetManagedNamespaceInner> beginUpdate(
         String resourceGroupName, String fleetName, String managedNamespaceName,
         FleetManagedNamespacePatch properties) {
         final String ifMatch = null;
-        Response<BinaryData> response
-            = updateWithResponse(resourceGroupName, fleetName, managedNamespaceName, properties, ifMatch);
-        return this.client.<FleetManagedNamespaceInner, FleetManagedNamespaceInner>getLroResult(response,
-            FleetManagedNamespaceInner.class, FleetManagedNamespaceInner.class, Context.NONE);
+        return beginUpdate(resourceGroupName, fleetName, managedNamespaceName, properties, ifMatch, Context.NONE);
     }
 
-    /**
-     * Update a FleetManagedNamespace.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param fleetName The name of the Fleet resource.
-     * @param managedNamespaceName The name of the fleet managed namespace resource.
-     * @param properties The resource properties to be updated.
-     * @param ifMatch The request should only proceed if an entity matches this string.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the {@link SyncPoller} for polling of a fleet managed namespace.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public SyncPoller<PollResult<FleetManagedNamespaceInner>, FleetManagedNamespaceInner> beginUpdate(
         String resourceGroupName, String fleetName, String managedNamespaceName, FleetManagedNamespacePatch properties,
@@ -1126,44 +946,20 @@ public final class FleetManagedNamespacesClientImpl implements FleetManagedNames
             .flatMap(this.client::getLroFinalResultOrError);
     }
 
-    /**
-     * Update a FleetManagedNamespace.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param fleetName The name of the Fleet resource.
-     * @param managedNamespaceName The name of the fleet managed namespace resource.
-     * @param properties The resource properties to be updated.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return a fleet managed namespace.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public FleetManagedNamespaceInner update(String resourceGroupName, String fleetName, String managedNamespaceName,
         FleetManagedNamespacePatch properties) {
         final String ifMatch = null;
-        return beginUpdate(resourceGroupName, fleetName, managedNamespaceName, properties, ifMatch).getFinalResult();
+        return update(resourceGroupName, fleetName, managedNamespaceName, properties, ifMatch, Context.NONE);
     }
 
-    /**
-     * Update a FleetManagedNamespace.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param fleetName The name of the Fleet resource.
-     * @param managedNamespaceName The name of the fleet managed namespace resource.
-     * @param properties The resource properties to be updated.
-     * @param ifMatch The request should only proceed if an entity matches this string.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return a fleet managed namespace.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public FleetManagedNamespaceInner update(String resourceGroupName, String fleetName, String managedNamespaceName,
         FleetManagedNamespacePatch properties, String ifMatch, Context context) {
-        return beginUpdate(resourceGroupName, fleetName, managedNamespaceName, properties, ifMatch, context)
-            .getFinalResult();
+        return this.client.getLroFinalResultOrError(
+            beginUpdate(resourceGroupName, fleetName, managedNamespaceName, properties, ifMatch, context));
     }
 
     /**
@@ -1197,11 +993,7 @@ public final class FleetManagedNamespacesClientImpl implements FleetManagedNames
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private PagedResponse<FleetManagedNamespaceInner> listByFleetNextSinglePage(String nextLink) {
-        final String accept = "application/json";
-        Response<FleetManagedNamespaceListResult> res
-            = service.listByFleetNextSync(nextLink, this.client.getEndpoint(), accept, Context.NONE);
-        return new PagedResponseBase<>(res.getRequest(), res.getStatusCode(), res.getHeaders(), res.getValue().value(),
-            res.getValue().nextLink(), null);
+        return listByFleetNextSinglePage(nextLink, Context.NONE);
     }
 
     /**

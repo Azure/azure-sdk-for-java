@@ -78,10 +78,7 @@ public final class AdministratorMicrosoftEntraImpl
     }
 
     public AdministratorMicrosoftEntra create() {
-        this.innerObject = serviceManager.serviceClient()
-            .getAdministratorsMicrosoftEntras()
-            .createOrUpdate(resourceGroupName, serverName, objectId, createParameters, Context.NONE);
-        return this;
+        return this.create(Context.NONE);
     }
 
     public AdministratorMicrosoftEntra create(Context context) {
@@ -104,10 +101,7 @@ public final class AdministratorMicrosoftEntraImpl
     }
 
     public AdministratorMicrosoftEntra apply() {
-        this.innerObject = serviceManager.serviceClient()
-            .getAdministratorsMicrosoftEntras()
-            .createOrUpdate(resourceGroupName, serverName, objectId, updateParameters, Context.NONE);
-        return this;
+        return this.apply(Context.NONE);
     }
 
     public AdministratorMicrosoftEntra apply(Context context) {
@@ -121,17 +115,19 @@ public final class AdministratorMicrosoftEntraImpl
         com.azure.resourcemanager.postgresqlflexibleserver.PostgreSqlManager serviceManager) {
         this.innerObject = innerObject;
         this.serviceManager = serviceManager;
-        this.resourceGroupName = ResourceManagerUtils.getValueFromIdByName(innerObject.id(), "resourceGroups");
-        this.serverName = ResourceManagerUtils.getValueFromIdByName(innerObject.id(), "flexibleServers");
-        this.objectId = ResourceManagerUtils.getValueFromIdByName(innerObject.id(), "administrators");
+        this.resourceGroupName = ResourceManagerUtils.getValueFromIdByParameterName(innerObject.id(),
+            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.DBforPostgreSQL/flexibleServers/{serverName}/administrators/{objectId}",
+            "resourceGroupName");
+        this.serverName = ResourceManagerUtils.getValueFromIdByParameterName(innerObject.id(),
+            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.DBforPostgreSQL/flexibleServers/{serverName}/administrators/{objectId}",
+            "serverName");
+        this.objectId = ResourceManagerUtils.getValueFromIdByParameterName(innerObject.id(),
+            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.DBforPostgreSQL/flexibleServers/{serverName}/administrators/{objectId}",
+            "objectId");
     }
 
     public AdministratorMicrosoftEntra refresh() {
-        this.innerObject = serviceManager.serviceClient()
-            .getAdministratorsMicrosoftEntras()
-            .getWithResponse(resourceGroupName, serverName, objectId, Context.NONE)
-            .getValue();
-        return this;
+        return this.refresh(Context.NONE);
     }
 
     public AdministratorMicrosoftEntra refresh(Context context) {

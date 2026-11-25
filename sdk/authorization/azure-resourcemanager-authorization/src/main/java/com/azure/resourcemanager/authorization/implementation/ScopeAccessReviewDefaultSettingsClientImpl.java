@@ -77,16 +77,7 @@ public final class ScopeAccessReviewDefaultSettingsClientImpl implements ScopeAc
             @BodyParam("application/json") AccessReviewScheduleSettings properties, Context context);
     }
 
-    /**
-     * Get access review default settings for the subscription.
-     * 
-     * @param scope The scope of the resource.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return access review default settings for the subscription along with {@link Response} on successful completion
-     * of {@link Mono}.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Response<AccessReviewDefaultSettingsInner>> getWithResponseAsync(String scope) {
         if (this.client.getEndpoint() == null) {
@@ -129,60 +120,25 @@ public final class ScopeAccessReviewDefaultSettingsClientImpl implements ScopeAc
         return service.get(this.client.getEndpoint(), apiVersion, scope, accept, context);
     }
 
-    /**
-     * Get access review default settings for the subscription.
-     * 
-     * @param scope The scope of the resource.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return access review default settings for the subscription on successful completion of {@link Mono}.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<AccessReviewDefaultSettingsInner> getAsync(String scope) {
         return getWithResponseAsync(scope).flatMap(res -> Mono.justOrEmpty(res.getValue()));
     }
 
-    /**
-     * Get access review default settings for the subscription.
-     * 
-     * @param scope The scope of the resource.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return access review default settings for the subscription along with {@link Response}.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Response<AccessReviewDefaultSettingsInner> getWithResponse(String scope, Context context) {
         return getWithResponseAsync(scope, context).block();
     }
 
-    /**
-     * Get access review default settings for the subscription.
-     * 
-     * @param scope The scope of the resource.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return access review default settings for the subscription.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public AccessReviewDefaultSettingsInner get(String scope) {
         return getWithResponse(scope, Context.NONE).getValue();
     }
 
-    /**
-     * Get access review default settings for the subscription.
-     * 
-     * @param scope The scope of the resource.
-     * @param properties Access review schedule settings.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return access review default settings for the subscription along with {@link Response} on successful completion
-     * of {@link Mono}.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Response<AccessReviewDefaultSettingsInner>> putWithResponseAsync(String scope,
         AccessReviewScheduleSettings properties) {
@@ -241,48 +197,20 @@ public final class ScopeAccessReviewDefaultSettingsClientImpl implements ScopeAc
         return service.put(this.client.getEndpoint(), apiVersion, scope, contentType, accept, properties, context);
     }
 
-    /**
-     * Get access review default settings for the subscription.
-     * 
-     * @param scope The scope of the resource.
-     * @param properties Access review schedule settings.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return access review default settings for the subscription on successful completion of {@link Mono}.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<AccessReviewDefaultSettingsInner> putAsync(String scope, AccessReviewScheduleSettings properties) {
         return putWithResponseAsync(scope, properties).flatMap(res -> Mono.justOrEmpty(res.getValue()));
     }
 
-    /**
-     * Get access review default settings for the subscription.
-     * 
-     * @param scope The scope of the resource.
-     * @param properties Access review schedule settings.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return access review default settings for the subscription along with {@link Response}.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Response<AccessReviewDefaultSettingsInner> putWithResponse(String scope,
         AccessReviewScheduleSettings properties, Context context) {
         return putWithResponseAsync(scope, properties, context).block();
     }
 
-    /**
-     * Get access review default settings for the subscription.
-     * 
-     * @param scope The scope of the resource.
-     * @param properties Access review schedule settings.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return access review default settings for the subscription.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public AccessReviewDefaultSettingsInner put(String scope, AccessReviewScheduleSettings properties) {
         return putWithResponse(scope, properties, Context.NONE).getValue();

@@ -215,21 +215,7 @@ public final class NetworkSecurityPerimetersClientImpl implements NetworkSecurit
             networkSecurityPerimeterConfigurationName).flatMap(res -> Mono.justOrEmpty(res.getValue()));
     }
 
-    /**
-     * Gets information about the specified NSP configuration.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param accountName A name for the Batch account which must be unique within the region. Batch account names must
-     * be between 3 and 24 characters in length and must use only numbers and lowercase letters. This name is used as
-     * part of the DNS name that is used to access the Batch service in the region in which the account is created. For
-     * example: http://accountname.region.batch.azure.com/.
-     * @param networkSecurityPerimeterConfigurationName The name for a network security perimeter configuration.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return information about the specified NSP configuration along with {@link Response}.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Response<NetworkSecurityPerimeterConfigurationInner> getConfigurationWithResponse(String resourceGroupName,
         String accountName, String networkSecurityPerimeterConfigurationName, Context context) {
@@ -262,20 +248,7 @@ public final class NetworkSecurityPerimetersClientImpl implements NetworkSecurit
             accept, context);
     }
 
-    /**
-     * Gets information about the specified NSP configuration.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param accountName A name for the Batch account which must be unique within the region. Batch account names must
-     * be between 3 and 24 characters in length and must use only numbers and lowercase letters. This name is used as
-     * part of the DNS name that is used to access the Batch service in the region in which the account is created. For
-     * example: http://accountname.region.batch.azure.com/.
-     * @param networkSecurityPerimeterConfigurationName The name for a network security perimeter configuration.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return information about the specified NSP configuration.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public NetworkSecurityPerimeterConfigurationInner getConfiguration(String resourceGroupName, String accountName,
         String networkSecurityPerimeterConfigurationName) {
@@ -363,30 +336,7 @@ public final class NetworkSecurityPerimetersClientImpl implements NetworkSecurit
     @ServiceMethod(returns = ReturnType.SINGLE)
     private PagedResponse<NetworkSecurityPerimeterConfigurationInner>
         listConfigurationsSinglePage(String resourceGroupName, String accountName) {
-        if (this.client.getEndpoint() == null) {
-            throw LOGGER.atError()
-                .log(new IllegalArgumentException(
-                    "Parameter this.client.getEndpoint() is required and cannot be null."));
-        }
-        if (this.client.getSubscriptionId() == null) {
-            throw LOGGER.atError()
-                .log(new IllegalArgumentException(
-                    "Parameter this.client.getSubscriptionId() is required and cannot be null."));
-        }
-        if (resourceGroupName == null) {
-            throw LOGGER.atError()
-                .log(new IllegalArgumentException("Parameter resourceGroupName is required and cannot be null."));
-        }
-        if (accountName == null) {
-            throw LOGGER.atError()
-                .log(new IllegalArgumentException("Parameter accountName is required and cannot be null."));
-        }
-        final String accept = "application/json";
-        Response<NetworkSecurityPerimeterConfigurationListResult> res
-            = service.listConfigurationsSync(this.client.getEndpoint(), this.client.getApiVersion(),
-                this.client.getSubscriptionId(), resourceGroupName, accountName, accept, Context.NONE);
-        return new PagedResponseBase<>(res.getRequest(), res.getStatusCode(), res.getHeaders(), res.getValue().value(),
-            res.getValue().nextLink(), null);
+        return listConfigurationsSinglePage(resourceGroupName, accountName, Context.NONE);
     }
 
     /**
@@ -433,42 +383,14 @@ public final class NetworkSecurityPerimetersClientImpl implements NetworkSecurit
             res.getValue().nextLink(), null);
     }
 
-    /**
-     * Lists all of the NSP configurations in the specified account.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param accountName A name for the Batch account which must be unique within the region. Batch account names must
-     * be between 3 and 24 characters in length and must use only numbers and lowercase letters. This name is used as
-     * part of the DNS name that is used to access the Batch service in the region in which the account is created. For
-     * example: http://accountname.region.batch.azure.com/.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return result of a list NSP (network security perimeter) configurations request as paginated response with
-     * {@link PagedIterable}.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.COLLECTION)
     public PagedIterable<NetworkSecurityPerimeterConfigurationInner> listConfigurations(String resourceGroupName,
         String accountName) {
-        return new PagedIterable<>(() -> listConfigurationsSinglePage(resourceGroupName, accountName),
-            nextLink -> listConfigurationsNextSinglePage(nextLink));
+        return listConfigurations(resourceGroupName, accountName, Context.NONE);
     }
 
-    /**
-     * Lists all of the NSP configurations in the specified account.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param accountName A name for the Batch account which must be unique within the region. Batch account names must
-     * be between 3 and 24 characters in length and must use only numbers and lowercase letters. This name is used as
-     * part of the DNS name that is used to access the Batch service in the region in which the account is created. For
-     * example: http://accountname.region.batch.azure.com/.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return result of a list NSP (network security perimeter) configurations request as paginated response with
-     * {@link PagedIterable}.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.COLLECTION)
     public PagedIterable<NetworkSecurityPerimeterConfigurationInner> listConfigurations(String resourceGroupName,
         String accountName, Context context) {
@@ -536,32 +458,8 @@ public final class NetworkSecurityPerimetersClientImpl implements NetworkSecurit
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Response<BinaryData> reconcileConfigurationWithResponse(String resourceGroupName, String accountName,
         String networkSecurityPerimeterConfigurationName) {
-        if (this.client.getEndpoint() == null) {
-            throw LOGGER.atError()
-                .log(new IllegalArgumentException(
-                    "Parameter this.client.getEndpoint() is required and cannot be null."));
-        }
-        if (this.client.getSubscriptionId() == null) {
-            throw LOGGER.atError()
-                .log(new IllegalArgumentException(
-                    "Parameter this.client.getSubscriptionId() is required and cannot be null."));
-        }
-        if (resourceGroupName == null) {
-            throw LOGGER.atError()
-                .log(new IllegalArgumentException("Parameter resourceGroupName is required and cannot be null."));
-        }
-        if (accountName == null) {
-            throw LOGGER.atError()
-                .log(new IllegalArgumentException("Parameter accountName is required and cannot be null."));
-        }
-        if (networkSecurityPerimeterConfigurationName == null) {
-            throw LOGGER.atError()
-                .log(new IllegalArgumentException(
-                    "Parameter networkSecurityPerimeterConfigurationName is required and cannot be null."));
-        }
-        return service.reconcileConfigurationSync(this.client.getEndpoint(), this.client.getApiVersion(),
-            this.client.getSubscriptionId(), resourceGroupName, accountName, networkSecurityPerimeterConfigurationName,
-            Context.NONE);
+        return reconcileConfigurationWithResponse(resourceGroupName, accountName,
+            networkSecurityPerimeterConfigurationName, Context.NONE);
     }
 
     /**
@@ -633,43 +531,15 @@ public final class NetworkSecurityPerimetersClientImpl implements NetworkSecurit
             this.client.getContext());
     }
 
-    /**
-     * Reconciles the specified NSP configuration.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param accountName A name for the Batch account which must be unique within the region. Batch account names must
-     * be between 3 and 24 characters in length and must use only numbers and lowercase letters. This name is used as
-     * part of the DNS name that is used to access the Batch service in the region in which the account is created. For
-     * example: http://accountname.region.batch.azure.com/.
-     * @param networkSecurityPerimeterConfigurationName The name for a network security perimeter configuration.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the {@link SyncPoller} for polling of long-running operation.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public SyncPoller<PollResult<Void>, Void> beginReconcileConfiguration(String resourceGroupName, String accountName,
         String networkSecurityPerimeterConfigurationName) {
-        Response<BinaryData> response = reconcileConfigurationWithResponse(resourceGroupName, accountName,
-            networkSecurityPerimeterConfigurationName);
-        return this.client.<Void, Void>getLroResult(response, Void.class, Void.class, Context.NONE);
+        return beginReconcileConfiguration(resourceGroupName, accountName, networkSecurityPerimeterConfigurationName,
+            Context.NONE);
     }
 
-    /**
-     * Reconciles the specified NSP configuration.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param accountName A name for the Batch account which must be unique within the region. Batch account names must
-     * be between 3 and 24 characters in length and must use only numbers and lowercase letters. This name is used as
-     * part of the DNS name that is used to access the Batch service in the region in which the account is created. For
-     * example: http://accountname.region.batch.azure.com/.
-     * @param networkSecurityPerimeterConfigurationName The name for a network security perimeter configuration.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the {@link SyncPoller} for polling of long-running operation.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public SyncPoller<PollResult<Void>, Void> beginReconcileConfiguration(String resourceGroupName, String accountName,
         String networkSecurityPerimeterConfigurationName, Context context) {
@@ -699,45 +569,19 @@ public final class NetworkSecurityPerimetersClientImpl implements NetworkSecurit
             networkSecurityPerimeterConfigurationName).last().flatMap(this.client::getLroFinalResultOrError);
     }
 
-    /**
-     * Reconciles the specified NSP configuration.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param accountName A name for the Batch account which must be unique within the region. Batch account names must
-     * be between 3 and 24 characters in length and must use only numbers and lowercase letters. This name is used as
-     * part of the DNS name that is used to access the Batch service in the region in which the account is created. For
-     * example: http://accountname.region.batch.azure.com/.
-     * @param networkSecurityPerimeterConfigurationName The name for a network security perimeter configuration.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public void reconcileConfiguration(String resourceGroupName, String accountName,
         String networkSecurityPerimeterConfigurationName) {
-        beginReconcileConfiguration(resourceGroupName, accountName, networkSecurityPerimeterConfigurationName)
-            .getFinalResult();
+        reconcileConfiguration(resourceGroupName, accountName, networkSecurityPerimeterConfigurationName, Context.NONE);
     }
 
-    /**
-     * Reconciles the specified NSP configuration.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param accountName A name for the Batch account which must be unique within the region. Batch account names must
-     * be between 3 and 24 characters in length and must use only numbers and lowercase letters. This name is used as
-     * part of the DNS name that is used to access the Batch service in the region in which the account is created. For
-     * example: http://accountname.region.batch.azure.com/.
-     * @param networkSecurityPerimeterConfigurationName The name for a network security perimeter configuration.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public void reconcileConfiguration(String resourceGroupName, String accountName,
         String networkSecurityPerimeterConfigurationName, Context context) {
-        beginReconcileConfiguration(resourceGroupName, accountName, networkSecurityPerimeterConfigurationName, context)
-            .getFinalResult();
+        this.client.getLroFinalResultOrError(beginReconcileConfiguration(resourceGroupName, accountName,
+            networkSecurityPerimeterConfigurationName, context));
     }
 
     /**
@@ -783,20 +627,7 @@ public final class NetworkSecurityPerimetersClientImpl implements NetworkSecurit
     @ServiceMethod(returns = ReturnType.SINGLE)
     private PagedResponse<NetworkSecurityPerimeterConfigurationInner>
         listConfigurationsNextSinglePage(String nextLink) {
-        if (nextLink == null) {
-            throw LOGGER.atError()
-                .log(new IllegalArgumentException("Parameter nextLink is required and cannot be null."));
-        }
-        if (this.client.getEndpoint() == null) {
-            throw LOGGER.atError()
-                .log(new IllegalArgumentException(
-                    "Parameter this.client.getEndpoint() is required and cannot be null."));
-        }
-        final String accept = "application/json";
-        Response<NetworkSecurityPerimeterConfigurationListResult> res
-            = service.listConfigurationsNextSync(nextLink, this.client.getEndpoint(), accept, Context.NONE);
-        return new PagedResponseBase<>(res.getRequest(), res.getStatusCode(), res.getHeaders(), res.getValue().value(),
-            res.getValue().nextLink(), null);
+        return listConfigurationsNextSinglePage(nextLink, Context.NONE);
     }
 
     /**

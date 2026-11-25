@@ -12,7 +12,10 @@ import com.azure.json.JsonToken;
 import com.azure.json.JsonWriter;
 import com.azure.resourcemanager.network.models.DelegationProperties;
 import com.azure.resourcemanager.network.models.InternetIngressPublicIpsProperties;
+import com.azure.resourcemanager.network.models.IpVersion;
 import com.azure.resourcemanager.network.models.ManagedServiceIdentity;
+import com.azure.resourcemanager.network.models.NetworkVirtualApplianceLoadBalancerConfiguration;
+import com.azure.resourcemanager.network.models.NetworkVirtualApplianceMigrationStatus;
 import com.azure.resourcemanager.network.models.NetworkVirtualAppliancePropertiesFormatNetworkProfile;
 import com.azure.resourcemanager.network.models.NvaInterfaceConfigurationsProperties;
 import com.azure.resourcemanager.network.models.PartnerManagedResourceProperties;
@@ -185,12 +188,49 @@ public final class NetworkVirtualApplianceInner extends Resource {
     }
 
     /**
+     * Get the loadBalancerConfiguration property: Configuration of the internal load balancer for a managed Network
+     * Virtual Appliance in a virtual hub or virtual network. Not applicable to partner-managed load balancers on SaaS
+     * NVAs. When omitted on create or update, Default distribution and a 5-minute idle timeout are used.
+     * 
+     * @return the loadBalancerConfiguration value.
+     */
+    public NetworkVirtualApplianceLoadBalancerConfiguration loadBalancerConfiguration() {
+        return this.innerProperties() == null ? null : this.innerProperties().loadBalancerConfiguration();
+    }
+
+    /**
+     * Set the loadBalancerConfiguration property: Configuration of the internal load balancer for a managed Network
+     * Virtual Appliance in a virtual hub or virtual network. Not applicable to partner-managed load balancers on SaaS
+     * NVAs. When omitted on create or update, Default distribution and a 5-minute idle timeout are used.
+     * 
+     * @param loadBalancerConfiguration the loadBalancerConfiguration value to set.
+     * @return the NetworkVirtualApplianceInner object itself.
+     */
+    public NetworkVirtualApplianceInner
+        withLoadBalancerConfiguration(NetworkVirtualApplianceLoadBalancerConfiguration loadBalancerConfiguration) {
+        if (this.innerProperties() == null) {
+            this.innerProperties = new NetworkVirtualAppliancePropertiesFormat();
+        }
+        this.innerProperties().withLoadBalancerConfiguration(loadBalancerConfiguration);
+        return this;
+    }
+
+    /**
      * Get the addressPrefix property: Address Prefix.
      * 
      * @return the addressPrefix value.
      */
     public String addressPrefix() {
         return this.innerProperties() == null ? null : this.innerProperties().addressPrefix();
+    }
+
+    /**
+     * Get the addressPrefixV6 property: Address Prefix for Dual-Stack NVAs.
+     * 
+     * @return the addressPrefixV6 value.
+     */
+    public String addressPrefixV6() {
+        return this.innerProperties() == null ? null : this.innerProperties().addressPrefixV6();
     }
 
     /**
@@ -533,6 +573,35 @@ public final class NetworkVirtualApplianceInner extends Resource {
     }
 
     /**
+     * Get the addressFamily property: The address families to deploy the NVA in. ["IPv4", "IPv6"] deploys a dual-stack
+     * NVA (the vHub/VNet must also be dual-stack). ["IPv4"], an empty array, or omitting the field deploys an IPv4-only
+     * NVA. The value "IPv6" may only appear in combination with "IPv4"; standalone ["IPv6"] is reserved for future use
+     * and is rejected by the service today.
+     * 
+     * @return the addressFamily value.
+     */
+    public List<IpVersion> addressFamily() {
+        return this.innerProperties() == null ? null : this.innerProperties().addressFamily();
+    }
+
+    /**
+     * Set the addressFamily property: The address families to deploy the NVA in. ["IPv4", "IPv6"] deploys a dual-stack
+     * NVA (the vHub/VNet must also be dual-stack). ["IPv4"], an empty array, or omitting the field deploys an IPv4-only
+     * NVA. The value "IPv6" may only appear in combination with "IPv4"; standalone ["IPv6"] is reserved for future use
+     * and is rejected by the service today.
+     * 
+     * @param addressFamily the addressFamily value to set.
+     * @return the NetworkVirtualApplianceInner object itself.
+     */
+    public NetworkVirtualApplianceInner withAddressFamily(List<IpVersion> addressFamily) {
+        if (this.innerProperties() == null) {
+            this.innerProperties = new NetworkVirtualAppliancePropertiesFormat();
+        }
+        this.innerProperties().withAddressFamily(addressFamily);
+        return this;
+    }
+
+    /**
      * Get the privateIpAddress property: A Internal Load Balancer's HA port frontend IP address. Can be used to set
      * routes &amp; UDR to load balance traffic between NVA instances.
      * 
@@ -540,6 +609,25 @@ public final class NetworkVirtualApplianceInner extends Resource {
      */
     public String privateIpAddress() {
         return this.innerProperties() == null ? null : this.innerProperties().privateIpAddress();
+    }
+
+    /**
+     * Get the privateIpAddressV6 property: An Internal Load Balancer's HA port frontend IPv6 address. Can be used to
+     * set routes &amp; UDR to load balance traffic between NVA instances. This field appears in dual-stack NVAs.
+     * 
+     * @return the privateIpAddressV6 value.
+     */
+    public String privateIpAddressV6() {
+        return this.innerProperties() == null ? null : this.innerProperties().privateIpAddressV6();
+    }
+
+    /**
+     * Get the migrationStatus property: The migration status of the Network Virtual Appliance.
+     * 
+     * @return the migrationStatus value.
+     */
+    public NetworkVirtualApplianceMigrationStatus migrationStatus() {
+        return this.innerProperties() == null ? null : this.innerProperties().migrationStatus();
     }
 
     /**

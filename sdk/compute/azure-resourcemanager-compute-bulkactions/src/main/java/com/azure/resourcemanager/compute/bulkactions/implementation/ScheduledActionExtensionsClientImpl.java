@@ -98,9 +98,9 @@ public final class ScheduledActionExtensionsClientImpl implements ScheduledActio
     }
 
     /**
-     * List ScheduledActionResources resources by parent.
+     * Lists recurring bulk actions associated with the specified VM.
      * 
-     * @param resourceUri The fully qualified Azure Resource manager identifier of the resource.
+     * @param resourceUri The fully qualified Azure resource ID of the compute resource.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
@@ -119,9 +119,9 @@ public final class ScheduledActionExtensionsClientImpl implements ScheduledActio
     }
 
     /**
-     * List ScheduledActionResources resources by parent.
+     * Lists recurring bulk actions associated with the specified VM.
      * 
-     * @param resourceUri The fully qualified Azure Resource manager identifier of the resource.
+     * @param resourceUri The fully qualified Azure resource ID of the compute resource.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
@@ -134,9 +134,9 @@ public final class ScheduledActionExtensionsClientImpl implements ScheduledActio
     }
 
     /**
-     * List ScheduledActionResources resources by parent.
+     * Lists recurring bulk actions associated with the specified VM.
      * 
-     * @param resourceUri The fully qualified Azure Resource manager identifier of the resource.
+     * @param resourceUri The fully qualified Azure resource ID of the compute resource.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
@@ -144,17 +144,13 @@ public final class ScheduledActionExtensionsClientImpl implements ScheduledActio
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private PagedResponse<ScheduledActionResourcesInner> listByVmsSinglePage(String resourceUri) {
-        final String accept = "application/json";
-        Response<ScheduledActionResourcesListResult> res = service.listByVmsSync(this.client.getEndpoint(),
-            this.client.getApiVersion(), resourceUri, accept, Context.NONE);
-        return new PagedResponseBase<>(res.getRequest(), res.getStatusCode(), res.getHeaders(), res.getValue().value(),
-            res.getValue().nextLink(), null);
+        return listByVmsSinglePage(resourceUri, Context.NONE);
     }
 
     /**
-     * List ScheduledActionResources resources by parent.
+     * Lists recurring bulk actions associated with the specified VM.
      * 
-     * @param resourceUri The fully qualified Azure Resource manager identifier of the resource.
+     * @param resourceUri The fully qualified Azure resource ID of the compute resource.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
@@ -170,33 +166,13 @@ public final class ScheduledActionExtensionsClientImpl implements ScheduledActio
             res.getValue().nextLink(), null);
     }
 
-    /**
-     * List ScheduledActionResources resources by parent.
-     * 
-     * @param resourceUri The fully qualified Azure Resource manager identifier of the resource.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the response of a ScheduledActionResources list operation as paginated response with
-     * {@link PagedIterable}.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.COLLECTION)
     public PagedIterable<ScheduledActionResourcesInner> listByVms(String resourceUri) {
-        return new PagedIterable<>(() -> listByVmsSinglePage(resourceUri),
-            nextLink -> listByVmsNextSinglePage(nextLink));
+        return listByVms(resourceUri, Context.NONE);
     }
 
-    /**
-     * List ScheduledActionResources resources by parent.
-     * 
-     * @param resourceUri The fully qualified Azure Resource manager identifier of the resource.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the response of a ScheduledActionResources list operation as paginated response with
-     * {@link PagedIterable}.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.COLLECTION)
     public PagedIterable<ScheduledActionResourcesInner> listByVms(String resourceUri, Context context) {
         return new PagedIterable<>(() -> listByVmsSinglePage(resourceUri, context),
@@ -234,11 +210,7 @@ public final class ScheduledActionExtensionsClientImpl implements ScheduledActio
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private PagedResponse<ScheduledActionResourcesInner> listByVmsNextSinglePage(String nextLink) {
-        final String accept = "application/json";
-        Response<ScheduledActionResourcesListResult> res
-            = service.listByVmsNextSync(nextLink, this.client.getEndpoint(), accept, Context.NONE);
-        return new PagedResponseBase<>(res.getRequest(), res.getStatusCode(), res.getHeaders(), res.getValue().value(),
-            res.getValue().nextLink(), null);
+        return listByVmsNextSinglePage(nextLink, Context.NONE);
     }
 
     /**

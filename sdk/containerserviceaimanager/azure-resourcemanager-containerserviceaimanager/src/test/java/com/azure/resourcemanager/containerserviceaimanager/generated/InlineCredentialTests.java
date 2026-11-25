@@ -11,15 +11,14 @@ import org.junit.jupiter.api.Assertions;
 public final class InlineCredentialTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
-        InlineCredential model
-            = BinaryData.fromString("{\"value\":\"uwutttxfvjrbi\"}").toObject(InlineCredential.class);
-        Assertions.assertEquals("uwutttxfvjrbi", model.value());
+        InlineCredential model = BinaryData.fromString("{\"value\":\"kktwhrdxw\"}").toObject(InlineCredential.class);
+        Assertions.assertEquals("kktwhrdxw", model.value());
     }
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
-        InlineCredential model = new InlineCredential().withValue("uwutttxfvjrbi");
+        InlineCredential model = new InlineCredential().withValue("kktwhrdxw");
         model = BinaryData.fromObject(model).toObject(InlineCredential.class);
-        Assertions.assertEquals("uwutttxfvjrbi", model.value());
+        Assertions.assertEquals("kktwhrdxw", model.value());
     }
 }

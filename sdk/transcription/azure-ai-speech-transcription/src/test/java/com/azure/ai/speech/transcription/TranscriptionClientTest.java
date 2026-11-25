@@ -156,7 +156,7 @@ class TranscriptionClientTest extends TranscriptionClientTestBase {
     private void transcribeAndVerifyResponse(String testName, TranscriptionOptions options,
         RequestOptions requestOptions) {
         BinaryData multipartBody = createMultipartBody(options, requestOptions);
-        Response<BinaryData> response = client.transcribeWithResponse(multipartBody, requestOptions);
+        Response<BinaryData> response = client.transcribeWithResponseInternal(multipartBody, requestOptions);
         printHttpRequestAndResponse(response);
         validateTranscriptionResult(testName, response.getValue().toObject(TranscriptionResult.class));
     }

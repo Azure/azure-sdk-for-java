@@ -9,7 +9,14 @@ import com.azure.security.keyvault.jca.implementation.model.CertificateBundle;
 import org.junit.jupiter.api.Test;
 
 import java.io.IOException;
+import java.util.ArrayList;
+import java.util.List;
+import java.util.logging.Handler;
+import java.util.logging.Level;
+import java.util.logging.LogRecord;
+import java.util.logging.Logger;
 
+import static org.junit.jupiter.api.Assertions.assertDoesNotThrow;
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertNotNull;
 import static org.junit.jupiter.api.Assertions.assertTrue;
@@ -27,9 +34,9 @@ public class JsonConverterUtilTest {
      * Test the {@link JsonConverterUtil#fromJson(ReadValueCallback, String)} method.
      */
     @Test
-    public void testFromJson() throws IOException {
-        String string = "{ \"cer\": \"cer\" }";
-        CertificateBundle bundle = JsonConverterUtil.fromJson(CertificateBundle::fromJson, string);
+    public void testFromJson() {
+        CertificateBundle bundle
+            = assertDoesNotThrow(() -> JsonConverterUtil.fromJson(CertificateBundle::fromJson, "{\"cer\":\"cer\"}"));
 
         assertNotNull(bundle);
         assertEquals("cer", bundle.getCer());
@@ -41,24 +48,61 @@ public class JsonConverterUtilTest {
     @Test
     public void testToJson() {
         CertificateBundle bundle = new CertificateBundle();
-
         bundle.setCer("value");
 
         String string = JsonConverterUtil.toJson(bundle);
 
-        assertTrue(string.contains("cer"));
+        assertTrue(string.contains("\"cer\""));
         assertTrue(string.contains("\"value\""));
     }
 
     @Test
     void testFromJsonWithTokenResponseBody() {
-        AccessToken accessToken = null;
-        try {
-            accessToken = JsonConverterUtil.fromJson(AccessToken::fromJson, DUMMY_TOKEN_RESPONSE_BODY);
-        } catch (IOException e) {
-            throw new RuntimeException(e);
-        }
+        AccessToken accessToken
+            = assertDoesNotThrow(() -> JsonConverterUtil.fromJson(AccessToken::fromJson, DUMMY_TOKEN_RESPONSE_BODY));
         assertNotNull(accessToken);
         assertEquals("test_access_token_value", accessToken.getAccessToken());
+    }
+
+    @Test
+    void fromJsonDoesNotLogThePayload() throws IOException {
+        List<String> loggedValues = new ArrayList<>();
+        Handler collector = new Handler() {
+            @Override
+            public void publish(LogRecord logRecord) {
+                if (logRecord.getParameters() != null) {
+                    for (Object parameter : logRecord.getParameters()) {
+                        loggedValues.add(String.valueOf(parameter));
+                    }
+                }
+            }
+
+            @Override
+            public void flush() {
+            }
+
+            @Override
+            public void close() {
+            }
+        };
+
+        Logger logger = Logger.getLogger(JsonConverterUtil.class.getName());
+        Level originalLevel = logger.getLevel();
+        boolean originalUseParentHandlers = logger.getUseParentHandlers();
+
+        logger.addHandler(collector);
+        logger.setLevel(Level.ALL);
+        logger.setUseParentHandlers(false);
+
+        try {
+            JsonConverterUtil.fromJson(AccessToken::fromJson, DUMMY_TOKEN_RESPONSE_BODY);
+        } finally {
+            logger.removeHandler(collector);
+            logger.setLevel(originalLevel);
+            logger.setUseParentHandlers(originalUseParentHandlers);
+        }
+
+        assertTrue(loggedValues.stream().noneMatch(value -> value.contains("test_access_token_value")),
+            "The payload must never be logged: it carries access tokens and PKCS12 key bundles");
     }
 }

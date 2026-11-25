@@ -53,12 +53,11 @@ public final class PublicCloudConnectorsImpl implements PublicCloudConnectors {
     }
 
     public void deleteByResourceGroup(String resourceGroupName, String publicCloudConnector) {
-        this.serviceClient().delete(resourceGroupName, publicCloudConnector);
+        this.deleteByResourceGroupWithResponse(resourceGroupName, publicCloudConnector, Context.NONE);
     }
 
     public PagedIterable<PublicCloudConnector> listByResourceGroup(String resourceGroupName) {
-        PagedIterable<PublicCloudConnectorInner> inner = this.serviceClient().listByResourceGroup(resourceGroupName);
-        return ResourceManagerUtils.mapPage(inner, inner1 -> new PublicCloudConnectorImpl(inner1, this.manager()));
+        return this.listByResourceGroup(resourceGroupName, Context.NONE);
     }
 
     public PagedIterable<PublicCloudConnector> listByResourceGroup(String resourceGroupName, Context context) {
@@ -68,8 +67,7 @@ public final class PublicCloudConnectorsImpl implements PublicCloudConnectors {
     }
 
     public PagedIterable<PublicCloudConnector> list() {
-        PagedIterable<PublicCloudConnectorInner> inner = this.serviceClient().list();
-        return ResourceManagerUtils.mapPage(inner, inner1 -> new PublicCloudConnectorImpl(inner1, this.manager()));
+        return this.list(Context.NONE);
     }
 
     public PagedIterable<PublicCloudConnector> list(Context context) {
@@ -78,13 +76,7 @@ public final class PublicCloudConnectorsImpl implements PublicCloudConnectors {
     }
 
     public OperationStatusResult testPermissions(String resourceGroupName, String publicCloudConnector) {
-        OperationStatusResultInner inner
-            = this.serviceClient().testPermissions(resourceGroupName, publicCloudConnector);
-        if (inner != null) {
-            return new OperationStatusResultImpl(inner, this.manager());
-        } else {
-            return null;
-        }
+        return this.testPermissions(resourceGroupName, publicCloudConnector, Context.NONE);
     }
 
     public OperationStatusResult testPermissions(String resourceGroupName, String publicCloudConnector,
@@ -99,58 +91,30 @@ public final class PublicCloudConnectorsImpl implements PublicCloudConnectors {
     }
 
     public PublicCloudConnector getById(String id) {
-        String resourceGroupName = ResourceManagerUtils.getValueFromIdByName(id, "resourceGroups");
-        if (resourceGroupName == null) {
-            throw LOGGER.logExceptionAsError(new IllegalArgumentException(
-                String.format("The resource ID '%s' is not valid. Missing path segment 'resourceGroups'.", id)));
-        }
-        String publicCloudConnector = ResourceManagerUtils.getValueFromIdByName(id, "publicCloudConnectors");
-        if (publicCloudConnector == null) {
-            throw LOGGER.logExceptionAsError(new IllegalArgumentException(
-                String.format("The resource ID '%s' is not valid. Missing path segment 'publicCloudConnectors'.", id)));
-        }
-        return this.getByResourceGroupWithResponse(resourceGroupName, publicCloudConnector, Context.NONE).getValue();
+        return this.getByIdWithResponse(id, Context.NONE).getValue();
     }
 
     public Response<PublicCloudConnector> getByIdWithResponse(String id, Context context) {
-        String resourceGroupName = ResourceManagerUtils.getValueFromIdByName(id, "resourceGroups");
-        if (resourceGroupName == null) {
-            throw LOGGER.logExceptionAsError(new IllegalArgumentException(
-                String.format("The resource ID '%s' is not valid. Missing path segment 'resourceGroups'.", id)));
-        }
-        String publicCloudConnector = ResourceManagerUtils.getValueFromIdByName(id, "publicCloudConnectors");
-        if (publicCloudConnector == null) {
-            throw LOGGER.logExceptionAsError(new IllegalArgumentException(
-                String.format("The resource ID '%s' is not valid. Missing path segment 'publicCloudConnectors'.", id)));
-        }
+        String resourceGroupName = ResourceManagerUtils.getRequiredValueFromIdByParameterName(id,
+            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.HybridConnectivity/publicCloudConnectors/{publicCloudConnector}",
+            "resourceGroupName", "resourceGroups", LOGGER);
+        String publicCloudConnector = ResourceManagerUtils.getRequiredValueFromIdByParameterName(id,
+            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.HybridConnectivity/publicCloudConnectors/{publicCloudConnector}",
+            "publicCloudConnector", "publicCloudConnectors", LOGGER);
         return this.getByResourceGroupWithResponse(resourceGroupName, publicCloudConnector, context);
     }
 
     public void deleteById(String id) {
-        String resourceGroupName = ResourceManagerUtils.getValueFromIdByName(id, "resourceGroups");
-        if (resourceGroupName == null) {
-            throw LOGGER.logExceptionAsError(new IllegalArgumentException(
-                String.format("The resource ID '%s' is not valid. Missing path segment 'resourceGroups'.", id)));
-        }
-        String publicCloudConnector = ResourceManagerUtils.getValueFromIdByName(id, "publicCloudConnectors");
-        if (publicCloudConnector == null) {
-            throw LOGGER.logExceptionAsError(new IllegalArgumentException(
-                String.format("The resource ID '%s' is not valid. Missing path segment 'publicCloudConnectors'.", id)));
-        }
-        this.deleteByResourceGroupWithResponse(resourceGroupName, publicCloudConnector, Context.NONE);
+        this.deleteByIdWithResponse(id, Context.NONE);
     }
 
     public Response<Void> deleteByIdWithResponse(String id, Context context) {
-        String resourceGroupName = ResourceManagerUtils.getValueFromIdByName(id, "resourceGroups");
-        if (resourceGroupName == null) {
-            throw LOGGER.logExceptionAsError(new IllegalArgumentException(
-                String.format("The resource ID '%s' is not valid. Missing path segment 'resourceGroups'.", id)));
-        }
-        String publicCloudConnector = ResourceManagerUtils.getValueFromIdByName(id, "publicCloudConnectors");
-        if (publicCloudConnector == null) {
-            throw LOGGER.logExceptionAsError(new IllegalArgumentException(
-                String.format("The resource ID '%s' is not valid. Missing path segment 'publicCloudConnectors'.", id)));
-        }
+        String resourceGroupName = ResourceManagerUtils.getRequiredValueFromIdByParameterName(id,
+            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.HybridConnectivity/publicCloudConnectors/{publicCloudConnector}",
+            "resourceGroupName", "resourceGroups", LOGGER);
+        String publicCloudConnector = ResourceManagerUtils.getRequiredValueFromIdByParameterName(id,
+            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.HybridConnectivity/publicCloudConnectors/{publicCloudConnector}",
+            "publicCloudConnector", "publicCloudConnectors", LOGGER);
         return this.deleteByResourceGroupWithResponse(resourceGroupName, publicCloudConnector, context);
     }
 

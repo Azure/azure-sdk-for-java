@@ -9,6 +9,7 @@ import com.azure.core.util.Context;
 import com.azure.resourcemanager.elasticsan.fluent.models.SnapshotInner;
 import com.azure.resourcemanager.elasticsan.models.ProvisioningStates;
 import com.azure.resourcemanager.elasticsan.models.Snapshot;
+import com.azure.resourcemanager.elasticsan.models.SnapshotAccessState;
 import com.azure.resourcemanager.elasticsan.models.SnapshotCreationData;
 
 public final class SnapshotImpl implements Snapshot, Snapshot.Definition {
@@ -19,6 +20,18 @@ public final class SnapshotImpl implements Snapshot, Snapshot.Definition {
     SnapshotImpl(SnapshotInner innerObject, com.azure.resourcemanager.elasticsan.ElasticSanManager serviceManager) {
         this.innerObject = innerObject;
         this.serviceManager = serviceManager;
+        this.resourceGroupName = ResourceManagerUtils.getValueFromIdByParameterName(innerObject.id(),
+            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.ElasticSan/elasticSans/{elasticSanName}/volumegroups/{volumeGroupName}/snapshots/{snapshotName}",
+            "resourceGroupName");
+        this.elasticSanName = ResourceManagerUtils.getValueFromIdByParameterName(innerObject.id(),
+            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.ElasticSan/elasticSans/{elasticSanName}/volumegroups/{volumeGroupName}/snapshots/{snapshotName}",
+            "elasticSanName");
+        this.volumeGroupName = ResourceManagerUtils.getValueFromIdByParameterName(innerObject.id(),
+            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.ElasticSan/elasticSans/{elasticSanName}/volumegroups/{volumeGroupName}/snapshots/{snapshotName}",
+            "volumeGroupName");
+        this.snapshotName = ResourceManagerUtils.getValueFromIdByParameterName(innerObject.id(),
+            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.ElasticSan/elasticSans/{elasticSanName}/volumegroups/{volumeGroupName}/snapshots/{snapshotName}",
+            "snapshotName");
     }
 
     public String id() {
@@ -53,6 +66,14 @@ public final class SnapshotImpl implements Snapshot, Snapshot.Definition {
         return this.innerModel().volumeName();
     }
 
+    public SnapshotAccessState snapshotAccessState() {
+        return this.innerModel().snapshotAccessState();
+    }
+
+    public Double completionPercent() {
+        return this.innerModel().completionPercent();
+    }
+
     public SnapshotInner innerModel() {
         return this.innerObject;
     }
@@ -78,10 +99,7 @@ public final class SnapshotImpl implements Snapshot, Snapshot.Definition {
     }
 
     public Snapshot create() {
-        this.innerObject = serviceManager.serviceClient()
-            .getVolumeSnapshots()
-            .create(resourceGroupName, elasticSanName, volumeGroupName, snapshotName, this.innerModel(), Context.NONE);
-        return this;
+        return this.create(Context.NONE);
     }
 
     public Snapshot create(Context context) {
@@ -98,11 +116,7 @@ public final class SnapshotImpl implements Snapshot, Snapshot.Definition {
     }
 
     public Snapshot refresh() {
-        this.innerObject = serviceManager.serviceClient()
-            .getVolumeSnapshots()
-            .getWithResponse(resourceGroupName, elasticSanName, volumeGroupName, snapshotName, Context.NONE)
-            .getValue();
-        return this;
+        return this.refresh(Context.NONE);
     }
 
     public Snapshot refresh(Context context) {

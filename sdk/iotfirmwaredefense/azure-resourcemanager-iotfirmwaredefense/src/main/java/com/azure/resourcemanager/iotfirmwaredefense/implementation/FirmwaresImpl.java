@@ -50,12 +50,11 @@ public final class FirmwaresImpl implements Firmwares {
     }
 
     public void delete(String resourceGroupName, String workspaceName, String firmwareId) {
-        this.serviceClient().delete(resourceGroupName, workspaceName, firmwareId);
+        this.deleteWithResponse(resourceGroupName, workspaceName, firmwareId, Context.NONE);
     }
 
     public PagedIterable<Firmware> listByWorkspace(String resourceGroupName, String workspaceName) {
-        PagedIterable<FirmwareInner> inner = this.serviceClient().listByWorkspace(resourceGroupName, workspaceName);
-        return ResourceManagerUtils.mapPage(inner, inner1 -> new FirmwareImpl(inner1, this.manager()));
+        return this.listByWorkspace(resourceGroupName, workspaceName, Context.NONE);
     }
 
     public PagedIterable<Firmware> listByWorkspace(String resourceGroupName, String workspaceName, Context context) {
@@ -65,78 +64,36 @@ public final class FirmwaresImpl implements Firmwares {
     }
 
     public Firmware getById(String id) {
-        String resourceGroupName = ResourceManagerUtils.getValueFromIdByName(id, "resourceGroups");
-        if (resourceGroupName == null) {
-            throw LOGGER.logExceptionAsError(new IllegalArgumentException(
-                String.format("The resource ID '%s' is not valid. Missing path segment 'resourceGroups'.", id)));
-        }
-        String workspaceName = ResourceManagerUtils.getValueFromIdByName(id, "workspaces");
-        if (workspaceName == null) {
-            throw LOGGER.logExceptionAsError(new IllegalArgumentException(
-                String.format("The resource ID '%s' is not valid. Missing path segment 'workspaces'.", id)));
-        }
-        String firmwareId = ResourceManagerUtils.getValueFromIdByName(id, "firmwares");
-        if (firmwareId == null) {
-            throw LOGGER.logExceptionAsError(new IllegalArgumentException(
-                String.format("The resource ID '%s' is not valid. Missing path segment 'firmwares'.", id)));
-        }
-        return this.getWithResponse(resourceGroupName, workspaceName, firmwareId, Context.NONE).getValue();
+        return this.getByIdWithResponse(id, Context.NONE).getValue();
     }
 
     public Response<Firmware> getByIdWithResponse(String id, Context context) {
-        String resourceGroupName = ResourceManagerUtils.getValueFromIdByName(id, "resourceGroups");
-        if (resourceGroupName == null) {
-            throw LOGGER.logExceptionAsError(new IllegalArgumentException(
-                String.format("The resource ID '%s' is not valid. Missing path segment 'resourceGroups'.", id)));
-        }
-        String workspaceName = ResourceManagerUtils.getValueFromIdByName(id, "workspaces");
-        if (workspaceName == null) {
-            throw LOGGER.logExceptionAsError(new IllegalArgumentException(
-                String.format("The resource ID '%s' is not valid. Missing path segment 'workspaces'.", id)));
-        }
-        String firmwareId = ResourceManagerUtils.getValueFromIdByName(id, "firmwares");
-        if (firmwareId == null) {
-            throw LOGGER.logExceptionAsError(new IllegalArgumentException(
-                String.format("The resource ID '%s' is not valid. Missing path segment 'firmwares'.", id)));
-        }
+        String resourceGroupName = ResourceManagerUtils.getRequiredValueFromIdByParameterName(id,
+            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.IoTFirmwareDefense/workspaces/{workspaceName}/firmwares/{firmwareId}",
+            "resourceGroupName", "resourceGroups", LOGGER);
+        String workspaceName = ResourceManagerUtils.getRequiredValueFromIdByParameterName(id,
+            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.IoTFirmwareDefense/workspaces/{workspaceName}/firmwares/{firmwareId}",
+            "workspaceName", "workspaces", LOGGER);
+        String firmwareId = ResourceManagerUtils.getRequiredValueFromIdByParameterName(id,
+            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.IoTFirmwareDefense/workspaces/{workspaceName}/firmwares/{firmwareId}",
+            "firmwareId", "firmwares", LOGGER);
         return this.getWithResponse(resourceGroupName, workspaceName, firmwareId, context);
     }
 
     public void deleteById(String id) {
-        String resourceGroupName = ResourceManagerUtils.getValueFromIdByName(id, "resourceGroups");
-        if (resourceGroupName == null) {
-            throw LOGGER.logExceptionAsError(new IllegalArgumentException(
-                String.format("The resource ID '%s' is not valid. Missing path segment 'resourceGroups'.", id)));
-        }
-        String workspaceName = ResourceManagerUtils.getValueFromIdByName(id, "workspaces");
-        if (workspaceName == null) {
-            throw LOGGER.logExceptionAsError(new IllegalArgumentException(
-                String.format("The resource ID '%s' is not valid. Missing path segment 'workspaces'.", id)));
-        }
-        String firmwareId = ResourceManagerUtils.getValueFromIdByName(id, "firmwares");
-        if (firmwareId == null) {
-            throw LOGGER.logExceptionAsError(new IllegalArgumentException(
-                String.format("The resource ID '%s' is not valid. Missing path segment 'firmwares'.", id)));
-        }
-        this.deleteWithResponse(resourceGroupName, workspaceName, firmwareId, Context.NONE);
+        this.deleteByIdWithResponse(id, Context.NONE);
     }
 
     public Response<Void> deleteByIdWithResponse(String id, Context context) {
-        String resourceGroupName = ResourceManagerUtils.getValueFromIdByName(id, "resourceGroups");
-        if (resourceGroupName == null) {
-            throw LOGGER.logExceptionAsError(new IllegalArgumentException(
-                String.format("The resource ID '%s' is not valid. Missing path segment 'resourceGroups'.", id)));
-        }
-        String workspaceName = ResourceManagerUtils.getValueFromIdByName(id, "workspaces");
-        if (workspaceName == null) {
-            throw LOGGER.logExceptionAsError(new IllegalArgumentException(
-                String.format("The resource ID '%s' is not valid. Missing path segment 'workspaces'.", id)));
-        }
-        String firmwareId = ResourceManagerUtils.getValueFromIdByName(id, "firmwares");
-        if (firmwareId == null) {
-            throw LOGGER.logExceptionAsError(new IllegalArgumentException(
-                String.format("The resource ID '%s' is not valid. Missing path segment 'firmwares'.", id)));
-        }
+        String resourceGroupName = ResourceManagerUtils.getRequiredValueFromIdByParameterName(id,
+            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.IoTFirmwareDefense/workspaces/{workspaceName}/firmwares/{firmwareId}",
+            "resourceGroupName", "resourceGroups", LOGGER);
+        String workspaceName = ResourceManagerUtils.getRequiredValueFromIdByParameterName(id,
+            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.IoTFirmwareDefense/workspaces/{workspaceName}/firmwares/{firmwareId}",
+            "workspaceName", "workspaces", LOGGER);
+        String firmwareId = ResourceManagerUtils.getRequiredValueFromIdByParameterName(id,
+            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.IoTFirmwareDefense/workspaces/{workspaceName}/firmwares/{firmwareId}",
+            "firmwareId", "firmwares", LOGGER);
         return this.deleteWithResponse(resourceGroupName, workspaceName, firmwareId, context);
     }
 

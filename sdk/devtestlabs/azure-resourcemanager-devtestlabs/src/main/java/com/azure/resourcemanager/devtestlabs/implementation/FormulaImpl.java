@@ -117,10 +117,7 @@ public final class FormulaImpl implements Formula, Formula.Definition, Formula.U
     }
 
     public Formula create() {
-        this.innerObject = serviceManager.serviceClient()
-            .getFormulas()
-            .createOrUpdate(resourceGroupName, labName, name, this.innerModel(), Context.NONE);
-        return this;
+        return this.create(Context.NONE);
     }
 
     public Formula create(Context context) {
@@ -142,11 +139,7 @@ public final class FormulaImpl implements Formula, Formula.Definition, Formula.U
     }
 
     public Formula apply() {
-        this.innerObject = serviceManager.serviceClient()
-            .getFormulas()
-            .updateWithResponse(resourceGroupName, labName, name, updateFormula, Context.NONE)
-            .getValue();
-        return this;
+        return this.apply(Context.NONE);
     }
 
     public Formula apply(Context context) {
@@ -160,18 +153,19 @@ public final class FormulaImpl implements Formula, Formula.Definition, Formula.U
     FormulaImpl(FormulaInner innerObject, com.azure.resourcemanager.devtestlabs.DevTestLabsManager serviceManager) {
         this.innerObject = innerObject;
         this.serviceManager = serviceManager;
-        this.resourceGroupName = ResourceManagerUtils.getValueFromIdByName(innerObject.id(), "resourceGroups");
-        this.labName = ResourceManagerUtils.getValueFromIdByName(innerObject.id(), "labs");
-        this.name = ResourceManagerUtils.getValueFromIdByName(innerObject.id(), "formulas");
+        this.resourceGroupName = ResourceManagerUtils.getValueFromIdByParameterName(innerObject.id(),
+            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.DevTestLab/labs/{labName}/formulas/{name}",
+            "resourceGroupName");
+        this.labName = ResourceManagerUtils.getValueFromIdByParameterName(innerObject.id(),
+            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.DevTestLab/labs/{labName}/formulas/{name}",
+            "labName");
+        this.name = ResourceManagerUtils.getValueFromIdByParameterName(innerObject.id(),
+            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.DevTestLab/labs/{labName}/formulas/{name}",
+            "name");
     }
 
     public Formula refresh() {
-        String localExpand = null;
-        this.innerObject = serviceManager.serviceClient()
-            .getFormulas()
-            .getWithResponse(resourceGroupName, labName, name, localExpand, Context.NONE)
-            .getValue();
-        return this;
+        return this.refresh(Context.NONE);
     }
 
     public Formula refresh(Context context) {

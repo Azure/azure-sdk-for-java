@@ -23,7 +23,7 @@ public final class ClustersImpl implements Clusters {
     }
 
     public void delete(String resourceGroupName, String organizationName, String environmentId, String clusterId) {
-        this.serviceClient().delete(resourceGroupName, organizationName, environmentId, clusterId);
+        this.delete(resourceGroupName, organizationName, environmentId, clusterId, Context.NONE);
     }
 
     public void delete(String resourceGroupName, String organizationName, String environmentId, String clusterId,
@@ -32,50 +32,22 @@ public final class ClustersImpl implements Clusters {
     }
 
     public void deleteById(String id) {
-        String resourceGroupName = ResourceManagerUtils.getValueFromIdByName(id, "resourceGroups");
-        if (resourceGroupName == null) {
-            throw LOGGER.logExceptionAsError(new IllegalArgumentException(
-                String.format("The resource ID '%s' is not valid. Missing path segment 'resourceGroups'.", id)));
-        }
-        String organizationName = ResourceManagerUtils.getValueFromIdByName(id, "organizations");
-        if (organizationName == null) {
-            throw LOGGER.logExceptionAsError(new IllegalArgumentException(
-                String.format("The resource ID '%s' is not valid. Missing path segment 'organizations'.", id)));
-        }
-        String environmentId = ResourceManagerUtils.getValueFromIdByName(id, "environments");
-        if (environmentId == null) {
-            throw LOGGER.logExceptionAsError(new IllegalArgumentException(
-                String.format("The resource ID '%s' is not valid. Missing path segment 'environments'.", id)));
-        }
-        String clusterId = ResourceManagerUtils.getValueFromIdByName(id, "clusters");
-        if (clusterId == null) {
-            throw LOGGER.logExceptionAsError(new IllegalArgumentException(
-                String.format("The resource ID '%s' is not valid. Missing path segment 'clusters'.", id)));
-        }
-        this.delete(resourceGroupName, organizationName, environmentId, clusterId, Context.NONE);
+        this.deleteByIdWithResponse(id, Context.NONE);
     }
 
     public void deleteByIdWithResponse(String id, Context context) {
-        String resourceGroupName = ResourceManagerUtils.getValueFromIdByName(id, "resourceGroups");
-        if (resourceGroupName == null) {
-            throw LOGGER.logExceptionAsError(new IllegalArgumentException(
-                String.format("The resource ID '%s' is not valid. Missing path segment 'resourceGroups'.", id)));
-        }
-        String organizationName = ResourceManagerUtils.getValueFromIdByName(id, "organizations");
-        if (organizationName == null) {
-            throw LOGGER.logExceptionAsError(new IllegalArgumentException(
-                String.format("The resource ID '%s' is not valid. Missing path segment 'organizations'.", id)));
-        }
-        String environmentId = ResourceManagerUtils.getValueFromIdByName(id, "environments");
-        if (environmentId == null) {
-            throw LOGGER.logExceptionAsError(new IllegalArgumentException(
-                String.format("The resource ID '%s' is not valid. Missing path segment 'environments'.", id)));
-        }
-        String clusterId = ResourceManagerUtils.getValueFromIdByName(id, "clusters");
-        if (clusterId == null) {
-            throw LOGGER.logExceptionAsError(new IllegalArgumentException(
-                String.format("The resource ID '%s' is not valid. Missing path segment 'clusters'.", id)));
-        }
+        String resourceGroupName = ResourceManagerUtils.getRequiredValueFromIdByParameterName(id,
+            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Confluent/organizations/{organizationName}/environments/{environmentId}/clusters/{clusterId}",
+            "resourceGroupName", "resourceGroups", LOGGER);
+        String organizationName = ResourceManagerUtils.getRequiredValueFromIdByParameterName(id,
+            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Confluent/organizations/{organizationName}/environments/{environmentId}/clusters/{clusterId}",
+            "organizationName", "organizations", LOGGER);
+        String environmentId = ResourceManagerUtils.getRequiredValueFromIdByParameterName(id,
+            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Confluent/organizations/{organizationName}/environments/{environmentId}/clusters/{clusterId}",
+            "environmentId", "environments", LOGGER);
+        String clusterId = ResourceManagerUtils.getRequiredValueFromIdByParameterName(id,
+            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Confluent/organizations/{organizationName}/environments/{environmentId}/clusters/{clusterId}",
+            "clusterId", "clusters", LOGGER);
         this.delete(resourceGroupName, organizationName, environmentId, clusterId, context);
     }
 

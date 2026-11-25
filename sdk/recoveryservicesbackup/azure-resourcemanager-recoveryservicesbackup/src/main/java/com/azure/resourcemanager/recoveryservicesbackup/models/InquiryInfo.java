@@ -18,6 +18,7 @@ import java.util.List;
 @Fluent
 public final class InquiryInfo implements JsonSerializable<InquiryInfo> {
     /*
+     * 
      * Inquiry Status for this container such as
      * InProgress | Failed | Succeeded
      */
@@ -29,6 +30,7 @@ public final class InquiryInfo implements JsonSerializable<InquiryInfo> {
     private ErrorDetail errorDetail;
 
     /*
+     * 
      * Inquiry Details which will have workload specific details.
      * For e.g. - For SQL and oracle this will contain different details.
      */
@@ -41,7 +43,8 @@ public final class InquiryInfo implements JsonSerializable<InquiryInfo> {
     }
 
     /**
-     * Get the status property: Inquiry Status for this container such as
+     * Get the status property:
+     * Inquiry Status for this container such as
      * InProgress | Failed | Succeeded.
      * 
      * @return the status value.
@@ -51,7 +54,8 @@ public final class InquiryInfo implements JsonSerializable<InquiryInfo> {
     }
 
     /**
-     * Set the status property: Inquiry Status for this container such as
+     * Set the status property:
+     * Inquiry Status for this container such as
      * InProgress | Failed | Succeeded.
      * 
      * @param status the status value to set.
@@ -83,7 +87,8 @@ public final class InquiryInfo implements JsonSerializable<InquiryInfo> {
     }
 
     /**
-     * Get the inquiryDetails property: Inquiry Details which will have workload specific details.
+     * Get the inquiryDetails property:
+     * Inquiry Details which will have workload specific details.
      * For e.g. - For SQL and oracle this will contain different details.
      * 
      * @return the inquiryDetails value.
@@ -93,7 +98,8 @@ public final class InquiryInfo implements JsonSerializable<InquiryInfo> {
     }
 
     /**
-     * Set the inquiryDetails property: Inquiry Details which will have workload specific details.
+     * Set the inquiryDetails property:
+     * Inquiry Details which will have workload specific details.
      * For e.g. - For SQL and oracle this will contain different details.
      * 
      * @param inquiryDetails the inquiryDetails value to set.

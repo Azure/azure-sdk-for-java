@@ -208,19 +208,7 @@ public final class ProjectCapabilityHostsClientImpl implements ProjectCapability
             .flatMap(res -> Mono.justOrEmpty(res.getValue()));
     }
 
-    /**
-     * Get project capabilityHost.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param accountName The name of Cognitive Services account.
-     * @param projectName The name of Cognitive Services account's project.
-     * @param capabilityHostName The name of the capability host associated with the Cognitive Services Resource.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return project capabilityHost along with {@link Response}.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Response<ProjectCapabilityHostInner> getWithResponse(String resourceGroupName, String accountName,
         String projectName, String capabilityHostName, Context context) {
@@ -229,18 +217,7 @@ public final class ProjectCapabilityHostsClientImpl implements ProjectCapability
             resourceGroupName, accountName, projectName, capabilityHostName, accept, context);
     }
 
-    /**
-     * Get project capabilityHost.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param accountName The name of Cognitive Services account.
-     * @param projectName The name of Cognitive Services account's project.
-     * @param capabilityHostName The name of the capability host associated with the Cognitive Services Resource.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return project capabilityHost.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public ProjectCapabilityHostInner get(String resourceGroupName, String accountName, String projectName,
         String capabilityHostName) {
@@ -290,11 +267,8 @@ public final class ProjectCapabilityHostsClientImpl implements ProjectCapability
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Response<BinaryData> createOrUpdateWithResponse(String resourceGroupName, String accountName,
         String projectName, String capabilityHostName, ProjectCapabilityHostInner capabilityHost) {
-        final String contentType = "application/json";
-        final String accept = "application/json";
-        return service.createOrUpdateSync(this.client.getEndpoint(), this.client.getApiVersion(),
-            this.client.getSubscriptionId(), resourceGroupName, accountName, projectName, capabilityHostName,
-            contentType, accept, capabilityHost, Context.NONE);
+        return createOrUpdateWithResponse(resourceGroupName, accountName, projectName, capabilityHostName,
+            capabilityHost, Context.NONE);
     }
 
     /**
@@ -346,45 +320,16 @@ public final class ProjectCapabilityHostsClientImpl implements ProjectCapability
             this.client.getContext());
     }
 
-    /**
-     * Create or update project capabilityHost.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param accountName The name of Cognitive Services account.
-     * @param projectName The name of Cognitive Services account's project.
-     * @param capabilityHostName The name of the capability host associated with the Cognitive Services Resource.
-     * @param capabilityHost CapabilityHost definition.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the {@link SyncPoller} for polling of azure Resource Manager resource envelope for Project
-     * CapabilityHost.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public SyncPoller<PollResult<ProjectCapabilityHostInner>, ProjectCapabilityHostInner> beginCreateOrUpdate(
         String resourceGroupName, String accountName, String projectName, String capabilityHostName,
         ProjectCapabilityHostInner capabilityHost) {
-        Response<BinaryData> response = createOrUpdateWithResponse(resourceGroupName, accountName, projectName,
-            capabilityHostName, capabilityHost);
-        return this.client.<ProjectCapabilityHostInner, ProjectCapabilityHostInner>getLroResult(response,
-            ProjectCapabilityHostInner.class, ProjectCapabilityHostInner.class, Context.NONE);
+        return beginCreateOrUpdate(resourceGroupName, accountName, projectName, capabilityHostName, capabilityHost,
+            Context.NONE);
     }
 
-    /**
-     * Create or update project capabilityHost.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param accountName The name of Cognitive Services account.
-     * @param projectName The name of Cognitive Services account's project.
-     * @param capabilityHostName The name of the capability host associated with the Cognitive Services Resource.
-     * @param capabilityHost CapabilityHost definition.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the {@link SyncPoller} for polling of azure Resource Manager resource envelope for Project
-     * CapabilityHost.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public SyncPoller<PollResult<ProjectCapabilityHostInner>, ProjectCapabilityHostInner> beginCreateOrUpdate(
         String resourceGroupName, String accountName, String projectName, String capabilityHostName,
@@ -417,45 +362,20 @@ public final class ProjectCapabilityHostsClientImpl implements ProjectCapability
             .flatMap(this.client::getLroFinalResultOrError);
     }
 
-    /**
-     * Create or update project capabilityHost.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param accountName The name of Cognitive Services account.
-     * @param projectName The name of Cognitive Services account's project.
-     * @param capabilityHostName The name of the capability host associated with the Cognitive Services Resource.
-     * @param capabilityHost CapabilityHost definition.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return azure Resource Manager resource envelope for Project CapabilityHost.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public ProjectCapabilityHostInner createOrUpdate(String resourceGroupName, String accountName, String projectName,
         String capabilityHostName, ProjectCapabilityHostInner capabilityHost) {
-        return beginCreateOrUpdate(resourceGroupName, accountName, projectName, capabilityHostName, capabilityHost)
-            .getFinalResult();
+        return createOrUpdate(resourceGroupName, accountName, projectName, capabilityHostName, capabilityHost,
+            Context.NONE);
     }
 
-    /**
-     * Create or update project capabilityHost.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param accountName The name of Cognitive Services account.
-     * @param projectName The name of Cognitive Services account's project.
-     * @param capabilityHostName The name of the capability host associated with the Cognitive Services Resource.
-     * @param capabilityHost CapabilityHost definition.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return azure Resource Manager resource envelope for Project CapabilityHost.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public ProjectCapabilityHostInner createOrUpdate(String resourceGroupName, String accountName, String projectName,
         String capabilityHostName, ProjectCapabilityHostInner capabilityHost, Context context) {
-        return beginCreateOrUpdate(resourceGroupName, accountName, projectName, capabilityHostName, capabilityHost,
-            context).getFinalResult();
+        return this.client.getLroFinalResultOrError(beginCreateOrUpdate(resourceGroupName, accountName, projectName,
+            capabilityHostName, capabilityHost, context));
     }
 
     /**
@@ -493,9 +413,7 @@ public final class ProjectCapabilityHostsClientImpl implements ProjectCapability
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Response<BinaryData> deleteWithResponse(String resourceGroupName, String accountName, String projectName,
         String capabilityHostName) {
-        return service.deleteSync(this.client.getEndpoint(), this.client.getApiVersion(),
-            this.client.getSubscriptionId(), resourceGroupName, accountName, projectName, capabilityHostName,
-            Context.NONE);
+        return deleteWithResponse(resourceGroupName, accountName, projectName, capabilityHostName, Context.NONE);
     }
 
     /**
@@ -539,39 +457,14 @@ public final class ProjectCapabilityHostsClientImpl implements ProjectCapability
             this.client.getContext());
     }
 
-    /**
-     * Delete project capabilityHost.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param accountName The name of Cognitive Services account.
-     * @param projectName The name of Cognitive Services account's project.
-     * @param capabilityHostName The name of the capability host associated with the Cognitive Services Resource.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the {@link SyncPoller} for polling of long-running operation.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public SyncPoller<PollResult<Void>, Void> beginDelete(String resourceGroupName, String accountName,
         String projectName, String capabilityHostName) {
-        Response<BinaryData> response
-            = deleteWithResponse(resourceGroupName, accountName, projectName, capabilityHostName);
-        return this.client.<Void, Void>getLroResult(response, Void.class, Void.class, Context.NONE);
+        return beginDelete(resourceGroupName, accountName, projectName, capabilityHostName, Context.NONE);
     }
 
-    /**
-     * Delete project capabilityHost.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param accountName The name of Cognitive Services account.
-     * @param projectName The name of Cognitive Services account's project.
-     * @param capabilityHostName The name of the capability host associated with the Cognitive Services Resource.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the {@link SyncPoller} for polling of long-running operation.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public SyncPoller<PollResult<Void>, Void> beginDelete(String resourceGroupName, String accountName,
         String projectName, String capabilityHostName, Context context) {
@@ -599,38 +492,18 @@ public final class ProjectCapabilityHostsClientImpl implements ProjectCapability
             .flatMap(this.client::getLroFinalResultOrError);
     }
 
-    /**
-     * Delete project capabilityHost.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param accountName The name of Cognitive Services account.
-     * @param projectName The name of Cognitive Services account's project.
-     * @param capabilityHostName The name of the capability host associated with the Cognitive Services Resource.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public void delete(String resourceGroupName, String accountName, String projectName, String capabilityHostName) {
-        beginDelete(resourceGroupName, accountName, projectName, capabilityHostName).getFinalResult();
+        delete(resourceGroupName, accountName, projectName, capabilityHostName, Context.NONE);
     }
 
-    /**
-     * Delete project capabilityHost.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param accountName The name of Cognitive Services account.
-     * @param projectName The name of Cognitive Services account's project.
-     * @param capabilityHostName The name of the capability host associated with the Cognitive Services Resource.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public void delete(String resourceGroupName, String accountName, String projectName, String capabilityHostName,
         Context context) {
-        beginDelete(resourceGroupName, accountName, projectName, capabilityHostName, context).getFinalResult();
+        this.client.getLroFinalResultOrError(
+            beginDelete(resourceGroupName, accountName, projectName, capabilityHostName, context));
     }
 
     /**
@@ -689,12 +562,7 @@ public final class ProjectCapabilityHostsClientImpl implements ProjectCapability
     @ServiceMethod(returns = ReturnType.SINGLE)
     private PagedResponse<ProjectCapabilityHostInner> listSinglePage(String resourceGroupName, String accountName,
         String projectName) {
-        final String accept = "application/json";
-        Response<ProjectCapabilityHostResourceArmPaginatedResult> res
-            = service.listSync(this.client.getEndpoint(), this.client.getApiVersion(), this.client.getSubscriptionId(),
-                resourceGroupName, accountName, projectName, accept, Context.NONE);
-        return new PagedResponseBase<>(res.getRequest(), res.getStatusCode(), res.getHeaders(), res.getValue().value(),
-            res.getValue().nextLink(), null);
+        return listSinglePage(resourceGroupName, accountName, projectName, Context.NONE);
     }
 
     /**
@@ -720,36 +588,14 @@ public final class ProjectCapabilityHostsClientImpl implements ProjectCapability
             res.getValue().nextLink(), null);
     }
 
-    /**
-     * List capabilityHost.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param accountName The name of Cognitive Services account.
-     * @param projectName The name of Cognitive Services account's project.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return a paginated list of Project Capability Host entities as paginated response with {@link PagedIterable}.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.COLLECTION)
     public PagedIterable<ProjectCapabilityHostInner> list(String resourceGroupName, String accountName,
         String projectName) {
-        return new PagedIterable<>(() -> listSinglePage(resourceGroupName, accountName, projectName),
-            nextLink -> listNextSinglePage(nextLink));
+        return list(resourceGroupName, accountName, projectName, Context.NONE);
     }
 
-    /**
-     * List capabilityHost.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param accountName The name of Cognitive Services account.
-     * @param projectName The name of Cognitive Services account's project.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return a paginated list of Project Capability Host entities as paginated response with {@link PagedIterable}.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.COLLECTION)
     public PagedIterable<ProjectCapabilityHostInner> list(String resourceGroupName, String accountName,
         String projectName, Context context) {
@@ -791,11 +637,7 @@ public final class ProjectCapabilityHostsClientImpl implements ProjectCapability
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private PagedResponse<ProjectCapabilityHostInner> listNextSinglePage(String nextLink) {
-        final String accept = "application/json";
-        Response<ProjectCapabilityHostResourceArmPaginatedResult> res
-            = service.listNextSync(nextLink, this.client.getEndpoint(), accept, Context.NONE);
-        return new PagedResponseBase<>(res.getRequest(), res.getStatusCode(), res.getHeaders(), res.getValue().value(),
-            res.getValue().nextLink(), null);
+        return listNextSinglePage(nextLink, Context.NONE);
     }
 
     /**

@@ -165,10 +165,7 @@ public final class LocalRulesResourceImpl
     }
 
     public LocalRulesResource create() {
-        this.innerObject = serviceManager.serviceClient()
-            .getLocalRules()
-            .createOrUpdate(resourceGroupName, localRulestackName, priority, this.innerModel(), Context.NONE);
-        return this;
+        return this.create(Context.NONE);
     }
 
     public LocalRulesResource create(Context context) {
@@ -190,10 +187,7 @@ public final class LocalRulesResourceImpl
     }
 
     public LocalRulesResource apply() {
-        this.innerObject = serviceManager.serviceClient()
-            .getLocalRules()
-            .createOrUpdate(resourceGroupName, localRulestackName, priority, this.innerModel(), Context.NONE);
-        return this;
+        return this.apply(Context.NONE);
     }
 
     public LocalRulesResource apply(Context context) {
@@ -207,17 +201,19 @@ public final class LocalRulesResourceImpl
         com.azure.resourcemanager.paloaltonetworks.ngfw.PaloAltoNetworksNgfwManager serviceManager) {
         this.innerObject = innerObject;
         this.serviceManager = serviceManager;
-        this.resourceGroupName = ResourceManagerUtils.getValueFromIdByName(innerObject.id(), "resourceGroups");
-        this.localRulestackName = ResourceManagerUtils.getValueFromIdByName(innerObject.id(), "localRulestacks");
-        this.priority = ResourceManagerUtils.getValueFromIdByName(innerObject.id(), "localRules");
+        this.resourceGroupName = ResourceManagerUtils.getValueFromIdByParameterName(innerObject.id(),
+            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/PaloAltoNetworks.Cloudngfw/localRulestacks/{localRulestackName}/localRules/{priority}",
+            "resourceGroupName");
+        this.localRulestackName = ResourceManagerUtils.getValueFromIdByParameterName(innerObject.id(),
+            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/PaloAltoNetworks.Cloudngfw/localRulestacks/{localRulestackName}/localRules/{priority}",
+            "localRulestackName");
+        this.priority = ResourceManagerUtils.getValueFromIdByParameterName(innerObject.id(),
+            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/PaloAltoNetworks.Cloudngfw/localRulestacks/{localRulestackName}/localRules/{priority}",
+            "priority");
     }
 
     public LocalRulesResource refresh() {
-        this.innerObject = serviceManager.serviceClient()
-            .getLocalRules()
-            .getWithResponse(resourceGroupName, localRulestackName, priority, Context.NONE)
-            .getValue();
-        return this;
+        return this.refresh(Context.NONE);
     }
 
     public LocalRulesResource refresh(Context context) {

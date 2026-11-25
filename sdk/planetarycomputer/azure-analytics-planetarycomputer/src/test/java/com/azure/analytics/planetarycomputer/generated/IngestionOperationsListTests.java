@@ -19,7 +19,8 @@ public final class IngestionOperationsListTests extends PlanetaryComputerProClie
     @Disabled
     public void testIngestionOperationsListTests() {
         // method invocation
-        PagedIterable<Operation> response = ingestionClient.listOperations(null, null, null, null);
+        PagedIterable<Operation> response
+            = ingestionClient.listOperations((Integer) null, (Integer) null, (String) null, (OperationStatus) null);
 
         // response assertion
         Assertions.assertEquals(200, response.iterableByPage().iterator().next().getStatusCode());

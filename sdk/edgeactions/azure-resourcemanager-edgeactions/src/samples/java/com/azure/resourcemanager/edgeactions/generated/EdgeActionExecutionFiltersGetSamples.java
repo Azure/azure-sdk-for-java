@@ -9,7 +9,7 @@ package com.azure.resourcemanager.edgeactions.generated;
  */
 public final class EdgeActionExecutionFiltersGetSamples {
     /*
-     * x-ms-original-file: 2025-12-01-preview/EdgeActionExecutionFilters_Get.json
+     * x-ms-original-file: 2026-10-01/EdgeActionExecutionFilters_Get.json
      */
     /**
      * Sample code: GetEdgeActionExecutionFilters.

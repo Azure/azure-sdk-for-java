@@ -10,6 +10,7 @@ import com.azure.core.management.profile.AzureProfile;
 import com.azure.core.models.AzureCloud;
 import com.azure.core.test.http.MockHttpResponse;
 import com.azure.resourcemanager.compute.recommender.ComputeRecommenderManager;
+import com.azure.resourcemanager.compute.recommender.models.PlacementScoreValue;
 import com.azure.resourcemanager.compute.recommender.models.ResourceSize;
 import com.azure.resourcemanager.compute.recommender.models.SpotPlacementScoresInput;
 import com.azure.resourcemanager.compute.recommender.models.SpotPlacementScoresResponse;
@@ -24,7 +25,7 @@ public final class SpotPlacementScoresPostWithResponseMockTests {
     @Test
     public void testPostWithResponse() throws Exception {
         String responseStr
-            = "{\"desiredLocations\":[\"nwsubisnj\",\"mpmngnzscxaqwoo\",\"hcbonqvpkvlr\"],\"desiredSizes\":[{\"sku\":\"ase\"},{\"sku\":\"heoflokeyyienjbd\"}],\"desiredCount\":1289591857,\"availabilityZones\":true,\"placementScores\":[{\"sku\":\"jp\",\"region\":\"masxazjpqyegu\",\"availabilityZone\":\"hb\",\"score\":\"hejjz\",\"isQuotaAvailable\":true},{\"sku\":\"dgwdslfhot\",\"region\":\"cynpwlbjnp\",\"availabilityZone\":\"cftadeh\",\"score\":\"ltyfsop\",\"isQuotaAvailable\":false},{\"sku\":\"esnzwde\",\"region\":\"avo\",\"availabilityZone\":\"zdmohctbqvu\",\"score\":\"xdn\",\"isQuotaAvailable\":false},{\"sku\":\"w\",\"region\":\"jjugwdkcglhslaz\",\"availabilityZone\":\"yggdtjixh\",\"score\":\"uofqwe\",\"isQuotaAvailable\":true}]}";
+            = "{\"desiredLocations\":[\"u\"],\"desiredSizes\":[{\"sku\":\"hrzayvvtpgvdf\"}],\"desiredCount\":1330318957,\"availabilityZones\":true,\"placementScores\":[{\"sku\":\"tqxln\",\"region\":\"lefgugnxk\",\"availabilityZone\":\"dqmidtt\",\"score\":\"Medium\",\"placementPreference\":2050810494},{\"sku\":\"rabhjybigeho\",\"region\":\"bowsk\",\"availabilityZone\":\"yktz\",\"score\":\"InsufficientQuota\",\"placementPreference\":227486860},{\"sku\":\"gqywgndrv\",\"region\":\"hzgpphrcgyncocpe\",\"availabilityZone\":\"vmmcoofs\",\"score\":\"RestrictedSkuNotAvailable\",\"placementPreference\":164546469},{\"sku\":\"bmqj\",\"region\":\"bcypmi\",\"availabilityZone\":\"w\",\"score\":\"Medium\",\"placementPreference\":1398219854}]}";
 
         HttpClient httpClient
             = response -> Mono.just(new MockHttpResponse(response, 200, responseStr.getBytes(StandardCharsets.UTF_8)));
@@ -34,21 +35,24 @@ public final class SpotPlacementScoresPostWithResponseMockTests {
                 new AzureProfile("", "", AzureCloud.AZURE_PUBLIC_CLOUD));
 
         SpotPlacementScoresResponse response = manager.spotPlacementScores()
-            .postWithResponse("lzu", new SpotPlacementScoresInput().withDesiredLocations(Arrays.asList("fwnfnb"))
-                .withDesiredSizes(
-                    Arrays.asList(new ResourceSize().withSku("onlebxetqgtzxdpn"), new ResourceSize().withSku("qqwx")))
-                .withDesiredCount(19464895)
-                .withAvailabilityZones(false), com.azure.core.util.Context.NONE)
+            .postWithResponse("xibqeojnx",
+                new SpotPlacementScoresInput()
+                    .withDesiredLocations(Arrays.asList("vddntwn", "eic", "twnpzaoqvuhrhcf", "cyddglmjthjqk"))
+                    .withDesiredSizes(Arrays.asList(new ResourceSize().withSku("eicxmqciwqvhkhi"),
+                        new ResourceSize().withSku("igdtopbob")))
+                    .withDesiredCount(2040578673)
+                    .withAvailabilityZones(false),
+                com.azure.core.util.Context.NONE)
             .getValue();
 
-        Assertions.assertEquals("nwsubisnj", response.desiredLocations().get(0));
-        Assertions.assertEquals("ase", response.desiredSizes().get(0).sku());
-        Assertions.assertEquals(1289591857, response.desiredCount());
+        Assertions.assertEquals("u", response.desiredLocations().get(0));
+        Assertions.assertEquals("hrzayvvtpgvdf", response.desiredSizes().get(0).sku());
+        Assertions.assertEquals(1330318957, response.desiredCount());
         Assertions.assertTrue(response.availabilityZones());
-        Assertions.assertEquals("jp", response.placementScores().get(0).sku());
-        Assertions.assertEquals("masxazjpqyegu", response.placementScores().get(0).region());
-        Assertions.assertEquals("hb", response.placementScores().get(0).availabilityZone());
-        Assertions.assertEquals("hejjz", response.placementScores().get(0).score());
-        Assertions.assertTrue(response.placementScores().get(0).isQuotaAvailable());
+        Assertions.assertEquals("tqxln", response.placementScores().get(0).sku());
+        Assertions.assertEquals("lefgugnxk", response.placementScores().get(0).region());
+        Assertions.assertEquals("dqmidtt", response.placementScores().get(0).availabilityZone());
+        Assertions.assertEquals(PlacementScoreValue.MEDIUM, response.placementScores().get(0).score());
+        Assertions.assertEquals(2050810494, response.placementScores().get(0).placementPreference());
     }
 }

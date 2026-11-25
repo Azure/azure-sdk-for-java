@@ -11,7 +11,7 @@ import com.azure.resourcemanager.newrelicobservability.models.ConfigurationName;
  */
 public final class MonitoredSubscriptionsCreateOrUpdateSamples {
     /*
-     * x-ms-original-file: 2025-05-01-preview/MonitoredSubscriptions_CreateOrUpdate.json
+     * x-ms-original-file: 2026-06-01/MonitoredSubscriptions_CreateOrUpdate.json
      */
     /**
      * Sample code: Monitors_AddMonitoredSubscriptions.

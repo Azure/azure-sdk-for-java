@@ -76,6 +76,11 @@ import reactor.netty.http.websocket.WebsocketOutbound;
  * the internal session.
  * </p>
  *
+ * <p>
+ * WebSocket handshake redirects are not followed to prevent credentials from being forwarded to another endpoint.
+ * Configure the client with the final service endpoint.
+ * </p>
+ *
  * <p><strong>Thread Safety:</strong></p>
  * This class is thread-safe and supports concurrent operations.
  *
@@ -180,7 +185,7 @@ public final class VoiceLiveSessionAsyncClient implements AsyncCloseable, AutoCl
                     logConnectionDetails(requestHeaders);
                     return HttpClient.create()
                         .resolver(io.netty.resolver.DefaultAddressResolverGroup.INSTANCE)
-                        .followRedirect(true)
+                        .followRedirect(false)
                         .headers(nettyHeaders -> {
                             for (HttpHeader header : requestHeaders) {
                                 nettyHeaders.set(header.getName(), header.getValue());

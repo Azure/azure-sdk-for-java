@@ -3,6 +3,7 @@
 
 package com.azure.resourcemanager.resources;
 
+import com.azure.core.test.annotation.DoNotRecord;
 import com.azure.resourcemanager.resources.models.Feature;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.Test;
@@ -12,6 +13,8 @@ import java.util.stream.Collectors;
 
 public class FeaturesTests extends ResourceManagementTest {
 
+    // Feature availability and registration state are subscription-specific.
+    @DoNotRecord(skipInPlayback = true)
     @Test
     public void canListAndRegisterFeature() {
         List<Feature> features = resourceClient.features().list().stream().collect(Collectors.toList());

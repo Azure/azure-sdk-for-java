@@ -113,10 +113,7 @@ public final class DedicatedCapacityImpl
     }
 
     public DedicatedCapacity create() {
-        this.innerObject = serviceManager.serviceClient()
-            .getCapacities()
-            .create(resourceGroupName, dedicatedCapacityName, this.innerModel(), Context.NONE);
-        return this;
+        return this.create(Context.NONE);
     }
 
     public DedicatedCapacity create(Context context) {
@@ -139,10 +136,7 @@ public final class DedicatedCapacityImpl
     }
 
     public DedicatedCapacity apply() {
-        this.innerObject = serviceManager.serviceClient()
-            .getCapacities()
-            .update(resourceGroupName, dedicatedCapacityName, updateCapacityUpdateParameters, Context.NONE);
-        return this;
+        return this.apply(Context.NONE);
     }
 
     public DedicatedCapacity apply(Context context) {
@@ -156,16 +150,16 @@ public final class DedicatedCapacityImpl
         com.azure.resourcemanager.powerbidedicated.PowerBIDedicatedManager serviceManager) {
         this.innerObject = innerObject;
         this.serviceManager = serviceManager;
-        this.resourceGroupName = ResourceManagerUtils.getValueFromIdByName(innerObject.id(), "resourceGroups");
-        this.dedicatedCapacityName = ResourceManagerUtils.getValueFromIdByName(innerObject.id(), "capacities");
+        this.resourceGroupName = ResourceManagerUtils.getValueFromIdByParameterName(innerObject.id(),
+            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.PowerBIDedicated/capacities/{dedicatedCapacityName}",
+            "resourceGroupName");
+        this.dedicatedCapacityName = ResourceManagerUtils.getValueFromIdByParameterName(innerObject.id(),
+            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.PowerBIDedicated/capacities/{dedicatedCapacityName}",
+            "dedicatedCapacityName");
     }
 
     public DedicatedCapacity refresh() {
-        this.innerObject = serviceManager.serviceClient()
-            .getCapacities()
-            .getByResourceGroupWithResponse(resourceGroupName, dedicatedCapacityName, Context.NONE)
-            .getValue();
-        return this;
+        return this.refresh(Context.NONE);
     }
 
     public DedicatedCapacity refresh(Context context) {

@@ -63,10 +63,7 @@ public final class ManagedNetworkSettingsPropertiesBasicResourceImpl
     }
 
     public ManagedNetworkSettingsPropertiesBasicResource create() {
-        this.innerObject = serviceManager.serviceClient()
-            .getManagedNetworkSettingsOperations()
-            .put(resourceGroupName, accountName, managedNetworkName, this.innerModel(), Context.NONE);
-        return this;
+        return this.create(Context.NONE);
     }
 
     public ManagedNetworkSettingsPropertiesBasicResource create(Context context) {
@@ -88,10 +85,7 @@ public final class ManagedNetworkSettingsPropertiesBasicResourceImpl
     }
 
     public ManagedNetworkSettingsPropertiesBasicResource apply() {
-        this.innerObject = serviceManager.serviceClient()
-            .getManagedNetworkSettingsOperations()
-            .patch(resourceGroupName, accountName, managedNetworkName, this.innerModel(), Context.NONE);
-        return this;
+        return this.apply(Context.NONE);
     }
 
     public ManagedNetworkSettingsPropertiesBasicResource apply(Context context) {
@@ -105,17 +99,19 @@ public final class ManagedNetworkSettingsPropertiesBasicResourceImpl
         com.azure.resourcemanager.cognitiveservices.CognitiveServicesManager serviceManager) {
         this.innerObject = innerObject;
         this.serviceManager = serviceManager;
-        this.resourceGroupName = ResourceManagerUtils.getValueFromIdByName(innerObject.id(), "resourceGroups");
-        this.accountName = ResourceManagerUtils.getValueFromIdByName(innerObject.id(), "accounts");
-        this.managedNetworkName = ResourceManagerUtils.getValueFromIdByName(innerObject.id(), "managedNetworks");
+        this.resourceGroupName = ResourceManagerUtils.getValueFromIdByParameterName(innerObject.id(),
+            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.CognitiveServices/accounts/{accountName}/managedNetworks/{managedNetworkName}",
+            "resourceGroupName");
+        this.accountName = ResourceManagerUtils.getValueFromIdByParameterName(innerObject.id(),
+            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.CognitiveServices/accounts/{accountName}/managedNetworks/{managedNetworkName}",
+            "accountName");
+        this.managedNetworkName = ResourceManagerUtils.getValueFromIdByParameterName(innerObject.id(),
+            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.CognitiveServices/accounts/{accountName}/managedNetworks/{managedNetworkName}",
+            "managedNetworkName");
     }
 
     public ManagedNetworkSettingsPropertiesBasicResource refresh() {
-        this.innerObject = serviceManager.serviceClient()
-            .getManagedNetworkSettingsOperations()
-            .getWithResponse(resourceGroupName, accountName, managedNetworkName, Context.NONE)
-            .getValue();
-        return this;
+        return this.refresh(Context.NONE);
     }
 
     public ManagedNetworkSettingsPropertiesBasicResource refresh(Context context) {

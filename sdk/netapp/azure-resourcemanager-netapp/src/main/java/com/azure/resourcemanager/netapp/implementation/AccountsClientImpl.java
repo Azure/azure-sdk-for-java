@@ -255,6 +255,24 @@ public final class AccountsClientImpl implements AccountsClient {
             @PathParam("resourceGroupName") String resourceGroupName, @PathParam("accountName") String accountName,
             @BodyParam("application/json") ChangeKeyVault body, Context context);
 
+        @Headers({ "Accept: application/json;q=0.9", "Content-Type: application/json" })
+        @Post("/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.NetApp/netAppAccounts/{accountName}/refreshLdapBindPassword")
+        @ExpectedResponses({ 202 })
+        @UnexpectedResponseExceptionType(ManagementException.class)
+        Mono<Response<Flux<ByteBuffer>>> refreshLdapBindPassword(@HostParam("endpoint") String endpoint,
+            @QueryParam("api-version") String apiVersion, @PathParam("subscriptionId") String subscriptionId,
+            @PathParam("resourceGroupName") String resourceGroupName, @PathParam("accountName") String accountName,
+            Context context);
+
+        @Headers({ "Accept: application/json;q=0.9", "Content-Type: application/json" })
+        @Post("/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.NetApp/netAppAccounts/{accountName}/refreshLdapBindPassword")
+        @ExpectedResponses({ 202 })
+        @UnexpectedResponseExceptionType(ManagementException.class)
+        Response<BinaryData> refreshLdapBindPasswordSync(@HostParam("endpoint") String endpoint,
+            @QueryParam("api-version") String apiVersion, @PathParam("subscriptionId") String subscriptionId,
+            @PathParam("resourceGroupName") String resourceGroupName, @PathParam("accountName") String accountName,
+            Context context);
+
         @Headers({ "Content-Type: application/json" })
         @Get("{nextLink}")
         @ExpectedResponses({ 200 })
@@ -337,17 +355,7 @@ public final class AccountsClientImpl implements AccountsClient {
             .flatMap(res -> Mono.justOrEmpty(res.getValue()));
     }
 
-    /**
-     * Get the NetApp account.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param accountName The name of the NetApp account.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the NetApp account along with {@link Response}.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Response<NetAppAccountInner> getByResourceGroupWithResponse(String resourceGroupName, String accountName,
         Context context) {
@@ -374,16 +382,7 @@ public final class AccountsClientImpl implements AccountsClient {
             this.client.getSubscriptionId(), resourceGroupName, accountName, accept, context);
     }
 
-    /**
-     * Get the NetApp account.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param accountName The name of the NetApp account.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the NetApp account.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public NetAppAccountInner getByResourceGroup(String resourceGroupName, String accountName) {
         return getByResourceGroupWithResponse(resourceGroupName, accountName, Context.NONE).getValue();
@@ -445,33 +444,7 @@ public final class AccountsClientImpl implements AccountsClient {
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Response<BinaryData> createOrUpdateWithResponse(String resourceGroupName, String accountName,
         NetAppAccountInner body) {
-        if (this.client.getEndpoint() == null) {
-            throw LOGGER.atError()
-                .log(new IllegalArgumentException(
-                    "Parameter this.client.getEndpoint() is required and cannot be null."));
-        }
-        if (this.client.getSubscriptionId() == null) {
-            throw LOGGER.atError()
-                .log(new IllegalArgumentException(
-                    "Parameter this.client.getSubscriptionId() is required and cannot be null."));
-        }
-        if (resourceGroupName == null) {
-            throw LOGGER.atError()
-                .log(new IllegalArgumentException("Parameter resourceGroupName is required and cannot be null."));
-        }
-        if (accountName == null) {
-            throw LOGGER.atError()
-                .log(new IllegalArgumentException("Parameter accountName is required and cannot be null."));
-        }
-        if (body == null) {
-            throw LOGGER.atError().log(new IllegalArgumentException("Parameter body is required and cannot be null."));
-        } else {
-            body.validate();
-        }
-        final String contentType = "application/json";
-        final String accept = "application/json";
-        return service.createOrUpdateSync(this.client.getEndpoint(), this.client.getApiVersion(),
-            this.client.getSubscriptionId(), resourceGroupName, accountName, contentType, accept, body, Context.NONE);
+        return createOrUpdateWithResponse(resourceGroupName, accountName, body, Context.NONE);
     }
 
     /**
@@ -537,37 +510,14 @@ public final class AccountsClientImpl implements AccountsClient {
             NetAppAccountInner.class, NetAppAccountInner.class, this.client.getContext());
     }
 
-    /**
-     * Create or update the specified NetApp account within the resource group.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param accountName The name of the NetApp account.
-     * @param body NetApp Account object supplied in the body of the operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the {@link SyncPoller} for polling of netApp account resource.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public SyncPoller<PollResult<NetAppAccountInner>, NetAppAccountInner> beginCreateOrUpdate(String resourceGroupName,
         String accountName, NetAppAccountInner body) {
-        Response<BinaryData> response = createOrUpdateWithResponse(resourceGroupName, accountName, body);
-        return this.client.<NetAppAccountInner, NetAppAccountInner>getLroResult(response, NetAppAccountInner.class,
-            NetAppAccountInner.class, Context.NONE);
+        return beginCreateOrUpdate(resourceGroupName, accountName, body, Context.NONE);
     }
 
-    /**
-     * Create or update the specified NetApp account within the resource group.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param accountName The name of the NetApp account.
-     * @param body NetApp Account object supplied in the body of the operation.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the {@link SyncPoller} for polling of netApp account resource.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public SyncPoller<PollResult<NetAppAccountInner>, NetAppAccountInner> beginCreateOrUpdate(String resourceGroupName,
         String accountName, NetAppAccountInner body, Context context) {
@@ -594,38 +544,17 @@ public final class AccountsClientImpl implements AccountsClient {
             .flatMap(this.client::getLroFinalResultOrError);
     }
 
-    /**
-     * Create or update the specified NetApp account within the resource group.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param accountName The name of the NetApp account.
-     * @param body NetApp Account object supplied in the body of the operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return netApp account resource.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public NetAppAccountInner createOrUpdate(String resourceGroupName, String accountName, NetAppAccountInner body) {
-        return beginCreateOrUpdate(resourceGroupName, accountName, body).getFinalResult();
+        return createOrUpdate(resourceGroupName, accountName, body, Context.NONE);
     }
 
-    /**
-     * Create or update the specified NetApp account within the resource group.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param accountName The name of the NetApp account.
-     * @param body NetApp Account object supplied in the body of the operation.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return netApp account resource.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public NetAppAccountInner createOrUpdate(String resourceGroupName, String accountName, NetAppAccountInner body,
         Context context) {
-        return beginCreateOrUpdate(resourceGroupName, accountName, body, context).getFinalResult();
+        return this.client.getLroFinalResultOrError(beginCreateOrUpdate(resourceGroupName, accountName, body, context));
     }
 
     /**
@@ -684,33 +613,7 @@ public final class AccountsClientImpl implements AccountsClient {
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Response<BinaryData> updateWithResponse(String resourceGroupName, String accountName,
         NetAppAccountPatch body) {
-        if (this.client.getEndpoint() == null) {
-            throw LOGGER.atError()
-                .log(new IllegalArgumentException(
-                    "Parameter this.client.getEndpoint() is required and cannot be null."));
-        }
-        if (this.client.getSubscriptionId() == null) {
-            throw LOGGER.atError()
-                .log(new IllegalArgumentException(
-                    "Parameter this.client.getSubscriptionId() is required and cannot be null."));
-        }
-        if (resourceGroupName == null) {
-            throw LOGGER.atError()
-                .log(new IllegalArgumentException("Parameter resourceGroupName is required and cannot be null."));
-        }
-        if (accountName == null) {
-            throw LOGGER.atError()
-                .log(new IllegalArgumentException("Parameter accountName is required and cannot be null."));
-        }
-        if (body == null) {
-            throw LOGGER.atError().log(new IllegalArgumentException("Parameter body is required and cannot be null."));
-        } else {
-            body.validate();
-        }
-        final String contentType = "application/json";
-        final String accept = "application/json";
-        return service.updateSync(this.client.getEndpoint(), this.client.getApiVersion(),
-            this.client.getSubscriptionId(), resourceGroupName, accountName, contentType, accept, body, Context.NONE);
+        return updateWithResponse(resourceGroupName, accountName, body, Context.NONE);
     }
 
     /**
@@ -776,37 +679,14 @@ public final class AccountsClientImpl implements AccountsClient {
             NetAppAccountInner.class, NetAppAccountInner.class, this.client.getContext());
     }
 
-    /**
-     * Patch the specified NetApp account.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param accountName The name of the NetApp account.
-     * @param body NetApp Account object supplied in the body of the operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the {@link SyncPoller} for polling of netApp account resource.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public SyncPoller<PollResult<NetAppAccountInner>, NetAppAccountInner> beginUpdate(String resourceGroupName,
         String accountName, NetAppAccountPatch body) {
-        Response<BinaryData> response = updateWithResponse(resourceGroupName, accountName, body);
-        return this.client.<NetAppAccountInner, NetAppAccountInner>getLroResult(response, NetAppAccountInner.class,
-            NetAppAccountInner.class, Context.NONE);
+        return beginUpdate(resourceGroupName, accountName, body, Context.NONE);
     }
 
-    /**
-     * Patch the specified NetApp account.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param accountName The name of the NetApp account.
-     * @param body NetApp Account object supplied in the body of the operation.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the {@link SyncPoller} for polling of netApp account resource.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public SyncPoller<PollResult<NetAppAccountInner>, NetAppAccountInner> beginUpdate(String resourceGroupName,
         String accountName, NetAppAccountPatch body, Context context) {
@@ -833,38 +713,17 @@ public final class AccountsClientImpl implements AccountsClient {
             .flatMap(this.client::getLroFinalResultOrError);
     }
 
-    /**
-     * Patch the specified NetApp account.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param accountName The name of the NetApp account.
-     * @param body NetApp Account object supplied in the body of the operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return netApp account resource.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public NetAppAccountInner update(String resourceGroupName, String accountName, NetAppAccountPatch body) {
-        return beginUpdate(resourceGroupName, accountName, body).getFinalResult();
+        return update(resourceGroupName, accountName, body, Context.NONE);
     }
 
-    /**
-     * Patch the specified NetApp account.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param accountName The name of the NetApp account.
-     * @param body NetApp Account object supplied in the body of the operation.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return netApp account resource.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public NetAppAccountInner update(String resourceGroupName, String accountName, NetAppAccountPatch body,
         Context context) {
-        return beginUpdate(resourceGroupName, accountName, body, context).getFinalResult();
+        return this.client.getLroFinalResultOrError(beginUpdate(resourceGroupName, accountName, body, context));
     }
 
     /**
@@ -912,26 +771,7 @@ public final class AccountsClientImpl implements AccountsClient {
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Response<BinaryData> deleteWithResponse(String resourceGroupName, String accountName) {
-        if (this.client.getEndpoint() == null) {
-            throw LOGGER.atError()
-                .log(new IllegalArgumentException(
-                    "Parameter this.client.getEndpoint() is required and cannot be null."));
-        }
-        if (this.client.getSubscriptionId() == null) {
-            throw LOGGER.atError()
-                .log(new IllegalArgumentException(
-                    "Parameter this.client.getSubscriptionId() is required and cannot be null."));
-        }
-        if (resourceGroupName == null) {
-            throw LOGGER.atError()
-                .log(new IllegalArgumentException("Parameter resourceGroupName is required and cannot be null."));
-        }
-        if (accountName == null) {
-            throw LOGGER.atError()
-                .log(new IllegalArgumentException("Parameter accountName is required and cannot be null."));
-        }
-        return service.deleteSync(this.client.getEndpoint(), this.client.getApiVersion(),
-            this.client.getSubscriptionId(), resourceGroupName, accountName, Context.NONE);
+        return deleteWithResponse(resourceGroupName, accountName, Context.NONE);
     }
 
     /**
@@ -986,33 +826,13 @@ public final class AccountsClientImpl implements AccountsClient {
             this.client.getContext());
     }
 
-    /**
-     * Delete the specified NetApp account.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param accountName The name of the NetApp account.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the {@link SyncPoller} for polling of long-running operation.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public SyncPoller<PollResult<Void>, Void> beginDelete(String resourceGroupName, String accountName) {
-        Response<BinaryData> response = deleteWithResponse(resourceGroupName, accountName);
-        return this.client.<Void, Void>getLroResult(response, Void.class, Void.class, Context.NONE);
+        return beginDelete(resourceGroupName, accountName, Context.NONE);
     }
 
-    /**
-     * Delete the specified NetApp account.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param accountName The name of the NetApp account.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the {@link SyncPoller} for polling of long-running operation.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public SyncPoller<PollResult<Void>, Void> beginDelete(String resourceGroupName, String accountName,
         Context context) {
@@ -1035,33 +855,16 @@ public final class AccountsClientImpl implements AccountsClient {
         return beginDeleteAsync(resourceGroupName, accountName).last().flatMap(this.client::getLroFinalResultOrError);
     }
 
-    /**
-     * Delete the specified NetApp account.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param accountName The name of the NetApp account.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public void delete(String resourceGroupName, String accountName) {
-        beginDelete(resourceGroupName, accountName).getFinalResult();
+        delete(resourceGroupName, accountName, Context.NONE);
     }
 
-    /**
-     * Delete the specified NetApp account.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param accountName The name of the NetApp account.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public void delete(String resourceGroupName, String accountName, Context context) {
-        beginDelete(resourceGroupName, accountName, context).getFinalResult();
+        this.client.getLroFinalResultOrError(beginDelete(resourceGroupName, accountName, context));
     }
 
     /**
@@ -1123,25 +926,7 @@ public final class AccountsClientImpl implements AccountsClient {
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private PagedResponse<NetAppAccountInner> listByResourceGroupSinglePage(String resourceGroupName) {
-        if (this.client.getEndpoint() == null) {
-            throw LOGGER.atError()
-                .log(new IllegalArgumentException(
-                    "Parameter this.client.getEndpoint() is required and cannot be null."));
-        }
-        if (this.client.getSubscriptionId() == null) {
-            throw LOGGER.atError()
-                .log(new IllegalArgumentException(
-                    "Parameter this.client.getSubscriptionId() is required and cannot be null."));
-        }
-        if (resourceGroupName == null) {
-            throw LOGGER.atError()
-                .log(new IllegalArgumentException("Parameter resourceGroupName is required and cannot be null."));
-        }
-        final String accept = "application/json";
-        Response<NetAppAccountList> res = service.listByResourceGroupSync(this.client.getEndpoint(),
-            this.client.getApiVersion(), this.client.getSubscriptionId(), resourceGroupName, accept, Context.NONE);
-        return new PagedResponseBase<>(res.getRequest(), res.getStatusCode(), res.getHeaders(), res.getValue().value(),
-            res.getValue().nextLink(), null);
+        return listByResourceGroupSinglePage(resourceGroupName, Context.NONE);
     }
 
     /**
@@ -1177,31 +962,13 @@ public final class AccountsClientImpl implements AccountsClient {
             res.getValue().nextLink(), null);
     }
 
-    /**
-     * List and describe all NetApp accounts in the resource group.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return list of NetApp account resources as paginated response with {@link PagedIterable}.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.COLLECTION)
     public PagedIterable<NetAppAccountInner> listByResourceGroup(String resourceGroupName) {
-        return new PagedIterable<>(() -> listByResourceGroupSinglePage(resourceGroupName),
-            nextLink -> listNextSinglePage(nextLink));
+        return listByResourceGroup(resourceGroupName, Context.NONE);
     }
 
-    /**
-     * List and describe all NetApp accounts in the resource group.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return list of NetApp account resources as paginated response with {@link PagedIterable}.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.COLLECTION)
     public PagedIterable<NetAppAccountInner> listByResourceGroup(String resourceGroupName, Context context) {
         return new PagedIterable<>(() -> listByResourceGroupSinglePage(resourceGroupName, context),
@@ -1257,21 +1024,7 @@ public final class AccountsClientImpl implements AccountsClient {
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private PagedResponse<NetAppAccountInner> listSinglePage() {
-        if (this.client.getEndpoint() == null) {
-            throw LOGGER.atError()
-                .log(new IllegalArgumentException(
-                    "Parameter this.client.getEndpoint() is required and cannot be null."));
-        }
-        if (this.client.getSubscriptionId() == null) {
-            throw LOGGER.atError()
-                .log(new IllegalArgumentException(
-                    "Parameter this.client.getSubscriptionId() is required and cannot be null."));
-        }
-        final String accept = "application/json";
-        Response<NetAppAccountList> res = service.listSync(this.client.getEndpoint(), this.client.getApiVersion(),
-            this.client.getSubscriptionId(), accept, Context.NONE);
-        return new PagedResponseBase<>(res.getRequest(), res.getStatusCode(), res.getHeaders(), res.getValue().value(),
-            res.getValue().nextLink(), null);
+        return listSinglePage(Context.NONE);
     }
 
     /**
@@ -1302,27 +1055,13 @@ public final class AccountsClientImpl implements AccountsClient {
             res.getValue().nextLink(), null);
     }
 
-    /**
-     * List and describe all NetApp accounts in the subscription.
-     * 
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return list of NetApp account resources as paginated response with {@link PagedIterable}.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.COLLECTION)
     public PagedIterable<NetAppAccountInner> list() {
-        return new PagedIterable<>(() -> listSinglePage(), nextLink -> listBySubscriptionNextSinglePage(nextLink));
+        return list(Context.NONE);
     }
 
-    /**
-     * List and describe all NetApp accounts in the subscription.
-     * 
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return list of NetApp account resources as paginated response with {@link PagedIterable}.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.COLLECTION)
     public PagedIterable<NetAppAccountInner> list(Context context) {
         return new PagedIterable<>(() -> listSinglePage(context),
@@ -1377,26 +1116,7 @@ public final class AccountsClientImpl implements AccountsClient {
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Response<BinaryData> renewCredentialsWithResponse(String resourceGroupName, String accountName) {
-        if (this.client.getEndpoint() == null) {
-            throw LOGGER.atError()
-                .log(new IllegalArgumentException(
-                    "Parameter this.client.getEndpoint() is required and cannot be null."));
-        }
-        if (this.client.getSubscriptionId() == null) {
-            throw LOGGER.atError()
-                .log(new IllegalArgumentException(
-                    "Parameter this.client.getSubscriptionId() is required and cannot be null."));
-        }
-        if (resourceGroupName == null) {
-            throw LOGGER.atError()
-                .log(new IllegalArgumentException("Parameter resourceGroupName is required and cannot be null."));
-        }
-        if (accountName == null) {
-            throw LOGGER.atError()
-                .log(new IllegalArgumentException("Parameter accountName is required and cannot be null."));
-        }
-        return service.renewCredentialsSync(this.client.getEndpoint(), this.client.getApiVersion(),
-            this.client.getSubscriptionId(), resourceGroupName, accountName, Context.NONE);
+        return renewCredentialsWithResponse(resourceGroupName, accountName, Context.NONE);
     }
 
     /**
@@ -1455,35 +1175,13 @@ public final class AccountsClientImpl implements AccountsClient {
             this.client.getContext());
     }
 
-    /**
-     * Renew identity credentials that are used to authenticate to key vault, for customer-managed key encryption. If
-     * encryption.identity.principalId does not match identity.principalId, running this operation will fix it.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param accountName The name of the NetApp account.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the {@link SyncPoller} for polling of long-running operation.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public SyncPoller<PollResult<Void>, Void> beginRenewCredentials(String resourceGroupName, String accountName) {
-        Response<BinaryData> response = renewCredentialsWithResponse(resourceGroupName, accountName);
-        return this.client.<Void, Void>getLroResult(response, Void.class, Void.class, Context.NONE);
+        return beginRenewCredentials(resourceGroupName, accountName, Context.NONE);
     }
 
-    /**
-     * Renew identity credentials that are used to authenticate to key vault, for customer-managed key encryption. If
-     * encryption.identity.principalId does not match identity.principalId, running this operation will fix it.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param accountName The name of the NetApp account.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the {@link SyncPoller} for polling of long-running operation.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public SyncPoller<PollResult<Void>, Void> beginRenewCredentials(String resourceGroupName, String accountName,
         Context context) {
@@ -1508,35 +1206,16 @@ public final class AccountsClientImpl implements AccountsClient {
             .flatMap(this.client::getLroFinalResultOrError);
     }
 
-    /**
-     * Renew identity credentials that are used to authenticate to key vault, for customer-managed key encryption. If
-     * encryption.identity.principalId does not match identity.principalId, running this operation will fix it.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param accountName The name of the NetApp account.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public void renewCredentials(String resourceGroupName, String accountName) {
-        beginRenewCredentials(resourceGroupName, accountName).getFinalResult();
+        renewCredentials(resourceGroupName, accountName, Context.NONE);
     }
 
-    /**
-     * Renew identity credentials that are used to authenticate to key vault, for customer-managed key encryption. If
-     * encryption.identity.principalId does not match identity.principalId, running this operation will fix it.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param accountName The name of the NetApp account.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public void renewCredentials(String resourceGroupName, String accountName, Context context) {
-        beginRenewCredentials(resourceGroupName, accountName, context).getFinalResult();
+        this.client.getLroFinalResultOrError(beginRenewCredentials(resourceGroupName, accountName, context));
     }
 
     /**
@@ -1593,29 +1272,7 @@ public final class AccountsClientImpl implements AccountsClient {
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Response<BinaryData> transitionToCmkWithResponse(String resourceGroupName, String accountName,
         EncryptionTransitionRequest body) {
-        if (this.client.getEndpoint() == null) {
-            throw LOGGER.atError()
-                .log(new IllegalArgumentException(
-                    "Parameter this.client.getEndpoint() is required and cannot be null."));
-        }
-        if (this.client.getSubscriptionId() == null) {
-            throw LOGGER.atError()
-                .log(new IllegalArgumentException(
-                    "Parameter this.client.getSubscriptionId() is required and cannot be null."));
-        }
-        if (resourceGroupName == null) {
-            throw LOGGER.atError()
-                .log(new IllegalArgumentException("Parameter resourceGroupName is required and cannot be null."));
-        }
-        if (accountName == null) {
-            throw LOGGER.atError()
-                .log(new IllegalArgumentException("Parameter accountName is required and cannot be null."));
-        }
-        if (body != null) {
-            body.validate();
-        }
-        return service.transitionToCmkSync(this.client.getEndpoint(), this.client.getApiVersion(),
-            this.client.getSubscriptionId(), resourceGroupName, accountName, body, Context.NONE);
+        return transitionToCmkWithResponse(resourceGroupName, accountName, body, Context.NONE);
     }
 
     /**
@@ -1711,43 +1368,19 @@ public final class AccountsClientImpl implements AccountsClient {
      * @return the {@link SyncPoller} for polling of long-running operation.
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
-    public SyncPoller<PollResult<Void>, Void> beginTransitionToCmk(String resourceGroupName, String accountName,
+    private SyncPoller<PollResult<Void>, Void> beginTransitionToCmk(String resourceGroupName, String accountName,
         EncryptionTransitionRequest body) {
-        Response<BinaryData> response = transitionToCmkWithResponse(resourceGroupName, accountName, body);
-        return this.client.<Void, Void>getLroResult(response, Void.class, Void.class, Context.NONE);
+        return beginTransitionToCmk(resourceGroupName, accountName, body, Context.NONE);
     }
 
-    /**
-     * Transitions all volumes in a VNet to a different encryption key source (Microsoft-managed key or Azure Key
-     * Vault). Operation fails if targeted volumes share encryption sibling set with volumes from another account.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param accountName The name of the NetApp account.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the {@link SyncPoller} for polling of long-running operation.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public SyncPoller<PollResult<Void>, Void> beginTransitionToCmk(String resourceGroupName, String accountName) {
         final EncryptionTransitionRequest body = null;
-        Response<BinaryData> response = transitionToCmkWithResponse(resourceGroupName, accountName, body);
-        return this.client.<Void, Void>getLroResult(response, Void.class, Void.class, Context.NONE);
+        return beginTransitionToCmk(resourceGroupName, accountName, body, Context.NONE);
     }
 
-    /**
-     * Transitions all volumes in a VNet to a different encryption key source (Microsoft-managed key or Azure Key
-     * Vault). Operation fails if targeted volumes share encryption sibling set with volumes from another account.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param accountName The name of the NetApp account.
-     * @param body The required parameters to perform encryption transition.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the {@link SyncPoller} for polling of long-running operation.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public SyncPoller<PollResult<Void>, Void> beginTransitionToCmk(String resourceGroupName, String accountName,
         EncryptionTransitionRequest body, Context context) {
@@ -1792,38 +1425,18 @@ public final class AccountsClientImpl implements AccountsClient {
             .flatMap(this.client::getLroFinalResultOrError);
     }
 
-    /**
-     * Transitions all volumes in a VNet to a different encryption key source (Microsoft-managed key or Azure Key
-     * Vault). Operation fails if targeted volumes share encryption sibling set with volumes from another account.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param accountName The name of the NetApp account.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public void transitionToCmk(String resourceGroupName, String accountName) {
         final EncryptionTransitionRequest body = null;
-        beginTransitionToCmk(resourceGroupName, accountName, body).getFinalResult();
+        transitionToCmk(resourceGroupName, accountName, body, Context.NONE);
     }
 
-    /**
-     * Transitions all volumes in a VNet to a different encryption key source (Microsoft-managed key or Azure Key
-     * Vault). Operation fails if targeted volumes share encryption sibling set with volumes from another account.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param accountName The name of the NetApp account.
-     * @param body The required parameters to perform encryption transition.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public void transitionToCmk(String resourceGroupName, String accountName, EncryptionTransitionRequest body,
         Context context) {
-        beginTransitionToCmk(resourceGroupName, accountName, body, context).getFinalResult();
+        this.client.getLroFinalResultOrError(beginTransitionToCmk(resourceGroupName, accountName, body, context));
     }
 
     /**
@@ -1879,27 +1492,7 @@ public final class AccountsClientImpl implements AccountsClient {
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Response<BinaryData> getChangeKeyVaultInformationWithResponse(String resourceGroupName,
         String accountName) {
-        if (this.client.getEndpoint() == null) {
-            throw LOGGER.atError()
-                .log(new IllegalArgumentException(
-                    "Parameter this.client.getEndpoint() is required and cannot be null."));
-        }
-        if (this.client.getSubscriptionId() == null) {
-            throw LOGGER.atError()
-                .log(new IllegalArgumentException(
-                    "Parameter this.client.getSubscriptionId() is required and cannot be null."));
-        }
-        if (resourceGroupName == null) {
-            throw LOGGER.atError()
-                .log(new IllegalArgumentException("Parameter resourceGroupName is required and cannot be null."));
-        }
-        if (accountName == null) {
-            throw LOGGER.atError()
-                .log(new IllegalArgumentException("Parameter accountName is required and cannot be null."));
-        }
-        final String accept = "application/json";
-        return service.getChangeKeyVaultInformationSync(this.client.getEndpoint(), this.client.getApiVersion(),
-            this.client.getSubscriptionId(), resourceGroupName, accountName, accept, Context.NONE);
+        return getChangeKeyVaultInformationWithResponse(resourceGroupName, accountName, Context.NONE);
     }
 
     /**
@@ -1963,39 +1556,14 @@ public final class AccountsClientImpl implements AccountsClient {
             this.client.getContext());
     }
 
-    /**
-     * Contains data from encryption.keyVaultProperties as well as information about which private endpoint is used by
-     * each encryption sibling set. Response from this endpoint can be modified and used as request body for POST
-     * request.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param accountName The name of the NetApp account.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the {@link SyncPoller} for polling of long-running operation.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public SyncPoller<PollResult<GetKeyVaultStatusResponseInner>, GetKeyVaultStatusResponseInner>
         beginGetChangeKeyVaultInformation(String resourceGroupName, String accountName) {
-        Response<BinaryData> response = getChangeKeyVaultInformationWithResponse(resourceGroupName, accountName);
-        return this.client.<GetKeyVaultStatusResponseInner, GetKeyVaultStatusResponseInner>getLroResult(response,
-            GetKeyVaultStatusResponseInner.class, GetKeyVaultStatusResponseInner.class, Context.NONE);
+        return beginGetChangeKeyVaultInformation(resourceGroupName, accountName, Context.NONE);
     }
 
-    /**
-     * Contains data from encryption.keyVaultProperties as well as information about which private endpoint is used by
-     * each encryption sibling set. Response from this endpoint can be modified and used as request body for POST
-     * request.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param accountName The name of the NetApp account.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the {@link SyncPoller} for polling of long-running operation.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public SyncPoller<PollResult<GetKeyVaultStatusResponseInner>, GetKeyVaultStatusResponseInner>
         beginGetChangeKeyVaultInformation(String resourceGroupName, String accountName, Context context) {
@@ -2024,40 +1592,18 @@ public final class AccountsClientImpl implements AccountsClient {
             .flatMap(this.client::getLroFinalResultOrError);
     }
 
-    /**
-     * Contains data from encryption.keyVaultProperties as well as information about which private endpoint is used by
-     * each encryption sibling set. Response from this endpoint can be modified and used as request body for POST
-     * request.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param accountName The name of the NetApp account.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the response.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public GetKeyVaultStatusResponseInner getChangeKeyVaultInformation(String resourceGroupName, String accountName) {
-        return beginGetChangeKeyVaultInformation(resourceGroupName, accountName).getFinalResult();
+        return getChangeKeyVaultInformation(resourceGroupName, accountName, Context.NONE);
     }
 
-    /**
-     * Contains data from encryption.keyVaultProperties as well as information about which private endpoint is used by
-     * each encryption sibling set. Response from this endpoint can be modified and used as request body for POST
-     * request.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param accountName The name of the NetApp account.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the response.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public GetKeyVaultStatusResponseInner getChangeKeyVaultInformation(String resourceGroupName, String accountName,
         Context context) {
-        return beginGetChangeKeyVaultInformation(resourceGroupName, accountName, context).getFinalResult();
+        return this.client
+            .getLroFinalResultOrError(beginGetChangeKeyVaultInformation(resourceGroupName, accountName, context));
     }
 
     /**
@@ -2114,29 +1660,7 @@ public final class AccountsClientImpl implements AccountsClient {
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Response<BinaryData> changeKeyVaultWithResponse(String resourceGroupName, String accountName,
         ChangeKeyVault body) {
-        if (this.client.getEndpoint() == null) {
-            throw LOGGER.atError()
-                .log(new IllegalArgumentException(
-                    "Parameter this.client.getEndpoint() is required and cannot be null."));
-        }
-        if (this.client.getSubscriptionId() == null) {
-            throw LOGGER.atError()
-                .log(new IllegalArgumentException(
-                    "Parameter this.client.getSubscriptionId() is required and cannot be null."));
-        }
-        if (resourceGroupName == null) {
-            throw LOGGER.atError()
-                .log(new IllegalArgumentException("Parameter resourceGroupName is required and cannot be null."));
-        }
-        if (accountName == null) {
-            throw LOGGER.atError()
-                .log(new IllegalArgumentException("Parameter accountName is required and cannot be null."));
-        }
-        if (body != null) {
-            body.validate();
-        }
-        return service.changeKeyVaultSync(this.client.getEndpoint(), this.client.getApiVersion(),
-            this.client.getSubscriptionId(), resourceGroupName, accountName, body, Context.NONE);
+        return changeKeyVaultWithResponse(resourceGroupName, accountName, body, Context.NONE);
     }
 
     /**
@@ -2232,43 +1756,19 @@ public final class AccountsClientImpl implements AccountsClient {
      * @return the {@link SyncPoller} for polling of long-running operation.
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
-    public SyncPoller<PollResult<Void>, Void> beginChangeKeyVault(String resourceGroupName, String accountName,
+    private SyncPoller<PollResult<Void>, Void> beginChangeKeyVault(String resourceGroupName, String accountName,
         ChangeKeyVault body) {
-        Response<BinaryData> response = changeKeyVaultWithResponse(resourceGroupName, accountName, body);
-        return this.client.<Void, Void>getLroResult(response, Void.class, Void.class, Context.NONE);
+        return beginChangeKeyVault(resourceGroupName, accountName, body, Context.NONE);
     }
 
-    /**
-     * Affects existing volumes that are encrypted with Key Vault/Managed HSM, and new volumes. Supports HSM to Key
-     * Vault, Key Vault to HSM, HSM to HSM and Key Vault to Key Vault.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param accountName The name of the NetApp account.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the {@link SyncPoller} for polling of long-running operation.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public SyncPoller<PollResult<Void>, Void> beginChangeKeyVault(String resourceGroupName, String accountName) {
         final ChangeKeyVault body = null;
-        Response<BinaryData> response = changeKeyVaultWithResponse(resourceGroupName, accountName, body);
-        return this.client.<Void, Void>getLroResult(response, Void.class, Void.class, Context.NONE);
+        return beginChangeKeyVault(resourceGroupName, accountName, body, Context.NONE);
     }
 
-    /**
-     * Affects existing volumes that are encrypted with Key Vault/Managed HSM, and new volumes. Supports HSM to Key
-     * Vault, Key Vault to HSM, HSM to HSM and Key Vault to Key Vault.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param accountName The name of the NetApp account.
-     * @param body The required parameters to perform encryption migration.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the {@link SyncPoller} for polling of long-running operation.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public SyncPoller<PollResult<Void>, Void> beginChangeKeyVault(String resourceGroupName, String accountName,
         ChangeKeyVault body, Context context) {
@@ -2312,37 +1812,164 @@ public final class AccountsClientImpl implements AccountsClient {
             .flatMap(this.client::getLroFinalResultOrError);
     }
 
+    @Override
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public void changeKeyVault(String resourceGroupName, String accountName) {
+        final ChangeKeyVault body = null;
+        changeKeyVault(resourceGroupName, accountName, body, Context.NONE);
+    }
+
+    @Override
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public void changeKeyVault(String resourceGroupName, String accountName, ChangeKeyVault body, Context context) {
+        this.client.getLroFinalResultOrError(beginChangeKeyVault(resourceGroupName, accountName, body, context));
+    }
+
     /**
-     * Affects existing volumes that are encrypted with Key Vault/Managed HSM, and new volumes. Supports HSM to Key
-     * Vault, Key Vault to HSM, HSM to HSM and Key Vault to Key Vault.
+     * Refresh LDAP Bind DN password by fetching the latest password from Azure Key Vault.
      * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param accountName The name of the NetApp account.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return the {@link Response} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public void changeKeyVault(String resourceGroupName, String accountName) {
-        final ChangeKeyVault body = null;
-        beginChangeKeyVault(resourceGroupName, accountName, body).getFinalResult();
+    private Mono<Response<Flux<ByteBuffer>>> refreshLdapBindPasswordWithResponseAsync(String resourceGroupName,
+        String accountName) {
+        if (this.client.getEndpoint() == null) {
+            return Mono.error(
+                new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
+        }
+        if (this.client.getSubscriptionId() == null) {
+            return Mono.error(new IllegalArgumentException(
+                "Parameter this.client.getSubscriptionId() is required and cannot be null."));
+        }
+        if (resourceGroupName == null) {
+            return Mono
+                .error(new IllegalArgumentException("Parameter resourceGroupName is required and cannot be null."));
+        }
+        if (accountName == null) {
+            return Mono.error(new IllegalArgumentException("Parameter accountName is required and cannot be null."));
+        }
+        return FluxUtil
+            .withContext(context -> service.refreshLdapBindPassword(this.client.getEndpoint(),
+                this.client.getApiVersion(), this.client.getSubscriptionId(), resourceGroupName, accountName, context))
+            .contextWrite(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext()).readOnly()));
     }
 
     /**
-     * Affects existing volumes that are encrypted with Key Vault/Managed HSM, and new volumes. Supports HSM to Key
-     * Vault, Key Vault to HSM, HSM to HSM and Key Vault to Key Vault.
+     * Refresh LDAP Bind DN password by fetching the latest password from Azure Key Vault.
      * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param accountName The name of the NetApp account.
-     * @param body The required parameters to perform encryption migration.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return the response body along with {@link Response}.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    private Response<BinaryData> refreshLdapBindPasswordWithResponse(String resourceGroupName, String accountName) {
+        return refreshLdapBindPasswordWithResponse(resourceGroupName, accountName, Context.NONE);
+    }
+
+    /**
+     * Refresh LDAP Bind DN password by fetching the latest password from Azure Key Vault.
+     * 
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
+     * @param accountName The name of the NetApp account.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return the response body along with {@link Response}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public void changeKeyVault(String resourceGroupName, String accountName, ChangeKeyVault body, Context context) {
-        beginChangeKeyVault(resourceGroupName, accountName, body, context).getFinalResult();
+    private Response<BinaryData> refreshLdapBindPasswordWithResponse(String resourceGroupName, String accountName,
+        Context context) {
+        if (this.client.getEndpoint() == null) {
+            throw LOGGER.atError()
+                .log(new IllegalArgumentException(
+                    "Parameter this.client.getEndpoint() is required and cannot be null."));
+        }
+        if (this.client.getSubscriptionId() == null) {
+            throw LOGGER.atError()
+                .log(new IllegalArgumentException(
+                    "Parameter this.client.getSubscriptionId() is required and cannot be null."));
+        }
+        if (resourceGroupName == null) {
+            throw LOGGER.atError()
+                .log(new IllegalArgumentException("Parameter resourceGroupName is required and cannot be null."));
+        }
+        if (accountName == null) {
+            throw LOGGER.atError()
+                .log(new IllegalArgumentException("Parameter accountName is required and cannot be null."));
+        }
+        return service.refreshLdapBindPasswordSync(this.client.getEndpoint(), this.client.getApiVersion(),
+            this.client.getSubscriptionId(), resourceGroupName, accountName, context);
+    }
+
+    /**
+     * Refresh LDAP Bind DN password by fetching the latest password from Azure Key Vault.
+     * 
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
+     * @param accountName The name of the NetApp account.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return the {@link PollerFlux} for polling of long-running operation.
+     */
+    @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
+    private PollerFlux<PollResult<Void>, Void> beginRefreshLdapBindPasswordAsync(String resourceGroupName,
+        String accountName) {
+        Mono<Response<Flux<ByteBuffer>>> mono
+            = refreshLdapBindPasswordWithResponseAsync(resourceGroupName, accountName);
+        return this.client.<Void, Void>getLroResult(mono, this.client.getHttpPipeline(), Void.class, Void.class,
+            this.client.getContext());
+    }
+
+    @Override
+    @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
+    public SyncPoller<PollResult<Void>, Void> beginRefreshLdapBindPassword(String resourceGroupName,
+        String accountName) {
+        return beginRefreshLdapBindPassword(resourceGroupName, accountName, Context.NONE);
+    }
+
+    @Override
+    @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
+    public SyncPoller<PollResult<Void>, Void> beginRefreshLdapBindPassword(String resourceGroupName, String accountName,
+        Context context) {
+        Response<BinaryData> response = refreshLdapBindPasswordWithResponse(resourceGroupName, accountName, context);
+        return this.client.<Void, Void>getLroResult(response, Void.class, Void.class, context);
+    }
+
+    /**
+     * Refresh LDAP Bind DN password by fetching the latest password from Azure Key Vault.
+     * 
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
+     * @param accountName The name of the NetApp account.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return A {@link Mono} that completes when a successful response is received.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    private Mono<Void> refreshLdapBindPasswordAsync(String resourceGroupName, String accountName) {
+        return beginRefreshLdapBindPasswordAsync(resourceGroupName, accountName).last()
+            .flatMap(this.client::getLroFinalResultOrError);
+    }
+
+    @Override
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public void refreshLdapBindPassword(String resourceGroupName, String accountName) {
+        refreshLdapBindPassword(resourceGroupName, accountName, Context.NONE);
+    }
+
+    @Override
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public void refreshLdapBindPassword(String resourceGroupName, String accountName, Context context) {
+        this.client.getLroFinalResultOrError(beginRefreshLdapBindPassword(resourceGroupName, accountName, context));
     }
 
     /**
@@ -2382,20 +2009,7 @@ public final class AccountsClientImpl implements AccountsClient {
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private PagedResponse<NetAppAccountInner> listNextSinglePage(String nextLink) {
-        if (nextLink == null) {
-            throw LOGGER.atError()
-                .log(new IllegalArgumentException("Parameter nextLink is required and cannot be null."));
-        }
-        if (this.client.getEndpoint() == null) {
-            throw LOGGER.atError()
-                .log(new IllegalArgumentException(
-                    "Parameter this.client.getEndpoint() is required and cannot be null."));
-        }
-        final String accept = "application/json";
-        Response<NetAppAccountList> res
-            = service.listNextSync(nextLink, this.client.getEndpoint(), accept, Context.NONE);
-        return new PagedResponseBase<>(res.getRequest(), res.getStatusCode(), res.getHeaders(), res.getValue().value(),
-            res.getValue().nextLink(), null);
+        return listNextSinglePage(nextLink, Context.NONE);
     }
 
     /**
@@ -2464,20 +2078,7 @@ public final class AccountsClientImpl implements AccountsClient {
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private PagedResponse<NetAppAccountInner> listBySubscriptionNextSinglePage(String nextLink) {
-        if (nextLink == null) {
-            throw LOGGER.atError()
-                .log(new IllegalArgumentException("Parameter nextLink is required and cannot be null."));
-        }
-        if (this.client.getEndpoint() == null) {
-            throw LOGGER.atError()
-                .log(new IllegalArgumentException(
-                    "Parameter this.client.getEndpoint() is required and cannot be null."));
-        }
-        final String accept = "application/json";
-        Response<NetAppAccountList> res
-            = service.listBySubscriptionNextSync(nextLink, this.client.getEndpoint(), accept, Context.NONE);
-        return new PagedResponseBase<>(res.getRequest(), res.getStatusCode(), res.getHeaders(), res.getValue().value(),
-            res.getValue().nextLink(), null);
+        return listBySubscriptionNextSinglePage(nextLink, Context.NONE);
     }
 
     /**

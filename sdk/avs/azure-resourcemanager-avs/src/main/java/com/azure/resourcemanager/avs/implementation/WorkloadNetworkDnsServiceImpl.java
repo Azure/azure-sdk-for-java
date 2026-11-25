@@ -98,10 +98,7 @@ public final class WorkloadNetworkDnsServiceImpl
     }
 
     public WorkloadNetworkDnsService create() {
-        this.innerObject = serviceManager.serviceClient()
-            .getWorkloadNetworks()
-            .createDnsService(resourceGroupName, privateCloudName, dnsServiceId, this.innerModel(), Context.NONE);
-        return this;
+        return this.create(Context.NONE);
     }
 
     public WorkloadNetworkDnsService create(Context context) {
@@ -122,10 +119,7 @@ public final class WorkloadNetworkDnsServiceImpl
     }
 
     public WorkloadNetworkDnsService apply() {
-        this.innerObject = serviceManager.serviceClient()
-            .getWorkloadNetworks()
-            .updateDnsService(resourceGroupName, privateCloudName, dnsServiceId, this.innerModel(), Context.NONE);
-        return this;
+        return this.apply(Context.NONE);
     }
 
     public WorkloadNetworkDnsService apply(Context context) {
@@ -139,17 +133,19 @@ public final class WorkloadNetworkDnsServiceImpl
         com.azure.resourcemanager.avs.AvsManager serviceManager) {
         this.innerObject = innerObject;
         this.serviceManager = serviceManager;
-        this.resourceGroupName = ResourceManagerUtils.getValueFromIdByName(innerObject.id(), "resourceGroups");
-        this.privateCloudName = ResourceManagerUtils.getValueFromIdByName(innerObject.id(), "privateClouds");
-        this.dnsServiceId = ResourceManagerUtils.getValueFromIdByName(innerObject.id(), "dnsServices");
+        this.resourceGroupName = ResourceManagerUtils.getValueFromIdByParameterName(innerObject.id(),
+            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.AVS/privateClouds/{privateCloudName}/workloadNetworks/default/dnsServices/{dnsServiceId}",
+            "resourceGroupName");
+        this.privateCloudName = ResourceManagerUtils.getValueFromIdByParameterName(innerObject.id(),
+            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.AVS/privateClouds/{privateCloudName}/workloadNetworks/default/dnsServices/{dnsServiceId}",
+            "privateCloudName");
+        this.dnsServiceId = ResourceManagerUtils.getValueFromIdByParameterName(innerObject.id(),
+            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.AVS/privateClouds/{privateCloudName}/workloadNetworks/default/dnsServices/{dnsServiceId}",
+            "dnsServiceId");
     }
 
     public WorkloadNetworkDnsService refresh() {
-        this.innerObject = serviceManager.serviceClient()
-            .getWorkloadNetworks()
-            .getDnsServiceWithResponse(resourceGroupName, privateCloudName, dnsServiceId, Context.NONE)
-            .getValue();
-        return this;
+        return this.refresh(Context.NONE);
     }
 
     public WorkloadNetworkDnsService refresh(Context context) {

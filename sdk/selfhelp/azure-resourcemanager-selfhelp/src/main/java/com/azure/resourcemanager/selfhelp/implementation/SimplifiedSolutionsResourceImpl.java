@@ -22,6 +22,11 @@ public final class SimplifiedSolutionsResourceImpl
         com.azure.resourcemanager.selfhelp.SelfHelpManager serviceManager) {
         this.innerObject = innerObject;
         this.serviceManager = serviceManager;
+        this.scope = ResourceManagerUtils.getValueFromIdByParameterName(innerObject.id(),
+            "/{scope}/providers/Microsoft.Help/simplifiedSolutions/{simplifiedSolutionsResourceName}", "scope");
+        this.simplifiedSolutionsResourceName = ResourceManagerUtils.getValueFromIdByParameterName(innerObject.id(),
+            "/{scope}/providers/Microsoft.Help/simplifiedSolutions/{simplifiedSolutionsResourceName}",
+            "simplifiedSolutionsResourceName");
     }
 
     public String id() {
@@ -92,10 +97,7 @@ public final class SimplifiedSolutionsResourceImpl
     }
 
     public SimplifiedSolutionsResource create() {
-        this.innerObject = serviceManager.serviceClient()
-            .getSimplifiedSolutions()
-            .create(scope, simplifiedSolutionsResourceName, this.innerModel(), Context.NONE);
-        return this;
+        return this.create(Context.NONE);
     }
 
     public SimplifiedSolutionsResource create(Context context) {
@@ -112,11 +114,7 @@ public final class SimplifiedSolutionsResourceImpl
     }
 
     public SimplifiedSolutionsResource refresh() {
-        this.innerObject = serviceManager.serviceClient()
-            .getSimplifiedSolutions()
-            .getWithResponse(scope, simplifiedSolutionsResourceName, Context.NONE)
-            .getValue();
-        return this;
+        return this.refresh(Context.NONE);
     }
 
     public SimplifiedSolutionsResource refresh(Context context) {

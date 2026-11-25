@@ -51,12 +51,11 @@ public final class QuotaTransfersImpl implements QuotaTransfers {
     }
 
     public void delete(String targetProvider, String region, String transferName) {
-        this.serviceClient().delete(targetProvider, region, transferName);
+        this.deleteWithResponse(targetProvider, region, transferName, Context.NONE);
     }
 
     public PagedIterable<QuotaTransfer> list(String targetProvider, String region) {
-        PagedIterable<QuotaTransferInner> inner = this.serviceClient().list(targetProvider, region);
-        return ResourceManagerUtils.mapPage(inner, inner1 -> new QuotaTransferImpl(inner1, this.manager()));
+        return this.list(targetProvider, region, Context.NONE);
     }
 
     public PagedIterable<QuotaTransfer> list(String targetProvider, String region, Context context) {
@@ -82,78 +81,36 @@ public final class QuotaTransfersImpl implements QuotaTransfers {
     }
 
     public QuotaTransfer getById(String id) {
-        String targetProvider = ResourceManagerUtils.getValueFromIdByName(id, "providers");
-        if (targetProvider == null) {
-            throw LOGGER.logExceptionAsError(new IllegalArgumentException(
-                String.format("The resource ID '%s' is not valid. Missing path segment 'providers'.", id)));
-        }
-        String region = ResourceManagerUtils.getValueFromIdByName(id, "locations");
-        if (region == null) {
-            throw LOGGER.logExceptionAsError(new IllegalArgumentException(
-                String.format("The resource ID '%s' is not valid. Missing path segment 'locations'.", id)));
-        }
-        String transferName = ResourceManagerUtils.getValueFromIdByName(id, "quotaTransfers");
-        if (transferName == null) {
-            throw LOGGER.logExceptionAsError(new IllegalArgumentException(
-                String.format("The resource ID '%s' is not valid. Missing path segment 'quotaTransfers'.", id)));
-        }
-        return this.getWithResponse(targetProvider, region, transferName, Context.NONE).getValue();
+        return this.getByIdWithResponse(id, Context.NONE).getValue();
     }
 
     public Response<QuotaTransfer> getByIdWithResponse(String id, Context context) {
-        String targetProvider = ResourceManagerUtils.getValueFromIdByName(id, "providers");
-        if (targetProvider == null) {
-            throw LOGGER.logExceptionAsError(new IllegalArgumentException(
-                String.format("The resource ID '%s' is not valid. Missing path segment 'providers'.", id)));
-        }
-        String region = ResourceManagerUtils.getValueFromIdByName(id, "locations");
-        if (region == null) {
-            throw LOGGER.logExceptionAsError(new IllegalArgumentException(
-                String.format("The resource ID '%s' is not valid. Missing path segment 'locations'.", id)));
-        }
-        String transferName = ResourceManagerUtils.getValueFromIdByName(id, "quotaTransfers");
-        if (transferName == null) {
-            throw LOGGER.logExceptionAsError(new IllegalArgumentException(
-                String.format("The resource ID '%s' is not valid. Missing path segment 'quotaTransfers'.", id)));
-        }
+        String targetProvider = ResourceManagerUtils.getRequiredValueFromIdByParameterName(id,
+            "/subscriptions/{subscriptionId}/providers/{targetProvider}/locations/{region}/providers/Microsoft.Quota/quotaTransfers/{transferName}",
+            "targetProvider", "providers", LOGGER);
+        String region = ResourceManagerUtils.getRequiredValueFromIdByParameterName(id,
+            "/subscriptions/{subscriptionId}/providers/{targetProvider}/locations/{region}/providers/Microsoft.Quota/quotaTransfers/{transferName}",
+            "region", "locations", LOGGER);
+        String transferName = ResourceManagerUtils.getRequiredValueFromIdByParameterName(id,
+            "/subscriptions/{subscriptionId}/providers/{targetProvider}/locations/{region}/providers/Microsoft.Quota/quotaTransfers/{transferName}",
+            "transferName", "quotaTransfers", LOGGER);
         return this.getWithResponse(targetProvider, region, transferName, context);
     }
 
     public void deleteById(String id) {
-        String targetProvider = ResourceManagerUtils.getValueFromIdByName(id, "providers");
-        if (targetProvider == null) {
-            throw LOGGER.logExceptionAsError(new IllegalArgumentException(
-                String.format("The resource ID '%s' is not valid. Missing path segment 'providers'.", id)));
-        }
-        String region = ResourceManagerUtils.getValueFromIdByName(id, "locations");
-        if (region == null) {
-            throw LOGGER.logExceptionAsError(new IllegalArgumentException(
-                String.format("The resource ID '%s' is not valid. Missing path segment 'locations'.", id)));
-        }
-        String transferName = ResourceManagerUtils.getValueFromIdByName(id, "quotaTransfers");
-        if (transferName == null) {
-            throw LOGGER.logExceptionAsError(new IllegalArgumentException(
-                String.format("The resource ID '%s' is not valid. Missing path segment 'quotaTransfers'.", id)));
-        }
-        this.deleteWithResponse(targetProvider, region, transferName, Context.NONE);
+        this.deleteByIdWithResponse(id, Context.NONE);
     }
 
     public Response<Void> deleteByIdWithResponse(String id, Context context) {
-        String targetProvider = ResourceManagerUtils.getValueFromIdByName(id, "providers");
-        if (targetProvider == null) {
-            throw LOGGER.logExceptionAsError(new IllegalArgumentException(
-                String.format("The resource ID '%s' is not valid. Missing path segment 'providers'.", id)));
-        }
-        String region = ResourceManagerUtils.getValueFromIdByName(id, "locations");
-        if (region == null) {
-            throw LOGGER.logExceptionAsError(new IllegalArgumentException(
-                String.format("The resource ID '%s' is not valid. Missing path segment 'locations'.", id)));
-        }
-        String transferName = ResourceManagerUtils.getValueFromIdByName(id, "quotaTransfers");
-        if (transferName == null) {
-            throw LOGGER.logExceptionAsError(new IllegalArgumentException(
-                String.format("The resource ID '%s' is not valid. Missing path segment 'quotaTransfers'.", id)));
-        }
+        String targetProvider = ResourceManagerUtils.getRequiredValueFromIdByParameterName(id,
+            "/subscriptions/{subscriptionId}/providers/{targetProvider}/locations/{region}/providers/Microsoft.Quota/quotaTransfers/{transferName}",
+            "targetProvider", "providers", LOGGER);
+        String region = ResourceManagerUtils.getRequiredValueFromIdByParameterName(id,
+            "/subscriptions/{subscriptionId}/providers/{targetProvider}/locations/{region}/providers/Microsoft.Quota/quotaTransfers/{transferName}",
+            "region", "locations", LOGGER);
+        String transferName = ResourceManagerUtils.getRequiredValueFromIdByParameterName(id,
+            "/subscriptions/{subscriptionId}/providers/{targetProvider}/locations/{region}/providers/Microsoft.Quota/quotaTransfers/{transferName}",
+            "transferName", "quotaTransfers", LOGGER);
         return this.deleteWithResponse(targetProvider, region, transferName, context);
     }
 

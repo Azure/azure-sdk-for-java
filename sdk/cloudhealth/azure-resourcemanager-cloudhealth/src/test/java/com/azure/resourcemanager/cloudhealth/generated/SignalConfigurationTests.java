@@ -6,8 +6,7 @@ package com.azure.resourcemanager.cloudhealth.generated;
 
 import com.azure.core.util.BinaryData;
 import com.azure.resourcemanager.cloudhealth.models.DynamicThresholdSensitivity;
-import com.azure.resourcemanager.cloudhealth.models.LookBackWindow;
-import com.azure.resourcemanager.cloudhealth.models.MetricAggregationType;
+import com.azure.resourcemanager.cloudhealth.models.RefreshInterval;
 import com.azure.resourcemanager.cloudhealth.models.SignalConfiguration;
 import com.azure.resourcemanager.cloudhealth.models.SignalOperator;
 import org.junit.jupiter.api.Assertions;
@@ -16,23 +15,20 @@ public final class SignalConfigurationTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
         SignalConfiguration model = BinaryData.fromString(
-            "{\"signalId\":\"cxgkmoyxcdyui\",\"metricNamespace\":\"mfdn\",\"metricName\":\"ydvfvfcjnae\",\"aggregationType\":\"Maximum\",\"unit\":\"vhmgorffukis\",\"timeGrain\":\"w\",\"dimensionFilter\":\"hwplefaxvx\",\"evaluationRules\":{\"degradedRule\":{\"operator\":\"GreaterThan\",\"threshold\":48.790855017350346,\"sensitivity\":\"Medium\",\"lookBackWindow\":\"PT30M\"},\"unhealthyRule\":{\"operator\":\"LessThanOrEqual\",\"threshold\":85.43154326324877,\"sensitivity\":\"Low\",\"lookBackWindow\":\"PT15M\"}}}")
+            "{\"signalId\":\"cokpv\",\"displayName\":\"lqtmldgxob\",\"description\":\"rclnpkc\",\"applicableResourceTypes\":[\"zriykhy\",\"wf\"],\"refreshInterval\":\"PT1H\",\"dataUnit\":\"oxqvkjlmxhomdynh\",\"configuration\":{\"signalKind\":\"SignalRecommendationConfiguration\"},\"evaluationRules\":{\"degradedRule\":{\"operator\":\"NotEqual\",\"threshold\":65.22089484517824,\"sensitivity\":\"Low\"},\"unhealthyRule\":{\"operator\":\"LessThanOrEqual\",\"threshold\":71.97788467107593,\"sensitivity\":\"Medium\"}}}")
             .toObject(SignalConfiguration.class);
-        Assertions.assertEquals("cxgkmoyxcdyui", model.signalId());
-        Assertions.assertEquals("mfdn", model.metricNamespace());
-        Assertions.assertEquals("ydvfvfcjnae", model.metricName());
-        Assertions.assertEquals(MetricAggregationType.MAXIMUM, model.aggregationType());
-        Assertions.assertEquals("vhmgorffukis", model.unit());
-        Assertions.assertEquals("w", model.timeGrain());
-        Assertions.assertEquals("hwplefaxvx", model.dimensionFilter());
-        Assertions.assertEquals(SignalOperator.GREATER_THAN, model.evaluationRules().degradedRule().operator());
-        Assertions.assertEquals(48.790855017350346D, model.evaluationRules().degradedRule().threshold());
-        Assertions.assertEquals(DynamicThresholdSensitivity.MEDIUM,
-            model.evaluationRules().degradedRule().sensitivity());
-        Assertions.assertEquals(LookBackWindow.PT30M, model.evaluationRules().degradedRule().lookBackWindow());
+        Assertions.assertEquals("cokpv", model.signalId());
+        Assertions.assertEquals("lqtmldgxob", model.displayName());
+        Assertions.assertEquals("rclnpkc", model.description());
+        Assertions.assertEquals("zriykhy", model.applicableResourceTypes().get(0));
+        Assertions.assertEquals(RefreshInterval.PT1H, model.refreshInterval());
+        Assertions.assertEquals("oxqvkjlmxhomdynh", model.dataUnit());
+        Assertions.assertEquals(SignalOperator.NOT_EQUAL, model.evaluationRules().degradedRule().operator());
+        Assertions.assertEquals(65.22089484517824D, model.evaluationRules().degradedRule().threshold());
+        Assertions.assertEquals(DynamicThresholdSensitivity.LOW, model.evaluationRules().degradedRule().sensitivity());
         Assertions.assertEquals(SignalOperator.LESS_THAN_OR_EQUAL, model.evaluationRules().unhealthyRule().operator());
-        Assertions.assertEquals(85.43154326324877D, model.evaluationRules().unhealthyRule().threshold());
-        Assertions.assertEquals(DynamicThresholdSensitivity.LOW, model.evaluationRules().unhealthyRule().sensitivity());
-        Assertions.assertEquals(LookBackWindow.PT15M, model.evaluationRules().unhealthyRule().lookBackWindow());
+        Assertions.assertEquals(71.97788467107593D, model.evaluationRules().unhealthyRule().threshold());
+        Assertions.assertEquals(DynamicThresholdSensitivity.MEDIUM,
+            model.evaluationRules().unhealthyRule().sensitivity());
     }
 }

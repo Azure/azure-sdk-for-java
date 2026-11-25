@@ -6,18 +6,19 @@ package com.azure.resourcemanager.compute.recommender.generated;
 
 import com.azure.core.util.BinaryData;
 import com.azure.resourcemanager.compute.recommender.models.PlacementScore;
+import com.azure.resourcemanager.compute.recommender.models.PlacementScoreValue;
 import org.junit.jupiter.api.Assertions;
 
 public final class PlacementScoreTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
         PlacementScore model = BinaryData.fromString(
-            "{\"sku\":\"ro\",\"region\":\"qpteeh\",\"availabilityZone\":\"vypyqrimzinpv\",\"score\":\"jdkirsoodqx\",\"isQuotaAvailable\":false}")
+            "{\"sku\":\"hpf\",\"region\":\"ypininm\",\"availabilityZone\":\"huyb\",\"score\":\"High\",\"placementPreference\":1573511448}")
             .toObject(PlacementScore.class);
-        Assertions.assertEquals("ro", model.sku());
-        Assertions.assertEquals("qpteeh", model.region());
-        Assertions.assertEquals("vypyqrimzinpv", model.availabilityZone());
-        Assertions.assertEquals("jdkirsoodqx", model.score());
-        Assertions.assertFalse(model.isQuotaAvailable());
+        Assertions.assertEquals("hpf", model.sku());
+        Assertions.assertEquals("ypininm", model.region());
+        Assertions.assertEquals("huyb", model.availabilityZone());
+        Assertions.assertEquals(PlacementScoreValue.HIGH, model.score());
+        Assertions.assertEquals(1573511448, model.placementPreference());
     }
 }

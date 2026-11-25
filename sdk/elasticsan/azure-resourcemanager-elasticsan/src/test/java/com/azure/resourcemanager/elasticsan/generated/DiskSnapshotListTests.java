@@ -12,16 +12,15 @@ import org.junit.jupiter.api.Assertions;
 public final class DiskSnapshotListTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
-        DiskSnapshotList model = BinaryData.fromString("{\"diskSnapshotIds\":[\"ksymd\",\"ys\",\"kiiuxhqyudxor\"]}")
+        DiskSnapshotList model = BinaryData.fromString("{\"diskSnapshotIds\":[\"sucocmnyyazttbtw\",\"rq\"]}")
             .toObject(DiskSnapshotList.class);
-        Assertions.assertEquals("ksymd", model.diskSnapshotIds().get(0));
+        Assertions.assertEquals("sucocmnyyazttbtw", model.diskSnapshotIds().get(0));
     }
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
-        DiskSnapshotList model
-            = new DiskSnapshotList().withDiskSnapshotIds(Arrays.asList("ksymd", "ys", "kiiuxhqyudxor"));
+        DiskSnapshotList model = new DiskSnapshotList().withDiskSnapshotIds(Arrays.asList("sucocmnyyazttbtw", "rq"));
         model = BinaryData.fromObject(model).toObject(DiskSnapshotList.class);
-        Assertions.assertEquals("ksymd", model.diskSnapshotIds().get(0));
+        Assertions.assertEquals("sucocmnyyazttbtw", model.diskSnapshotIds().get(0));
     }
 }

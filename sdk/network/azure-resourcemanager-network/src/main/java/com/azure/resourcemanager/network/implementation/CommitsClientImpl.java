@@ -117,17 +117,7 @@ public final class CommitsClientImpl implements CommitsClient {
             @HostParam("endpoint") String endpoint, @HeaderParam("Accept") String accept, Context context);
     }
 
-    /**
-     * Gets the specified commit.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param networkManagerName The name of the network manager.
-     * @param commitName The name of the commit.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the specified commit along with {@link Response} on successful completion of {@link Mono}.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Response<CommitInner>> getWithResponseAsync(String resourceGroupName, String networkManagerName,
         String commitName) {
@@ -150,7 +140,7 @@ public final class CommitsClientImpl implements CommitsClient {
         if (commitName == null) {
             return Mono.error(new IllegalArgumentException("Parameter commitName is required and cannot be null."));
         }
-        final String apiVersion = "2025-07-01";
+        final String apiVersion = "2026-05-01";
         final String accept = "application/json";
         return FluxUtil
             .withContext(context -> service.get(this.client.getEndpoint(), apiVersion, this.client.getSubscriptionId(),
@@ -192,76 +182,34 @@ public final class CommitsClientImpl implements CommitsClient {
         if (commitName == null) {
             return Mono.error(new IllegalArgumentException("Parameter commitName is required and cannot be null."));
         }
-        final String apiVersion = "2025-07-01";
+        final String apiVersion = "2026-05-01";
         final String accept = "application/json";
         context = this.client.mergeContext(context);
         return service.get(this.client.getEndpoint(), apiVersion, this.client.getSubscriptionId(), resourceGroupName,
             networkManagerName, commitName, accept, context);
     }
 
-    /**
-     * Gets the specified commit.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param networkManagerName The name of the network manager.
-     * @param commitName The name of the commit.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the specified commit on successful completion of {@link Mono}.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<CommitInner> getAsync(String resourceGroupName, String networkManagerName, String commitName) {
         return getWithResponseAsync(resourceGroupName, networkManagerName, commitName)
             .flatMap(res -> Mono.justOrEmpty(res.getValue()));
     }
 
-    /**
-     * Gets the specified commit.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param networkManagerName The name of the network manager.
-     * @param commitName The name of the commit.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the specified commit along with {@link Response}.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Response<CommitInner> getWithResponse(String resourceGroupName, String networkManagerName, String commitName,
         Context context) {
         return getWithResponseAsync(resourceGroupName, networkManagerName, commitName, context).block();
     }
 
-    /**
-     * Gets the specified commit.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param networkManagerName The name of the network manager.
-     * @param commitName The name of the commit.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the specified commit.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public CommitInner get(String resourceGroupName, String networkManagerName, String commitName) {
         return getWithResponse(resourceGroupName, networkManagerName, commitName, Context.NONE).getValue();
     }
 
-    /**
-     * Creates or updates a commit.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param networkManagerName The name of the network manager.
-     * @param commitName The name of the commit.
-     * @param resource Parameters supplied to specify which commit to create.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the commit resource along with {@link Response} on successful completion of {@link Mono}.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Response<Flux<ByteBuffer>>> createOrUpdateWithResponseAsync(String resourceGroupName,
         String networkManagerName, String commitName, CommitInner resource) {
@@ -289,7 +237,7 @@ public final class CommitsClientImpl implements CommitsClient {
         } else {
             resource.validate();
         }
-        final String apiVersion = "2025-07-01";
+        final String apiVersion = "2026-05-01";
         final String contentType = "application/json";
         final String accept = "application/json";
         return FluxUtil
@@ -339,7 +287,7 @@ public final class CommitsClientImpl implements CommitsClient {
         } else {
             resource.validate();
         }
-        final String apiVersion = "2025-07-01";
+        final String apiVersion = "2026-05-01";
         final String contentType = "application/json";
         final String accept = "application/json";
         context = this.client.mergeContext(context);
@@ -347,18 +295,7 @@ public final class CommitsClientImpl implements CommitsClient {
             resourceGroupName, networkManagerName, commitName, contentType, accept, resource, context);
     }
 
-    /**
-     * Creates or updates a commit.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param networkManagerName The name of the network manager.
-     * @param commitName The name of the commit.
-     * @param resource Parameters supplied to specify which commit to create.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the {@link PollerFlux} for polling of the commit resource.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public PollerFlux<PollResult<CommitInner>, CommitInner> beginCreateOrUpdateAsync(String resourceGroupName,
         String networkManagerName, String commitName, CommitInner resource) {
@@ -391,18 +328,7 @@ public final class CommitsClientImpl implements CommitsClient {
             CommitInner.class, CommitInner.class, context);
     }
 
-    /**
-     * Creates or updates a commit.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param networkManagerName The name of the network manager.
-     * @param commitName The name of the commit.
-     * @param resource Parameters supplied to specify which commit to create.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the {@link SyncPoller} for polling of the commit resource.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public SyncPoller<PollResult<CommitInner>, CommitInner> beginCreateOrUpdate(String resourceGroupName,
         String networkManagerName, String commitName, CommitInner resource) {
@@ -410,19 +336,7 @@ public final class CommitsClientImpl implements CommitsClient {
             .getSyncPoller();
     }
 
-    /**
-     * Creates or updates a commit.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param networkManagerName The name of the network manager.
-     * @param commitName The name of the commit.
-     * @param resource Parameters supplied to specify which commit to create.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the {@link SyncPoller} for polling of the commit resource.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public SyncPoller<PollResult<CommitInner>, CommitInner> beginCreateOrUpdate(String resourceGroupName,
         String networkManagerName, String commitName, CommitInner resource, Context context) {
@@ -430,18 +344,7 @@ public final class CommitsClientImpl implements CommitsClient {
             .getSyncPoller();
     }
 
-    /**
-     * Creates or updates a commit.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param networkManagerName The name of the network manager.
-     * @param commitName The name of the commit.
-     * @param resource Parameters supplied to specify which commit to create.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the commit resource on successful completion of {@link Mono}.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<CommitInner> createOrUpdateAsync(String resourceGroupName, String networkManagerName, String commitName,
         CommitInner resource) {
@@ -469,54 +372,21 @@ public final class CommitsClientImpl implements CommitsClient {
             .flatMap(this.client::getLroFinalResultOrError);
     }
 
-    /**
-     * Creates or updates a commit.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param networkManagerName The name of the network manager.
-     * @param commitName The name of the commit.
-     * @param resource Parameters supplied to specify which commit to create.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the commit resource.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public CommitInner createOrUpdate(String resourceGroupName, String networkManagerName, String commitName,
         CommitInner resource) {
         return createOrUpdateAsync(resourceGroupName, networkManagerName, commitName, resource).block();
     }
 
-    /**
-     * Creates or updates a commit.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param networkManagerName The name of the network manager.
-     * @param commitName The name of the commit.
-     * @param resource Parameters supplied to specify which commit to create.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the commit resource.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public CommitInner createOrUpdate(String resourceGroupName, String networkManagerName, String commitName,
         CommitInner resource, Context context) {
         return createOrUpdateAsync(resourceGroupName, networkManagerName, commitName, resource, context).block();
     }
 
-    /**
-     * Deletes a commit.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param networkManagerName The name of the network manager.
-     * @param commitName The name of the commit.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the {@link Response} on successful completion of {@link Mono}.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Response<Flux<ByteBuffer>>> deleteWithResponseAsync(String resourceGroupName, String networkManagerName,
         String commitName) {
@@ -539,7 +409,7 @@ public final class CommitsClientImpl implements CommitsClient {
         if (commitName == null) {
             return Mono.error(new IllegalArgumentException("Parameter commitName is required and cannot be null."));
         }
-        final String apiVersion = "2025-07-01";
+        final String apiVersion = "2026-05-01";
         return FluxUtil
             .withContext(context -> service.delete(this.client.getEndpoint(), apiVersion,
                 this.client.getSubscriptionId(), resourceGroupName, networkManagerName, commitName, context))
@@ -580,23 +450,13 @@ public final class CommitsClientImpl implements CommitsClient {
         if (commitName == null) {
             return Mono.error(new IllegalArgumentException("Parameter commitName is required and cannot be null."));
         }
-        final String apiVersion = "2025-07-01";
+        final String apiVersion = "2026-05-01";
         context = this.client.mergeContext(context);
         return service.delete(this.client.getEndpoint(), apiVersion, this.client.getSubscriptionId(), resourceGroupName,
             networkManagerName, commitName, context);
     }
 
-    /**
-     * Deletes a commit.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param networkManagerName The name of the network manager.
-     * @param commitName The name of the commit.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the {@link PollerFlux} for polling of long-running operation.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public PollerFlux<PollResult<Void>, Void> beginDeleteAsync(String resourceGroupName, String networkManagerName,
         String commitName) {
@@ -628,52 +488,21 @@ public final class CommitsClientImpl implements CommitsClient {
             context);
     }
 
-    /**
-     * Deletes a commit.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param networkManagerName The name of the network manager.
-     * @param commitName The name of the commit.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the {@link SyncPoller} for polling of long-running operation.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public SyncPoller<PollResult<Void>, Void> beginDelete(String resourceGroupName, String networkManagerName,
         String commitName) {
         return this.beginDeleteAsync(resourceGroupName, networkManagerName, commitName).getSyncPoller();
     }
 
-    /**
-     * Deletes a commit.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param networkManagerName The name of the network manager.
-     * @param commitName The name of the commit.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the {@link SyncPoller} for polling of long-running operation.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public SyncPoller<PollResult<Void>, Void> beginDelete(String resourceGroupName, String networkManagerName,
         String commitName, Context context) {
         return this.beginDeleteAsync(resourceGroupName, networkManagerName, commitName, context).getSyncPoller();
     }
 
-    /**
-     * Deletes a commit.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param networkManagerName The name of the network manager.
-     * @param commitName The name of the commit.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return A {@link Mono} that completes when a successful response is received.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Void> deleteAsync(String resourceGroupName, String networkManagerName, String commitName) {
         return beginDeleteAsync(resourceGroupName, networkManagerName, commitName).last()
@@ -699,32 +528,13 @@ public final class CommitsClientImpl implements CommitsClient {
             .flatMap(this.client::getLroFinalResultOrError);
     }
 
-    /**
-     * Deletes a commit.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param networkManagerName The name of the network manager.
-     * @param commitName The name of the commit.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public void delete(String resourceGroupName, String networkManagerName, String commitName) {
         deleteAsync(resourceGroupName, networkManagerName, commitName).block();
     }
 
-    /**
-     * Deletes a commit.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param networkManagerName The name of the network manager.
-     * @param commitName The name of the commit.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public void delete(String resourceGroupName, String networkManagerName, String commitName, Context context) {
         deleteAsync(resourceGroupName, networkManagerName, commitName, context).block();
@@ -765,7 +575,7 @@ public final class CommitsClientImpl implements CommitsClient {
             return Mono
                 .error(new IllegalArgumentException("Parameter networkManagerName is required and cannot be null."));
         }
-        final String apiVersion = "2025-07-01";
+        final String apiVersion = "2026-05-01";
         final String accept = "application/json";
         return FluxUtil
             .withContext(context -> service.list(this.client.getEndpoint(), apiVersion, this.client.getSubscriptionId(),
@@ -811,7 +621,7 @@ public final class CommitsClientImpl implements CommitsClient {
             return Mono
                 .error(new IllegalArgumentException("Parameter networkManagerName is required and cannot be null."));
         }
-        final String apiVersion = "2025-07-01";
+        final String apiVersion = "2026-05-01";
         final String accept = "application/json";
         context = this.client.mergeContext(context);
         return service
@@ -821,21 +631,7 @@ public final class CommitsClientImpl implements CommitsClient {
                 res.getValue().value(), res.getValue().nextLink(), null));
     }
 
-    /**
-     * Lists all commits for the specified network manager.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param networkManagerName The name of the network manager.
-     * @param top An optional query parameter which specifies the maximum number of records to be returned by the
-     * server.
-     * @param skipToken SkipToken is only used if a previous operation returned a partial result. If a previous response
-     * contains a nextLink element, the value of the nextLink element will include a skipToken parameter that specifies
-     * a starting point to use for subsequent calls.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the response of a Commit list operation as paginated response with {@link PagedFlux}.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.COLLECTION)
     public PagedFlux<CommitInner> listAsync(String resourceGroupName, String networkManagerName, Integer top,
         String skipToken) {
@@ -843,16 +639,7 @@ public final class CommitsClientImpl implements CommitsClient {
             nextLink -> listNextSinglePageAsync(nextLink));
     }
 
-    /**
-     * Lists all commits for the specified network manager.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param networkManagerName The name of the network manager.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the response of a Commit list operation as paginated response with {@link PagedFlux}.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.COLLECTION)
     public PagedFlux<CommitInner> listAsync(String resourceGroupName, String networkManagerName) {
         final Integer top = null;
@@ -885,16 +672,7 @@ public final class CommitsClientImpl implements CommitsClient {
             nextLink -> listNextSinglePageAsync(nextLink, context));
     }
 
-    /**
-     * Lists all commits for the specified network manager.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param networkManagerName The name of the network manager.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the response of a Commit list operation as paginated response with {@link PagedIterable}.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.COLLECTION)
     public PagedIterable<CommitInner> list(String resourceGroupName, String networkManagerName) {
         final Integer top = null;
@@ -902,22 +680,7 @@ public final class CommitsClientImpl implements CommitsClient {
         return new PagedIterable<>(listAsync(resourceGroupName, networkManagerName, top, skipToken));
     }
 
-    /**
-     * Lists all commits for the specified network manager.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param networkManagerName The name of the network manager.
-     * @param top An optional query parameter which specifies the maximum number of records to be returned by the
-     * server.
-     * @param skipToken SkipToken is only used if a previous operation returned a partial result. If a previous response
-     * contains a nextLink element, the value of the nextLink element will include a skipToken parameter that specifies
-     * a starting point to use for subsequent calls.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the response of a Commit list operation as paginated response with {@link PagedIterable}.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.COLLECTION)
     public PagedIterable<CommitInner> list(String resourceGroupName, String networkManagerName, Integer top,
         String skipToken, Context context) {

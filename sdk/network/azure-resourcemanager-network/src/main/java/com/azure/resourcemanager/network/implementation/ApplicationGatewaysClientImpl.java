@@ -263,16 +263,7 @@ public final class ApplicationGatewaysClientImpl implements InnerSupportsGet<App
             @HeaderParam("Accept") String accept, Context context);
     }
 
-    /**
-     * Gets the specified application gateway.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param applicationGatewayName The name of the application gateway.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the specified application gateway along with {@link Response} on successful completion of {@link Mono}.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Response<ApplicationGatewayInner>> getByResourceGroupWithResponseAsync(String resourceGroupName,
         String applicationGatewayName) {
@@ -292,7 +283,7 @@ public final class ApplicationGatewaysClientImpl implements InnerSupportsGet<App
             return Mono.error(
                 new IllegalArgumentException("Parameter applicationGatewayName is required and cannot be null."));
         }
-        final String apiVersion = "2025-07-01";
+        final String apiVersion = "2026-05-01";
         final String accept = "application/json";
         return FluxUtil
             .withContext(context -> service.getByResourceGroup(this.client.getEndpoint(), apiVersion,
@@ -330,23 +321,14 @@ public final class ApplicationGatewaysClientImpl implements InnerSupportsGet<App
             return Mono.error(
                 new IllegalArgumentException("Parameter applicationGatewayName is required and cannot be null."));
         }
-        final String apiVersion = "2025-07-01";
+        final String apiVersion = "2026-05-01";
         final String accept = "application/json";
         context = this.client.mergeContext(context);
         return service.getByResourceGroup(this.client.getEndpoint(), apiVersion, this.client.getSubscriptionId(),
             resourceGroupName, applicationGatewayName, accept, context);
     }
 
-    /**
-     * Gets the specified application gateway.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param applicationGatewayName The name of the application gateway.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the specified application gateway on successful completion of {@link Mono}.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<ApplicationGatewayInner> getByResourceGroupAsync(String resourceGroupName,
         String applicationGatewayName) {
@@ -354,49 +336,20 @@ public final class ApplicationGatewaysClientImpl implements InnerSupportsGet<App
             .flatMap(res -> Mono.justOrEmpty(res.getValue()));
     }
 
-    /**
-     * Gets the specified application gateway.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param applicationGatewayName The name of the application gateway.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the specified application gateway along with {@link Response}.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Response<ApplicationGatewayInner> getByResourceGroupWithResponse(String resourceGroupName,
         String applicationGatewayName, Context context) {
         return getByResourceGroupWithResponseAsync(resourceGroupName, applicationGatewayName, context).block();
     }
 
-    /**
-     * Gets the specified application gateway.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param applicationGatewayName The name of the application gateway.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the specified application gateway.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public ApplicationGatewayInner getByResourceGroup(String resourceGroupName, String applicationGatewayName) {
         return getByResourceGroupWithResponse(resourceGroupName, applicationGatewayName, Context.NONE).getValue();
     }
 
-    /**
-     * Creates or updates the specified application gateway.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param applicationGatewayName The name of the application gateway.
-     * @param parameters Parameters supplied to the create or update application gateway operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return application gateway resource along with {@link Response} on successful completion of {@link Mono}.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Response<Flux<ByteBuffer>>> createOrUpdateWithResponseAsync(String resourceGroupName,
         String applicationGatewayName, ApplicationGatewayInner parameters) {
@@ -421,7 +374,7 @@ public final class ApplicationGatewaysClientImpl implements InnerSupportsGet<App
         } else {
             parameters.validate();
         }
-        final String apiVersion = "2025-07-01";
+        final String apiVersion = "2026-05-01";
         final String contentType = "application/json";
         final String accept = "application/json";
         return FluxUtil
@@ -467,7 +420,7 @@ public final class ApplicationGatewaysClientImpl implements InnerSupportsGet<App
         } else {
             parameters.validate();
         }
-        final String apiVersion = "2025-07-01";
+        final String apiVersion = "2026-05-01";
         final String contentType = "application/json";
         final String accept = "application/json";
         context = this.client.mergeContext(context);
@@ -475,17 +428,7 @@ public final class ApplicationGatewaysClientImpl implements InnerSupportsGet<App
             resourceGroupName, applicationGatewayName, contentType, accept, parameters, context);
     }
 
-    /**
-     * Creates or updates the specified application gateway.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param applicationGatewayName The name of the application gateway.
-     * @param parameters Parameters supplied to the create or update application gateway operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the {@link PollerFlux} for polling of application gateway resource.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public PollerFlux<PollResult<ApplicationGatewayInner>, ApplicationGatewayInner> beginCreateOrUpdateAsync(
         String resourceGroupName, String applicationGatewayName, ApplicationGatewayInner parameters) {
@@ -518,35 +461,14 @@ public final class ApplicationGatewaysClientImpl implements InnerSupportsGet<App
             this.client.getHttpPipeline(), ApplicationGatewayInner.class, ApplicationGatewayInner.class, context);
     }
 
-    /**
-     * Creates or updates the specified application gateway.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param applicationGatewayName The name of the application gateway.
-     * @param parameters Parameters supplied to the create or update application gateway operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the {@link SyncPoller} for polling of application gateway resource.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public SyncPoller<PollResult<ApplicationGatewayInner>, ApplicationGatewayInner> beginCreateOrUpdate(
         String resourceGroupName, String applicationGatewayName, ApplicationGatewayInner parameters) {
         return this.beginCreateOrUpdateAsync(resourceGroupName, applicationGatewayName, parameters).getSyncPoller();
     }
 
-    /**
-     * Creates or updates the specified application gateway.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param applicationGatewayName The name of the application gateway.
-     * @param parameters Parameters supplied to the create or update application gateway operation.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the {@link SyncPoller} for polling of application gateway resource.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public SyncPoller<PollResult<ApplicationGatewayInner>, ApplicationGatewayInner> beginCreateOrUpdate(
         String resourceGroupName, String applicationGatewayName, ApplicationGatewayInner parameters, Context context) {
@@ -554,17 +476,7 @@ public final class ApplicationGatewaysClientImpl implements InnerSupportsGet<App
             .getSyncPoller();
     }
 
-    /**
-     * Creates or updates the specified application gateway.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param applicationGatewayName The name of the application gateway.
-     * @param parameters Parameters supplied to the create or update application gateway operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return application gateway resource on successful completion of {@link Mono}.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<ApplicationGatewayInner> createOrUpdateAsync(String resourceGroupName, String applicationGatewayName,
         ApplicationGatewayInner parameters) {
@@ -591,52 +503,21 @@ public final class ApplicationGatewaysClientImpl implements InnerSupportsGet<App
             .flatMap(this.client::getLroFinalResultOrError);
     }
 
-    /**
-     * Creates or updates the specified application gateway.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param applicationGatewayName The name of the application gateway.
-     * @param parameters Parameters supplied to the create or update application gateway operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return application gateway resource.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public ApplicationGatewayInner createOrUpdate(String resourceGroupName, String applicationGatewayName,
         ApplicationGatewayInner parameters) {
         return createOrUpdateAsync(resourceGroupName, applicationGatewayName, parameters).block();
     }
 
-    /**
-     * Creates or updates the specified application gateway.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param applicationGatewayName The name of the application gateway.
-     * @param parameters Parameters supplied to the create or update application gateway operation.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return application gateway resource.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public ApplicationGatewayInner createOrUpdate(String resourceGroupName, String applicationGatewayName,
         ApplicationGatewayInner parameters, Context context) {
         return createOrUpdateAsync(resourceGroupName, applicationGatewayName, parameters, context).block();
     }
 
-    /**
-     * Updates the specified application gateway tags.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param applicationGatewayName The name of the application gateway.
-     * @param parameters Parameters supplied to update application gateway tags.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return application gateway resource along with {@link Response} on successful completion of {@link Mono}.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Response<ApplicationGatewayInner>> updateTagsWithResponseAsync(String resourceGroupName,
         String applicationGatewayName, TagsObject parameters) {
@@ -661,7 +542,7 @@ public final class ApplicationGatewaysClientImpl implements InnerSupportsGet<App
         } else {
             parameters.validate();
         }
-        final String apiVersion = "2025-07-01";
+        final String apiVersion = "2026-05-01";
         final String contentType = "application/json";
         final String accept = "application/json";
         return FluxUtil
@@ -707,7 +588,7 @@ public final class ApplicationGatewaysClientImpl implements InnerSupportsGet<App
         } else {
             parameters.validate();
         }
-        final String apiVersion = "2025-07-01";
+        final String apiVersion = "2026-05-01";
         final String contentType = "application/json";
         final String accept = "application/json";
         context = this.client.mergeContext(context);
@@ -715,17 +596,7 @@ public final class ApplicationGatewaysClientImpl implements InnerSupportsGet<App
             resourceGroupName, applicationGatewayName, contentType, accept, parameters, context);
     }
 
-    /**
-     * Updates the specified application gateway tags.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param applicationGatewayName The name of the application gateway.
-     * @param parameters Parameters supplied to update application gateway tags.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return application gateway resource on successful completion of {@link Mono}.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<ApplicationGatewayInner> updateTagsAsync(String resourceGroupName, String applicationGatewayName,
         TagsObject parameters) {
@@ -733,51 +604,21 @@ public final class ApplicationGatewaysClientImpl implements InnerSupportsGet<App
             .flatMap(res -> Mono.justOrEmpty(res.getValue()));
     }
 
-    /**
-     * Updates the specified application gateway tags.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param applicationGatewayName The name of the application gateway.
-     * @param parameters Parameters supplied to update application gateway tags.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return application gateway resource along with {@link Response}.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Response<ApplicationGatewayInner> updateTagsWithResponse(String resourceGroupName,
         String applicationGatewayName, TagsObject parameters, Context context) {
         return updateTagsWithResponseAsync(resourceGroupName, applicationGatewayName, parameters, context).block();
     }
 
-    /**
-     * Updates the specified application gateway tags.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param applicationGatewayName The name of the application gateway.
-     * @param parameters Parameters supplied to update application gateway tags.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return application gateway resource.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public ApplicationGatewayInner updateTags(String resourceGroupName, String applicationGatewayName,
         TagsObject parameters) {
         return updateTagsWithResponse(resourceGroupName, applicationGatewayName, parameters, Context.NONE).getValue();
     }
 
-    /**
-     * Deletes the specified application gateway.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param applicationGatewayName The name of the application gateway.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the {@link Response} on successful completion of {@link Mono}.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Response<Flux<ByteBuffer>>> deleteWithResponseAsync(String resourceGroupName,
         String applicationGatewayName) {
@@ -797,7 +638,7 @@ public final class ApplicationGatewaysClientImpl implements InnerSupportsGet<App
             return Mono.error(
                 new IllegalArgumentException("Parameter applicationGatewayName is required and cannot be null."));
         }
-        final String apiVersion = "2025-07-01";
+        final String apiVersion = "2026-05-01";
         return FluxUtil
             .withContext(context -> service.delete(this.client.getEndpoint(), apiVersion,
                 this.client.getSubscriptionId(), resourceGroupName, applicationGatewayName, context))
@@ -834,22 +675,13 @@ public final class ApplicationGatewaysClientImpl implements InnerSupportsGet<App
             return Mono.error(
                 new IllegalArgumentException("Parameter applicationGatewayName is required and cannot be null."));
         }
-        final String apiVersion = "2025-07-01";
+        final String apiVersion = "2026-05-01";
         context = this.client.mergeContext(context);
         return service.delete(this.client.getEndpoint(), apiVersion, this.client.getSubscriptionId(), resourceGroupName,
             applicationGatewayName, context);
     }
 
-    /**
-     * Deletes the specified application gateway.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param applicationGatewayName The name of the application gateway.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the {@link PollerFlux} for polling of long-running operation.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public PollerFlux<PollResult<Void>, Void> beginDeleteAsync(String resourceGroupName,
         String applicationGatewayName) {
@@ -879,48 +711,20 @@ public final class ApplicationGatewaysClientImpl implements InnerSupportsGet<App
             context);
     }
 
-    /**
-     * Deletes the specified application gateway.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param applicationGatewayName The name of the application gateway.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the {@link SyncPoller} for polling of long-running operation.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public SyncPoller<PollResult<Void>, Void> beginDelete(String resourceGroupName, String applicationGatewayName) {
         return this.beginDeleteAsync(resourceGroupName, applicationGatewayName).getSyncPoller();
     }
 
-    /**
-     * Deletes the specified application gateway.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param applicationGatewayName The name of the application gateway.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the {@link SyncPoller} for polling of long-running operation.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public SyncPoller<PollResult<Void>, Void> beginDelete(String resourceGroupName, String applicationGatewayName,
         Context context) {
         return this.beginDeleteAsync(resourceGroupName, applicationGatewayName, context).getSyncPoller();
     }
 
-    /**
-     * Deletes the specified application gateway.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param applicationGatewayName The name of the application gateway.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return A {@link Mono} that completes when a successful response is received.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Void> deleteAsync(String resourceGroupName, String applicationGatewayName) {
         return beginDeleteAsync(resourceGroupName, applicationGatewayName).last()
@@ -944,30 +748,13 @@ public final class ApplicationGatewaysClientImpl implements InnerSupportsGet<App
             .flatMap(this.client::getLroFinalResultOrError);
     }
 
-    /**
-     * Deletes the specified application gateway.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param applicationGatewayName The name of the application gateway.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public void delete(String resourceGroupName, String applicationGatewayName) {
         deleteAsync(resourceGroupName, applicationGatewayName).block();
     }
 
-    /**
-     * Deletes the specified application gateway.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param applicationGatewayName The name of the application gateway.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public void delete(String resourceGroupName, String applicationGatewayName, Context context) {
         deleteAsync(resourceGroupName, applicationGatewayName, context).block();
@@ -997,7 +784,7 @@ public final class ApplicationGatewaysClientImpl implements InnerSupportsGet<App
             return Mono
                 .error(new IllegalArgumentException("Parameter resourceGroupName is required and cannot be null."));
         }
-        final String apiVersion = "2025-07-01";
+        final String apiVersion = "2026-05-01";
         final String accept = "application/json";
         return FluxUtil
             .withContext(context -> service.listByResourceGroup(this.client.getEndpoint(), apiVersion,
@@ -1033,7 +820,7 @@ public final class ApplicationGatewaysClientImpl implements InnerSupportsGet<App
             return Mono
                 .error(new IllegalArgumentException("Parameter resourceGroupName is required and cannot be null."));
         }
-        final String apiVersion = "2025-07-01";
+        final String apiVersion = "2026-05-01";
         final String accept = "application/json";
         context = this.client.mergeContext(context);
         return service
@@ -1043,15 +830,7 @@ public final class ApplicationGatewaysClientImpl implements InnerSupportsGet<App
                 res.getValue().value(), res.getValue().nextLink(), null));
     }
 
-    /**
-     * Lists all application gateways in a resource group.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the response of a ApplicationGateway list operation as paginated response with {@link PagedFlux}.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.COLLECTION)
     public PagedFlux<ApplicationGatewayInner> listByResourceGroupAsync(String resourceGroupName) {
         return new PagedFlux<>(() -> listByResourceGroupSinglePageAsync(resourceGroupName),
@@ -1074,30 +853,13 @@ public final class ApplicationGatewaysClientImpl implements InnerSupportsGet<App
             nextLink -> listNextSinglePageAsync(nextLink, context));
     }
 
-    /**
-     * Lists all application gateways in a resource group.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the response of a ApplicationGateway list operation as paginated response with {@link PagedIterable}.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.COLLECTION)
     public PagedIterable<ApplicationGatewayInner> listByResourceGroup(String resourceGroupName) {
         return new PagedIterable<>(listByResourceGroupAsync(resourceGroupName));
     }
 
-    /**
-     * Lists all application gateways in a resource group.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the response of a ApplicationGateway list operation as paginated response with {@link PagedIterable}.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.COLLECTION)
     public PagedIterable<ApplicationGatewayInner> listByResourceGroup(String resourceGroupName, Context context) {
         return new PagedIterable<>(listByResourceGroupAsync(resourceGroupName, context));
@@ -1121,7 +883,7 @@ public final class ApplicationGatewaysClientImpl implements InnerSupportsGet<App
             return Mono.error(new IllegalArgumentException(
                 "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
-        final String apiVersion = "2025-07-01";
+        final String apiVersion = "2026-05-01";
         final String accept = "application/json";
         return FluxUtil
             .withContext(context -> service.list(this.client.getEndpoint(), apiVersion, this.client.getSubscriptionId(),
@@ -1151,7 +913,7 @@ public final class ApplicationGatewaysClientImpl implements InnerSupportsGet<App
             return Mono.error(new IllegalArgumentException(
                 "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
-        final String apiVersion = "2025-07-01";
+        final String apiVersion = "2026-05-01";
         final String accept = "application/json";
         context = this.client.mergeContext(context);
         return service.list(this.client.getEndpoint(), apiVersion, this.client.getSubscriptionId(), accept, context)
@@ -1159,13 +921,7 @@ public final class ApplicationGatewaysClientImpl implements InnerSupportsGet<App
                 res.getValue().value(), res.getValue().nextLink(), null));
     }
 
-    /**
-     * Gets all the application gateways in a subscription.
-     * 
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return all the application gateways in a subscription as paginated response with {@link PagedFlux}.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.COLLECTION)
     public PagedFlux<ApplicationGatewayInner> listAsync() {
         return new PagedFlux<>(() -> listSinglePageAsync(), nextLink -> listAllNextSinglePageAsync(nextLink));
@@ -1186,42 +942,19 @@ public final class ApplicationGatewaysClientImpl implements InnerSupportsGet<App
             nextLink -> listAllNextSinglePageAsync(nextLink, context));
     }
 
-    /**
-     * Gets all the application gateways in a subscription.
-     * 
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return all the application gateways in a subscription as paginated response with {@link PagedIterable}.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.COLLECTION)
     public PagedIterable<ApplicationGatewayInner> list() {
         return new PagedIterable<>(listAsync());
     }
 
-    /**
-     * Gets all the application gateways in a subscription.
-     * 
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return all the application gateways in a subscription as paginated response with {@link PagedIterable}.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.COLLECTION)
     public PagedIterable<ApplicationGatewayInner> list(Context context) {
         return new PagedIterable<>(listAsync(context));
     }
 
-    /**
-     * Starts the specified application gateway.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param applicationGatewayName The name of the application gateway.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the {@link Response} on successful completion of {@link Mono}.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Response<Flux<ByteBuffer>>> startWithResponseAsync(String resourceGroupName,
         String applicationGatewayName) {
@@ -1241,7 +974,7 @@ public final class ApplicationGatewaysClientImpl implements InnerSupportsGet<App
             return Mono.error(
                 new IllegalArgumentException("Parameter applicationGatewayName is required and cannot be null."));
         }
-        final String apiVersion = "2025-07-01";
+        final String apiVersion = "2026-05-01";
         return FluxUtil
             .withContext(context -> service.start(this.client.getEndpoint(), apiVersion,
                 this.client.getSubscriptionId(), resourceGroupName, applicationGatewayName, context))
@@ -1278,22 +1011,13 @@ public final class ApplicationGatewaysClientImpl implements InnerSupportsGet<App
             return Mono.error(
                 new IllegalArgumentException("Parameter applicationGatewayName is required and cannot be null."));
         }
-        final String apiVersion = "2025-07-01";
+        final String apiVersion = "2026-05-01";
         context = this.client.mergeContext(context);
         return service.start(this.client.getEndpoint(), apiVersion, this.client.getSubscriptionId(), resourceGroupName,
             applicationGatewayName, context);
     }
 
-    /**
-     * Starts the specified application gateway.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param applicationGatewayName The name of the application gateway.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the {@link PollerFlux} for polling of long-running operation.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public PollerFlux<PollResult<Void>, Void> beginStartAsync(String resourceGroupName, String applicationGatewayName) {
         Mono<Response<Flux<ByteBuffer>>> mono = startWithResponseAsync(resourceGroupName, applicationGatewayName);
@@ -1322,48 +1046,20 @@ public final class ApplicationGatewaysClientImpl implements InnerSupportsGet<App
             context);
     }
 
-    /**
-     * Starts the specified application gateway.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param applicationGatewayName The name of the application gateway.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the {@link SyncPoller} for polling of long-running operation.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public SyncPoller<PollResult<Void>, Void> beginStart(String resourceGroupName, String applicationGatewayName) {
         return this.beginStartAsync(resourceGroupName, applicationGatewayName).getSyncPoller();
     }
 
-    /**
-     * Starts the specified application gateway.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param applicationGatewayName The name of the application gateway.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the {@link SyncPoller} for polling of long-running operation.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public SyncPoller<PollResult<Void>, Void> beginStart(String resourceGroupName, String applicationGatewayName,
         Context context) {
         return this.beginStartAsync(resourceGroupName, applicationGatewayName, context).getSyncPoller();
     }
 
-    /**
-     * Starts the specified application gateway.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param applicationGatewayName The name of the application gateway.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return A {@link Mono} that completes when a successful response is received.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Void> startAsync(String resourceGroupName, String applicationGatewayName) {
         return beginStartAsync(resourceGroupName, applicationGatewayName).last()
@@ -1387,45 +1083,19 @@ public final class ApplicationGatewaysClientImpl implements InnerSupportsGet<App
             .flatMap(this.client::getLroFinalResultOrError);
     }
 
-    /**
-     * Starts the specified application gateway.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param applicationGatewayName The name of the application gateway.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public void start(String resourceGroupName, String applicationGatewayName) {
         startAsync(resourceGroupName, applicationGatewayName).block();
     }
 
-    /**
-     * Starts the specified application gateway.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param applicationGatewayName The name of the application gateway.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public void start(String resourceGroupName, String applicationGatewayName, Context context) {
         startAsync(resourceGroupName, applicationGatewayName, context).block();
     }
 
-    /**
-     * Stops the specified application gateway in a resource group.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param applicationGatewayName The name of the application gateway.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the {@link Response} on successful completion of {@link Mono}.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Response<Flux<ByteBuffer>>> stopWithResponseAsync(String resourceGroupName,
         String applicationGatewayName) {
@@ -1445,7 +1115,7 @@ public final class ApplicationGatewaysClientImpl implements InnerSupportsGet<App
             return Mono.error(
                 new IllegalArgumentException("Parameter applicationGatewayName is required and cannot be null."));
         }
-        final String apiVersion = "2025-07-01";
+        final String apiVersion = "2026-05-01";
         return FluxUtil
             .withContext(context -> service.stop(this.client.getEndpoint(), apiVersion, this.client.getSubscriptionId(),
                 resourceGroupName, applicationGatewayName, context))
@@ -1482,22 +1152,13 @@ public final class ApplicationGatewaysClientImpl implements InnerSupportsGet<App
             return Mono.error(
                 new IllegalArgumentException("Parameter applicationGatewayName is required and cannot be null."));
         }
-        final String apiVersion = "2025-07-01";
+        final String apiVersion = "2026-05-01";
         context = this.client.mergeContext(context);
         return service.stop(this.client.getEndpoint(), apiVersion, this.client.getSubscriptionId(), resourceGroupName,
             applicationGatewayName, context);
     }
 
-    /**
-     * Stops the specified application gateway in a resource group.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param applicationGatewayName The name of the application gateway.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the {@link PollerFlux} for polling of long-running operation.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public PollerFlux<PollResult<Void>, Void> beginStopAsync(String resourceGroupName, String applicationGatewayName) {
         Mono<Response<Flux<ByteBuffer>>> mono = stopWithResponseAsync(resourceGroupName, applicationGatewayName);
@@ -1526,48 +1187,20 @@ public final class ApplicationGatewaysClientImpl implements InnerSupportsGet<App
             context);
     }
 
-    /**
-     * Stops the specified application gateway in a resource group.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param applicationGatewayName The name of the application gateway.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the {@link SyncPoller} for polling of long-running operation.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public SyncPoller<PollResult<Void>, Void> beginStop(String resourceGroupName, String applicationGatewayName) {
         return this.beginStopAsync(resourceGroupName, applicationGatewayName).getSyncPoller();
     }
 
-    /**
-     * Stops the specified application gateway in a resource group.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param applicationGatewayName The name of the application gateway.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the {@link SyncPoller} for polling of long-running operation.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public SyncPoller<PollResult<Void>, Void> beginStop(String resourceGroupName, String applicationGatewayName,
         Context context) {
         return this.beginStopAsync(resourceGroupName, applicationGatewayName, context).getSyncPoller();
     }
 
-    /**
-     * Stops the specified application gateway in a resource group.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param applicationGatewayName The name of the application gateway.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return A {@link Mono} that completes when a successful response is received.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Void> stopAsync(String resourceGroupName, String applicationGatewayName) {
         return beginStopAsync(resourceGroupName, applicationGatewayName).last()
@@ -1591,47 +1224,19 @@ public final class ApplicationGatewaysClientImpl implements InnerSupportsGet<App
             .flatMap(this.client::getLroFinalResultOrError);
     }
 
-    /**
-     * Stops the specified application gateway in a resource group.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param applicationGatewayName The name of the application gateway.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public void stop(String resourceGroupName, String applicationGatewayName) {
         stopAsync(resourceGroupName, applicationGatewayName).block();
     }
 
-    /**
-     * Stops the specified application gateway in a resource group.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param applicationGatewayName The name of the application gateway.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public void stop(String resourceGroupName, String applicationGatewayName, Context context) {
         stopAsync(resourceGroupName, applicationGatewayName, context).block();
     }
 
-    /**
-     * Gets the backend health of the specified application gateway in a resource group.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param applicationGatewayName The name of the application gateway.
-     * @param expand Expands BackendAddressPool and BackendHttpSettings referenced in backend health.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the backend health of the specified application gateway in a resource group along with {@link Response}
-     * on successful completion of {@link Mono}.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Response<Flux<ByteBuffer>>> backendHealthWithResponseAsync(String resourceGroupName,
         String applicationGatewayName, String expand) {
@@ -1651,7 +1256,7 @@ public final class ApplicationGatewaysClientImpl implements InnerSupportsGet<App
             return Mono.error(
                 new IllegalArgumentException("Parameter applicationGatewayName is required and cannot be null."));
         }
-        final String apiVersion = "2025-07-01";
+        final String apiVersion = "2026-05-01";
         final String accept = "application/json";
         return FluxUtil
             .withContext(context -> service.backendHealth(this.client.getEndpoint(), apiVersion,
@@ -1691,25 +1296,14 @@ public final class ApplicationGatewaysClientImpl implements InnerSupportsGet<App
             return Mono.error(
                 new IllegalArgumentException("Parameter applicationGatewayName is required and cannot be null."));
         }
-        final String apiVersion = "2025-07-01";
+        final String apiVersion = "2026-05-01";
         final String accept = "application/json";
         context = this.client.mergeContext(context);
         return service.backendHealth(this.client.getEndpoint(), apiVersion, this.client.getSubscriptionId(),
             resourceGroupName, applicationGatewayName, expand, accept, context);
     }
 
-    /**
-     * Gets the backend health of the specified application gateway in a resource group.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param applicationGatewayName The name of the application gateway.
-     * @param expand Expands BackendAddressPool and BackendHttpSettings referenced in backend health.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the {@link PollerFlux} for polling of the backend health of the specified application gateway in a
-     * resource group.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public PollerFlux<PollResult<ApplicationGatewayBackendHealthInner>, ApplicationGatewayBackendHealthInner>
         beginBackendHealthAsync(String resourceGroupName, String applicationGatewayName, String expand) {
@@ -1720,17 +1314,7 @@ public final class ApplicationGatewaysClientImpl implements InnerSupportsGet<App
             ApplicationGatewayBackendHealthInner.class, this.client.getContext());
     }
 
-    /**
-     * Gets the backend health of the specified application gateway in a resource group.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param applicationGatewayName The name of the application gateway.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the {@link PollerFlux} for polling of the backend health of the specified application gateway in a
-     * resource group.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public PollerFlux<PollResult<ApplicationGatewayBackendHealthInner>, ApplicationGatewayBackendHealthInner>
         beginBackendHealthAsync(String resourceGroupName, String applicationGatewayName) {
@@ -1767,17 +1351,7 @@ public final class ApplicationGatewaysClientImpl implements InnerSupportsGet<App
             ApplicationGatewayBackendHealthInner.class, context);
     }
 
-    /**
-     * Gets the backend health of the specified application gateway in a resource group.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param applicationGatewayName The name of the application gateway.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the {@link SyncPoller} for polling of the backend health of the specified application gateway in a
-     * resource group.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public SyncPoller<PollResult<ApplicationGatewayBackendHealthInner>, ApplicationGatewayBackendHealthInner>
         beginBackendHealth(String resourceGroupName, String applicationGatewayName) {
@@ -1785,37 +1359,14 @@ public final class ApplicationGatewaysClientImpl implements InnerSupportsGet<App
         return this.beginBackendHealthAsync(resourceGroupName, applicationGatewayName, expand).getSyncPoller();
     }
 
-    /**
-     * Gets the backend health of the specified application gateway in a resource group.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param applicationGatewayName The name of the application gateway.
-     * @param expand Expands BackendAddressPool and BackendHttpSettings referenced in backend health.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the {@link SyncPoller} for polling of the backend health of the specified application gateway in a
-     * resource group.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public SyncPoller<PollResult<ApplicationGatewayBackendHealthInner>, ApplicationGatewayBackendHealthInner>
         beginBackendHealth(String resourceGroupName, String applicationGatewayName, String expand, Context context) {
         return this.beginBackendHealthAsync(resourceGroupName, applicationGatewayName, expand, context).getSyncPoller();
     }
 
-    /**
-     * Gets the backend health of the specified application gateway in a resource group.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param applicationGatewayName The name of the application gateway.
-     * @param expand Expands BackendAddressPool and BackendHttpSettings referenced in backend health.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the backend health of the specified application gateway in a resource group on successful completion of
-     * {@link Mono}.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<ApplicationGatewayBackendHealthInner> backendHealthAsync(String resourceGroupName,
         String applicationGatewayName, String expand) {
@@ -1823,17 +1374,7 @@ public final class ApplicationGatewaysClientImpl implements InnerSupportsGet<App
             .flatMap(this.client::getLroFinalResultOrError);
     }
 
-    /**
-     * Gets the backend health of the specified application gateway in a resource group.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param applicationGatewayName The name of the application gateway.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the backend health of the specified application gateway in a resource group on successful completion of
-     * {@link Mono}.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<ApplicationGatewayBackendHealthInner> backendHealthAsync(String resourceGroupName,
         String applicationGatewayName) {
@@ -1862,54 +1403,21 @@ public final class ApplicationGatewaysClientImpl implements InnerSupportsGet<App
             .flatMap(this.client::getLroFinalResultOrError);
     }
 
-    /**
-     * Gets the backend health of the specified application gateway in a resource group.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param applicationGatewayName The name of the application gateway.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the backend health of the specified application gateway in a resource group.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public ApplicationGatewayBackendHealthInner backendHealth(String resourceGroupName, String applicationGatewayName) {
         final String expand = null;
         return backendHealthAsync(resourceGroupName, applicationGatewayName, expand).block();
     }
 
-    /**
-     * Gets the backend health of the specified application gateway in a resource group.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param applicationGatewayName The name of the application gateway.
-     * @param expand Expands BackendAddressPool and BackendHttpSettings referenced in backend health.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the backend health of the specified application gateway in a resource group.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public ApplicationGatewayBackendHealthInner backendHealth(String resourceGroupName, String applicationGatewayName,
         String expand, Context context) {
         return backendHealthAsync(resourceGroupName, applicationGatewayName, expand, context).block();
     }
 
-    /**
-     * Gets the backend health for given combination of backend pool and http setting of the specified application
-     * gateway in a resource group.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param applicationGatewayName The name of the application gateway.
-     * @param probeRequest Request body for on-demand test probe operation.
-     * @param expand Expands BackendAddressPool and BackendHttpSettings referenced in backend health.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the backend health for given combination of backend pool and http setting of the specified application
-     * gateway in a resource group along with {@link Response} on successful completion of {@link Mono}.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Response<Flux<ByteBuffer>>> backendHealthOnDemandWithResponseAsync(String resourceGroupName,
         String applicationGatewayName, ApplicationGatewayOnDemandProbe probeRequest, String expand) {
@@ -1934,7 +1442,7 @@ public final class ApplicationGatewaysClientImpl implements InnerSupportsGet<App
         } else {
             probeRequest.validate();
         }
-        final String apiVersion = "2025-07-01";
+        final String apiVersion = "2026-05-01";
         final String contentType = "application/json";
         final String accept = "application/json";
         return FluxUtil
@@ -1983,7 +1491,7 @@ public final class ApplicationGatewaysClientImpl implements InnerSupportsGet<App
         } else {
             probeRequest.validate();
         }
-        final String apiVersion = "2025-07-01";
+        final String apiVersion = "2026-05-01";
         final String contentType = "application/json";
         final String accept = "application/json";
         context = this.client.mergeContext(context);
@@ -1991,20 +1499,7 @@ public final class ApplicationGatewaysClientImpl implements InnerSupportsGet<App
             resourceGroupName, applicationGatewayName, expand, contentType, accept, probeRequest, context);
     }
 
-    /**
-     * Gets the backend health for given combination of backend pool and http setting of the specified application
-     * gateway in a resource group.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param applicationGatewayName The name of the application gateway.
-     * @param probeRequest Request body for on-demand test probe operation.
-     * @param expand Expands BackendAddressPool and BackendHttpSettings referenced in backend health.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the {@link PollerFlux} for polling of the backend health for given combination of backend pool and http
-     * setting of the specified application gateway in a resource group.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public
         PollerFlux<PollResult<ApplicationGatewayBackendHealthOnDemandInner>, ApplicationGatewayBackendHealthOnDemandInner>
@@ -2018,19 +1513,7 @@ public final class ApplicationGatewaysClientImpl implements InnerSupportsGet<App
                 ApplicationGatewayBackendHealthOnDemandInner.class, this.client.getContext());
     }
 
-    /**
-     * Gets the backend health for given combination of backend pool and http setting of the specified application
-     * gateway in a resource group.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param applicationGatewayName The name of the application gateway.
-     * @param probeRequest Request body for on-demand test probe operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the {@link PollerFlux} for polling of the backend health for given combination of backend pool and http
-     * setting of the specified application gateway in a resource group.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public
         PollerFlux<PollResult<ApplicationGatewayBackendHealthOnDemandInner>, ApplicationGatewayBackendHealthOnDemandInner>
@@ -2074,19 +1557,7 @@ public final class ApplicationGatewaysClientImpl implements InnerSupportsGet<App
                 ApplicationGatewayBackendHealthOnDemandInner.class, context);
     }
 
-    /**
-     * Gets the backend health for given combination of backend pool and http setting of the specified application
-     * gateway in a resource group.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param applicationGatewayName The name of the application gateway.
-     * @param probeRequest Request body for on-demand test probe operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the {@link SyncPoller} for polling of the backend health for given combination of backend pool and http
-     * setting of the specified application gateway in a resource group.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public
         SyncPoller<PollResult<ApplicationGatewayBackendHealthOnDemandInner>, ApplicationGatewayBackendHealthOnDemandInner>
@@ -2097,21 +1568,7 @@ public final class ApplicationGatewaysClientImpl implements InnerSupportsGet<App
             .getSyncPoller();
     }
 
-    /**
-     * Gets the backend health for given combination of backend pool and http setting of the specified application
-     * gateway in a resource group.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param applicationGatewayName The name of the application gateway.
-     * @param probeRequest Request body for on-demand test probe operation.
-     * @param expand Expands BackendAddressPool and BackendHttpSettings referenced in backend health.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the {@link SyncPoller} for polling of the backend health for given combination of backend pool and http
-     * setting of the specified application gateway in a resource group.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public
         SyncPoller<PollResult<ApplicationGatewayBackendHealthOnDemandInner>, ApplicationGatewayBackendHealthOnDemandInner>
@@ -2122,20 +1579,7 @@ public final class ApplicationGatewaysClientImpl implements InnerSupportsGet<App
             .getSyncPoller();
     }
 
-    /**
-     * Gets the backend health for given combination of backend pool and http setting of the specified application
-     * gateway in a resource group.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param applicationGatewayName The name of the application gateway.
-     * @param probeRequest Request body for on-demand test probe operation.
-     * @param expand Expands BackendAddressPool and BackendHttpSettings referenced in backend health.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the backend health for given combination of backend pool and http setting of the specified application
-     * gateway in a resource group on successful completion of {@link Mono}.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<ApplicationGatewayBackendHealthOnDemandInner> backendHealthOnDemandAsync(String resourceGroupName,
         String applicationGatewayName, ApplicationGatewayOnDemandProbe probeRequest, String expand) {
@@ -2143,19 +1587,7 @@ public final class ApplicationGatewaysClientImpl implements InnerSupportsGet<App
             .flatMap(this.client::getLroFinalResultOrError);
     }
 
-    /**
-     * Gets the backend health for given combination of backend pool and http setting of the specified application
-     * gateway in a resource group.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param applicationGatewayName The name of the application gateway.
-     * @param probeRequest Request body for on-demand test probe operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the backend health for given combination of backend pool and http setting of the specified application
-     * gateway in a resource group on successful completion of {@link Mono}.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<ApplicationGatewayBackendHealthOnDemandInner> backendHealthOnDemandAsync(String resourceGroupName,
         String applicationGatewayName, ApplicationGatewayOnDemandProbe probeRequest) {
@@ -2187,19 +1619,7 @@ public final class ApplicationGatewaysClientImpl implements InnerSupportsGet<App
             .flatMap(this.client::getLroFinalResultOrError);
     }
 
-    /**
-     * Gets the backend health for given combination of backend pool and http setting of the specified application
-     * gateway in a resource group.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param applicationGatewayName The name of the application gateway.
-     * @param probeRequest Request body for on-demand test probe operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the backend health for given combination of backend pool and http setting of the specified application
-     * gateway in a resource group.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public ApplicationGatewayBackendHealthOnDemandInner backendHealthOnDemand(String resourceGroupName,
         String applicationGatewayName, ApplicationGatewayOnDemandProbe probeRequest) {
@@ -2207,21 +1627,7 @@ public final class ApplicationGatewaysClientImpl implements InnerSupportsGet<App
         return backendHealthOnDemandAsync(resourceGroupName, applicationGatewayName, probeRequest, expand).block();
     }
 
-    /**
-     * Gets the backend health for given combination of backend pool and http setting of the specified application
-     * gateway in a resource group.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param applicationGatewayName The name of the application gateway.
-     * @param probeRequest Request body for on-demand test probe operation.
-     * @param expand Expands BackendAddressPool and BackendHttpSettings referenced in backend health.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the backend health for given combination of backend pool and http setting of the specified application
-     * gateway in a resource group.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public ApplicationGatewayBackendHealthOnDemandInner backendHealthOnDemand(String resourceGroupName,
         String applicationGatewayName, ApplicationGatewayOnDemandProbe probeRequest, String expand, Context context) {
@@ -2229,14 +1635,7 @@ public final class ApplicationGatewaysClientImpl implements InnerSupportsGet<App
             .block();
     }
 
-    /**
-     * Lists available Ssl options for configuring Ssl policy.
-     * 
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return response for ApplicationGatewayAvailableSslOptions API service call along with {@link Response} on
-     * successful completion of {@link Mono}.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Response<ApplicationGatewayAvailableSslOptionsInner>> listAvailableSslOptionsWithResponseAsync() {
         if (this.client.getEndpoint() == null) {
@@ -2247,7 +1646,7 @@ public final class ApplicationGatewaysClientImpl implements InnerSupportsGet<App
             return Mono.error(new IllegalArgumentException(
                 "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
-        final String apiVersion = "2025-07-01";
+        final String apiVersion = "2026-05-01";
         final String accept = "application/json";
         return FluxUtil
             .withContext(context -> service.listAvailableSslOptions(this.client.getEndpoint(), apiVersion,
@@ -2276,47 +1675,26 @@ public final class ApplicationGatewaysClientImpl implements InnerSupportsGet<App
             return Mono.error(new IllegalArgumentException(
                 "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
-        final String apiVersion = "2025-07-01";
+        final String apiVersion = "2026-05-01";
         final String accept = "application/json";
         context = this.client.mergeContext(context);
         return service.listAvailableSslOptions(this.client.getEndpoint(), apiVersion, this.client.getSubscriptionId(),
             accept, context);
     }
 
-    /**
-     * Lists available Ssl options for configuring Ssl policy.
-     * 
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return response for ApplicationGatewayAvailableSslOptions API service call on successful completion of
-     * {@link Mono}.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<ApplicationGatewayAvailableSslOptionsInner> listAvailableSslOptionsAsync() {
         return listAvailableSslOptionsWithResponseAsync().flatMap(res -> Mono.justOrEmpty(res.getValue()));
     }
 
-    /**
-     * Lists available Ssl options for configuring Ssl policy.
-     * 
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return response for ApplicationGatewayAvailableSslOptions API service call along with {@link Response}.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Response<ApplicationGatewayAvailableSslOptionsInner> listAvailableSslOptionsWithResponse(Context context) {
         return listAvailableSslOptionsWithResponseAsync(context).block();
     }
 
-    /**
-     * Lists available Ssl options for configuring Ssl policy.
-     * 
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return response for ApplicationGatewayAvailableSslOptions API service call.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public ApplicationGatewayAvailableSslOptionsInner listAvailableSslOptions() {
         return listAvailableSslOptionsWithResponse(Context.NONE).getValue();
@@ -2341,7 +1719,7 @@ public final class ApplicationGatewaysClientImpl implements InnerSupportsGet<App
             return Mono.error(new IllegalArgumentException(
                 "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
-        final String apiVersion = "2025-07-01";
+        final String apiVersion = "2026-05-01";
         final String accept = "application/json";
         return FluxUtil
             .withContext(context -> service.listAvailableSslPredefinedPolicies(this.client.getEndpoint(), apiVersion,
@@ -2373,7 +1751,7 @@ public final class ApplicationGatewaysClientImpl implements InnerSupportsGet<App
             return Mono.error(new IllegalArgumentException(
                 "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
-        final String apiVersion = "2025-07-01";
+        final String apiVersion = "2026-05-01";
         final String accept = "application/json";
         context = this.client.mergeContext(context);
         return service
@@ -2383,14 +1761,7 @@ public final class ApplicationGatewaysClientImpl implements InnerSupportsGet<App
                 res.getValue().value(), res.getValue().nextLink(), null));
     }
 
-    /**
-     * Lists all SSL predefined policies for configuring Ssl policy.
-     * 
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return response for ApplicationGatewayAvailableSslOptions API service call as paginated response with
-     * {@link PagedFlux}.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.COLLECTION)
     public PagedFlux<ApplicationGatewaySslPredefinedPolicyInner> listAvailableSslPredefinedPoliciesAsync() {
         return new PagedFlux<>(() -> listAvailableSslPredefinedPoliciesSinglePageAsync(),
@@ -2414,45 +1785,20 @@ public final class ApplicationGatewaysClientImpl implements InnerSupportsGet<App
             nextLink -> listAvailableSslPredefinedPoliciesNextSinglePageAsync(nextLink, context));
     }
 
-    /**
-     * Lists all SSL predefined policies for configuring Ssl policy.
-     * 
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return response for ApplicationGatewayAvailableSslOptions API service call as paginated response with
-     * {@link PagedIterable}.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.COLLECTION)
     public PagedIterable<ApplicationGatewaySslPredefinedPolicyInner> listAvailableSslPredefinedPolicies() {
         return new PagedIterable<>(listAvailableSslPredefinedPoliciesAsync());
     }
 
-    /**
-     * Lists all SSL predefined policies for configuring Ssl policy.
-     * 
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return response for ApplicationGatewayAvailableSslOptions API service call as paginated response with
-     * {@link PagedIterable}.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.COLLECTION)
     public PagedIterable<ApplicationGatewaySslPredefinedPolicyInner>
         listAvailableSslPredefinedPolicies(Context context) {
         return new PagedIterable<>(listAvailableSslPredefinedPoliciesAsync(context));
     }
 
-    /**
-     * Gets Ssl predefined policy with the specified policy name.
-     * 
-     * @param predefinedPolicyName The name of the ssl predefined policy.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return ssl predefined policy with the specified policy name along with {@link Response} on successful completion
-     * of {@link Mono}.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Response<ApplicationGatewaySslPredefinedPolicyInner>>
         getSslPredefinedPolicyWithResponseAsync(String predefinedPolicyName) {
@@ -2468,7 +1814,7 @@ public final class ApplicationGatewaysClientImpl implements InnerSupportsGet<App
             return Mono
                 .error(new IllegalArgumentException("Parameter predefinedPolicyName is required and cannot be null."));
         }
-        final String apiVersion = "2025-07-01";
+        final String apiVersion = "2026-05-01";
         final String accept = "application/json";
         return FluxUtil
             .withContext(context -> service.getSslPredefinedPolicy(this.client.getEndpoint(), apiVersion,
@@ -2502,65 +1848,34 @@ public final class ApplicationGatewaysClientImpl implements InnerSupportsGet<App
             return Mono
                 .error(new IllegalArgumentException("Parameter predefinedPolicyName is required and cannot be null."));
         }
-        final String apiVersion = "2025-07-01";
+        final String apiVersion = "2026-05-01";
         final String accept = "application/json";
         context = this.client.mergeContext(context);
         return service.getSslPredefinedPolicy(this.client.getEndpoint(), apiVersion, this.client.getSubscriptionId(),
             predefinedPolicyName, accept, context);
     }
 
-    /**
-     * Gets Ssl predefined policy with the specified policy name.
-     * 
-     * @param predefinedPolicyName The name of the ssl predefined policy.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return ssl predefined policy with the specified policy name on successful completion of {@link Mono}.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<ApplicationGatewaySslPredefinedPolicyInner> getSslPredefinedPolicyAsync(String predefinedPolicyName) {
         return getSslPredefinedPolicyWithResponseAsync(predefinedPolicyName)
             .flatMap(res -> Mono.justOrEmpty(res.getValue()));
     }
 
-    /**
-     * Gets Ssl predefined policy with the specified policy name.
-     * 
-     * @param predefinedPolicyName The name of the ssl predefined policy.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return ssl predefined policy with the specified policy name along with {@link Response}.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Response<ApplicationGatewaySslPredefinedPolicyInner>
         getSslPredefinedPolicyWithResponse(String predefinedPolicyName, Context context) {
         return getSslPredefinedPolicyWithResponseAsync(predefinedPolicyName, context).block();
     }
 
-    /**
-     * Gets Ssl predefined policy with the specified policy name.
-     * 
-     * @param predefinedPolicyName The name of the ssl predefined policy.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return ssl predefined policy with the specified policy name.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public ApplicationGatewaySslPredefinedPolicyInner getSslPredefinedPolicy(String predefinedPolicyName) {
         return getSslPredefinedPolicyWithResponse(predefinedPolicyName, Context.NONE).getValue();
     }
 
-    /**
-     * Lists all available server variables.
-     * 
-     * @throws ErrorException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the response body along with {@link Response} on successful completion of {@link Mono}.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Response<List<String>>> listAvailableServerVariablesWithResponseAsync() {
         if (this.client.getEndpoint() == null) {
@@ -2571,7 +1886,7 @@ public final class ApplicationGatewaysClientImpl implements InnerSupportsGet<App
             return Mono.error(new IllegalArgumentException(
                 "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
-        final String apiVersion = "2025-07-01";
+        final String apiVersion = "2026-05-01";
         final String accept = "application/json";
         return FluxUtil
             .withContext(context -> service.listAvailableServerVariables(this.client.getEndpoint(), apiVersion,
@@ -2598,58 +1913,32 @@ public final class ApplicationGatewaysClientImpl implements InnerSupportsGet<App
             return Mono.error(new IllegalArgumentException(
                 "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
-        final String apiVersion = "2025-07-01";
+        final String apiVersion = "2026-05-01";
         final String accept = "application/json";
         context = this.client.mergeContext(context);
         return service.listAvailableServerVariables(this.client.getEndpoint(), apiVersion,
             this.client.getSubscriptionId(), accept, context);
     }
 
-    /**
-     * Lists all available server variables.
-     * 
-     * @throws ErrorException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the response body on successful completion of {@link Mono}.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<List<String>> listAvailableServerVariablesAsync() {
         return listAvailableServerVariablesWithResponseAsync().flatMap(res -> Mono.justOrEmpty(res.getValue()));
     }
 
-    /**
-     * Lists all available server variables.
-     * 
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ErrorException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the response body along with {@link Response}.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Response<List<String>> listAvailableServerVariablesWithResponse(Context context) {
         return listAvailableServerVariablesWithResponseAsync(context).block();
     }
 
-    /**
-     * Lists all available server variables.
-     * 
-     * @throws ErrorException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the response.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public List<String> listAvailableServerVariables() {
         return listAvailableServerVariablesWithResponse(Context.NONE).getValue();
     }
 
-    /**
-     * Lists all available request headers.
-     * 
-     * @throws ErrorException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the response body along with {@link Response} on successful completion of {@link Mono}.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Response<List<String>>> listAvailableRequestHeadersWithResponseAsync() {
         if (this.client.getEndpoint() == null) {
@@ -2660,7 +1949,7 @@ public final class ApplicationGatewaysClientImpl implements InnerSupportsGet<App
             return Mono.error(new IllegalArgumentException(
                 "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
-        final String apiVersion = "2025-07-01";
+        final String apiVersion = "2026-05-01";
         final String accept = "application/json";
         return FluxUtil
             .withContext(context -> service.listAvailableRequestHeaders(this.client.getEndpoint(), apiVersion,
@@ -2687,58 +1976,32 @@ public final class ApplicationGatewaysClientImpl implements InnerSupportsGet<App
             return Mono.error(new IllegalArgumentException(
                 "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
-        final String apiVersion = "2025-07-01";
+        final String apiVersion = "2026-05-01";
         final String accept = "application/json";
         context = this.client.mergeContext(context);
         return service.listAvailableRequestHeaders(this.client.getEndpoint(), apiVersion,
             this.client.getSubscriptionId(), accept, context);
     }
 
-    /**
-     * Lists all available request headers.
-     * 
-     * @throws ErrorException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the response body on successful completion of {@link Mono}.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<List<String>> listAvailableRequestHeadersAsync() {
         return listAvailableRequestHeadersWithResponseAsync().flatMap(res -> Mono.justOrEmpty(res.getValue()));
     }
 
-    /**
-     * Lists all available request headers.
-     * 
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ErrorException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the response body along with {@link Response}.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Response<List<String>> listAvailableRequestHeadersWithResponse(Context context) {
         return listAvailableRequestHeadersWithResponseAsync(context).block();
     }
 
-    /**
-     * Lists all available request headers.
-     * 
-     * @throws ErrorException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the response.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public List<String> listAvailableRequestHeaders() {
         return listAvailableRequestHeadersWithResponse(Context.NONE).getValue();
     }
 
-    /**
-     * Lists all available response headers.
-     * 
-     * @throws ErrorException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the response body along with {@link Response} on successful completion of {@link Mono}.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Response<List<String>>> listAvailableResponseHeadersWithResponseAsync() {
         if (this.client.getEndpoint() == null) {
@@ -2749,7 +2012,7 @@ public final class ApplicationGatewaysClientImpl implements InnerSupportsGet<App
             return Mono.error(new IllegalArgumentException(
                 "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
-        final String apiVersion = "2025-07-01";
+        final String apiVersion = "2026-05-01";
         final String accept = "application/json";
         return FluxUtil
             .withContext(context -> service.listAvailableResponseHeaders(this.client.getEndpoint(), apiVersion,
@@ -2776,59 +2039,32 @@ public final class ApplicationGatewaysClientImpl implements InnerSupportsGet<App
             return Mono.error(new IllegalArgumentException(
                 "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
-        final String apiVersion = "2025-07-01";
+        final String apiVersion = "2026-05-01";
         final String accept = "application/json";
         context = this.client.mergeContext(context);
         return service.listAvailableResponseHeaders(this.client.getEndpoint(), apiVersion,
             this.client.getSubscriptionId(), accept, context);
     }
 
-    /**
-     * Lists all available response headers.
-     * 
-     * @throws ErrorException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the response body on successful completion of {@link Mono}.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<List<String>> listAvailableResponseHeadersAsync() {
         return listAvailableResponseHeadersWithResponseAsync().flatMap(res -> Mono.justOrEmpty(res.getValue()));
     }
 
-    /**
-     * Lists all available response headers.
-     * 
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ErrorException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the response body along with {@link Response}.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Response<List<String>> listAvailableResponseHeadersWithResponse(Context context) {
         return listAvailableResponseHeadersWithResponseAsync(context).block();
     }
 
-    /**
-     * Lists all available response headers.
-     * 
-     * @throws ErrorException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the response.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public List<String> listAvailableResponseHeaders() {
         return listAvailableResponseHeadersWithResponse(Context.NONE).getValue();
     }
 
-    /**
-     * Lists all available web application firewall rule sets.
-     * 
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return response for ApplicationGatewayAvailableWafRuleSets API service call along with {@link Response} on
-     * successful completion of {@link Mono}.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Response<ApplicationGatewayAvailableWafRuleSetsResultInner>>
         listAvailableWafRuleSetsWithResponseAsync() {
@@ -2840,7 +2076,7 @@ public final class ApplicationGatewaysClientImpl implements InnerSupportsGet<App
             return Mono.error(new IllegalArgumentException(
                 "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
-        final String apiVersion = "2025-07-01";
+        final String apiVersion = "2026-05-01";
         final String accept = "application/json";
         return FluxUtil
             .withContext(context -> service.listAvailableWafRuleSets(this.client.getEndpoint(), apiVersion,
@@ -2869,48 +2105,27 @@ public final class ApplicationGatewaysClientImpl implements InnerSupportsGet<App
             return Mono.error(new IllegalArgumentException(
                 "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
-        final String apiVersion = "2025-07-01";
+        final String apiVersion = "2026-05-01";
         final String accept = "application/json";
         context = this.client.mergeContext(context);
         return service.listAvailableWafRuleSets(this.client.getEndpoint(), apiVersion, this.client.getSubscriptionId(),
             accept, context);
     }
 
-    /**
-     * Lists all available web application firewall rule sets.
-     * 
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return response for ApplicationGatewayAvailableWafRuleSets API service call on successful completion of
-     * {@link Mono}.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<ApplicationGatewayAvailableWafRuleSetsResultInner> listAvailableWafRuleSetsAsync() {
         return listAvailableWafRuleSetsWithResponseAsync().flatMap(res -> Mono.justOrEmpty(res.getValue()));
     }
 
-    /**
-     * Lists all available web application firewall rule sets.
-     * 
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return response for ApplicationGatewayAvailableWafRuleSets API service call along with {@link Response}.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Response<ApplicationGatewayAvailableWafRuleSetsResultInner>
         listAvailableWafRuleSetsWithResponse(Context context) {
         return listAvailableWafRuleSetsWithResponseAsync(context).block();
     }
 
-    /**
-     * Lists all available web application firewall rule sets.
-     * 
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return response for ApplicationGatewayAvailableWafRuleSets API service call.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public ApplicationGatewayAvailableWafRuleSetsResultInner listAvailableWafRuleSets() {
         return listAvailableWafRuleSetsWithResponse(Context.NONE).getValue();

@@ -11,7 +11,6 @@ import java.util.Collection;
 /**
  * The supported data generation job types.
  */
-@Beta(warningText = "Preview API. DataGenerationJobs=V1Preview")
 public final class DataGenerationJobType extends ExpandableStringEnum<DataGenerationJobType> {
 
     /**
@@ -21,7 +20,7 @@ public final class DataGenerationJobType extends ExpandableStringEnum<DataGenera
     public static final DataGenerationJobType SIMPLE_QNA = fromString("simple_qna");
 
     /**
-     * Single turn query and response from agent traces.
+     * Samples from captured turns in agent traces.
      */
     @Generated
     public static final DataGenerationJobType TRACES = fromString("traces");
@@ -64,8 +63,16 @@ public final class DataGenerationJobType extends ExpandableStringEnum<DataGenera
     }
 
     /**
-     * Task generation for evaluation scenarios.
+     * Simulation seed for evaluation scenarios.
      */
     @Generated
-    public static final DataGenerationJobType TASK_GENERATION = fromString("task_generation");
+    public static final DataGenerationJobType SIMULATION_SEED = fromString("simulation_seed");
+
+    /**
+     * Reconstruction of existing traced conversations for evaluation. This is a preview feature, not synthetic
+     * conversation simulation.
+     */
+    @Generated
+    @Beta(warningText = "Preview API.")
+    public static final DataGenerationJobType CONVERSATIONS = fromString("conversations");
 }

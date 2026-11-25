@@ -210,6 +210,14 @@ final class RntbdRequestHeaders extends RntbdTokenStream<RntbdRequestHeader> {
 
     // region Methods
 
+    void overrideSessionToken(final String sessionToken) {
+        if (StringUtils.isNotEmpty(sessionToken)) {
+            this.getSessionToken().setValue(sessionToken);
+        } else {
+            this.tokens.put(RntbdRequestHeader.SessionToken, RntbdToken.create(RntbdRequestHeader.SessionToken));
+        }
+    }
+
     static RntbdRequestHeaders decode(final ByteBuf in) {
         final RntbdRequestHeaders metadata = new RntbdRequestHeaders(in);
         return RntbdRequestHeaders.decode(metadata);
@@ -897,7 +905,15 @@ final class RntbdRequestHeaders extends RntbdTokenStream<RntbdRequestHeader> {
         if (StringUtils.isNotEmpty(value)) {
             try {
                 final int workloadId = Integer.parseInt(value);
-                this.getWorkloadId().setValue((byte) workloadId);
+
+                // WorkloadId is a UShort token; values outside its range would be silently
+                // truncated on the wire and attributed to a different workload.
+                if (workloadId < 0 || workloadId > 0xFFFF) {
+                    logger.warn("Workload id header value {} is out of range and will not be sent", value);
+                    return;
+                }
+
+                this.getWorkloadId().setValue(workloadId);
             } catch (NumberFormatException e) {
                 logger.warn("Invalid value for workload id header: {}", value, e);
             }

@@ -1,0 +1,43 @@
+# Deletes the Cosmos databases created by the current job.
+#
+# The in-process janitor (CosmosTestResourceJanitor) already cleans up at the end of a test run, but it
+# cannot help when the JVM is killed before any listener or shutdown hook runs. This step runs at the end
+# of the job and deletes exactly the databases tagged with this job's run id, so it is safe on the long
+# lived shared accounts where several legs execute concurrently.
+#
+# It is a bonus layer: cleanup failing must never turn a job red, because cleanup failing tells us
+# nothing about the code under test, and the accounts are unreachable in exactly the situations where the
+# tests were already failing. Anything it cannot delete is reported as a warning and left behind.
+#
+# On cancellation this only gets cancelTimeoutInMinutes (5 by default) to finish, which a cold Maven
+# start plus a metadata sweep can exceed, so treat it as best effort there.
+
+parameters:
+  - name: AccountHost
+    type: string
+  - name: AccountKey
+    type: string
+  - name: DisplayName
+    type: string
+    default: 'Clean up Cosmos test resources for this run'
+
+steps:
+  - pwsh: |
+      # Deliberately never fails: see the header comment. Errors are surfaced as warnings instead.
+      mvn -f sdk/cosmos/azure-cosmos-tests/pom.xml `
+        "-Dmaven.repo.local=$env:MAVEN_CACHE_FOLDER" `
+        --batch-mode `
+        "-Dexec.args=--account-host $env:CLEANUP_ACCOUNT_HOST --account-key $env:CLEANUP_ACCOUNT_KEY" `
+        exec:java
+
+      if ($LASTEXITCODE -ne 0) {
+        Write-Host "##vso[task.logissue type=warning]Cosmos test resource cleanup did not complete (mvn exit $LASTEXITCODE). Databases created by this job may still exist."
+      }
+
+      exit 0
+    displayName: ${{ parameters.DisplayName }}
+    condition: always()
+    env:
+      # Passed as environment variables rather than on the command line so the key is not echoed.
+      CLEANUP_ACCOUNT_HOST: ${{ parameters.AccountHost }}
+      CLEANUP_ACCOUNT_KEY: ${{ parameters.AccountKey }}

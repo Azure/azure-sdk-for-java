@@ -13,22 +13,22 @@ import org.junit.jupiter.api.Assertions;
 public final class ResourceProviderCapabilitiesTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
-        ResourceProviderCapabilities model
-            = BinaryData.fromString("{\"quotaId\":\"jtckwhdso\",\"effect\":\"Allow\",\"requiredFeatures\":[\"i\"]}")
-                .toObject(ResourceProviderCapabilities.class);
-        Assertions.assertEquals("jtckwhdso", model.quotaId());
+        ResourceProviderCapabilities model = BinaryData.fromString(
+            "{\"quotaId\":\"ifiyipjxsqwpgrj\",\"effect\":\"Allow\",\"requiredFeatures\":[\"rcjxvsnbyxqabn\",\"ocpcy\",\"hurzafblj\"]}")
+            .toObject(ResourceProviderCapabilities.class);
+        Assertions.assertEquals("ifiyipjxsqwpgrj", model.quotaId());
         Assertions.assertEquals(ResourceProviderCapabilitiesEffect.ALLOW, model.effect());
-        Assertions.assertEquals("i", model.requiredFeatures().get(0));
+        Assertions.assertEquals("rcjxvsnbyxqabn", model.requiredFeatures().get(0));
     }
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
-        ResourceProviderCapabilities model = new ResourceProviderCapabilities().withQuotaId("jtckwhdso")
+        ResourceProviderCapabilities model = new ResourceProviderCapabilities().withQuotaId("ifiyipjxsqwpgrj")
             .withEffect(ResourceProviderCapabilitiesEffect.ALLOW)
-            .withRequiredFeatures(Arrays.asList("i"));
+            .withRequiredFeatures(Arrays.asList("rcjxvsnbyxqabn", "ocpcy", "hurzafblj"));
         model = BinaryData.fromObject(model).toObject(ResourceProviderCapabilities.class);
-        Assertions.assertEquals("jtckwhdso", model.quotaId());
+        Assertions.assertEquals("ifiyipjxsqwpgrj", model.quotaId());
         Assertions.assertEquals(ResourceProviderCapabilitiesEffect.ALLOW, model.effect());
-        Assertions.assertEquals("i", model.requiredFeatures().get(0));
+        Assertions.assertEquals("rcjxvsnbyxqabn", model.requiredFeatures().get(0));
     }
 }

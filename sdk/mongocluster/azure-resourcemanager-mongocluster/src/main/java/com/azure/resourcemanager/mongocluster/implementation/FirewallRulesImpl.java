@@ -45,7 +45,7 @@ public final class FirewallRulesImpl implements FirewallRules {
     }
 
     public void delete(String resourceGroupName, String mongoClusterName, String firewallRuleName) {
-        this.serviceClient().delete(resourceGroupName, mongoClusterName, firewallRuleName);
+        this.delete(resourceGroupName, mongoClusterName, firewallRuleName, Context.NONE);
     }
 
     public void delete(String resourceGroupName, String mongoClusterName, String firewallRuleName, Context context) {
@@ -53,9 +53,7 @@ public final class FirewallRulesImpl implements FirewallRules {
     }
 
     public PagedIterable<FirewallRule> listByMongoCluster(String resourceGroupName, String mongoClusterName) {
-        PagedIterable<FirewallRuleInner> inner
-            = this.serviceClient().listByMongoCluster(resourceGroupName, mongoClusterName);
-        return ResourceManagerUtils.mapPage(inner, inner1 -> new FirewallRuleImpl(inner1, this.manager()));
+        return this.listByMongoCluster(resourceGroupName, mongoClusterName, Context.NONE);
     }
 
     public PagedIterable<FirewallRule> listByMongoCluster(String resourceGroupName, String mongoClusterName,
@@ -66,78 +64,36 @@ public final class FirewallRulesImpl implements FirewallRules {
     }
 
     public FirewallRule getById(String id) {
-        String resourceGroupName = ResourceManagerUtils.getValueFromIdByName(id, "resourceGroups");
-        if (resourceGroupName == null) {
-            throw LOGGER.logExceptionAsError(new IllegalArgumentException(
-                String.format("The resource ID '%s' is not valid. Missing path segment 'resourceGroups'.", id)));
-        }
-        String mongoClusterName = ResourceManagerUtils.getValueFromIdByName(id, "mongoClusters");
-        if (mongoClusterName == null) {
-            throw LOGGER.logExceptionAsError(new IllegalArgumentException(
-                String.format("The resource ID '%s' is not valid. Missing path segment 'mongoClusters'.", id)));
-        }
-        String firewallRuleName = ResourceManagerUtils.getValueFromIdByName(id, "firewallRules");
-        if (firewallRuleName == null) {
-            throw LOGGER.logExceptionAsError(new IllegalArgumentException(
-                String.format("The resource ID '%s' is not valid. Missing path segment 'firewallRules'.", id)));
-        }
-        return this.getWithResponse(resourceGroupName, mongoClusterName, firewallRuleName, Context.NONE).getValue();
+        return this.getByIdWithResponse(id, Context.NONE).getValue();
     }
 
     public Response<FirewallRule> getByIdWithResponse(String id, Context context) {
-        String resourceGroupName = ResourceManagerUtils.getValueFromIdByName(id, "resourceGroups");
-        if (resourceGroupName == null) {
-            throw LOGGER.logExceptionAsError(new IllegalArgumentException(
-                String.format("The resource ID '%s' is not valid. Missing path segment 'resourceGroups'.", id)));
-        }
-        String mongoClusterName = ResourceManagerUtils.getValueFromIdByName(id, "mongoClusters");
-        if (mongoClusterName == null) {
-            throw LOGGER.logExceptionAsError(new IllegalArgumentException(
-                String.format("The resource ID '%s' is not valid. Missing path segment 'mongoClusters'.", id)));
-        }
-        String firewallRuleName = ResourceManagerUtils.getValueFromIdByName(id, "firewallRules");
-        if (firewallRuleName == null) {
-            throw LOGGER.logExceptionAsError(new IllegalArgumentException(
-                String.format("The resource ID '%s' is not valid. Missing path segment 'firewallRules'.", id)));
-        }
+        String resourceGroupName = ResourceManagerUtils.getRequiredValueFromIdByParameterName(id,
+            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.DocumentDB/mongoClusters/{mongoClusterName}/firewallRules/{firewallRuleName}",
+            "resourceGroupName", "resourceGroups", LOGGER);
+        String mongoClusterName = ResourceManagerUtils.getRequiredValueFromIdByParameterName(id,
+            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.DocumentDB/mongoClusters/{mongoClusterName}/firewallRules/{firewallRuleName}",
+            "mongoClusterName", "mongoClusters", LOGGER);
+        String firewallRuleName = ResourceManagerUtils.getRequiredValueFromIdByParameterName(id,
+            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.DocumentDB/mongoClusters/{mongoClusterName}/firewallRules/{firewallRuleName}",
+            "firewallRuleName", "firewallRules", LOGGER);
         return this.getWithResponse(resourceGroupName, mongoClusterName, firewallRuleName, context);
     }
 
     public void deleteById(String id) {
-        String resourceGroupName = ResourceManagerUtils.getValueFromIdByName(id, "resourceGroups");
-        if (resourceGroupName == null) {
-            throw LOGGER.logExceptionAsError(new IllegalArgumentException(
-                String.format("The resource ID '%s' is not valid. Missing path segment 'resourceGroups'.", id)));
-        }
-        String mongoClusterName = ResourceManagerUtils.getValueFromIdByName(id, "mongoClusters");
-        if (mongoClusterName == null) {
-            throw LOGGER.logExceptionAsError(new IllegalArgumentException(
-                String.format("The resource ID '%s' is not valid. Missing path segment 'mongoClusters'.", id)));
-        }
-        String firewallRuleName = ResourceManagerUtils.getValueFromIdByName(id, "firewallRules");
-        if (firewallRuleName == null) {
-            throw LOGGER.logExceptionAsError(new IllegalArgumentException(
-                String.format("The resource ID '%s' is not valid. Missing path segment 'firewallRules'.", id)));
-        }
-        this.delete(resourceGroupName, mongoClusterName, firewallRuleName, Context.NONE);
+        this.deleteByIdWithResponse(id, Context.NONE);
     }
 
     public void deleteByIdWithResponse(String id, Context context) {
-        String resourceGroupName = ResourceManagerUtils.getValueFromIdByName(id, "resourceGroups");
-        if (resourceGroupName == null) {
-            throw LOGGER.logExceptionAsError(new IllegalArgumentException(
-                String.format("The resource ID '%s' is not valid. Missing path segment 'resourceGroups'.", id)));
-        }
-        String mongoClusterName = ResourceManagerUtils.getValueFromIdByName(id, "mongoClusters");
-        if (mongoClusterName == null) {
-            throw LOGGER.logExceptionAsError(new IllegalArgumentException(
-                String.format("The resource ID '%s' is not valid. Missing path segment 'mongoClusters'.", id)));
-        }
-        String firewallRuleName = ResourceManagerUtils.getValueFromIdByName(id, "firewallRules");
-        if (firewallRuleName == null) {
-            throw LOGGER.logExceptionAsError(new IllegalArgumentException(
-                String.format("The resource ID '%s' is not valid. Missing path segment 'firewallRules'.", id)));
-        }
+        String resourceGroupName = ResourceManagerUtils.getRequiredValueFromIdByParameterName(id,
+            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.DocumentDB/mongoClusters/{mongoClusterName}/firewallRules/{firewallRuleName}",
+            "resourceGroupName", "resourceGroups", LOGGER);
+        String mongoClusterName = ResourceManagerUtils.getRequiredValueFromIdByParameterName(id,
+            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.DocumentDB/mongoClusters/{mongoClusterName}/firewallRules/{firewallRuleName}",
+            "mongoClusterName", "mongoClusters", LOGGER);
+        String firewallRuleName = ResourceManagerUtils.getRequiredValueFromIdByParameterName(id,
+            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.DocumentDB/mongoClusters/{mongoClusterName}/firewallRules/{firewallRuleName}",
+            "firewallRuleName", "firewallRules", LOGGER);
         this.delete(resourceGroupName, mongoClusterName, firewallRuleName, context);
     }
 

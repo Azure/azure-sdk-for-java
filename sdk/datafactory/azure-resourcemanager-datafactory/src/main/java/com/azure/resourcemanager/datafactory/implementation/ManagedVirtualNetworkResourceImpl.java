@@ -69,12 +69,7 @@ public final class ManagedVirtualNetworkResourceImpl implements ManagedVirtualNe
     }
 
     public ManagedVirtualNetworkResource create() {
-        this.innerObject = serviceManager.serviceClient()
-            .getManagedVirtualNetworks()
-            .createOrUpdateWithResponse(resourceGroupName, factoryName, managedVirtualNetworkName, this.innerModel(),
-                createIfMatch, Context.NONE)
-            .getValue();
-        return this;
+        return this.create(Context.NONE);
     }
 
     public ManagedVirtualNetworkResource create(Context context) {
@@ -100,12 +95,7 @@ public final class ManagedVirtualNetworkResourceImpl implements ManagedVirtualNe
     }
 
     public ManagedVirtualNetworkResource apply() {
-        this.innerObject = serviceManager.serviceClient()
-            .getManagedVirtualNetworks()
-            .createOrUpdateWithResponse(resourceGroupName, factoryName, managedVirtualNetworkName, this.innerModel(),
-                updateIfMatch, Context.NONE)
-            .getValue();
-        return this;
+        return this.apply(Context.NONE);
     }
 
     public ManagedVirtualNetworkResource apply(Context context) {
@@ -121,19 +111,19 @@ public final class ManagedVirtualNetworkResourceImpl implements ManagedVirtualNe
         com.azure.resourcemanager.datafactory.DataFactoryManager serviceManager) {
         this.innerObject = innerObject;
         this.serviceManager = serviceManager;
-        this.resourceGroupName = ResourceManagerUtils.getValueFromIdByName(innerObject.id(), "resourceGroups");
-        this.factoryName = ResourceManagerUtils.getValueFromIdByName(innerObject.id(), "factories");
-        this.managedVirtualNetworkName
-            = ResourceManagerUtils.getValueFromIdByName(innerObject.id(), "managedVirtualNetworks");
+        this.resourceGroupName = ResourceManagerUtils.getValueFromIdByParameterName(innerObject.id(),
+            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.DataFactory/factories/{factoryName}/managedVirtualNetworks/{managedVirtualNetworkName}",
+            "resourceGroupName");
+        this.factoryName = ResourceManagerUtils.getValueFromIdByParameterName(innerObject.id(),
+            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.DataFactory/factories/{factoryName}/managedVirtualNetworks/{managedVirtualNetworkName}",
+            "factoryName");
+        this.managedVirtualNetworkName = ResourceManagerUtils.getValueFromIdByParameterName(innerObject.id(),
+            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.DataFactory/factories/{factoryName}/managedVirtualNetworks/{managedVirtualNetworkName}",
+            "managedVirtualNetworkName");
     }
 
     public ManagedVirtualNetworkResource refresh() {
-        String localIfNoneMatch = null;
-        this.innerObject = serviceManager.serviceClient()
-            .getManagedVirtualNetworks()
-            .getWithResponse(resourceGroupName, factoryName, managedVirtualNetworkName, localIfNoneMatch, Context.NONE)
-            .getValue();
-        return this;
+        return this.refresh(Context.NONE);
     }
 
     public ManagedVirtualNetworkResource refresh(Context context) {

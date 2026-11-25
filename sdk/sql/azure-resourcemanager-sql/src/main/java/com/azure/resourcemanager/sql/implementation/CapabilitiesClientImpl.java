@@ -68,17 +68,7 @@ public final class CapabilitiesClientImpl implements CapabilitiesClient {
             @HeaderParam("Accept") String accept, Context context);
     }
 
-    /**
-     * Gets the subscription capabilities available for the specified location.
-     * 
-     * @param locationName The location name whose capabilities are retrieved.
-     * @param include If specified, restricts the response to only include the selected item.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the subscription capabilities available for the specified location along with {@link Response} on
-     * successful completion of {@link Mono}.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Response<LocationCapabilitiesInner>> listByLocationWithResponseAsync(String locationName,
         CapabilityGroup include) {
@@ -132,48 +122,21 @@ public final class CapabilitiesClientImpl implements CapabilitiesClient {
             this.client.getSubscriptionId(), locationName, include, accept, context);
     }
 
-    /**
-     * Gets the subscription capabilities available for the specified location.
-     * 
-     * @param locationName The location name whose capabilities are retrieved.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the subscription capabilities available for the specified location on successful completion of
-     * {@link Mono}.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<LocationCapabilitiesInner> listByLocationAsync(String locationName) {
         final CapabilityGroup include = null;
         return listByLocationWithResponseAsync(locationName, include).flatMap(res -> Mono.justOrEmpty(res.getValue()));
     }
 
-    /**
-     * Gets the subscription capabilities available for the specified location.
-     * 
-     * @param locationName The location name whose capabilities are retrieved.
-     * @param include If specified, restricts the response to only include the selected item.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the subscription capabilities available for the specified location along with {@link Response}.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Response<LocationCapabilitiesInner> listByLocationWithResponse(String locationName, CapabilityGroup include,
         Context context) {
         return listByLocationWithResponseAsync(locationName, include, context).block();
     }
 
-    /**
-     * Gets the subscription capabilities available for the specified location.
-     * 
-     * @param locationName The location name whose capabilities are retrieved.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the subscription capabilities available for the specified location.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public LocationCapabilitiesInner listByLocation(String locationName) {
         final CapabilityGroup include = null;

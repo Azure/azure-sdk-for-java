@@ -23,6 +23,7 @@ import com.azure.storage.common.Utility;
 import com.azure.storage.common.implementation.SasImplUtils;
 import com.azure.storage.common.implementation.StorageImplUtils;
 import com.azure.storage.file.share.implementation.AzureFileStorageImpl;
+import com.azure.storage.file.share.implementation.ShareErrors;
 import com.azure.storage.file.share.implementation.models.CopyFileSmbInfo;
 import com.azure.storage.file.share.implementation.models.DestinationLeaseAccessConditions;
 import com.azure.storage.file.share.implementation.models.ListFilesIncludeType;
@@ -38,6 +39,7 @@ import com.azure.storage.file.share.models.NtfsFileAttributes;
 import com.azure.storage.file.share.models.ShareDirectoryInfo;
 import com.azure.storage.file.share.models.ShareDirectoryProperties;
 import com.azure.storage.file.share.models.ShareDirectorySetMetadataInfo;
+import com.azure.storage.file.share.models.ShareErrorCode;
 import com.azure.storage.file.share.models.ShareFileHttpHeaders;
 import com.azure.storage.file.share.models.ShareFileItem;
 import com.azure.storage.file.share.models.ShareFilePermission;
@@ -69,6 +71,10 @@ import static com.azure.core.util.FluxUtil.withContext;
  * Service. Operations allowed by the client are creating, deleting and listing subdirectory and file, retrieving
  * properties, setting metadata and list or force close handles of the directory or file.
  *
+ * <p>Clients addressed by file ID support property retrieval. Other service operations, including existence checks,
+ * and child-client creation throw {@link IllegalStateException} or signal it through the returned publisher.
+ * Use a path-addressed client for these operations.</p>
+ *
  * <p><strong>Instantiating an Asynchronous Directory Client</strong></p>
  *
  * <!-- src_embed com.azure.storage.file.share.ShareDirectoryAsyncClient.instantiation -->
@@ -93,6 +99,7 @@ public class ShareDirectoryAsyncClient {
     private final AzureFileStorageImpl azureFileStorageClient;
     private final String shareName;
     private final String directoryPath;
+    private final String fileId;
     private final String snapshot;
     private final String accountName;
     private final ShareServiceVersion serviceVersion;
@@ -110,10 +117,17 @@ public class ShareDirectoryAsyncClient {
      */
     ShareDirectoryAsyncClient(AzureFileStorageImpl azureFileStorageClient, String shareName, String directoryPath,
         String snapshot, String accountName, ShareServiceVersion serviceVersion, AzureSasCredential sasToken) {
+        this(azureFileStorageClient, shareName, directoryPath, "", snapshot, accountName, serviceVersion, sasToken);
+    }
+
+    ShareDirectoryAsyncClient(AzureFileStorageImpl azureFileStorageClient, String shareName, String directoryPath,
+        String fileId, String snapshot, String accountName, ShareServiceVersion serviceVersion,
+        AzureSasCredential sasToken) {
         Objects.requireNonNull(shareName, "'shareName' cannot be null.");
         Objects.requireNonNull(directoryPath);
         this.shareName = shareName;
         this.directoryPath = directoryPath;
+        this.fileId = fileId;
         this.snapshot = snapshot;
         this.azureFileStorageClient = azureFileStorageClient;
         this.accountName = accountName;
@@ -123,7 +137,7 @@ public class ShareDirectoryAsyncClient {
 
     ShareDirectoryAsyncClient(ShareDirectoryAsyncClient directoryAsyncClient) {
         this(directoryAsyncClient.azureFileStorageClient, directoryAsyncClient.shareName,
-            Utility.urlEncode(directoryAsyncClient.directoryPath), directoryAsyncClient.snapshot,
+            directoryAsyncClient.directoryPath, directoryAsyncClient.fileId, directoryAsyncClient.snapshot,
             directoryAsyncClient.accountName, directoryAsyncClient.serviceVersion, directoryAsyncClient.sasToken);
     }
 
@@ -133,14 +147,26 @@ public class ShareDirectoryAsyncClient {
      * @return the URL of the storage directory client
      */
     public String getDirectoryUrl() {
-        StringBuilder directoryUrlString = new StringBuilder(azureFileStorageClient.getUrl()).append("/")
-            .append(shareName)
-            .append("/")
-            .append(directoryPath);
-        if (snapshot != null) {
-            directoryUrlString.append("?sharesnapshot=").append(snapshot);
+        String directoryUrlString = azureFileStorageClient.getUrl() + "/" + shareName;
+        if (fileId.isEmpty()) {
+            directoryUrlString += "/" + directoryPath;
         }
-        return directoryUrlString.toString();
+        if (snapshot != null) {
+            directoryUrlString = Utility.appendQueryParameter(directoryUrlString, "sharesnapshot", snapshot);
+        }
+        if (!fileId.isEmpty()) {
+            directoryUrlString = Utility.appendQueryParameter(directoryUrlString, "fileid", Utility.urlEncode(fileId));
+        }
+        return directoryUrlString;
+    }
+
+    /**
+     * Gets the file ID used to address the directory, or an empty string when the client is path-addressed.
+     *
+     * @return The file ID.
+     */
+    public String getFileId() {
+        return fileId;
     }
 
     /**
@@ -160,8 +186,10 @@ public class ShareDirectoryAsyncClient {
      *
      * @param fileName Name of the file
      * @return a ShareFileAsyncClient that interacts with the specified share
+     * @throws IllegalStateException If this client is addressed by file ID.
      */
     public ShareFileAsyncClient getFileClient(String fileName) {
+        ShareErrors.validatePathOperation(fileId, "getFileClient");
         String filePath = directoryPath + "/" + fileName;
         // Support for root directory
         if (directoryPath.isEmpty()) {
@@ -179,8 +207,10 @@ public class ShareDirectoryAsyncClient {
      *
      * @param subdirectoryName Name of the directory
      * @return a ShareDirectoryAsyncClient that interacts with the specified directory
+     * @throws IllegalStateException If this client is addressed by file ID.
      */
     public ShareDirectoryAsyncClient getSubdirectoryClient(String subdirectoryName) {
+        ShareErrors.validatePathOperation(fileId, "getSubdirectoryClient");
         StringBuilder directoryPathBuilder = new StringBuilder().append(this.directoryPath);
         if (!this.directoryPath.isEmpty() && !this.directoryPath.endsWith("/")) {
             directoryPathBuilder.append("/");
@@ -202,6 +232,7 @@ public class ShareDirectoryAsyncClient {
      * <!-- end com.azure.storage.file.share.ShareDirectoryAsyncClient.exists -->
      *
      * @return Flag indicating existence of the directory.
+     * @throws IllegalStateException If this client is addressed by file ID, emitted through the returned publisher.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Boolean> exists() {
@@ -220,6 +251,7 @@ public class ShareDirectoryAsyncClient {
      * <!-- end com.azure.storage.file.share.ShareDirectoryAsyncClient.existsWithResponse -->
      *
      * @return Flag indicating existence of the directory.
+     * @throws IllegalStateException If this client is addressed by file ID, emitted through the returned publisher.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Response<Boolean>> existsWithResponse() {
@@ -231,6 +263,7 @@ public class ShareDirectoryAsyncClient {
     }
 
     Mono<Response<Boolean>> existsWithResponse(Context context) {
+        ShareErrors.validatePathOperation(fileId, "exists");
         return this.getPropertiesWithResponse(context)
             .map(cp -> (Response<Boolean>) new SimpleResponse<>(cp, true))
             .onErrorResume(ModelHelper::checkDoesNotExistStatusCode, t -> {
@@ -356,6 +389,7 @@ public class ShareDirectoryAsyncClient {
     Mono<Response<ShareDirectoryInfo>> createWithResponse(FileSmbProperties smbProperties, String filePermission,
         FilePermissionFormat filePermissionFormat, FilePosixProperties posixProperties, Map<String, String> metadata,
         FilePropertySemantics filePropertySemantics, Context context) {
+        ShareErrors.validatePathOperation(fileId, "create");
         context = context == null ? Context.NONE : context;
         smbProperties = smbProperties == null ? new FileSmbProperties() : smbProperties;
         posixProperties = posixProperties == null ? new FilePosixProperties() : posixProperties;
@@ -390,7 +424,9 @@ public class ShareDirectoryAsyncClient {
      * <a href="https://docs.microsoft.com/rest/api/storageservices/create-directory">Azure Docs</a>.</p>
      *
      * @return A reactive response signaling completion. {@link ShareDirectoryInfo} contains information about the
-     * created directory.
+     * created directory. Errors with a {@link ShareStorageException} if the directory could not be created for any
+     * other reason than that it already exists, for example when a file with the same name already exists at this
+     * location (status code 409, error code ResourceTypeMismatch).
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<ShareDirectoryInfo> createIfNotExists() {
@@ -433,7 +469,9 @@ public class ShareDirectoryAsyncClient {
      * @return A {@link Mono} containing {@link Response} signaling completion, whose {@link Response#getValue() value}
      * contains a {@link ShareDirectoryInfo} containing information about the directory. If {@link Response}'s status
      * code is 201, a new directory was successfully created. If status code is 409, a directory already existed at this
-     * location.
+     * location. Errors with a {@link ShareStorageException} if the directory could not be created for any other reason
+     * than that it already exists, for example when a file with the same name already exists at this location (status
+     * code 409, error code ResourceTypeMismatch).
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Response<ShareDirectoryInfo>> createIfNotExistsWithResponse(ShareDirectoryCreateOptions options) {
@@ -451,8 +489,7 @@ public class ShareDirectoryAsyncClient {
             return createWithResponse(options.getSmbProperties(), options.getFilePermission(),
                 options.getFilePermissionFormat(), options.getPosixProperties(), options.getMetadata(),
                 options.getFilePropertySemantics(), context).onErrorResume(
-                    t -> t instanceof ShareStorageException && ((ShareStorageException) t).getStatusCode() == 409,
-                    t -> {
+                    t -> ModelHelper.isConflictWithErrorCode(t, ShareErrorCode.RESOURCE_ALREADY_EXISTS), t -> {
                         HttpResponse response = ((ShareStorageException) t).getResponse();
                         return Mono.just(new SimpleResponse<>(response.getRequest(), response.getStatusCode(),
                             response.getHeaders(), null));
@@ -523,6 +560,7 @@ public class ShareDirectoryAsyncClient {
     }
 
     Mono<Response<Void>> deleteWithResponse(Context context) {
+        ShareErrors.validatePathOperation(fileId, "delete");
         context = context == null ? Context.NONE : context;
         return azureFileStorageClient.getDirectories()
             .deleteNoCustomHeadersWithResponseAsync(shareName, directoryPath, null, context);
@@ -611,6 +649,11 @@ public class ShareDirectoryAsyncClient {
      *
      * <p>Retrieve directory properties</p>
      *
+     * <p>This operation accepts path-addressed and file-ID-addressed clients. To retrieve properties without knowing
+     * the directory path, use {@link ShareAsyncClient#getDirectoryClientByFileId(String)}. Service availability determines
+     * whether a file-ID request succeeds; the client does not check the share protocol. If the service does not
+     * support property retrieval by ID for the share, use a path-addressed client.</p>
+     *
      * <!-- src_embed com.azure.storage.file.share.ShareDirectoryAsyncClient.getProperties -->
      * <pre>
      * shareDirectoryAsyncClient.getProperties&#40;&#41;.subscribe&#40;properties -&gt; &#123;
@@ -661,6 +704,11 @@ public class ShareDirectoryAsyncClient {
 
     Mono<Response<ShareDirectoryProperties>> getPropertiesWithResponse(Context context) {
         context = context == null ? Context.NONE : context;
+        if (!fileId.isEmpty()) {
+            return azureFileStorageClient.getDirectories()
+                .getPropertiesByFileIdWithResponseAsync(shareName, fileId, snapshot, null, null, context)
+                .map(ModelHelper::mapShareDirectoryPropertiesResponse);
+        }
         return azureFileStorageClient.getDirectories()
             .getPropertiesWithResponseAsync(shareName, directoryPath, snapshot, null, context)
             .map(ModelHelper::mapShareDirectoryPropertiesResponse);
@@ -770,6 +818,7 @@ public class ShareDirectoryAsyncClient {
 
     Mono<Response<ShareDirectoryInfo>> setPropertiesWithResponse(FileSmbProperties smbProperties, String filePermission,
         FilePermissionFormat filePermissionFormat, FilePosixProperties posixProperties, Context context) {
+        ShareErrors.validatePathOperation(fileId, "setProperties");
         context = context == null ? Context.NONE : context;
         smbProperties = smbProperties == null ? new FileSmbProperties() : smbProperties;
         posixProperties = posixProperties == null ? new FilePosixProperties() : posixProperties;
@@ -870,6 +919,7 @@ public class ShareDirectoryAsyncClient {
 
     Mono<Response<ShareDirectorySetMetadataInfo>> setMetadataWithResponse(Map<String, String> metadata,
         Context context) {
+        ShareErrors.validatePathOperation(fileId, "setMetadata");
         context = context == null ? Context.NONE : context;
         return azureFileStorageClient.getDirectories()
             .setMetadataWithResponseAsync(shareName, directoryPath, null, metadata, context)
@@ -977,6 +1027,7 @@ public class ShareDirectoryAsyncClient {
 
     PagedFlux<ShareFileItem> listFilesAndDirectoriesWithOptionalTimeout(ShareListFilesAndDirectoriesOptions options,
         Duration timeout, Context context) {
+        ShareErrors.validatePathOperation(fileId, "listFilesAndDirectories");
         final ShareListFilesAndDirectoriesOptions modifiedOptions
             = options == null ? new ShareListFilesAndDirectoriesOptions() : options;
 
@@ -1046,6 +1097,7 @@ public class ShareDirectoryAsyncClient {
 
     PagedFlux<HandleItem> listHandlesWithOptionalTimeout(Integer maxResultPerPage, boolean recursive, Duration timeout,
         Context context) {
+        ShareErrors.validatePathOperation(fileId, "listHandles");
         Function<String, Mono<PagedResponse<HandleItem>>> retriever = marker -> StorageImplUtils
             .applyOptionalTimeout(this.azureFileStorageClient.getDirectories()
                 .listHandlesWithResponseAsync(shareName, directoryPath, marker, maxResultPerPage, null, snapshot,
@@ -1118,6 +1170,7 @@ public class ShareDirectoryAsyncClient {
     }
 
     Mono<Response<CloseHandlesInfo>> forceCloseHandleWithResponse(String handleId, Context context) {
+        ShareErrors.validatePathOperation(fileId, "forceCloseHandle");
         return this.azureFileStorageClient.getDirectories()
             .forceCloseHandlesWithResponseAsync(shareName, directoryPath, handleId, null, null, snapshot, false,
                 context)
@@ -1161,6 +1214,7 @@ public class ShareDirectoryAsyncClient {
     }
 
     PagedFlux<CloseHandlesInfo> forceCloseAllHandlesWithTimeout(boolean recursive, Duration timeout, Context context) {
+        ShareErrors.validatePathOperation(fileId, "forceCloseAllHandles");
         Function<String, Mono<PagedResponse<CloseHandlesInfo>>> retriever = marker -> StorageImplUtils
             .applyOptionalTimeout(this.azureFileStorageClient.getDirectories()
                 .forceCloseHandlesWithResponseAsync(shareName, directoryPath, "*", null, marker, snapshot, recursive,
@@ -1242,6 +1296,7 @@ public class ShareDirectoryAsyncClient {
     }
 
     Mono<Response<ShareDirectoryAsyncClient>> renameWithResponse(ShareFileRenameOptions options, Context context) {
+        ShareErrors.validatePathOperation(fileId, "rename");
         StorageImplUtils.assertNotNull("options", options);
         context = context == null ? Context.NONE : context;
 
@@ -1277,9 +1332,14 @@ public class ShareDirectoryAsyncClient {
 
         ShareDirectoryAsyncClient destinationDirectoryClient = getDirectoryAsyncClient(options.getDestinationPath());
 
-        String renameSource = this.getDirectoryUrl();
-
-        renameSource = this.sasToken != null ? renameSource + "?" + this.sasToken.getSignature() : renameSource;
+        // getDirectoryUrl() is a raw concatenation and the service percent-decodes x-ms-file-rename-source,
+        // so encode the stored raw share name and directory path exactly once here.
+        String renameSource = azureFileStorageClient.getUrl() + "/" + Utility.urlEncode(shareName) + "/"
+            + Utility.urlEncode(directoryPath);
+        if (snapshot != null) {
+            renameSource = Utility.appendQueryParameter(renameSource, "sharesnapshot", snapshot);
+        }
+        renameSource = sasToken != null ? renameSource + "?" + sasToken.getSignature() : renameSource;
 
         return destinationDirectoryClient.azureFileStorageClient.getDirectories()
             .renameWithResponseAsync(destinationDirectoryClient.getShareName(),
@@ -1404,7 +1464,10 @@ public class ShareDirectoryAsyncClient {
      * <a href="https://docs.microsoft.com/rest/api/storageservices/create-directory">Azure Docs</a>.</p>
      *
      * @param subdirectoryName Name of the subdirectory
-     * @return A {@link Mono} containing a {@link ShareDirectoryAsyncClient} used to interact with the subdirectory created.
+     * @return A {@link Mono} containing a {@link ShareDirectoryAsyncClient} used to interact with the subdirectory
+     * created. Errors with a {@link ShareStorageException} if the directory could not be created for any other reason
+     * than that it already exists, for example when a file with the same name already exists at this location (status
+     * code 409, error code ResourceTypeMismatch).
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<ShareDirectoryAsyncClient> createSubdirectoryIfNotExists(String subdirectoryName) {
@@ -1446,7 +1509,9 @@ public class ShareDirectoryAsyncClient {
      * @return A reactive response signaling completion. The presence of a {@link Response} item indicates a new
      * subdirectory was created, and {@link Response#getValue() value} contains a {@link ShareDirectoryAsyncClient}
      * which can be used to interact with the newly created directory. An empty {@code Mono} indicates the specified
-     * subdirectory already existed at this location.
+     * subdirectory already existed at this location. Errors with a {@link ShareStorageException} if the directory could
+     * not be created for any other reason than that it already exists, for example when a file with the same name
+     * already exists at this location (status code 409, error code ResourceTypeMismatch).
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Response<ShareDirectoryAsyncClient>> createSubdirectoryIfNotExistsWithResponse(String subdirectoryName,
@@ -2156,6 +2221,7 @@ public class ShareDirectoryAsyncClient {
     @Deprecated
     public String generateSas(ShareServiceSasSignatureValues shareServiceSasSignatureValues,
         Consumer<String> stringToSignHandler, Context context) {
+        ShareErrors.validatePathOperation(fileId, "generateSas");
         return new ShareSasImplUtil(shareServiceSasSignatureValues, getShareName(), getDirectoryPath())
             .generateSas(SasImplUtils.extractSharedKeyCredential(getHttpPipeline()), stringToSignHandler, context);
     }

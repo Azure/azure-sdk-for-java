@@ -48,7 +48,7 @@ public final class CodeSigningAccountsImpl implements CodeSigningAccounts {
     }
 
     public void deleteByResourceGroup(String resourceGroupName, String accountName) {
-        this.serviceClient().delete(resourceGroupName, accountName);
+        this.delete(resourceGroupName, accountName, Context.NONE);
     }
 
     public void delete(String resourceGroupName, String accountName, Context context) {
@@ -56,8 +56,7 @@ public final class CodeSigningAccountsImpl implements CodeSigningAccounts {
     }
 
     public PagedIterable<CodeSigningAccount> listByResourceGroup(String resourceGroupName) {
-        PagedIterable<CodeSigningAccountInner> inner = this.serviceClient().listByResourceGroup(resourceGroupName);
-        return ResourceManagerUtils.mapPage(inner, inner1 -> new CodeSigningAccountImpl(inner1, this.manager()));
+        return this.listByResourceGroup(resourceGroupName, Context.NONE);
     }
 
     public PagedIterable<CodeSigningAccount> listByResourceGroup(String resourceGroupName, Context context) {
@@ -67,8 +66,7 @@ public final class CodeSigningAccountsImpl implements CodeSigningAccounts {
     }
 
     public PagedIterable<CodeSigningAccount> list() {
-        PagedIterable<CodeSigningAccountInner> inner = this.serviceClient().list();
-        return ResourceManagerUtils.mapPage(inner, inner1 -> new CodeSigningAccountImpl(inner1, this.manager()));
+        return this.list(Context.NONE);
     }
 
     public PagedIterable<CodeSigningAccount> list(Context context) {
@@ -94,58 +92,30 @@ public final class CodeSigningAccountsImpl implements CodeSigningAccounts {
     }
 
     public CodeSigningAccount getById(String id) {
-        String resourceGroupName = ResourceManagerUtils.getValueFromIdByName(id, "resourceGroups");
-        if (resourceGroupName == null) {
-            throw LOGGER.logExceptionAsError(new IllegalArgumentException(
-                String.format("The resource ID '%s' is not valid. Missing path segment 'resourceGroups'.", id)));
-        }
-        String accountName = ResourceManagerUtils.getValueFromIdByName(id, "codeSigningAccounts");
-        if (accountName == null) {
-            throw LOGGER.logExceptionAsError(new IllegalArgumentException(
-                String.format("The resource ID '%s' is not valid. Missing path segment 'codeSigningAccounts'.", id)));
-        }
-        return this.getByResourceGroupWithResponse(resourceGroupName, accountName, Context.NONE).getValue();
+        return this.getByIdWithResponse(id, Context.NONE).getValue();
     }
 
     public Response<CodeSigningAccount> getByIdWithResponse(String id, Context context) {
-        String resourceGroupName = ResourceManagerUtils.getValueFromIdByName(id, "resourceGroups");
-        if (resourceGroupName == null) {
-            throw LOGGER.logExceptionAsError(new IllegalArgumentException(
-                String.format("The resource ID '%s' is not valid. Missing path segment 'resourceGroups'.", id)));
-        }
-        String accountName = ResourceManagerUtils.getValueFromIdByName(id, "codeSigningAccounts");
-        if (accountName == null) {
-            throw LOGGER.logExceptionAsError(new IllegalArgumentException(
-                String.format("The resource ID '%s' is not valid. Missing path segment 'codeSigningAccounts'.", id)));
-        }
+        String resourceGroupName = ResourceManagerUtils.getRequiredValueFromIdByParameterName(id,
+            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.CodeSigning/codeSigningAccounts/{accountName}",
+            "resourceGroupName", "resourceGroups", LOGGER);
+        String accountName = ResourceManagerUtils.getRequiredValueFromIdByParameterName(id,
+            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.CodeSigning/codeSigningAccounts/{accountName}",
+            "accountName", "codeSigningAccounts", LOGGER);
         return this.getByResourceGroupWithResponse(resourceGroupName, accountName, context);
     }
 
     public void deleteById(String id) {
-        String resourceGroupName = ResourceManagerUtils.getValueFromIdByName(id, "resourceGroups");
-        if (resourceGroupName == null) {
-            throw LOGGER.logExceptionAsError(new IllegalArgumentException(
-                String.format("The resource ID '%s' is not valid. Missing path segment 'resourceGroups'.", id)));
-        }
-        String accountName = ResourceManagerUtils.getValueFromIdByName(id, "codeSigningAccounts");
-        if (accountName == null) {
-            throw LOGGER.logExceptionAsError(new IllegalArgumentException(
-                String.format("The resource ID '%s' is not valid. Missing path segment 'codeSigningAccounts'.", id)));
-        }
-        this.delete(resourceGroupName, accountName, Context.NONE);
+        this.deleteByIdWithResponse(id, Context.NONE);
     }
 
     public void deleteByIdWithResponse(String id, Context context) {
-        String resourceGroupName = ResourceManagerUtils.getValueFromIdByName(id, "resourceGroups");
-        if (resourceGroupName == null) {
-            throw LOGGER.logExceptionAsError(new IllegalArgumentException(
-                String.format("The resource ID '%s' is not valid. Missing path segment 'resourceGroups'.", id)));
-        }
-        String accountName = ResourceManagerUtils.getValueFromIdByName(id, "codeSigningAccounts");
-        if (accountName == null) {
-            throw LOGGER.logExceptionAsError(new IllegalArgumentException(
-                String.format("The resource ID '%s' is not valid. Missing path segment 'codeSigningAccounts'.", id)));
-        }
+        String resourceGroupName = ResourceManagerUtils.getRequiredValueFromIdByParameterName(id,
+            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.CodeSigning/codeSigningAccounts/{accountName}",
+            "resourceGroupName", "resourceGroups", LOGGER);
+        String accountName = ResourceManagerUtils.getRequiredValueFromIdByParameterName(id,
+            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.CodeSigning/codeSigningAccounts/{accountName}",
+            "accountName", "codeSigningAccounts", LOGGER);
         this.delete(resourceGroupName, accountName, context);
     }
 

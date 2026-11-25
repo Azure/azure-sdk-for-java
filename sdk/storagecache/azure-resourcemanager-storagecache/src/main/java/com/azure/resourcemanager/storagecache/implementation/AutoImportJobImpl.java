@@ -199,10 +199,7 @@ public final class AutoImportJobImpl implements AutoImportJob, AutoImportJob.Def
     }
 
     public AutoImportJob create() {
-        this.innerObject = serviceManager.serviceClient()
-            .getAutoImportJobs()
-            .createOrUpdate(resourceGroupName, amlFilesystemName, autoImportJobName, this.innerModel(), Context.NONE);
-        return this;
+        return this.create(Context.NONE);
     }
 
     public AutoImportJob create(Context context) {
@@ -224,10 +221,7 @@ public final class AutoImportJobImpl implements AutoImportJob, AutoImportJob.Def
     }
 
     public AutoImportJob apply() {
-        this.innerObject = serviceManager.serviceClient()
-            .getAutoImportJobs()
-            .update(resourceGroupName, amlFilesystemName, autoImportJobName, updateAutoImportJob, Context.NONE);
-        return this;
+        return this.apply(Context.NONE);
     }
 
     public AutoImportJob apply(Context context) {
@@ -241,17 +235,19 @@ public final class AutoImportJobImpl implements AutoImportJob, AutoImportJob.Def
         com.azure.resourcemanager.storagecache.StorageCacheManager serviceManager) {
         this.innerObject = innerObject;
         this.serviceManager = serviceManager;
-        this.resourceGroupName = ResourceManagerUtils.getValueFromIdByName(innerObject.id(), "resourceGroups");
-        this.amlFilesystemName = ResourceManagerUtils.getValueFromIdByName(innerObject.id(), "amlFilesystems");
-        this.autoImportJobName = ResourceManagerUtils.getValueFromIdByName(innerObject.id(), "autoImportJobs");
+        this.resourceGroupName = ResourceManagerUtils.getValueFromIdByParameterName(innerObject.id(),
+            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.StorageCache/amlFilesystems/{amlFilesystemName}/autoImportJobs/{autoImportJobName}",
+            "resourceGroupName");
+        this.amlFilesystemName = ResourceManagerUtils.getValueFromIdByParameterName(innerObject.id(),
+            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.StorageCache/amlFilesystems/{amlFilesystemName}/autoImportJobs/{autoImportJobName}",
+            "amlFilesystemName");
+        this.autoImportJobName = ResourceManagerUtils.getValueFromIdByParameterName(innerObject.id(),
+            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.StorageCache/amlFilesystems/{amlFilesystemName}/autoImportJobs/{autoImportJobName}",
+            "autoImportJobName");
     }
 
     public AutoImportJob refresh() {
-        this.innerObject = serviceManager.serviceClient()
-            .getAutoImportJobs()
-            .getWithResponse(resourceGroupName, amlFilesystemName, autoImportJobName, Context.NONE)
-            .getValue();
-        return this;
+        return this.refresh(Context.NONE);
     }
 
     public AutoImportJob refresh(Context context) {

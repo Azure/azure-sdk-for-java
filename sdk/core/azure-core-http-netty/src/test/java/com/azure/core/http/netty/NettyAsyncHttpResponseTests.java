@@ -13,6 +13,7 @@ import com.azure.core.http.netty.mocking.MockEventLoop;
 import com.azure.core.http.netty.mocking.MockHttpClientResponse;
 import com.azure.core.http.netty.mocking.MockNettyInbound;
 import com.azure.core.util.FluxUtil;
+import io.netty.buffer.ByteBuf;
 import io.netty.buffer.ByteBufAllocator;
 import io.netty.channel.EventLoop;
 import io.netty.handler.codec.http.DefaultHttpHeaders;
@@ -23,6 +24,7 @@ import org.junit.jupiter.api.Test;
 import org.junit.jupiter.params.ParameterizedTest;
 import org.junit.jupiter.params.provider.Arguments;
 import org.junit.jupiter.params.provider.MethodSource;
+import org.junit.jupiter.params.provider.ValueSource;
 import reactor.core.publisher.Flux;
 import reactor.core.publisher.Mono;
 import reactor.netty.ByteBufFlux;
@@ -33,12 +35,28 @@ import reactor.test.StepVerifier;
 
 import java.lang.reflect.InvocationTargetException;
 import java.lang.reflect.Method;
+import java.io.ByteArrayOutputStream;
+import java.io.IOException;
+import java.nio.ByteBuffer;
+import java.nio.channels.AsynchronousByteChannel;
+import java.nio.channels.CompletionHandler;
 import java.nio.charset.Charset;
 import java.nio.charset.StandardCharsets;
+import java.time.Duration;
+import java.util.concurrent.CompletableFuture;
+import java.util.concurrent.Future;
+import java.util.concurrent.TimeUnit;
+import java.util.concurrent.atomic.AtomicBoolean;
+import java.util.concurrent.atomic.AtomicReference;
+import java.util.function.Consumer;
 import java.util.stream.Stream;
 
 import static org.junit.jupiter.api.Assertions.assertArrayEquals;
 import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertFalse;
+import static org.junit.jupiter.api.Assertions.assertNotNull;
+import static org.junit.jupiter.api.Assertions.assertNull;
+import static org.junit.jupiter.api.Assertions.assertTrue;
 
 /**
  * Tests {@link NettyAsyncHttpResponse}.
@@ -133,6 +151,147 @@ public class NettyAsyncHttpResponseTests {
         StepVerifier.create(response.getBodyAsString(StandardCharsets.UTF_8))
             .assertNext(actual -> assertEquals(HELLO, actual))
             .verifyComplete();
+    }
+
+    @ParameterizedTest
+    @ValueSource(booleans = { false, true })
+    public void asynchronousWritesOwnHeapBuffersAndDoNotBlock(boolean disableBufferCopy) throws Exception {
+        byte[] expected = new byte[8193];
+        for (int i = 0; i < expected.length; i++) {
+            expected[i] = (byte) i;
+        }
+        ByteBuf networkBuffer = ByteBufAllocator.DEFAULT.directBuffer(expected.length).writeBytes(expected);
+        ByteBufFlux body
+            = ByteBufFlux.fromInbound(Flux.just(networkBuffer).doFinally(ignored -> networkBuffer.release()));
+        MockEventLoop eventLoop = new MockEventLoop();
+        NettyAsyncHttpResponse response = response(body, disableBufferCopy, eventLoop);
+        DeferredWriteChannel channel = new DeferredWriteChannel();
+        CompletableFuture<Void> transfer = response.writeBodyToAsync(channel).toFuture();
+        try {
+            assertFalse(transfer.isDone());
+            assertEquals(0, networkBuffer.refCnt());
+            assertEquals(0, eventLoop.getExecuteCount());
+            while (channel.pending.get() != null) {
+                channel.completeWrite();
+            }
+            transfer.get(5, TimeUnit.SECONDS);
+            assertArrayEquals(expected, channel.output.toByteArray());
+            assertEquals(1, eventLoop.getExecuteCount());
+        } finally {
+            transfer.cancel(true);
+            if (networkBuffer.refCnt() > 0) {
+                networkBuffer.release();
+            }
+        }
+    }
+
+    @Test
+    public void asynchronousWriteFailureClosesResponse() {
+        ByteBuf networkBuffer = ByteBufAllocator.DEFAULT.directBuffer(3).writeBytes(new byte[] { 1, 2, 3 });
+        ByteBufFlux body
+            = ByteBufFlux.fromInbound(Flux.just(networkBuffer).doFinally(ignored -> networkBuffer.release()));
+        MockEventLoop eventLoop = new MockEventLoop();
+        DeferredWriteChannel channel = new DeferredWriteChannel();
+        IOException expected = new IOException("Destination failed");
+
+        StepVerifier.create(response(body, true, eventLoop).writeBodyToAsync(channel))
+            .then(() -> channel.failWrite(expected))
+            .expectErrorMatches(error -> error == expected)
+            .verify(Duration.ofSeconds(5));
+        assertEquals(0, networkBuffer.refCnt());
+        assertEquals(1, eventLoop.getExecuteCount());
+    }
+
+    @Test
+    public void cancellingAsynchronousWriteStopsBodyAndClosesResponse() {
+        AtomicBoolean cancelled = new AtomicBoolean();
+        ByteBuf networkBuffer = ByteBufAllocator.DEFAULT.directBuffer(8193).writeZero(8193);
+        ByteBufFlux body = ByteBufFlux.fromInbound(Flux.just(networkBuffer)
+            .doFinally(ignored -> networkBuffer.release())
+            .concatWith(Flux.never())
+            .doOnCancel(() -> cancelled.set(true)));
+        MockEventLoop eventLoop = new MockEventLoop();
+        DeferredWriteChannel channel = new DeferredWriteChannel();
+        CompletableFuture<Void> transfer = response(body, true, eventLoop).writeBodyToAsync(channel).toFuture();
+
+        assertFalse(transfer.isDone());
+        assertTrue(transfer.cancel(true));
+        assertTrue(cancelled.get());
+        assertEquals(0, networkBuffer.refCnt());
+        assertEquals(1, eventLoop.getExecuteCount());
+        channel.completeWrite();
+        assertNull(channel.pending.get());
+        assertTrue(channel.isOpen());
+    }
+
+    private static NettyAsyncHttpResponse response(ByteBufFlux body, boolean disableBufferCopy,
+        MockEventLoop eventLoop) {
+        Connection connection
+            = new MockConnection(new MockNettyInbound(body), new MockChannel((Attribute<String>) null) {
+                @Override
+                public EventLoop eventLoop() {
+                    return eventLoop;
+                }
+            });
+        return new NettyAsyncHttpResponse(new MockHttpClientResponse(new DefaultHttpHeaders(), null), connection,
+            REQUEST, disableBufferCopy, false);
+    }
+
+    private static final class DeferredWriteChannel implements AsynchronousByteChannel {
+        private final ByteArrayOutputStream output = new ByteArrayOutputStream();
+        private final AtomicReference<Runnable> pending = new AtomicReference<>();
+        private Consumer<Throwable> fail;
+        private boolean open = true;
+
+        @Override
+        public <A> void write(ByteBuffer src, A attachment, CompletionHandler<Integer, ? super A> handler) {
+            assertFalse(src.isDirect(), "Asynchronous file channels must not receive scoped direct buffers");
+            assertNull(pending.get());
+            pending.set(() -> {
+                int count = Math.min(4096, src.remaining());
+                for (int i = 0; i < count; i++) {
+                    output.write(src.get());
+                }
+                handler.completed(count, attachment);
+            });
+            fail = error -> handler.failed(error, attachment);
+        }
+
+        @Override
+        public Future<Integer> write(ByteBuffer src) {
+            throw new AssertionError("The response must not wait on a Future");
+        }
+
+        @Override
+        public <A> void read(ByteBuffer dst, A attachment, CompletionHandler<Integer, ? super A> handler) {
+            throw new UnsupportedOperationException();
+        }
+
+        @Override
+        public Future<Integer> read(ByteBuffer dst) {
+            throw new UnsupportedOperationException();
+        }
+
+        private void completeWrite() {
+            Runnable completion = pending.getAndSet(null);
+            assertNotNull(completion);
+            completion.run();
+        }
+
+        private void failWrite(Throwable error) {
+            assertNotNull(pending.getAndSet(null));
+            fail.accept(error);
+        }
+
+        @Override
+        public boolean isOpen() {
+            return open;
+        }
+
+        @Override
+        public void close() {
+            open = false;
+        }
     }
 
     @ParameterizedTest

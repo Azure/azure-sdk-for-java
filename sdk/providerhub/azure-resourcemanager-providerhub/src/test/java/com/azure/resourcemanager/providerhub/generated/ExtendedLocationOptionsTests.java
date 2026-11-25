@@ -13,18 +13,19 @@ import org.junit.jupiter.api.Assertions;
 public final class ExtendedLocationOptionsTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
-        ExtendedLocationOptions model = BinaryData.fromString("{\"type\":\"EdgeZone\",\"supportedPolicy\":\"All\"}")
-            .toObject(ExtendedLocationOptions.class);
-        Assertions.assertEquals(ExtendedLocationType.EDGE_ZONE, model.type());
+        ExtendedLocationOptions model
+            = BinaryData.fromString("{\"type\":\"CustomLocation\",\"supportedPolicy\":\"All\"}")
+                .toObject(ExtendedLocationOptions.class);
+        Assertions.assertEquals(ExtendedLocationType.CUSTOM_LOCATION, model.type());
         Assertions.assertEquals(ResourceTypeExtendedLocationPolicy.ALL, model.supportedPolicy());
     }
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
-        ExtendedLocationOptions model = new ExtendedLocationOptions().withType(ExtendedLocationType.EDGE_ZONE)
+        ExtendedLocationOptions model = new ExtendedLocationOptions().withType(ExtendedLocationType.CUSTOM_LOCATION)
             .withSupportedPolicy(ResourceTypeExtendedLocationPolicy.ALL);
         model = BinaryData.fromObject(model).toObject(ExtendedLocationOptions.class);
-        Assertions.assertEquals(ExtendedLocationType.EDGE_ZONE, model.type());
+        Assertions.assertEquals(ExtendedLocationType.CUSTOM_LOCATION, model.type());
         Assertions.assertEquals(ResourceTypeExtendedLocationPolicy.ALL, model.supportedPolicy());
     }
 }

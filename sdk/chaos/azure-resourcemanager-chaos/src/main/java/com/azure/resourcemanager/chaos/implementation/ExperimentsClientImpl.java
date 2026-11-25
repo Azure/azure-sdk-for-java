@@ -366,17 +366,7 @@ public final class ExperimentsClientImpl implements ExperimentsClient {
             .flatMap(res -> Mono.justOrEmpty(res.getValue()));
     }
 
-    /**
-     * Get a Experiment resource.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param experimentName String that represents a Experiment resource name.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return a Experiment resource along with {@link Response}.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Response<ExperimentInner> getByResourceGroupWithResponse(String resourceGroupName, String experimentName,
         Context context) {
@@ -385,16 +375,7 @@ public final class ExperimentsClientImpl implements ExperimentsClient {
             this.client.getSubscriptionId(), resourceGroupName, experimentName, accept, context);
     }
 
-    /**
-     * Get a Experiment resource.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param experimentName String that represents a Experiment resource name.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return a Experiment resource.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public ExperimentInner getByResourceGroup(String resourceGroupName, String experimentName) {
         return getByResourceGroupWithResponse(resourceGroupName, experimentName, Context.NONE).getValue();
@@ -438,11 +419,7 @@ public final class ExperimentsClientImpl implements ExperimentsClient {
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Response<BinaryData> createOrUpdateWithResponse(String resourceGroupName, String experimentName,
         ExperimentInner resource) {
-        final String contentType = "application/json";
-        final String accept = "application/json";
-        return service.createOrUpdateSync(this.client.getEndpoint(), this.client.getApiVersion(),
-            this.client.getSubscriptionId(), resourceGroupName, experimentName, contentType, accept, resource,
-            Context.NONE);
+        return createOrUpdateWithResponse(resourceGroupName, experimentName, resource, Context.NONE);
     }
 
     /**
@@ -486,37 +463,14 @@ public final class ExperimentsClientImpl implements ExperimentsClient {
             ExperimentInner.class, ExperimentInner.class, this.client.getContext());
     }
 
-    /**
-     * Create or update a Experiment resource.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param experimentName String that represents a Experiment resource name.
-     * @param resource Experiment resource to be created or updated.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the {@link SyncPoller} for polling of model that represents a Experiment resource.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public SyncPoller<PollResult<ExperimentInner>, ExperimentInner> beginCreateOrUpdate(String resourceGroupName,
         String experimentName, ExperimentInner resource) {
-        Response<BinaryData> response = createOrUpdateWithResponse(resourceGroupName, experimentName, resource);
-        return this.client.<ExperimentInner, ExperimentInner>getLroResult(response, ExperimentInner.class,
-            ExperimentInner.class, Context.NONE);
+        return beginCreateOrUpdate(resourceGroupName, experimentName, resource, Context.NONE);
     }
 
-    /**
-     * Create or update a Experiment resource.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param experimentName String that represents a Experiment resource name.
-     * @param resource Experiment resource to be created or updated.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the {@link SyncPoller} for polling of model that represents a Experiment resource.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public SyncPoller<PollResult<ExperimentInner>, ExperimentInner> beginCreateOrUpdate(String resourceGroupName,
         String experimentName, ExperimentInner resource, Context context) {
@@ -544,42 +498,22 @@ public final class ExperimentsClientImpl implements ExperimentsClient {
             .flatMap(this.client::getLroFinalResultOrError);
     }
 
-    /**
-     * Create or update a Experiment resource.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param experimentName String that represents a Experiment resource name.
-     * @param resource Experiment resource to be created or updated.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return model that represents a Experiment resource.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public ExperimentInner createOrUpdate(String resourceGroupName, String experimentName, ExperimentInner resource) {
-        return beginCreateOrUpdate(resourceGroupName, experimentName, resource).getFinalResult();
+        return createOrUpdate(resourceGroupName, experimentName, resource, Context.NONE);
     }
 
-    /**
-     * Create or update a Experiment resource.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param experimentName String that represents a Experiment resource name.
-     * @param resource Experiment resource to be created or updated.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return model that represents a Experiment resource.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public ExperimentInner createOrUpdate(String resourceGroupName, String experimentName, ExperimentInner resource,
         Context context) {
-        return beginCreateOrUpdate(resourceGroupName, experimentName, resource, context).getFinalResult();
+        return this.client
+            .getLroFinalResultOrError(beginCreateOrUpdate(resourceGroupName, experimentName, resource, context));
     }
 
     /**
-     * The operation to update an experiment.
+     * Update an experiment.
      * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param experimentName String that represents a Experiment resource name.
@@ -603,7 +537,7 @@ public final class ExperimentsClientImpl implements ExperimentsClient {
     }
 
     /**
-     * The operation to update an experiment.
+     * Update an experiment.
      * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param experimentName String that represents a Experiment resource name.
@@ -616,15 +550,11 @@ public final class ExperimentsClientImpl implements ExperimentsClient {
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Response<BinaryData> updateWithResponse(String resourceGroupName, String experimentName,
         ExperimentUpdate properties) {
-        final String contentType = "application/json";
-        final String accept = "application/json";
-        return service.updateSync(this.client.getEndpoint(), this.client.getApiVersion(),
-            this.client.getSubscriptionId(), resourceGroupName, experimentName, contentType, accept, properties,
-            Context.NONE);
+        return updateWithResponse(resourceGroupName, experimentName, properties, Context.NONE);
     }
 
     /**
-     * The operation to update an experiment.
+     * Update an experiment.
      * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param experimentName String that represents a Experiment resource name.
@@ -646,7 +576,7 @@ public final class ExperimentsClientImpl implements ExperimentsClient {
     }
 
     /**
-     * The operation to update an experiment.
+     * Update an experiment.
      * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param experimentName String that represents a Experiment resource name.
@@ -664,37 +594,14 @@ public final class ExperimentsClientImpl implements ExperimentsClient {
             ExperimentInner.class, ExperimentInner.class, this.client.getContext());
     }
 
-    /**
-     * The operation to update an experiment.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param experimentName String that represents a Experiment resource name.
-     * @param properties Parameters supplied to the Update experiment operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the {@link SyncPoller} for polling of model that represents a Experiment resource.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public SyncPoller<PollResult<ExperimentInner>, ExperimentInner> beginUpdate(String resourceGroupName,
         String experimentName, ExperimentUpdate properties) {
-        Response<BinaryData> response = updateWithResponse(resourceGroupName, experimentName, properties);
-        return this.client.<ExperimentInner, ExperimentInner>getLroResult(response, ExperimentInner.class,
-            ExperimentInner.class, Context.NONE);
+        return beginUpdate(resourceGroupName, experimentName, properties, Context.NONE);
     }
 
-    /**
-     * The operation to update an experiment.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param experimentName String that represents a Experiment resource name.
-     * @param properties Parameters supplied to the Update experiment operation.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the {@link SyncPoller} for polling of model that represents a Experiment resource.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public SyncPoller<PollResult<ExperimentInner>, ExperimentInner> beginUpdate(String resourceGroupName,
         String experimentName, ExperimentUpdate properties, Context context) {
@@ -704,7 +611,7 @@ public final class ExperimentsClientImpl implements ExperimentsClient {
     }
 
     /**
-     * The operation to update an experiment.
+     * Update an experiment.
      * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param experimentName String that represents a Experiment resource name.
@@ -721,38 +628,18 @@ public final class ExperimentsClientImpl implements ExperimentsClient {
             .flatMap(this.client::getLroFinalResultOrError);
     }
 
-    /**
-     * The operation to update an experiment.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param experimentName String that represents a Experiment resource name.
-     * @param properties Parameters supplied to the Update experiment operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return model that represents a Experiment resource.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public ExperimentInner update(String resourceGroupName, String experimentName, ExperimentUpdate properties) {
-        return beginUpdate(resourceGroupName, experimentName, properties).getFinalResult();
+        return update(resourceGroupName, experimentName, properties, Context.NONE);
     }
 
-    /**
-     * The operation to update an experiment.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param experimentName String that represents a Experiment resource name.
-     * @param properties Parameters supplied to the Update experiment operation.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return model that represents a Experiment resource.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public ExperimentInner update(String resourceGroupName, String experimentName, ExperimentUpdate properties,
         Context context) {
-        return beginUpdate(resourceGroupName, experimentName, properties, context).getFinalResult();
+        return this.client
+            .getLroFinalResultOrError(beginUpdate(resourceGroupName, experimentName, properties, context));
     }
 
     /**
@@ -785,8 +672,7 @@ public final class ExperimentsClientImpl implements ExperimentsClient {
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Response<BinaryData> deleteWithResponse(String resourceGroupName, String experimentName) {
-        return service.deleteSync(this.client.getEndpoint(), this.client.getApiVersion(),
-            this.client.getSubscriptionId(), resourceGroupName, experimentName, Context.NONE);
+        return deleteWithResponse(resourceGroupName, experimentName, Context.NONE);
     }
 
     /**
@@ -823,33 +709,13 @@ public final class ExperimentsClientImpl implements ExperimentsClient {
             this.client.getContext());
     }
 
-    /**
-     * Delete a Experiment resource.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param experimentName String that represents a Experiment resource name.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the {@link SyncPoller} for polling of long-running operation.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public SyncPoller<PollResult<Void>, Void> beginDelete(String resourceGroupName, String experimentName) {
-        Response<BinaryData> response = deleteWithResponse(resourceGroupName, experimentName);
-        return this.client.<Void, Void>getLroResult(response, Void.class, Void.class, Context.NONE);
+        return beginDelete(resourceGroupName, experimentName, Context.NONE);
     }
 
-    /**
-     * Delete a Experiment resource.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param experimentName String that represents a Experiment resource name.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the {@link SyncPoller} for polling of long-running operation.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public SyncPoller<PollResult<Void>, Void> beginDelete(String resourceGroupName, String experimentName,
         Context context) {
@@ -873,33 +739,16 @@ public final class ExperimentsClientImpl implements ExperimentsClient {
             .flatMap(this.client::getLroFinalResultOrError);
     }
 
-    /**
-     * Delete a Experiment resource.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param experimentName String that represents a Experiment resource name.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public void delete(String resourceGroupName, String experimentName) {
-        beginDelete(resourceGroupName, experimentName).getFinalResult();
+        delete(resourceGroupName, experimentName, Context.NONE);
     }
 
-    /**
-     * Delete a Experiment resource.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param experimentName String that represents a Experiment resource name.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public void delete(String resourceGroupName, String experimentName, Context context) {
-        beginDelete(resourceGroupName, experimentName, context).getFinalResult();
+        this.client.getLroFinalResultOrError(beginDelete(resourceGroupName, experimentName, context));
     }
 
     /**
@@ -978,12 +827,7 @@ public final class ExperimentsClientImpl implements ExperimentsClient {
     @ServiceMethod(returns = ReturnType.SINGLE)
     private PagedResponse<ExperimentInner> listByResourceGroupSinglePage(String resourceGroupName, Boolean running,
         String continuationToken) {
-        final String accept = "application/json";
-        Response<ExperimentListResult> res
-            = service.listByResourceGroupSync(this.client.getEndpoint(), this.client.getApiVersion(),
-                this.client.getSubscriptionId(), resourceGroupName, running, continuationToken, accept, Context.NONE);
-        return new PagedResponseBase<>(res.getRequest(), res.getStatusCode(), res.getHeaders(), res.getValue().value(),
-            res.getValue().nextLink(), null);
+        return listByResourceGroupSinglePage(resourceGroupName, running, continuationToken, Context.NONE);
     }
 
     /**
@@ -1010,36 +854,15 @@ public final class ExperimentsClientImpl implements ExperimentsClient {
             res.getValue().nextLink(), null);
     }
 
-    /**
-     * Get a list of Experiment resources in a resource group.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return a list of Experiment resources in a resource group as paginated response with {@link PagedIterable}.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.COLLECTION)
     public PagedIterable<ExperimentInner> listByResourceGroup(String resourceGroupName) {
         final Boolean running = null;
         final String continuationToken = null;
-        return new PagedIterable<>(() -> listByResourceGroupSinglePage(resourceGroupName, running, continuationToken),
-            nextLink -> listNextSinglePage(nextLink));
+        return listByResourceGroup(resourceGroupName, running, continuationToken, Context.NONE);
     }
 
-    /**
-     * Get a list of Experiment resources in a resource group.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param running Optional value that indicates whether to filter results based on if the Experiment is currently
-     * running. If null, then the results will not be filtered.
-     * @param continuationToken String that sets the continuation token.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return a list of Experiment resources in a resource group as paginated response with {@link PagedIterable}.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.COLLECTION)
     public PagedIterable<ExperimentInner> listByResourceGroup(String resourceGroupName, Boolean running,
         String continuationToken, Context context) {
@@ -1116,11 +939,7 @@ public final class ExperimentsClientImpl implements ExperimentsClient {
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private PagedResponse<ExperimentInner> listSinglePage(Boolean running, String continuationToken) {
-        final String accept = "application/json";
-        Response<ExperimentListResult> res = service.listSync(this.client.getEndpoint(), this.client.getApiVersion(),
-            this.client.getSubscriptionId(), running, continuationToken, accept, Context.NONE);
-        return new PagedResponseBase<>(res.getRequest(), res.getStatusCode(), res.getHeaders(), res.getValue().value(),
-            res.getValue().nextLink(), null);
+        return listSinglePage(running, continuationToken, Context.NONE);
     }
 
     /**
@@ -1144,33 +963,15 @@ public final class ExperimentsClientImpl implements ExperimentsClient {
             res.getValue().nextLink(), null);
     }
 
-    /**
-     * Get a list of Experiment resources in a subscription.
-     * 
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return a list of Experiment resources in a subscription as paginated response with {@link PagedIterable}.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.COLLECTION)
     public PagedIterable<ExperimentInner> list() {
         final Boolean running = null;
         final String continuationToken = null;
-        return new PagedIterable<>(() -> listSinglePage(running, continuationToken),
-            nextLink -> listAllNextSinglePage(nextLink));
+        return list(running, continuationToken, Context.NONE);
     }
 
-    /**
-     * Get a list of Experiment resources in a subscription.
-     * 
-     * @param running Optional value that indicates whether to filter results based on if the Experiment is currently
-     * running. If null, then the results will not be filtered.
-     * @param continuationToken String that sets the continuation token.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return a list of Experiment resources in a subscription as paginated response with {@link PagedIterable}.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.COLLECTION)
     public PagedIterable<ExperimentInner> list(Boolean running, String continuationToken, Context context) {
         return new PagedIterable<>(() -> listSinglePage(running, continuationToken, context),
@@ -1207,8 +1008,7 @@ public final class ExperimentsClientImpl implements ExperimentsClient {
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Response<BinaryData> cancelWithResponse(String resourceGroupName, String experimentName) {
-        return service.cancelSync(this.client.getEndpoint(), this.client.getApiVersion(),
-            this.client.getSubscriptionId(), resourceGroupName, experimentName, Context.NONE);
+        return cancelWithResponse(resourceGroupName, experimentName, Context.NONE);
     }
 
     /**
@@ -1245,33 +1045,13 @@ public final class ExperimentsClientImpl implements ExperimentsClient {
             this.client.getContext());
     }
 
-    /**
-     * Cancel a running Experiment resource.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param experimentName String that represents a Experiment resource name.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the {@link SyncPoller} for polling of long-running operation.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public SyncPoller<PollResult<Void>, Void> beginCancel(String resourceGroupName, String experimentName) {
-        Response<BinaryData> response = cancelWithResponse(resourceGroupName, experimentName);
-        return this.client.<Void, Void>getLroResult(response, Void.class, Void.class, Context.NONE);
+        return beginCancel(resourceGroupName, experimentName, Context.NONE);
     }
 
-    /**
-     * Cancel a running Experiment resource.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param experimentName String that represents a Experiment resource name.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the {@link SyncPoller} for polling of long-running operation.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public SyncPoller<PollResult<Void>, Void> beginCancel(String resourceGroupName, String experimentName,
         Context context) {
@@ -1295,33 +1075,16 @@ public final class ExperimentsClientImpl implements ExperimentsClient {
             .flatMap(this.client::getLroFinalResultOrError);
     }
 
-    /**
-     * Cancel a running Experiment resource.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param experimentName String that represents a Experiment resource name.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public void cancel(String resourceGroupName, String experimentName) {
-        beginCancel(resourceGroupName, experimentName).getFinalResult();
+        cancel(resourceGroupName, experimentName, Context.NONE);
     }
 
-    /**
-     * Cancel a running Experiment resource.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param experimentName String that represents a Experiment resource name.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public void cancel(String resourceGroupName, String experimentName, Context context) {
-        beginCancel(resourceGroupName, experimentName, context).getFinalResult();
+        this.client.getLroFinalResultOrError(beginCancel(resourceGroupName, experimentName, context));
     }
 
     /**
@@ -1354,8 +1117,7 @@ public final class ExperimentsClientImpl implements ExperimentsClient {
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Response<BinaryData> startWithResponse(String resourceGroupName, String experimentName) {
-        return service.startSync(this.client.getEndpoint(), this.client.getApiVersion(),
-            this.client.getSubscriptionId(), resourceGroupName, experimentName, Context.NONE);
+        return startWithResponse(resourceGroupName, experimentName, Context.NONE);
     }
 
     /**
@@ -1392,33 +1154,13 @@ public final class ExperimentsClientImpl implements ExperimentsClient {
             this.client.getContext());
     }
 
-    /**
-     * Start a Experiment resource.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param experimentName String that represents a Experiment resource name.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the {@link SyncPoller} for polling of long-running operation.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public SyncPoller<PollResult<Void>, Void> beginStart(String resourceGroupName, String experimentName) {
-        Response<BinaryData> response = startWithResponse(resourceGroupName, experimentName);
-        return this.client.<Void, Void>getLroResult(response, Void.class, Void.class, Context.NONE);
+        return beginStart(resourceGroupName, experimentName, Context.NONE);
     }
 
-    /**
-     * Start a Experiment resource.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param experimentName String that represents a Experiment resource name.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the {@link SyncPoller} for polling of long-running operation.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public SyncPoller<PollResult<Void>, Void> beginStart(String resourceGroupName, String experimentName,
         Context context) {
@@ -1441,33 +1183,16 @@ public final class ExperimentsClientImpl implements ExperimentsClient {
         return beginStartAsync(resourceGroupName, experimentName).last().flatMap(this.client::getLroFinalResultOrError);
     }
 
-    /**
-     * Start a Experiment resource.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param experimentName String that represents a Experiment resource name.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public void start(String resourceGroupName, String experimentName) {
-        beginStart(resourceGroupName, experimentName).getFinalResult();
+        start(resourceGroupName, experimentName, Context.NONE);
     }
 
-    /**
-     * Start a Experiment resource.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param experimentName String that represents a Experiment resource name.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public void start(String resourceGroupName, String experimentName, Context context) {
-        beginStart(resourceGroupName, experimentName, context).getFinalResult();
+        this.client.getLroFinalResultOrError(beginStart(resourceGroupName, experimentName, context));
     }
 
     /**
@@ -1510,18 +1235,7 @@ public final class ExperimentsClientImpl implements ExperimentsClient {
             .flatMap(res -> Mono.justOrEmpty(res.getValue()));
     }
 
-    /**
-     * Get an execution of an Experiment resource.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param experimentName String that represents a Experiment resource name.
-     * @param executionId GUID that represents a Experiment execution detail.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return an execution of an Experiment resource along with {@link Response}.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Response<ExperimentExecutionInner> getExecutionWithResponse(String resourceGroupName, String experimentName,
         String executionId, Context context) {
@@ -1530,17 +1244,7 @@ public final class ExperimentsClientImpl implements ExperimentsClient {
             this.client.getSubscriptionId(), resourceGroupName, experimentName, executionId, accept, context);
     }
 
-    /**
-     * Get an execution of an Experiment resource.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param experimentName String that represents a Experiment resource name.
-     * @param executionId GUID that represents a Experiment execution detail.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return an execution of an Experiment resource.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public ExperimentExecutionInner getExecution(String resourceGroupName, String experimentName, String executionId) {
         return getExecutionWithResponse(resourceGroupName, experimentName, executionId, Context.NONE).getValue();
@@ -1599,12 +1303,7 @@ public final class ExperimentsClientImpl implements ExperimentsClient {
     @ServiceMethod(returns = ReturnType.SINGLE)
     private PagedResponse<ExperimentExecutionInner> listAllExecutionsSinglePage(String resourceGroupName,
         String experimentName) {
-        final String accept = "application/json";
-        Response<ExperimentExecutionListResult> res
-            = service.listAllExecutionsSync(this.client.getEndpoint(), this.client.getApiVersion(),
-                this.client.getSubscriptionId(), resourceGroupName, experimentName, accept, Context.NONE);
-        return new PagedResponseBase<>(res.getRequest(), res.getStatusCode(), res.getHeaders(), res.getValue().value(),
-            res.getValue().nextLink(), null);
+        return listAllExecutionsSinglePage(resourceGroupName, experimentName, Context.NONE);
     }
 
     /**
@@ -1629,33 +1328,13 @@ public final class ExperimentsClientImpl implements ExperimentsClient {
             res.getValue().nextLink(), null);
     }
 
-    /**
-     * Get a list of executions of an Experiment resource.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param experimentName String that represents a Experiment resource name.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return a list of executions of an Experiment resource as paginated response with {@link PagedIterable}.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.COLLECTION)
     public PagedIterable<ExperimentExecutionInner> listAllExecutions(String resourceGroupName, String experimentName) {
-        return new PagedIterable<>(() -> listAllExecutionsSinglePage(resourceGroupName, experimentName),
-            nextLink -> listAllExecutionsNextSinglePage(nextLink));
+        return listAllExecutions(resourceGroupName, experimentName, Context.NONE);
     }
 
-    /**
-     * Get a list of executions of an Experiment resource.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param experimentName String that represents a Experiment resource name.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return a list of executions of an Experiment resource as paginated response with {@link PagedIterable}.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.COLLECTION)
     public PagedIterable<ExperimentExecutionInner> listAllExecutions(String resourceGroupName, String experimentName,
         Context context) {
@@ -1703,18 +1382,7 @@ public final class ExperimentsClientImpl implements ExperimentsClient {
             .flatMap(res -> Mono.justOrEmpty(res.getValue()));
     }
 
-    /**
-     * Execution details of an experiment resource.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param experimentName String that represents a Experiment resource name.
-     * @param executionId GUID that represents a Experiment execution detail.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return model that represents the execution details of an Experiment along with {@link Response}.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Response<ExperimentExecutionDetailsInner> executionDetailsWithResponse(String resourceGroupName,
         String experimentName, String executionId, Context context) {
@@ -1723,17 +1391,7 @@ public final class ExperimentsClientImpl implements ExperimentsClient {
             this.client.getSubscriptionId(), resourceGroupName, experimentName, executionId, accept, context);
     }
 
-    /**
-     * Execution details of an experiment resource.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param experimentName String that represents a Experiment resource name.
-     * @param executionId GUID that represents a Experiment execution detail.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return model that represents the execution details of an Experiment.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public ExperimentExecutionDetailsInner executionDetails(String resourceGroupName, String experimentName,
         String executionId) {
@@ -1770,11 +1428,7 @@ public final class ExperimentsClientImpl implements ExperimentsClient {
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private PagedResponse<ExperimentInner> listNextSinglePage(String nextLink) {
-        final String accept = "application/json";
-        Response<ExperimentListResult> res
-            = service.listNextSync(nextLink, this.client.getEndpoint(), accept, Context.NONE);
-        return new PagedResponseBase<>(res.getRequest(), res.getStatusCode(), res.getHeaders(), res.getValue().value(),
-            res.getValue().nextLink(), null);
+        return listNextSinglePage(nextLink, Context.NONE);
     }
 
     /**
@@ -1826,11 +1480,7 @@ public final class ExperimentsClientImpl implements ExperimentsClient {
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private PagedResponse<ExperimentInner> listAllNextSinglePage(String nextLink) {
-        final String accept = "application/json";
-        Response<ExperimentListResult> res
-            = service.listAllNextSync(nextLink, this.client.getEndpoint(), accept, Context.NONE);
-        return new PagedResponseBase<>(res.getRequest(), res.getStatusCode(), res.getHeaders(), res.getValue().value(),
-            res.getValue().nextLink(), null);
+        return listAllNextSinglePage(nextLink, Context.NONE);
     }
 
     /**
@@ -1883,11 +1533,7 @@ public final class ExperimentsClientImpl implements ExperimentsClient {
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private PagedResponse<ExperimentExecutionInner> listAllExecutionsNextSinglePage(String nextLink) {
-        final String accept = "application/json";
-        Response<ExperimentExecutionListResult> res
-            = service.listAllExecutionsNextSync(nextLink, this.client.getEndpoint(), accept, Context.NONE);
-        return new PagedResponseBase<>(res.getRequest(), res.getStatusCode(), res.getHeaders(), res.getValue().value(),
-            res.getValue().nextLink(), null);
+        return listAllExecutionsNextSinglePage(nextLink, Context.NONE);
     }
 
     /**

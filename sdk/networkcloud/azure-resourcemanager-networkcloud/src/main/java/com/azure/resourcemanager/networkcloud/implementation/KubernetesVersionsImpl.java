@@ -77,60 +77,32 @@ public final class KubernetesVersionsImpl implements KubernetesVersions {
     }
 
     public KubernetesVersion getById(String id) {
-        String resourceGroupName = ResourceManagerUtils.getValueFromIdByName(id, "resourceGroups");
-        if (resourceGroupName == null) {
-            throw LOGGER.logExceptionAsError(new IllegalArgumentException(
-                String.format("The resource ID '%s' is not valid. Missing path segment 'resourceGroups'.", id)));
-        }
-        String kubernetesVersionName = ResourceManagerUtils.getValueFromIdByName(id, "kubernetesVersions");
-        if (kubernetesVersionName == null) {
-            throw LOGGER.logExceptionAsError(new IllegalArgumentException(
-                String.format("The resource ID '%s' is not valid. Missing path segment 'kubernetesVersions'.", id)));
-        }
-        return this.getByResourceGroupWithResponse(resourceGroupName, kubernetesVersionName, Context.NONE).getValue();
+        return this.getByIdWithResponse(id, Context.NONE).getValue();
     }
 
     public Response<KubernetesVersion> getByIdWithResponse(String id, Context context) {
-        String resourceGroupName = ResourceManagerUtils.getValueFromIdByName(id, "resourceGroups");
-        if (resourceGroupName == null) {
-            throw LOGGER.logExceptionAsError(new IllegalArgumentException(
-                String.format("The resource ID '%s' is not valid. Missing path segment 'resourceGroups'.", id)));
-        }
-        String kubernetesVersionName = ResourceManagerUtils.getValueFromIdByName(id, "kubernetesVersions");
-        if (kubernetesVersionName == null) {
-            throw LOGGER.logExceptionAsError(new IllegalArgumentException(
-                String.format("The resource ID '%s' is not valid. Missing path segment 'kubernetesVersions'.", id)));
-        }
+        String resourceGroupName = ResourceManagerUtils.getRequiredValueFromIdByParameterName(id,
+            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.NetworkCloud/kubernetesVersions/{kubernetesVersionName}",
+            "resourceGroupName", "resourceGroups", LOGGER);
+        String kubernetesVersionName = ResourceManagerUtils.getRequiredValueFromIdByParameterName(id,
+            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.NetworkCloud/kubernetesVersions/{kubernetesVersionName}",
+            "kubernetesVersionName", "kubernetesVersions", LOGGER);
         return this.getByResourceGroupWithResponse(resourceGroupName, kubernetesVersionName, context);
     }
 
     public void deleteById(String id) {
-        String resourceGroupName = ResourceManagerUtils.getValueFromIdByName(id, "resourceGroups");
-        if (resourceGroupName == null) {
-            throw LOGGER.logExceptionAsError(new IllegalArgumentException(
-                String.format("The resource ID '%s' is not valid. Missing path segment 'resourceGroups'.", id)));
-        }
-        String kubernetesVersionName = ResourceManagerUtils.getValueFromIdByName(id, "kubernetesVersions");
-        if (kubernetesVersionName == null) {
-            throw LOGGER.logExceptionAsError(new IllegalArgumentException(
-                String.format("The resource ID '%s' is not valid. Missing path segment 'kubernetesVersions'.", id)));
-        }
         String localIfMatch = null;
         String localIfNoneMatch = null;
-        this.delete(resourceGroupName, kubernetesVersionName, localIfMatch, localIfNoneMatch, Context.NONE);
+        this.deleteByIdWithResponse(id, localIfMatch, localIfNoneMatch, Context.NONE);
     }
 
     public void deleteByIdWithResponse(String id, String ifMatch, String ifNoneMatch, Context context) {
-        String resourceGroupName = ResourceManagerUtils.getValueFromIdByName(id, "resourceGroups");
-        if (resourceGroupName == null) {
-            throw LOGGER.logExceptionAsError(new IllegalArgumentException(
-                String.format("The resource ID '%s' is not valid. Missing path segment 'resourceGroups'.", id)));
-        }
-        String kubernetesVersionName = ResourceManagerUtils.getValueFromIdByName(id, "kubernetesVersions");
-        if (kubernetesVersionName == null) {
-            throw LOGGER.logExceptionAsError(new IllegalArgumentException(
-                String.format("The resource ID '%s' is not valid. Missing path segment 'kubernetesVersions'.", id)));
-        }
+        String resourceGroupName = ResourceManagerUtils.getRequiredValueFromIdByParameterName(id,
+            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.NetworkCloud/kubernetesVersions/{kubernetesVersionName}",
+            "resourceGroupName", "resourceGroups", LOGGER);
+        String kubernetesVersionName = ResourceManagerUtils.getRequiredValueFromIdByParameterName(id,
+            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.NetworkCloud/kubernetesVersions/{kubernetesVersionName}",
+            "kubernetesVersionName", "kubernetesVersions", LOGGER);
         this.delete(resourceGroupName, kubernetesVersionName, ifMatch, ifNoneMatch, context);
     }
 

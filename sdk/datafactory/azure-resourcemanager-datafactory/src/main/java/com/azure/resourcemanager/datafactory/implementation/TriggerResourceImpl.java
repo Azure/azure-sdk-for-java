@@ -70,12 +70,7 @@ public final class TriggerResourceImpl implements TriggerResource, TriggerResour
     }
 
     public TriggerResource create() {
-        this.innerObject = serviceManager.serviceClient()
-            .getTriggers()
-            .createOrUpdateWithResponse(resourceGroupName, factoryName, triggerName, this.innerModel(), createIfMatch,
-                Context.NONE)
-            .getValue();
-        return this;
+        return this.create(Context.NONE);
     }
 
     public TriggerResource create(Context context) {
@@ -100,12 +95,7 @@ public final class TriggerResourceImpl implements TriggerResource, TriggerResour
     }
 
     public TriggerResource apply() {
-        this.innerObject = serviceManager.serviceClient()
-            .getTriggers()
-            .createOrUpdateWithResponse(resourceGroupName, factoryName, triggerName, this.innerModel(), updateIfMatch,
-                Context.NONE)
-            .getValue();
-        return this;
+        return this.apply(Context.NONE);
     }
 
     public TriggerResource apply(Context context) {
@@ -121,18 +111,19 @@ public final class TriggerResourceImpl implements TriggerResource, TriggerResour
         com.azure.resourcemanager.datafactory.DataFactoryManager serviceManager) {
         this.innerObject = innerObject;
         this.serviceManager = serviceManager;
-        this.resourceGroupName = ResourceManagerUtils.getValueFromIdByName(innerObject.id(), "resourceGroups");
-        this.factoryName = ResourceManagerUtils.getValueFromIdByName(innerObject.id(), "factories");
-        this.triggerName = ResourceManagerUtils.getValueFromIdByName(innerObject.id(), "triggers");
+        this.resourceGroupName = ResourceManagerUtils.getValueFromIdByParameterName(innerObject.id(),
+            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.DataFactory/factories/{factoryName}/triggers/{triggerName}",
+            "resourceGroupName");
+        this.factoryName = ResourceManagerUtils.getValueFromIdByParameterName(innerObject.id(),
+            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.DataFactory/factories/{factoryName}/triggers/{triggerName}",
+            "factoryName");
+        this.triggerName = ResourceManagerUtils.getValueFromIdByParameterName(innerObject.id(),
+            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.DataFactory/factories/{factoryName}/triggers/{triggerName}",
+            "triggerName");
     }
 
     public TriggerResource refresh() {
-        String localIfNoneMatch = null;
-        this.innerObject = serviceManager.serviceClient()
-            .getTriggers()
-            .getWithResponse(resourceGroupName, factoryName, triggerName, localIfNoneMatch, Context.NONE)
-            .getValue();
-        return this;
+        return this.refresh(Context.NONE);
     }
 
     public TriggerResource refresh(Context context) {

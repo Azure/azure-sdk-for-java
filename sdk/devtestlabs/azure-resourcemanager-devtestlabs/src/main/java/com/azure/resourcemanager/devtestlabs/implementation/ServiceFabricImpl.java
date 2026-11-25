@@ -113,10 +113,7 @@ public final class ServiceFabricImpl implements ServiceFabric, ServiceFabric.Def
     }
 
     public ServiceFabric create() {
-        this.innerObject = serviceManager.serviceClient()
-            .getServiceFabrics()
-            .createOrUpdate(resourceGroupName, labName, userName, name, this.innerModel(), Context.NONE);
-        return this;
+        return this.create(Context.NONE);
     }
 
     public ServiceFabric create(Context context) {
@@ -138,11 +135,7 @@ public final class ServiceFabricImpl implements ServiceFabric, ServiceFabric.Def
     }
 
     public ServiceFabric apply() {
-        this.innerObject = serviceManager.serviceClient()
-            .getServiceFabrics()
-            .updateWithResponse(resourceGroupName, labName, userName, name, updateServiceFabric, Context.NONE)
-            .getValue();
-        return this;
+        return this.apply(Context.NONE);
     }
 
     public ServiceFabric apply(Context context) {
@@ -157,19 +150,22 @@ public final class ServiceFabricImpl implements ServiceFabric, ServiceFabric.Def
         com.azure.resourcemanager.devtestlabs.DevTestLabsManager serviceManager) {
         this.innerObject = innerObject;
         this.serviceManager = serviceManager;
-        this.resourceGroupName = ResourceManagerUtils.getValueFromIdByName(innerObject.id(), "resourceGroups");
-        this.labName = ResourceManagerUtils.getValueFromIdByName(innerObject.id(), "labs");
-        this.userName = ResourceManagerUtils.getValueFromIdByName(innerObject.id(), "users");
-        this.name = ResourceManagerUtils.getValueFromIdByName(innerObject.id(), "servicefabrics");
+        this.resourceGroupName = ResourceManagerUtils.getValueFromIdByParameterName(innerObject.id(),
+            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.DevTestLab/labs/{labName}/users/{userName}/servicefabrics/{name}",
+            "resourceGroupName");
+        this.labName = ResourceManagerUtils.getValueFromIdByParameterName(innerObject.id(),
+            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.DevTestLab/labs/{labName}/users/{userName}/servicefabrics/{name}",
+            "labName");
+        this.userName = ResourceManagerUtils.getValueFromIdByParameterName(innerObject.id(),
+            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.DevTestLab/labs/{labName}/users/{userName}/servicefabrics/{name}",
+            "userName");
+        this.name = ResourceManagerUtils.getValueFromIdByParameterName(innerObject.id(),
+            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.DevTestLab/labs/{labName}/users/{userName}/servicefabrics/{name}",
+            "name");
     }
 
     public ServiceFabric refresh() {
-        String localExpand = null;
-        this.innerObject = serviceManager.serviceClient()
-            .getServiceFabrics()
-            .getWithResponse(resourceGroupName, labName, userName, name, localExpand, Context.NONE)
-            .getValue();
-        return this;
+        return this.refresh(Context.NONE);
     }
 
     public ServiceFabric refresh(Context context) {

@@ -92,10 +92,7 @@ public final class SapCentralServerInstanceImpl
     }
 
     public SapCentralServerInstance create() {
-        this.innerObject = serviceManager.serviceClient()
-            .getSapCentralServerInstances()
-            .create(resourceGroupName, sapVirtualInstanceName, centralInstanceName, this.innerModel(), Context.NONE);
-        return this;
+        return this.create(Context.NONE);
     }
 
     public SapCentralServerInstance create(Context context) {
@@ -118,12 +115,7 @@ public final class SapCentralServerInstanceImpl
     }
 
     public SapCentralServerInstance apply() {
-        this.innerObject = serviceManager.serviceClient()
-            .getSapCentralServerInstances()
-            .updateWithResponse(resourceGroupName, sapVirtualInstanceName, centralInstanceName, updateProperties,
-                Context.NONE)
-            .getValue();
-        return this;
+        return this.apply(Context.NONE);
     }
 
     public SapCentralServerInstance apply(Context context) {
@@ -139,18 +131,19 @@ public final class SapCentralServerInstanceImpl
         com.azure.resourcemanager.workloadssapvirtualinstance.WorkloadsSapVirtualInstanceManager serviceManager) {
         this.innerObject = innerObject;
         this.serviceManager = serviceManager;
-        this.resourceGroupName = ResourceManagerUtils.getValueFromIdByName(innerObject.id(), "resourceGroups");
-        this.sapVirtualInstanceName
-            = ResourceManagerUtils.getValueFromIdByName(innerObject.id(), "sapVirtualInstances");
-        this.centralInstanceName = ResourceManagerUtils.getValueFromIdByName(innerObject.id(), "centralInstances");
+        this.resourceGroupName = ResourceManagerUtils.getValueFromIdByParameterName(innerObject.id(),
+            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Workloads/sapVirtualInstances/{sapVirtualInstanceName}/centralInstances/{centralInstanceName}",
+            "resourceGroupName");
+        this.sapVirtualInstanceName = ResourceManagerUtils.getValueFromIdByParameterName(innerObject.id(),
+            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Workloads/sapVirtualInstances/{sapVirtualInstanceName}/centralInstances/{centralInstanceName}",
+            "sapVirtualInstanceName");
+        this.centralInstanceName = ResourceManagerUtils.getValueFromIdByParameterName(innerObject.id(),
+            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Workloads/sapVirtualInstances/{sapVirtualInstanceName}/centralInstances/{centralInstanceName}",
+            "centralInstanceName");
     }
 
     public SapCentralServerInstance refresh() {
-        this.innerObject = serviceManager.serviceClient()
-            .getSapCentralServerInstances()
-            .getWithResponse(resourceGroupName, sapVirtualInstanceName, centralInstanceName, Context.NONE)
-            .getValue();
-        return this;
+        return this.refresh(Context.NONE);
     }
 
     public SapCentralServerInstance refresh(Context context) {

@@ -91,7 +91,7 @@ public final class OperationsClientImpl implements OperationsClient {
             return Mono.error(
                 new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
         }
-        final String apiVersion = "2026-03-01";
+        final String apiVersion = "2026-04-01";
         final String accept = "application/json";
         return FluxUtil.withContext(context -> service.list(this.client.getEndpoint(), apiVersion, accept, context))
             .<PagedResponse<OperationInner>>map(res -> new PagedResponseBase<>(res.getRequest(), res.getStatusCode(),
@@ -115,7 +115,7 @@ public final class OperationsClientImpl implements OperationsClient {
             return Mono.error(
                 new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
         }
-        final String apiVersion = "2026-03-01";
+        final String apiVersion = "2026-04-01";
         final String accept = "application/json";
         context = this.client.mergeContext(context);
         return service.list(this.client.getEndpoint(), apiVersion, accept, context)
@@ -123,14 +123,7 @@ public final class OperationsClientImpl implements OperationsClient {
                 res.getValue().value(), res.getValue().nextLink(), null));
     }
 
-    /**
-     * List the operations for the provider.
-     * 
-     * @throws ApiErrorException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return a list of REST API operations supported by an Azure Resource Provider as paginated response with
-     * {@link PagedFlux}.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.COLLECTION)
     public PagedFlux<OperationInner> listAsync() {
         return new PagedFlux<>(() -> listSinglePageAsync(), nextLink -> listNextSinglePageAsync(nextLink));
@@ -152,29 +145,13 @@ public final class OperationsClientImpl implements OperationsClient {
             nextLink -> listNextSinglePageAsync(nextLink, context));
     }
 
-    /**
-     * List the operations for the provider.
-     * 
-     * @throws ApiErrorException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return a list of REST API operations supported by an Azure Resource Provider as paginated response with
-     * {@link PagedIterable}.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.COLLECTION)
     public PagedIterable<OperationInner> list() {
         return new PagedIterable<>(listAsync());
     }
 
-    /**
-     * List the operations for the provider.
-     * 
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ApiErrorException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return a list of REST API operations supported by an Azure Resource Provider as paginated response with
-     * {@link PagedIterable}.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.COLLECTION)
     public PagedIterable<OperationInner> list(Context context) {
         return new PagedIterable<>(listAsync(context));

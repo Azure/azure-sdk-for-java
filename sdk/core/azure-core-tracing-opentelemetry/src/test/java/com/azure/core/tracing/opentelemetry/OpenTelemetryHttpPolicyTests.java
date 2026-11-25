@@ -138,7 +138,7 @@ public class OpenTelemetryHttpPolicyTests {
         SpanData httpSpan = exportedSpans.get(0);
 
         assertEquals(request.getHeaders().getValue(TRACEPARENT),
-            String.format("00-%s-%s-01", httpSpan.getTraceId(), httpSpan.getSpanId()));
+            String.format("00-%s-%s-03", httpSpan.getTraceId(), httpSpan.getSpanId()));
         assertEquals(((ReadableSpan) parentSpan).getSpanContext().getSpanId(), httpSpan.getParentSpanId());
         assertEquals("POST", httpSpan.getName());
 
@@ -307,8 +307,8 @@ public class OpenTelemetryHttpPolicyTests {
         SpanData try503 = exportedSpans.get(0);
         SpanData try200 = exportedSpans.get(1);
 
-        assertEquals(traceparentTry503.get(), String.format("00-%s-%s-01", try503.getTraceId(), try503.getSpanId()));
-        assertEquals(traceparentTry200.get(), String.format("00-%s-%s-01", try200.getTraceId(), try200.getSpanId()));
+        assertEquals(traceparentTry503.get(), String.format("00-%s-%s-03", try503.getTraceId(), try503.getSpanId()));
+        assertEquals(traceparentTry200.get(), String.format("00-%s-%s-03", try200.getTraceId(), try200.getSpanId()));
 
         assertEquals("GET", try503.getName());
         Map<String, Object> httpAttributes503 = getAttributes(try503);

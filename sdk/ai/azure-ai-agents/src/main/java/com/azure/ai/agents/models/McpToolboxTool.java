@@ -41,7 +41,10 @@ public final class McpToolboxTool extends ToolboxTool {
     /*
      * Identifier for service connectors, like those available in ChatGPT. One of
      * `server_url`, `connector_id`, or `tunnel_id` must be provided. Learn more
-     * about service connectors [here](/docs/guides/tools-remote-mcp#connectors).
+     * about service connectors [here](https://developers.openai.com/api/docs/guides/tools-connectors-mcp#connectors).
+     * This field is deprecated for models released after September 1, 2026.
+     * Use `server_url` to connect to a remote MCP server, or `tunnel_id` to
+     * connect through a Secure MCP Tunnel.
      * Currently supported `connector_id` values are:
      * - Dropbox: `connector_dropbox`
      * - Gmail: `connector_gmail`
@@ -158,7 +161,10 @@ public final class McpToolboxTool extends ToolboxTool {
     /**
      * Get the connectorType property: Identifier for service connectors, like those available in ChatGPT. One of
      * `server_url`, `connector_id`, or `tunnel_id` must be provided. Learn more
-     * about service connectors [here](/docs/guides/tools-remote-mcp#connectors).
+     * about service connectors [here](https://developers.openai.com/api/docs/guides/tools-connectors-mcp#connectors).
+     * This field is deprecated for models released after September 1, 2026.
+     * Use `server_url` to connect to a remote MCP server, or `tunnel_id` to
+     * connect through a Secure MCP Tunnel.
      * Currently supported `connector_id` values are:
      * - Dropbox: `connector_dropbox`
      * - Gmail: `connector_gmail`
@@ -179,7 +185,10 @@ public final class McpToolboxTool extends ToolboxTool {
     /**
      * Set the connectorType property: Identifier for service connectors, like those available in ChatGPT. One of
      * `server_url`, `connector_id`, or `tunnel_id` must be provided. Learn more
-     * about service connectors [here](/docs/guides/tools-remote-mcp#connectors).
+     * about service connectors [here](https://developers.openai.com/api/docs/guides/tools-connectors-mcp#connectors).
+     * This field is deprecated for models released after September 1, 2026.
+     * Use `server_url` to connect to a remote MCP server, or `tunnel_id` to
+     * connect through a Secure MCP Tunnel.
      * Currently supported `connector_id` values are:
      * - Dropbox: `connector_dropbox`
      * - Gmail: `connector_gmail`
@@ -419,6 +428,8 @@ public final class McpToolboxTool extends ToolboxTool {
         }
         jsonWriter.writeBooleanField("defer_loading", this.deferLoading);
         jsonWriter.writeStringField("project_connection_id", this.projectConnectionId);
+        jsonWriter.writeArrayField("request_header_bindings", this.requestHeaderBindings,
+            (writer, element) -> writer.writeJson(element));
         return jsonWriter.writeEndObject();
     }
 
@@ -450,6 +461,7 @@ public final class McpToolboxTool extends ToolboxTool {
             BinaryData requireApproval = null;
             Boolean deferLoading = null;
             String projectConnectionId = null;
+            List<McpToolboxRequestHeaderBinding> requestHeaderBindings = null;
             while (reader.nextToken() != JsonToken.END_OBJECT) {
                 String fieldName = reader.getFieldName();
                 reader.nextToken();
@@ -488,6 +500,9 @@ public final class McpToolboxTool extends ToolboxTool {
                     deferLoading = reader.getNullable(JsonReader::getBoolean);
                 } else if ("project_connection_id".equals(fieldName)) {
                     projectConnectionId = reader.getString();
+                } else if ("request_header_bindings".equals(fieldName)) {
+                    requestHeaderBindings
+                        = reader.readArray(reader1 -> McpToolboxRequestHeaderBinding.fromJson(reader1));
                 } else {
                     reader.skipChildren();
                 }
@@ -508,6 +523,7 @@ public final class McpToolboxTool extends ToolboxTool {
             deserializedMcpToolboxTool.requireApproval = requireApproval;
             deserializedMcpToolboxTool.deferLoading = deferLoading;
             deserializedMcpToolboxTool.projectConnectionId = projectConnectionId;
+            deserializedMcpToolboxTool.requestHeaderBindings = requestHeaderBindings;
             return deserializedMcpToolboxTool;
         });
     }
@@ -568,6 +584,34 @@ public final class McpToolboxTool extends ToolboxTool {
     @Generated
     public McpToolboxTool setAllowedCallers(List<CallableToolAllowedCaller> allowedCallers) {
         this.allowedCallers = allowedCallers;
+        return this;
+    }
+
+    /*
+     * Bindings that supply request headers to this MCP server.
+     */
+    @Generated
+    private List<McpToolboxRequestHeaderBinding> requestHeaderBindings;
+
+    /**
+     * Get the requestHeaderBindings property: Bindings that supply request headers to this MCP server.
+     *
+     * @return the requestHeaderBindings value.
+     */
+    @Generated
+    public List<McpToolboxRequestHeaderBinding> getRequestHeaderBindings() {
+        return this.requestHeaderBindings;
+    }
+
+    /**
+     * Set the requestHeaderBindings property: Bindings that supply request headers to this MCP server.
+     *
+     * @param requestHeaderBindings the requestHeaderBindings value to set.
+     * @return the McpToolboxTool object itself.
+     */
+    @Generated
+    public McpToolboxTool setRequestHeaderBindings(List<McpToolboxRequestHeaderBinding> requestHeaderBindings) {
+        this.requestHeaderBindings = requestHeaderBindings;
         return this;
     }
 }

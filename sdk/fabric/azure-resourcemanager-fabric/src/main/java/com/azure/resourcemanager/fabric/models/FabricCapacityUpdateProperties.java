@@ -17,6 +17,11 @@ import java.io.IOException;
 @Fluent
 public final class FabricCapacityUpdateProperties implements JsonSerializable<FabricCapacityUpdateProperties> {
     /*
+     * The capacity overage properties of the Fabric capacity resource.
+     */
+    private CapacityOverageProperties overage;
+
+    /*
      * The capacity administration
      */
     private CapacityAdministration administration;
@@ -25,6 +30,26 @@ public final class FabricCapacityUpdateProperties implements JsonSerializable<Fa
      * Creates an instance of FabricCapacityUpdateProperties class.
      */
     public FabricCapacityUpdateProperties() {
+    }
+
+    /**
+     * Get the overage property: The capacity overage properties of the Fabric capacity resource.
+     * 
+     * @return the overage value.
+     */
+    public CapacityOverageProperties overage() {
+        return this.overage;
+    }
+
+    /**
+     * Set the overage property: The capacity overage properties of the Fabric capacity resource.
+     * 
+     * @param overage the overage value to set.
+     * @return the FabricCapacityUpdateProperties object itself.
+     */
+    public FabricCapacityUpdateProperties withOverage(CapacityOverageProperties overage) {
+        this.overage = overage;
+        return this;
     }
 
     /**
@@ -53,6 +78,7 @@ public final class FabricCapacityUpdateProperties implements JsonSerializable<Fa
     @Override
     public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
         jsonWriter.writeStartObject();
+        jsonWriter.writeJsonField("overage", this.overage);
         jsonWriter.writeJsonField("administration", this.administration);
         return jsonWriter.writeEndObject();
     }
@@ -73,7 +99,9 @@ public final class FabricCapacityUpdateProperties implements JsonSerializable<Fa
                 String fieldName = reader.getFieldName();
                 reader.nextToken();
 
-                if ("administration".equals(fieldName)) {
+                if ("overage".equals(fieldName)) {
+                    deserializedFabricCapacityUpdateProperties.overage = CapacityOverageProperties.fromJson(reader);
+                } else if ("administration".equals(fieldName)) {
                     deserializedFabricCapacityUpdateProperties.administration = CapacityAdministration.fromJson(reader);
                 } else {
                     reader.skipChildren();

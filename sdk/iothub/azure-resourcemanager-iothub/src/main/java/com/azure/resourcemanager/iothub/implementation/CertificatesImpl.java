@@ -55,7 +55,7 @@ public final class CertificatesImpl implements Certificates {
     }
 
     public void delete(String resourceGroupName, String resourceName, String certificateName, String ifMatch) {
-        this.serviceClient().delete(resourceGroupName, resourceName, certificateName, ifMatch);
+        this.deleteWithResponse(resourceGroupName, resourceName, certificateName, ifMatch, Context.NONE);
     }
 
     public Response<CertificateListDescription> listByIotHubWithResponse(String resourceGroupName, String resourceName,
@@ -116,79 +116,37 @@ public final class CertificatesImpl implements Certificates {
     }
 
     public CertificateDescription getById(String id) {
-        String resourceGroupName = ResourceManagerUtils.getValueFromIdByName(id, "resourceGroups");
-        if (resourceGroupName == null) {
-            throw LOGGER.logExceptionAsError(new IllegalArgumentException(
-                String.format("The resource ID '%s' is not valid. Missing path segment 'resourceGroups'.", id)));
-        }
-        String resourceName = ResourceManagerUtils.getValueFromIdByName(id, "IotHubs");
-        if (resourceName == null) {
-            throw LOGGER.logExceptionAsError(new IllegalArgumentException(
-                String.format("The resource ID '%s' is not valid. Missing path segment 'IotHubs'.", id)));
-        }
-        String certificateName = ResourceManagerUtils.getValueFromIdByName(id, "certificates");
-        if (certificateName == null) {
-            throw LOGGER.logExceptionAsError(new IllegalArgumentException(
-                String.format("The resource ID '%s' is not valid. Missing path segment 'certificates'.", id)));
-        }
-        return this.getWithResponse(resourceGroupName, resourceName, certificateName, Context.NONE).getValue();
+        return this.getByIdWithResponse(id, Context.NONE).getValue();
     }
 
     public Response<CertificateDescription> getByIdWithResponse(String id, Context context) {
-        String resourceGroupName = ResourceManagerUtils.getValueFromIdByName(id, "resourceGroups");
-        if (resourceGroupName == null) {
-            throw LOGGER.logExceptionAsError(new IllegalArgumentException(
-                String.format("The resource ID '%s' is not valid. Missing path segment 'resourceGroups'.", id)));
-        }
-        String resourceName = ResourceManagerUtils.getValueFromIdByName(id, "IotHubs");
-        if (resourceName == null) {
-            throw LOGGER.logExceptionAsError(new IllegalArgumentException(
-                String.format("The resource ID '%s' is not valid. Missing path segment 'IotHubs'.", id)));
-        }
-        String certificateName = ResourceManagerUtils.getValueFromIdByName(id, "certificates");
-        if (certificateName == null) {
-            throw LOGGER.logExceptionAsError(new IllegalArgumentException(
-                String.format("The resource ID '%s' is not valid. Missing path segment 'certificates'.", id)));
-        }
+        String resourceGroupName = ResourceManagerUtils.getRequiredValueFromIdByParameterName(id,
+            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Devices/IotHubs/{resourceName}/certificates/{certificateName}",
+            "resourceGroupName", "resourceGroups", LOGGER);
+        String resourceName = ResourceManagerUtils.getRequiredValueFromIdByParameterName(id,
+            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Devices/IotHubs/{resourceName}/certificates/{certificateName}",
+            "resourceName", "IotHubs", LOGGER);
+        String certificateName = ResourceManagerUtils.getRequiredValueFromIdByParameterName(id,
+            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Devices/IotHubs/{resourceName}/certificates/{certificateName}",
+            "certificateName", "certificates", LOGGER);
         return this.getWithResponse(resourceGroupName, resourceName, certificateName, context);
     }
 
     public void deleteById(String id) {
-        String resourceGroupName = ResourceManagerUtils.getValueFromIdByName(id, "resourceGroups");
-        if (resourceGroupName == null) {
-            throw LOGGER.logExceptionAsError(new IllegalArgumentException(
-                String.format("The resource ID '%s' is not valid. Missing path segment 'resourceGroups'.", id)));
-        }
-        String resourceName = ResourceManagerUtils.getValueFromIdByName(id, "IotHubs");
-        if (resourceName == null) {
-            throw LOGGER.logExceptionAsError(new IllegalArgumentException(
-                String.format("The resource ID '%s' is not valid. Missing path segment 'IotHubs'.", id)));
-        }
-        String certificateName = ResourceManagerUtils.getValueFromIdByName(id, "certificates");
-        if (certificateName == null) {
-            throw LOGGER.logExceptionAsError(new IllegalArgumentException(
-                String.format("The resource ID '%s' is not valid. Missing path segment 'certificates'.", id)));
-        }
         String localIfMatch = null;
-        this.deleteWithResponse(resourceGroupName, resourceName, certificateName, localIfMatch, Context.NONE);
+        this.deleteByIdWithResponse(id, localIfMatch, Context.NONE);
     }
 
     public Response<Void> deleteByIdWithResponse(String id, String ifMatch, Context context) {
-        String resourceGroupName = ResourceManagerUtils.getValueFromIdByName(id, "resourceGroups");
-        if (resourceGroupName == null) {
-            throw LOGGER.logExceptionAsError(new IllegalArgumentException(
-                String.format("The resource ID '%s' is not valid. Missing path segment 'resourceGroups'.", id)));
-        }
-        String resourceName = ResourceManagerUtils.getValueFromIdByName(id, "IotHubs");
-        if (resourceName == null) {
-            throw LOGGER.logExceptionAsError(new IllegalArgumentException(
-                String.format("The resource ID '%s' is not valid. Missing path segment 'IotHubs'.", id)));
-        }
-        String certificateName = ResourceManagerUtils.getValueFromIdByName(id, "certificates");
-        if (certificateName == null) {
-            throw LOGGER.logExceptionAsError(new IllegalArgumentException(
-                String.format("The resource ID '%s' is not valid. Missing path segment 'certificates'.", id)));
-        }
+        String resourceGroupName = ResourceManagerUtils.getRequiredValueFromIdByParameterName(id,
+            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Devices/IotHubs/{resourceName}/certificates/{certificateName}",
+            "resourceGroupName", "resourceGroups", LOGGER);
+        String resourceName = ResourceManagerUtils.getRequiredValueFromIdByParameterName(id,
+            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Devices/IotHubs/{resourceName}/certificates/{certificateName}",
+            "resourceName", "IotHubs", LOGGER);
+        String certificateName = ResourceManagerUtils.getRequiredValueFromIdByParameterName(id,
+            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Devices/IotHubs/{resourceName}/certificates/{certificateName}",
+            "certificateName", "certificates", LOGGER);
         return this.deleteWithResponse(resourceGroupName, resourceName, certificateName, ifMatch, context);
     }
 

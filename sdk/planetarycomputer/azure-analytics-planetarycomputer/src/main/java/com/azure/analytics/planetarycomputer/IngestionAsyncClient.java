@@ -227,6 +227,13 @@ public final class IngestionAsyncClient {
      * }
      * </pre>
      * 
+     * <p><strong>Response Headers</strong></p>
+     * <table border="1">
+     * <caption>Response Headers</caption>
+     * <tr><th>Name</th><th>Type</th><th>Description</th></tr>
+     * <tr><td>location</td><td>String</td><td>Url of the created ingestion run</td></tr>
+     * </table>
+     * 
      * @param collectionId Catalog collection id.
      * @param ingestionId Ingestion id.
      * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
@@ -393,6 +400,13 @@ public final class IngestionAsyncClient {
      * }
      * }
      * </pre>
+     * 
+     * <p><strong>Response Headers</strong></p>
+     * <table border="1">
+     * <caption>Response Headers</caption>
+     * <tr><th>Name</th><th>Type</th><th>Description</th></tr>
+     * <tr><td>location</td><td>String</td><td>Url of the created ingestion</td></tr>
+     * </table>
      * 
      * @param collectionId Catalog collection id.
      * @param body Definition of the ingestion.
@@ -622,6 +636,13 @@ public final class IngestionAsyncClient {
      * }
      * </pre>
      * 
+     * <p><strong>Response Headers</strong></p>
+     * <table border="1">
+     * <caption>Response Headers</caption>
+     * <tr><th>Name</th><th>Type</th><th>Description</th></tr>
+     * <tr><td>location</td><td>String</td><td>Url of the created ingestion source</td></tr>
+     * </table>
+     * 
      * @param body Definition of the ingestion source.
      * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
      * @throws HttpResponseException thrown if the request is rejected by server.
@@ -661,6 +682,13 @@ public final class IngestionAsyncClient {
      * }
      * }
      * </pre>
+     * 
+     * <p><strong>Response Headers</strong></p>
+     * <table border="1">
+     * <caption>Response Headers</caption>
+     * <tr><th>Name</th><th>Type</th><th>Description</th></tr>
+     * <tr><td>location</td><td>String</td><td>Url of the created ingestion source</td></tr>
+     * </table>
      * 
      * @param id Ingestion source id.
      * @param body Definition of the ingestion source.
@@ -880,9 +908,16 @@ public final class IngestionAsyncClient {
         }
         PagedFlux<BinaryData> pagedFluxResponse = listOperations(requestOptions);
         return PagedFlux.create(() -> (continuationTokenParam, pageSizeParam) -> {
-            Flux<PagedResponse<BinaryData>> flux = (continuationTokenParam == null)
-                ? pagedFluxResponse.byPage().take(1)
-                : pagedFluxResponse.byPage(continuationTokenParam).take(1);
+            Flux<PagedResponse<BinaryData>> flux;
+            if (pageSizeParam == null) {
+                flux = (continuationTokenParam == null)
+                    ? pagedFluxResponse.byPage().take(1)
+                    : pagedFluxResponse.byPage(continuationTokenParam).take(1);
+            } else {
+                flux = (continuationTokenParam == null)
+                    ? pagedFluxResponse.byPage(pageSizeParam).take(1)
+                    : pagedFluxResponse.byPage(continuationTokenParam, pageSizeParam).take(1);
+            }
             return flux.map(pagedResponse -> new PagedResponseBase<Void, Operation>(pagedResponse.getRequest(),
                 pagedResponse.getStatusCode(), pagedResponse.getHeaders(),
                 pagedResponse.getValue()
@@ -910,9 +945,16 @@ public final class IngestionAsyncClient {
         RequestOptions requestOptions = new RequestOptions();
         PagedFlux<BinaryData> pagedFluxResponse = listOperations(requestOptions);
         return PagedFlux.create(() -> (continuationTokenParam, pageSizeParam) -> {
-            Flux<PagedResponse<BinaryData>> flux = (continuationTokenParam == null)
-                ? pagedFluxResponse.byPage().take(1)
-                : pagedFluxResponse.byPage(continuationTokenParam).take(1);
+            Flux<PagedResponse<BinaryData>> flux;
+            if (pageSizeParam == null) {
+                flux = (continuationTokenParam == null)
+                    ? pagedFluxResponse.byPage().take(1)
+                    : pagedFluxResponse.byPage(continuationTokenParam).take(1);
+            } else {
+                flux = (continuationTokenParam == null)
+                    ? pagedFluxResponse.byPage(pageSizeParam).take(1)
+                    : pagedFluxResponse.byPage(continuationTokenParam, pageSizeParam).take(1);
+            }
             return flux.map(pagedResponse -> new PagedResponseBase<Void, Operation>(pagedResponse.getRequest(),
                 pagedResponse.getStatusCode(), pagedResponse.getHeaders(),
                 pagedResponse.getValue()
@@ -996,9 +1038,16 @@ public final class IngestionAsyncClient {
         }
         PagedFlux<BinaryData> pagedFluxResponse = listRuns(collectionId, ingestionId, requestOptions);
         return PagedFlux.create(() -> (continuationTokenParam, pageSizeParam) -> {
-            Flux<PagedResponse<BinaryData>> flux = (continuationTokenParam == null)
-                ? pagedFluxResponse.byPage().take(1)
-                : pagedFluxResponse.byPage(continuationTokenParam).take(1);
+            Flux<PagedResponse<BinaryData>> flux;
+            if (pageSizeParam == null) {
+                flux = (continuationTokenParam == null)
+                    ? pagedFluxResponse.byPage().take(1)
+                    : pagedFluxResponse.byPage(continuationTokenParam).take(1);
+            } else {
+                flux = (continuationTokenParam == null)
+                    ? pagedFluxResponse.byPage(pageSizeParam).take(1)
+                    : pagedFluxResponse.byPage(continuationTokenParam, pageSizeParam).take(1);
+            }
             return flux.map(pagedResponse -> new PagedResponseBase<Void, IngestionRun>(pagedResponse.getRequest(),
                 pagedResponse.getStatusCode(), pagedResponse.getHeaders(),
                 pagedResponse.getValue()
@@ -1029,9 +1078,16 @@ public final class IngestionAsyncClient {
         RequestOptions requestOptions = new RequestOptions();
         PagedFlux<BinaryData> pagedFluxResponse = listRuns(collectionId, ingestionId, requestOptions);
         return PagedFlux.create(() -> (continuationTokenParam, pageSizeParam) -> {
-            Flux<PagedResponse<BinaryData>> flux = (continuationTokenParam == null)
-                ? pagedFluxResponse.byPage().take(1)
-                : pagedFluxResponse.byPage(continuationTokenParam).take(1);
+            Flux<PagedResponse<BinaryData>> flux;
+            if (pageSizeParam == null) {
+                flux = (continuationTokenParam == null)
+                    ? pagedFluxResponse.byPage().take(1)
+                    : pagedFluxResponse.byPage(continuationTokenParam).take(1);
+            } else {
+                flux = (continuationTokenParam == null)
+                    ? pagedFluxResponse.byPage(pageSizeParam).take(1)
+                    : pagedFluxResponse.byPage(continuationTokenParam, pageSizeParam).take(1);
+            }
             return flux.map(pagedResponse -> new PagedResponseBase<Void, IngestionRun>(pagedResponse.getRequest(),
                 pagedResponse.getStatusCode(), pagedResponse.getHeaders(),
                 pagedResponse.getValue()
@@ -1136,9 +1192,16 @@ public final class IngestionAsyncClient {
         }
         PagedFlux<BinaryData> pagedFluxResponse = list(collectionId, requestOptions);
         return PagedFlux.create(() -> (continuationTokenParam, pageSizeParam) -> {
-            Flux<PagedResponse<BinaryData>> flux = (continuationTokenParam == null)
-                ? pagedFluxResponse.byPage().take(1)
-                : pagedFluxResponse.byPage(continuationTokenParam).take(1);
+            Flux<PagedResponse<BinaryData>> flux;
+            if (pageSizeParam == null) {
+                flux = (continuationTokenParam == null)
+                    ? pagedFluxResponse.byPage().take(1)
+                    : pagedFluxResponse.byPage(continuationTokenParam).take(1);
+            } else {
+                flux = (continuationTokenParam == null)
+                    ? pagedFluxResponse.byPage(pageSizeParam).take(1)
+                    : pagedFluxResponse.byPage(continuationTokenParam, pageSizeParam).take(1);
+            }
             return flux
                 .map(pagedResponse -> new PagedResponseBase<Void, IngestionDefinition>(pagedResponse.getRequest(),
                     pagedResponse.getStatusCode(), pagedResponse.getHeaders(),
@@ -1169,9 +1232,16 @@ public final class IngestionAsyncClient {
         RequestOptions requestOptions = new RequestOptions();
         PagedFlux<BinaryData> pagedFluxResponse = list(collectionId, requestOptions);
         return PagedFlux.create(() -> (continuationTokenParam, pageSizeParam) -> {
-            Flux<PagedResponse<BinaryData>> flux = (continuationTokenParam == null)
-                ? pagedFluxResponse.byPage().take(1)
-                : pagedFluxResponse.byPage(continuationTokenParam).take(1);
+            Flux<PagedResponse<BinaryData>> flux;
+            if (pageSizeParam == null) {
+                flux = (continuationTokenParam == null)
+                    ? pagedFluxResponse.byPage().take(1)
+                    : pagedFluxResponse.byPage(continuationTokenParam).take(1);
+            } else {
+                flux = (continuationTokenParam == null)
+                    ? pagedFluxResponse.byPage(pageSizeParam).take(1)
+                    : pagedFluxResponse.byPage(continuationTokenParam, pageSizeParam).take(1);
+            }
             return flux
                 .map(pagedResponse -> new PagedResponseBase<Void, IngestionDefinition>(pagedResponse.getRequest(),
                     pagedResponse.getStatusCode(), pagedResponse.getHeaders(),
@@ -1293,9 +1363,16 @@ public final class IngestionAsyncClient {
         }
         PagedFlux<BinaryData> pagedFluxResponse = listSources(requestOptions);
         return PagedFlux.create(() -> (continuationTokenParam, pageSizeParam) -> {
-            Flux<PagedResponse<BinaryData>> flux = (continuationTokenParam == null)
-                ? pagedFluxResponse.byPage().take(1)
-                : pagedFluxResponse.byPage(continuationTokenParam).take(1);
+            Flux<PagedResponse<BinaryData>> flux;
+            if (pageSizeParam == null) {
+                flux = (continuationTokenParam == null)
+                    ? pagedFluxResponse.byPage().take(1)
+                    : pagedFluxResponse.byPage(continuationTokenParam).take(1);
+            } else {
+                flux = (continuationTokenParam == null)
+                    ? pagedFluxResponse.byPage(pageSizeParam).take(1)
+                    : pagedFluxResponse.byPage(continuationTokenParam, pageSizeParam).take(1);
+            }
             return flux
                 .map(pagedResponse -> new PagedResponseBase<Void, IngestionSourceSummary>(pagedResponse.getRequest(),
                     pagedResponse.getStatusCode(), pagedResponse.getHeaders(),
@@ -1324,9 +1401,16 @@ public final class IngestionAsyncClient {
         RequestOptions requestOptions = new RequestOptions();
         PagedFlux<BinaryData> pagedFluxResponse = listSources(requestOptions);
         return PagedFlux.create(() -> (continuationTokenParam, pageSizeParam) -> {
-            Flux<PagedResponse<BinaryData>> flux = (continuationTokenParam == null)
-                ? pagedFluxResponse.byPage().take(1)
-                : pagedFluxResponse.byPage(continuationTokenParam).take(1);
+            Flux<PagedResponse<BinaryData>> flux;
+            if (pageSizeParam == null) {
+                flux = (continuationTokenParam == null)
+                    ? pagedFluxResponse.byPage().take(1)
+                    : pagedFluxResponse.byPage(continuationTokenParam).take(1);
+            } else {
+                flux = (continuationTokenParam == null)
+                    ? pagedFluxResponse.byPage(pageSizeParam).take(1)
+                    : pagedFluxResponse.byPage(continuationTokenParam, pageSizeParam).take(1);
+            }
             return flux
                 .map(pagedResponse -> new PagedResponseBase<Void, IngestionSourceSummary>(pagedResponse.getRequest(),
                     pagedResponse.getStatusCode(), pagedResponse.getHeaders(),
@@ -1356,9 +1440,16 @@ public final class IngestionAsyncClient {
         RequestOptions requestOptions = new RequestOptions();
         PagedFlux<BinaryData> pagedFluxResponse = listManagedIdentities(requestOptions);
         return PagedFlux.create(() -> (continuationTokenParam, pageSizeParam) -> {
-            Flux<PagedResponse<BinaryData>> flux = (continuationTokenParam == null)
-                ? pagedFluxResponse.byPage().take(1)
-                : pagedFluxResponse.byPage(continuationTokenParam).take(1);
+            Flux<PagedResponse<BinaryData>> flux;
+            if (pageSizeParam == null) {
+                flux = (continuationTokenParam == null)
+                    ? pagedFluxResponse.byPage().take(1)
+                    : pagedFluxResponse.byPage(continuationTokenParam).take(1);
+            } else {
+                flux = (continuationTokenParam == null)
+                    ? pagedFluxResponse.byPage(pageSizeParam).take(1)
+                    : pagedFluxResponse.byPage(continuationTokenParam, pageSizeParam).take(1);
+            }
             return flux
                 .map(pagedResponse -> new PagedResponseBase<Void, ManagedIdentityMetadata>(pagedResponse.getRequest(),
                     pagedResponse.getStatusCode(), pagedResponse.getHeaders(),

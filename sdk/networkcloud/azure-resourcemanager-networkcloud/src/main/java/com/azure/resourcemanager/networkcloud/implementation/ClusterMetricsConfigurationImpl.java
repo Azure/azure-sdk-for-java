@@ -137,11 +137,7 @@ public final class ClusterMetricsConfigurationImpl
     }
 
     public ClusterMetricsConfiguration create() {
-        this.innerObject = serviceManager.serviceClient()
-            .getMetricsConfigurations()
-            .createOrUpdate(resourceGroupName, clusterName, metricsConfigurationName, this.innerModel(), createIfMatch,
-                createIfNoneMatch, Context.NONE);
-        return this;
+        return this.create(Context.NONE);
     }
 
     public ClusterMetricsConfiguration create(Context context) {
@@ -169,11 +165,7 @@ public final class ClusterMetricsConfigurationImpl
     }
 
     public ClusterMetricsConfiguration apply() {
-        this.innerObject = serviceManager.serviceClient()
-            .getMetricsConfigurations()
-            .update(resourceGroupName, clusterName, metricsConfigurationName, updateIfMatch, updateIfNoneMatch,
-                updateMetricsConfigurationUpdateParameters, Context.NONE);
-        return this;
+        return this.apply(Context.NONE);
     }
 
     public ClusterMetricsConfiguration apply(Context context) {
@@ -188,18 +180,19 @@ public final class ClusterMetricsConfigurationImpl
         com.azure.resourcemanager.networkcloud.NetworkCloudManager serviceManager) {
         this.innerObject = innerObject;
         this.serviceManager = serviceManager;
-        this.resourceGroupName = ResourceManagerUtils.getValueFromIdByName(innerObject.id(), "resourceGroups");
-        this.clusterName = ResourceManagerUtils.getValueFromIdByName(innerObject.id(), "clusters");
-        this.metricsConfigurationName
-            = ResourceManagerUtils.getValueFromIdByName(innerObject.id(), "metricsConfigurations");
+        this.resourceGroupName = ResourceManagerUtils.getValueFromIdByParameterName(innerObject.id(),
+            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.NetworkCloud/clusters/{clusterName}/metricsConfigurations/{metricsConfigurationName}",
+            "resourceGroupName");
+        this.clusterName = ResourceManagerUtils.getValueFromIdByParameterName(innerObject.id(),
+            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.NetworkCloud/clusters/{clusterName}/metricsConfigurations/{metricsConfigurationName}",
+            "clusterName");
+        this.metricsConfigurationName = ResourceManagerUtils.getValueFromIdByParameterName(innerObject.id(),
+            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.NetworkCloud/clusters/{clusterName}/metricsConfigurations/{metricsConfigurationName}",
+            "metricsConfigurationName");
     }
 
     public ClusterMetricsConfiguration refresh() {
-        this.innerObject = serviceManager.serviceClient()
-            .getMetricsConfigurations()
-            .getWithResponse(resourceGroupName, clusterName, metricsConfigurationName, Context.NONE)
-            .getValue();
-        return this;
+        return this.refresh(Context.NONE);
     }
 
     public ClusterMetricsConfiguration refresh(Context context) {

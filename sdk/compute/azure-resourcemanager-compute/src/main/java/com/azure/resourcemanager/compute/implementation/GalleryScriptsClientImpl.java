@@ -129,18 +129,7 @@ public final class GalleryScriptsClientImpl implements GalleryScriptsClient {
             @HeaderParam("Accept") String accept, Context context);
     }
 
-    /**
-     * Retrieves information about a gallery script definition.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param galleryName The name of the Shared Image Gallery.
-     * @param galleryScriptName The name of the gallery Script Definition to be retrieved.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ApiErrorException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return specifies information about the gallery Script Definition that you want to create or update along with
-     * {@link Response} on successful completion of {@link Mono}.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Response<GalleryScriptInner>> getWithResponseAsync(String resourceGroupName, String galleryName,
         String galleryScriptName) {
@@ -163,7 +152,7 @@ public final class GalleryScriptsClientImpl implements GalleryScriptsClient {
             return Mono
                 .error(new IllegalArgumentException("Parameter galleryScriptName is required and cannot be null."));
         }
-        final String apiVersion = "2025-12-03";
+        final String apiVersion = "2026-03-03";
         final String accept = "application/json";
         return FluxUtil
             .withContext(context -> service.get(this.client.getEndpoint(), apiVersion, this.client.getSubscriptionId(),
@@ -206,80 +195,34 @@ public final class GalleryScriptsClientImpl implements GalleryScriptsClient {
             return Mono
                 .error(new IllegalArgumentException("Parameter galleryScriptName is required and cannot be null."));
         }
-        final String apiVersion = "2025-12-03";
+        final String apiVersion = "2026-03-03";
         final String accept = "application/json";
         context = this.client.mergeContext(context);
         return service.get(this.client.getEndpoint(), apiVersion, this.client.getSubscriptionId(), resourceGroupName,
             galleryName, galleryScriptName, accept, context);
     }
 
-    /**
-     * Retrieves information about a gallery script definition.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param galleryName The name of the Shared Image Gallery.
-     * @param galleryScriptName The name of the gallery Script Definition to be retrieved.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ApiErrorException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return specifies information about the gallery Script Definition that you want to create or update on successful
-     * completion of {@link Mono}.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<GalleryScriptInner> getAsync(String resourceGroupName, String galleryName, String galleryScriptName) {
         return getWithResponseAsync(resourceGroupName, galleryName, galleryScriptName)
             .flatMap(res -> Mono.justOrEmpty(res.getValue()));
     }
 
-    /**
-     * Retrieves information about a gallery script definition.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param galleryName The name of the Shared Image Gallery.
-     * @param galleryScriptName The name of the gallery Script Definition to be retrieved.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ApiErrorException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return specifies information about the gallery Script Definition that you want to create or update along with
-     * {@link Response}.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Response<GalleryScriptInner> getWithResponse(String resourceGroupName, String galleryName,
         String galleryScriptName, Context context) {
         return getWithResponseAsync(resourceGroupName, galleryName, galleryScriptName, context).block();
     }
 
-    /**
-     * Retrieves information about a gallery script definition.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param galleryName The name of the Shared Image Gallery.
-     * @param galleryScriptName The name of the gallery Script Definition to be retrieved.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ApiErrorException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return specifies information about the gallery Script Definition that you want to create or update.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public GalleryScriptInner get(String resourceGroupName, String galleryName, String galleryScriptName) {
         return getWithResponse(resourceGroupName, galleryName, galleryScriptName, Context.NONE).getValue();
     }
 
-    /**
-     * Create or update a Gallery Script Definition. Gallery scripts allow the storage, sharing and reuse of common
-     * scripts.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param galleryName The name of the Shared Image Gallery.
-     * @param galleryScriptName The name of the gallery Script Definition to be retrieved.
-     * @param galleryScript Parameters supplied to the create or update gallery Script operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ApiErrorException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return specifies information about the gallery Script Definition that you want to create or update along with
-     * {@link Response} on successful completion of {@link Mono}.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Response<Flux<ByteBuffer>>> createOrUpdateWithResponseAsync(String resourceGroupName,
         String galleryName, String galleryScriptName, GalleryScriptInner galleryScript) {
@@ -307,7 +250,7 @@ public final class GalleryScriptsClientImpl implements GalleryScriptsClient {
         } else {
             galleryScript.validate();
         }
-        final String apiVersion = "2025-12-03";
+        final String apiVersion = "2026-03-03";
         final String contentType = "application/json";
         final String accept = "application/json";
         return FluxUtil
@@ -359,7 +302,7 @@ public final class GalleryScriptsClientImpl implements GalleryScriptsClient {
         } else {
             galleryScript.validate();
         }
-        final String apiVersion = "2025-12-03";
+        final String apiVersion = "2026-03-03";
         final String contentType = "application/json";
         final String accept = "application/json";
         context = this.client.mergeContext(context);
@@ -367,20 +310,7 @@ public final class GalleryScriptsClientImpl implements GalleryScriptsClient {
             resourceGroupName, galleryName, galleryScriptName, contentType, accept, galleryScript, context);
     }
 
-    /**
-     * Create or update a Gallery Script Definition. Gallery scripts allow the storage, sharing and reuse of common
-     * scripts.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param galleryName The name of the Shared Image Gallery.
-     * @param galleryScriptName The name of the gallery Script Definition to be retrieved.
-     * @param galleryScript Parameters supplied to the create or update gallery Script operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ApiErrorException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the {@link PollerFlux} for polling of specifies information about the gallery Script Definition that you
-     * want to create or update.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public PollerFlux<PollResult<GalleryScriptInner>, GalleryScriptInner> beginCreateOrUpdateAsync(
         String resourceGroupName, String galleryName, String galleryScriptName, GalleryScriptInner galleryScript) {
@@ -416,20 +346,7 @@ public final class GalleryScriptsClientImpl implements GalleryScriptsClient {
             GalleryScriptInner.class, GalleryScriptInner.class, context);
     }
 
-    /**
-     * Create or update a Gallery Script Definition. Gallery scripts allow the storage, sharing and reuse of common
-     * scripts.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param galleryName The name of the Shared Image Gallery.
-     * @param galleryScriptName The name of the gallery Script Definition to be retrieved.
-     * @param galleryScript Parameters supplied to the create or update gallery Script operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ApiErrorException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the {@link SyncPoller} for polling of specifies information about the gallery Script Definition that you
-     * want to create or update.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public SyncPoller<PollResult<GalleryScriptInner>, GalleryScriptInner> beginCreateOrUpdate(String resourceGroupName,
         String galleryName, String galleryScriptName, GalleryScriptInner galleryScript) {
@@ -437,21 +354,7 @@ public final class GalleryScriptsClientImpl implements GalleryScriptsClient {
             .getSyncPoller();
     }
 
-    /**
-     * Create or update a Gallery Script Definition. Gallery scripts allow the storage, sharing and reuse of common
-     * scripts.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param galleryName The name of the Shared Image Gallery.
-     * @param galleryScriptName The name of the gallery Script Definition to be retrieved.
-     * @param galleryScript Parameters supplied to the create or update gallery Script operation.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ApiErrorException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the {@link SyncPoller} for polling of specifies information about the gallery Script Definition that you
-     * want to create or update.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public SyncPoller<PollResult<GalleryScriptInner>, GalleryScriptInner> beginCreateOrUpdate(String resourceGroupName,
         String galleryName, String galleryScriptName, GalleryScriptInner galleryScript, Context context) {
@@ -459,20 +362,7 @@ public final class GalleryScriptsClientImpl implements GalleryScriptsClient {
             .getSyncPoller();
     }
 
-    /**
-     * Create or update a Gallery Script Definition. Gallery scripts allow the storage, sharing and reuse of common
-     * scripts.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param galleryName The name of the Shared Image Gallery.
-     * @param galleryScriptName The name of the gallery Script Definition to be retrieved.
-     * @param galleryScript Parameters supplied to the create or update gallery Script operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ApiErrorException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return specifies information about the gallery Script Definition that you want to create or update on successful
-     * completion of {@link Mono}.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<GalleryScriptInner> createOrUpdateAsync(String resourceGroupName, String galleryName,
         String galleryScriptName, GalleryScriptInner galleryScript) {
@@ -503,58 +393,21 @@ public final class GalleryScriptsClientImpl implements GalleryScriptsClient {
             .flatMap(this.client::getLroFinalResultOrError);
     }
 
-    /**
-     * Create or update a Gallery Script Definition. Gallery scripts allow the storage, sharing and reuse of common
-     * scripts.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param galleryName The name of the Shared Image Gallery.
-     * @param galleryScriptName The name of the gallery Script Definition to be retrieved.
-     * @param galleryScript Parameters supplied to the create or update gallery Script operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ApiErrorException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return specifies information about the gallery Script Definition that you want to create or update.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public GalleryScriptInner createOrUpdate(String resourceGroupName, String galleryName, String galleryScriptName,
         GalleryScriptInner galleryScript) {
         return createOrUpdateAsync(resourceGroupName, galleryName, galleryScriptName, galleryScript).block();
     }
 
-    /**
-     * Create or update a Gallery Script Definition. Gallery scripts allow the storage, sharing and reuse of common
-     * scripts.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param galleryName The name of the Shared Image Gallery.
-     * @param galleryScriptName The name of the gallery Script Definition to be retrieved.
-     * @param galleryScript Parameters supplied to the create or update gallery Script operation.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ApiErrorException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return specifies information about the gallery Script Definition that you want to create or update.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public GalleryScriptInner createOrUpdate(String resourceGroupName, String galleryName, String galleryScriptName,
         GalleryScriptInner galleryScript, Context context) {
         return createOrUpdateAsync(resourceGroupName, galleryName, galleryScriptName, galleryScript, context).block();
     }
 
-    /**
-     * Update a gallery Script Definition.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param galleryName The name of the Shared Image Gallery.
-     * @param galleryScriptName The name of the gallery Script Definition to be retrieved.
-     * @param galleryScript Parameters supplied to the update gallery Script operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ApiErrorException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return specifies information about the gallery Script Definition that you want to create or update along with
-     * {@link Response} on successful completion of {@link Mono}.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Response<Flux<ByteBuffer>>> updateWithResponseAsync(String resourceGroupName, String galleryName,
         String galleryScriptName, GalleryScriptUpdate galleryScript) {
@@ -582,7 +435,7 @@ public final class GalleryScriptsClientImpl implements GalleryScriptsClient {
         } else {
             galleryScript.validate();
         }
-        final String apiVersion = "2025-12-03";
+        final String apiVersion = "2026-03-03";
         final String contentType = "application/json";
         final String accept = "application/json";
         return FluxUtil
@@ -633,7 +486,7 @@ public final class GalleryScriptsClientImpl implements GalleryScriptsClient {
         } else {
             galleryScript.validate();
         }
-        final String apiVersion = "2025-12-03";
+        final String apiVersion = "2026-03-03";
         final String contentType = "application/json";
         final String accept = "application/json";
         context = this.client.mergeContext(context);
@@ -641,19 +494,7 @@ public final class GalleryScriptsClientImpl implements GalleryScriptsClient {
             galleryName, galleryScriptName, contentType, accept, galleryScript, context);
     }
 
-    /**
-     * Update a gallery Script Definition.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param galleryName The name of the Shared Image Gallery.
-     * @param galleryScriptName The name of the gallery Script Definition to be retrieved.
-     * @param galleryScript Parameters supplied to the update gallery Script operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ApiErrorException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the {@link PollerFlux} for polling of specifies information about the gallery Script Definition that you
-     * want to create or update.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public PollerFlux<PollResult<GalleryScriptInner>, GalleryScriptInner> beginUpdateAsync(String resourceGroupName,
         String galleryName, String galleryScriptName, GalleryScriptUpdate galleryScript) {
@@ -687,39 +528,14 @@ public final class GalleryScriptsClientImpl implements GalleryScriptsClient {
             GalleryScriptInner.class, GalleryScriptInner.class, context);
     }
 
-    /**
-     * Update a gallery Script Definition.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param galleryName The name of the Shared Image Gallery.
-     * @param galleryScriptName The name of the gallery Script Definition to be retrieved.
-     * @param galleryScript Parameters supplied to the update gallery Script operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ApiErrorException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the {@link SyncPoller} for polling of specifies information about the gallery Script Definition that you
-     * want to create or update.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public SyncPoller<PollResult<GalleryScriptInner>, GalleryScriptInner> beginUpdate(String resourceGroupName,
         String galleryName, String galleryScriptName, GalleryScriptUpdate galleryScript) {
         return this.beginUpdateAsync(resourceGroupName, galleryName, galleryScriptName, galleryScript).getSyncPoller();
     }
 
-    /**
-     * Update a gallery Script Definition.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param galleryName The name of the Shared Image Gallery.
-     * @param galleryScriptName The name of the gallery Script Definition to be retrieved.
-     * @param galleryScript Parameters supplied to the update gallery Script operation.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ApiErrorException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the {@link SyncPoller} for polling of specifies information about the gallery Script Definition that you
-     * want to create or update.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public SyncPoller<PollResult<GalleryScriptInner>, GalleryScriptInner> beginUpdate(String resourceGroupName,
         String galleryName, String galleryScriptName, GalleryScriptUpdate galleryScript, Context context) {
@@ -727,19 +543,7 @@ public final class GalleryScriptsClientImpl implements GalleryScriptsClient {
             .getSyncPoller();
     }
 
-    /**
-     * Update a gallery Script Definition.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param galleryName The name of the Shared Image Gallery.
-     * @param galleryScriptName The name of the gallery Script Definition to be retrieved.
-     * @param galleryScript Parameters supplied to the update gallery Script operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ApiErrorException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return specifies information about the gallery Script Definition that you want to create or update on successful
-     * completion of {@link Mono}.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<GalleryScriptInner> updateAsync(String resourceGroupName, String galleryName, String galleryScriptName,
         GalleryScriptUpdate galleryScript) {
@@ -768,54 +572,21 @@ public final class GalleryScriptsClientImpl implements GalleryScriptsClient {
             .flatMap(this.client::getLroFinalResultOrError);
     }
 
-    /**
-     * Update a gallery Script Definition.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param galleryName The name of the Shared Image Gallery.
-     * @param galleryScriptName The name of the gallery Script Definition to be retrieved.
-     * @param galleryScript Parameters supplied to the update gallery Script operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ApiErrorException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return specifies information about the gallery Script Definition that you want to create or update.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public GalleryScriptInner update(String resourceGroupName, String galleryName, String galleryScriptName,
         GalleryScriptUpdate galleryScript) {
         return updateAsync(resourceGroupName, galleryName, galleryScriptName, galleryScript).block();
     }
 
-    /**
-     * Update a gallery Script Definition.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param galleryName The name of the Shared Image Gallery.
-     * @param galleryScriptName The name of the gallery Script Definition to be retrieved.
-     * @param galleryScript Parameters supplied to the update gallery Script operation.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ApiErrorException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return specifies information about the gallery Script Definition that you want to create or update.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public GalleryScriptInner update(String resourceGroupName, String galleryName, String galleryScriptName,
         GalleryScriptUpdate galleryScript, Context context) {
         return updateAsync(resourceGroupName, galleryName, galleryScriptName, galleryScript, context).block();
     }
 
-    /**
-     * Delete a gallery Script Definition.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param galleryName The name of the Shared Image Gallery.
-     * @param galleryScriptName The name of the gallery Script Definition to be retrieved.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ApiErrorException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the {@link Response} on successful completion of {@link Mono}.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Response<Flux<ByteBuffer>>> deleteWithResponseAsync(String resourceGroupName, String galleryName,
         String galleryScriptName) {
@@ -838,7 +609,7 @@ public final class GalleryScriptsClientImpl implements GalleryScriptsClient {
             return Mono
                 .error(new IllegalArgumentException("Parameter galleryScriptName is required and cannot be null."));
         }
-        final String apiVersion = "2025-12-03";
+        final String apiVersion = "2026-03-03";
         return FluxUtil
             .withContext(context -> service.delete(this.client.getEndpoint(), apiVersion,
                 this.client.getSubscriptionId(), resourceGroupName, galleryName, galleryScriptName, context))
@@ -879,23 +650,13 @@ public final class GalleryScriptsClientImpl implements GalleryScriptsClient {
             return Mono
                 .error(new IllegalArgumentException("Parameter galleryScriptName is required and cannot be null."));
         }
-        final String apiVersion = "2025-12-03";
+        final String apiVersion = "2026-03-03";
         context = this.client.mergeContext(context);
         return service.delete(this.client.getEndpoint(), apiVersion, this.client.getSubscriptionId(), resourceGroupName,
             galleryName, galleryScriptName, context);
     }
 
-    /**
-     * Delete a gallery Script Definition.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param galleryName The name of the Shared Image Gallery.
-     * @param galleryScriptName The name of the gallery Script Definition to be retrieved.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ApiErrorException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the {@link PollerFlux} for polling of long-running operation.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public PollerFlux<PollResult<Void>, Void> beginDeleteAsync(String resourceGroupName, String galleryName,
         String galleryScriptName) {
@@ -927,52 +688,21 @@ public final class GalleryScriptsClientImpl implements GalleryScriptsClient {
             context);
     }
 
-    /**
-     * Delete a gallery Script Definition.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param galleryName The name of the Shared Image Gallery.
-     * @param galleryScriptName The name of the gallery Script Definition to be retrieved.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ApiErrorException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the {@link SyncPoller} for polling of long-running operation.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public SyncPoller<PollResult<Void>, Void> beginDelete(String resourceGroupName, String galleryName,
         String galleryScriptName) {
         return this.beginDeleteAsync(resourceGroupName, galleryName, galleryScriptName).getSyncPoller();
     }
 
-    /**
-     * Delete a gallery Script Definition.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param galleryName The name of the Shared Image Gallery.
-     * @param galleryScriptName The name of the gallery Script Definition to be retrieved.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ApiErrorException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the {@link SyncPoller} for polling of long-running operation.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public SyncPoller<PollResult<Void>, Void> beginDelete(String resourceGroupName, String galleryName,
         String galleryScriptName, Context context) {
         return this.beginDeleteAsync(resourceGroupName, galleryName, galleryScriptName, context).getSyncPoller();
     }
 
-    /**
-     * Delete a gallery Script Definition.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param galleryName The name of the Shared Image Gallery.
-     * @param galleryScriptName The name of the gallery Script Definition to be retrieved.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ApiErrorException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return A {@link Mono} that completes when a successful response is received.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Void> deleteAsync(String resourceGroupName, String galleryName, String galleryScriptName) {
         return beginDeleteAsync(resourceGroupName, galleryName, galleryScriptName).last()
@@ -998,32 +728,13 @@ public final class GalleryScriptsClientImpl implements GalleryScriptsClient {
             .flatMap(this.client::getLroFinalResultOrError);
     }
 
-    /**
-     * Delete a gallery Script Definition.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param galleryName The name of the Shared Image Gallery.
-     * @param galleryScriptName The name of the gallery Script Definition to be retrieved.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ApiErrorException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public void delete(String resourceGroupName, String galleryName, String galleryScriptName) {
         deleteAsync(resourceGroupName, galleryName, galleryScriptName).block();
     }
 
-    /**
-     * Delete a gallery Script Definition.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param galleryName The name of the Shared Image Gallery.
-     * @param galleryScriptName The name of the gallery Script Definition to be retrieved.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ApiErrorException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public void delete(String resourceGroupName, String galleryName, String galleryScriptName, Context context) {
         deleteAsync(resourceGroupName, galleryName, galleryScriptName, context).block();
@@ -1058,7 +769,7 @@ public final class GalleryScriptsClientImpl implements GalleryScriptsClient {
         if (galleryName == null) {
             return Mono.error(new IllegalArgumentException("Parameter galleryName is required and cannot be null."));
         }
-        final String apiVersion = "2025-12-03";
+        final String apiVersion = "2026-03-03";
         final String accept = "application/json";
         return FluxUtil
             .withContext(context -> service.listByGallery(this.client.getEndpoint(), apiVersion,
@@ -1098,7 +809,7 @@ public final class GalleryScriptsClientImpl implements GalleryScriptsClient {
         if (galleryName == null) {
             return Mono.error(new IllegalArgumentException("Parameter galleryName is required and cannot be null."));
         }
-        final String apiVersion = "2025-12-03";
+        final String apiVersion = "2026-03-03";
         final String accept = "application/json";
         context = this.client.mergeContext(context);
         return service
@@ -1108,16 +819,7 @@ public final class GalleryScriptsClientImpl implements GalleryScriptsClient {
                 res.getValue().value(), res.getValue().nextLink(), null));
     }
 
-    /**
-     * List gallery Script Definitions in a gallery.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param galleryName The name of the Shared Image Gallery.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ApiErrorException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the List Gallery Script operation response as paginated response with {@link PagedFlux}.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.COLLECTION)
     public PagedFlux<GalleryScriptInner> listByGalleryAsync(String resourceGroupName, String galleryName) {
         return new PagedFlux<>(() -> listByGallerySinglePageAsync(resourceGroupName, galleryName),
@@ -1142,32 +844,13 @@ public final class GalleryScriptsClientImpl implements GalleryScriptsClient {
             nextLink -> listByGalleryNextSinglePageAsync(nextLink, context));
     }
 
-    /**
-     * List gallery Script Definitions in a gallery.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param galleryName The name of the Shared Image Gallery.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ApiErrorException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the List Gallery Script operation response as paginated response with {@link PagedIterable}.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.COLLECTION)
     public PagedIterable<GalleryScriptInner> listByGallery(String resourceGroupName, String galleryName) {
         return new PagedIterable<>(listByGalleryAsync(resourceGroupName, galleryName));
     }
 
-    /**
-     * List gallery Script Definitions in a gallery.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param galleryName The name of the Shared Image Gallery.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ApiErrorException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the List Gallery Script operation response as paginated response with {@link PagedIterable}.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.COLLECTION)
     public PagedIterable<GalleryScriptInner> listByGallery(String resourceGroupName, String galleryName,
         Context context) {

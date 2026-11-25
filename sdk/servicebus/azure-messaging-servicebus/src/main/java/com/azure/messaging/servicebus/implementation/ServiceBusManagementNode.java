@@ -8,6 +8,7 @@ import com.azure.messaging.servicebus.ServiceBusReceivedMessage;
 import com.azure.messaging.servicebus.ServiceBusTransactionContext;
 import com.azure.messaging.servicebus.administration.models.CreateRuleOptions;
 import com.azure.messaging.servicebus.administration.models.RuleProperties;
+import com.azure.messaging.servicebus.models.DeleteMessagesResult;
 import com.azure.messaging.servicebus.models.ServiceBusReceiveMode;
 import reactor.core.publisher.Flux;
 import reactor.core.publisher.Mono;
@@ -125,6 +126,19 @@ public interface ServiceBusManagementNode extends AutoCloseable {
         String associatedLinkName, ServiceBusTransactionContext transactionContext);
 
     /**
+     * Deletes up to {@code maxMessages} messages enqueued before the given cutoff.
+     *
+     * @param maxMessages The maximum number of messages to delete. The service limit is 500 for Basic and Standard and
+     * 4,000 for Premium.
+     * @param enqueueTimeUtcOlderThan Only messages enqueued before this time are deleted.
+     * @param sessionId The session identifier, or {@code null} for a non-session entity.
+     * @param associatedLinkName The associated receive-link name, or {@code null} if no link is open.
+     * @return The number of messages actually deleted by the service.
+     */
+    Mono<DeleteMessagesResult> deleteMessages(int maxMessages, OffsetDateTime enqueueTimeUtcOlderThan, String sessionId,
+        String associatedLinkName);
+
+    /**
      * Create a rule with the {@link CreateRuleOptions} for Service Bus subscription.
      *
      * @param ruleName Name of the rule.
@@ -149,8 +163,7 @@ public interface ServiceBusManagementNode extends AutoCloseable {
     Flux<RuleProperties> listRules();
 
     /**
-     * Lists the session IDs for sessions that have active messages or whose state was updated
-     * since the given time.
+     * Lists session IDs using either the default listing mode or a session-state update cutoff.
      *
      * <p>Pagination follows the cursor semantics of Track 1's
      * {@code com.microsoft.azure.servicebus.SessionBrowser}: the caller threads {@code skip} from
@@ -158,8 +171,9 @@ public interface ServiceBusManagementNode extends AutoCloseable {
      * (the last entry of the previous page) into the next request, and stops when the broker returns
      * a page smaller than the requested page size (a short or empty page signals the end).</p>
      *
-     * @param lastUpdatedTime Filter timestamp. To get sessions with active messages, pass the
-     *     {@link ManagementConstants#ACTIVE_MESSAGES_SENTINEL} sentinel (the implementation also
+     * @param lastUpdatedTime Filter timestamp. To use the default listing mode for sessions with
+     *     active messages or stored session state, pass the
+     *     {@link ManagementConstants#DEFAULT_LISTING_SENTINEL} sentinel (the implementation also
      *     accepts {@link OffsetDateTime#MAX} and clamps it to that sentinel), which matches the
      *     Track 1 Java sentinel value ({@code new Date(253402300800000L)}, rendered by
      *     {@code OffsetDateTime.toString()} as {@code +10000-01-01T00:00Z}). Pass a real timestamp

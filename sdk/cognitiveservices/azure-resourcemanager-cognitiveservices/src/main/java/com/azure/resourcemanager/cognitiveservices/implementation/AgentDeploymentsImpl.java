@@ -49,7 +49,7 @@ public final class AgentDeploymentsImpl implements AgentDeployments {
 
     public void delete(String resourceGroupName, String accountName, String projectName, String appName,
         String deploymentName) {
-        this.serviceClient().delete(resourceGroupName, accountName, projectName, appName, deploymentName);
+        this.delete(resourceGroupName, accountName, projectName, appName, deploymentName, Context.NONE);
     }
 
     public void delete(String resourceGroupName, String accountName, String projectName, String appName,
@@ -81,7 +81,7 @@ public final class AgentDeploymentsImpl implements AgentDeployments {
 
     public void start(String resourceGroupName, String accountName, String projectName, String appName,
         String deploymentName) {
-        this.serviceClient().start(resourceGroupName, accountName, projectName, appName, deploymentName);
+        this.startWithResponse(resourceGroupName, accountName, projectName, appName, deploymentName, Context.NONE);
     }
 
     public Response<Void> stopWithResponse(String resourceGroupName, String accountName, String projectName,
@@ -92,123 +92,52 @@ public final class AgentDeploymentsImpl implements AgentDeployments {
 
     public void stop(String resourceGroupName, String accountName, String projectName, String appName,
         String deploymentName) {
-        this.serviceClient().stop(resourceGroupName, accountName, projectName, appName, deploymentName);
+        this.stopWithResponse(resourceGroupName, accountName, projectName, appName, deploymentName, Context.NONE);
     }
 
     public AgentDeployment getById(String id) {
-        String resourceGroupName = ResourceManagerUtils.getValueFromIdByName(id, "resourceGroups");
-        if (resourceGroupName == null) {
-            throw LOGGER.logExceptionAsError(new IllegalArgumentException(
-                String.format("The resource ID '%s' is not valid. Missing path segment 'resourceGroups'.", id)));
-        }
-        String accountName = ResourceManagerUtils.getValueFromIdByName(id, "accounts");
-        if (accountName == null) {
-            throw LOGGER.logExceptionAsError(new IllegalArgumentException(
-                String.format("The resource ID '%s' is not valid. Missing path segment 'accounts'.", id)));
-        }
-        String projectName = ResourceManagerUtils.getValueFromIdByName(id, "projects");
-        if (projectName == null) {
-            throw LOGGER.logExceptionAsError(new IllegalArgumentException(
-                String.format("The resource ID '%s' is not valid. Missing path segment 'projects'.", id)));
-        }
-        String appName = ResourceManagerUtils.getValueFromIdByName(id, "applications");
-        if (appName == null) {
-            throw LOGGER.logExceptionAsError(new IllegalArgumentException(
-                String.format("The resource ID '%s' is not valid. Missing path segment 'applications'.", id)));
-        }
-        String deploymentName = ResourceManagerUtils.getValueFromIdByName(id, "agentDeployments");
-        if (deploymentName == null) {
-            throw LOGGER.logExceptionAsError(new IllegalArgumentException(
-                String.format("The resource ID '%s' is not valid. Missing path segment 'agentDeployments'.", id)));
-        }
-        return this.getWithResponse(resourceGroupName, accountName, projectName, appName, deploymentName, Context.NONE)
-            .getValue();
+        return this.getByIdWithResponse(id, Context.NONE).getValue();
     }
 
     public Response<AgentDeployment> getByIdWithResponse(String id, Context context) {
-        String resourceGroupName = ResourceManagerUtils.getValueFromIdByName(id, "resourceGroups");
-        if (resourceGroupName == null) {
-            throw LOGGER.logExceptionAsError(new IllegalArgumentException(
-                String.format("The resource ID '%s' is not valid. Missing path segment 'resourceGroups'.", id)));
-        }
-        String accountName = ResourceManagerUtils.getValueFromIdByName(id, "accounts");
-        if (accountName == null) {
-            throw LOGGER.logExceptionAsError(new IllegalArgumentException(
-                String.format("The resource ID '%s' is not valid. Missing path segment 'accounts'.", id)));
-        }
-        String projectName = ResourceManagerUtils.getValueFromIdByName(id, "projects");
-        if (projectName == null) {
-            throw LOGGER.logExceptionAsError(new IllegalArgumentException(
-                String.format("The resource ID '%s' is not valid. Missing path segment 'projects'.", id)));
-        }
-        String appName = ResourceManagerUtils.getValueFromIdByName(id, "applications");
-        if (appName == null) {
-            throw LOGGER.logExceptionAsError(new IllegalArgumentException(
-                String.format("The resource ID '%s' is not valid. Missing path segment 'applications'.", id)));
-        }
-        String deploymentName = ResourceManagerUtils.getValueFromIdByName(id, "agentDeployments");
-        if (deploymentName == null) {
-            throw LOGGER.logExceptionAsError(new IllegalArgumentException(
-                String.format("The resource ID '%s' is not valid. Missing path segment 'agentDeployments'.", id)));
-        }
+        String resourceGroupName = ResourceManagerUtils.getRequiredValueFromIdByParameterName(id,
+            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.CognitiveServices/accounts/{accountName}/projects/{projectName}/applications/{appName}/agentDeployments/{deploymentName}",
+            "resourceGroupName", "resourceGroups", LOGGER);
+        String accountName = ResourceManagerUtils.getRequiredValueFromIdByParameterName(id,
+            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.CognitiveServices/accounts/{accountName}/projects/{projectName}/applications/{appName}/agentDeployments/{deploymentName}",
+            "accountName", "accounts", LOGGER);
+        String projectName = ResourceManagerUtils.getRequiredValueFromIdByParameterName(id,
+            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.CognitiveServices/accounts/{accountName}/projects/{projectName}/applications/{appName}/agentDeployments/{deploymentName}",
+            "projectName", "projects", LOGGER);
+        String appName = ResourceManagerUtils.getRequiredValueFromIdByParameterName(id,
+            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.CognitiveServices/accounts/{accountName}/projects/{projectName}/applications/{appName}/agentDeployments/{deploymentName}",
+            "appName", "applications", LOGGER);
+        String deploymentName = ResourceManagerUtils.getRequiredValueFromIdByParameterName(id,
+            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.CognitiveServices/accounts/{accountName}/projects/{projectName}/applications/{appName}/agentDeployments/{deploymentName}",
+            "deploymentName", "agentDeployments", LOGGER);
         return this.getWithResponse(resourceGroupName, accountName, projectName, appName, deploymentName, context);
     }
 
     public void deleteById(String id) {
-        String resourceGroupName = ResourceManagerUtils.getValueFromIdByName(id, "resourceGroups");
-        if (resourceGroupName == null) {
-            throw LOGGER.logExceptionAsError(new IllegalArgumentException(
-                String.format("The resource ID '%s' is not valid. Missing path segment 'resourceGroups'.", id)));
-        }
-        String accountName = ResourceManagerUtils.getValueFromIdByName(id, "accounts");
-        if (accountName == null) {
-            throw LOGGER.logExceptionAsError(new IllegalArgumentException(
-                String.format("The resource ID '%s' is not valid. Missing path segment 'accounts'.", id)));
-        }
-        String projectName = ResourceManagerUtils.getValueFromIdByName(id, "projects");
-        if (projectName == null) {
-            throw LOGGER.logExceptionAsError(new IllegalArgumentException(
-                String.format("The resource ID '%s' is not valid. Missing path segment 'projects'.", id)));
-        }
-        String appName = ResourceManagerUtils.getValueFromIdByName(id, "applications");
-        if (appName == null) {
-            throw LOGGER.logExceptionAsError(new IllegalArgumentException(
-                String.format("The resource ID '%s' is not valid. Missing path segment 'applications'.", id)));
-        }
-        String deploymentName = ResourceManagerUtils.getValueFromIdByName(id, "agentDeployments");
-        if (deploymentName == null) {
-            throw LOGGER.logExceptionAsError(new IllegalArgumentException(
-                String.format("The resource ID '%s' is not valid. Missing path segment 'agentDeployments'.", id)));
-        }
-        this.delete(resourceGroupName, accountName, projectName, appName, deploymentName, Context.NONE);
+        this.deleteByIdWithResponse(id, Context.NONE);
     }
 
     public void deleteByIdWithResponse(String id, Context context) {
-        String resourceGroupName = ResourceManagerUtils.getValueFromIdByName(id, "resourceGroups");
-        if (resourceGroupName == null) {
-            throw LOGGER.logExceptionAsError(new IllegalArgumentException(
-                String.format("The resource ID '%s' is not valid. Missing path segment 'resourceGroups'.", id)));
-        }
-        String accountName = ResourceManagerUtils.getValueFromIdByName(id, "accounts");
-        if (accountName == null) {
-            throw LOGGER.logExceptionAsError(new IllegalArgumentException(
-                String.format("The resource ID '%s' is not valid. Missing path segment 'accounts'.", id)));
-        }
-        String projectName = ResourceManagerUtils.getValueFromIdByName(id, "projects");
-        if (projectName == null) {
-            throw LOGGER.logExceptionAsError(new IllegalArgumentException(
-                String.format("The resource ID '%s' is not valid. Missing path segment 'projects'.", id)));
-        }
-        String appName = ResourceManagerUtils.getValueFromIdByName(id, "applications");
-        if (appName == null) {
-            throw LOGGER.logExceptionAsError(new IllegalArgumentException(
-                String.format("The resource ID '%s' is not valid. Missing path segment 'applications'.", id)));
-        }
-        String deploymentName = ResourceManagerUtils.getValueFromIdByName(id, "agentDeployments");
-        if (deploymentName == null) {
-            throw LOGGER.logExceptionAsError(new IllegalArgumentException(
-                String.format("The resource ID '%s' is not valid. Missing path segment 'agentDeployments'.", id)));
-        }
+        String resourceGroupName = ResourceManagerUtils.getRequiredValueFromIdByParameterName(id,
+            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.CognitiveServices/accounts/{accountName}/projects/{projectName}/applications/{appName}/agentDeployments/{deploymentName}",
+            "resourceGroupName", "resourceGroups", LOGGER);
+        String accountName = ResourceManagerUtils.getRequiredValueFromIdByParameterName(id,
+            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.CognitiveServices/accounts/{accountName}/projects/{projectName}/applications/{appName}/agentDeployments/{deploymentName}",
+            "accountName", "accounts", LOGGER);
+        String projectName = ResourceManagerUtils.getRequiredValueFromIdByParameterName(id,
+            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.CognitiveServices/accounts/{accountName}/projects/{projectName}/applications/{appName}/agentDeployments/{deploymentName}",
+            "projectName", "projects", LOGGER);
+        String appName = ResourceManagerUtils.getRequiredValueFromIdByParameterName(id,
+            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.CognitiveServices/accounts/{accountName}/projects/{projectName}/applications/{appName}/agentDeployments/{deploymentName}",
+            "appName", "applications", LOGGER);
+        String deploymentName = ResourceManagerUtils.getRequiredValueFromIdByParameterName(id,
+            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.CognitiveServices/accounts/{accountName}/projects/{projectName}/applications/{appName}/agentDeployments/{deploymentName}",
+            "deploymentName", "agentDeployments", LOGGER);
         this.delete(resourceGroupName, accountName, projectName, appName, deploymentName, context);
     }
 

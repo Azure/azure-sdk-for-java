@@ -201,20 +201,7 @@ public final class CredentialOperationsClientImpl implements CredentialOperation
             .flatMap(res -> Mono.justOrEmpty(res.getValue()));
     }
 
-    /**
-     * Gets a credential.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param factoryName The factory name.
-     * @param credentialName Credential name.
-     * @param ifNoneMatch ETag of the credential entity. Should only be specified for get. If the ETag matches the
-     * existing entity tag, or if * was provided, then no content will be returned.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return a credential along with {@link Response}.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Response<CredentialResourceInner> getWithResponse(String resourceGroupName, String factoryName,
         String credentialName, String ifNoneMatch, Context context) {
@@ -223,17 +210,7 @@ public final class CredentialOperationsClientImpl implements CredentialOperation
             resourceGroupName, factoryName, credentialName, ifNoneMatch, accept, context);
     }
 
-    /**
-     * Gets a credential.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param factoryName The factory name.
-     * @param credentialName Credential name.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return a credential.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public CredentialResourceInner get(String resourceGroupName, String factoryName, String credentialName) {
         final String ifNoneMatch = null;
@@ -286,21 +263,7 @@ public final class CredentialOperationsClientImpl implements CredentialOperation
             .flatMap(res -> Mono.justOrEmpty(res.getValue()));
     }
 
-    /**
-     * Creates or updates a credential.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param factoryName The factory name.
-     * @param credentialName Credential name.
-     * @param credential Credential resource definition.
-     * @param ifMatch ETag of the credential entity. Should only be specified for update, for which it should match
-     * existing entity or can be * for unconditional update.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return credential resource type along with {@link Response}.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Response<CredentialResourceInner> createOrUpdateWithResponse(String resourceGroupName, String factoryName,
         String credentialName, CredentialResourceInner credential, String ifMatch, Context context) {
@@ -311,18 +274,7 @@ public final class CredentialOperationsClientImpl implements CredentialOperation
             accept, credential, context);
     }
 
-    /**
-     * Creates or updates a credential.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param factoryName The factory name.
-     * @param credentialName Credential name.
-     * @param credential Credential resource definition.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return credential resource type.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public CredentialResourceInner createOrUpdate(String resourceGroupName, String factoryName, String credentialName,
         CredentialResourceInner credential) {
@@ -367,18 +319,7 @@ public final class CredentialOperationsClientImpl implements CredentialOperation
         return deleteWithResponseAsync(resourceGroupName, factoryName, credentialName).flatMap(ignored -> Mono.empty());
     }
 
-    /**
-     * Deletes a credential.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param factoryName The factory name.
-     * @param credentialName Credential name.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the {@link Response}.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Response<Void> deleteWithResponse(String resourceGroupName, String factoryName, String credentialName,
         Context context) {
@@ -386,16 +327,7 @@ public final class CredentialOperationsClientImpl implements CredentialOperation
             this.client.getSubscriptionId(), resourceGroupName, factoryName, credentialName, context);
     }
 
-    /**
-     * Deletes a credential.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param factoryName The factory name.
-     * @param credentialName Credential name.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public void delete(String resourceGroupName, String factoryName, String credentialName) {
         deleteWithResponse(resourceGroupName, factoryName, credentialName, Context.NONE);
@@ -452,12 +384,7 @@ public final class CredentialOperationsClientImpl implements CredentialOperation
     @ServiceMethod(returns = ReturnType.SINGLE)
     private PagedResponse<CredentialResourceInner> listByFactorySinglePage(String resourceGroupName,
         String factoryName) {
-        final String accept = "application/json";
-        Response<CredentialListResponse> res
-            = service.listByFactorySync(this.client.getEndpoint(), this.client.getApiVersion(),
-                this.client.getSubscriptionId(), resourceGroupName, factoryName, accept, Context.NONE);
-        return new PagedResponseBase<>(res.getRequest(), res.getStatusCode(), res.getHeaders(), res.getValue().value(),
-            res.getValue().nextLink(), null);
+        return listByFactorySinglePage(resourceGroupName, factoryName, Context.NONE);
     }
 
     /**
@@ -482,33 +409,13 @@ public final class CredentialOperationsClientImpl implements CredentialOperation
             res.getValue().nextLink(), null);
     }
 
-    /**
-     * List credentials.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param factoryName The factory name.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return a list of credential resources as paginated response with {@link PagedIterable}.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.COLLECTION)
     public PagedIterable<CredentialResourceInner> listByFactory(String resourceGroupName, String factoryName) {
-        return new PagedIterable<>(() -> listByFactorySinglePage(resourceGroupName, factoryName),
-            nextLink -> listByFactoryNextSinglePage(nextLink));
+        return listByFactory(resourceGroupName, factoryName, Context.NONE);
     }
 
-    /**
-     * List credentials.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param factoryName The factory name.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return a list of credential resources as paginated response with {@link PagedIterable}.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.COLLECTION)
     public PagedIterable<CredentialResourceInner> listByFactory(String resourceGroupName, String factoryName,
         Context context) {
@@ -546,11 +453,7 @@ public final class CredentialOperationsClientImpl implements CredentialOperation
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private PagedResponse<CredentialResourceInner> listByFactoryNextSinglePage(String nextLink) {
-        final String accept = "application/json";
-        Response<CredentialListResponse> res
-            = service.listByFactoryNextSync(nextLink, this.client.getEndpoint(), accept, Context.NONE);
-        return new PagedResponseBase<>(res.getRequest(), res.getStatusCode(), res.getHeaders(), res.getValue().value(),
-            res.getValue().nextLink(), null);
+        return listByFactoryNextSinglePage(nextLink, Context.NONE);
     }
 
     /**

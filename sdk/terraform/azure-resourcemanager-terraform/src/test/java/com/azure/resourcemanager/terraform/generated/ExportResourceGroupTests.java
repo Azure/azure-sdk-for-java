@@ -5,6 +5,7 @@
 package com.azure.resourcemanager.terraform.generated;
 
 import com.azure.core.util.BinaryData;
+import com.azure.resourcemanager.terraform.models.AzureExtensionResourceType;
 import com.azure.resourcemanager.terraform.models.ExportResourceGroup;
 import com.azure.resourcemanager.terraform.models.TargetProvider;
 import java.util.Arrays;
@@ -14,39 +15,42 @@ public final class ExportResourceGroupTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
         ExportResourceGroup model = BinaryData.fromString(
-            "{\"type\":\"ExportResourceGroup\",\"resourceGroupName\":\"zkrwfn\",\"namePattern\":\"odjpslwejd\",\"targetProvider\":\"azapi\",\"fullProperties\":true,\"maskSensitive\":true,\"includeRoleAssignment\":true,\"includeManagedResource\":true,\"excludeAzureResource\":[\"tazak\",\"j\",\"ahbc\",\"yffdfdos\"],\"excludeTerraformResource\":[\"xpaojakhmsbz\"]}")
+            "{\"type\":\"ExportResourceGroup\",\"resourceGroupName\":\"pslwejdpvw\",\"namePattern\":\"oqpsoa\",\"targetProvider\":\"azurerm\",\"fullProperties\":true,\"maskSensitive\":false,\"includeRoleAssignment\":false,\"includeExtensions\":[\"role-assignments\"],\"includeManagedResource\":false,\"excludeAzureResource\":[\"ffdfdosygexpa\",\"jakhmsbzjh\"],\"excludeTerraformResource\":[\"evdphlxaol\",\"hqtrgqjbpf\"]}")
             .toObject(ExportResourceGroup.class);
-        Assertions.assertEquals(TargetProvider.AZAPI, model.targetProvider());
+        Assertions.assertEquals(TargetProvider.AZURERM, model.targetProvider());
         Assertions.assertTrue(model.fullProperties());
-        Assertions.assertTrue(model.maskSensitive());
-        Assertions.assertTrue(model.includeRoleAssignment());
-        Assertions.assertTrue(model.includeManagedResource());
-        Assertions.assertEquals("tazak", model.excludeAzureResource().get(0));
-        Assertions.assertEquals("xpaojakhmsbz", model.excludeTerraformResource().get(0));
-        Assertions.assertEquals("zkrwfn", model.resourceGroupName());
-        Assertions.assertEquals("odjpslwejd", model.namePattern());
+        Assertions.assertFalse(model.maskSensitive());
+        Assertions.assertFalse(model.includeRoleAssignment());
+        Assertions.assertEquals(AzureExtensionResourceType.ROLE_ASSIGNMENTS, model.includeExtensions().get(0));
+        Assertions.assertFalse(model.includeManagedResource());
+        Assertions.assertEquals("ffdfdosygexpa", model.excludeAzureResource().get(0));
+        Assertions.assertEquals("evdphlxaol", model.excludeTerraformResource().get(0));
+        Assertions.assertEquals("pslwejdpvw", model.resourceGroupName());
+        Assertions.assertEquals("oqpsoa", model.namePattern());
     }
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
-        ExportResourceGroup model = new ExportResourceGroup().withTargetProvider(TargetProvider.AZAPI)
+        ExportResourceGroup model = new ExportResourceGroup().withTargetProvider(TargetProvider.AZURERM)
             .withFullProperties(true)
-            .withMaskSensitive(true)
-            .withIncludeRoleAssignment(true)
-            .withIncludeManagedResource(true)
-            .withExcludeAzureResource(Arrays.asList("tazak", "j", "ahbc", "yffdfdos"))
-            .withExcludeTerraformResource(Arrays.asList("xpaojakhmsbz"))
-            .withResourceGroupName("zkrwfn")
-            .withNamePattern("odjpslwejd");
+            .withMaskSensitive(false)
+            .withIncludeRoleAssignment(false)
+            .withIncludeExtensions(Arrays.asList(AzureExtensionResourceType.ROLE_ASSIGNMENTS))
+            .withIncludeManagedResource(false)
+            .withExcludeAzureResource(Arrays.asList("ffdfdosygexpa", "jakhmsbzjh"))
+            .withExcludeTerraformResource(Arrays.asList("evdphlxaol", "hqtrgqjbpf"))
+            .withResourceGroupName("pslwejdpvw")
+            .withNamePattern("oqpsoa");
         model = BinaryData.fromObject(model).toObject(ExportResourceGroup.class);
-        Assertions.assertEquals(TargetProvider.AZAPI, model.targetProvider());
+        Assertions.assertEquals(TargetProvider.AZURERM, model.targetProvider());
         Assertions.assertTrue(model.fullProperties());
-        Assertions.assertTrue(model.maskSensitive());
-        Assertions.assertTrue(model.includeRoleAssignment());
-        Assertions.assertTrue(model.includeManagedResource());
-        Assertions.assertEquals("tazak", model.excludeAzureResource().get(0));
-        Assertions.assertEquals("xpaojakhmsbz", model.excludeTerraformResource().get(0));
-        Assertions.assertEquals("zkrwfn", model.resourceGroupName());
-        Assertions.assertEquals("odjpslwejd", model.namePattern());
+        Assertions.assertFalse(model.maskSensitive());
+        Assertions.assertFalse(model.includeRoleAssignment());
+        Assertions.assertEquals(AzureExtensionResourceType.ROLE_ASSIGNMENTS, model.includeExtensions().get(0));
+        Assertions.assertFalse(model.includeManagedResource());
+        Assertions.assertEquals("ffdfdosygexpa", model.excludeAzureResource().get(0));
+        Assertions.assertEquals("evdphlxaol", model.excludeTerraformResource().get(0));
+        Assertions.assertEquals("pslwejdpvw", model.resourceGroupName());
+        Assertions.assertEquals("oqpsoa", model.namePattern());
     }
 }

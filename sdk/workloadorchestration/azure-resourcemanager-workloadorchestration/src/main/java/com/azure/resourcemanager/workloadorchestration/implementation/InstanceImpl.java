@@ -72,10 +72,7 @@ public final class InstanceImpl implements Instance, Instance.Definition, Instan
     }
 
     public Instance create() {
-        this.innerObject = serviceManager.serviceClient()
-            .getInstances()
-            .createOrUpdate(resourceGroupName, targetName, solutionName, instanceName, this.innerModel(), Context.NONE);
-        return this;
+        return this.create(Context.NONE);
     }
 
     public Instance create(Context context) {
@@ -97,10 +94,7 @@ public final class InstanceImpl implements Instance, Instance.Definition, Instan
     }
 
     public Instance apply() {
-        this.innerObject = serviceManager.serviceClient()
-            .getInstances()
-            .update(resourceGroupName, targetName, solutionName, instanceName, this.innerModel(), Context.NONE);
-        return this;
+        return this.apply(Context.NONE);
     }
 
     public Instance apply(Context context) {
@@ -114,18 +108,22 @@ public final class InstanceImpl implements Instance, Instance.Definition, Instan
         com.azure.resourcemanager.workloadorchestration.WorkloadOrchestrationManager serviceManager) {
         this.innerObject = innerObject;
         this.serviceManager = serviceManager;
-        this.resourceGroupName = ResourceManagerUtils.getValueFromIdByName(innerObject.id(), "resourceGroups");
-        this.targetName = ResourceManagerUtils.getValueFromIdByName(innerObject.id(), "targets");
-        this.solutionName = ResourceManagerUtils.getValueFromIdByName(innerObject.id(), "solutions");
-        this.instanceName = ResourceManagerUtils.getValueFromIdByName(innerObject.id(), "instances");
+        this.resourceGroupName = ResourceManagerUtils.getValueFromIdByParameterName(innerObject.id(),
+            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Edge/targets/{targetName}/solutions/{solutionName}/instances/{instanceName}",
+            "resourceGroupName");
+        this.targetName = ResourceManagerUtils.getValueFromIdByParameterName(innerObject.id(),
+            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Edge/targets/{targetName}/solutions/{solutionName}/instances/{instanceName}",
+            "targetName");
+        this.solutionName = ResourceManagerUtils.getValueFromIdByParameterName(innerObject.id(),
+            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Edge/targets/{targetName}/solutions/{solutionName}/instances/{instanceName}",
+            "solutionName");
+        this.instanceName = ResourceManagerUtils.getValueFromIdByParameterName(innerObject.id(),
+            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Edge/targets/{targetName}/solutions/{solutionName}/instances/{instanceName}",
+            "instanceName");
     }
 
     public Instance refresh() {
-        this.innerObject = serviceManager.serviceClient()
-            .getInstances()
-            .getWithResponse(resourceGroupName, targetName, solutionName, instanceName, Context.NONE)
-            .getValue();
-        return this;
+        return this.refresh(Context.NONE);
     }
 
     public Instance refresh(Context context) {

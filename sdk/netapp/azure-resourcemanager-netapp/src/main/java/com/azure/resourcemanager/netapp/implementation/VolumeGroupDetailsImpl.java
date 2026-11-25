@@ -23,6 +23,15 @@ public final class VolumeGroupDetailsImpl implements VolumeGroupDetails, VolumeG
         com.azure.resourcemanager.netapp.NetAppFilesManager serviceManager) {
         this.innerObject = innerObject;
         this.serviceManager = serviceManager;
+        this.resourceGroupName = ResourceManagerUtils.getValueFromIdByParameterName(innerObject.id(),
+            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.NetApp/netAppAccounts/{accountName}/volumeGroups/{volumeGroupName}",
+            "resourceGroupName");
+        this.accountName = ResourceManagerUtils.getValueFromIdByParameterName(innerObject.id(),
+            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.NetApp/netAppAccounts/{accountName}/volumeGroups/{volumeGroupName}",
+            "accountName");
+        this.volumeGroupName = ResourceManagerUtils.getValueFromIdByParameterName(innerObject.id(),
+            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.NetApp/netAppAccounts/{accountName}/volumeGroups/{volumeGroupName}",
+            "volumeGroupName");
     }
 
     public String id() {
@@ -91,10 +100,7 @@ public final class VolumeGroupDetailsImpl implements VolumeGroupDetails, VolumeG
     }
 
     public VolumeGroupDetails create() {
-        this.innerObject = serviceManager.serviceClient()
-            .getVolumeGroups()
-            .create(resourceGroupName, accountName, volumeGroupName, this.innerModel(), Context.NONE);
-        return this;
+        return this.create(Context.NONE);
     }
 
     public VolumeGroupDetails create(Context context) {
@@ -111,11 +117,7 @@ public final class VolumeGroupDetailsImpl implements VolumeGroupDetails, VolumeG
     }
 
     public VolumeGroupDetails refresh() {
-        this.innerObject = serviceManager.serviceClient()
-            .getVolumeGroups()
-            .getWithResponse(resourceGroupName, accountName, volumeGroupName, Context.NONE)
-            .getValue();
-        return this;
+        return this.refresh(Context.NONE);
     }
 
     public VolumeGroupDetails refresh(Context context) {

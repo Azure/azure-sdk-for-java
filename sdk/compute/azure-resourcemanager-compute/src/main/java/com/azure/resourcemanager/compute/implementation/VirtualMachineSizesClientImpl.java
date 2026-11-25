@@ -102,7 +102,7 @@ public final class VirtualMachineSizesClientImpl implements VirtualMachineSizesC
         if (location == null) {
             return Mono.error(new IllegalArgumentException("Parameter location is required and cannot be null."));
         }
-        final String apiVersion = "2026-03-01";
+        final String apiVersion = "2026-04-01";
         final String accept = "application/json";
         return FluxUtil
             .withContext(context -> service.list(this.client.getEndpoint(), apiVersion, this.client.getSubscriptionId(),
@@ -136,7 +136,7 @@ public final class VirtualMachineSizesClientImpl implements VirtualMachineSizesC
         if (location == null) {
             return Mono.error(new IllegalArgumentException("Parameter location is required and cannot be null."));
         }
-        final String apiVersion = "2026-03-01";
+        final String apiVersion = "2026-04-01";
         final String accept = "application/json";
         context = this.client.mergeContext(context);
         return service
@@ -145,15 +145,7 @@ public final class VirtualMachineSizesClientImpl implements VirtualMachineSizesC
                 res.getValue().value(), res.getValue().nextLink(), null));
     }
 
-    /**
-     * This API is deprecated. Use [Resources Skus](https://docs.microsoft.com/rest/api/compute/resourceskus/list).
-     * 
-     * @param location The name of the Azure region.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ApiErrorException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the List Virtual Machine operation response as paginated response with {@link PagedFlux}.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.COLLECTION)
     public PagedFlux<VirtualMachineSizeInner> listAsync(String location) {
         return new PagedFlux<>(() -> listSinglePageAsync(location), nextLink -> listNextSinglePageAsync(nextLink));
@@ -175,30 +167,13 @@ public final class VirtualMachineSizesClientImpl implements VirtualMachineSizesC
             nextLink -> listNextSinglePageAsync(nextLink, context));
     }
 
-    /**
-     * This API is deprecated. Use [Resources Skus](https://docs.microsoft.com/rest/api/compute/resourceskus/list).
-     * 
-     * @param location The name of the Azure region.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ApiErrorException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the List Virtual Machine operation response as paginated response with {@link PagedIterable}.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.COLLECTION)
     public PagedIterable<VirtualMachineSizeInner> list(String location) {
         return new PagedIterable<>(listAsync(location));
     }
 
-    /**
-     * This API is deprecated. Use [Resources Skus](https://docs.microsoft.com/rest/api/compute/resourceskus/list).
-     * 
-     * @param location The name of the Azure region.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ApiErrorException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the List Virtual Machine operation response as paginated response with {@link PagedIterable}.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.COLLECTION)
     public PagedIterable<VirtualMachineSizeInner> list(String location, Context context) {
         return new PagedIterable<>(listAsync(location, context));

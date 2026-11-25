@@ -73,10 +73,7 @@ public final class ExpressRouteAuthorizationImpl
     }
 
     public ExpressRouteAuthorization create() {
-        this.innerObject = serviceManager.serviceClient()
-            .getAuthorizations()
-            .createOrUpdate(resourceGroupName, privateCloudName, authorizationName, this.innerModel(), Context.NONE);
-        return this;
+        return this.create(Context.NONE);
     }
 
     public ExpressRouteAuthorization create(Context context) {
@@ -97,10 +94,7 @@ public final class ExpressRouteAuthorizationImpl
     }
 
     public ExpressRouteAuthorization apply() {
-        this.innerObject = serviceManager.serviceClient()
-            .getAuthorizations()
-            .createOrUpdate(resourceGroupName, privateCloudName, authorizationName, this.innerModel(), Context.NONE);
-        return this;
+        return this.apply(Context.NONE);
     }
 
     public ExpressRouteAuthorization apply(Context context) {
@@ -114,17 +108,19 @@ public final class ExpressRouteAuthorizationImpl
         com.azure.resourcemanager.avs.AvsManager serviceManager) {
         this.innerObject = innerObject;
         this.serviceManager = serviceManager;
-        this.resourceGroupName = ResourceManagerUtils.getValueFromIdByName(innerObject.id(), "resourceGroups");
-        this.privateCloudName = ResourceManagerUtils.getValueFromIdByName(innerObject.id(), "privateClouds");
-        this.authorizationName = ResourceManagerUtils.getValueFromIdByName(innerObject.id(), "authorizations");
+        this.resourceGroupName = ResourceManagerUtils.getValueFromIdByParameterName(innerObject.id(),
+            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.AVS/privateClouds/{privateCloudName}/authorizations/{authorizationName}",
+            "resourceGroupName");
+        this.privateCloudName = ResourceManagerUtils.getValueFromIdByParameterName(innerObject.id(),
+            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.AVS/privateClouds/{privateCloudName}/authorizations/{authorizationName}",
+            "privateCloudName");
+        this.authorizationName = ResourceManagerUtils.getValueFromIdByParameterName(innerObject.id(),
+            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.AVS/privateClouds/{privateCloudName}/authorizations/{authorizationName}",
+            "authorizationName");
     }
 
     public ExpressRouteAuthorization refresh() {
-        this.innerObject = serviceManager.serviceClient()
-            .getAuthorizations()
-            .getWithResponse(resourceGroupName, privateCloudName, authorizationName, Context.NONE)
-            .getValue();
-        return this;
+        return this.refresh(Context.NONE);
     }
 
     public ExpressRouteAuthorization refresh(Context context) {

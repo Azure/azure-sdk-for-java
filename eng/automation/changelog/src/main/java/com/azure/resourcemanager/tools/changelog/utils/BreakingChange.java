@@ -16,6 +16,7 @@ public class BreakingChange {
 
     private final String className;
     private Type type;
+    private final Set<String> classTypeChanges = new LinkedHashSet<>();
     private final Set<String> methodChanges = new LinkedHashSet<>();
     private final Set<String> fieldChanges = new LinkedHashSet<>();
     private final Set<String> stageChanges = new LinkedHashSet<>();
@@ -39,6 +40,11 @@ public class BreakingChange {
         methodChanges.add(content);
     }
 
+    public void addClassTypeChange(String oldType, String newType) {
+        setClassLevelChangeType(Type.MODIFIED);
+        classTypeChanges.add(String.format("%s to %s", oldType, newType));
+    }
+
     public void addFieldLevelChange(String content) {
         setClassLevelChangeType(Type.MODIFIED);
         fieldChanges.add(content);
@@ -56,7 +62,10 @@ public class BreakingChange {
         StringBuilder builder = new StringBuilder();
         builder.append(String.format("#### `%s` was %s\n\n", className, type.getDisplayName()));
         int count = 0;
-        List<String> innerChanges = Stream.concat(Stream.concat(stageChanges.stream(), fieldChanges.stream()), methodChanges.stream()).collect(Collectors.toList());
+        List<String> innerChanges = Stream.of(classTypeChanges.stream().map(change -> String.format("Changed from %s.", change)),
+            stageChanges.stream(), fieldChanges.stream(), methodChanges.stream())
+            .flatMap(changes -> changes)
+            .collect(Collectors.toList());
         for (String methodChange : innerChanges) {
             builder
                 .append("* ")
@@ -73,16 +82,15 @@ public class BreakingChange {
     public Collection<String> getItems() {
         if (type == Type.NOT_CHANGED) {
             return Collections.emptyList();
-        } else if (methodChanges.isEmpty() && fieldChanges.isEmpty() && stageChanges.isEmpty()) {
+        } else if (classTypeChanges.isEmpty() && methodChanges.isEmpty() && fieldChanges.isEmpty() && stageChanges.isEmpty()) {
             return Collections.singleton(String.format("Class `%s` was %s.", className, type.getDisplayName()));
         } else {
-            return Stream.concat(
-                Stream.concat(
-                    stageChanges.stream().map(stageChange -> String.format("%s in class `%s`.", stageChange, className)),
-                    fieldChanges.stream().map(fieldChange -> String.format("Field %s in class `%s`.", fieldChange, className))
-                ),
+            return Stream.of(
+                classTypeChanges.stream().map(change -> String.format("Type `%s` changed from %s.", className, change)),
+                stageChanges.stream().map(stageChange -> String.format("%s in class `%s`.", stageChange, className)),
+                fieldChanges.stream().map(fieldChange -> String.format("Field %s in class `%s`.", fieldChange, className)),
                 methodChanges.stream().map(methodChange -> String.format("Method %s in class `%s`.", methodChange, className))
-            ).collect(Collectors.toList());
+            ).flatMap(changes -> changes).collect(Collectors.toList());
         }
     }
 

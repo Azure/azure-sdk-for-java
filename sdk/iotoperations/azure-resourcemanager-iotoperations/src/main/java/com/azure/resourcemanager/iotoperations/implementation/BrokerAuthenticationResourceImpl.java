@@ -70,11 +70,7 @@ public final class BrokerAuthenticationResourceImpl implements BrokerAuthenticat
     }
 
     public BrokerAuthenticationResource create() {
-        this.innerObject = serviceManager.serviceClient()
-            .getBrokerAuthentications()
-            .createOrUpdate(resourceGroupName, instanceName, brokerName, authenticationName, this.innerModel(),
-                Context.NONE);
-        return this;
+        return this.create(Context.NONE);
     }
 
     public BrokerAuthenticationResource create(Context context) {
@@ -97,11 +93,7 @@ public final class BrokerAuthenticationResourceImpl implements BrokerAuthenticat
     }
 
     public BrokerAuthenticationResource apply() {
-        this.innerObject = serviceManager.serviceClient()
-            .getBrokerAuthentications()
-            .createOrUpdate(resourceGroupName, instanceName, brokerName, authenticationName, this.innerModel(),
-                Context.NONE);
-        return this;
+        return this.apply(Context.NONE);
     }
 
     public BrokerAuthenticationResource apply(Context context) {
@@ -116,18 +108,22 @@ public final class BrokerAuthenticationResourceImpl implements BrokerAuthenticat
         com.azure.resourcemanager.iotoperations.IoTOperationsManager serviceManager) {
         this.innerObject = innerObject;
         this.serviceManager = serviceManager;
-        this.resourceGroupName = ResourceManagerUtils.getValueFromIdByName(innerObject.id(), "resourceGroups");
-        this.instanceName = ResourceManagerUtils.getValueFromIdByName(innerObject.id(), "instances");
-        this.brokerName = ResourceManagerUtils.getValueFromIdByName(innerObject.id(), "brokers");
-        this.authenticationName = ResourceManagerUtils.getValueFromIdByName(innerObject.id(), "authentications");
+        this.resourceGroupName = ResourceManagerUtils.getValueFromIdByParameterName(innerObject.id(),
+            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.IoTOperations/instances/{instanceName}/brokers/{brokerName}/authentications/{authenticationName}",
+            "resourceGroupName");
+        this.instanceName = ResourceManagerUtils.getValueFromIdByParameterName(innerObject.id(),
+            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.IoTOperations/instances/{instanceName}/brokers/{brokerName}/authentications/{authenticationName}",
+            "instanceName");
+        this.brokerName = ResourceManagerUtils.getValueFromIdByParameterName(innerObject.id(),
+            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.IoTOperations/instances/{instanceName}/brokers/{brokerName}/authentications/{authenticationName}",
+            "brokerName");
+        this.authenticationName = ResourceManagerUtils.getValueFromIdByParameterName(innerObject.id(),
+            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.IoTOperations/instances/{instanceName}/brokers/{brokerName}/authentications/{authenticationName}",
+            "authenticationName");
     }
 
     public BrokerAuthenticationResource refresh() {
-        this.innerObject = serviceManager.serviceClient()
-            .getBrokerAuthentications()
-            .getWithResponse(resourceGroupName, instanceName, brokerName, authenticationName, Context.NONE)
-            .getValue();
-        return this;
+        return this.refresh(Context.NONE);
     }
 
     public BrokerAuthenticationResource refresh(Context context) {

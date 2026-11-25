@@ -98,10 +98,8 @@ public final class ConfigurationAssignmentsImpl implements ConfigurationAssignme
 
     public PagedIterable<ConfigurationAssignment> listParent(String resourceGroupName, String providerName,
         String resourceParentType, String resourceParentName, String resourceType, String resourceName) {
-        PagedIterable<ConfigurationAssignmentInner> inner = this.serviceClient()
-            .listParent(resourceGroupName, providerName, resourceParentType, resourceParentName, resourceType,
-                resourceName);
-        return ResourceManagerUtils.mapPage(inner, inner1 -> new ConfigurationAssignmentImpl(inner1, this.manager()));
+        return this.listParent(resourceGroupName, providerName, resourceParentType, resourceParentName, resourceType,
+            resourceName, Context.NONE);
     }
 
     public PagedIterable<ConfigurationAssignment> listParent(String resourceGroupName, String providerName,
@@ -177,9 +175,7 @@ public final class ConfigurationAssignmentsImpl implements ConfigurationAssignme
 
     public PagedIterable<ConfigurationAssignment> list(String resourceGroupName, String providerName,
         String resourceType, String resourceName) {
-        PagedIterable<ConfigurationAssignmentInner> inner
-            = this.serviceClient().list(resourceGroupName, providerName, resourceType, resourceName);
-        return ResourceManagerUtils.mapPage(inner, inner1 -> new ConfigurationAssignmentImpl(inner1, this.manager()));
+        return this.list(resourceGroupName, providerName, resourceType, resourceName, Context.NONE);
     }
 
     public PagedIterable<ConfigurationAssignment> list(String resourceGroupName, String providerName,

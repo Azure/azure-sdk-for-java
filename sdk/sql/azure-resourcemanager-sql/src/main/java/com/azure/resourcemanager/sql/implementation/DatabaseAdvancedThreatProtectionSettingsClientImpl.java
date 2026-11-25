@@ -108,19 +108,7 @@ public final class DatabaseAdvancedThreatProtectionSettingsClientImpl
             @HeaderParam("Accept") String accept, Context context);
     }
 
-    /**
-     * Gets a database's Advanced Threat Protection state.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param serverName The name of the server.
-     * @param databaseName The name of the database.
-     * @param advancedThreatProtectionName The name of the Advanced Threat Protection state.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return a database's Advanced Threat Protection state along with {@link Response} on successful completion of
-     * {@link Mono}.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Response<DatabaseAdvancedThreatProtectionInner>> getWithResponseAsync(String resourceGroupName,
         String serverName, String databaseName, AdvancedThreatProtectionName advancedThreatProtectionName) {
@@ -200,18 +188,7 @@ public final class DatabaseAdvancedThreatProtectionSettingsClientImpl
             resourceGroupName, serverName, databaseName, advancedThreatProtectionName, accept, context);
     }
 
-    /**
-     * Gets a database's Advanced Threat Protection state.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param serverName The name of the server.
-     * @param databaseName The name of the database.
-     * @param advancedThreatProtectionName The name of the Advanced Threat Protection state.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return a database's Advanced Threat Protection state on successful completion of {@link Mono}.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<DatabaseAdvancedThreatProtectionInner> getAsync(String resourceGroupName, String serverName,
         String databaseName, AdvancedThreatProtectionName advancedThreatProtectionName) {
@@ -219,19 +196,7 @@ public final class DatabaseAdvancedThreatProtectionSettingsClientImpl
             .flatMap(res -> Mono.justOrEmpty(res.getValue()));
     }
 
-    /**
-     * Gets a database's Advanced Threat Protection state.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param serverName The name of the server.
-     * @param databaseName The name of the database.
-     * @param advancedThreatProtectionName The name of the Advanced Threat Protection state.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return a database's Advanced Threat Protection state along with {@link Response}.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Response<DatabaseAdvancedThreatProtectionInner> getWithResponse(String resourceGroupName, String serverName,
         String databaseName, AdvancedThreatProtectionName advancedThreatProtectionName, Context context) {
@@ -239,18 +204,7 @@ public final class DatabaseAdvancedThreatProtectionSettingsClientImpl
             .block();
     }
 
-    /**
-     * Gets a database's Advanced Threat Protection state.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param serverName The name of the server.
-     * @param databaseName The name of the database.
-     * @param advancedThreatProtectionName The name of the Advanced Threat Protection state.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return a database's Advanced Threat Protection state.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public DatabaseAdvancedThreatProtectionInner get(String resourceGroupName, String serverName, String databaseName,
         AdvancedThreatProtectionName advancedThreatProtectionName) {
@@ -258,20 +212,7 @@ public final class DatabaseAdvancedThreatProtectionSettingsClientImpl
             .getValue();
     }
 
-    /**
-     * Creates or updates a database's Advanced Threat Protection state.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param serverName The name of the server.
-     * @param databaseName The name of the database.
-     * @param advancedThreatProtectionName The name of the Advanced Threat Protection state.
-     * @param parameters The database Advanced Threat Protection state.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return a database Advanced Threat Protection along with {@link Response} on successful completion of
-     * {@link Mono}.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Response<DatabaseAdvancedThreatProtectionInner>> createOrUpdateWithResponseAsync(
         String resourceGroupName, String serverName, String databaseName,
@@ -367,19 +308,7 @@ public final class DatabaseAdvancedThreatProtectionSettingsClientImpl
             contentType, accept, parameters, context);
     }
 
-    /**
-     * Creates or updates a database's Advanced Threat Protection state.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param serverName The name of the server.
-     * @param databaseName The name of the database.
-     * @param advancedThreatProtectionName The name of the Advanced Threat Protection state.
-     * @param parameters The database Advanced Threat Protection state.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return a database Advanced Threat Protection on successful completion of {@link Mono}.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<DatabaseAdvancedThreatProtectionInner> createOrUpdateAsync(String resourceGroupName, String serverName,
         String databaseName, AdvancedThreatProtectionName advancedThreatProtectionName,
@@ -388,20 +317,7 @@ public final class DatabaseAdvancedThreatProtectionSettingsClientImpl
             advancedThreatProtectionName, parameters).flatMap(res -> Mono.justOrEmpty(res.getValue()));
     }
 
-    /**
-     * Creates or updates a database's Advanced Threat Protection state.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param serverName The name of the server.
-     * @param databaseName The name of the database.
-     * @param advancedThreatProtectionName The name of the Advanced Threat Protection state.
-     * @param parameters The database Advanced Threat Protection state.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return a database Advanced Threat Protection along with {@link Response}.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Response<DatabaseAdvancedThreatProtectionInner> createOrUpdateWithResponse(String resourceGroupName,
         String serverName, String databaseName, AdvancedThreatProtectionName advancedThreatProtectionName,
@@ -410,19 +326,7 @@ public final class DatabaseAdvancedThreatProtectionSettingsClientImpl
             advancedThreatProtectionName, parameters, context).block();
     }
 
-    /**
-     * Creates or updates a database's Advanced Threat Protection state.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param serverName The name of the server.
-     * @param databaseName The name of the database.
-     * @param advancedThreatProtectionName The name of the Advanced Threat Protection state.
-     * @param parameters The database Advanced Threat Protection state.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return a database Advanced Threat Protection.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public DatabaseAdvancedThreatProtectionInner createOrUpdate(String resourceGroupName, String serverName,
         String databaseName, AdvancedThreatProtectionName advancedThreatProtectionName,
@@ -516,17 +420,7 @@ public final class DatabaseAdvancedThreatProtectionSettingsClientImpl
                 res.getValue().value(), res.getValue().nextLink(), null));
     }
 
-    /**
-     * Gets a list of database's Advanced Threat Protection states.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param serverName The name of the server.
-     * @param databaseName The name of the database.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return a list of database's Advanced Threat Protection states as paginated response with {@link PagedFlux}.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.COLLECTION)
     public PagedFlux<DatabaseAdvancedThreatProtectionInner> listByDatabaseAsync(String resourceGroupName,
         String serverName, String databaseName) {
@@ -554,35 +448,14 @@ public final class DatabaseAdvancedThreatProtectionSettingsClientImpl
             nextLink -> listByDatabaseNextSinglePageAsync(nextLink, context));
     }
 
-    /**
-     * Gets a list of database's Advanced Threat Protection states.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param serverName The name of the server.
-     * @param databaseName The name of the database.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return a list of database's Advanced Threat Protection states as paginated response with {@link PagedIterable}.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.COLLECTION)
     public PagedIterable<DatabaseAdvancedThreatProtectionInner> listByDatabase(String resourceGroupName,
         String serverName, String databaseName) {
         return new PagedIterable<>(listByDatabaseAsync(resourceGroupName, serverName, databaseName));
     }
 
-    /**
-     * Gets a list of database's Advanced Threat Protection states.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param serverName The name of the server.
-     * @param databaseName The name of the database.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return a list of database's Advanced Threat Protection states as paginated response with {@link PagedIterable}.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.COLLECTION)
     public PagedIterable<DatabaseAdvancedThreatProtectionInner> listByDatabase(String resourceGroupName,
         String serverName, String databaseName, Context context) {

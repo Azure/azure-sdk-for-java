@@ -54,10 +54,7 @@ public final class DependencyOfRelationshipImpl
     }
 
     public DependencyOfRelationship create() {
-        this.innerObject = serviceManager.serviceClient()
-            .getDependencyOfRelationships()
-            .createOrUpdate(resourceUri, name, this.innerModel(), Context.NONE);
-        return this;
+        return this.create(Context.NONE);
     }
 
     public DependencyOfRelationship create(Context context) {
@@ -79,10 +76,7 @@ public final class DependencyOfRelationshipImpl
     }
 
     public DependencyOfRelationship apply() {
-        this.innerObject = serviceManager.serviceClient()
-            .getDependencyOfRelationships()
-            .createOrUpdate(resourceUri, name, this.innerModel(), Context.NONE);
-        return this;
+        return this.apply(Context.NONE);
     }
 
     public DependencyOfRelationship apply(Context context) {
@@ -100,14 +94,15 @@ public final class DependencyOfRelationshipImpl
             "/{resourceUri}/providers/Microsoft.Relationships/dependencyOf/{name}", "resourceUri");
         this.name = ResourceManagerUtils.getValueFromIdByParameterName(innerObject.id(),
             "/{resourceUri}/providers/Microsoft.Relationships/dependencyOf/{name}", "name");
+        if (this.name == null) {
+            this.name = ResourceManagerUtils.getValueFromIdByParameterName(innerObject.id(),
+                "/providers/Microsoft.Management/serviceGroups/{serviceGroupName}/providers/Microsoft.Relationships/dependencyOf/{name}",
+                "name");
+        }
     }
 
     public DependencyOfRelationship refresh() {
-        this.innerObject = serviceManager.serviceClient()
-            .getDependencyOfRelationships()
-            .getWithResponse(resourceUri, name, Context.NONE)
-            .getValue();
-        return this;
+        return this.refresh(Context.NONE);
     }
 
     public DependencyOfRelationship refresh(Context context) {

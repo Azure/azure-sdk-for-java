@@ -45,7 +45,7 @@ public final class WebPubSubCustomDomainsImpl implements WebPubSubCustomDomains 
     }
 
     public void delete(String resourceGroupName, String resourceName, String name) {
-        this.serviceClient().delete(resourceGroupName, resourceName, name);
+        this.delete(resourceGroupName, resourceName, name, Context.NONE);
     }
 
     public void delete(String resourceGroupName, String resourceName, String name, Context context) {
@@ -53,8 +53,7 @@ public final class WebPubSubCustomDomainsImpl implements WebPubSubCustomDomains 
     }
 
     public PagedIterable<CustomDomain> list(String resourceGroupName, String resourceName) {
-        PagedIterable<CustomDomainInner> inner = this.serviceClient().list(resourceGroupName, resourceName);
-        return ResourceManagerUtils.mapPage(inner, inner1 -> new CustomDomainImpl(inner1, this.manager()));
+        return this.list(resourceGroupName, resourceName, Context.NONE);
     }
 
     public PagedIterable<CustomDomain> list(String resourceGroupName, String resourceName, Context context) {
@@ -63,78 +62,36 @@ public final class WebPubSubCustomDomainsImpl implements WebPubSubCustomDomains 
     }
 
     public CustomDomain getById(String id) {
-        String resourceGroupName = ResourceManagerUtils.getValueFromIdByName(id, "resourceGroups");
-        if (resourceGroupName == null) {
-            throw LOGGER.logExceptionAsError(new IllegalArgumentException(
-                String.format("The resource ID '%s' is not valid. Missing path segment 'resourceGroups'.", id)));
-        }
-        String resourceName = ResourceManagerUtils.getValueFromIdByName(id, "webPubSub");
-        if (resourceName == null) {
-            throw LOGGER.logExceptionAsError(new IllegalArgumentException(
-                String.format("The resource ID '%s' is not valid. Missing path segment 'webPubSub'.", id)));
-        }
-        String name = ResourceManagerUtils.getValueFromIdByName(id, "customDomains");
-        if (name == null) {
-            throw LOGGER.logExceptionAsError(new IllegalArgumentException(
-                String.format("The resource ID '%s' is not valid. Missing path segment 'customDomains'.", id)));
-        }
-        return this.getWithResponse(resourceGroupName, resourceName, name, Context.NONE).getValue();
+        return this.getByIdWithResponse(id, Context.NONE).getValue();
     }
 
     public Response<CustomDomain> getByIdWithResponse(String id, Context context) {
-        String resourceGroupName = ResourceManagerUtils.getValueFromIdByName(id, "resourceGroups");
-        if (resourceGroupName == null) {
-            throw LOGGER.logExceptionAsError(new IllegalArgumentException(
-                String.format("The resource ID '%s' is not valid. Missing path segment 'resourceGroups'.", id)));
-        }
-        String resourceName = ResourceManagerUtils.getValueFromIdByName(id, "webPubSub");
-        if (resourceName == null) {
-            throw LOGGER.logExceptionAsError(new IllegalArgumentException(
-                String.format("The resource ID '%s' is not valid. Missing path segment 'webPubSub'.", id)));
-        }
-        String name = ResourceManagerUtils.getValueFromIdByName(id, "customDomains");
-        if (name == null) {
-            throw LOGGER.logExceptionAsError(new IllegalArgumentException(
-                String.format("The resource ID '%s' is not valid. Missing path segment 'customDomains'.", id)));
-        }
+        String resourceGroupName = ResourceManagerUtils.getRequiredValueFromIdByParameterName(id,
+            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.SignalRService/webPubSub/{resourceName}/customDomains/{name}",
+            "resourceGroupName", "resourceGroups", LOGGER);
+        String resourceName = ResourceManagerUtils.getRequiredValueFromIdByParameterName(id,
+            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.SignalRService/webPubSub/{resourceName}/customDomains/{name}",
+            "resourceName", "webPubSub", LOGGER);
+        String name = ResourceManagerUtils.getRequiredValueFromIdByParameterName(id,
+            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.SignalRService/webPubSub/{resourceName}/customDomains/{name}",
+            "name", "customDomains", LOGGER);
         return this.getWithResponse(resourceGroupName, resourceName, name, context);
     }
 
     public void deleteById(String id) {
-        String resourceGroupName = ResourceManagerUtils.getValueFromIdByName(id, "resourceGroups");
-        if (resourceGroupName == null) {
-            throw LOGGER.logExceptionAsError(new IllegalArgumentException(
-                String.format("The resource ID '%s' is not valid. Missing path segment 'resourceGroups'.", id)));
-        }
-        String resourceName = ResourceManagerUtils.getValueFromIdByName(id, "webPubSub");
-        if (resourceName == null) {
-            throw LOGGER.logExceptionAsError(new IllegalArgumentException(
-                String.format("The resource ID '%s' is not valid. Missing path segment 'webPubSub'.", id)));
-        }
-        String name = ResourceManagerUtils.getValueFromIdByName(id, "customDomains");
-        if (name == null) {
-            throw LOGGER.logExceptionAsError(new IllegalArgumentException(
-                String.format("The resource ID '%s' is not valid. Missing path segment 'customDomains'.", id)));
-        }
-        this.delete(resourceGroupName, resourceName, name, Context.NONE);
+        this.deleteByIdWithResponse(id, Context.NONE);
     }
 
     public void deleteByIdWithResponse(String id, Context context) {
-        String resourceGroupName = ResourceManagerUtils.getValueFromIdByName(id, "resourceGroups");
-        if (resourceGroupName == null) {
-            throw LOGGER.logExceptionAsError(new IllegalArgumentException(
-                String.format("The resource ID '%s' is not valid. Missing path segment 'resourceGroups'.", id)));
-        }
-        String resourceName = ResourceManagerUtils.getValueFromIdByName(id, "webPubSub");
-        if (resourceName == null) {
-            throw LOGGER.logExceptionAsError(new IllegalArgumentException(
-                String.format("The resource ID '%s' is not valid. Missing path segment 'webPubSub'.", id)));
-        }
-        String name = ResourceManagerUtils.getValueFromIdByName(id, "customDomains");
-        if (name == null) {
-            throw LOGGER.logExceptionAsError(new IllegalArgumentException(
-                String.format("The resource ID '%s' is not valid. Missing path segment 'customDomains'.", id)));
-        }
+        String resourceGroupName = ResourceManagerUtils.getRequiredValueFromIdByParameterName(id,
+            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.SignalRService/webPubSub/{resourceName}/customDomains/{name}",
+            "resourceGroupName", "resourceGroups", LOGGER);
+        String resourceName = ResourceManagerUtils.getRequiredValueFromIdByParameterName(id,
+            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.SignalRService/webPubSub/{resourceName}/customDomains/{name}",
+            "resourceName", "webPubSub", LOGGER);
+        String name = ResourceManagerUtils.getRequiredValueFromIdByParameterName(id,
+            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.SignalRService/webPubSub/{resourceName}/customDomains/{name}",
+            "name", "customDomains", LOGGER);
         this.delete(resourceGroupName, resourceName, name, context);
     }
 

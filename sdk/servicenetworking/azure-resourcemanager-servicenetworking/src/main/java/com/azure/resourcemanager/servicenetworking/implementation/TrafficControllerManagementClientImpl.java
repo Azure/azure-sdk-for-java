@@ -22,6 +22,7 @@ import com.azure.core.util.CoreUtils;
 import com.azure.core.util.logging.ClientLogger;
 import com.azure.core.util.polling.AsyncPollResponse;
 import com.azure.core.util.polling.LongRunningOperationStatus;
+import com.azure.core.util.polling.PollResponse;
 import com.azure.core.util.polling.PollerFlux;
 import com.azure.core.util.polling.SyncPoller;
 import com.azure.core.util.serializer.SerializerAdapter;
@@ -29,6 +30,8 @@ import com.azure.core.util.serializer.SerializerEncoding;
 import com.azure.resourcemanager.servicenetworking.fluent.AssociationsInterfacesClient;
 import com.azure.resourcemanager.servicenetworking.fluent.FrontendsInterfacesClient;
 import com.azure.resourcemanager.servicenetworking.fluent.OperationsClient;
+import com.azure.resourcemanager.servicenetworking.fluent.PrivateEndpointConnectionsInterfacesClient;
+import com.azure.resourcemanager.servicenetworking.fluent.PrivateLinkResourcesInterfacesClient;
 import com.azure.resourcemanager.servicenetworking.fluent.SecurityPoliciesInterfacesClient;
 import com.azure.resourcemanager.servicenetworking.fluent.TrafficControllerInterfacesClient;
 import com.azure.resourcemanager.servicenetworking.fluent.TrafficControllerManagementClient;
@@ -187,6 +190,34 @@ public final class TrafficControllerManagementClientImpl implements TrafficContr
     }
 
     /**
+     * The PrivateEndpointConnectionsInterfacesClient object to access its operations.
+     */
+    private final PrivateEndpointConnectionsInterfacesClient privateEndpointConnectionsInterfaces;
+
+    /**
+     * Gets the PrivateEndpointConnectionsInterfacesClient object to access its operations.
+     * 
+     * @return the PrivateEndpointConnectionsInterfacesClient object.
+     */
+    public PrivateEndpointConnectionsInterfacesClient getPrivateEndpointConnectionsInterfaces() {
+        return this.privateEndpointConnectionsInterfaces;
+    }
+
+    /**
+     * The PrivateLinkResourcesInterfacesClient object to access its operations.
+     */
+    private final PrivateLinkResourcesInterfacesClient privateLinkResourcesInterfaces;
+
+    /**
+     * Gets the PrivateLinkResourcesInterfacesClient object to access its operations.
+     * 
+     * @return the PrivateLinkResourcesInterfacesClient object.
+     */
+    public PrivateLinkResourcesInterfacesClient getPrivateLinkResourcesInterfaces() {
+        return this.privateLinkResourcesInterfaces;
+    }
+
+    /**
      * The OperationsClient object to access its operations.
      */
     private final OperationsClient operations;
@@ -217,11 +248,13 @@ public final class TrafficControllerManagementClientImpl implements TrafficContr
         this.defaultPollInterval = defaultPollInterval;
         this.endpoint = endpoint;
         this.subscriptionId = subscriptionId;
-        this.apiVersion = "2025-03-01-preview";
+        this.apiVersion = "2026-03-01";
         this.associationsInterfaces = new AssociationsInterfacesClientImpl(this);
         this.frontendsInterfaces = new FrontendsInterfacesClientImpl(this);
         this.securityPoliciesInterfaces = new SecurityPoliciesInterfacesClientImpl(this);
         this.trafficControllerInterfaces = new TrafficControllerInterfacesClientImpl(this);
+        this.privateEndpointConnectionsInterfaces = new PrivateEndpointConnectionsInterfacesClientImpl(this);
+        this.privateLinkResourcesInterfaces = new PrivateLinkResourcesInterfacesClientImpl(this);
         this.operations = new OperationsClientImpl(this);
     }
 
@@ -280,6 +313,24 @@ public final class TrafficControllerManagementClientImpl implements TrafficContr
     }
 
     /**
+     * Waits for completion and gets the final result, or throws an error.
+     * 
+     * @param poller the synchronous poller.
+     * @param <T> type of poll result.
+     * @param <U> type of final result.
+     * @return the final result.
+     * @throws ManagementException if the long running operation fails.
+     */
+    public <T, U> U getLroFinalResultOrError(SyncPoller<PollResult<T>, U> poller) {
+        PollResponse<PollResult<T>> response = poller.waitForCompletion();
+        ManagementException exception = getLroException(response.getStatus(), response.getValue());
+        if (exception != null) {
+            throw exception;
+        }
+        return poller.getFinalResult();
+    }
+
+    /**
      * Gets the final result, or an error, based on last async poll response.
      * 
      * @param response the last async poll response.
@@ -288,17 +339,25 @@ public final class TrafficControllerManagementClientImpl implements TrafficContr
      * @return the final result, or an error.
      */
     public <T, U> Mono<U> getLroFinalResultOrError(AsyncPollResponse<PollResult<T>, U> response) {
-        if (response.getStatus() != LongRunningOperationStatus.SUCCESSFULLY_COMPLETED) {
+        ManagementException exception = getLroException(response.getStatus(), response.getValue());
+        if (exception != null) {
+            return Mono.error(exception);
+        }
+        return response.getFinalResult();
+    }
+
+    private ManagementException getLroException(LongRunningOperationStatus status, PollResult<?> result) {
+        PollResult.Error lroError = result == null ? null : result.getError();
+        if (status != LongRunningOperationStatus.SUCCESSFULLY_COMPLETED || lroError != null) {
             String errorMessage;
             ManagementError managementError = null;
             HttpResponse errorResponse = null;
-            PollResult.Error lroError = response.getValue().getError();
             if (lroError != null) {
                 errorResponse = new HttpResponseImpl(lroError.getResponseStatusCode(), lroError.getResponseHeaders(),
                     lroError.getResponseBody());
 
-                errorMessage = response.getValue().getError().getMessage();
-                String errorBody = response.getValue().getError().getResponseBody();
+                errorMessage = lroError.getMessage();
+                String errorBody = lroError.getResponseBody();
                 if (errorBody != null) {
                     // try to deserialize error body to ManagementError
                     try {
@@ -317,12 +376,11 @@ public final class TrafficControllerManagementClientImpl implements TrafficContr
             }
             if (managementError == null) {
                 // fallback to default ManagementError
-                managementError = new ManagementError(response.getStatus().toString(), errorMessage);
+                managementError = new ManagementError(status.toString(), errorMessage);
             }
-            return Mono.error(new ManagementException(errorMessage, errorResponse, managementError));
-        } else {
-            return response.getFinalResult();
+            return new ManagementException(errorMessage, errorResponse, managementError);
         }
+        return null;
     }
 
     private static final class HttpResponseImpl extends HttpResponse {

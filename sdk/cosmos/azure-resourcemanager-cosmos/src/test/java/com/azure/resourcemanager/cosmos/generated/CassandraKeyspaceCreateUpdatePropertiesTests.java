@@ -15,22 +15,22 @@ public final class CassandraKeyspaceCreateUpdatePropertiesTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
         CassandraKeyspaceCreateUpdateProperties model = BinaryData.fromString(
-            "{\"resource\":{\"id\":\"kwjdjodqhy\"},\"options\":{\"throughput\":989850966,\"autoscaleSettings\":{\"maxThroughput\":79047446}}}")
+            "{\"resource\":{\"id\":\"sbede\"},\"options\":{\"throughput\":2100639848,\"autoscaleSettings\":{\"maxThroughput\":1063056742}}}")
             .toObject(CassandraKeyspaceCreateUpdateProperties.class);
-        Assertions.assertEquals("kwjdjodqhy", model.resource().id());
-        Assertions.assertEquals(989850966, model.options().throughput());
-        Assertions.assertEquals(79047446, model.options().autoscaleSettings().maxThroughput());
+        Assertions.assertEquals("sbede", model.resource().id());
+        Assertions.assertEquals(2100639848, model.options().throughput());
+        Assertions.assertEquals(1063056742, model.options().autoscaleSettings().maxThroughput());
     }
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
         CassandraKeyspaceCreateUpdateProperties model = new CassandraKeyspaceCreateUpdateProperties()
-            .withResource(new CassandraKeyspaceResource().withId("kwjdjodqhy"))
-            .withOptions(new CreateUpdateOptions().withThroughput(989850966)
-                .withAutoscaleSettings(new AutoscaleSettings().withMaxThroughput(79047446)));
+            .withResource(new CassandraKeyspaceResource().withId("sbede"))
+            .withOptions(new CreateUpdateOptions().withThroughput(2100639848)
+                .withAutoscaleSettings(new AutoscaleSettings().withMaxThroughput(1063056742)));
         model = BinaryData.fromObject(model).toObject(CassandraKeyspaceCreateUpdateProperties.class);
-        Assertions.assertEquals("kwjdjodqhy", model.resource().id());
-        Assertions.assertEquals(989850966, model.options().throughput());
-        Assertions.assertEquals(79047446, model.options().autoscaleSettings().maxThroughput());
+        Assertions.assertEquals("sbede", model.resource().id());
+        Assertions.assertEquals(2100639848, model.options().throughput());
+        Assertions.assertEquals(1063056742, model.options().autoscaleSettings().maxThroughput());
     }
 }

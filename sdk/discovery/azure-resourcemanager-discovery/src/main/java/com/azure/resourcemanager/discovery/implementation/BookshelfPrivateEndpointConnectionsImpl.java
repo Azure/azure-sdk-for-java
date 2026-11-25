@@ -47,7 +47,7 @@ public final class BookshelfPrivateEndpointConnectionsImpl implements BookshelfP
     }
 
     public void delete(String resourceGroupName, String bookshelfName, String privateEndpointConnectionName) {
-        this.serviceClient().delete(resourceGroupName, bookshelfName, privateEndpointConnectionName);
+        this.delete(resourceGroupName, bookshelfName, privateEndpointConnectionName, Context.NONE);
     }
 
     public void delete(String resourceGroupName, String bookshelfName, String privateEndpointConnectionName,
@@ -57,10 +57,7 @@ public final class BookshelfPrivateEndpointConnectionsImpl implements BookshelfP
 
     public PagedIterable<BookshelfPrivateEndpointConnection> listByBookshelf(String resourceGroupName,
         String bookshelfName) {
-        PagedIterable<BookshelfPrivateEndpointConnectionInner> inner
-            = this.serviceClient().listByBookshelf(resourceGroupName, bookshelfName);
-        return ResourceManagerUtils.mapPage(inner,
-            inner1 -> new BookshelfPrivateEndpointConnectionImpl(inner1, this.manager()));
+        return this.listByBookshelf(resourceGroupName, bookshelfName, Context.NONE);
     }
 
     public PagedIterable<BookshelfPrivateEndpointConnection> listByBookshelf(String resourceGroupName,
@@ -72,83 +69,36 @@ public final class BookshelfPrivateEndpointConnectionsImpl implements BookshelfP
     }
 
     public BookshelfPrivateEndpointConnection getById(String id) {
-        String resourceGroupName = ResourceManagerUtils.getValueFromIdByName(id, "resourceGroups");
-        if (resourceGroupName == null) {
-            throw LOGGER.logExceptionAsError(new IllegalArgumentException(
-                String.format("The resource ID '%s' is not valid. Missing path segment 'resourceGroups'.", id)));
-        }
-        String bookshelfName = ResourceManagerUtils.getValueFromIdByName(id, "bookshelves");
-        if (bookshelfName == null) {
-            throw LOGGER.logExceptionAsError(new IllegalArgumentException(
-                String.format("The resource ID '%s' is not valid. Missing path segment 'bookshelves'.", id)));
-        }
-        String privateEndpointConnectionName
-            = ResourceManagerUtils.getValueFromIdByName(id, "privateEndpointConnections");
-        if (privateEndpointConnectionName == null) {
-            throw LOGGER.logExceptionAsError(new IllegalArgumentException(String
-                .format("The resource ID '%s' is not valid. Missing path segment 'privateEndpointConnections'.", id)));
-        }
-        return this.getWithResponse(resourceGroupName, bookshelfName, privateEndpointConnectionName, Context.NONE)
-            .getValue();
+        return this.getByIdWithResponse(id, Context.NONE).getValue();
     }
 
     public Response<BookshelfPrivateEndpointConnection> getByIdWithResponse(String id, Context context) {
-        String resourceGroupName = ResourceManagerUtils.getValueFromIdByName(id, "resourceGroups");
-        if (resourceGroupName == null) {
-            throw LOGGER.logExceptionAsError(new IllegalArgumentException(
-                String.format("The resource ID '%s' is not valid. Missing path segment 'resourceGroups'.", id)));
-        }
-        String bookshelfName = ResourceManagerUtils.getValueFromIdByName(id, "bookshelves");
-        if (bookshelfName == null) {
-            throw LOGGER.logExceptionAsError(new IllegalArgumentException(
-                String.format("The resource ID '%s' is not valid. Missing path segment 'bookshelves'.", id)));
-        }
-        String privateEndpointConnectionName
-            = ResourceManagerUtils.getValueFromIdByName(id, "privateEndpointConnections");
-        if (privateEndpointConnectionName == null) {
-            throw LOGGER.logExceptionAsError(new IllegalArgumentException(String
-                .format("The resource ID '%s' is not valid. Missing path segment 'privateEndpointConnections'.", id)));
-        }
+        String resourceGroupName = ResourceManagerUtils.getRequiredValueFromIdByParameterName(id,
+            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Discovery/bookshelves/{bookshelfName}/privateEndpointConnections/{privateEndpointConnectionName}",
+            "resourceGroupName", "resourceGroups", LOGGER);
+        String bookshelfName = ResourceManagerUtils.getRequiredValueFromIdByParameterName(id,
+            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Discovery/bookshelves/{bookshelfName}/privateEndpointConnections/{privateEndpointConnectionName}",
+            "bookshelfName", "bookshelves", LOGGER);
+        String privateEndpointConnectionName = ResourceManagerUtils.getRequiredValueFromIdByParameterName(id,
+            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Discovery/bookshelves/{bookshelfName}/privateEndpointConnections/{privateEndpointConnectionName}",
+            "privateEndpointConnectionName", "privateEndpointConnections", LOGGER);
         return this.getWithResponse(resourceGroupName, bookshelfName, privateEndpointConnectionName, context);
     }
 
     public void deleteById(String id) {
-        String resourceGroupName = ResourceManagerUtils.getValueFromIdByName(id, "resourceGroups");
-        if (resourceGroupName == null) {
-            throw LOGGER.logExceptionAsError(new IllegalArgumentException(
-                String.format("The resource ID '%s' is not valid. Missing path segment 'resourceGroups'.", id)));
-        }
-        String bookshelfName = ResourceManagerUtils.getValueFromIdByName(id, "bookshelves");
-        if (bookshelfName == null) {
-            throw LOGGER.logExceptionAsError(new IllegalArgumentException(
-                String.format("The resource ID '%s' is not valid. Missing path segment 'bookshelves'.", id)));
-        }
-        String privateEndpointConnectionName
-            = ResourceManagerUtils.getValueFromIdByName(id, "privateEndpointConnections");
-        if (privateEndpointConnectionName == null) {
-            throw LOGGER.logExceptionAsError(new IllegalArgumentException(String
-                .format("The resource ID '%s' is not valid. Missing path segment 'privateEndpointConnections'.", id)));
-        }
-        this.delete(resourceGroupName, bookshelfName, privateEndpointConnectionName, Context.NONE);
+        this.deleteByIdWithResponse(id, Context.NONE);
     }
 
     public void deleteByIdWithResponse(String id, Context context) {
-        String resourceGroupName = ResourceManagerUtils.getValueFromIdByName(id, "resourceGroups");
-        if (resourceGroupName == null) {
-            throw LOGGER.logExceptionAsError(new IllegalArgumentException(
-                String.format("The resource ID '%s' is not valid. Missing path segment 'resourceGroups'.", id)));
-        }
-        String bookshelfName = ResourceManagerUtils.getValueFromIdByName(id, "bookshelves");
-        if (bookshelfName == null) {
-            throw LOGGER.logExceptionAsError(new IllegalArgumentException(
-                String.format("The resource ID '%s' is not valid. Missing path segment 'bookshelves'.", id)));
-        }
-        String privateEndpointConnectionName
-            = ResourceManagerUtils.getValueFromIdByName(id, "privateEndpointConnections");
-        if (privateEndpointConnectionName == null) {
-            throw LOGGER.logExceptionAsError(new IllegalArgumentException(String
-                .format("The resource ID '%s' is not valid. Missing path segment 'privateEndpointConnections'.", id)));
-        }
+        String resourceGroupName = ResourceManagerUtils.getRequiredValueFromIdByParameterName(id,
+            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Discovery/bookshelves/{bookshelfName}/privateEndpointConnections/{privateEndpointConnectionName}",
+            "resourceGroupName", "resourceGroups", LOGGER);
+        String bookshelfName = ResourceManagerUtils.getRequiredValueFromIdByParameterName(id,
+            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Discovery/bookshelves/{bookshelfName}/privateEndpointConnections/{privateEndpointConnectionName}",
+            "bookshelfName", "bookshelves", LOGGER);
+        String privateEndpointConnectionName = ResourceManagerUtils.getRequiredValueFromIdByParameterName(id,
+            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Discovery/bookshelves/{bookshelfName}/privateEndpointConnections/{privateEndpointConnectionName}",
+            "privateEndpointConnectionName", "privateEndpointConnections", LOGGER);
         this.delete(resourceGroupName, bookshelfName, privateEndpointConnectionName, context);
     }
 

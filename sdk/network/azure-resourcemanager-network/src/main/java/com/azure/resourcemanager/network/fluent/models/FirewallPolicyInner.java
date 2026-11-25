@@ -183,6 +183,15 @@ public final class FirewallPolicyInner extends Resource {
     }
 
     /**
+     * Get the kubeSelectorGroups property: List of references to FirewallPolicyKubeSelectorGroups.
+     * 
+     * @return the kubeSelectorGroups value.
+     */
+    public List<SubResource> kubeSelectorGroups() {
+        return this.innerProperties() == null ? null : this.innerProperties().kubeSelectorGroups();
+    }
+
+    /**
      * Get the provisioningState property: The provisioning state of the firewall policy resource.
      * 
      * @return the provisioningState value.
@@ -460,6 +469,17 @@ public final class FirewallPolicyInner extends Resource {
         }
         this.innerProperties().withSku(sku);
         return this;
+    }
+
+    /**
+     * Get the afcManaged property: Indicates that the Firewall Policy is managed by AFC (Azure Firewall for
+     * Containers). When set, the policy is treated as read-only for callers that do not supply the AFC-managed sync
+     * marker on write operations.
+     * 
+     * @return the afcManaged value.
+     */
+    public Boolean afcManaged() {
+        return this.innerProperties() == null ? null : this.innerProperties().afcManaged();
     }
 
     /**

@@ -70,7 +70,7 @@ public final class IotHubResourcesImpl implements IotHubResources {
     }
 
     public void deleteByResourceGroup(String resourceGroupName, String resourceName) {
-        this.serviceClient().delete(resourceGroupName, resourceName);
+        this.delete(resourceGroupName, resourceName, Context.NONE);
     }
 
     public void delete(String resourceGroupName, String resourceName, Context context) {
@@ -78,8 +78,7 @@ public final class IotHubResourcesImpl implements IotHubResources {
     }
 
     public PagedIterable<IotHubDescription> listByResourceGroup(String resourceGroupName) {
-        PagedIterable<IotHubDescriptionInner> inner = this.serviceClient().listByResourceGroup(resourceGroupName);
-        return ResourceManagerUtils.mapPage(inner, inner1 -> new IotHubDescriptionImpl(inner1, this.manager()));
+        return this.listByResourceGroup(resourceGroupName, Context.NONE);
     }
 
     public PagedIterable<IotHubDescription> listByResourceGroup(String resourceGroupName, Context context) {
@@ -89,8 +88,7 @@ public final class IotHubResourcesImpl implements IotHubResources {
     }
 
     public PagedIterable<IotHubDescription> list() {
-        PagedIterable<IotHubDescriptionInner> inner = this.serviceClient().list();
-        return ResourceManagerUtils.mapPage(inner, inner1 -> new IotHubDescriptionImpl(inner1, this.manager()));
+        return this.list(Context.NONE);
     }
 
     public PagedIterable<IotHubDescription> list(Context context) {
@@ -99,9 +97,7 @@ public final class IotHubResourcesImpl implements IotHubResources {
     }
 
     public PagedIterable<IotHubSkuDescription> getValidSkus(String resourceGroupName, String resourceName) {
-        PagedIterable<IotHubSkuDescriptionInner> inner
-            = this.serviceClient().getValidSkus(resourceGroupName, resourceName);
-        return ResourceManagerUtils.mapPage(inner, inner1 -> new IotHubSkuDescriptionImpl(inner1, this.manager()));
+        return this.getValidSkus(resourceGroupName, resourceName, Context.NONE);
     }
 
     public PagedIterable<IotHubSkuDescription> getValidSkus(String resourceGroupName, String resourceName,
@@ -112,8 +108,7 @@ public final class IotHubResourcesImpl implements IotHubResources {
     }
 
     public PagedIterable<JobResponse> listJobs(String resourceGroupName, String resourceName) {
-        PagedIterable<JobResponseInner> inner = this.serviceClient().listJobs(resourceGroupName, resourceName);
-        return ResourceManagerUtils.mapPage(inner, inner1 -> new JobResponseImpl(inner1, this.manager()));
+        return this.listJobs(resourceGroupName, resourceName, Context.NONE);
     }
 
     public PagedIterable<JobResponse> listJobs(String resourceGroupName, String resourceName, Context context) {
@@ -139,9 +134,7 @@ public final class IotHubResourcesImpl implements IotHubResources {
     }
 
     public PagedIterable<IotHubQuotaMetricInfo> getQuotaMetrics(String resourceGroupName, String resourceName) {
-        PagedIterable<IotHubQuotaMetricInfoInner> inner
-            = this.serviceClient().getQuotaMetrics(resourceGroupName, resourceName);
-        return ResourceManagerUtils.mapPage(inner, inner1 -> new IotHubQuotaMetricInfoImpl(inner1, this.manager()));
+        return this.getQuotaMetrics(resourceGroupName, resourceName, Context.NONE);
     }
 
     public PagedIterable<IotHubQuotaMetricInfo> getQuotaMetrics(String resourceGroupName, String resourceName,
@@ -152,9 +145,7 @@ public final class IotHubResourcesImpl implements IotHubResources {
     }
 
     public PagedIterable<EndpointHealthData> getEndpointHealth(String resourceGroupName, String iotHubName) {
-        PagedIterable<EndpointHealthDataInner> inner
-            = this.serviceClient().getEndpointHealth(resourceGroupName, iotHubName);
-        return ResourceManagerUtils.mapPage(inner, inner1 -> new EndpointHealthDataImpl(inner1, this.manager()));
+        return this.getEndpointHealth(resourceGroupName, iotHubName, Context.NONE);
     }
 
     public PagedIterable<EndpointHealthData> getEndpointHealth(String resourceGroupName, String iotHubName,
@@ -200,10 +191,7 @@ public final class IotHubResourcesImpl implements IotHubResources {
 
     public PagedIterable<SharedAccessSignatureAuthorizationRule> listKeys(String resourceGroupName,
         String resourceName) {
-        PagedIterable<SharedAccessSignatureAuthorizationRuleInner> inner
-            = this.serviceClient().listKeys(resourceGroupName, resourceName);
-        return ResourceManagerUtils.mapPage(inner,
-            inner1 -> new SharedAccessSignatureAuthorizationRuleImpl(inner1, this.manager()));
+        return this.listKeys(resourceGroupName, resourceName, Context.NONE);
     }
 
     public PagedIterable<SharedAccessSignatureAuthorizationRule> listKeys(String resourceGroupName, String resourceName,
@@ -316,14 +304,13 @@ public final class IotHubResourcesImpl implements IotHubResources {
 
     public void deleteEventHubConsumerGroup(String resourceGroupName, String resourceName, String eventHubEndpointName,
         String name) {
-        this.serviceClient().deleteEventHubConsumerGroup(resourceGroupName, resourceName, eventHubEndpointName, name);
+        this.deleteEventHubConsumerGroupWithResponse(resourceGroupName, resourceName, eventHubEndpointName, name,
+            Context.NONE);
     }
 
     public PagedIterable<EventHubConsumerGroupInfo> listEventHubConsumerGroups(String resourceGroupName,
         String resourceName, String eventHubEndpointName) {
-        PagedIterable<EventHubConsumerGroupInfoInner> inner
-            = this.serviceClient().listEventHubConsumerGroups(resourceGroupName, resourceName, eventHubEndpointName);
-        return ResourceManagerUtils.mapPage(inner, inner1 -> new EventHubConsumerGroupInfoImpl(inner1, this.manager()));
+        return this.listEventHubConsumerGroups(resourceGroupName, resourceName, eventHubEndpointName, Context.NONE);
     }
 
     public PagedIterable<EventHubConsumerGroupInfo> listEventHubConsumerGroups(String resourceGroupName,
@@ -351,159 +338,71 @@ public final class IotHubResourcesImpl implements IotHubResources {
     }
 
     public IotHubDescription getById(String id) {
-        String resourceGroupName = ResourceManagerUtils.getValueFromIdByName(id, "resourceGroups");
-        if (resourceGroupName == null) {
-            throw LOGGER.logExceptionAsError(new IllegalArgumentException(
-                String.format("The resource ID '%s' is not valid. Missing path segment 'resourceGroups'.", id)));
-        }
-        String resourceName = ResourceManagerUtils.getValueFromIdByName(id, "IotHubs");
-        if (resourceName == null) {
-            throw LOGGER.logExceptionAsError(new IllegalArgumentException(
-                String.format("The resource ID '%s' is not valid. Missing path segment 'IotHubs'.", id)));
-        }
-        return this.getByResourceGroupWithResponse(resourceGroupName, resourceName, Context.NONE).getValue();
+        return this.getByIdWithResponse(id, Context.NONE).getValue();
     }
 
     public Response<IotHubDescription> getByIdWithResponse(String id, Context context) {
-        String resourceGroupName = ResourceManagerUtils.getValueFromIdByName(id, "resourceGroups");
-        if (resourceGroupName == null) {
-            throw LOGGER.logExceptionAsError(new IllegalArgumentException(
-                String.format("The resource ID '%s' is not valid. Missing path segment 'resourceGroups'.", id)));
-        }
-        String resourceName = ResourceManagerUtils.getValueFromIdByName(id, "IotHubs");
-        if (resourceName == null) {
-            throw LOGGER.logExceptionAsError(new IllegalArgumentException(
-                String.format("The resource ID '%s' is not valid. Missing path segment 'IotHubs'.", id)));
-        }
+        String resourceGroupName = ResourceManagerUtils.getRequiredValueFromIdByParameterName(id,
+            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Devices/IotHubs/{resourceName}",
+            "resourceGroupName", "resourceGroups", LOGGER);
+        String resourceName = ResourceManagerUtils.getRequiredValueFromIdByParameterName(id,
+            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Devices/IotHubs/{resourceName}",
+            "resourceName", "IotHubs", LOGGER);
         return this.getByResourceGroupWithResponse(resourceGroupName, resourceName, context);
     }
 
     public EventHubConsumerGroupInfo getEventHubConsumerGroupById(String id) {
-        String resourceGroupName = ResourceManagerUtils.getValueFromIdByName(id, "resourceGroups");
-        if (resourceGroupName == null) {
-            throw LOGGER.logExceptionAsError(new IllegalArgumentException(
-                String.format("The resource ID '%s' is not valid. Missing path segment 'resourceGroups'.", id)));
-        }
-        String resourceName = ResourceManagerUtils.getValueFromIdByName(id, "IotHubs");
-        if (resourceName == null) {
-            throw LOGGER.logExceptionAsError(new IllegalArgumentException(
-                String.format("The resource ID '%s' is not valid. Missing path segment 'IotHubs'.", id)));
-        }
-        String eventHubEndpointName = ResourceManagerUtils.getValueFromIdByName(id, "eventHubEndpoints");
-        if (eventHubEndpointName == null) {
-            throw LOGGER.logExceptionAsError(new IllegalArgumentException(
-                String.format("The resource ID '%s' is not valid. Missing path segment 'eventHubEndpoints'.", id)));
-        }
-        String name = ResourceManagerUtils.getValueFromIdByName(id, "ConsumerGroups");
-        if (name == null) {
-            throw LOGGER.logExceptionAsError(new IllegalArgumentException(
-                String.format("The resource ID '%s' is not valid. Missing path segment 'ConsumerGroups'.", id)));
-        }
-        return this
-            .getEventHubConsumerGroupWithResponse(resourceGroupName, resourceName, eventHubEndpointName, name,
-                Context.NONE)
-            .getValue();
+        return this.getEventHubConsumerGroupByIdWithResponse(id, Context.NONE).getValue();
     }
 
     public Response<EventHubConsumerGroupInfo> getEventHubConsumerGroupByIdWithResponse(String id, Context context) {
-        String resourceGroupName = ResourceManagerUtils.getValueFromIdByName(id, "resourceGroups");
-        if (resourceGroupName == null) {
-            throw LOGGER.logExceptionAsError(new IllegalArgumentException(
-                String.format("The resource ID '%s' is not valid. Missing path segment 'resourceGroups'.", id)));
-        }
-        String resourceName = ResourceManagerUtils.getValueFromIdByName(id, "IotHubs");
-        if (resourceName == null) {
-            throw LOGGER.logExceptionAsError(new IllegalArgumentException(
-                String.format("The resource ID '%s' is not valid. Missing path segment 'IotHubs'.", id)));
-        }
-        String eventHubEndpointName = ResourceManagerUtils.getValueFromIdByName(id, "eventHubEndpoints");
-        if (eventHubEndpointName == null) {
-            throw LOGGER.logExceptionAsError(new IllegalArgumentException(
-                String.format("The resource ID '%s' is not valid. Missing path segment 'eventHubEndpoints'.", id)));
-        }
-        String name = ResourceManagerUtils.getValueFromIdByName(id, "ConsumerGroups");
-        if (name == null) {
-            throw LOGGER.logExceptionAsError(new IllegalArgumentException(
-                String.format("The resource ID '%s' is not valid. Missing path segment 'ConsumerGroups'.", id)));
-        }
+        String resourceGroupName = ResourceManagerUtils.getRequiredValueFromIdByParameterName(id,
+            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Devices/IotHubs/{resourceName}/eventHubEndpoints/{eventHubEndpointName}/ConsumerGroups/{name}",
+            "resourceGroupName", "resourceGroups", LOGGER);
+        String resourceName = ResourceManagerUtils.getRequiredValueFromIdByParameterName(id,
+            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Devices/IotHubs/{resourceName}/eventHubEndpoints/{eventHubEndpointName}/ConsumerGroups/{name}",
+            "resourceName", "IotHubs", LOGGER);
+        String eventHubEndpointName = ResourceManagerUtils.getRequiredValueFromIdByParameterName(id,
+            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Devices/IotHubs/{resourceName}/eventHubEndpoints/{eventHubEndpointName}/ConsumerGroups/{name}",
+            "eventHubEndpointName", "eventHubEndpoints", LOGGER);
+        String name = ResourceManagerUtils.getRequiredValueFromIdByParameterName(id,
+            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Devices/IotHubs/{resourceName}/eventHubEndpoints/{eventHubEndpointName}/ConsumerGroups/{name}",
+            "name", "ConsumerGroups", LOGGER);
         return this.getEventHubConsumerGroupWithResponse(resourceGroupName, resourceName, eventHubEndpointName, name,
             context);
     }
 
     public void deleteById(String id) {
-        String resourceGroupName = ResourceManagerUtils.getValueFromIdByName(id, "resourceGroups");
-        if (resourceGroupName == null) {
-            throw LOGGER.logExceptionAsError(new IllegalArgumentException(
-                String.format("The resource ID '%s' is not valid. Missing path segment 'resourceGroups'.", id)));
-        }
-        String resourceName = ResourceManagerUtils.getValueFromIdByName(id, "IotHubs");
-        if (resourceName == null) {
-            throw LOGGER.logExceptionAsError(new IllegalArgumentException(
-                String.format("The resource ID '%s' is not valid. Missing path segment 'IotHubs'.", id)));
-        }
-        this.delete(resourceGroupName, resourceName, Context.NONE);
+        this.deleteByIdWithResponse(id, Context.NONE);
     }
 
     public void deleteByIdWithResponse(String id, Context context) {
-        String resourceGroupName = ResourceManagerUtils.getValueFromIdByName(id, "resourceGroups");
-        if (resourceGroupName == null) {
-            throw LOGGER.logExceptionAsError(new IllegalArgumentException(
-                String.format("The resource ID '%s' is not valid. Missing path segment 'resourceGroups'.", id)));
-        }
-        String resourceName = ResourceManagerUtils.getValueFromIdByName(id, "IotHubs");
-        if (resourceName == null) {
-            throw LOGGER.logExceptionAsError(new IllegalArgumentException(
-                String.format("The resource ID '%s' is not valid. Missing path segment 'IotHubs'.", id)));
-        }
+        String resourceGroupName = ResourceManagerUtils.getRequiredValueFromIdByParameterName(id,
+            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Devices/IotHubs/{resourceName}",
+            "resourceGroupName", "resourceGroups", LOGGER);
+        String resourceName = ResourceManagerUtils.getRequiredValueFromIdByParameterName(id,
+            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Devices/IotHubs/{resourceName}",
+            "resourceName", "IotHubs", LOGGER);
         this.delete(resourceGroupName, resourceName, context);
     }
 
     public void deleteEventHubConsumerGroupById(String id) {
-        String resourceGroupName = ResourceManagerUtils.getValueFromIdByName(id, "resourceGroups");
-        if (resourceGroupName == null) {
-            throw LOGGER.logExceptionAsError(new IllegalArgumentException(
-                String.format("The resource ID '%s' is not valid. Missing path segment 'resourceGroups'.", id)));
-        }
-        String resourceName = ResourceManagerUtils.getValueFromIdByName(id, "IotHubs");
-        if (resourceName == null) {
-            throw LOGGER.logExceptionAsError(new IllegalArgumentException(
-                String.format("The resource ID '%s' is not valid. Missing path segment 'IotHubs'.", id)));
-        }
-        String eventHubEndpointName = ResourceManagerUtils.getValueFromIdByName(id, "eventHubEndpoints");
-        if (eventHubEndpointName == null) {
-            throw LOGGER.logExceptionAsError(new IllegalArgumentException(
-                String.format("The resource ID '%s' is not valid. Missing path segment 'eventHubEndpoints'.", id)));
-        }
-        String name = ResourceManagerUtils.getValueFromIdByName(id, "ConsumerGroups");
-        if (name == null) {
-            throw LOGGER.logExceptionAsError(new IllegalArgumentException(
-                String.format("The resource ID '%s' is not valid. Missing path segment 'ConsumerGroups'.", id)));
-        }
-        this.deleteEventHubConsumerGroupWithResponse(resourceGroupName, resourceName, eventHubEndpointName, name,
-            Context.NONE);
+        this.deleteEventHubConsumerGroupByIdWithResponse(id, Context.NONE);
     }
 
     public Response<Void> deleteEventHubConsumerGroupByIdWithResponse(String id, Context context) {
-        String resourceGroupName = ResourceManagerUtils.getValueFromIdByName(id, "resourceGroups");
-        if (resourceGroupName == null) {
-            throw LOGGER.logExceptionAsError(new IllegalArgumentException(
-                String.format("The resource ID '%s' is not valid. Missing path segment 'resourceGroups'.", id)));
-        }
-        String resourceName = ResourceManagerUtils.getValueFromIdByName(id, "IotHubs");
-        if (resourceName == null) {
-            throw LOGGER.logExceptionAsError(new IllegalArgumentException(
-                String.format("The resource ID '%s' is not valid. Missing path segment 'IotHubs'.", id)));
-        }
-        String eventHubEndpointName = ResourceManagerUtils.getValueFromIdByName(id, "eventHubEndpoints");
-        if (eventHubEndpointName == null) {
-            throw LOGGER.logExceptionAsError(new IllegalArgumentException(
-                String.format("The resource ID '%s' is not valid. Missing path segment 'eventHubEndpoints'.", id)));
-        }
-        String name = ResourceManagerUtils.getValueFromIdByName(id, "ConsumerGroups");
-        if (name == null) {
-            throw LOGGER.logExceptionAsError(new IllegalArgumentException(
-                String.format("The resource ID '%s' is not valid. Missing path segment 'ConsumerGroups'.", id)));
-        }
+        String resourceGroupName = ResourceManagerUtils.getRequiredValueFromIdByParameterName(id,
+            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Devices/IotHubs/{resourceName}/eventHubEndpoints/{eventHubEndpointName}/ConsumerGroups/{name}",
+            "resourceGroupName", "resourceGroups", LOGGER);
+        String resourceName = ResourceManagerUtils.getRequiredValueFromIdByParameterName(id,
+            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Devices/IotHubs/{resourceName}/eventHubEndpoints/{eventHubEndpointName}/ConsumerGroups/{name}",
+            "resourceName", "IotHubs", LOGGER);
+        String eventHubEndpointName = ResourceManagerUtils.getRequiredValueFromIdByParameterName(id,
+            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Devices/IotHubs/{resourceName}/eventHubEndpoints/{eventHubEndpointName}/ConsumerGroups/{name}",
+            "eventHubEndpointName", "eventHubEndpoints", LOGGER);
+        String name = ResourceManagerUtils.getRequiredValueFromIdByParameterName(id,
+            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Devices/IotHubs/{resourceName}/eventHubEndpoints/{eventHubEndpointName}/ConsumerGroups/{name}",
+            "name", "ConsumerGroups", LOGGER);
         return this.deleteEventHubConsumerGroupWithResponse(resourceGroupName, resourceName, eventHubEndpointName, name,
             context);
     }

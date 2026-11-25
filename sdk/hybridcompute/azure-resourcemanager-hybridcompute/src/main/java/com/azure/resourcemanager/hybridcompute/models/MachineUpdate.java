@@ -20,7 +20,7 @@ public final class MachineUpdate extends ResourceUpdate {
     /*
      * Identity for the resource.
      */
-    private ManagedServiceIdentity identity;
+    private Identity identity;
 
     /*
      * Indicates which kind of Arc machine placement on-premises, such as HCI, SCVMM or VMware etc.
@@ -43,7 +43,7 @@ public final class MachineUpdate extends ResourceUpdate {
      * 
      * @return the identity value.
      */
-    public ManagedServiceIdentity identity() {
+    public Identity identity() {
         return this.identity;
     }
 
@@ -53,7 +53,7 @@ public final class MachineUpdate extends ResourceUpdate {
      * @param identity the identity value to set.
      * @return the MachineUpdate object itself.
      */
-    public MachineUpdate withIdentity(ManagedServiceIdentity identity) {
+    public MachineUpdate withIdentity(Identity identity) {
         this.identity = identity;
         return this;
     }
@@ -289,6 +289,31 @@ public final class MachineUpdate extends ResourceUpdate {
     }
 
     /**
+     * Get the clientPublicKey property: Public Key that the client provides to be used during initial resource
+     * onboarding.
+     * 
+     * @return the clientPublicKey value.
+     */
+    public String clientPublicKey() {
+        return this.innerProperties() == null ? null : this.innerProperties().clientPublicKey();
+    }
+
+    /**
+     * Set the clientPublicKey property: Public Key that the client provides to be used during initial resource
+     * onboarding.
+     * 
+     * @param clientPublicKey the clientPublicKey value to set.
+     * @return the MachineUpdate object itself.
+     */
+    public MachineUpdate withClientPublicKey(String clientPublicKey) {
+        if (this.innerProperties() == null) {
+            this.innerProperties = new MachineUpdateProperties();
+        }
+        this.innerProperties().withClientPublicKey(clientPublicKey);
+        return this;
+    }
+
+    /**
      * {@inheritDoc}
      */
     @Override
@@ -320,7 +345,7 @@ public final class MachineUpdate extends ResourceUpdate {
                     Map<String, String> tags = reader.readMap(reader1 -> reader1.getString());
                     deserializedMachineUpdate.withTags(tags);
                 } else if ("identity".equals(fieldName)) {
-                    deserializedMachineUpdate.identity = ManagedServiceIdentity.fromJson(reader);
+                    deserializedMachineUpdate.identity = Identity.fromJson(reader);
                 } else if ("kind".equals(fieldName)) {
                     deserializedMachineUpdate.kind = ArcKindEnum.fromString(reader.getString());
                 } else if ("properties".equals(fieldName)) {

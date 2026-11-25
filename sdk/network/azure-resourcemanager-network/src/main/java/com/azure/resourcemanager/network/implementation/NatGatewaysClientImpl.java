@@ -147,18 +147,7 @@ public final class NatGatewaysClientImpl implements InnerSupportsGet<NatGatewayI
             @HostParam("endpoint") String endpoint, @HeaderParam("Accept") String accept, Context context);
     }
 
-    /**
-     * Gets the specified nat gateway in a specified resource group.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param natGatewayName The name of the nat gateway.
-     * @param expand Expands referenced resources.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the specified nat gateway in a specified resource group along with {@link Response} on successful
-     * completion of {@link Mono}.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Response<NatGatewayInner>> getByResourceGroupWithResponseAsync(String resourceGroupName,
         String natGatewayName, String expand) {
@@ -177,7 +166,7 @@ public final class NatGatewaysClientImpl implements InnerSupportsGet<NatGatewayI
         if (natGatewayName == null) {
             return Mono.error(new IllegalArgumentException("Parameter natGatewayName is required and cannot be null."));
         }
-        final String apiVersion = "2025-07-01";
+        final String apiVersion = "2026-05-01";
         final String accept = "application/json";
         return FluxUtil
             .withContext(context -> service.getByResourceGroup(this.client.getEndpoint(), apiVersion,
@@ -216,23 +205,14 @@ public final class NatGatewaysClientImpl implements InnerSupportsGet<NatGatewayI
         if (natGatewayName == null) {
             return Mono.error(new IllegalArgumentException("Parameter natGatewayName is required and cannot be null."));
         }
-        final String apiVersion = "2025-07-01";
+        final String apiVersion = "2026-05-01";
         final String accept = "application/json";
         context = this.client.mergeContext(context);
         return service.getByResourceGroup(this.client.getEndpoint(), apiVersion, this.client.getSubscriptionId(),
             resourceGroupName, natGatewayName, expand, accept, context);
     }
 
-    /**
-     * Gets the specified nat gateway in a specified resource group.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param natGatewayName The name of the nat gateway.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the specified nat gateway in a specified resource group on successful completion of {@link Mono}.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<NatGatewayInner> getByResourceGroupAsync(String resourceGroupName, String natGatewayName) {
         final String expand = null;
@@ -240,51 +220,21 @@ public final class NatGatewaysClientImpl implements InnerSupportsGet<NatGatewayI
             .flatMap(res -> Mono.justOrEmpty(res.getValue()));
     }
 
-    /**
-     * Gets the specified nat gateway in a specified resource group.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param natGatewayName The name of the nat gateway.
-     * @param expand Expands referenced resources.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the specified nat gateway in a specified resource group along with {@link Response}.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Response<NatGatewayInner> getByResourceGroupWithResponse(String resourceGroupName, String natGatewayName,
         String expand, Context context) {
         return getByResourceGroupWithResponseAsync(resourceGroupName, natGatewayName, expand, context).block();
     }
 
-    /**
-     * Gets the specified nat gateway in a specified resource group.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param natGatewayName The name of the nat gateway.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the specified nat gateway in a specified resource group.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public NatGatewayInner getByResourceGroup(String resourceGroupName, String natGatewayName) {
         final String expand = null;
         return getByResourceGroupWithResponse(resourceGroupName, natGatewayName, expand, Context.NONE).getValue();
     }
 
-    /**
-     * Creates or updates a nat gateway.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param natGatewayName The name of the nat gateway.
-     * @param parameters Parameters supplied to the create or update nat gateway operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return nat Gateway resource along with {@link Response} on successful completion of {@link Mono}.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Response<Flux<ByteBuffer>>> createOrUpdateWithResponseAsync(String resourceGroupName,
         String natGatewayName, NatGatewayInner parameters) {
@@ -308,7 +258,7 @@ public final class NatGatewaysClientImpl implements InnerSupportsGet<NatGatewayI
         } else {
             parameters.validate();
         }
-        final String apiVersion = "2025-07-01";
+        final String apiVersion = "2026-05-01";
         final String contentType = "application/json";
         final String accept = "application/json";
         return FluxUtil
@@ -353,7 +303,7 @@ public final class NatGatewaysClientImpl implements InnerSupportsGet<NatGatewayI
         } else {
             parameters.validate();
         }
-        final String apiVersion = "2025-07-01";
+        final String apiVersion = "2026-05-01";
         final String contentType = "application/json";
         final String accept = "application/json";
         context = this.client.mergeContext(context);
@@ -361,17 +311,7 @@ public final class NatGatewaysClientImpl implements InnerSupportsGet<NatGatewayI
             resourceGroupName, natGatewayName, contentType, accept, parameters, context);
     }
 
-    /**
-     * Creates or updates a nat gateway.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param natGatewayName The name of the nat gateway.
-     * @param parameters Parameters supplied to the create or update nat gateway operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the {@link PollerFlux} for polling of nat Gateway resource.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public PollerFlux<PollResult<NatGatewayInner>, NatGatewayInner> beginCreateOrUpdateAsync(String resourceGroupName,
         String natGatewayName, NatGatewayInner parameters) {
@@ -403,52 +343,21 @@ public final class NatGatewaysClientImpl implements InnerSupportsGet<NatGatewayI
             NatGatewayInner.class, NatGatewayInner.class, context);
     }
 
-    /**
-     * Creates or updates a nat gateway.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param natGatewayName The name of the nat gateway.
-     * @param parameters Parameters supplied to the create or update nat gateway operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the {@link SyncPoller} for polling of nat Gateway resource.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public SyncPoller<PollResult<NatGatewayInner>, NatGatewayInner> beginCreateOrUpdate(String resourceGroupName,
         String natGatewayName, NatGatewayInner parameters) {
         return this.beginCreateOrUpdateAsync(resourceGroupName, natGatewayName, parameters).getSyncPoller();
     }
 
-    /**
-     * Creates or updates a nat gateway.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param natGatewayName The name of the nat gateway.
-     * @param parameters Parameters supplied to the create or update nat gateway operation.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the {@link SyncPoller} for polling of nat Gateway resource.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public SyncPoller<PollResult<NatGatewayInner>, NatGatewayInner> beginCreateOrUpdate(String resourceGroupName,
         String natGatewayName, NatGatewayInner parameters, Context context) {
         return this.beginCreateOrUpdateAsync(resourceGroupName, natGatewayName, parameters, context).getSyncPoller();
     }
 
-    /**
-     * Creates or updates a nat gateway.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param natGatewayName The name of the nat gateway.
-     * @param parameters Parameters supplied to the create or update nat gateway operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return nat Gateway resource on successful completion of {@link Mono}.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<NatGatewayInner> createOrUpdateAsync(String resourceGroupName, String natGatewayName,
         NatGatewayInner parameters) {
@@ -475,51 +384,20 @@ public final class NatGatewaysClientImpl implements InnerSupportsGet<NatGatewayI
             .flatMap(this.client::getLroFinalResultOrError);
     }
 
-    /**
-     * Creates or updates a nat gateway.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param natGatewayName The name of the nat gateway.
-     * @param parameters Parameters supplied to the create or update nat gateway operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return nat Gateway resource.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public NatGatewayInner createOrUpdate(String resourceGroupName, String natGatewayName, NatGatewayInner parameters) {
         return createOrUpdateAsync(resourceGroupName, natGatewayName, parameters).block();
     }
 
-    /**
-     * Creates or updates a nat gateway.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param natGatewayName The name of the nat gateway.
-     * @param parameters Parameters supplied to the create or update nat gateway operation.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return nat Gateway resource.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public NatGatewayInner createOrUpdate(String resourceGroupName, String natGatewayName, NatGatewayInner parameters,
         Context context) {
         return createOrUpdateAsync(resourceGroupName, natGatewayName, parameters, context).block();
     }
 
-    /**
-     * Updates nat gateway tags.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param natGatewayName The name of the nat gateway.
-     * @param parameters Parameters supplied to update nat gateway tags.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return nat Gateway resource along with {@link Response} on successful completion of {@link Mono}.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Response<NatGatewayInner>> updateTagsWithResponseAsync(String resourceGroupName, String natGatewayName,
         TagsObject parameters) {
@@ -543,7 +421,7 @@ public final class NatGatewaysClientImpl implements InnerSupportsGet<NatGatewayI
         } else {
             parameters.validate();
         }
-        final String apiVersion = "2025-07-01";
+        final String apiVersion = "2026-05-01";
         final String contentType = "application/json";
         final String accept = "application/json";
         return FluxUtil
@@ -588,7 +466,7 @@ public final class NatGatewaysClientImpl implements InnerSupportsGet<NatGatewayI
         } else {
             parameters.validate();
         }
-        final String apiVersion = "2025-07-01";
+        final String apiVersion = "2026-05-01";
         final String contentType = "application/json";
         final String accept = "application/json";
         context = this.client.mergeContext(context);
@@ -596,17 +474,7 @@ public final class NatGatewaysClientImpl implements InnerSupportsGet<NatGatewayI
             resourceGroupName, natGatewayName, contentType, accept, parameters, context);
     }
 
-    /**
-     * Updates nat gateway tags.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param natGatewayName The name of the nat gateway.
-     * @param parameters Parameters supplied to update nat gateway tags.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return nat Gateway resource on successful completion of {@link Mono}.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<NatGatewayInner> updateTagsAsync(String resourceGroupName, String natGatewayName,
         TagsObject parameters) {
@@ -614,50 +482,20 @@ public final class NatGatewaysClientImpl implements InnerSupportsGet<NatGatewayI
             .flatMap(res -> Mono.justOrEmpty(res.getValue()));
     }
 
-    /**
-     * Updates nat gateway tags.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param natGatewayName The name of the nat gateway.
-     * @param parameters Parameters supplied to update nat gateway tags.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return nat Gateway resource along with {@link Response}.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Response<NatGatewayInner> updateTagsWithResponse(String resourceGroupName, String natGatewayName,
         TagsObject parameters, Context context) {
         return updateTagsWithResponseAsync(resourceGroupName, natGatewayName, parameters, context).block();
     }
 
-    /**
-     * Updates nat gateway tags.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param natGatewayName The name of the nat gateway.
-     * @param parameters Parameters supplied to update nat gateway tags.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return nat Gateway resource.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public NatGatewayInner updateTags(String resourceGroupName, String natGatewayName, TagsObject parameters) {
         return updateTagsWithResponse(resourceGroupName, natGatewayName, parameters, Context.NONE).getValue();
     }
 
-    /**
-     * Deletes the specified nat gateway.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param natGatewayName The name of the nat gateway.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the {@link Response} on successful completion of {@link Mono}.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Response<Flux<ByteBuffer>>> deleteWithResponseAsync(String resourceGroupName, String natGatewayName) {
         if (this.client.getEndpoint() == null) {
@@ -675,7 +513,7 @@ public final class NatGatewaysClientImpl implements InnerSupportsGet<NatGatewayI
         if (natGatewayName == null) {
             return Mono.error(new IllegalArgumentException("Parameter natGatewayName is required and cannot be null."));
         }
-        final String apiVersion = "2025-07-01";
+        final String apiVersion = "2026-05-01";
         return FluxUtil
             .withContext(context -> service.delete(this.client.getEndpoint(), apiVersion,
                 this.client.getSubscriptionId(), resourceGroupName, natGatewayName, context))
@@ -711,22 +549,13 @@ public final class NatGatewaysClientImpl implements InnerSupportsGet<NatGatewayI
         if (natGatewayName == null) {
             return Mono.error(new IllegalArgumentException("Parameter natGatewayName is required and cannot be null."));
         }
-        final String apiVersion = "2025-07-01";
+        final String apiVersion = "2026-05-01";
         context = this.client.mergeContext(context);
         return service.delete(this.client.getEndpoint(), apiVersion, this.client.getSubscriptionId(), resourceGroupName,
             natGatewayName, context);
     }
 
-    /**
-     * Deletes the specified nat gateway.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param natGatewayName The name of the nat gateway.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the {@link PollerFlux} for polling of long-running operation.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public PollerFlux<PollResult<Void>, Void> beginDeleteAsync(String resourceGroupName, String natGatewayName) {
         Mono<Response<Flux<ByteBuffer>>> mono = deleteWithResponseAsync(resourceGroupName, natGatewayName);
@@ -754,48 +583,20 @@ public final class NatGatewaysClientImpl implements InnerSupportsGet<NatGatewayI
             context);
     }
 
-    /**
-     * Deletes the specified nat gateway.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param natGatewayName The name of the nat gateway.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the {@link SyncPoller} for polling of long-running operation.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public SyncPoller<PollResult<Void>, Void> beginDelete(String resourceGroupName, String natGatewayName) {
         return this.beginDeleteAsync(resourceGroupName, natGatewayName).getSyncPoller();
     }
 
-    /**
-     * Deletes the specified nat gateway.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param natGatewayName The name of the nat gateway.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the {@link SyncPoller} for polling of long-running operation.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public SyncPoller<PollResult<Void>, Void> beginDelete(String resourceGroupName, String natGatewayName,
         Context context) {
         return this.beginDeleteAsync(resourceGroupName, natGatewayName, context).getSyncPoller();
     }
 
-    /**
-     * Deletes the specified nat gateway.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param natGatewayName The name of the nat gateway.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return A {@link Mono} that completes when a successful response is received.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Void> deleteAsync(String resourceGroupName, String natGatewayName) {
         return beginDeleteAsync(resourceGroupName, natGatewayName).last()
@@ -819,30 +620,13 @@ public final class NatGatewaysClientImpl implements InnerSupportsGet<NatGatewayI
             .flatMap(this.client::getLroFinalResultOrError);
     }
 
-    /**
-     * Deletes the specified nat gateway.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param natGatewayName The name of the nat gateway.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public void delete(String resourceGroupName, String natGatewayName) {
         deleteAsync(resourceGroupName, natGatewayName).block();
     }
 
-    /**
-     * Deletes the specified nat gateway.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param natGatewayName The name of the nat gateway.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public void delete(String resourceGroupName, String natGatewayName, Context context) {
         deleteAsync(resourceGroupName, natGatewayName, context).block();
@@ -872,7 +656,7 @@ public final class NatGatewaysClientImpl implements InnerSupportsGet<NatGatewayI
             return Mono
                 .error(new IllegalArgumentException("Parameter resourceGroupName is required and cannot be null."));
         }
-        final String apiVersion = "2025-07-01";
+        final String apiVersion = "2026-05-01";
         final String accept = "application/json";
         return FluxUtil
             .withContext(context -> service.listByResourceGroup(this.client.getEndpoint(), apiVersion,
@@ -908,7 +692,7 @@ public final class NatGatewaysClientImpl implements InnerSupportsGet<NatGatewayI
             return Mono
                 .error(new IllegalArgumentException("Parameter resourceGroupName is required and cannot be null."));
         }
-        final String apiVersion = "2025-07-01";
+        final String apiVersion = "2026-05-01";
         final String accept = "application/json";
         context = this.client.mergeContext(context);
         return service
@@ -918,15 +702,7 @@ public final class NatGatewaysClientImpl implements InnerSupportsGet<NatGatewayI
                 res.getValue().value(), res.getValue().nextLink(), null));
     }
 
-    /**
-     * Gets all nat gateways in a resource group.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return all nat gateways in a resource group as paginated response with {@link PagedFlux}.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.COLLECTION)
     public PagedFlux<NatGatewayInner> listByResourceGroupAsync(String resourceGroupName) {
         return new PagedFlux<>(() -> listByResourceGroupSinglePageAsync(resourceGroupName),
@@ -949,30 +725,13 @@ public final class NatGatewaysClientImpl implements InnerSupportsGet<NatGatewayI
             nextLink -> listNextSinglePageAsync(nextLink, context));
     }
 
-    /**
-     * Gets all nat gateways in a resource group.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return all nat gateways in a resource group as paginated response with {@link PagedIterable}.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.COLLECTION)
     public PagedIterable<NatGatewayInner> listByResourceGroup(String resourceGroupName) {
         return new PagedIterable<>(listByResourceGroupAsync(resourceGroupName));
     }
 
-    /**
-     * Gets all nat gateways in a resource group.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return all nat gateways in a resource group as paginated response with {@link PagedIterable}.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.COLLECTION)
     public PagedIterable<NatGatewayInner> listByResourceGroup(String resourceGroupName, Context context) {
         return new PagedIterable<>(listByResourceGroupAsync(resourceGroupName, context));
@@ -996,7 +755,7 @@ public final class NatGatewaysClientImpl implements InnerSupportsGet<NatGatewayI
             return Mono.error(new IllegalArgumentException(
                 "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
-        final String apiVersion = "2025-07-01";
+        final String apiVersion = "2026-05-01";
         final String accept = "application/json";
         return FluxUtil
             .withContext(context -> service.list(this.client.getEndpoint(), apiVersion, this.client.getSubscriptionId(),
@@ -1026,7 +785,7 @@ public final class NatGatewaysClientImpl implements InnerSupportsGet<NatGatewayI
             return Mono.error(new IllegalArgumentException(
                 "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
-        final String apiVersion = "2025-07-01";
+        final String apiVersion = "2026-05-01";
         final String accept = "application/json";
         context = this.client.mergeContext(context);
         return service.list(this.client.getEndpoint(), apiVersion, this.client.getSubscriptionId(), accept, context)
@@ -1034,13 +793,7 @@ public final class NatGatewaysClientImpl implements InnerSupportsGet<NatGatewayI
                 res.getValue().value(), res.getValue().nextLink(), null));
     }
 
-    /**
-     * Gets all the Nat Gateways in a subscription.
-     * 
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return all the Nat Gateways in a subscription as paginated response with {@link PagedFlux}.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.COLLECTION)
     public PagedFlux<NatGatewayInner> listAsync() {
         return new PagedFlux<>(() -> listSinglePageAsync(), nextLink -> listAllNextSinglePageAsync(nextLink));
@@ -1061,27 +814,13 @@ public final class NatGatewaysClientImpl implements InnerSupportsGet<NatGatewayI
             nextLink -> listAllNextSinglePageAsync(nextLink, context));
     }
 
-    /**
-     * Gets all the Nat Gateways in a subscription.
-     * 
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return all the Nat Gateways in a subscription as paginated response with {@link PagedIterable}.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.COLLECTION)
     public PagedIterable<NatGatewayInner> list() {
         return new PagedIterable<>(listAsync());
     }
 
-    /**
-     * Gets all the Nat Gateways in a subscription.
-     * 
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return all the Nat Gateways in a subscription as paginated response with {@link PagedIterable}.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.COLLECTION)
     public PagedIterable<NatGatewayInner> list(Context context) {
         return new PagedIterable<>(listAsync(context));

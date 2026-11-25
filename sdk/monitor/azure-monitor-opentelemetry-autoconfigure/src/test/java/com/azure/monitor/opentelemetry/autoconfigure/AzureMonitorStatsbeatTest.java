@@ -10,6 +10,7 @@ import com.azure.core.http.HttpPipelineBuilder;
 import com.azure.core.http.HttpRequest;
 import com.azure.core.http.HttpResponse;
 import com.azure.core.http.policy.HttpPipelinePolicy;
+import com.azure.core.util.Configuration;
 import com.azure.monitor.opentelemetry.autoconfigure.implementation.statsbeat.StatsbeatModule;
 import com.azure.monitor.opentelemetry.autoconfigure.implementation.utils.TestUtils;
 import com.azure.monitor.opentelemetry.autoconfigure.implementation.MockHttpResponse;
@@ -25,12 +26,17 @@ import io.opentelemetry.sdk.OpenTelemetrySdk;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.parallel.Execution;
 import org.junit.jupiter.api.parallel.ExecutionMode;
+import org.junit.jupiter.api.parallel.Isolated;
+import org.junit.jupiter.params.ParameterizedTest;
+import org.junit.jupiter.params.provider.CsvSource;
 import reactor.core.publisher.Mono;
 import reactor.util.annotation.Nullable;
 
 import java.net.URL;
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
+import java.util.Set;
 import java.util.concurrent.CountDownLatch;
 import java.util.concurrent.atomic.AtomicInteger;
 import java.util.function.Function;
@@ -40,35 +46,77 @@ import static org.assertj.core.api.Assertions.assertThat;
 import static org.assertj.core.api.Assertions.entry;
 
 @Execution(ExecutionMode.SAME_THREAD)
+@Isolated("Changes global SDKStats configuration")
 public class AzureMonitorStatsbeatTest {
     private static final String STATSBEAT_CONNECTION_STRING = "InstrumentationKey=00000000-0000-0000-0000-000000000000;"
         + "IngestionEndpoint=https://westus-0.in.applicationinsights.azure.com/;"
         + "LiveEndpoint=https://westus.livediagnostics.monitor.azure.com/";
     private static final String INSTRUMENTATION_KEY = "00000000-0000-0000-0000-000000000000";
 
-    @Test
-    public void testStatsbeat() throws Exception {
+    @ParameterizedTest
+    @CsvSource({ ", false,", "false, false, false", "false, true, true", "FaLsE, true, TrUe" })
+    public void testStatsbeat(String disabledAll, String globalDisabledAll, String publicDisable) throws Exception {
         // create the OpenTelemetry SDK
         CountDownLatch countDownLatch = new CountDownLatch(1);
-        CustomValidationPolicy customValidationPolicy = new CustomValidationPolicy(countDownLatch);
-        OpenTelemetrySdk openTelemetry
-            = TestUtils.createOpenTelemetrySdk(getHttpPipeline(customValidationPolicy, HttpClient.createDefault()),
-                getStatsbeatConfiguration(), STATSBEAT_CONNECTION_STRING);
+        CustomValidationPolicy customValidationPolicy
+            = new CustomValidationPolicy(countDownLatch, AzureMonitorStatsbeatTest::hasExpectedStatsbeatTelemetry);
+        Map<String, String> configuration = getStatsbeatConfiguration();
+        if (disabledAll != null) {
+            configuration.put("APPLICATIONINSIGHTS_SDKStats_DISABLED_ALL", disabledAll);
+        }
+        if (publicDisable != null) {
+            configuration.put("applicationinsights.sdkstats.disabled", publicDisable);
+        }
+        String previousDisabledAll
+            = Configuration.getGlobalConfiguration().get("APPLICATIONINSIGHTS_SDKStats_DISABLED_ALL");
+        Set<Thread> existingThreads = Thread.getAllStackTraces().keySet();
+        OpenTelemetrySdk openTelemetry;
+        try {
+            Configuration.getGlobalConfiguration().put("APPLICATIONINSIGHTS_SDKStats_DISABLED_ALL", globalDisabledAll);
+            HttpClient httpClient = request -> Mono.just(new MockHttpResponse(request, 200));
+            openTelemetry = TestUtils.createOpenTelemetrySdk(getHttpPipeline(customValidationPolicy, httpClient),
+                configuration, STATSBEAT_CONNECTION_STRING);
+        } finally {
+            if (previousDisabledAll == null) {
+                Configuration.getGlobalConfiguration().remove("APPLICATIONINSIGHTS_SDKStats_DISABLED_ALL");
+            } else {
+                Configuration.getGlobalConfiguration()
+                    .put("APPLICATIONINSIGHTS_SDKStats_DISABLED_ALL", previousDisabledAll);
+            }
+        }
 
-        // generate a metric
-        generateMetric(openTelemetry);
+        try {
+            long customerStatsThreads = Thread.getAllStackTraces()
+                .keySet()
+                .stream()
+                .filter(thread -> !existingThreads.contains(thread))
+                .filter(thread -> thread.getName().startsWith("CustomerSdkStats-"))
+                .count();
+            assertThat(customerStatsThreads).isEqualTo(Boolean.parseBoolean(publicDisable) ? 0 : 1);
+            generateMetric(openTelemetry);
+        } finally {
+            // close to flush
+            openTelemetry.close();
+        }
 
-        // close to flush
-        openTelemetry.close();
-
-        Thread.sleep(2000);
-
-        // wait for export
-        countDownLatch.await(10, SECONDS);
+        assertThat(countDownLatch.await(10, SECONDS)).as("Attach and Feature Statsbeat telemetry was exported")
+            .isTrue();
         assertThat(customValidationPolicy.getUrl())
             .isEqualTo(new URL("https://westus-0.in.applicationinsights.azure.com/v2.1/track"));
 
         verifyStatsbeatTelemetry(customValidationPolicy);
+    }
+
+    private static boolean hasExpectedStatsbeatTelemetry(List<TelemetryItem> telemetryItems) {
+        return hasStatsbeatMetric(telemetryItems, "Attach") && hasStatsbeatMetric(telemetryItems, "Feature");
+    }
+
+    private static boolean hasStatsbeatMetric(List<TelemetryItem> telemetryItems, String metricName) {
+        return telemetryItems.stream()
+            .filter(item -> item.getName().equals("Statsbeat"))
+            .map(item -> TestUtils.toMetricsData(item.getData().getBaseData()))
+            .flatMap(metricsData -> metricsData.getMetrics().stream())
+            .anyMatch(metric -> metric.getName().equals(metricName));
     }
 
     @Test

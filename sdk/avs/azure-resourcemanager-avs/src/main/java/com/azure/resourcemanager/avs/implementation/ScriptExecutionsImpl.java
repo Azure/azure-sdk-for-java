@@ -30,8 +30,7 @@ public final class ScriptExecutionsImpl implements ScriptExecutions {
     }
 
     public PagedIterable<ScriptExecution> list(String resourceGroupName, String privateCloudName) {
-        PagedIterable<ScriptExecutionInner> inner = this.serviceClient().list(resourceGroupName, privateCloudName);
-        return ResourceManagerUtils.mapPage(inner, inner1 -> new ScriptExecutionImpl(inner1, this.manager()));
+        return this.list(resourceGroupName, privateCloudName, Context.NONE);
     }
 
     public PagedIterable<ScriptExecution> list(String resourceGroupName, String privateCloudName, Context context) {
@@ -58,7 +57,7 @@ public final class ScriptExecutionsImpl implements ScriptExecutions {
     }
 
     public void delete(String resourceGroupName, String privateCloudName, String scriptExecutionName) {
-        this.serviceClient().delete(resourceGroupName, privateCloudName, scriptExecutionName);
+        this.delete(resourceGroupName, privateCloudName, scriptExecutionName, Context.NONE);
     }
 
     public void delete(String resourceGroupName, String privateCloudName, String scriptExecutionName, Context context) {
@@ -86,78 +85,36 @@ public final class ScriptExecutionsImpl implements ScriptExecutions {
     }
 
     public ScriptExecution getById(String id) {
-        String resourceGroupName = ResourceManagerUtils.getValueFromIdByName(id, "resourceGroups");
-        if (resourceGroupName == null) {
-            throw LOGGER.logExceptionAsError(new IllegalArgumentException(
-                String.format("The resource ID '%s' is not valid. Missing path segment 'resourceGroups'.", id)));
-        }
-        String privateCloudName = ResourceManagerUtils.getValueFromIdByName(id, "privateClouds");
-        if (privateCloudName == null) {
-            throw LOGGER.logExceptionAsError(new IllegalArgumentException(
-                String.format("The resource ID '%s' is not valid. Missing path segment 'privateClouds'.", id)));
-        }
-        String scriptExecutionName = ResourceManagerUtils.getValueFromIdByName(id, "scriptExecutions");
-        if (scriptExecutionName == null) {
-            throw LOGGER.logExceptionAsError(new IllegalArgumentException(
-                String.format("The resource ID '%s' is not valid. Missing path segment 'scriptExecutions'.", id)));
-        }
-        return this.getWithResponse(resourceGroupName, privateCloudName, scriptExecutionName, Context.NONE).getValue();
+        return this.getByIdWithResponse(id, Context.NONE).getValue();
     }
 
     public Response<ScriptExecution> getByIdWithResponse(String id, Context context) {
-        String resourceGroupName = ResourceManagerUtils.getValueFromIdByName(id, "resourceGroups");
-        if (resourceGroupName == null) {
-            throw LOGGER.logExceptionAsError(new IllegalArgumentException(
-                String.format("The resource ID '%s' is not valid. Missing path segment 'resourceGroups'.", id)));
-        }
-        String privateCloudName = ResourceManagerUtils.getValueFromIdByName(id, "privateClouds");
-        if (privateCloudName == null) {
-            throw LOGGER.logExceptionAsError(new IllegalArgumentException(
-                String.format("The resource ID '%s' is not valid. Missing path segment 'privateClouds'.", id)));
-        }
-        String scriptExecutionName = ResourceManagerUtils.getValueFromIdByName(id, "scriptExecutions");
-        if (scriptExecutionName == null) {
-            throw LOGGER.logExceptionAsError(new IllegalArgumentException(
-                String.format("The resource ID '%s' is not valid. Missing path segment 'scriptExecutions'.", id)));
-        }
+        String resourceGroupName = ResourceManagerUtils.getRequiredValueFromIdByParameterName(id,
+            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.AVS/privateClouds/{privateCloudName}/scriptExecutions/{scriptExecutionName}",
+            "resourceGroupName", "resourceGroups", LOGGER);
+        String privateCloudName = ResourceManagerUtils.getRequiredValueFromIdByParameterName(id,
+            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.AVS/privateClouds/{privateCloudName}/scriptExecutions/{scriptExecutionName}",
+            "privateCloudName", "privateClouds", LOGGER);
+        String scriptExecutionName = ResourceManagerUtils.getRequiredValueFromIdByParameterName(id,
+            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.AVS/privateClouds/{privateCloudName}/scriptExecutions/{scriptExecutionName}",
+            "scriptExecutionName", "scriptExecutions", LOGGER);
         return this.getWithResponse(resourceGroupName, privateCloudName, scriptExecutionName, context);
     }
 
     public void deleteById(String id) {
-        String resourceGroupName = ResourceManagerUtils.getValueFromIdByName(id, "resourceGroups");
-        if (resourceGroupName == null) {
-            throw LOGGER.logExceptionAsError(new IllegalArgumentException(
-                String.format("The resource ID '%s' is not valid. Missing path segment 'resourceGroups'.", id)));
-        }
-        String privateCloudName = ResourceManagerUtils.getValueFromIdByName(id, "privateClouds");
-        if (privateCloudName == null) {
-            throw LOGGER.logExceptionAsError(new IllegalArgumentException(
-                String.format("The resource ID '%s' is not valid. Missing path segment 'privateClouds'.", id)));
-        }
-        String scriptExecutionName = ResourceManagerUtils.getValueFromIdByName(id, "scriptExecutions");
-        if (scriptExecutionName == null) {
-            throw LOGGER.logExceptionAsError(new IllegalArgumentException(
-                String.format("The resource ID '%s' is not valid. Missing path segment 'scriptExecutions'.", id)));
-        }
-        this.delete(resourceGroupName, privateCloudName, scriptExecutionName, Context.NONE);
+        this.deleteByIdWithResponse(id, Context.NONE);
     }
 
     public void deleteByIdWithResponse(String id, Context context) {
-        String resourceGroupName = ResourceManagerUtils.getValueFromIdByName(id, "resourceGroups");
-        if (resourceGroupName == null) {
-            throw LOGGER.logExceptionAsError(new IllegalArgumentException(
-                String.format("The resource ID '%s' is not valid. Missing path segment 'resourceGroups'.", id)));
-        }
-        String privateCloudName = ResourceManagerUtils.getValueFromIdByName(id, "privateClouds");
-        if (privateCloudName == null) {
-            throw LOGGER.logExceptionAsError(new IllegalArgumentException(
-                String.format("The resource ID '%s' is not valid. Missing path segment 'privateClouds'.", id)));
-        }
-        String scriptExecutionName = ResourceManagerUtils.getValueFromIdByName(id, "scriptExecutions");
-        if (scriptExecutionName == null) {
-            throw LOGGER.logExceptionAsError(new IllegalArgumentException(
-                String.format("The resource ID '%s' is not valid. Missing path segment 'scriptExecutions'.", id)));
-        }
+        String resourceGroupName = ResourceManagerUtils.getRequiredValueFromIdByParameterName(id,
+            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.AVS/privateClouds/{privateCloudName}/scriptExecutions/{scriptExecutionName}",
+            "resourceGroupName", "resourceGroups", LOGGER);
+        String privateCloudName = ResourceManagerUtils.getRequiredValueFromIdByParameterName(id,
+            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.AVS/privateClouds/{privateCloudName}/scriptExecutions/{scriptExecutionName}",
+            "privateCloudName", "privateClouds", LOGGER);
+        String scriptExecutionName = ResourceManagerUtils.getRequiredValueFromIdByParameterName(id,
+            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.AVS/privateClouds/{privateCloudName}/scriptExecutions/{scriptExecutionName}",
+            "scriptExecutionName", "scriptExecutions", LOGGER);
         this.delete(resourceGroupName, privateCloudName, scriptExecutionName, context);
     }
 

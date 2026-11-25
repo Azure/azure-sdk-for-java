@@ -81,10 +81,7 @@ public final class ToolImpl implements Tool, Tool.Definition, Tool.Update {
     }
 
     public Tool create() {
-        this.innerObject = serviceManager.serviceClient()
-            .getTools()
-            .createOrUpdate(resourceGroupName, toolName, this.innerModel(), Context.NONE);
-        return this;
+        return this.create(Context.NONE);
     }
 
     public Tool create(Context context) {
@@ -105,10 +102,7 @@ public final class ToolImpl implements Tool, Tool.Definition, Tool.Update {
     }
 
     public Tool apply() {
-        this.innerObject = serviceManager.serviceClient()
-            .getTools()
-            .update(resourceGroupName, toolName, this.innerModel(), Context.NONE);
-        return this;
+        return this.apply(Context.NONE);
     }
 
     public Tool apply(Context context) {
@@ -120,16 +114,16 @@ public final class ToolImpl implements Tool, Tool.Definition, Tool.Update {
     ToolImpl(ToolInner innerObject, com.azure.resourcemanager.discovery.DiscoveryManager serviceManager) {
         this.innerObject = innerObject;
         this.serviceManager = serviceManager;
-        this.resourceGroupName = ResourceManagerUtils.getValueFromIdByName(innerObject.id(), "resourceGroups");
-        this.toolName = ResourceManagerUtils.getValueFromIdByName(innerObject.id(), "tools");
+        this.resourceGroupName = ResourceManagerUtils.getValueFromIdByParameterName(innerObject.id(),
+            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Discovery/tools/{toolName}",
+            "resourceGroupName");
+        this.toolName = ResourceManagerUtils.getValueFromIdByParameterName(innerObject.id(),
+            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Discovery/tools/{toolName}",
+            "toolName");
     }
 
     public Tool refresh() {
-        this.innerObject = serviceManager.serviceClient()
-            .getTools()
-            .getByResourceGroupWithResponse(resourceGroupName, toolName, Context.NONE)
-            .getValue();
-        return this;
+        return this.refresh(Context.NONE);
     }
 
     public Tool refresh(Context context) {

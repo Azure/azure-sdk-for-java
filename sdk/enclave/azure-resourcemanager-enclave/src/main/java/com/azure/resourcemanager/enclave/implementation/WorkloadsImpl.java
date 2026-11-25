@@ -45,7 +45,7 @@ public final class WorkloadsImpl implements Workloads {
     }
 
     public void delete(String resourceGroupName, String virtualEnclaveName, String workloadName) {
-        this.serviceClient().delete(resourceGroupName, virtualEnclaveName, workloadName);
+        this.delete(resourceGroupName, virtualEnclaveName, workloadName, Context.NONE);
     }
 
     public void delete(String resourceGroupName, String virtualEnclaveName, String workloadName, Context context) {
@@ -53,9 +53,7 @@ public final class WorkloadsImpl implements Workloads {
     }
 
     public PagedIterable<WorkloadResource> listByEnclaveResource(String resourceGroupName, String virtualEnclaveName) {
-        PagedIterable<WorkloadResourceInner> inner
-            = this.serviceClient().listByEnclaveResource(resourceGroupName, virtualEnclaveName);
-        return ResourceManagerUtils.mapPage(inner, inner1 -> new WorkloadResourceImpl(inner1, this.manager()));
+        return this.listByEnclaveResource(resourceGroupName, virtualEnclaveName, Context.NONE);
     }
 
     public PagedIterable<WorkloadResource> listByEnclaveResource(String resourceGroupName, String virtualEnclaveName,
@@ -66,8 +64,7 @@ public final class WorkloadsImpl implements Workloads {
     }
 
     public PagedIterable<WorkloadResource> listBySubscription(String virtualEnclaveName) {
-        PagedIterable<WorkloadResourceInner> inner = this.serviceClient().listBySubscription(virtualEnclaveName);
-        return ResourceManagerUtils.mapPage(inner, inner1 -> new WorkloadResourceImpl(inner1, this.manager()));
+        return this.listBySubscription(virtualEnclaveName, Context.NONE);
     }
 
     public PagedIterable<WorkloadResource> listBySubscription(String virtualEnclaveName, Context context) {
@@ -77,78 +74,36 @@ public final class WorkloadsImpl implements Workloads {
     }
 
     public WorkloadResource getById(String id) {
-        String resourceGroupName = ResourceManagerUtils.getValueFromIdByName(id, "resourceGroups");
-        if (resourceGroupName == null) {
-            throw LOGGER.logExceptionAsError(new IllegalArgumentException(
-                String.format("The resource ID '%s' is not valid. Missing path segment 'resourceGroups'.", id)));
-        }
-        String virtualEnclaveName = ResourceManagerUtils.getValueFromIdByName(id, "virtualEnclaves");
-        if (virtualEnclaveName == null) {
-            throw LOGGER.logExceptionAsError(new IllegalArgumentException(
-                String.format("The resource ID '%s' is not valid. Missing path segment 'virtualEnclaves'.", id)));
-        }
-        String workloadName = ResourceManagerUtils.getValueFromIdByName(id, "workloads");
-        if (workloadName == null) {
-            throw LOGGER.logExceptionAsError(new IllegalArgumentException(
-                String.format("The resource ID '%s' is not valid. Missing path segment 'workloads'.", id)));
-        }
-        return this.getWithResponse(resourceGroupName, virtualEnclaveName, workloadName, Context.NONE).getValue();
+        return this.getByIdWithResponse(id, Context.NONE).getValue();
     }
 
     public Response<WorkloadResource> getByIdWithResponse(String id, Context context) {
-        String resourceGroupName = ResourceManagerUtils.getValueFromIdByName(id, "resourceGroups");
-        if (resourceGroupName == null) {
-            throw LOGGER.logExceptionAsError(new IllegalArgumentException(
-                String.format("The resource ID '%s' is not valid. Missing path segment 'resourceGroups'.", id)));
-        }
-        String virtualEnclaveName = ResourceManagerUtils.getValueFromIdByName(id, "virtualEnclaves");
-        if (virtualEnclaveName == null) {
-            throw LOGGER.logExceptionAsError(new IllegalArgumentException(
-                String.format("The resource ID '%s' is not valid. Missing path segment 'virtualEnclaves'.", id)));
-        }
-        String workloadName = ResourceManagerUtils.getValueFromIdByName(id, "workloads");
-        if (workloadName == null) {
-            throw LOGGER.logExceptionAsError(new IllegalArgumentException(
-                String.format("The resource ID '%s' is not valid. Missing path segment 'workloads'.", id)));
-        }
+        String resourceGroupName = ResourceManagerUtils.getRequiredValueFromIdByParameterName(id,
+            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Mission/virtualEnclaves/{virtualEnclaveName}/workloads/{workloadName}",
+            "resourceGroupName", "resourceGroups", LOGGER);
+        String virtualEnclaveName = ResourceManagerUtils.getRequiredValueFromIdByParameterName(id,
+            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Mission/virtualEnclaves/{virtualEnclaveName}/workloads/{workloadName}",
+            "virtualEnclaveName", "virtualEnclaves", LOGGER);
+        String workloadName = ResourceManagerUtils.getRequiredValueFromIdByParameterName(id,
+            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Mission/virtualEnclaves/{virtualEnclaveName}/workloads/{workloadName}",
+            "workloadName", "workloads", LOGGER);
         return this.getWithResponse(resourceGroupName, virtualEnclaveName, workloadName, context);
     }
 
     public void deleteById(String id) {
-        String resourceGroupName = ResourceManagerUtils.getValueFromIdByName(id, "resourceGroups");
-        if (resourceGroupName == null) {
-            throw LOGGER.logExceptionAsError(new IllegalArgumentException(
-                String.format("The resource ID '%s' is not valid. Missing path segment 'resourceGroups'.", id)));
-        }
-        String virtualEnclaveName = ResourceManagerUtils.getValueFromIdByName(id, "virtualEnclaves");
-        if (virtualEnclaveName == null) {
-            throw LOGGER.logExceptionAsError(new IllegalArgumentException(
-                String.format("The resource ID '%s' is not valid. Missing path segment 'virtualEnclaves'.", id)));
-        }
-        String workloadName = ResourceManagerUtils.getValueFromIdByName(id, "workloads");
-        if (workloadName == null) {
-            throw LOGGER.logExceptionAsError(new IllegalArgumentException(
-                String.format("The resource ID '%s' is not valid. Missing path segment 'workloads'.", id)));
-        }
-        this.delete(resourceGroupName, virtualEnclaveName, workloadName, Context.NONE);
+        this.deleteByIdWithResponse(id, Context.NONE);
     }
 
     public void deleteByIdWithResponse(String id, Context context) {
-        String resourceGroupName = ResourceManagerUtils.getValueFromIdByName(id, "resourceGroups");
-        if (resourceGroupName == null) {
-            throw LOGGER.logExceptionAsError(new IllegalArgumentException(
-                String.format("The resource ID '%s' is not valid. Missing path segment 'resourceGroups'.", id)));
-        }
-        String virtualEnclaveName = ResourceManagerUtils.getValueFromIdByName(id, "virtualEnclaves");
-        if (virtualEnclaveName == null) {
-            throw LOGGER.logExceptionAsError(new IllegalArgumentException(
-                String.format("The resource ID '%s' is not valid. Missing path segment 'virtualEnclaves'.", id)));
-        }
-        String workloadName = ResourceManagerUtils.getValueFromIdByName(id, "workloads");
-        if (workloadName == null) {
-            throw LOGGER.logExceptionAsError(new IllegalArgumentException(
-                String.format("The resource ID '%s' is not valid. Missing path segment 'workloads'.", id)));
-        }
+        String resourceGroupName = ResourceManagerUtils.getRequiredValueFromIdByParameterName(id,
+            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Mission/virtualEnclaves/{virtualEnclaveName}/workloads/{workloadName}",
+            "resourceGroupName", "resourceGroups", LOGGER);
+        String virtualEnclaveName = ResourceManagerUtils.getRequiredValueFromIdByParameterName(id,
+            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Mission/virtualEnclaves/{virtualEnclaveName}/workloads/{workloadName}",
+            "virtualEnclaveName", "virtualEnclaves", LOGGER);
+        String workloadName = ResourceManagerUtils.getRequiredValueFromIdByParameterName(id,
+            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Mission/virtualEnclaves/{virtualEnclaveName}/workloads/{workloadName}",
+            "workloadName", "workloads", LOGGER);
         this.delete(resourceGroupName, virtualEnclaveName, workloadName, context);
     }
 

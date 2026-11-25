@@ -15,9 +15,9 @@ import com.microsoft.azure.eventhubs.TimeoutException;
 import com.microsoft.azure.eventhubs.impl.SharedAccessSignatureTokenProvider;
 import com.microsoft.azure.eventhubs.lib.ApiTestBase;
 import com.microsoft.azure.eventhubs.lib.TestContext;
-import org.junit.After;
-import org.junit.Assert;
-import org.junit.Test;
+import org.junit.jupiter.api.AfterEach;
+import org.junit.jupiter.api.Assertions;
+import org.junit.jupiter.api.Test;
 
 import java.time.Duration;
 import java.util.Locale;
@@ -27,7 +27,7 @@ public class SecurityExceptionsTest extends ApiTestBase {
     private static final String PARTITION_ID = "0";
     private EventHubClient ehClient;
 
-    @Test(expected = AuthorizationFailedException.class)
+    @Test
     public void testEventHubClientUnAuthorizedAccessKeyName() throws Throwable {
         final ConnectionStringBuilder correctConnectionString = TestContext.getConnectionString();
         final ConnectionStringBuilder connectionString = new ConnectionStringBuilder()
@@ -36,11 +36,13 @@ public class SecurityExceptionsTest extends ApiTestBase {
                 .setSasKeyName("---------------wrongkey------------")
                 .setSasKey(correctConnectionString.getSasKey());
 
-        ehClient = EventHubClient.createFromConnectionStringSync(connectionString.toString(), TestContext.EXECUTOR_SERVICE);
-        ehClient.sendSync(EventData.create("Test Message".getBytes()));
+        Assertions.assertThrows(AuthorizationFailedException.class, () -> {
+            ehClient = EventHubClient.createFromConnectionStringSync(connectionString.toString(), TestContext.EXECUTOR_SERVICE);
+            ehClient.sendSync(EventData.create("Test Message".getBytes()));
+        });
     }
 
-    @Test(expected = AuthorizationFailedException.class)
+    @Test
     public void testEventHubClientUnAuthorizedAccessKey() throws Throwable {
         final ConnectionStringBuilder correctConnectionString = TestContext.getConnectionString();
         final ConnectionStringBuilder connectionString = new ConnectionStringBuilder()
@@ -49,11 +51,13 @@ public class SecurityExceptionsTest extends ApiTestBase {
                 .setSasKeyName(correctConnectionString.getSasKeyName())
                 .setSasKey("--------------wrongvalue-----------");
 
-        ehClient = EventHubClient.createFromConnectionStringSync(connectionString.toString(), TestContext.EXECUTOR_SERVICE);
-        ehClient.sendSync(EventData.create("Test Message".getBytes()));
+        Assertions.assertThrows(AuthorizationFailedException.class, () -> {
+            ehClient = EventHubClient.createFromConnectionStringSync(connectionString.toString(), TestContext.EXECUTOR_SERVICE);
+            ehClient.sendSync(EventData.create("Test Message".getBytes()));
+        });
     }
 
-    @Test()
+    @Test
     public void testEventHubClientInvalidAccessToken() throws Throwable {
         final ConnectionStringBuilder correctConnectionString = TestContext.getConnectionString();
         final ConnectionStringBuilder connectionString = new ConnectionStringBuilder()
@@ -67,11 +71,11 @@ public class SecurityExceptionsTest extends ApiTestBase {
         try {
             ehClient.sendSync(EventData.create(("Test Message".getBytes())));
         } catch (TimeoutException e) {
-            Assert.assertEquals(EventHubException.class, e.getCause().getClass());
+            Assertions.assertEquals(EventHubException.class, e.getCause().getClass());
         }
     }
 
-    @Test(expected = IllegalArgumentException.class)
+    @Test
     public void testEventHubClientNullKeyNameAndAccessToken() throws Throwable {
         final ConnectionStringBuilder correctConnectionString = TestContext.getConnectionString();
         final ConnectionStringBuilder connectionString = new ConnectionStringBuilder()
@@ -80,11 +84,13 @@ public class SecurityExceptionsTest extends ApiTestBase {
                 .setSharedAccessSignature(null)
                 .setOperationTimeout(Duration.ofSeconds(10));
 
-        ehClient = EventHubClient.createFromConnectionStringSync(connectionString.toString(), TestContext.EXECUTOR_SERVICE);
-        ehClient.sendSync(EventData.create(("Test Message".getBytes())));
+        Assertions.assertThrows(IllegalArgumentException.class, () -> {
+            ehClient = EventHubClient.createFromConnectionStringSync(connectionString.toString(), TestContext.EXECUTOR_SERVICE);
+            ehClient.sendSync(EventData.create(("Test Message".getBytes())));
+        });
     }
 
-    @Test(expected = AuthorizationFailedException.class)
+    @Test
     public void testEventHubClientUnAuthorizedAccessToken() throws Throwable {
         final ConnectionStringBuilder correctConnectionString = TestContext.getConnectionString();
         final String wrongToken = SharedAccessSignatureTokenProvider.generateSharedAccessSignature(
@@ -97,11 +103,13 @@ public class SecurityExceptionsTest extends ApiTestBase {
                 .setEventHubName(correctConnectionString.getEventHubName())
                 .setSharedAccessSignature(wrongToken);
 
-        ehClient = EventHubClient.createFromConnectionStringSync(connectionString.toString(), TestContext.EXECUTOR_SERVICE);
-        ehClient.sendSync(EventData.create("Test Message".getBytes()));
+        Assertions.assertThrows(AuthorizationFailedException.class, () -> {
+            ehClient = EventHubClient.createFromConnectionStringSync(connectionString.toString(), TestContext.EXECUTOR_SERVICE);
+            ehClient.sendSync(EventData.create("Test Message".getBytes()));
+        });
     }
 
-    @Test(expected = AuthorizationFailedException.class)
+    @Test
     public void testEventHubClientWrongResourceInAccessToken() throws Throwable {
         final ConnectionStringBuilder correctConnectionString = TestContext.getConnectionString();
         final String wrongToken = SharedAccessSignatureTokenProvider.generateSharedAccessSignature(
@@ -114,11 +122,13 @@ public class SecurityExceptionsTest extends ApiTestBase {
                 .setEventHubName(correctConnectionString.getEventHubName())
                 .setSharedAccessSignature(wrongToken);
 
-        ehClient = EventHubClient.createFromConnectionStringSync(connectionString.toString(), TestContext.EXECUTOR_SERVICE);
-        ehClient.sendSync(EventData.create("Test Message".getBytes()));
+        Assertions.assertThrows(AuthorizationFailedException.class, () -> {
+            ehClient = EventHubClient.createFromConnectionStringSync(connectionString.toString(), TestContext.EXECUTOR_SERVICE);
+            ehClient.sendSync(EventData.create("Test Message".getBytes()));
+        });
     }
 
-    @Test(expected = AuthorizationFailedException.class)
+    @Test
     public void testUnAuthorizedAccessSenderCreation() throws Throwable {
         final ConnectionStringBuilder correctConnectionString = TestContext.getConnectionString();
         final ConnectionStringBuilder connectionString = new ConnectionStringBuilder()
@@ -127,11 +137,13 @@ public class SecurityExceptionsTest extends ApiTestBase {
                 .setSasKeyName("------------wrongkeyname----------")
                 .setSasKey(correctConnectionString.getSasKey());
 
-        ehClient = EventHubClient.createFromConnectionStringSync(connectionString.toString(), TestContext.EXECUTOR_SERVICE);
-        ehClient.createPartitionSenderSync(PARTITION_ID);
+        Assertions.assertThrows(AuthorizationFailedException.class, () -> {
+            ehClient = EventHubClient.createFromConnectionStringSync(connectionString.toString(), TestContext.EXECUTOR_SERVICE);
+            ehClient.createPartitionSenderSync(PARTITION_ID);
+        });
     }
 
-    @Test(expected = AuthorizationFailedException.class)
+    @Test
     public void testUnAuthorizedAccessReceiverCreation() throws Throwable {
         final ConnectionStringBuilder correctConnectionString = TestContext.getConnectionString();
         final ConnectionStringBuilder connectionString = new ConnectionStringBuilder()
@@ -140,11 +152,13 @@ public class SecurityExceptionsTest extends ApiTestBase {
                 .setSasKeyName("---------------wrongkey------------")
                 .setSasKey(correctConnectionString.getSasKey());
 
-        ehClient = EventHubClient.createFromConnectionStringSync(connectionString.toString(), TestContext.EXECUTOR_SERVICE);
-        ehClient.createReceiverSync(TestContext.getConsumerGroupName(), PARTITION_ID, EventPosition.fromStartOfStream());
+        Assertions.assertThrows(AuthorizationFailedException.class, () -> {
+            ehClient = EventHubClient.createFromConnectionStringSync(connectionString.toString(), TestContext.EXECUTOR_SERVICE);
+            ehClient.createReceiverSync(TestContext.getConsumerGroupName(), PARTITION_ID, EventPosition.fromStartOfStream());
+        });
     }
 
-    @Test(expected = IllegalEntityException.class)
+    @Test
     public void testSendToNonExistentEventHub() throws Throwable {
         final ConnectionStringBuilder correctConnectionString = TestContext.getConnectionString();
         final ConnectionStringBuilder connectionString = new ConnectionStringBuilder()
@@ -153,11 +167,13 @@ public class SecurityExceptionsTest extends ApiTestBase {
                 .setSasKeyName(correctConnectionString.getSasKeyName())
                 .setSasKey(correctConnectionString.getSasKey());
 
-        ehClient = EventHubClient.createFromConnectionStringSync(connectionString.toString(), TestContext.EXECUTOR_SERVICE);
-        ehClient.sendSync(EventData.create("test string".getBytes()));
+        Assertions.assertThrows(IllegalEntityException.class, () -> {
+            ehClient = EventHubClient.createFromConnectionStringSync(connectionString.toString(), TestContext.EXECUTOR_SERVICE);
+            ehClient.sendSync(EventData.create("test string".getBytes()));
+        });
     }
 
-    @Test(expected = IllegalEntityException.class)
+    @Test
     public void testReceiveFromNonExistentEventHub() throws Throwable {
         final ConnectionStringBuilder correctConnectionString = TestContext.getConnectionString();
         final ConnectionStringBuilder connectionString = new ConnectionStringBuilder()
@@ -166,11 +182,13 @@ public class SecurityExceptionsTest extends ApiTestBase {
                 .setSasKeyName(correctConnectionString.getSasKeyName())
                 .setSasKey(correctConnectionString.getSasKey());
 
-        ehClient = EventHubClient.createFromConnectionStringSync(connectionString.toString(), TestContext.EXECUTOR_SERVICE);
-        ehClient.createReceiverSync(TestContext.getConsumerGroupName(), PARTITION_ID, EventPosition.fromStartOfStream());
+        Assertions.assertThrows(IllegalEntityException.class, () -> {
+            ehClient = EventHubClient.createFromConnectionStringSync(connectionString.toString(), TestContext.EXECUTOR_SERVICE);
+            ehClient.createReceiverSync(TestContext.getConsumerGroupName(), PARTITION_ID, EventPosition.fromStartOfStream());
+        });
     }
 
-    @After
+    @AfterEach
     public void cleanup() throws EventHubException {
         if (ehClient != null) {
             ehClient.closeSync();

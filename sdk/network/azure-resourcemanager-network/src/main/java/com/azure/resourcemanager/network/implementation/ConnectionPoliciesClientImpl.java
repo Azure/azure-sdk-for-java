@@ -120,19 +120,7 @@ public final class ConnectionPoliciesClientImpl implements ConnectionPoliciesCli
             @HeaderParam("Accept") String accept, Context context);
     }
 
-    /**
-     * Retrieves the details of a ConnectionPolicy.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param virtualHubName The name of the VirtualHub.
-     * @param connectionPolicyName The name of the ConnectionPolicy that is unique within a VirtualHub. This name can be
-     * used to access the resource.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return connectionPolicy resource defined for VirtualHub along with {@link Response} on successful completion of
-     * {@link Mono}.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Response<ConnectionPolicyInner>> getWithResponseAsync(String resourceGroupName, String virtualHubName,
         String connectionPolicyName) {
@@ -155,7 +143,7 @@ public final class ConnectionPoliciesClientImpl implements ConnectionPoliciesCli
             return Mono
                 .error(new IllegalArgumentException("Parameter connectionPolicyName is required and cannot be null."));
         }
-        final String apiVersion = "2025-07-01";
+        final String apiVersion = "2026-05-01";
         final String accept = "application/json";
         return FluxUtil
             .withContext(context -> service.get(this.client.getEndpoint(), apiVersion, this.client.getSubscriptionId(),
@@ -199,25 +187,14 @@ public final class ConnectionPoliciesClientImpl implements ConnectionPoliciesCli
             return Mono
                 .error(new IllegalArgumentException("Parameter connectionPolicyName is required and cannot be null."));
         }
-        final String apiVersion = "2025-07-01";
+        final String apiVersion = "2026-05-01";
         final String accept = "application/json";
         context = this.client.mergeContext(context);
         return service.get(this.client.getEndpoint(), apiVersion, this.client.getSubscriptionId(), resourceGroupName,
             virtualHubName, connectionPolicyName, accept, context);
     }
 
-    /**
-     * Retrieves the details of a ConnectionPolicy.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param virtualHubName The name of the VirtualHub.
-     * @param connectionPolicyName The name of the ConnectionPolicy that is unique within a VirtualHub. This name can be
-     * used to access the resource.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return connectionPolicy resource defined for VirtualHub on successful completion of {@link Mono}.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<ConnectionPolicyInner> getAsync(String resourceGroupName, String virtualHubName,
         String connectionPolicyName) {
@@ -225,56 +202,20 @@ public final class ConnectionPoliciesClientImpl implements ConnectionPoliciesCli
             .flatMap(res -> Mono.justOrEmpty(res.getValue()));
     }
 
-    /**
-     * Retrieves the details of a ConnectionPolicy.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param virtualHubName The name of the VirtualHub.
-     * @param connectionPolicyName The name of the ConnectionPolicy that is unique within a VirtualHub. This name can be
-     * used to access the resource.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return connectionPolicy resource defined for VirtualHub along with {@link Response}.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Response<ConnectionPolicyInner> getWithResponse(String resourceGroupName, String virtualHubName,
         String connectionPolicyName, Context context) {
         return getWithResponseAsync(resourceGroupName, virtualHubName, connectionPolicyName, context).block();
     }
 
-    /**
-     * Retrieves the details of a ConnectionPolicy.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param virtualHubName The name of the VirtualHub.
-     * @param connectionPolicyName The name of the ConnectionPolicy that is unique within a VirtualHub. This name can be
-     * used to access the resource.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return connectionPolicy resource defined for VirtualHub.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public ConnectionPolicyInner get(String resourceGroupName, String virtualHubName, String connectionPolicyName) {
         return getWithResponse(resourceGroupName, virtualHubName, connectionPolicyName, Context.NONE).getValue();
     }
 
-    /**
-     * Creates a ConnectionPolicy if it doesn't exist else updates the existing one.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param virtualHubName The name of the VirtualHub.
-     * @param connectionPolicyName The name of the ConnectionPolicy that is unique within a VirtualHub. This name can be
-     * used to access the resource.
-     * @param resource Parameters supplied to create or update a ConnectionPolicy.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return connectionPolicy resource defined for VirtualHub along with {@link Response} on successful completion of
-     * {@link Mono}.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Response<Flux<ByteBuffer>>> createOrUpdateWithResponseAsync(String resourceGroupName,
         String virtualHubName, String connectionPolicyName, ConnectionPolicyInner resource) {
@@ -302,7 +243,7 @@ public final class ConnectionPoliciesClientImpl implements ConnectionPoliciesCli
         } else {
             resource.validate();
         }
-        final String apiVersion = "2025-07-01";
+        final String apiVersion = "2026-05-01";
         final String contentType = "application/json";
         final String accept = "application/json";
         return FluxUtil
@@ -354,7 +295,7 @@ public final class ConnectionPoliciesClientImpl implements ConnectionPoliciesCli
         } else {
             resource.validate();
         }
-        final String apiVersion = "2025-07-01";
+        final String apiVersion = "2026-05-01";
         final String contentType = "application/json";
         final String accept = "application/json";
         context = this.client.mergeContext(context);
@@ -362,19 +303,7 @@ public final class ConnectionPoliciesClientImpl implements ConnectionPoliciesCli
             resourceGroupName, virtualHubName, connectionPolicyName, contentType, accept, resource, context);
     }
 
-    /**
-     * Creates a ConnectionPolicy if it doesn't exist else updates the existing one.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param virtualHubName The name of the VirtualHub.
-     * @param connectionPolicyName The name of the ConnectionPolicy that is unique within a VirtualHub. This name can be
-     * used to access the resource.
-     * @param resource Parameters supplied to create or update a ConnectionPolicy.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the {@link PollerFlux} for polling of connectionPolicy resource defined for VirtualHub.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public PollerFlux<PollResult<ConnectionPolicyInner>, ConnectionPolicyInner> beginCreateOrUpdateAsync(
         String resourceGroupName, String virtualHubName, String connectionPolicyName, ConnectionPolicyInner resource) {
@@ -410,19 +339,7 @@ public final class ConnectionPoliciesClientImpl implements ConnectionPoliciesCli
             this.client.getHttpPipeline(), ConnectionPolicyInner.class, ConnectionPolicyInner.class, context);
     }
 
-    /**
-     * Creates a ConnectionPolicy if it doesn't exist else updates the existing one.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param virtualHubName The name of the VirtualHub.
-     * @param connectionPolicyName The name of the ConnectionPolicy that is unique within a VirtualHub. This name can be
-     * used to access the resource.
-     * @param resource Parameters supplied to create or update a ConnectionPolicy.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the {@link SyncPoller} for polling of connectionPolicy resource defined for VirtualHub.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public SyncPoller<PollResult<ConnectionPolicyInner>, ConnectionPolicyInner> beginCreateOrUpdate(
         String resourceGroupName, String virtualHubName, String connectionPolicyName, ConnectionPolicyInner resource) {
@@ -430,20 +347,7 @@ public final class ConnectionPoliciesClientImpl implements ConnectionPoliciesCli
             .getSyncPoller();
     }
 
-    /**
-     * Creates a ConnectionPolicy if it doesn't exist else updates the existing one.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param virtualHubName The name of the VirtualHub.
-     * @param connectionPolicyName The name of the ConnectionPolicy that is unique within a VirtualHub. This name can be
-     * used to access the resource.
-     * @param resource Parameters supplied to create or update a ConnectionPolicy.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the {@link SyncPoller} for polling of connectionPolicy resource defined for VirtualHub.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public SyncPoller<PollResult<ConnectionPolicyInner>, ConnectionPolicyInner> beginCreateOrUpdate(
         String resourceGroupName, String virtualHubName, String connectionPolicyName, ConnectionPolicyInner resource,
@@ -452,19 +356,7 @@ public final class ConnectionPoliciesClientImpl implements ConnectionPoliciesCli
             .getSyncPoller();
     }
 
-    /**
-     * Creates a ConnectionPolicy if it doesn't exist else updates the existing one.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param virtualHubName The name of the VirtualHub.
-     * @param connectionPolicyName The name of the ConnectionPolicy that is unique within a VirtualHub. This name can be
-     * used to access the resource.
-     * @param resource Parameters supplied to create or update a ConnectionPolicy.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return connectionPolicy resource defined for VirtualHub on successful completion of {@link Mono}.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<ConnectionPolicyInner> createOrUpdateAsync(String resourceGroupName, String virtualHubName,
         String connectionPolicyName, ConnectionPolicyInner resource) {
@@ -494,57 +386,21 @@ public final class ConnectionPoliciesClientImpl implements ConnectionPoliciesCli
             .flatMap(this.client::getLroFinalResultOrError);
     }
 
-    /**
-     * Creates a ConnectionPolicy if it doesn't exist else updates the existing one.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param virtualHubName The name of the VirtualHub.
-     * @param connectionPolicyName The name of the ConnectionPolicy that is unique within a VirtualHub. This name can be
-     * used to access the resource.
-     * @param resource Parameters supplied to create or update a ConnectionPolicy.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return connectionPolicy resource defined for VirtualHub.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public ConnectionPolicyInner createOrUpdate(String resourceGroupName, String virtualHubName,
         String connectionPolicyName, ConnectionPolicyInner resource) {
         return createOrUpdateAsync(resourceGroupName, virtualHubName, connectionPolicyName, resource).block();
     }
 
-    /**
-     * Creates a ConnectionPolicy if it doesn't exist else updates the existing one.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param virtualHubName The name of the VirtualHub.
-     * @param connectionPolicyName The name of the ConnectionPolicy that is unique within a VirtualHub. This name can be
-     * used to access the resource.
-     * @param resource Parameters supplied to create or update a ConnectionPolicy.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return connectionPolicy resource defined for VirtualHub.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public ConnectionPolicyInner createOrUpdate(String resourceGroupName, String virtualHubName,
         String connectionPolicyName, ConnectionPolicyInner resource, Context context) {
         return createOrUpdateAsync(resourceGroupName, virtualHubName, connectionPolicyName, resource, context).block();
     }
 
-    /**
-     * Deletes a ConnectionPolicy.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param virtualHubName The name of the VirtualHub.
-     * @param connectionPolicyName The name of the ConnectionPolicy that is unique within a VirtualHub. This name can be
-     * used to access the resource.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the {@link Response} on successful completion of {@link Mono}.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Response<Flux<ByteBuffer>>> deleteWithResponseAsync(String resourceGroupName, String virtualHubName,
         String connectionPolicyName) {
@@ -567,7 +423,7 @@ public final class ConnectionPoliciesClientImpl implements ConnectionPoliciesCli
             return Mono
                 .error(new IllegalArgumentException("Parameter connectionPolicyName is required and cannot be null."));
         }
-        final String apiVersion = "2025-07-01";
+        final String apiVersion = "2026-05-01";
         return FluxUtil
             .withContext(context -> service.delete(this.client.getEndpoint(), apiVersion,
                 this.client.getSubscriptionId(), resourceGroupName, virtualHubName, connectionPolicyName, context))
@@ -609,24 +465,13 @@ public final class ConnectionPoliciesClientImpl implements ConnectionPoliciesCli
             return Mono
                 .error(new IllegalArgumentException("Parameter connectionPolicyName is required and cannot be null."));
         }
-        final String apiVersion = "2025-07-01";
+        final String apiVersion = "2026-05-01";
         context = this.client.mergeContext(context);
         return service.delete(this.client.getEndpoint(), apiVersion, this.client.getSubscriptionId(), resourceGroupName,
             virtualHubName, connectionPolicyName, context);
     }
 
-    /**
-     * Deletes a ConnectionPolicy.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param virtualHubName The name of the VirtualHub.
-     * @param connectionPolicyName The name of the ConnectionPolicy that is unique within a VirtualHub. This name can be
-     * used to access the resource.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the {@link PollerFlux} for polling of long-running operation.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public PollerFlux<PollResult<Void>, Void> beginDeleteAsync(String resourceGroupName, String virtualHubName,
         String connectionPolicyName) {
@@ -659,55 +504,21 @@ public final class ConnectionPoliciesClientImpl implements ConnectionPoliciesCli
             context);
     }
 
-    /**
-     * Deletes a ConnectionPolicy.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param virtualHubName The name of the VirtualHub.
-     * @param connectionPolicyName The name of the ConnectionPolicy that is unique within a VirtualHub. This name can be
-     * used to access the resource.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the {@link SyncPoller} for polling of long-running operation.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public SyncPoller<PollResult<Void>, Void> beginDelete(String resourceGroupName, String virtualHubName,
         String connectionPolicyName) {
         return this.beginDeleteAsync(resourceGroupName, virtualHubName, connectionPolicyName).getSyncPoller();
     }
 
-    /**
-     * Deletes a ConnectionPolicy.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param virtualHubName The name of the VirtualHub.
-     * @param connectionPolicyName The name of the ConnectionPolicy that is unique within a VirtualHub. This name can be
-     * used to access the resource.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the {@link SyncPoller} for polling of long-running operation.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public SyncPoller<PollResult<Void>, Void> beginDelete(String resourceGroupName, String virtualHubName,
         String connectionPolicyName, Context context) {
         return this.beginDeleteAsync(resourceGroupName, virtualHubName, connectionPolicyName, context).getSyncPoller();
     }
 
-    /**
-     * Deletes a ConnectionPolicy.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param virtualHubName The name of the VirtualHub.
-     * @param connectionPolicyName The name of the ConnectionPolicy that is unique within a VirtualHub. This name can be
-     * used to access the resource.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return A {@link Mono} that completes when a successful response is received.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Void> deleteAsync(String resourceGroupName, String virtualHubName, String connectionPolicyName) {
         return beginDeleteAsync(resourceGroupName, virtualHubName, connectionPolicyName).last()
@@ -734,34 +545,13 @@ public final class ConnectionPoliciesClientImpl implements ConnectionPoliciesCli
             .flatMap(this.client::getLroFinalResultOrError);
     }
 
-    /**
-     * Deletes a ConnectionPolicy.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param virtualHubName The name of the VirtualHub.
-     * @param connectionPolicyName The name of the ConnectionPolicy that is unique within a VirtualHub. This name can be
-     * used to access the resource.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public void delete(String resourceGroupName, String virtualHubName, String connectionPolicyName) {
         deleteAsync(resourceGroupName, virtualHubName, connectionPolicyName).block();
     }
 
-    /**
-     * Deletes a ConnectionPolicy.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param virtualHubName The name of the VirtualHub.
-     * @param connectionPolicyName The name of the ConnectionPolicy that is unique within a VirtualHub. This name can be
-     * used to access the resource.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public void delete(String resourceGroupName, String virtualHubName, String connectionPolicyName, Context context) {
         deleteAsync(resourceGroupName, virtualHubName, connectionPolicyName, context).block();
@@ -796,7 +586,7 @@ public final class ConnectionPoliciesClientImpl implements ConnectionPoliciesCli
         if (virtualHubName == null) {
             return Mono.error(new IllegalArgumentException("Parameter virtualHubName is required and cannot be null."));
         }
-        final String apiVersion = "2025-07-01";
+        final String apiVersion = "2026-05-01";
         final String accept = "application/json";
         return FluxUtil
             .withContext(context -> service.list(this.client.getEndpoint(), apiVersion, this.client.getSubscriptionId(),
@@ -836,7 +626,7 @@ public final class ConnectionPoliciesClientImpl implements ConnectionPoliciesCli
         if (virtualHubName == null) {
             return Mono.error(new IllegalArgumentException("Parameter virtualHubName is required and cannot be null."));
         }
-        final String apiVersion = "2025-07-01";
+        final String apiVersion = "2026-05-01";
         final String accept = "application/json";
         context = this.client.mergeContext(context);
         return service
@@ -846,17 +636,7 @@ public final class ConnectionPoliciesClientImpl implements ConnectionPoliciesCli
                 res.getValue().value(), res.getValue().nextLink(), null));
     }
 
-    /**
-     * Retrieves the details of all ConnectionPolicies.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param virtualHubName The name of the VirtualHub.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return list of ConnectionPolicies and a URL nextLink to get the next set of results as paginated response with
-     * {@link PagedFlux}.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.COLLECTION)
     public PagedFlux<ConnectionPolicyInner> listAsync(String resourceGroupName, String virtualHubName) {
         return new PagedFlux<>(() -> listSinglePageAsync(resourceGroupName, virtualHubName),
@@ -882,34 +662,13 @@ public final class ConnectionPoliciesClientImpl implements ConnectionPoliciesCli
             nextLink -> listNextSinglePageAsync(nextLink, context));
     }
 
-    /**
-     * Retrieves the details of all ConnectionPolicies.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param virtualHubName The name of the VirtualHub.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return list of ConnectionPolicies and a URL nextLink to get the next set of results as paginated response with
-     * {@link PagedIterable}.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.COLLECTION)
     public PagedIterable<ConnectionPolicyInner> list(String resourceGroupName, String virtualHubName) {
         return new PagedIterable<>(listAsync(resourceGroupName, virtualHubName));
     }
 
-    /**
-     * Retrieves the details of all ConnectionPolicies.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param virtualHubName The name of the VirtualHub.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return list of ConnectionPolicies and a URL nextLink to get the next set of results as paginated response with
-     * {@link PagedIterable}.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.COLLECTION)
     public PagedIterable<ConnectionPolicyInner> list(String resourceGroupName, String virtualHubName, Context context) {
         return new PagedIterable<>(listAsync(resourceGroupName, virtualHubName, context));

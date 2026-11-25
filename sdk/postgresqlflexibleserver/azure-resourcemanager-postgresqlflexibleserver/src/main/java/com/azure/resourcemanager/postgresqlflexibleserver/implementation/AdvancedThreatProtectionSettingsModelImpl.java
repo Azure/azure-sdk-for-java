@@ -68,10 +68,7 @@ public final class AdvancedThreatProtectionSettingsModelImpl implements Advanced
     }
 
     public AdvancedThreatProtectionSettingsModel create() {
-        this.innerObject = serviceManager.serviceClient()
-            .getServerThreatProtectionSettings()
-            .createOrUpdate(resourceGroupName, serverName, threatProtectionName, this.innerModel(), Context.NONE);
-        return this;
+        return this.create(Context.NONE);
     }
 
     public AdvancedThreatProtectionSettingsModel create(Context context) {
@@ -93,10 +90,7 @@ public final class AdvancedThreatProtectionSettingsModelImpl implements Advanced
     }
 
     public AdvancedThreatProtectionSettingsModel apply() {
-        this.innerObject = serviceManager.serviceClient()
-            .getServerThreatProtectionSettings()
-            .createOrUpdate(resourceGroupName, serverName, threatProtectionName, this.innerModel(), Context.NONE);
-        return this;
+        return this.apply(Context.NONE);
     }
 
     public AdvancedThreatProtectionSettingsModel apply(Context context) {
@@ -110,10 +104,16 @@ public final class AdvancedThreatProtectionSettingsModelImpl implements Advanced
         com.azure.resourcemanager.postgresqlflexibleserver.PostgreSqlManager serviceManager) {
         this.innerObject = innerObject;
         this.serviceManager = serviceManager;
-        this.resourceGroupName = ResourceManagerUtils.getValueFromIdByName(innerObject.id(), "resourceGroups");
-        this.serverName = ResourceManagerUtils.getValueFromIdByName(innerObject.id(), "flexibleServers");
-        this.threatProtectionName = ThreatProtectionName.fromString(
-            ResourceManagerUtils.getValueFromIdByName(innerObject.id(), "advancedThreatProtectionSettings"));
+        this.resourceGroupName = ResourceManagerUtils.getValueFromIdByParameterName(innerObject.id(),
+            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.DBforPostgreSQL/flexibleServers/{serverName}/advancedThreatProtectionSettings/{threatProtectionName}",
+            "resourceGroupName");
+        this.serverName = ResourceManagerUtils.getValueFromIdByParameterName(innerObject.id(),
+            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.DBforPostgreSQL/flexibleServers/{serverName}/advancedThreatProtectionSettings/{threatProtectionName}",
+            "serverName");
+        this.threatProtectionName = ThreatProtectionName.fromString(ResourceManagerUtils.getValueFromIdByParameterName(
+            innerObject.id(),
+            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.DBforPostgreSQL/flexibleServers/{serverName}/advancedThreatProtectionSettings/{threatProtectionName}",
+            "threatProtectionName"));
     }
 
     public AdvancedThreatProtectionSettingsModelImpl withState(ThreatProtectionState state) {

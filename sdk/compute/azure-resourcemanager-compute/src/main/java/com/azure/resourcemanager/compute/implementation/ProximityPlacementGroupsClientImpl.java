@@ -145,19 +145,7 @@ public final class ProximityPlacementGroupsClientImpl implements InnerSupportsGe
             @HeaderParam("Accept") String accept, Context context);
     }
 
-    /**
-     * Retrieves information about a proximity placement group .
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param proximityPlacementGroupName The name of the proximity placement group.
-     * @param includeColocationStatus includeColocationStatus=true enables fetching the colocation status of all the
-     * resources in the proximity placement group.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ApiErrorException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return specifies information about the proximity placement group along with {@link Response} on successful
-     * completion of {@link Mono}.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Response<ProximityPlacementGroupInner>> getByResourceGroupWithResponseAsync(String resourceGroupName,
         String proximityPlacementGroupName, String includeColocationStatus) {
@@ -177,7 +165,7 @@ public final class ProximityPlacementGroupsClientImpl implements InnerSupportsGe
             return Mono.error(
                 new IllegalArgumentException("Parameter proximityPlacementGroupName is required and cannot be null."));
         }
-        final String apiVersion = "2026-03-01";
+        final String apiVersion = "2026-04-01";
         final String accept = "application/json";
         return FluxUtil
             .withContext(context -> service.getByResourceGroup(this.client.getEndpoint(), apiVersion,
@@ -219,23 +207,14 @@ public final class ProximityPlacementGroupsClientImpl implements InnerSupportsGe
             return Mono.error(
                 new IllegalArgumentException("Parameter proximityPlacementGroupName is required and cannot be null."));
         }
-        final String apiVersion = "2026-03-01";
+        final String apiVersion = "2026-04-01";
         final String accept = "application/json";
         context = this.client.mergeContext(context);
         return service.getByResourceGroup(this.client.getEndpoint(), apiVersion, this.client.getSubscriptionId(),
             resourceGroupName, proximityPlacementGroupName, includeColocationStatus, accept, context);
     }
 
-    /**
-     * Retrieves information about a proximity placement group .
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param proximityPlacementGroupName The name of the proximity placement group.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ApiErrorException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return specifies information about the proximity placement group on successful completion of {@link Mono}.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<ProximityPlacementGroupInner> getByResourceGroupAsync(String resourceGroupName,
         String proximityPlacementGroupName) {
@@ -244,19 +223,7 @@ public final class ProximityPlacementGroupsClientImpl implements InnerSupportsGe
             includeColocationStatus).flatMap(res -> Mono.justOrEmpty(res.getValue()));
     }
 
-    /**
-     * Retrieves information about a proximity placement group .
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param proximityPlacementGroupName The name of the proximity placement group.
-     * @param includeColocationStatus includeColocationStatus=true enables fetching the colocation status of all the
-     * resources in the proximity placement group.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ApiErrorException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return specifies information about the proximity placement group along with {@link Response}.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Response<ProximityPlacementGroupInner> getByResourceGroupWithResponse(String resourceGroupName,
         String proximityPlacementGroupName, String includeColocationStatus, Context context) {
@@ -264,16 +231,7 @@ public final class ProximityPlacementGroupsClientImpl implements InnerSupportsGe
             includeColocationStatus, context).block();
     }
 
-    /**
-     * Retrieves information about a proximity placement group .
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param proximityPlacementGroupName The name of the proximity placement group.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ApiErrorException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return specifies information about the proximity placement group.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public ProximityPlacementGroupInner getByResourceGroup(String resourceGroupName,
         String proximityPlacementGroupName) {
@@ -282,18 +240,7 @@ public final class ProximityPlacementGroupsClientImpl implements InnerSupportsGe
             Context.NONE).getValue();
     }
 
-    /**
-     * Create or update a proximity placement group.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param proximityPlacementGroupName The name of the proximity placement group.
-     * @param parameters Parameters supplied to the Create Proximity Placement Group operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ApiErrorException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return specifies information about the proximity placement group along with {@link Response} on successful
-     * completion of {@link Mono}.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Response<ProximityPlacementGroupInner>> createOrUpdateWithResponseAsync(String resourceGroupName,
         String proximityPlacementGroupName, ProximityPlacementGroupInner parameters) {
@@ -318,7 +265,7 @@ public final class ProximityPlacementGroupsClientImpl implements InnerSupportsGe
         } else {
             parameters.validate();
         }
-        final String apiVersion = "2026-03-01";
+        final String apiVersion = "2026-04-01";
         final String contentType = "application/json";
         final String accept = "application/json";
         return FluxUtil
@@ -365,7 +312,7 @@ public final class ProximityPlacementGroupsClientImpl implements InnerSupportsGe
         } else {
             parameters.validate();
         }
-        final String apiVersion = "2026-03-01";
+        final String apiVersion = "2026-04-01";
         final String contentType = "application/json";
         final String accept = "application/json";
         context = this.client.mergeContext(context);
@@ -373,17 +320,7 @@ public final class ProximityPlacementGroupsClientImpl implements InnerSupportsGe
             resourceGroupName, proximityPlacementGroupName, contentType, accept, parameters, context);
     }
 
-    /**
-     * Create or update a proximity placement group.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param proximityPlacementGroupName The name of the proximity placement group.
-     * @param parameters Parameters supplied to the Create Proximity Placement Group operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ApiErrorException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return specifies information about the proximity placement group on successful completion of {@link Mono}.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<ProximityPlacementGroupInner> createOrUpdateAsync(String resourceGroupName,
         String proximityPlacementGroupName, ProximityPlacementGroupInner parameters) {
@@ -391,18 +328,7 @@ public final class ProximityPlacementGroupsClientImpl implements InnerSupportsGe
             .flatMap(res -> Mono.justOrEmpty(res.getValue()));
     }
 
-    /**
-     * Create or update a proximity placement group.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param proximityPlacementGroupName The name of the proximity placement group.
-     * @param parameters Parameters supplied to the Create Proximity Placement Group operation.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ApiErrorException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return specifies information about the proximity placement group along with {@link Response}.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Response<ProximityPlacementGroupInner> createOrUpdateWithResponse(String resourceGroupName,
         String proximityPlacementGroupName, ProximityPlacementGroupInner parameters, Context context) {
@@ -410,17 +336,7 @@ public final class ProximityPlacementGroupsClientImpl implements InnerSupportsGe
             .block();
     }
 
-    /**
-     * Create or update a proximity placement group.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param proximityPlacementGroupName The name of the proximity placement group.
-     * @param parameters Parameters supplied to the Create Proximity Placement Group operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ApiErrorException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return specifies information about the proximity placement group.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public ProximityPlacementGroupInner createOrUpdate(String resourceGroupName, String proximityPlacementGroupName,
         ProximityPlacementGroupInner parameters) {
@@ -428,18 +344,7 @@ public final class ProximityPlacementGroupsClientImpl implements InnerSupportsGe
             .getValue();
     }
 
-    /**
-     * Update a proximity placement group.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param proximityPlacementGroupName The name of the proximity placement group.
-     * @param parameters Parameters supplied to the Update Proximity Placement Group operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ApiErrorException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return specifies information about the proximity placement group along with {@link Response} on successful
-     * completion of {@link Mono}.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Response<ProximityPlacementGroupInner>> updateWithResponseAsync(String resourceGroupName,
         String proximityPlacementGroupName, ProximityPlacementGroupUpdate parameters) {
@@ -464,7 +369,7 @@ public final class ProximityPlacementGroupsClientImpl implements InnerSupportsGe
         } else {
             parameters.validate();
         }
-        final String apiVersion = "2026-03-01";
+        final String apiVersion = "2026-04-01";
         final String contentType = "application/json";
         final String accept = "application/json";
         return FluxUtil
@@ -511,7 +416,7 @@ public final class ProximityPlacementGroupsClientImpl implements InnerSupportsGe
         } else {
             parameters.validate();
         }
-        final String apiVersion = "2026-03-01";
+        final String apiVersion = "2026-04-01";
         final String contentType = "application/json";
         final String accept = "application/json";
         context = this.client.mergeContext(context);
@@ -519,17 +424,7 @@ public final class ProximityPlacementGroupsClientImpl implements InnerSupportsGe
             proximityPlacementGroupName, contentType, accept, parameters, context);
     }
 
-    /**
-     * Update a proximity placement group.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param proximityPlacementGroupName The name of the proximity placement group.
-     * @param parameters Parameters supplied to the Update Proximity Placement Group operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ApiErrorException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return specifies information about the proximity placement group on successful completion of {@link Mono}.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<ProximityPlacementGroupInner> updateAsync(String resourceGroupName, String proximityPlacementGroupName,
         ProximityPlacementGroupUpdate parameters) {
@@ -537,51 +432,21 @@ public final class ProximityPlacementGroupsClientImpl implements InnerSupportsGe
             .flatMap(res -> Mono.justOrEmpty(res.getValue()));
     }
 
-    /**
-     * Update a proximity placement group.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param proximityPlacementGroupName The name of the proximity placement group.
-     * @param parameters Parameters supplied to the Update Proximity Placement Group operation.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ApiErrorException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return specifies information about the proximity placement group along with {@link Response}.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Response<ProximityPlacementGroupInner> updateWithResponse(String resourceGroupName,
         String proximityPlacementGroupName, ProximityPlacementGroupUpdate parameters, Context context) {
         return updateWithResponseAsync(resourceGroupName, proximityPlacementGroupName, parameters, context).block();
     }
 
-    /**
-     * Update a proximity placement group.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param proximityPlacementGroupName The name of the proximity placement group.
-     * @param parameters Parameters supplied to the Update Proximity Placement Group operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ApiErrorException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return specifies information about the proximity placement group.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public ProximityPlacementGroupInner update(String resourceGroupName, String proximityPlacementGroupName,
         ProximityPlacementGroupUpdate parameters) {
         return updateWithResponse(resourceGroupName, proximityPlacementGroupName, parameters, Context.NONE).getValue();
     }
 
-    /**
-     * Delete a proximity placement group.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param proximityPlacementGroupName The name of the proximity placement group.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ApiErrorException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the {@link Response} on successful completion of {@link Mono}.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Response<Void>> deleteWithResponseAsync(String resourceGroupName, String proximityPlacementGroupName) {
         if (this.client.getEndpoint() == null) {
@@ -600,7 +465,7 @@ public final class ProximityPlacementGroupsClientImpl implements InnerSupportsGe
             return Mono.error(
                 new IllegalArgumentException("Parameter proximityPlacementGroupName is required and cannot be null."));
         }
-        final String apiVersion = "2026-03-01";
+        final String apiVersion = "2026-04-01";
         return FluxUtil
             .withContext(context -> service.delete(this.client.getEndpoint(), apiVersion,
                 this.client.getSubscriptionId(), resourceGroupName, proximityPlacementGroupName, context))
@@ -637,53 +502,26 @@ public final class ProximityPlacementGroupsClientImpl implements InnerSupportsGe
             return Mono.error(
                 new IllegalArgumentException("Parameter proximityPlacementGroupName is required and cannot be null."));
         }
-        final String apiVersion = "2026-03-01";
+        final String apiVersion = "2026-04-01";
         context = this.client.mergeContext(context);
         return service.delete(this.client.getEndpoint(), apiVersion, this.client.getSubscriptionId(), resourceGroupName,
             proximityPlacementGroupName, context);
     }
 
-    /**
-     * Delete a proximity placement group.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param proximityPlacementGroupName The name of the proximity placement group.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ApiErrorException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return A {@link Mono} that completes when a successful response is received.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Void> deleteAsync(String resourceGroupName, String proximityPlacementGroupName) {
         return deleteWithResponseAsync(resourceGroupName, proximityPlacementGroupName).flatMap(ignored -> Mono.empty());
     }
 
-    /**
-     * Delete a proximity placement group.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param proximityPlacementGroupName The name of the proximity placement group.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ApiErrorException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the {@link Response}.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Response<Void> deleteWithResponse(String resourceGroupName, String proximityPlacementGroupName,
         Context context) {
         return deleteWithResponseAsync(resourceGroupName, proximityPlacementGroupName, context).block();
     }
 
-    /**
-     * Delete a proximity placement group.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param proximityPlacementGroupName The name of the proximity placement group.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ApiErrorException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public void delete(String resourceGroupName, String proximityPlacementGroupName) {
         deleteWithResponse(resourceGroupName, proximityPlacementGroupName, Context.NONE);
@@ -714,7 +552,7 @@ public final class ProximityPlacementGroupsClientImpl implements InnerSupportsGe
             return Mono
                 .error(new IllegalArgumentException("Parameter resourceGroupName is required and cannot be null."));
         }
-        final String apiVersion = "2026-03-01";
+        final String apiVersion = "2026-04-01";
         final String accept = "application/json";
         return FluxUtil
             .withContext(context -> service.listByResourceGroup(this.client.getEndpoint(), apiVersion,
@@ -750,7 +588,7 @@ public final class ProximityPlacementGroupsClientImpl implements InnerSupportsGe
             return Mono
                 .error(new IllegalArgumentException("Parameter resourceGroupName is required and cannot be null."));
         }
-        final String apiVersion = "2026-03-01";
+        final String apiVersion = "2026-04-01";
         final String accept = "application/json";
         context = this.client.mergeContext(context);
         return service
@@ -760,15 +598,7 @@ public final class ProximityPlacementGroupsClientImpl implements InnerSupportsGe
                 res.getValue().value(), res.getValue().nextLink(), null));
     }
 
-    /**
-     * Lists all proximity placement groups in a resource group.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ApiErrorException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the List Proximity Placement Group operation response as paginated response with {@link PagedFlux}.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.COLLECTION)
     public PagedFlux<ProximityPlacementGroupInner> listByResourceGroupAsync(String resourceGroupName) {
         return new PagedFlux<>(() -> listByResourceGroupSinglePageAsync(resourceGroupName),
@@ -792,30 +622,13 @@ public final class ProximityPlacementGroupsClientImpl implements InnerSupportsGe
             nextLink -> listByResourceGroupNextSinglePageAsync(nextLink, context));
     }
 
-    /**
-     * Lists all proximity placement groups in a resource group.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ApiErrorException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the List Proximity Placement Group operation response as paginated response with {@link PagedIterable}.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.COLLECTION)
     public PagedIterable<ProximityPlacementGroupInner> listByResourceGroup(String resourceGroupName) {
         return new PagedIterable<>(listByResourceGroupAsync(resourceGroupName));
     }
 
-    /**
-     * Lists all proximity placement groups in a resource group.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ApiErrorException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the List Proximity Placement Group operation response as paginated response with {@link PagedIterable}.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.COLLECTION)
     public PagedIterable<ProximityPlacementGroupInner> listByResourceGroup(String resourceGroupName, Context context) {
         return new PagedIterable<>(listByResourceGroupAsync(resourceGroupName, context));
@@ -839,7 +652,7 @@ public final class ProximityPlacementGroupsClientImpl implements InnerSupportsGe
             return Mono.error(new IllegalArgumentException(
                 "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
-        final String apiVersion = "2026-03-01";
+        final String apiVersion = "2026-04-01";
         final String accept = "application/json";
         return FluxUtil
             .withContext(context -> service.list(this.client.getEndpoint(), apiVersion, this.client.getSubscriptionId(),
@@ -869,7 +682,7 @@ public final class ProximityPlacementGroupsClientImpl implements InnerSupportsGe
             return Mono.error(new IllegalArgumentException(
                 "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
-        final String apiVersion = "2026-03-01";
+        final String apiVersion = "2026-04-01";
         final String accept = "application/json";
         context = this.client.mergeContext(context);
         return service.list(this.client.getEndpoint(), apiVersion, this.client.getSubscriptionId(), accept, context)
@@ -877,13 +690,7 @@ public final class ProximityPlacementGroupsClientImpl implements InnerSupportsGe
                 res.getValue().value(), res.getValue().nextLink(), null));
     }
 
-    /**
-     * Lists all proximity placement groups in a subscription.
-     * 
-     * @throws ApiErrorException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the List Proximity Placement Group operation response as paginated response with {@link PagedFlux}.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.COLLECTION)
     public PagedFlux<ProximityPlacementGroupInner> listAsync() {
         return new PagedFlux<>(() -> listSinglePageAsync(),
@@ -905,27 +712,13 @@ public final class ProximityPlacementGroupsClientImpl implements InnerSupportsGe
             nextLink -> listBySubscriptionNextSinglePageAsync(nextLink, context));
     }
 
-    /**
-     * Lists all proximity placement groups in a subscription.
-     * 
-     * @throws ApiErrorException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the List Proximity Placement Group operation response as paginated response with {@link PagedIterable}.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.COLLECTION)
     public PagedIterable<ProximityPlacementGroupInner> list() {
         return new PagedIterable<>(listAsync());
     }
 
-    /**
-     * Lists all proximity placement groups in a subscription.
-     * 
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ApiErrorException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the List Proximity Placement Group operation response as paginated response with {@link PagedIterable}.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.COLLECTION)
     public PagedIterable<ProximityPlacementGroupInner> list(Context context) {
         return new PagedIterable<>(listAsync(context));

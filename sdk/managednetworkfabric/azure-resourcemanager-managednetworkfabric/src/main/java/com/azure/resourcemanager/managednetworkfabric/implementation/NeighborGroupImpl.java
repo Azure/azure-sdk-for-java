@@ -139,10 +139,7 @@ public final class NeighborGroupImpl implements NeighborGroup, NeighborGroup.Def
     }
 
     public NeighborGroup create() {
-        this.innerObject = serviceManager.serviceClient()
-            .getNeighborGroups()
-            .create(resourceGroupName, neighborGroupName, this.innerModel(), Context.NONE);
-        return this;
+        return this.create(Context.NONE);
     }
 
     public NeighborGroup create(Context context) {
@@ -165,10 +162,7 @@ public final class NeighborGroupImpl implements NeighborGroup, NeighborGroup.Def
     }
 
     public NeighborGroup apply() {
-        this.innerObject = serviceManager.serviceClient()
-            .getNeighborGroups()
-            .update(resourceGroupName, neighborGroupName, updateBody, Context.NONE);
-        return this;
+        return this.apply(Context.NONE);
     }
 
     public NeighborGroup apply(Context context) {
@@ -182,16 +176,16 @@ public final class NeighborGroupImpl implements NeighborGroup, NeighborGroup.Def
         com.azure.resourcemanager.managednetworkfabric.ManagedNetworkFabricManager serviceManager) {
         this.innerObject = innerObject;
         this.serviceManager = serviceManager;
-        this.resourceGroupName = ResourceManagerUtils.getValueFromIdByName(innerObject.id(), "resourceGroups");
-        this.neighborGroupName = ResourceManagerUtils.getValueFromIdByName(innerObject.id(), "neighborGroups");
+        this.resourceGroupName = ResourceManagerUtils.getValueFromIdByParameterName(innerObject.id(),
+            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.ManagedNetworkFabric/neighborGroups/{neighborGroupName}",
+            "resourceGroupName");
+        this.neighborGroupName = ResourceManagerUtils.getValueFromIdByParameterName(innerObject.id(),
+            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.ManagedNetworkFabric/neighborGroups/{neighborGroupName}",
+            "neighborGroupName");
     }
 
     public NeighborGroup refresh() {
-        this.innerObject = serviceManager.serviceClient()
-            .getNeighborGroups()
-            .getByResourceGroupWithResponse(resourceGroupName, neighborGroupName, Context.NONE)
-            .getValue();
-        return this;
+        return this.refresh(Context.NONE);
     }
 
     public NeighborGroup refresh(Context context) {

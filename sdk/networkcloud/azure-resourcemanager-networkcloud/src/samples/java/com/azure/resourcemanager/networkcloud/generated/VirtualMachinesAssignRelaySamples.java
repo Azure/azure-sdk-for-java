@@ -12,7 +12,7 @@ import com.azure.resourcemanager.networkcloud.models.VirtualMachineAssignRelayPa
  */
 public final class VirtualMachinesAssignRelaySamples {
     /*
-     * x-ms-original-file: 2026-05-01-preview/VirtualMachines_AssignRelay.json
+     * x-ms-original-file: 2026-07-01/VirtualMachines_AssignRelay.json
      */
     /**
      * Sample code: Assign relay to the Microsoft.HybridCompute machine for a virtual machine.

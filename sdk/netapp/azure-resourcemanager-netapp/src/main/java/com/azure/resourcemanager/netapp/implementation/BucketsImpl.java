@@ -49,7 +49,7 @@ public final class BucketsImpl implements Buckets {
 
     public void delete(String resourceGroupName, String accountName, String poolName, String volumeName,
         String bucketName) {
-        this.serviceClient().delete(resourceGroupName, accountName, poolName, volumeName, bucketName);
+        this.delete(resourceGroupName, accountName, poolName, volumeName, bucketName, Context.NONE);
     }
 
     public void delete(String resourceGroupName, String accountName, String poolName, String volumeName,
@@ -59,9 +59,7 @@ public final class BucketsImpl implements Buckets {
 
     public PagedIterable<Bucket> list(String resourceGroupName, String accountName, String poolName,
         String volumeName) {
-        PagedIterable<BucketInner> inner
-            = this.serviceClient().list(resourceGroupName, accountName, poolName, volumeName);
-        return ResourceManagerUtils.mapPage(inner, inner1 -> new BucketImpl(inner1, this.manager()));
+        return this.list(resourceGroupName, accountName, poolName, volumeName, Context.NONE);
     }
 
     public PagedIterable<Bucket> list(String resourceGroupName, String accountName, String poolName, String volumeName,
@@ -94,8 +92,8 @@ public final class BucketsImpl implements Buckets {
 
     public void generateAkvCredentials(String resourceGroupName, String accountName, String poolName, String volumeName,
         String bucketName, BucketCredentialsExpiry body) {
-        this.serviceClient()
-            .generateAkvCredentials(resourceGroupName, accountName, poolName, volumeName, bucketName, body);
+        this.generateAkvCredentials(resourceGroupName, accountName, poolName, volumeName, bucketName, body,
+            Context.NONE);
     }
 
     public void generateAkvCredentials(String resourceGroupName, String accountName, String poolName, String volumeName,
@@ -106,7 +104,7 @@ public final class BucketsImpl implements Buckets {
 
     public void refreshCertificate(String resourceGroupName, String accountName, String poolName, String volumeName,
         String bucketName) {
-        this.serviceClient().refreshCertificate(resourceGroupName, accountName, poolName, volumeName, bucketName);
+        this.refreshCertificate(resourceGroupName, accountName, poolName, volumeName, bucketName, Context.NONE);
     }
 
     public void refreshCertificate(String resourceGroupName, String accountName, String poolName, String volumeName,
@@ -116,119 +114,48 @@ public final class BucketsImpl implements Buckets {
     }
 
     public Bucket getById(String id) {
-        String resourceGroupName = ResourceManagerUtils.getValueFromIdByName(id, "resourceGroups");
-        if (resourceGroupName == null) {
-            throw LOGGER.logExceptionAsError(new IllegalArgumentException(
-                String.format("The resource ID '%s' is not valid. Missing path segment 'resourceGroups'.", id)));
-        }
-        String accountName = ResourceManagerUtils.getValueFromIdByName(id, "netAppAccounts");
-        if (accountName == null) {
-            throw LOGGER.logExceptionAsError(new IllegalArgumentException(
-                String.format("The resource ID '%s' is not valid. Missing path segment 'netAppAccounts'.", id)));
-        }
-        String poolName = ResourceManagerUtils.getValueFromIdByName(id, "capacityPools");
-        if (poolName == null) {
-            throw LOGGER.logExceptionAsError(new IllegalArgumentException(
-                String.format("The resource ID '%s' is not valid. Missing path segment 'capacityPools'.", id)));
-        }
-        String volumeName = ResourceManagerUtils.getValueFromIdByName(id, "volumes");
-        if (volumeName == null) {
-            throw LOGGER.logExceptionAsError(new IllegalArgumentException(
-                String.format("The resource ID '%s' is not valid. Missing path segment 'volumes'.", id)));
-        }
-        String bucketName = ResourceManagerUtils.getValueFromIdByName(id, "buckets");
-        if (bucketName == null) {
-            throw LOGGER.logExceptionAsError(new IllegalArgumentException(
-                String.format("The resource ID '%s' is not valid. Missing path segment 'buckets'.", id)));
-        }
-        return this.getWithResponse(resourceGroupName, accountName, poolName, volumeName, bucketName, Context.NONE)
-            .getValue();
+        return this.getByIdWithResponse(id, Context.NONE).getValue();
     }
 
     public Response<Bucket> getByIdWithResponse(String id, Context context) {
-        String resourceGroupName = ResourceManagerUtils.getValueFromIdByName(id, "resourceGroups");
-        if (resourceGroupName == null) {
-            throw LOGGER.logExceptionAsError(new IllegalArgumentException(
-                String.format("The resource ID '%s' is not valid. Missing path segment 'resourceGroups'.", id)));
-        }
-        String accountName = ResourceManagerUtils.getValueFromIdByName(id, "netAppAccounts");
-        if (accountName == null) {
-            throw LOGGER.logExceptionAsError(new IllegalArgumentException(
-                String.format("The resource ID '%s' is not valid. Missing path segment 'netAppAccounts'.", id)));
-        }
-        String poolName = ResourceManagerUtils.getValueFromIdByName(id, "capacityPools");
-        if (poolName == null) {
-            throw LOGGER.logExceptionAsError(new IllegalArgumentException(
-                String.format("The resource ID '%s' is not valid. Missing path segment 'capacityPools'.", id)));
-        }
-        String volumeName = ResourceManagerUtils.getValueFromIdByName(id, "volumes");
-        if (volumeName == null) {
-            throw LOGGER.logExceptionAsError(new IllegalArgumentException(
-                String.format("The resource ID '%s' is not valid. Missing path segment 'volumes'.", id)));
-        }
-        String bucketName = ResourceManagerUtils.getValueFromIdByName(id, "buckets");
-        if (bucketName == null) {
-            throw LOGGER.logExceptionAsError(new IllegalArgumentException(
-                String.format("The resource ID '%s' is not valid. Missing path segment 'buckets'.", id)));
-        }
+        String resourceGroupName = ResourceManagerUtils.getRequiredValueFromIdByParameterName(id,
+            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.NetApp/netAppAccounts/{accountName}/capacityPools/{poolName}/volumes/{volumeName}/buckets/{bucketName}",
+            "resourceGroupName", "resourceGroups", LOGGER);
+        String accountName = ResourceManagerUtils.getRequiredValueFromIdByParameterName(id,
+            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.NetApp/netAppAccounts/{accountName}/capacityPools/{poolName}/volumes/{volumeName}/buckets/{bucketName}",
+            "accountName", "netAppAccounts", LOGGER);
+        String poolName = ResourceManagerUtils.getRequiredValueFromIdByParameterName(id,
+            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.NetApp/netAppAccounts/{accountName}/capacityPools/{poolName}/volumes/{volumeName}/buckets/{bucketName}",
+            "poolName", "capacityPools", LOGGER);
+        String volumeName = ResourceManagerUtils.getRequiredValueFromIdByParameterName(id,
+            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.NetApp/netAppAccounts/{accountName}/capacityPools/{poolName}/volumes/{volumeName}/buckets/{bucketName}",
+            "volumeName", "volumes", LOGGER);
+        String bucketName = ResourceManagerUtils.getRequiredValueFromIdByParameterName(id,
+            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.NetApp/netAppAccounts/{accountName}/capacityPools/{poolName}/volumes/{volumeName}/buckets/{bucketName}",
+            "bucketName", "buckets", LOGGER);
         return this.getWithResponse(resourceGroupName, accountName, poolName, volumeName, bucketName, context);
     }
 
     public void deleteById(String id) {
-        String resourceGroupName = ResourceManagerUtils.getValueFromIdByName(id, "resourceGroups");
-        if (resourceGroupName == null) {
-            throw LOGGER.logExceptionAsError(new IllegalArgumentException(
-                String.format("The resource ID '%s' is not valid. Missing path segment 'resourceGroups'.", id)));
-        }
-        String accountName = ResourceManagerUtils.getValueFromIdByName(id, "netAppAccounts");
-        if (accountName == null) {
-            throw LOGGER.logExceptionAsError(new IllegalArgumentException(
-                String.format("The resource ID '%s' is not valid. Missing path segment 'netAppAccounts'.", id)));
-        }
-        String poolName = ResourceManagerUtils.getValueFromIdByName(id, "capacityPools");
-        if (poolName == null) {
-            throw LOGGER.logExceptionAsError(new IllegalArgumentException(
-                String.format("The resource ID '%s' is not valid. Missing path segment 'capacityPools'.", id)));
-        }
-        String volumeName = ResourceManagerUtils.getValueFromIdByName(id, "volumes");
-        if (volumeName == null) {
-            throw LOGGER.logExceptionAsError(new IllegalArgumentException(
-                String.format("The resource ID '%s' is not valid. Missing path segment 'volumes'.", id)));
-        }
-        String bucketName = ResourceManagerUtils.getValueFromIdByName(id, "buckets");
-        if (bucketName == null) {
-            throw LOGGER.logExceptionAsError(new IllegalArgumentException(
-                String.format("The resource ID '%s' is not valid. Missing path segment 'buckets'.", id)));
-        }
-        this.delete(resourceGroupName, accountName, poolName, volumeName, bucketName, Context.NONE);
+        this.deleteByIdWithResponse(id, Context.NONE);
     }
 
     public void deleteByIdWithResponse(String id, Context context) {
-        String resourceGroupName = ResourceManagerUtils.getValueFromIdByName(id, "resourceGroups");
-        if (resourceGroupName == null) {
-            throw LOGGER.logExceptionAsError(new IllegalArgumentException(
-                String.format("The resource ID '%s' is not valid. Missing path segment 'resourceGroups'.", id)));
-        }
-        String accountName = ResourceManagerUtils.getValueFromIdByName(id, "netAppAccounts");
-        if (accountName == null) {
-            throw LOGGER.logExceptionAsError(new IllegalArgumentException(
-                String.format("The resource ID '%s' is not valid. Missing path segment 'netAppAccounts'.", id)));
-        }
-        String poolName = ResourceManagerUtils.getValueFromIdByName(id, "capacityPools");
-        if (poolName == null) {
-            throw LOGGER.logExceptionAsError(new IllegalArgumentException(
-                String.format("The resource ID '%s' is not valid. Missing path segment 'capacityPools'.", id)));
-        }
-        String volumeName = ResourceManagerUtils.getValueFromIdByName(id, "volumes");
-        if (volumeName == null) {
-            throw LOGGER.logExceptionAsError(new IllegalArgumentException(
-                String.format("The resource ID '%s' is not valid. Missing path segment 'volumes'.", id)));
-        }
-        String bucketName = ResourceManagerUtils.getValueFromIdByName(id, "buckets");
-        if (bucketName == null) {
-            throw LOGGER.logExceptionAsError(new IllegalArgumentException(
-                String.format("The resource ID '%s' is not valid. Missing path segment 'buckets'.", id)));
-        }
+        String resourceGroupName = ResourceManagerUtils.getRequiredValueFromIdByParameterName(id,
+            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.NetApp/netAppAccounts/{accountName}/capacityPools/{poolName}/volumes/{volumeName}/buckets/{bucketName}",
+            "resourceGroupName", "resourceGroups", LOGGER);
+        String accountName = ResourceManagerUtils.getRequiredValueFromIdByParameterName(id,
+            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.NetApp/netAppAccounts/{accountName}/capacityPools/{poolName}/volumes/{volumeName}/buckets/{bucketName}",
+            "accountName", "netAppAccounts", LOGGER);
+        String poolName = ResourceManagerUtils.getRequiredValueFromIdByParameterName(id,
+            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.NetApp/netAppAccounts/{accountName}/capacityPools/{poolName}/volumes/{volumeName}/buckets/{bucketName}",
+            "poolName", "capacityPools", LOGGER);
+        String volumeName = ResourceManagerUtils.getRequiredValueFromIdByParameterName(id,
+            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.NetApp/netAppAccounts/{accountName}/capacityPools/{poolName}/volumes/{volumeName}/buckets/{bucketName}",
+            "volumeName", "volumes", LOGGER);
+        String bucketName = ResourceManagerUtils.getRequiredValueFromIdByParameterName(id,
+            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.NetApp/netAppAccounts/{accountName}/capacityPools/{poolName}/volumes/{volumeName}/buckets/{bucketName}",
+            "bucketName", "buckets", LOGGER);
         this.delete(resourceGroupName, accountName, poolName, volumeName, bucketName, context);
     }
 

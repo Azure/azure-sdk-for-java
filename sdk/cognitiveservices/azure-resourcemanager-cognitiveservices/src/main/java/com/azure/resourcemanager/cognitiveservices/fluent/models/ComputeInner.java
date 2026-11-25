@@ -13,7 +13,6 @@ import com.azure.json.JsonWriter;
 import com.azure.resourcemanager.cognitiveservices.models.ComputeProperties;
 import com.azure.resourcemanager.cognitiveservices.models.Identity;
 import java.io.IOException;
-import java.util.Map;
 
 /**
  * Cognitive Services compute resource. Supports polymorphic compute types
@@ -30,16 +29,6 @@ public final class ComputeInner extends ProxyResource {
      * Resource Etag.
      */
     private String etag;
-
-    /*
-     * The location of the compute resource.
-     */
-    private String location;
-
-    /*
-     * Resource tags.
-     */
-    private Map<String, String> tags;
 
     /*
      * The kind (type) of compute resource.
@@ -106,46 +95,6 @@ public final class ComputeInner extends ProxyResource {
      */
     public String etag() {
         return this.etag;
-    }
-
-    /**
-     * Get the location property: The location of the compute resource.
-     * 
-     * @return the location value.
-     */
-    public String location() {
-        return this.location;
-    }
-
-    /**
-     * Set the location property: The location of the compute resource.
-     * 
-     * @param location the location value to set.
-     * @return the ComputeInner object itself.
-     */
-    public ComputeInner withLocation(String location) {
-        this.location = location;
-        return this;
-    }
-
-    /**
-     * Get the tags property: Resource tags.
-     * 
-     * @return the tags value.
-     */
-    public Map<String, String> tags() {
-        return this.tags;
-    }
-
-    /**
-     * Set the tags property: Resource tags.
-     * 
-     * @param tags the tags value to set.
-     * @return the ComputeInner object itself.
-     */
-    public ComputeInner withTags(Map<String, String> tags) {
-        this.tags = tags;
-        return this;
     }
 
     /**
@@ -234,8 +183,6 @@ public final class ComputeInner extends ProxyResource {
     public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
         jsonWriter.writeStartObject();
         jsonWriter.writeJsonField("properties", this.properties);
-        jsonWriter.writeStringField("location", this.location);
-        jsonWriter.writeMapField("tags", this.tags, (writer, element) -> writer.writeString(element));
         jsonWriter.writeStringField("kind", this.kind);
         jsonWriter.writeJsonField("identity", this.identity);
         return jsonWriter.writeEndObject();
@@ -267,11 +214,6 @@ public final class ComputeInner extends ProxyResource {
                     deserializedComputeInner.properties = ComputeProperties.fromJson(reader);
                 } else if ("etag".equals(fieldName)) {
                     deserializedComputeInner.etag = reader.getString();
-                } else if ("location".equals(fieldName)) {
-                    deserializedComputeInner.location = reader.getString();
-                } else if ("tags".equals(fieldName)) {
-                    Map<String, String> tags = reader.readMap(reader1 -> reader1.getString());
-                    deserializedComputeInner.tags = tags;
                 } else if ("kind".equals(fieldName)) {
                     deserializedComputeInner.kind = reader.getString();
                 } else if ("identity".equals(fieldName)) {

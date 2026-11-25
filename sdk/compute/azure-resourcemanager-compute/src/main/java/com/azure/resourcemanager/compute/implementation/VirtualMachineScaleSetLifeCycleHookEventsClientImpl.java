@@ -107,18 +107,7 @@ public final class VirtualMachineScaleSetLifeCycleHookEventsClientImpl
             @HeaderParam("Accept") String accept, Context context);
     }
 
-    /**
-     * Gets a virtual machine scale set lifecycle hook event.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param vmScaleSetName The name of the VM scale set.
-     * @param lifecycleHookEventName The name of the VMScaleSetLifecycleHookEvent.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ApiErrorException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return a virtual machine scale set lifecycle hook event along with {@link Response} on successful completion of
-     * {@link Mono}.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Response<VMScaleSetLifecycleHookEventInner>> getWithResponseAsync(String resourceGroupName,
         String vmScaleSetName, String lifecycleHookEventName) {
@@ -141,7 +130,7 @@ public final class VirtualMachineScaleSetLifeCycleHookEventsClientImpl
             return Mono.error(
                 new IllegalArgumentException("Parameter lifecycleHookEventName is required and cannot be null."));
         }
-        final String apiVersion = "2026-03-01";
+        final String apiVersion = "2026-04-01";
         final String accept = "application/json";
         return FluxUtil
             .withContext(context -> service.get(this.client.getEndpoint(), apiVersion, this.client.getSubscriptionId(),
@@ -184,24 +173,14 @@ public final class VirtualMachineScaleSetLifeCycleHookEventsClientImpl
             return Mono.error(
                 new IllegalArgumentException("Parameter lifecycleHookEventName is required and cannot be null."));
         }
-        final String apiVersion = "2026-03-01";
+        final String apiVersion = "2026-04-01";
         final String accept = "application/json";
         context = this.client.mergeContext(context);
         return service.get(this.client.getEndpoint(), apiVersion, this.client.getSubscriptionId(), resourceGroupName,
             vmScaleSetName, lifecycleHookEventName, accept, context);
     }
 
-    /**
-     * Gets a virtual machine scale set lifecycle hook event.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param vmScaleSetName The name of the VM scale set.
-     * @param lifecycleHookEventName The name of the VMScaleSetLifecycleHookEvent.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ApiErrorException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return a virtual machine scale set lifecycle hook event on successful completion of {@link Mono}.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<VMScaleSetLifecycleHookEventInner> getAsync(String resourceGroupName, String vmScaleSetName,
         String lifecycleHookEventName) {
@@ -209,54 +188,21 @@ public final class VirtualMachineScaleSetLifeCycleHookEventsClientImpl
             .flatMap(res -> Mono.justOrEmpty(res.getValue()));
     }
 
-    /**
-     * Gets a virtual machine scale set lifecycle hook event.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param vmScaleSetName The name of the VM scale set.
-     * @param lifecycleHookEventName The name of the VMScaleSetLifecycleHookEvent.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ApiErrorException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return a virtual machine scale set lifecycle hook event along with {@link Response}.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Response<VMScaleSetLifecycleHookEventInner> getWithResponse(String resourceGroupName, String vmScaleSetName,
         String lifecycleHookEventName, Context context) {
         return getWithResponseAsync(resourceGroupName, vmScaleSetName, lifecycleHookEventName, context).block();
     }
 
-    /**
-     * Gets a virtual machine scale set lifecycle hook event.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param vmScaleSetName The name of the VM scale set.
-     * @param lifecycleHookEventName The name of the VMScaleSetLifecycleHookEvent.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ApiErrorException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return a virtual machine scale set lifecycle hook event.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public VMScaleSetLifecycleHookEventInner get(String resourceGroupName, String vmScaleSetName,
         String lifecycleHookEventName) {
         return getWithResponse(resourceGroupName, vmScaleSetName, lifecycleHookEventName, Context.NONE).getValue();
     }
 
-    /**
-     * The operation to update a virtual machine scale set lifecycle hook event.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param vmScaleSetName The name of the VM scale set.
-     * @param lifecycleHookEventName The name of the VMScaleSetLifecycleHookEvent.
-     * @param properties Parameters supplied to the Update virtual machine scale set lifecycle hook event operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ApiErrorException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return defines a virtual machine scale set lifecycle hook event along with {@link Response} on successful
-     * completion of {@link Mono}.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Response<VMScaleSetLifecycleHookEventInner>> updateWithResponseAsync(String resourceGroupName,
         String vmScaleSetName, String lifecycleHookEventName, VMScaleSetLifecycleHookEventUpdate properties) {
@@ -284,7 +230,7 @@ public final class VirtualMachineScaleSetLifeCycleHookEventsClientImpl
         } else {
             properties.validate();
         }
-        final String apiVersion = "2026-03-01";
+        final String apiVersion = "2026-04-01";
         final String contentType = "application/json";
         final String accept = "application/json";
         return FluxUtil
@@ -336,7 +282,7 @@ public final class VirtualMachineScaleSetLifeCycleHookEventsClientImpl
         } else {
             properties.validate();
         }
-        final String apiVersion = "2026-03-01";
+        final String apiVersion = "2026-04-01";
         final String contentType = "application/json";
         final String accept = "application/json";
         context = this.client.mergeContext(context);
@@ -344,18 +290,7 @@ public final class VirtualMachineScaleSetLifeCycleHookEventsClientImpl
             vmScaleSetName, lifecycleHookEventName, contentType, accept, properties, context);
     }
 
-    /**
-     * The operation to update a virtual machine scale set lifecycle hook event.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param vmScaleSetName The name of the VM scale set.
-     * @param lifecycleHookEventName The name of the VMScaleSetLifecycleHookEvent.
-     * @param properties Parameters supplied to the Update virtual machine scale set lifecycle hook event operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ApiErrorException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return defines a virtual machine scale set lifecycle hook event on successful completion of {@link Mono}.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<VMScaleSetLifecycleHookEventInner> updateAsync(String resourceGroupName, String vmScaleSetName,
         String lifecycleHookEventName, VMScaleSetLifecycleHookEventUpdate properties) {
@@ -363,19 +298,7 @@ public final class VirtualMachineScaleSetLifeCycleHookEventsClientImpl
             .flatMap(res -> Mono.justOrEmpty(res.getValue()));
     }
 
-    /**
-     * The operation to update a virtual machine scale set lifecycle hook event.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param vmScaleSetName The name of the VM scale set.
-     * @param lifecycleHookEventName The name of the VMScaleSetLifecycleHookEvent.
-     * @param properties Parameters supplied to the Update virtual machine scale set lifecycle hook event operation.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ApiErrorException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return defines a virtual machine scale set lifecycle hook event along with {@link Response}.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Response<VMScaleSetLifecycleHookEventInner> updateWithResponse(String resourceGroupName,
         String vmScaleSetName, String lifecycleHookEventName, VMScaleSetLifecycleHookEventUpdate properties,
@@ -384,18 +307,7 @@ public final class VirtualMachineScaleSetLifeCycleHookEventsClientImpl
             .block();
     }
 
-    /**
-     * The operation to update a virtual machine scale set lifecycle hook event.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param vmScaleSetName The name of the VM scale set.
-     * @param lifecycleHookEventName The name of the VMScaleSetLifecycleHookEvent.
-     * @param properties Parameters supplied to the Update virtual machine scale set lifecycle hook event operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ApiErrorException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return defines a virtual machine scale set lifecycle hook event.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public VMScaleSetLifecycleHookEventInner update(String resourceGroupName, String vmScaleSetName,
         String lifecycleHookEventName, VMScaleSetLifecycleHookEventUpdate properties) {
@@ -432,7 +344,7 @@ public final class VirtualMachineScaleSetLifeCycleHookEventsClientImpl
         if (vmScaleSetName == null) {
             return Mono.error(new IllegalArgumentException("Parameter vmScaleSetName is required and cannot be null."));
         }
-        final String apiVersion = "2026-03-01";
+        final String apiVersion = "2026-04-01";
         final String accept = "application/json";
         return FluxUtil
             .withContext(context -> service.list(this.client.getEndpoint(), apiVersion, this.client.getSubscriptionId(),
@@ -472,7 +384,7 @@ public final class VirtualMachineScaleSetLifeCycleHookEventsClientImpl
         if (vmScaleSetName == null) {
             return Mono.error(new IllegalArgumentException("Parameter vmScaleSetName is required and cannot be null."));
         }
-        final String apiVersion = "2026-03-01";
+        final String apiVersion = "2026-04-01";
         final String accept = "application/json";
         context = this.client.mergeContext(context);
         return service
@@ -482,17 +394,7 @@ public final class VirtualMachineScaleSetLifeCycleHookEventsClientImpl
                 res.getValue().value(), res.getValue().nextLink(), null));
     }
 
-    /**
-     * Gets a list of virtual machine scale set lifecycle hook events created for a virtual machine scale set resource.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param vmScaleSetName The name of the VM scale set.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ApiErrorException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return a list of virtual machine scale set lifecycle hook events created for a virtual machine scale set
-     * resource as paginated response with {@link PagedFlux}.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.COLLECTION)
     public PagedFlux<VMScaleSetLifecycleHookEventInner> listAsync(String resourceGroupName, String vmScaleSetName) {
         return new PagedFlux<>(() -> listSinglePageAsync(resourceGroupName, vmScaleSetName),
@@ -518,34 +420,13 @@ public final class VirtualMachineScaleSetLifeCycleHookEventsClientImpl
             nextLink -> listNextSinglePageAsync(nextLink, context));
     }
 
-    /**
-     * Gets a list of virtual machine scale set lifecycle hook events created for a virtual machine scale set resource.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param vmScaleSetName The name of the VM scale set.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ApiErrorException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return a list of virtual machine scale set lifecycle hook events created for a virtual machine scale set
-     * resource as paginated response with {@link PagedIterable}.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.COLLECTION)
     public PagedIterable<VMScaleSetLifecycleHookEventInner> list(String resourceGroupName, String vmScaleSetName) {
         return new PagedIterable<>(listAsync(resourceGroupName, vmScaleSetName));
     }
 
-    /**
-     * Gets a list of virtual machine scale set lifecycle hook events created for a virtual machine scale set resource.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param vmScaleSetName The name of the VM scale set.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ApiErrorException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return a list of virtual machine scale set lifecycle hook events created for a virtual machine scale set
-     * resource as paginated response with {@link PagedIterable}.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.COLLECTION)
     public PagedIterable<VMScaleSetLifecycleHookEventInner> list(String resourceGroupName, String vmScaleSetName,
         Context context) {

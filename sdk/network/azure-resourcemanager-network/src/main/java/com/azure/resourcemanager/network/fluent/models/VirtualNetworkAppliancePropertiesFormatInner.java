@@ -5,6 +5,7 @@
 package com.azure.resourcemanager.network.fluent.models;
 
 import com.azure.core.annotation.Fluent;
+import com.azure.core.management.SubResource;
 import com.azure.json.JsonReader;
 import com.azure.json.JsonSerializable;
 import com.azure.json.JsonToken;
@@ -25,6 +26,11 @@ public final class VirtualNetworkAppliancePropertiesFormatInner
      * Bandwidth of the VirtualNetworkAppliance resource in Gbps.
      */
     private Double bandwidthInGbps;
+
+    /*
+     * The reference to the capacity provider resource.
+     */
+    private SubResource capacityProvider;
 
     /*
      * A list of IPConfigurations of the virtual network appliance.
@@ -74,6 +80,26 @@ public final class VirtualNetworkAppliancePropertiesFormatInner
      */
     public VirtualNetworkAppliancePropertiesFormatInner withBandwidthInGbps(Double bandwidthInGbps) {
         this.bandwidthInGbps = bandwidthInGbps;
+        return this;
+    }
+
+    /**
+     * Get the capacityProvider property: The reference to the capacity provider resource.
+     * 
+     * @return the capacityProvider value.
+     */
+    public SubResource capacityProvider() {
+        return this.capacityProvider;
+    }
+
+    /**
+     * Set the capacityProvider property: The reference to the capacity provider resource.
+     * 
+     * @param capacityProvider the capacityProvider value to set.
+     * @return the VirtualNetworkAppliancePropertiesFormatInner object itself.
+     */
+    public VirtualNetworkAppliancePropertiesFormatInner withCapacityProvider(SubResource capacityProvider) {
+        this.capacityProvider = capacityProvider;
         return this;
     }
 
@@ -168,6 +194,7 @@ public final class VirtualNetworkAppliancePropertiesFormatInner
     public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
         jsonWriter.writeStartObject();
         jsonWriter.writeNumberField("bandwidthInGbps", this.bandwidthInGbps);
+        jsonWriter.writeJsonField("capacityProvider", this.capacityProvider);
         jsonWriter.writeStringField("privateIPAddressVersion",
             this.privateIPAddressVersion == null ? null : this.privateIPAddressVersion.toString());
         jsonWriter.writeJsonField("subnet", this.subnet);
@@ -193,6 +220,9 @@ public final class VirtualNetworkAppliancePropertiesFormatInner
                 if ("bandwidthInGbps".equals(fieldName)) {
                     deserializedVirtualNetworkAppliancePropertiesFormatInner.bandwidthInGbps
                         = reader.getNullable(JsonReader::getDouble);
+                } else if ("capacityProvider".equals(fieldName)) {
+                    deserializedVirtualNetworkAppliancePropertiesFormatInner.capacityProvider
+                        = SubResource.fromJson(reader);
                 } else if ("ipConfigurations".equals(fieldName)) {
                     List<VirtualNetworkApplianceIpConfiguration> ipConfigurations
                         = reader.readArray(reader1 -> VirtualNetworkApplianceIpConfiguration.fromJson(reader1));

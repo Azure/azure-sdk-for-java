@@ -34,6 +34,7 @@ import com.azure.core.util.FluxUtil;
 import com.azure.core.util.polling.PollerFlux;
 import com.azure.core.util.polling.SyncPoller;
 import com.azure.resourcemanager.network.fluent.ServiceGatewaysClient;
+import com.azure.resourcemanager.network.fluent.models.ServiceGatewayActionOkResponseBodyInner;
 import com.azure.resourcemanager.network.fluent.models.ServiceGatewayAddressLocationResponseInner;
 import com.azure.resourcemanager.network.fluent.models.ServiceGatewayInner;
 import com.azure.resourcemanager.network.fluent.models.ServiceGatewayServiceInner;
@@ -139,24 +140,25 @@ public final class ServiceGatewaysClientImpl implements InnerSupportsGet<Service
             @QueryParam("api-version") String apiVersion, @PathParam("subscriptionId") String subscriptionId,
             @HeaderParam("Accept") String accept, Context context);
 
-        @Headers({ "Accept: application/json;q=0.9" })
         @Post("/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Network/serviceGateways/{serviceGatewayName}/updateAddressLocations")
-        @ExpectedResponses({ 202, 204 })
+        @ExpectedResponses({ 200 })
         @UnexpectedResponseExceptionType(ManagementException.class)
-        Mono<Response<Flux<ByteBuffer>>> updateAddressLocations(@HostParam("endpoint") String endpoint,
-            @QueryParam("api-version") String apiVersion, @PathParam("subscriptionId") String subscriptionId,
+        Mono<Response<ServiceGatewayActionOkResponseBodyInner>> updateAddressLocations(
+            @HostParam("endpoint") String endpoint, @QueryParam("api-version") String apiVersion,
+            @PathParam("subscriptionId") String subscriptionId,
             @PathParam("resourceGroupName") String resourceGroupName,
             @PathParam("serviceGatewayName") String serviceGatewayName, @HeaderParam("Content-Type") String contentType,
+            @HeaderParam("Accept") String accept,
             @BodyParam("application/json") ServiceGatewayUpdateAddressLocationsRequest parameters, Context context);
 
-        @Headers({ "Accept: application/json;q=0.9" })
         @Post("/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Network/serviceGateways/{serviceGatewayName}/updateServices")
-        @ExpectedResponses({ 202, 204 })
+        @ExpectedResponses({ 200 })
         @UnexpectedResponseExceptionType(ManagementException.class)
-        Mono<Response<Flux<ByteBuffer>>> updateServices(@HostParam("endpoint") String endpoint,
+        Mono<Response<ServiceGatewayActionOkResponseBodyInner>> updateServices(@HostParam("endpoint") String endpoint,
             @QueryParam("api-version") String apiVersion, @PathParam("subscriptionId") String subscriptionId,
             @PathParam("resourceGroupName") String resourceGroupName,
             @PathParam("serviceGatewayName") String serviceGatewayName, @HeaderParam("Content-Type") String contentType,
+            @HeaderParam("Accept") String accept,
             @BodyParam("application/json") ServiceGatewayUpdateServicesRequest parameters, Context context);
 
         @Headers({ "Content-Type: application/json" })
@@ -213,16 +215,7 @@ public final class ServiceGatewaysClientImpl implements InnerSupportsGet<Service
             @HeaderParam("Accept") String accept, Context context);
     }
 
-    /**
-     * Gets the specified service gateway.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param serviceGatewayName The name of the service gateway.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the specified service gateway along with {@link Response} on successful completion of {@link Mono}.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Response<ServiceGatewayInner>> getByResourceGroupWithResponseAsync(String resourceGroupName,
         String serviceGatewayName) {
@@ -242,7 +235,7 @@ public final class ServiceGatewaysClientImpl implements InnerSupportsGet<Service
             return Mono
                 .error(new IllegalArgumentException("Parameter serviceGatewayName is required and cannot be null."));
         }
-        final String apiVersion = "2025-07-01";
+        final String apiVersion = "2026-05-01";
         final String accept = "application/json";
         return FluxUtil
             .withContext(context -> service.getByResourceGroup(this.client.getEndpoint(), apiVersion,
@@ -280,72 +273,34 @@ public final class ServiceGatewaysClientImpl implements InnerSupportsGet<Service
             return Mono
                 .error(new IllegalArgumentException("Parameter serviceGatewayName is required and cannot be null."));
         }
-        final String apiVersion = "2025-07-01";
+        final String apiVersion = "2026-05-01";
         final String accept = "application/json";
         context = this.client.mergeContext(context);
         return service.getByResourceGroup(this.client.getEndpoint(), apiVersion, this.client.getSubscriptionId(),
             resourceGroupName, serviceGatewayName, accept, context);
     }
 
-    /**
-     * Gets the specified service gateway.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param serviceGatewayName The name of the service gateway.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the specified service gateway on successful completion of {@link Mono}.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<ServiceGatewayInner> getByResourceGroupAsync(String resourceGroupName, String serviceGatewayName) {
         return getByResourceGroupWithResponseAsync(resourceGroupName, serviceGatewayName)
             .flatMap(res -> Mono.justOrEmpty(res.getValue()));
     }
 
-    /**
-     * Gets the specified service gateway.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param serviceGatewayName The name of the service gateway.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the specified service gateway along with {@link Response}.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Response<ServiceGatewayInner> getByResourceGroupWithResponse(String resourceGroupName,
         String serviceGatewayName, Context context) {
         return getByResourceGroupWithResponseAsync(resourceGroupName, serviceGatewayName, context).block();
     }
 
-    /**
-     * Gets the specified service gateway.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param serviceGatewayName The name of the service gateway.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the specified service gateway.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public ServiceGatewayInner getByResourceGroup(String resourceGroupName, String serviceGatewayName) {
         return getByResourceGroupWithResponse(resourceGroupName, serviceGatewayName, Context.NONE).getValue();
     }
 
-    /**
-     * Creates or updates a service gateway.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param serviceGatewayName The name of the service gateway.
-     * @param parameters Parameters supplied to the create or update service gateway operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return serviceGateway resource along with {@link Response} on successful completion of {@link Mono}.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Response<Flux<ByteBuffer>>> createOrUpdateWithResponseAsync(String resourceGroupName,
         String serviceGatewayName, ServiceGatewayInner parameters) {
@@ -370,7 +325,7 @@ public final class ServiceGatewaysClientImpl implements InnerSupportsGet<Service
         } else {
             parameters.validate();
         }
-        final String apiVersion = "2025-07-01";
+        final String apiVersion = "2026-05-01";
         final String contentType = "application/json";
         final String accept = "application/json";
         return FluxUtil
@@ -416,7 +371,7 @@ public final class ServiceGatewaysClientImpl implements InnerSupportsGet<Service
         } else {
             parameters.validate();
         }
-        final String apiVersion = "2025-07-01";
+        final String apiVersion = "2026-05-01";
         final String contentType = "application/json";
         final String accept = "application/json";
         context = this.client.mergeContext(context);
@@ -424,17 +379,7 @@ public final class ServiceGatewaysClientImpl implements InnerSupportsGet<Service
             resourceGroupName, serviceGatewayName, contentType, accept, parameters, context);
     }
 
-    /**
-     * Creates or updates a service gateway.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param serviceGatewayName The name of the service gateway.
-     * @param parameters Parameters supplied to the create or update service gateway operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the {@link PollerFlux} for polling of serviceGateway resource.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public PollerFlux<PollResult<ServiceGatewayInner>, ServiceGatewayInner>
         beginCreateOrUpdateAsync(String resourceGroupName, String serviceGatewayName, ServiceGatewayInner parameters) {
@@ -466,35 +411,14 @@ public final class ServiceGatewaysClientImpl implements InnerSupportsGet<Service
             ServiceGatewayInner.class, ServiceGatewayInner.class, context);
     }
 
-    /**
-     * Creates or updates a service gateway.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param serviceGatewayName The name of the service gateway.
-     * @param parameters Parameters supplied to the create or update service gateway operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the {@link SyncPoller} for polling of serviceGateway resource.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public SyncPoller<PollResult<ServiceGatewayInner>, ServiceGatewayInner>
         beginCreateOrUpdate(String resourceGroupName, String serviceGatewayName, ServiceGatewayInner parameters) {
         return this.beginCreateOrUpdateAsync(resourceGroupName, serviceGatewayName, parameters).getSyncPoller();
     }
 
-    /**
-     * Creates or updates a service gateway.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param serviceGatewayName The name of the service gateway.
-     * @param parameters Parameters supplied to the create or update service gateway operation.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the {@link SyncPoller} for polling of serviceGateway resource.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public SyncPoller<PollResult<ServiceGatewayInner>, ServiceGatewayInner> beginCreateOrUpdate(
         String resourceGroupName, String serviceGatewayName, ServiceGatewayInner parameters, Context context) {
@@ -502,17 +426,7 @@ public final class ServiceGatewaysClientImpl implements InnerSupportsGet<Service
             .getSyncPoller();
     }
 
-    /**
-     * Creates or updates a service gateway.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param serviceGatewayName The name of the service gateway.
-     * @param parameters Parameters supplied to the create or update service gateway operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return serviceGateway resource on successful completion of {@link Mono}.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<ServiceGatewayInner> createOrUpdateAsync(String resourceGroupName, String serviceGatewayName,
         ServiceGatewayInner parameters) {
@@ -539,52 +453,21 @@ public final class ServiceGatewaysClientImpl implements InnerSupportsGet<Service
             .flatMap(this.client::getLroFinalResultOrError);
     }
 
-    /**
-     * Creates or updates a service gateway.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param serviceGatewayName The name of the service gateway.
-     * @param parameters Parameters supplied to the create or update service gateway operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return serviceGateway resource.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public ServiceGatewayInner createOrUpdate(String resourceGroupName, String serviceGatewayName,
         ServiceGatewayInner parameters) {
         return createOrUpdateAsync(resourceGroupName, serviceGatewayName, parameters).block();
     }
 
-    /**
-     * Creates or updates a service gateway.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param serviceGatewayName The name of the service gateway.
-     * @param parameters Parameters supplied to the create or update service gateway operation.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return serviceGateway resource.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public ServiceGatewayInner createOrUpdate(String resourceGroupName, String serviceGatewayName,
         ServiceGatewayInner parameters, Context context) {
         return createOrUpdateAsync(resourceGroupName, serviceGatewayName, parameters, context).block();
     }
 
-    /**
-     * Updates a service gateway tags.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param serviceGatewayName The name of the service gateway.
-     * @param parameters Parameters supplied to update service gateway tags.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return serviceGateway resource along with {@link Response} on successful completion of {@link Mono}.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Response<ServiceGatewayInner>> updateTagsWithResponseAsync(String resourceGroupName,
         String serviceGatewayName, TagsObject parameters) {
@@ -609,7 +492,7 @@ public final class ServiceGatewaysClientImpl implements InnerSupportsGet<Service
         } else {
             parameters.validate();
         }
-        final String apiVersion = "2025-07-01";
+        final String apiVersion = "2026-05-01";
         final String contentType = "application/json";
         final String accept = "application/json";
         return FluxUtil
@@ -655,7 +538,7 @@ public final class ServiceGatewaysClientImpl implements InnerSupportsGet<Service
         } else {
             parameters.validate();
         }
-        final String apiVersion = "2025-07-01";
+        final String apiVersion = "2026-05-01";
         final String contentType = "application/json";
         final String accept = "application/json";
         context = this.client.mergeContext(context);
@@ -663,17 +546,7 @@ public final class ServiceGatewaysClientImpl implements InnerSupportsGet<Service
             resourceGroupName, serviceGatewayName, contentType, accept, parameters, context);
     }
 
-    /**
-     * Updates a service gateway tags.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param serviceGatewayName The name of the service gateway.
-     * @param parameters Parameters supplied to update service gateway tags.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return serviceGateway resource on successful completion of {@link Mono}.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<ServiceGatewayInner> updateTagsAsync(String resourceGroupName, String serviceGatewayName,
         TagsObject parameters) {
@@ -681,50 +554,20 @@ public final class ServiceGatewaysClientImpl implements InnerSupportsGet<Service
             .flatMap(res -> Mono.justOrEmpty(res.getValue()));
     }
 
-    /**
-     * Updates a service gateway tags.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param serviceGatewayName The name of the service gateway.
-     * @param parameters Parameters supplied to update service gateway tags.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return serviceGateway resource along with {@link Response}.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Response<ServiceGatewayInner> updateTagsWithResponse(String resourceGroupName, String serviceGatewayName,
         TagsObject parameters, Context context) {
         return updateTagsWithResponseAsync(resourceGroupName, serviceGatewayName, parameters, context).block();
     }
 
-    /**
-     * Updates a service gateway tags.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param serviceGatewayName The name of the service gateway.
-     * @param parameters Parameters supplied to update service gateway tags.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return serviceGateway resource.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public ServiceGatewayInner updateTags(String resourceGroupName, String serviceGatewayName, TagsObject parameters) {
         return updateTagsWithResponse(resourceGroupName, serviceGatewayName, parameters, Context.NONE).getValue();
     }
 
-    /**
-     * Deletes the specified service gateway.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param serviceGatewayName The name of the service gateway.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the {@link Response} on successful completion of {@link Mono}.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Response<Flux<ByteBuffer>>> deleteWithResponseAsync(String resourceGroupName,
         String serviceGatewayName) {
@@ -744,7 +587,7 @@ public final class ServiceGatewaysClientImpl implements InnerSupportsGet<Service
             return Mono
                 .error(new IllegalArgumentException("Parameter serviceGatewayName is required and cannot be null."));
         }
-        final String apiVersion = "2025-07-01";
+        final String apiVersion = "2026-05-01";
         return FluxUtil
             .withContext(context -> service.delete(this.client.getEndpoint(), apiVersion,
                 this.client.getSubscriptionId(), resourceGroupName, serviceGatewayName, context))
@@ -781,22 +624,13 @@ public final class ServiceGatewaysClientImpl implements InnerSupportsGet<Service
             return Mono
                 .error(new IllegalArgumentException("Parameter serviceGatewayName is required and cannot be null."));
         }
-        final String apiVersion = "2025-07-01";
+        final String apiVersion = "2026-05-01";
         context = this.client.mergeContext(context);
         return service.delete(this.client.getEndpoint(), apiVersion, this.client.getSubscriptionId(), resourceGroupName,
             serviceGatewayName, context);
     }
 
-    /**
-     * Deletes the specified service gateway.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param serviceGatewayName The name of the service gateway.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the {@link PollerFlux} for polling of long-running operation.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public PollerFlux<PollResult<Void>, Void> beginDeleteAsync(String resourceGroupName, String serviceGatewayName) {
         Mono<Response<Flux<ByteBuffer>>> mono = deleteWithResponseAsync(resourceGroupName, serviceGatewayName);
@@ -824,48 +658,20 @@ public final class ServiceGatewaysClientImpl implements InnerSupportsGet<Service
             context);
     }
 
-    /**
-     * Deletes the specified service gateway.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param serviceGatewayName The name of the service gateway.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the {@link SyncPoller} for polling of long-running operation.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public SyncPoller<PollResult<Void>, Void> beginDelete(String resourceGroupName, String serviceGatewayName) {
         return this.beginDeleteAsync(resourceGroupName, serviceGatewayName).getSyncPoller();
     }
 
-    /**
-     * Deletes the specified service gateway.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param serviceGatewayName The name of the service gateway.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the {@link SyncPoller} for polling of long-running operation.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public SyncPoller<PollResult<Void>, Void> beginDelete(String resourceGroupName, String serviceGatewayName,
         Context context) {
         return this.beginDeleteAsync(resourceGroupName, serviceGatewayName, context).getSyncPoller();
     }
 
-    /**
-     * Deletes the specified service gateway.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param serviceGatewayName The name of the service gateway.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return A {@link Mono} that completes when a successful response is received.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Void> deleteAsync(String resourceGroupName, String serviceGatewayName) {
         return beginDeleteAsync(resourceGroupName, serviceGatewayName).last()
@@ -889,30 +695,13 @@ public final class ServiceGatewaysClientImpl implements InnerSupportsGet<Service
             .flatMap(this.client::getLroFinalResultOrError);
     }
 
-    /**
-     * Deletes the specified service gateway.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param serviceGatewayName The name of the service gateway.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public void delete(String resourceGroupName, String serviceGatewayName) {
         deleteAsync(resourceGroupName, serviceGatewayName).block();
     }
 
-    /**
-     * Deletes the specified service gateway.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param serviceGatewayName The name of the service gateway.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public void delete(String resourceGroupName, String serviceGatewayName, Context context) {
         deleteAsync(resourceGroupName, serviceGatewayName, context).block();
@@ -942,7 +731,7 @@ public final class ServiceGatewaysClientImpl implements InnerSupportsGet<Service
             return Mono
                 .error(new IllegalArgumentException("Parameter resourceGroupName is required and cannot be null."));
         }
-        final String apiVersion = "2025-07-01";
+        final String apiVersion = "2026-05-01";
         final String accept = "application/json";
         return FluxUtil
             .withContext(context -> service.listByResourceGroup(this.client.getEndpoint(), apiVersion,
@@ -978,7 +767,7 @@ public final class ServiceGatewaysClientImpl implements InnerSupportsGet<Service
             return Mono
                 .error(new IllegalArgumentException("Parameter resourceGroupName is required and cannot be null."));
         }
-        final String apiVersion = "2025-07-01";
+        final String apiVersion = "2026-05-01";
         final String accept = "application/json";
         context = this.client.mergeContext(context);
         return service
@@ -988,15 +777,7 @@ public final class ServiceGatewaysClientImpl implements InnerSupportsGet<Service
                 res.getValue().value(), res.getValue().nextLink(), null));
     }
 
-    /**
-     * Gets all the service gateways in a resource group.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return all the service gateways in a resource group as paginated response with {@link PagedFlux}.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.COLLECTION)
     public PagedFlux<ServiceGatewayInner> listByResourceGroupAsync(String resourceGroupName) {
         return new PagedFlux<>(() -> listByResourceGroupSinglePageAsync(resourceGroupName),
@@ -1019,30 +800,13 @@ public final class ServiceGatewaysClientImpl implements InnerSupportsGet<Service
             nextLink -> listNextSinglePageAsync(nextLink, context));
     }
 
-    /**
-     * Gets all the service gateways in a resource group.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return all the service gateways in a resource group as paginated response with {@link PagedIterable}.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.COLLECTION)
     public PagedIterable<ServiceGatewayInner> listByResourceGroup(String resourceGroupName) {
         return new PagedIterable<>(listByResourceGroupAsync(resourceGroupName));
     }
 
-    /**
-     * Gets all the service gateways in a resource group.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return all the service gateways in a resource group as paginated response with {@link PagedIterable}.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.COLLECTION)
     public PagedIterable<ServiceGatewayInner> listByResourceGroup(String resourceGroupName, Context context) {
         return new PagedIterable<>(listByResourceGroupAsync(resourceGroupName, context));
@@ -1066,7 +830,7 @@ public final class ServiceGatewaysClientImpl implements InnerSupportsGet<Service
             return Mono.error(new IllegalArgumentException(
                 "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
-        final String apiVersion = "2025-07-01";
+        final String apiVersion = "2026-05-01";
         final String accept = "application/json";
         return FluxUtil
             .withContext(context -> service.list(this.client.getEndpoint(), apiVersion, this.client.getSubscriptionId(),
@@ -1096,7 +860,7 @@ public final class ServiceGatewaysClientImpl implements InnerSupportsGet<Service
             return Mono.error(new IllegalArgumentException(
                 "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
-        final String apiVersion = "2025-07-01";
+        final String apiVersion = "2026-05-01";
         final String accept = "application/json";
         context = this.client.mergeContext(context);
         return service.list(this.client.getEndpoint(), apiVersion, this.client.getSubscriptionId(), accept, context)
@@ -1104,13 +868,7 @@ public final class ServiceGatewaysClientImpl implements InnerSupportsGet<Service
                 res.getValue().value(), res.getValue().nextLink(), null));
     }
 
-    /**
-     * Gets all the service gateways in a subscription.
-     * 
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return all the service gateways in a subscription as paginated response with {@link PagedFlux}.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.COLLECTION)
     public PagedFlux<ServiceGatewayInner> listAsync() {
         return new PagedFlux<>(() -> listSinglePageAsync(), nextLink -> listAllNextSinglePageAsync(nextLink));
@@ -1131,57 +889,22 @@ public final class ServiceGatewaysClientImpl implements InnerSupportsGet<Service
             nextLink -> listAllNextSinglePageAsync(nextLink, context));
     }
 
-    /**
-     * Gets all the service gateways in a subscription.
-     * 
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return all the service gateways in a subscription as paginated response with {@link PagedIterable}.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.COLLECTION)
     public PagedIterable<ServiceGatewayInner> list() {
         return new PagedIterable<>(listAsync());
     }
 
-    /**
-     * Gets all the service gateways in a subscription.
-     * 
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return all the service gateways in a subscription as paginated response with {@link PagedIterable}.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.COLLECTION)
     public PagedIterable<ServiceGatewayInner> list(Context context) {
         return new PagedIterable<>(listAsync(context));
     }
 
-    /**
-     * Creates or updates address locations within the service gateway.
-     * 
-     * The request supports both full and partial update modes at two levels: location and address.
-     * 
-     * Full update replaces all existing data.
-     * 
-     * Partial update modifies only the specified entries:
-     * 
-     * For location-level partial updates, if no address is provided, the existing address will be deleted.
-     * 
-     * For address-level partial updates, if no services are provided, the existing services will be considered for
-     * deletion.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param serviceGatewayName The name of the service gateway.
-     * @param parameters Parameters supplied to the create or updates address locations in service gateway operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the {@link Response} on successful completion of {@link Mono}.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<Response<Flux<ByteBuffer>>> updateAddressLocationsWithResponseAsync(String resourceGroupName,
-        String serviceGatewayName, ServiceGatewayUpdateAddressLocationsRequest parameters) {
+    public Mono<Response<ServiceGatewayActionOkResponseBodyInner>> updateAddressLocationsWithResponseAsync(
+        String resourceGroupName, String serviceGatewayName, ServiceGatewayUpdateAddressLocationsRequest parameters) {
         if (this.client.getEndpoint() == null) {
             return Mono.error(
                 new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
@@ -1203,10 +926,13 @@ public final class ServiceGatewaysClientImpl implements InnerSupportsGet<Service
         } else {
             parameters.validate();
         }
-        final String apiVersion = "2025-07-01";
+        final String apiVersion = "2026-05-01";
         final String contentType = "application/json";
-        return FluxUtil.withContext(context -> service.updateAddressLocations(this.client.getEndpoint(), apiVersion,
-            this.client.getSubscriptionId(), resourceGroupName, serviceGatewayName, contentType, parameters, context))
+        final String accept = "application/json";
+        return FluxUtil
+            .withContext(context -> service.updateAddressLocations(this.client.getEndpoint(), apiVersion,
+                this.client.getSubscriptionId(), resourceGroupName, serviceGatewayName, contentType, accept, parameters,
+                context))
             .contextWrite(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext()).readOnly()));
     }
 
@@ -1226,16 +952,17 @@ public final class ServiceGatewaysClientImpl implements InnerSupportsGet<Service
      * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param serviceGatewayName The name of the service gateway.
-     * @param parameters Parameters supplied to the create or updates address locations in service gateway operation.
+     * @param parameters Parameters supplied to create or update address locations in service gateway operation.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the {@link Response} on successful completion of {@link Mono}.
+     * @return empty success response along with {@link Response} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<Response<Flux<ByteBuffer>>> updateAddressLocationsWithResponseAsync(String resourceGroupName,
-        String serviceGatewayName, ServiceGatewayUpdateAddressLocationsRequest parameters, Context context) {
+    private Mono<Response<ServiceGatewayActionOkResponseBodyInner>> updateAddressLocationsWithResponseAsync(
+        String resourceGroupName, String serviceGatewayName, ServiceGatewayUpdateAddressLocationsRequest parameters,
+        Context context) {
         if (this.client.getEndpoint() == null) {
             return Mono.error(
                 new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
@@ -1257,267 +984,43 @@ public final class ServiceGatewaysClientImpl implements InnerSupportsGet<Service
         } else {
             parameters.validate();
         }
-        final String apiVersion = "2025-07-01";
+        final String apiVersion = "2026-05-01";
         final String contentType = "application/json";
+        final String accept = "application/json";
         context = this.client.mergeContext(context);
         return service.updateAddressLocations(this.client.getEndpoint(), apiVersion, this.client.getSubscriptionId(),
-            resourceGroupName, serviceGatewayName, contentType, parameters, context);
+            resourceGroupName, serviceGatewayName, contentType, accept, parameters, context);
     }
 
-    /**
-     * Creates or updates address locations within the service gateway.
-     * 
-     * The request supports both full and partial update modes at two levels: location and address.
-     * 
-     * Full update replaces all existing data.
-     * 
-     * Partial update modifies only the specified entries:
-     * 
-     * For location-level partial updates, if no address is provided, the existing address will be deleted.
-     * 
-     * For address-level partial updates, if no services are provided, the existing services will be considered for
-     * deletion.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param serviceGatewayName The name of the service gateway.
-     * @param parameters Parameters supplied to the create or updates address locations in service gateway operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the {@link PollerFlux} for polling of long-running operation.
-     */
-    @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
-    public PollerFlux<PollResult<Void>, Void> beginUpdateAddressLocationsAsync(String resourceGroupName,
+    @Override
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public Mono<ServiceGatewayActionOkResponseBodyInner> updateAddressLocationsAsync(String resourceGroupName,
         String serviceGatewayName, ServiceGatewayUpdateAddressLocationsRequest parameters) {
-        Mono<Response<Flux<ByteBuffer>>> mono
-            = updateAddressLocationsWithResponseAsync(resourceGroupName, serviceGatewayName, parameters);
-        return this.client.<Void, Void>getLroResult(mono, this.client.getHttpPipeline(), Void.class, Void.class,
-            this.client.getContext());
+        return updateAddressLocationsWithResponseAsync(resourceGroupName, serviceGatewayName, parameters)
+            .flatMap(res -> Mono.justOrEmpty(res.getValue()));
     }
 
-    /**
-     * Creates or updates address locations within the service gateway.
-     * 
-     * The request supports both full and partial update modes at two levels: location and address.
-     * 
-     * Full update replaces all existing data.
-     * 
-     * Partial update modifies only the specified entries:
-     * 
-     * For location-level partial updates, if no address is provided, the existing address will be deleted.
-     * 
-     * For address-level partial updates, if no services are provided, the existing services will be considered for
-     * deletion.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param serviceGatewayName The name of the service gateway.
-     * @param parameters Parameters supplied to the create or updates address locations in service gateway operation.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the {@link PollerFlux} for polling of long-running operation.
-     */
-    @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
-    private PollerFlux<PollResult<Void>, Void> beginUpdateAddressLocationsAsync(String resourceGroupName,
-        String serviceGatewayName, ServiceGatewayUpdateAddressLocationsRequest parameters, Context context) {
-        context = this.client.mergeContext(context);
-        Mono<Response<Flux<ByteBuffer>>> mono
-            = updateAddressLocationsWithResponseAsync(resourceGroupName, serviceGatewayName, parameters, context);
-        return this.client.<Void, Void>getLroResult(mono, this.client.getHttpPipeline(), Void.class, Void.class,
-            context);
+    @Override
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public Response<ServiceGatewayActionOkResponseBodyInner> updateAddressLocationsWithResponse(
+        String resourceGroupName, String serviceGatewayName, ServiceGatewayUpdateAddressLocationsRequest parameters,
+        Context context) {
+        return updateAddressLocationsWithResponseAsync(resourceGroupName, serviceGatewayName, parameters, context)
+            .block();
     }
 
-    /**
-     * Creates or updates address locations within the service gateway.
-     * 
-     * The request supports both full and partial update modes at two levels: location and address.
-     * 
-     * Full update replaces all existing data.
-     * 
-     * Partial update modifies only the specified entries:
-     * 
-     * For location-level partial updates, if no address is provided, the existing address will be deleted.
-     * 
-     * For address-level partial updates, if no services are provided, the existing services will be considered for
-     * deletion.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param serviceGatewayName The name of the service gateway.
-     * @param parameters Parameters supplied to the create or updates address locations in service gateway operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the {@link SyncPoller} for polling of long-running operation.
-     */
-    @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
-    public SyncPoller<PollResult<Void>, Void> beginUpdateAddressLocations(String resourceGroupName,
+    @Override
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public ServiceGatewayActionOkResponseBodyInner updateAddressLocations(String resourceGroupName,
         String serviceGatewayName, ServiceGatewayUpdateAddressLocationsRequest parameters) {
-        return this.beginUpdateAddressLocationsAsync(resourceGroupName, serviceGatewayName, parameters).getSyncPoller();
+        return updateAddressLocationsWithResponse(resourceGroupName, serviceGatewayName, parameters, Context.NONE)
+            .getValue();
     }
 
-    /**
-     * Creates or updates address locations within the service gateway.
-     * 
-     * The request supports both full and partial update modes at two levels: location and address.
-     * 
-     * Full update replaces all existing data.
-     * 
-     * Partial update modifies only the specified entries:
-     * 
-     * For location-level partial updates, if no address is provided, the existing address will be deleted.
-     * 
-     * For address-level partial updates, if no services are provided, the existing services will be considered for
-     * deletion.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param serviceGatewayName The name of the service gateway.
-     * @param parameters Parameters supplied to the create or updates address locations in service gateway operation.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the {@link SyncPoller} for polling of long-running operation.
-     */
-    @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
-    public SyncPoller<PollResult<Void>, Void> beginUpdateAddressLocations(String resourceGroupName,
-        String serviceGatewayName, ServiceGatewayUpdateAddressLocationsRequest parameters, Context context) {
-        return this.beginUpdateAddressLocationsAsync(resourceGroupName, serviceGatewayName, parameters, context)
-            .getSyncPoller();
-    }
-
-    /**
-     * Creates or updates address locations within the service gateway.
-     * 
-     * The request supports both full and partial update modes at two levels: location and address.
-     * 
-     * Full update replaces all existing data.
-     * 
-     * Partial update modifies only the specified entries:
-     * 
-     * For location-level partial updates, if no address is provided, the existing address will be deleted.
-     * 
-     * For address-level partial updates, if no services are provided, the existing services will be considered for
-     * deletion.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param serviceGatewayName The name of the service gateway.
-     * @param parameters Parameters supplied to the create or updates address locations in service gateway operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return A {@link Mono} that completes when a successful response is received.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<Void> updateAddressLocationsAsync(String resourceGroupName, String serviceGatewayName,
-        ServiceGatewayUpdateAddressLocationsRequest parameters) {
-        return beginUpdateAddressLocationsAsync(resourceGroupName, serviceGatewayName, parameters).last()
-            .flatMap(this.client::getLroFinalResultOrError);
-    }
-
-    /**
-     * Creates or updates address locations within the service gateway.
-     * 
-     * The request supports both full and partial update modes at two levels: location and address.
-     * 
-     * Full update replaces all existing data.
-     * 
-     * Partial update modifies only the specified entries:
-     * 
-     * For location-level partial updates, if no address is provided, the existing address will be deleted.
-     * 
-     * For address-level partial updates, if no services are provided, the existing services will be considered for
-     * deletion.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param serviceGatewayName The name of the service gateway.
-     * @param parameters Parameters supplied to the create or updates address locations in service gateway operation.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return A {@link Mono} that completes when a successful response is received.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<Void> updateAddressLocationsAsync(String resourceGroupName, String serviceGatewayName,
-        ServiceGatewayUpdateAddressLocationsRequest parameters, Context context) {
-        return beginUpdateAddressLocationsAsync(resourceGroupName, serviceGatewayName, parameters, context).last()
-            .flatMap(this.client::getLroFinalResultOrError);
-    }
-
-    /**
-     * Creates or updates address locations within the service gateway.
-     * 
-     * The request supports both full and partial update modes at two levels: location and address.
-     * 
-     * Full update replaces all existing data.
-     * 
-     * Partial update modifies only the specified entries:
-     * 
-     * For location-level partial updates, if no address is provided, the existing address will be deleted.
-     * 
-     * For address-level partial updates, if no services are provided, the existing services will be considered for
-     * deletion.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param serviceGatewayName The name of the service gateway.
-     * @param parameters Parameters supplied to the create or updates address locations in service gateway operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    public void updateAddressLocations(String resourceGroupName, String serviceGatewayName,
-        ServiceGatewayUpdateAddressLocationsRequest parameters) {
-        updateAddressLocationsAsync(resourceGroupName, serviceGatewayName, parameters).block();
-    }
-
-    /**
-     * Creates or updates address locations within the service gateway.
-     * 
-     * The request supports both full and partial update modes at two levels: location and address.
-     * 
-     * Full update replaces all existing data.
-     * 
-     * Partial update modifies only the specified entries:
-     * 
-     * For location-level partial updates, if no address is provided, the existing address will be deleted.
-     * 
-     * For address-level partial updates, if no services are provided, the existing services will be considered for
-     * deletion.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param serviceGatewayName The name of the service gateway.
-     * @param parameters Parameters supplied to the create or updates address locations in service gateway operation.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    public void updateAddressLocations(String resourceGroupName, String serviceGatewayName,
-        ServiceGatewayUpdateAddressLocationsRequest parameters, Context context) {
-        updateAddressLocationsAsync(resourceGroupName, serviceGatewayName, parameters, context).block();
-    }
-
-    /**
-     * Creates, updates, or deletes services within the service gateway.
-     * The request supports both full and partial update modes at the service level.
-     * 
-     * Full update replaces all existing services with the new list provided in the request.
-     * Partial update modifies only the specified services.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param serviceGatewayName The name of the service gateway.
-     * @param parameters Parameters supplied to the create or updates services in service gateway operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the {@link Response} on successful completion of {@link Mono}.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<Response<Flux<ByteBuffer>>> updateServicesWithResponseAsync(String resourceGroupName,
-        String serviceGatewayName, ServiceGatewayUpdateServicesRequest parameters) {
+    public Mono<Response<ServiceGatewayActionOkResponseBodyInner>> updateServicesWithResponseAsync(
+        String resourceGroupName, String serviceGatewayName, ServiceGatewayUpdateServicesRequest parameters) {
         if (this.client.getEndpoint() == null) {
             return Mono.error(
                 new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
@@ -1539,10 +1042,13 @@ public final class ServiceGatewaysClientImpl implements InnerSupportsGet<Service
         } else {
             parameters.validate();
         }
-        final String apiVersion = "2025-07-01";
+        final String apiVersion = "2026-05-01";
         final String contentType = "application/json";
-        return FluxUtil.withContext(context -> service.updateServices(this.client.getEndpoint(), apiVersion,
-            this.client.getSubscriptionId(), resourceGroupName, serviceGatewayName, contentType, parameters, context))
+        final String accept = "application/json";
+        return FluxUtil
+            .withContext(context -> service.updateServices(this.client.getEndpoint(), apiVersion,
+                this.client.getSubscriptionId(), resourceGroupName, serviceGatewayName, contentType, accept, parameters,
+                context))
             .contextWrite(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext()).readOnly()));
     }
 
@@ -1555,16 +1061,17 @@ public final class ServiceGatewaysClientImpl implements InnerSupportsGet<Service
      * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param serviceGatewayName The name of the service gateway.
-     * @param parameters Parameters supplied to the create or updates services in service gateway operation.
+     * @param parameters Parameters supplied to create or update services in service gateway operation.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the {@link Response} on successful completion of {@link Mono}.
+     * @return empty success response along with {@link Response} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<Response<Flux<ByteBuffer>>> updateServicesWithResponseAsync(String resourceGroupName,
-        String serviceGatewayName, ServiceGatewayUpdateServicesRequest parameters, Context context) {
+    private Mono<Response<ServiceGatewayActionOkResponseBodyInner>> updateServicesWithResponseAsync(
+        String resourceGroupName, String serviceGatewayName, ServiceGatewayUpdateServicesRequest parameters,
+        Context context) {
         if (this.client.getEndpoint() == null) {
             return Mono.error(
                 new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
@@ -1586,191 +1093,34 @@ public final class ServiceGatewaysClientImpl implements InnerSupportsGet<Service
         } else {
             parameters.validate();
         }
-        final String apiVersion = "2025-07-01";
+        final String apiVersion = "2026-05-01";
         final String contentType = "application/json";
+        final String accept = "application/json";
         context = this.client.mergeContext(context);
         return service.updateServices(this.client.getEndpoint(), apiVersion, this.client.getSubscriptionId(),
-            resourceGroupName, serviceGatewayName, contentType, parameters, context);
+            resourceGroupName, serviceGatewayName, contentType, accept, parameters, context);
     }
 
-    /**
-     * Creates, updates, or deletes services within the service gateway.
-     * The request supports both full and partial update modes at the service level.
-     * 
-     * Full update replaces all existing services with the new list provided in the request.
-     * Partial update modifies only the specified services.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param serviceGatewayName The name of the service gateway.
-     * @param parameters Parameters supplied to the create or updates services in service gateway operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the {@link PollerFlux} for polling of long-running operation.
-     */
-    @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
-    public PollerFlux<PollResult<Void>, Void> beginUpdateServicesAsync(String resourceGroupName,
+    @Override
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public Mono<ServiceGatewayActionOkResponseBodyInner> updateServicesAsync(String resourceGroupName,
         String serviceGatewayName, ServiceGatewayUpdateServicesRequest parameters) {
-        Mono<Response<Flux<ByteBuffer>>> mono
-            = updateServicesWithResponseAsync(resourceGroupName, serviceGatewayName, parameters);
-        return this.client.<Void, Void>getLroResult(mono, this.client.getHttpPipeline(), Void.class, Void.class,
-            this.client.getContext());
+        return updateServicesWithResponseAsync(resourceGroupName, serviceGatewayName, parameters)
+            .flatMap(res -> Mono.justOrEmpty(res.getValue()));
     }
 
-    /**
-     * Creates, updates, or deletes services within the service gateway.
-     * The request supports both full and partial update modes at the service level.
-     * 
-     * Full update replaces all existing services with the new list provided in the request.
-     * Partial update modifies only the specified services.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param serviceGatewayName The name of the service gateway.
-     * @param parameters Parameters supplied to the create or updates services in service gateway operation.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the {@link PollerFlux} for polling of long-running operation.
-     */
-    @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
-    private PollerFlux<PollResult<Void>, Void> beginUpdateServicesAsync(String resourceGroupName,
+    @Override
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public Response<ServiceGatewayActionOkResponseBodyInner> updateServicesWithResponse(String resourceGroupName,
         String serviceGatewayName, ServiceGatewayUpdateServicesRequest parameters, Context context) {
-        context = this.client.mergeContext(context);
-        Mono<Response<Flux<ByteBuffer>>> mono
-            = updateServicesWithResponseAsync(resourceGroupName, serviceGatewayName, parameters, context);
-        return this.client.<Void, Void>getLroResult(mono, this.client.getHttpPipeline(), Void.class, Void.class,
-            context);
+        return updateServicesWithResponseAsync(resourceGroupName, serviceGatewayName, parameters, context).block();
     }
 
-    /**
-     * Creates, updates, or deletes services within the service gateway.
-     * The request supports both full and partial update modes at the service level.
-     * 
-     * Full update replaces all existing services with the new list provided in the request.
-     * Partial update modifies only the specified services.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param serviceGatewayName The name of the service gateway.
-     * @param parameters Parameters supplied to the create or updates services in service gateway operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the {@link SyncPoller} for polling of long-running operation.
-     */
-    @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
-    public SyncPoller<PollResult<Void>, Void> beginUpdateServices(String resourceGroupName, String serviceGatewayName,
+    @Override
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public ServiceGatewayActionOkResponseBodyInner updateServices(String resourceGroupName, String serviceGatewayName,
         ServiceGatewayUpdateServicesRequest parameters) {
-        return this.beginUpdateServicesAsync(resourceGroupName, serviceGatewayName, parameters).getSyncPoller();
-    }
-
-    /**
-     * Creates, updates, or deletes services within the service gateway.
-     * The request supports both full and partial update modes at the service level.
-     * 
-     * Full update replaces all existing services with the new list provided in the request.
-     * Partial update modifies only the specified services.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param serviceGatewayName The name of the service gateway.
-     * @param parameters Parameters supplied to the create or updates services in service gateway operation.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the {@link SyncPoller} for polling of long-running operation.
-     */
-    @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
-    public SyncPoller<PollResult<Void>, Void> beginUpdateServices(String resourceGroupName, String serviceGatewayName,
-        ServiceGatewayUpdateServicesRequest parameters, Context context) {
-        return this.beginUpdateServicesAsync(resourceGroupName, serviceGatewayName, parameters, context)
-            .getSyncPoller();
-    }
-
-    /**
-     * Creates, updates, or deletes services within the service gateway.
-     * The request supports both full and partial update modes at the service level.
-     * 
-     * Full update replaces all existing services with the new list provided in the request.
-     * Partial update modifies only the specified services.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param serviceGatewayName The name of the service gateway.
-     * @param parameters Parameters supplied to the create or updates services in service gateway operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return A {@link Mono} that completes when a successful response is received.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<Void> updateServicesAsync(String resourceGroupName, String serviceGatewayName,
-        ServiceGatewayUpdateServicesRequest parameters) {
-        return beginUpdateServicesAsync(resourceGroupName, serviceGatewayName, parameters).last()
-            .flatMap(this.client::getLroFinalResultOrError);
-    }
-
-    /**
-     * Creates, updates, or deletes services within the service gateway.
-     * The request supports both full and partial update modes at the service level.
-     * 
-     * Full update replaces all existing services with the new list provided in the request.
-     * Partial update modifies only the specified services.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param serviceGatewayName The name of the service gateway.
-     * @param parameters Parameters supplied to the create or updates services in service gateway operation.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return A {@link Mono} that completes when a successful response is received.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<Void> updateServicesAsync(String resourceGroupName, String serviceGatewayName,
-        ServiceGatewayUpdateServicesRequest parameters, Context context) {
-        return beginUpdateServicesAsync(resourceGroupName, serviceGatewayName, parameters, context).last()
-            .flatMap(this.client::getLroFinalResultOrError);
-    }
-
-    /**
-     * Creates, updates, or deletes services within the service gateway.
-     * The request supports both full and partial update modes at the service level.
-     * 
-     * Full update replaces all existing services with the new list provided in the request.
-     * Partial update modifies only the specified services.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param serviceGatewayName The name of the service gateway.
-     * @param parameters Parameters supplied to the create or updates services in service gateway operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    public void updateServices(String resourceGroupName, String serviceGatewayName,
-        ServiceGatewayUpdateServicesRequest parameters) {
-        updateServicesAsync(resourceGroupName, serviceGatewayName, parameters).block();
-    }
-
-    /**
-     * Creates, updates, or deletes services within the service gateway.
-     * The request supports both full and partial update modes at the service level.
-     * 
-     * Full update replaces all existing services with the new list provided in the request.
-     * Partial update modifies only the specified services.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param serviceGatewayName The name of the service gateway.
-     * @param parameters Parameters supplied to the create or updates services in service gateway operation.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    public void updateServices(String resourceGroupName, String serviceGatewayName,
-        ServiceGatewayUpdateServicesRequest parameters, Context context) {
-        updateServicesAsync(resourceGroupName, serviceGatewayName, parameters, context).block();
+        return updateServicesWithResponse(resourceGroupName, serviceGatewayName, parameters, Context.NONE).getValue();
     }
 
     /**
@@ -1803,7 +1153,7 @@ public final class ServiceGatewaysClientImpl implements InnerSupportsGet<Service
             return Mono
                 .error(new IllegalArgumentException("Parameter serviceGatewayName is required and cannot be null."));
         }
-        final String apiVersion = "2025-07-01";
+        final String apiVersion = "2026-05-01";
         final String accept = "application/json";
         return FluxUtil
             .withContext(context -> service.getAddressLocations(this.client.getEndpoint(), apiVersion,
@@ -1845,7 +1195,7 @@ public final class ServiceGatewaysClientImpl implements InnerSupportsGet<Service
             return Mono
                 .error(new IllegalArgumentException("Parameter serviceGatewayName is required and cannot be null."));
         }
-        final String apiVersion = "2025-07-01";
+        final String apiVersion = "2026-05-01";
         final String accept = "application/json";
         context = this.client.mergeContext(context);
         return service
@@ -1855,16 +1205,7 @@ public final class ServiceGatewaysClientImpl implements InnerSupportsGet<Service
                 res.getValue().value(), res.getValue().nextLink(), null));
     }
 
-    /**
-     * Get address locations in service gateway.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param serviceGatewayName The name of the service gateway.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return address locations in service gateway as paginated response with {@link PagedFlux}.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.COLLECTION)
     public PagedFlux<ServiceGatewayAddressLocationResponseInner> getAddressLocationsAsync(String resourceGroupName,
         String serviceGatewayName) {
@@ -1890,33 +1231,14 @@ public final class ServiceGatewaysClientImpl implements InnerSupportsGet<Service
             nextLink -> getAddressLocationsNextSinglePageAsync(nextLink, context));
     }
 
-    /**
-     * Get address locations in service gateway.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param serviceGatewayName The name of the service gateway.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return address locations in service gateway as paginated response with {@link PagedIterable}.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.COLLECTION)
     public PagedIterable<ServiceGatewayAddressLocationResponseInner> getAddressLocations(String resourceGroupName,
         String serviceGatewayName) {
         return new PagedIterable<>(getAddressLocationsAsync(resourceGroupName, serviceGatewayName));
     }
 
-    /**
-     * Get address locations in service gateway.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param serviceGatewayName The name of the service gateway.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return address locations in service gateway as paginated response with {@link PagedIterable}.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.COLLECTION)
     public PagedIterable<ServiceGatewayAddressLocationResponseInner> getAddressLocations(String resourceGroupName,
         String serviceGatewayName, Context context) {
@@ -1952,7 +1274,7 @@ public final class ServiceGatewaysClientImpl implements InnerSupportsGet<Service
             return Mono
                 .error(new IllegalArgumentException("Parameter serviceGatewayName is required and cannot be null."));
         }
-        final String apiVersion = "2025-07-01";
+        final String apiVersion = "2026-05-01";
         final String accept = "application/json";
         return FluxUtil
             .withContext(context -> service.getServices(this.client.getEndpoint(), apiVersion,
@@ -1992,7 +1314,7 @@ public final class ServiceGatewaysClientImpl implements InnerSupportsGet<Service
             return Mono
                 .error(new IllegalArgumentException("Parameter serviceGatewayName is required and cannot be null."));
         }
-        final String apiVersion = "2025-07-01";
+        final String apiVersion = "2026-05-01";
         final String accept = "application/json";
         context = this.client.mergeContext(context);
         return service
@@ -2002,16 +1324,7 @@ public final class ServiceGatewaysClientImpl implements InnerSupportsGet<Service
                 res.getValue().value(), res.getValue().nextLink(), null));
     }
 
-    /**
-     * Get Services in service gateway.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param serviceGatewayName The name of the service gateway.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return services in service gateway as paginated response with {@link PagedFlux}.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.COLLECTION)
     public PagedFlux<ServiceGatewayServiceInner> getServicesAsync(String resourceGroupName, String serviceGatewayName) {
         return new PagedFlux<>(() -> getServicesSinglePageAsync(resourceGroupName, serviceGatewayName),
@@ -2036,32 +1349,13 @@ public final class ServiceGatewaysClientImpl implements InnerSupportsGet<Service
             nextLink -> getServicesNextSinglePageAsync(nextLink, context));
     }
 
-    /**
-     * Get Services in service gateway.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param serviceGatewayName The name of the service gateway.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return services in service gateway as paginated response with {@link PagedIterable}.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.COLLECTION)
     public PagedIterable<ServiceGatewayServiceInner> getServices(String resourceGroupName, String serviceGatewayName) {
         return new PagedIterable<>(getServicesAsync(resourceGroupName, serviceGatewayName));
     }
 
-    /**
-     * Get Services in service gateway.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param serviceGatewayName The name of the service gateway.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return services in service gateway as paginated response with {@link PagedIterable}.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.COLLECTION)
     public PagedIterable<ServiceGatewayServiceInner> getServices(String resourceGroupName, String serviceGatewayName,
         Context context) {

@@ -233,7 +233,7 @@ public final class OnlineExperimentationClientImpl {
         @UnexpectedResponseExceptionType(HttpResponseException.class)
         Mono<Response<Void>> deleteMetric(@HostParam("endpoint") String endpoint,
             @QueryParam("api-version") String apiVersion, @PathParam("experimentMetricId") String experimentMetricId,
-            @HeaderParam("Accept") String accept, RequestOptions requestOptions, Context context);
+            RequestOptions requestOptions, Context context);
 
         @Delete("/experiment-metrics/{experimentMetricId}")
         @ExpectedResponses({ 204 })
@@ -243,7 +243,7 @@ public final class OnlineExperimentationClientImpl {
         @UnexpectedResponseExceptionType(HttpResponseException.class)
         Response<Void> deleteMetricSync(@HostParam("endpoint") String endpoint,
             @QueryParam("api-version") String apiVersion, @PathParam("experimentMetricId") String experimentMetricId,
-            @HeaderParam("Accept") String accept, RequestOptions requestOptions, Context context);
+            RequestOptions requestOptions, Context context);
 
         @Get("/experiment-metrics")
         @ExpectedResponses({ 200 })
@@ -324,6 +324,15 @@ public final class OnlineExperimentationClientImpl {
      * }
      * </pre>
      * 
+     * <p><strong>Response Headers</strong></p>
+     * <table border="1">
+     * <caption>Response Headers</caption>
+     * <tr><th>Name</th><th>Type</th><th>Description</th></tr>
+     * <tr><td>ETag</td><td>String</td><td>The entity tag for the response.</td></tr>
+     * <tr><td>x-ms-client-request-id</td><td>String</td><td>An opaque, globally-unique, client-generated string
+     * identifier for the request.</td></tr>
+     * </table>
+     * 
      * @param experimentMetricId Identifier for this experiment metric. Must start with a lowercase letter and contain
      * only lowercase letters, numbers, and underscores.
      * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
@@ -379,6 +388,15 @@ public final class OnlineExperimentationClientImpl {
      * }
      * }
      * </pre>
+     * 
+     * <p><strong>Response Headers</strong></p>
+     * <table border="1">
+     * <caption>Response Headers</caption>
+     * <tr><th>Name</th><th>Type</th><th>Description</th></tr>
+     * <tr><td>ETag</td><td>String</td><td>The entity tag for the response.</td></tr>
+     * <tr><td>x-ms-client-request-id</td><td>String</td><td>An opaque, globally-unique, client-generated string
+     * identifier for the request.</td></tr>
+     * </table>
      * 
      * @param experimentMetricId Identifier for this experiment metric. Must start with a lowercase letter and contain
      * only lowercase letters, numbers, and underscores.
@@ -455,6 +473,15 @@ public final class OnlineExperimentationClientImpl {
      * }
      * }
      * </pre>
+     * 
+     * <p><strong>Response Headers</strong></p>
+     * <table border="1">
+     * <caption>Response Headers</caption>
+     * <tr><th>Name</th><th>Type</th><th>Description</th></tr>
+     * <tr><td>ETag</td><td>String</td><td>The entity tag for the response.</td></tr>
+     * <tr><td>x-ms-client-request-id</td><td>String</td><td>An opaque, globally-unique, client-generated string
+     * identifier for the request.</td></tr>
+     * </table>
      * 
      * @param experimentMetricId Identifier for this experiment metric. Must start with a lowercase letter and contain
      * only lowercase letters, numbers, and underscores.
@@ -537,6 +564,15 @@ public final class OnlineExperimentationClientImpl {
      * }
      * </pre>
      * 
+     * <p><strong>Response Headers</strong></p>
+     * <table border="1">
+     * <caption>Response Headers</caption>
+     * <tr><th>Name</th><th>Type</th><th>Description</th></tr>
+     * <tr><td>ETag</td><td>String</td><td>The entity tag for the response.</td></tr>
+     * <tr><td>x-ms-client-request-id</td><td>String</td><td>An opaque, globally-unique, client-generated string
+     * identifier for the request.</td></tr>
+     * </table>
+     * 
      * @param experimentMetricId Identifier for this experiment metric. Must start with a lowercase letter and contain
      * only lowercase letters, numbers, and underscores.
      * @param resource The resource instance.
@@ -596,6 +632,14 @@ public final class OnlineExperimentationClientImpl {
      * }
      * </pre>
      * 
+     * <p><strong>Response Headers</strong></p>
+     * <table border="1">
+     * <caption>Response Headers</caption>
+     * <tr><th>Name</th><th>Type</th><th>Description</th></tr>
+     * <tr><td>x-ms-client-request-id</td><td>String</td><td>An opaque, globally-unique, client-generated string
+     * identifier for the request.</td></tr>
+     * </table>
+     * 
      * @param body Experiment metric input to validate.
      * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
      * @throws HttpResponseException thrown if the request is rejected by server.
@@ -653,6 +697,14 @@ public final class OnlineExperimentationClientImpl {
      * }
      * </pre>
      * 
+     * <p><strong>Response Headers</strong></p>
+     * <table border="1">
+     * <caption>Response Headers</caption>
+     * <tr><th>Name</th><th>Type</th><th>Description</th></tr>
+     * <tr><td>x-ms-client-request-id</td><td>String</td><td>An opaque, globally-unique, client-generated string
+     * identifier for the request.</td></tr>
+     * </table>
+     * 
      * @param body Experiment metric input to validate.
      * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
      * @throws HttpResponseException thrown if the request is rejected by server.
@@ -685,6 +737,13 @@ public final class OnlineExperimentationClientImpl {
      * was modified after this time.</td></tr>
      * </table>
      * You can add these to a request with {@link RequestOptions#addHeader}
+     * <p><strong>Response Headers</strong></p>
+     * <table border="1">
+     * <caption>Response Headers</caption>
+     * <tr><th>Name</th><th>Type</th><th>Description</th></tr>
+     * <tr><td>x-ms-client-request-id</td><td>String</td><td>An opaque, globally-unique, client-generated string
+     * identifier for the request.</td></tr>
+     * </table>
      * 
      * @param experimentMetricId Identifier for this experiment metric. Must start with a lowercase letter and contain
      * only lowercase letters, numbers, and underscores.
@@ -698,9 +757,8 @@ public final class OnlineExperimentationClientImpl {
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Response<Void>> deleteMetricWithResponseAsync(String experimentMetricId,
         RequestOptions requestOptions) {
-        final String accept = "application/json";
         return FluxUtil.withContext(context -> service.deleteMetric(this.getEndpoint(),
-            this.getServiceVersion().getVersion(), experimentMetricId, accept, requestOptions, context));
+            this.getServiceVersion().getVersion(), experimentMetricId, requestOptions, context));
     }
 
     /**
@@ -719,6 +777,13 @@ public final class OnlineExperimentationClientImpl {
      * was modified after this time.</td></tr>
      * </table>
      * You can add these to a request with {@link RequestOptions#addHeader}
+     * <p><strong>Response Headers</strong></p>
+     * <table border="1">
+     * <caption>Response Headers</caption>
+     * <tr><th>Name</th><th>Type</th><th>Description</th></tr>
+     * <tr><td>x-ms-client-request-id</td><td>String</td><td>An opaque, globally-unique, client-generated string
+     * identifier for the request.</td></tr>
+     * </table>
      * 
      * @param experimentMetricId Identifier for this experiment metric. Must start with a lowercase letter and contain
      * only lowercase letters, numbers, and underscores.
@@ -731,9 +796,8 @@ public final class OnlineExperimentationClientImpl {
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Response<Void> deleteMetricWithResponse(String experimentMetricId, RequestOptions requestOptions) {
-        final String accept = "application/json";
         return service.deleteMetricSync(this.getEndpoint(), this.getServiceVersion().getVersion(), experimentMetricId,
-            accept, requestOptions, Context.NONE);
+            requestOptions, Context.NONE);
     }
 
     /**

@@ -88,11 +88,7 @@ public final class SecurityPolicyImpl implements SecurityPolicy, SecurityPolicy.
     }
 
     public SecurityPolicy create() {
-        this.innerObject = serviceManager.serviceClient()
-            .getSecurityPoliciesInterfaces()
-            .createOrUpdate(resourceGroupName, trafficControllerName, securityPolicyName, this.innerModel(),
-                Context.NONE);
-        return this;
+        return this.create(Context.NONE);
     }
 
     public SecurityPolicy create(Context context) {
@@ -115,12 +111,7 @@ public final class SecurityPolicyImpl implements SecurityPolicy, SecurityPolicy.
     }
 
     public SecurityPolicy apply() {
-        this.innerObject = serviceManager.serviceClient()
-            .getSecurityPoliciesInterfaces()
-            .updateWithResponse(resourceGroupName, trafficControllerName, securityPolicyName, updateProperties,
-                Context.NONE)
-            .getValue();
-        return this;
+        return this.apply(Context.NONE);
     }
 
     public SecurityPolicy apply(Context context) {
@@ -135,17 +126,19 @@ public final class SecurityPolicyImpl implements SecurityPolicy, SecurityPolicy.
         com.azure.resourcemanager.servicenetworking.TrafficControllerManager serviceManager) {
         this.innerObject = innerObject;
         this.serviceManager = serviceManager;
-        this.resourceGroupName = ResourceManagerUtils.getValueFromIdByName(innerObject.id(), "resourceGroups");
-        this.trafficControllerName = ResourceManagerUtils.getValueFromIdByName(innerObject.id(), "trafficControllers");
-        this.securityPolicyName = ResourceManagerUtils.getValueFromIdByName(innerObject.id(), "securityPolicies");
+        this.resourceGroupName = ResourceManagerUtils.getValueFromIdByParameterName(innerObject.id(),
+            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.ServiceNetworking/trafficControllers/{trafficControllerName}/securityPolicies/{securityPolicyName}",
+            "resourceGroupName");
+        this.trafficControllerName = ResourceManagerUtils.getValueFromIdByParameterName(innerObject.id(),
+            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.ServiceNetworking/trafficControllers/{trafficControllerName}/securityPolicies/{securityPolicyName}",
+            "trafficControllerName");
+        this.securityPolicyName = ResourceManagerUtils.getValueFromIdByParameterName(innerObject.id(),
+            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.ServiceNetworking/trafficControllers/{trafficControllerName}/securityPolicies/{securityPolicyName}",
+            "securityPolicyName");
     }
 
     public SecurityPolicy refresh() {
-        this.innerObject = serviceManager.serviceClient()
-            .getSecurityPoliciesInterfaces()
-            .getWithResponse(resourceGroupName, trafficControllerName, securityPolicyName, Context.NONE)
-            .getValue();
-        return this;
+        return this.refresh(Context.NONE);
     }
 
     public SecurityPolicy refresh(Context context) {

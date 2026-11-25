@@ -97,10 +97,7 @@ public final class ReplicaImpl implements Replica, Replica.Definition, Replica.U
     }
 
     public Replica create() {
-        this.innerObject = serviceManager.serviceClient()
-            .getWebPubSubReplicas()
-            .createOrUpdate(resourceGroupName, resourceName, replicaName, this.innerModel(), Context.NONE);
-        return this;
+        return this.create(Context.NONE);
     }
 
     public Replica create(Context context) {
@@ -121,10 +118,7 @@ public final class ReplicaImpl implements Replica, Replica.Definition, Replica.U
     }
 
     public Replica apply() {
-        this.innerObject = serviceManager.serviceClient()
-            .getWebPubSubReplicas()
-            .update(resourceGroupName, resourceName, replicaName, this.innerModel(), Context.NONE);
-        return this;
+        return this.apply(Context.NONE);
     }
 
     public Replica apply(Context context) {
@@ -137,17 +131,19 @@ public final class ReplicaImpl implements Replica, Replica.Definition, Replica.U
     ReplicaImpl(ReplicaInner innerObject, com.azure.resourcemanager.webpubsub.WebPubSubManager serviceManager) {
         this.innerObject = innerObject;
         this.serviceManager = serviceManager;
-        this.resourceGroupName = ResourceManagerUtils.getValueFromIdByName(innerObject.id(), "resourceGroups");
-        this.resourceName = ResourceManagerUtils.getValueFromIdByName(innerObject.id(), "webPubSub");
-        this.replicaName = ResourceManagerUtils.getValueFromIdByName(innerObject.id(), "replicas");
+        this.resourceGroupName = ResourceManagerUtils.getValueFromIdByParameterName(innerObject.id(),
+            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.SignalRService/webPubSub/{resourceName}/replicas/{replicaName}",
+            "resourceGroupName");
+        this.resourceName = ResourceManagerUtils.getValueFromIdByParameterName(innerObject.id(),
+            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.SignalRService/webPubSub/{resourceName}/replicas/{replicaName}",
+            "resourceName");
+        this.replicaName = ResourceManagerUtils.getValueFromIdByParameterName(innerObject.id(),
+            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.SignalRService/webPubSub/{resourceName}/replicas/{replicaName}",
+            "replicaName");
     }
 
     public Replica refresh() {
-        this.innerObject = serviceManager.serviceClient()
-            .getWebPubSubReplicas()
-            .getWithResponse(resourceGroupName, resourceName, replicaName, Context.NONE)
-            .getValue();
-        return this;
+        return this.refresh(Context.NONE);
     }
 
     public Replica refresh(Context context) {

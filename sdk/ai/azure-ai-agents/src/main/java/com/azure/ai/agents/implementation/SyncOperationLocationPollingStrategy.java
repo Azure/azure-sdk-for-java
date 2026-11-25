@@ -29,7 +29,7 @@ import java.util.Map;
  * @param <U> the type of the final result object to deserialize into, or BinaryData if raw response body should be
  * kept
  */
-public final class SyncOperationLocationPollingStrategy<T, U> extends SyncOperationResourcePollingStrategy<T, U> {
+public class SyncOperationLocationPollingStrategy<T, U> extends SyncOperationResourcePollingStrategy<T, U> {
 
     private static final ClientLogger LOGGER = new ClientLogger(SyncOperationLocationPollingStrategy.class);
 

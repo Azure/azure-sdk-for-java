@@ -387,19 +387,7 @@ public final class DatabasesClientImpl implements DatabasesClient {
             .flatMap(res -> Mono.justOrEmpty(res.getValue()));
     }
 
-    /**
-     * Gets information about a database in a Redis Enterprise cluster.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param clusterName The name of the Redis Enterprise cluster. Name must be 1-60 characters long. Allowed
-     * characters(A-Z, a-z, 0-9) and hyphen(-). There can be no leading nor trailing nor consecutive hyphens.
-     * @param databaseName The name of the Redis Enterprise database.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return information about a database in a Redis Enterprise cluster along with {@link Response}.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Response<DatabaseInner> getWithResponse(String resourceGroupName, String clusterName, String databaseName,
         Context context) {
@@ -408,18 +396,7 @@ public final class DatabasesClientImpl implements DatabasesClient {
             resourceGroupName, clusterName, databaseName, accept, context);
     }
 
-    /**
-     * Gets information about a database in a Redis Enterprise cluster.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param clusterName The name of the Redis Enterprise cluster. Name must be 1-60 characters long. Allowed
-     * characters(A-Z, a-z, 0-9) and hyphen(-). There can be no leading nor trailing nor consecutive hyphens.
-     * @param databaseName The name of the Redis Enterprise database.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return information about a database in a Redis Enterprise cluster.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public DatabaseInner get(String resourceGroupName, String clusterName, String databaseName) {
         return getWithResponse(resourceGroupName, clusterName, databaseName, Context.NONE).getValue();
@@ -467,11 +444,7 @@ public final class DatabasesClientImpl implements DatabasesClient {
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Response<BinaryData> createWithResponse(String resourceGroupName, String clusterName, String databaseName,
         DatabaseInner parameters) {
-        final String contentType = "application/json";
-        final String accept = "application/json";
-        return service.createSync(this.client.getEndpoint(), this.client.getApiVersion(),
-            this.client.getSubscriptionId(), resourceGroupName, clusterName, databaseName, contentType, accept,
-            parameters, Context.NONE);
+        return createWithResponse(resourceGroupName, clusterName, databaseName, parameters, Context.NONE);
     }
 
     /**
@@ -520,41 +493,14 @@ public final class DatabasesClientImpl implements DatabasesClient {
             DatabaseInner.class, DatabaseInner.class, this.client.getContext());
     }
 
-    /**
-     * Creates a database.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param clusterName The name of the Redis Enterprise cluster. Name must be 1-60 characters long. Allowed
-     * characters(A-Z, a-z, 0-9) and hyphen(-). There can be no leading nor trailing nor consecutive hyphens.
-     * @param databaseName The name of the Redis Enterprise database.
-     * @param parameters Parameters supplied to the create or update database operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the {@link SyncPoller} for polling of describes a database on the Redis Enterprise cluster.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public SyncPoller<PollResult<DatabaseInner>, DatabaseInner> beginCreate(String resourceGroupName,
         String clusterName, String databaseName, DatabaseInner parameters) {
-        Response<BinaryData> response = createWithResponse(resourceGroupName, clusterName, databaseName, parameters);
-        return this.client.<DatabaseInner, DatabaseInner>getLroResult(response, DatabaseInner.class,
-            DatabaseInner.class, Context.NONE);
+        return beginCreate(resourceGroupName, clusterName, databaseName, parameters, Context.NONE);
     }
 
-    /**
-     * Creates a database.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param clusterName The name of the Redis Enterprise cluster. Name must be 1-60 characters long. Allowed
-     * characters(A-Z, a-z, 0-9) and hyphen(-). There can be no leading nor trailing nor consecutive hyphens.
-     * @param databaseName The name of the Redis Enterprise database.
-     * @param parameters Parameters supplied to the create or update database operation.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the {@link SyncPoller} for polling of describes a database on the Redis Enterprise cluster.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public SyncPoller<PollResult<DatabaseInner>, DatabaseInner> beginCreate(String resourceGroupName,
         String clusterName, String databaseName, DatabaseInner parameters, Context context) {
@@ -584,43 +530,19 @@ public final class DatabasesClientImpl implements DatabasesClient {
             .flatMap(this.client::getLroFinalResultOrError);
     }
 
-    /**
-     * Creates a database.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param clusterName The name of the Redis Enterprise cluster. Name must be 1-60 characters long. Allowed
-     * characters(A-Z, a-z, 0-9) and hyphen(-). There can be no leading nor trailing nor consecutive hyphens.
-     * @param databaseName The name of the Redis Enterprise database.
-     * @param parameters Parameters supplied to the create or update database operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return describes a database on the Redis Enterprise cluster.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public DatabaseInner create(String resourceGroupName, String clusterName, String databaseName,
         DatabaseInner parameters) {
-        return beginCreate(resourceGroupName, clusterName, databaseName, parameters).getFinalResult();
+        return create(resourceGroupName, clusterName, databaseName, parameters, Context.NONE);
     }
 
-    /**
-     * Creates a database.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param clusterName The name of the Redis Enterprise cluster. Name must be 1-60 characters long. Allowed
-     * characters(A-Z, a-z, 0-9) and hyphen(-). There can be no leading nor trailing nor consecutive hyphens.
-     * @param databaseName The name of the Redis Enterprise database.
-     * @param parameters Parameters supplied to the create or update database operation.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return describes a database on the Redis Enterprise cluster.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public DatabaseInner create(String resourceGroupName, String clusterName, String databaseName,
         DatabaseInner parameters, Context context) {
-        return beginCreate(resourceGroupName, clusterName, databaseName, parameters, context).getFinalResult();
+        return this.client
+            .getLroFinalResultOrError(beginCreate(resourceGroupName, clusterName, databaseName, parameters, context));
     }
 
     /**
@@ -665,11 +587,7 @@ public final class DatabasesClientImpl implements DatabasesClient {
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Response<BinaryData> updateWithResponse(String resourceGroupName, String clusterName, String databaseName,
         DatabaseUpdate parameters) {
-        final String contentType = "application/json";
-        final String accept = "application/json";
-        return service.updateSync(this.client.getEndpoint(), this.client.getApiVersion(),
-            this.client.getSubscriptionId(), resourceGroupName, clusterName, databaseName, contentType, accept,
-            parameters, Context.NONE);
+        return updateWithResponse(resourceGroupName, clusterName, databaseName, parameters, Context.NONE);
     }
 
     /**
@@ -718,41 +636,14 @@ public final class DatabasesClientImpl implements DatabasesClient {
             DatabaseInner.class, DatabaseInner.class, this.client.getContext());
     }
 
-    /**
-     * Updates a database.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param clusterName The name of the Redis Enterprise cluster. Name must be 1-60 characters long. Allowed
-     * characters(A-Z, a-z, 0-9) and hyphen(-). There can be no leading nor trailing nor consecutive hyphens.
-     * @param databaseName The name of the Redis Enterprise database.
-     * @param parameters Parameters supplied to the create or update database operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the {@link SyncPoller} for polling of describes a database on the Redis Enterprise cluster.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public SyncPoller<PollResult<DatabaseInner>, DatabaseInner> beginUpdate(String resourceGroupName,
         String clusterName, String databaseName, DatabaseUpdate parameters) {
-        Response<BinaryData> response = updateWithResponse(resourceGroupName, clusterName, databaseName, parameters);
-        return this.client.<DatabaseInner, DatabaseInner>getLroResult(response, DatabaseInner.class,
-            DatabaseInner.class, Context.NONE);
+        return beginUpdate(resourceGroupName, clusterName, databaseName, parameters, Context.NONE);
     }
 
-    /**
-     * Updates a database.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param clusterName The name of the Redis Enterprise cluster. Name must be 1-60 characters long. Allowed
-     * characters(A-Z, a-z, 0-9) and hyphen(-). There can be no leading nor trailing nor consecutive hyphens.
-     * @param databaseName The name of the Redis Enterprise database.
-     * @param parameters Parameters supplied to the create or update database operation.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the {@link SyncPoller} for polling of describes a database on the Redis Enterprise cluster.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public SyncPoller<PollResult<DatabaseInner>, DatabaseInner> beginUpdate(String resourceGroupName,
         String clusterName, String databaseName, DatabaseUpdate parameters, Context context) {
@@ -782,43 +673,19 @@ public final class DatabasesClientImpl implements DatabasesClient {
             .flatMap(this.client::getLroFinalResultOrError);
     }
 
-    /**
-     * Updates a database.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param clusterName The name of the Redis Enterprise cluster. Name must be 1-60 characters long. Allowed
-     * characters(A-Z, a-z, 0-9) and hyphen(-). There can be no leading nor trailing nor consecutive hyphens.
-     * @param databaseName The name of the Redis Enterprise database.
-     * @param parameters Parameters supplied to the create or update database operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return describes a database on the Redis Enterprise cluster.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public DatabaseInner update(String resourceGroupName, String clusterName, String databaseName,
         DatabaseUpdate parameters) {
-        return beginUpdate(resourceGroupName, clusterName, databaseName, parameters).getFinalResult();
+        return update(resourceGroupName, clusterName, databaseName, parameters, Context.NONE);
     }
 
-    /**
-     * Updates a database.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param clusterName The name of the Redis Enterprise cluster. Name must be 1-60 characters long. Allowed
-     * characters(A-Z, a-z, 0-9) and hyphen(-). There can be no leading nor trailing nor consecutive hyphens.
-     * @param databaseName The name of the Redis Enterprise database.
-     * @param parameters Parameters supplied to the create or update database operation.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return describes a database on the Redis Enterprise cluster.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public DatabaseInner update(String resourceGroupName, String clusterName, String databaseName,
         DatabaseUpdate parameters, Context context) {
-        return beginUpdate(resourceGroupName, clusterName, databaseName, parameters, context).getFinalResult();
+        return this.client
+            .getLroFinalResultOrError(beginUpdate(resourceGroupName, clusterName, databaseName, parameters, context));
     }
 
     /**
@@ -856,8 +723,7 @@ public final class DatabasesClientImpl implements DatabasesClient {
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Response<BinaryData> deleteWithResponse(String resourceGroupName, String clusterName, String databaseName) {
-        return service.deleteSync(this.client.getEndpoint(), this.client.getApiVersion(),
-            this.client.getSubscriptionId(), resourceGroupName, clusterName, databaseName, Context.NONE);
+        return deleteWithResponse(resourceGroupName, clusterName, databaseName, Context.NONE);
     }
 
     /**
@@ -900,38 +766,14 @@ public final class DatabasesClientImpl implements DatabasesClient {
             this.client.getContext());
     }
 
-    /**
-     * Deletes a single database.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param clusterName The name of the Redis Enterprise cluster. Name must be 1-60 characters long. Allowed
-     * characters(A-Z, a-z, 0-9) and hyphen(-). There can be no leading nor trailing nor consecutive hyphens.
-     * @param databaseName The name of the Redis Enterprise database.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the {@link SyncPoller} for polling of long-running operation.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public SyncPoller<PollResult<Void>, Void> beginDelete(String resourceGroupName, String clusterName,
         String databaseName) {
-        Response<BinaryData> response = deleteWithResponse(resourceGroupName, clusterName, databaseName);
-        return this.client.<Void, Void>getLroResult(response, Void.class, Void.class, Context.NONE);
+        return beginDelete(resourceGroupName, clusterName, databaseName, Context.NONE);
     }
 
-    /**
-     * Deletes a single database.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param clusterName The name of the Redis Enterprise cluster. Name must be 1-60 characters long. Allowed
-     * characters(A-Z, a-z, 0-9) and hyphen(-). There can be no leading nor trailing nor consecutive hyphens.
-     * @param databaseName The name of the Redis Enterprise database.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the {@link SyncPoller} for polling of long-running operation.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public SyncPoller<PollResult<Void>, Void> beginDelete(String resourceGroupName, String clusterName,
         String databaseName, Context context) {
@@ -957,37 +799,16 @@ public final class DatabasesClientImpl implements DatabasesClient {
             .flatMap(this.client::getLroFinalResultOrError);
     }
 
-    /**
-     * Deletes a single database.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param clusterName The name of the Redis Enterprise cluster. Name must be 1-60 characters long. Allowed
-     * characters(A-Z, a-z, 0-9) and hyphen(-). There can be no leading nor trailing nor consecutive hyphens.
-     * @param databaseName The name of the Redis Enterprise database.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public void delete(String resourceGroupName, String clusterName, String databaseName) {
-        beginDelete(resourceGroupName, clusterName, databaseName).getFinalResult();
+        delete(resourceGroupName, clusterName, databaseName, Context.NONE);
     }
 
-    /**
-     * Deletes a single database.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param clusterName The name of the Redis Enterprise cluster. Name must be 1-60 characters long. Allowed
-     * characters(A-Z, a-z, 0-9) and hyphen(-). There can be no leading nor trailing nor consecutive hyphens.
-     * @param databaseName The name of the Redis Enterprise database.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public void delete(String resourceGroupName, String clusterName, String databaseName, Context context) {
-        beginDelete(resourceGroupName, clusterName, databaseName, context).getFinalResult();
+        this.client.getLroFinalResultOrError(beginDelete(resourceGroupName, clusterName, databaseName, context));
     }
 
     /**
@@ -1044,11 +865,7 @@ public final class DatabasesClientImpl implements DatabasesClient {
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private PagedResponse<DatabaseInner> listByClusterSinglePage(String resourceGroupName, String clusterName) {
-        final String accept = "application/json";
-        Response<DatabaseList> res = service.listByClusterSync(this.client.getEndpoint(), this.client.getApiVersion(),
-            this.client.getSubscriptionId(), resourceGroupName, clusterName, accept, Context.NONE);
-        return new PagedResponseBase<>(res.getRequest(), res.getStatusCode(), res.getHeaders(), res.getValue().value(),
-            res.getValue().nextLink(), null);
+        return listByClusterSinglePage(resourceGroupName, clusterName, Context.NONE);
     }
 
     /**
@@ -1073,35 +890,13 @@ public final class DatabasesClientImpl implements DatabasesClient {
             res.getValue().nextLink(), null);
     }
 
-    /**
-     * Gets all databases in the specified Redis Enterprise cluster.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param clusterName The name of the Redis Enterprise cluster. Name must be 1-60 characters long. Allowed
-     * characters(A-Z, a-z, 0-9) and hyphen(-). There can be no leading nor trailing nor consecutive hyphens.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return all databases in the specified Redis Enterprise cluster as paginated response with {@link PagedIterable}.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.COLLECTION)
     public PagedIterable<DatabaseInner> listByCluster(String resourceGroupName, String clusterName) {
-        return new PagedIterable<>(() -> listByClusterSinglePage(resourceGroupName, clusterName),
-            nextLink -> listByClusterNextSinglePage(nextLink));
+        return listByCluster(resourceGroupName, clusterName, Context.NONE);
     }
 
-    /**
-     * Gets all databases in the specified Redis Enterprise cluster.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param clusterName The name of the Redis Enterprise cluster. Name must be 1-60 characters long. Allowed
-     * characters(A-Z, a-z, 0-9) and hyphen(-). There can be no leading nor trailing nor consecutive hyphens.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return all databases in the specified Redis Enterprise cluster as paginated response with {@link PagedIterable}.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.COLLECTION)
     public PagedIterable<DatabaseInner> listByCluster(String resourceGroupName, String clusterName, Context context) {
         return new PagedIterable<>(() -> listByClusterSinglePage(resourceGroupName, clusterName, context),
@@ -1150,19 +945,7 @@ public final class DatabasesClientImpl implements DatabasesClient {
             .flatMap(res -> Mono.justOrEmpty(res.getValue()));
     }
 
-    /**
-     * Retrieves the access keys for the Redis Enterprise database.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param clusterName The name of the Redis Enterprise cluster. Name must be 1-60 characters long. Allowed
-     * characters(A-Z, a-z, 0-9) and hyphen(-). There can be no leading nor trailing nor consecutive hyphens.
-     * @param databaseName The name of the Redis Enterprise database.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the secret access keys used for authenticating connections to redis along with {@link Response}.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Response<AccessKeysInner> listKeysWithResponse(String resourceGroupName, String clusterName,
         String databaseName, Context context) {
@@ -1171,18 +954,7 @@ public final class DatabasesClientImpl implements DatabasesClient {
             this.client.getSubscriptionId(), resourceGroupName, clusterName, databaseName, accept, context);
     }
 
-    /**
-     * Retrieves the access keys for the Redis Enterprise database.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param clusterName The name of the Redis Enterprise cluster. Name must be 1-60 characters long. Allowed
-     * characters(A-Z, a-z, 0-9) and hyphen(-). There can be no leading nor trailing nor consecutive hyphens.
-     * @param databaseName The name of the Redis Enterprise database.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the secret access keys used for authenticating connections to redis.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public AccessKeysInner listKeys(String resourceGroupName, String clusterName, String databaseName) {
         return listKeysWithResponse(resourceGroupName, clusterName, databaseName, Context.NONE).getValue();
@@ -1229,11 +1001,7 @@ public final class DatabasesClientImpl implements DatabasesClient {
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Response<BinaryData> regenerateKeyWithResponse(String resourceGroupName, String clusterName,
         String databaseName, RegenerateKeyParameters parameters) {
-        final String contentType = "application/json";
-        final String accept = "application/json";
-        return service.regenerateKeySync(this.client.getEndpoint(), this.client.getApiVersion(),
-            this.client.getSubscriptionId(), resourceGroupName, clusterName, databaseName, contentType, accept,
-            parameters, Context.NONE);
+        return regenerateKeyWithResponse(resourceGroupName, clusterName, databaseName, parameters, Context.NONE);
     }
 
     /**
@@ -1282,42 +1050,14 @@ public final class DatabasesClientImpl implements DatabasesClient {
             AccessKeysInner.class, AccessKeysInner.class, this.client.getContext());
     }
 
-    /**
-     * Regenerates the Redis Enterprise database's access keys.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param clusterName The name of the Redis Enterprise cluster. Name must be 1-60 characters long. Allowed
-     * characters(A-Z, a-z, 0-9) and hyphen(-). There can be no leading nor trailing nor consecutive hyphens.
-     * @param databaseName The name of the Redis Enterprise database.
-     * @param parameters Specifies which key to regenerate.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the {@link SyncPoller} for polling of long-running operation.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public SyncPoller<PollResult<AccessKeysInner>, AccessKeysInner> beginRegenerateKey(String resourceGroupName,
         String clusterName, String databaseName, RegenerateKeyParameters parameters) {
-        Response<BinaryData> response
-            = regenerateKeyWithResponse(resourceGroupName, clusterName, databaseName, parameters);
-        return this.client.<AccessKeysInner, AccessKeysInner>getLroResult(response, AccessKeysInner.class,
-            AccessKeysInner.class, Context.NONE);
+        return beginRegenerateKey(resourceGroupName, clusterName, databaseName, parameters, Context.NONE);
     }
 
-    /**
-     * Regenerates the Redis Enterprise database's access keys.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param clusterName The name of the Redis Enterprise cluster. Name must be 1-60 characters long. Allowed
-     * characters(A-Z, a-z, 0-9) and hyphen(-). There can be no leading nor trailing nor consecutive hyphens.
-     * @param databaseName The name of the Redis Enterprise database.
-     * @param parameters Specifies which key to regenerate.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the {@link SyncPoller} for polling of long-running operation.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public SyncPoller<PollResult<AccessKeysInner>, AccessKeysInner> beginRegenerateKey(String resourceGroupName,
         String clusterName, String databaseName, RegenerateKeyParameters parameters, Context context) {
@@ -1347,43 +1087,19 @@ public final class DatabasesClientImpl implements DatabasesClient {
             .flatMap(this.client::getLroFinalResultOrError);
     }
 
-    /**
-     * Regenerates the Redis Enterprise database's access keys.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param clusterName The name of the Redis Enterprise cluster. Name must be 1-60 characters long. Allowed
-     * characters(A-Z, a-z, 0-9) and hyphen(-). There can be no leading nor trailing nor consecutive hyphens.
-     * @param databaseName The name of the Redis Enterprise database.
-     * @param parameters Specifies which key to regenerate.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the response.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public AccessKeysInner regenerateKey(String resourceGroupName, String clusterName, String databaseName,
         RegenerateKeyParameters parameters) {
-        return beginRegenerateKey(resourceGroupName, clusterName, databaseName, parameters).getFinalResult();
+        return regenerateKey(resourceGroupName, clusterName, databaseName, parameters, Context.NONE);
     }
 
-    /**
-     * Regenerates the Redis Enterprise database's access keys.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param clusterName The name of the Redis Enterprise cluster. Name must be 1-60 characters long. Allowed
-     * characters(A-Z, a-z, 0-9) and hyphen(-). There can be no leading nor trailing nor consecutive hyphens.
-     * @param databaseName The name of the Redis Enterprise database.
-     * @param parameters Specifies which key to regenerate.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the response.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public AccessKeysInner regenerateKey(String resourceGroupName, String clusterName, String databaseName,
         RegenerateKeyParameters parameters, Context context) {
-        return beginRegenerateKey(resourceGroupName, clusterName, databaseName, parameters, context).getFinalResult();
+        return this.client.getLroFinalResultOrError(
+            beginRegenerateKey(resourceGroupName, clusterName, databaseName, parameters, context));
     }
 
     /**
@@ -1426,10 +1142,7 @@ public final class DatabasesClientImpl implements DatabasesClient {
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Response<BinaryData> importMethodWithResponse(String resourceGroupName, String clusterName,
         String databaseName, ImportClusterParameters parameters) {
-        final String contentType = "application/json";
-        return service.importMethodSync(this.client.getEndpoint(), this.client.getApiVersion(),
-            this.client.getSubscriptionId(), resourceGroupName, clusterName, databaseName, contentType, parameters,
-            Context.NONE);
+        return importMethodWithResponse(resourceGroupName, clusterName, databaseName, parameters, Context.NONE);
     }
 
     /**
@@ -1477,41 +1190,14 @@ public final class DatabasesClientImpl implements DatabasesClient {
             this.client.getContext());
     }
 
-    /**
-     * Imports database files to target database.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param clusterName The name of the Redis Enterprise cluster. Name must be 1-60 characters long. Allowed
-     * characters(A-Z, a-z, 0-9) and hyphen(-). There can be no leading nor trailing nor consecutive hyphens.
-     * @param databaseName The name of the Redis Enterprise database.
-     * @param parameters Storage information for importing into the cluster.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the {@link SyncPoller} for polling of long-running operation.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public SyncPoller<PollResult<Void>, Void> beginImportMethod(String resourceGroupName, String clusterName,
         String databaseName, ImportClusterParameters parameters) {
-        Response<BinaryData> response
-            = importMethodWithResponse(resourceGroupName, clusterName, databaseName, parameters);
-        return this.client.<Void, Void>getLroResult(response, Void.class, Void.class, Context.NONE);
+        return beginImportMethod(resourceGroupName, clusterName, databaseName, parameters, Context.NONE);
     }
 
-    /**
-     * Imports database files to target database.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param clusterName The name of the Redis Enterprise cluster. Name must be 1-60 characters long. Allowed
-     * characters(A-Z, a-z, 0-9) and hyphen(-). There can be no leading nor trailing nor consecutive hyphens.
-     * @param databaseName The name of the Redis Enterprise database.
-     * @param parameters Storage information for importing into the cluster.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the {@link SyncPoller} for polling of long-running operation.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public SyncPoller<PollResult<Void>, Void> beginImportMethod(String resourceGroupName, String clusterName,
         String databaseName, ImportClusterParameters parameters, Context context) {
@@ -1540,41 +1226,19 @@ public final class DatabasesClientImpl implements DatabasesClient {
             .flatMap(this.client::getLroFinalResultOrError);
     }
 
-    /**
-     * Imports database files to target database.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param clusterName The name of the Redis Enterprise cluster. Name must be 1-60 characters long. Allowed
-     * characters(A-Z, a-z, 0-9) and hyphen(-). There can be no leading nor trailing nor consecutive hyphens.
-     * @param databaseName The name of the Redis Enterprise database.
-     * @param parameters Storage information for importing into the cluster.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public void importMethod(String resourceGroupName, String clusterName, String databaseName,
         ImportClusterParameters parameters) {
-        beginImportMethod(resourceGroupName, clusterName, databaseName, parameters).getFinalResult();
+        importMethod(resourceGroupName, clusterName, databaseName, parameters, Context.NONE);
     }
 
-    /**
-     * Imports database files to target database.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param clusterName The name of the Redis Enterprise cluster. Name must be 1-60 characters long. Allowed
-     * characters(A-Z, a-z, 0-9) and hyphen(-). There can be no leading nor trailing nor consecutive hyphens.
-     * @param databaseName The name of the Redis Enterprise database.
-     * @param parameters Storage information for importing into the cluster.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public void importMethod(String resourceGroupName, String clusterName, String databaseName,
         ImportClusterParameters parameters, Context context) {
-        beginImportMethod(resourceGroupName, clusterName, databaseName, parameters, context).getFinalResult();
+        this.client.getLroFinalResultOrError(
+            beginImportMethod(resourceGroupName, clusterName, databaseName, parameters, context));
     }
 
     /**
@@ -1617,10 +1281,7 @@ public final class DatabasesClientImpl implements DatabasesClient {
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Response<BinaryData> exportWithResponse(String resourceGroupName, String clusterName, String databaseName,
         ExportClusterParameters parameters) {
-        final String contentType = "application/json";
-        return service.exportSync(this.client.getEndpoint(), this.client.getApiVersion(),
-            this.client.getSubscriptionId(), resourceGroupName, clusterName, databaseName, contentType, parameters,
-            Context.NONE);
+        return exportWithResponse(resourceGroupName, clusterName, databaseName, parameters, Context.NONE);
     }
 
     /**
@@ -1668,40 +1329,14 @@ public final class DatabasesClientImpl implements DatabasesClient {
             this.client.getContext());
     }
 
-    /**
-     * Exports a database file from target database.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param clusterName The name of the Redis Enterprise cluster. Name must be 1-60 characters long. Allowed
-     * characters(A-Z, a-z, 0-9) and hyphen(-). There can be no leading nor trailing nor consecutive hyphens.
-     * @param databaseName The name of the Redis Enterprise database.
-     * @param parameters Storage information for exporting into the cluster.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the {@link SyncPoller} for polling of long-running operation.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public SyncPoller<PollResult<Void>, Void> beginExport(String resourceGroupName, String clusterName,
         String databaseName, ExportClusterParameters parameters) {
-        Response<BinaryData> response = exportWithResponse(resourceGroupName, clusterName, databaseName, parameters);
-        return this.client.<Void, Void>getLroResult(response, Void.class, Void.class, Context.NONE);
+        return beginExport(resourceGroupName, clusterName, databaseName, parameters, Context.NONE);
     }
 
-    /**
-     * Exports a database file from target database.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param clusterName The name of the Redis Enterprise cluster. Name must be 1-60 characters long. Allowed
-     * characters(A-Z, a-z, 0-9) and hyphen(-). There can be no leading nor trailing nor consecutive hyphens.
-     * @param databaseName The name of the Redis Enterprise database.
-     * @param parameters Storage information for exporting into the cluster.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the {@link SyncPoller} for polling of long-running operation.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public SyncPoller<PollResult<Void>, Void> beginExport(String resourceGroupName, String clusterName,
         String databaseName, ExportClusterParameters parameters, Context context) {
@@ -1730,41 +1365,19 @@ public final class DatabasesClientImpl implements DatabasesClient {
             .flatMap(this.client::getLroFinalResultOrError);
     }
 
-    /**
-     * Exports a database file from target database.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param clusterName The name of the Redis Enterprise cluster. Name must be 1-60 characters long. Allowed
-     * characters(A-Z, a-z, 0-9) and hyphen(-). There can be no leading nor trailing nor consecutive hyphens.
-     * @param databaseName The name of the Redis Enterprise database.
-     * @param parameters Storage information for exporting into the cluster.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public void export(String resourceGroupName, String clusterName, String databaseName,
         ExportClusterParameters parameters) {
-        beginExport(resourceGroupName, clusterName, databaseName, parameters).getFinalResult();
+        export(resourceGroupName, clusterName, databaseName, parameters, Context.NONE);
     }
 
-    /**
-     * Exports a database file from target database.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param clusterName The name of the Redis Enterprise cluster. Name must be 1-60 characters long. Allowed
-     * characters(A-Z, a-z, 0-9) and hyphen(-). There can be no leading nor trailing nor consecutive hyphens.
-     * @param databaseName The name of the Redis Enterprise database.
-     * @param parameters Storage information for exporting into the cluster.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public void export(String resourceGroupName, String clusterName, String databaseName,
         ExportClusterParameters parameters, Context context) {
-        beginExport(resourceGroupName, clusterName, databaseName, parameters, context).getFinalResult();
+        this.client
+            .getLroFinalResultOrError(beginExport(resourceGroupName, clusterName, databaseName, parameters, context));
     }
 
     /**
@@ -1807,10 +1420,7 @@ public final class DatabasesClientImpl implements DatabasesClient {
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Response<BinaryData> forceUnlinkWithResponse(String resourceGroupName, String clusterName,
         String databaseName, ForceUnlinkParameters parameters) {
-        final String contentType = "application/json";
-        return service.forceUnlinkSync(this.client.getEndpoint(), this.client.getApiVersion(),
-            this.client.getSubscriptionId(), resourceGroupName, clusterName, databaseName, contentType, parameters,
-            Context.NONE);
+        return forceUnlinkWithResponse(resourceGroupName, clusterName, databaseName, parameters, Context.NONE);
     }
 
     /**
@@ -1858,41 +1468,14 @@ public final class DatabasesClientImpl implements DatabasesClient {
             this.client.getContext());
     }
 
-    /**
-     * Forcibly removes the link to the specified database resource.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param clusterName The name of the Redis Enterprise cluster. Name must be 1-60 characters long. Allowed
-     * characters(A-Z, a-z, 0-9) and hyphen(-). There can be no leading nor trailing nor consecutive hyphens.
-     * @param databaseName The name of the Redis Enterprise database.
-     * @param parameters Information identifying the database to be unlinked.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the {@link SyncPoller} for polling of long-running operation.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public SyncPoller<PollResult<Void>, Void> beginForceUnlink(String resourceGroupName, String clusterName,
         String databaseName, ForceUnlinkParameters parameters) {
-        Response<BinaryData> response
-            = forceUnlinkWithResponse(resourceGroupName, clusterName, databaseName, parameters);
-        return this.client.<Void, Void>getLroResult(response, Void.class, Void.class, Context.NONE);
+        return beginForceUnlink(resourceGroupName, clusterName, databaseName, parameters, Context.NONE);
     }
 
-    /**
-     * Forcibly removes the link to the specified database resource.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param clusterName The name of the Redis Enterprise cluster. Name must be 1-60 characters long. Allowed
-     * characters(A-Z, a-z, 0-9) and hyphen(-). There can be no leading nor trailing nor consecutive hyphens.
-     * @param databaseName The name of the Redis Enterprise database.
-     * @param parameters Information identifying the database to be unlinked.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the {@link SyncPoller} for polling of long-running operation.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public SyncPoller<PollResult<Void>, Void> beginForceUnlink(String resourceGroupName, String clusterName,
         String databaseName, ForceUnlinkParameters parameters, Context context) {
@@ -1921,41 +1504,19 @@ public final class DatabasesClientImpl implements DatabasesClient {
             .flatMap(this.client::getLroFinalResultOrError);
     }
 
-    /**
-     * Forcibly removes the link to the specified database resource.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param clusterName The name of the Redis Enterprise cluster. Name must be 1-60 characters long. Allowed
-     * characters(A-Z, a-z, 0-9) and hyphen(-). There can be no leading nor trailing nor consecutive hyphens.
-     * @param databaseName The name of the Redis Enterprise database.
-     * @param parameters Information identifying the database to be unlinked.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public void forceUnlink(String resourceGroupName, String clusterName, String databaseName,
         ForceUnlinkParameters parameters) {
-        beginForceUnlink(resourceGroupName, clusterName, databaseName, parameters).getFinalResult();
+        forceUnlink(resourceGroupName, clusterName, databaseName, parameters, Context.NONE);
     }
 
-    /**
-     * Forcibly removes the link to the specified database resource.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param clusterName The name of the Redis Enterprise cluster. Name must be 1-60 characters long. Allowed
-     * characters(A-Z, a-z, 0-9) and hyphen(-). There can be no leading nor trailing nor consecutive hyphens.
-     * @param databaseName The name of the Redis Enterprise database.
-     * @param parameters Information identifying the database to be unlinked.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public void forceUnlink(String resourceGroupName, String clusterName, String databaseName,
         ForceUnlinkParameters parameters, Context context) {
-        beginForceUnlink(resourceGroupName, clusterName, databaseName, parameters, context).getFinalResult();
+        this.client.getLroFinalResultOrError(
+            beginForceUnlink(resourceGroupName, clusterName, databaseName, parameters, context));
     }
 
     /**
@@ -2002,9 +1563,7 @@ public final class DatabasesClientImpl implements DatabasesClient {
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Response<BinaryData> forceLinkToReplicationGroupWithResponse(String resourceGroupName, String clusterName,
         String databaseName, ForceLinkParameters parameters) {
-        final String contentType = "application/json";
-        return service.forceLinkToReplicationGroupSync(this.client.getEndpoint(), this.client.getApiVersion(),
-            this.client.getSubscriptionId(), resourceGroupName, clusterName, databaseName, contentType, parameters,
+        return forceLinkToReplicationGroupWithResponse(resourceGroupName, clusterName, databaseName, parameters,
             Context.NONE);
     }
 
@@ -2057,45 +1616,14 @@ public final class DatabasesClientImpl implements DatabasesClient {
             this.client.getContext());
     }
 
-    /**
-     * Forcibly recreates an existing database on the specified cluster, and rejoins it to an existing replication
-     * group. **IMPORTANT NOTE:** All data in this database will be discarded, and the database will temporarily be
-     * unavailable while rejoining the replication group.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param clusterName The name of the Redis Enterprise cluster. Name must be 1-60 characters long. Allowed
-     * characters(A-Z, a-z, 0-9) and hyphen(-). There can be no leading nor trailing nor consecutive hyphens.
-     * @param databaseName The name of the Redis Enterprise database.
-     * @param parameters Information identifying the database to be unlinked.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the {@link SyncPoller} for polling of long-running operation.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public SyncPoller<PollResult<Void>, Void> beginForceLinkToReplicationGroup(String resourceGroupName,
         String clusterName, String databaseName, ForceLinkParameters parameters) {
-        Response<BinaryData> response
-            = forceLinkToReplicationGroupWithResponse(resourceGroupName, clusterName, databaseName, parameters);
-        return this.client.<Void, Void>getLroResult(response, Void.class, Void.class, Context.NONE);
+        return beginForceLinkToReplicationGroup(resourceGroupName, clusterName, databaseName, parameters, Context.NONE);
     }
 
-    /**
-     * Forcibly recreates an existing database on the specified cluster, and rejoins it to an existing replication
-     * group. **IMPORTANT NOTE:** All data in this database will be discarded, and the database will temporarily be
-     * unavailable while rejoining the replication group.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param clusterName The name of the Redis Enterprise cluster. Name must be 1-60 characters long. Allowed
-     * characters(A-Z, a-z, 0-9) and hyphen(-). There can be no leading nor trailing nor consecutive hyphens.
-     * @param databaseName The name of the Redis Enterprise database.
-     * @param parameters Information identifying the database to be unlinked.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the {@link SyncPoller} for polling of long-running operation.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public SyncPoller<PollResult<Void>, Void> beginForceLinkToReplicationGroup(String resourceGroupName,
         String clusterName, String databaseName, ForceLinkParameters parameters, Context context) {
@@ -2126,46 +1654,19 @@ public final class DatabasesClientImpl implements DatabasesClient {
             .flatMap(this.client::getLroFinalResultOrError);
     }
 
-    /**
-     * Forcibly recreates an existing database on the specified cluster, and rejoins it to an existing replication
-     * group. **IMPORTANT NOTE:** All data in this database will be discarded, and the database will temporarily be
-     * unavailable while rejoining the replication group.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param clusterName The name of the Redis Enterprise cluster. Name must be 1-60 characters long. Allowed
-     * characters(A-Z, a-z, 0-9) and hyphen(-). There can be no leading nor trailing nor consecutive hyphens.
-     * @param databaseName The name of the Redis Enterprise database.
-     * @param parameters Information identifying the database to be unlinked.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public void forceLinkToReplicationGroup(String resourceGroupName, String clusterName, String databaseName,
         ForceLinkParameters parameters) {
-        beginForceLinkToReplicationGroup(resourceGroupName, clusterName, databaseName, parameters).getFinalResult();
+        forceLinkToReplicationGroup(resourceGroupName, clusterName, databaseName, parameters, Context.NONE);
     }
 
-    /**
-     * Forcibly recreates an existing database on the specified cluster, and rejoins it to an existing replication
-     * group. **IMPORTANT NOTE:** All data in this database will be discarded, and the database will temporarily be
-     * unavailable while rejoining the replication group.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param clusterName The name of the Redis Enterprise cluster. Name must be 1-60 characters long. Allowed
-     * characters(A-Z, a-z, 0-9) and hyphen(-). There can be no leading nor trailing nor consecutive hyphens.
-     * @param databaseName The name of the Redis Enterprise database.
-     * @param parameters Information identifying the database to be unlinked.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public void forceLinkToReplicationGroup(String resourceGroupName, String clusterName, String databaseName,
         ForceLinkParameters parameters, Context context) {
-        beginForceLinkToReplicationGroup(resourceGroupName, clusterName, databaseName, parameters, context)
-            .getFinalResult();
+        this.client.getLroFinalResultOrError(
+            beginForceLinkToReplicationGroup(resourceGroupName, clusterName, databaseName, parameters, context));
     }
 
     /**
@@ -2206,8 +1707,7 @@ public final class DatabasesClientImpl implements DatabasesClient {
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Response<BinaryData> flushWithResponse(String resourceGroupName, String clusterName, String databaseName,
         FlushParameters parameters) {
-        return service.flushSync(this.client.getEndpoint(), this.client.getApiVersion(),
-            this.client.getSubscriptionId(), resourceGroupName, clusterName, databaseName, parameters, Context.NONE);
+        return flushWithResponse(resourceGroupName, clusterName, databaseName, parameters, Context.NONE);
     }
 
     /**
@@ -2289,46 +1789,20 @@ public final class DatabasesClientImpl implements DatabasesClient {
      * @return the {@link SyncPoller} for polling of long-running operation.
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
-    public SyncPoller<PollResult<Void>, Void> beginFlush(String resourceGroupName, String clusterName,
+    private SyncPoller<PollResult<Void>, Void> beginFlush(String resourceGroupName, String clusterName,
         String databaseName, FlushParameters parameters) {
-        Response<BinaryData> response = flushWithResponse(resourceGroupName, clusterName, databaseName, parameters);
-        return this.client.<Void, Void>getLroResult(response, Void.class, Void.class, Context.NONE);
+        return beginFlush(resourceGroupName, clusterName, databaseName, parameters, Context.NONE);
     }
 
-    /**
-     * Flushes all the keys in this database and also from its linked databases.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param clusterName The name of the Redis Enterprise cluster. Name must be 1-60 characters long. Allowed
-     * characters(A-Z, a-z, 0-9) and hyphen(-). There can be no leading nor trailing nor consecutive hyphens.
-     * @param databaseName The name of the Redis Enterprise database.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the {@link SyncPoller} for polling of long-running operation.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public SyncPoller<PollResult<Void>, Void> beginFlush(String resourceGroupName, String clusterName,
         String databaseName) {
         final FlushParameters parameters = null;
-        Response<BinaryData> response = flushWithResponse(resourceGroupName, clusterName, databaseName, parameters);
-        return this.client.<Void, Void>getLroResult(response, Void.class, Void.class, Context.NONE);
+        return beginFlush(resourceGroupName, clusterName, databaseName, parameters, Context.NONE);
     }
 
-    /**
-     * Flushes all the keys in this database and also from its linked databases.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param clusterName The name of the Redis Enterprise cluster. Name must be 1-60 characters long. Allowed
-     * characters(A-Z, a-z, 0-9) and hyphen(-). There can be no leading nor trailing nor consecutive hyphens.
-     * @param databaseName The name of the Redis Enterprise database.
-     * @param parameters Information identifying the databases to be flushed.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the {@link SyncPoller} for polling of long-running operation.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public SyncPoller<PollResult<Void>, Void> beginFlush(String resourceGroupName, String clusterName,
         String databaseName, FlushParameters parameters, Context context) {
@@ -2376,40 +1850,19 @@ public final class DatabasesClientImpl implements DatabasesClient {
             .flatMap(this.client::getLroFinalResultOrError);
     }
 
-    /**
-     * Flushes all the keys in this database and also from its linked databases.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param clusterName The name of the Redis Enterprise cluster. Name must be 1-60 characters long. Allowed
-     * characters(A-Z, a-z, 0-9) and hyphen(-). There can be no leading nor trailing nor consecutive hyphens.
-     * @param databaseName The name of the Redis Enterprise database.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public void flush(String resourceGroupName, String clusterName, String databaseName) {
         final FlushParameters parameters = null;
-        beginFlush(resourceGroupName, clusterName, databaseName, parameters).getFinalResult();
+        flush(resourceGroupName, clusterName, databaseName, parameters, Context.NONE);
     }
 
-    /**
-     * Flushes all the keys in this database and also from its linked databases.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param clusterName The name of the Redis Enterprise cluster. Name must be 1-60 characters long. Allowed
-     * characters(A-Z, a-z, 0-9) and hyphen(-). There can be no leading nor trailing nor consecutive hyphens.
-     * @param databaseName The name of the Redis Enterprise database.
-     * @param parameters Information identifying the databases to be flushed.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public void flush(String resourceGroupName, String clusterName, String databaseName, FlushParameters parameters,
         Context context) {
-        beginFlush(resourceGroupName, clusterName, databaseName, parameters, context).getFinalResult();
+        this.client
+            .getLroFinalResultOrError(beginFlush(resourceGroupName, clusterName, databaseName, parameters, context));
     }
 
     /**
@@ -2449,8 +1902,7 @@ public final class DatabasesClientImpl implements DatabasesClient {
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Response<BinaryData> upgradeDBRedisVersionWithResponse(String resourceGroupName, String clusterName,
         String databaseName) {
-        return service.upgradeDBRedisVersionSync(this.client.getEndpoint(), this.client.getApiVersion(),
-            this.client.getSubscriptionId(), resourceGroupName, clusterName, databaseName, Context.NONE);
+        return upgradeDBRedisVersionWithResponse(resourceGroupName, clusterName, databaseName, Context.NONE);
     }
 
     /**
@@ -2494,38 +1946,14 @@ public final class DatabasesClientImpl implements DatabasesClient {
             this.client.getContext());
     }
 
-    /**
-     * Upgrades the database Redis version to the latest available.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param clusterName The name of the Redis Enterprise cluster. Name must be 1-60 characters long. Allowed
-     * characters(A-Z, a-z, 0-9) and hyphen(-). There can be no leading nor trailing nor consecutive hyphens.
-     * @param databaseName The name of the Redis Enterprise database.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the {@link SyncPoller} for polling of long-running operation.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public SyncPoller<PollResult<Void>, Void> beginUpgradeDBRedisVersion(String resourceGroupName, String clusterName,
         String databaseName) {
-        Response<BinaryData> response = upgradeDBRedisVersionWithResponse(resourceGroupName, clusterName, databaseName);
-        return this.client.<Void, Void>getLroResult(response, Void.class, Void.class, Context.NONE);
+        return beginUpgradeDBRedisVersion(resourceGroupName, clusterName, databaseName, Context.NONE);
     }
 
-    /**
-     * Upgrades the database Redis version to the latest available.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param clusterName The name of the Redis Enterprise cluster. Name must be 1-60 characters long. Allowed
-     * characters(A-Z, a-z, 0-9) and hyphen(-). There can be no leading nor trailing nor consecutive hyphens.
-     * @param databaseName The name of the Redis Enterprise database.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the {@link SyncPoller} for polling of long-running operation.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public SyncPoller<PollResult<Void>, Void> beginUpgradeDBRedisVersion(String resourceGroupName, String clusterName,
         String databaseName, Context context) {
@@ -2552,38 +1980,18 @@ public final class DatabasesClientImpl implements DatabasesClient {
             .flatMap(this.client::getLroFinalResultOrError);
     }
 
-    /**
-     * Upgrades the database Redis version to the latest available.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param clusterName The name of the Redis Enterprise cluster. Name must be 1-60 characters long. Allowed
-     * characters(A-Z, a-z, 0-9) and hyphen(-). There can be no leading nor trailing nor consecutive hyphens.
-     * @param databaseName The name of the Redis Enterprise database.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public void upgradeDBRedisVersion(String resourceGroupName, String clusterName, String databaseName) {
-        beginUpgradeDBRedisVersion(resourceGroupName, clusterName, databaseName).getFinalResult();
+        upgradeDBRedisVersion(resourceGroupName, clusterName, databaseName, Context.NONE);
     }
 
-    /**
-     * Upgrades the database Redis version to the latest available.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param clusterName The name of the Redis Enterprise cluster. Name must be 1-60 characters long. Allowed
-     * characters(A-Z, a-z, 0-9) and hyphen(-). There can be no leading nor trailing nor consecutive hyphens.
-     * @param databaseName The name of the Redis Enterprise database.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public void upgradeDBRedisVersion(String resourceGroupName, String clusterName, String databaseName,
         Context context) {
-        beginUpgradeDBRedisVersion(resourceGroupName, clusterName, databaseName, context).getFinalResult();
+        this.client.getLroFinalResultOrError(
+            beginUpgradeDBRedisVersion(resourceGroupName, clusterName, databaseName, context));
     }
 
     /**
@@ -2617,11 +2025,7 @@ public final class DatabasesClientImpl implements DatabasesClient {
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private PagedResponse<DatabaseInner> listByClusterNextSinglePage(String nextLink) {
-        final String accept = "application/json";
-        Response<DatabaseList> res
-            = service.listByClusterNextSync(nextLink, this.client.getEndpoint(), accept, Context.NONE);
-        return new PagedResponseBase<>(res.getRequest(), res.getStatusCode(), res.getHeaders(), res.getValue().value(),
-            res.getValue().nextLink(), null);
+        return listByClusterNextSinglePage(nextLink, Context.NONE);
     }
 
     /**

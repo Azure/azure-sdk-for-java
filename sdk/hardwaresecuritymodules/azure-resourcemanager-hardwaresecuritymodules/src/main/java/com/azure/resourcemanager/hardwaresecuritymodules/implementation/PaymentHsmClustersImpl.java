@@ -46,7 +46,7 @@ public final class PaymentHsmClustersImpl implements PaymentHsmClusters {
     }
 
     public void deleteByResourceGroup(String resourceGroupName, String paymentHsmClusterName) {
-        this.serviceClient().delete(resourceGroupName, paymentHsmClusterName);
+        this.delete(resourceGroupName, paymentHsmClusterName, Context.NONE);
     }
 
     public void delete(String resourceGroupName, String paymentHsmClusterName, Context context) {
@@ -76,58 +76,30 @@ public final class PaymentHsmClustersImpl implements PaymentHsmClusters {
     }
 
     public PaymentHsmCluster getById(String id) {
-        String resourceGroupName = ResourceManagerUtils.getValueFromIdByName(id, "resourceGroups");
-        if (resourceGroupName == null) {
-            throw LOGGER.logExceptionAsError(new IllegalArgumentException(
-                String.format("The resource ID '%s' is not valid. Missing path segment 'resourceGroups'.", id)));
-        }
-        String paymentHsmClusterName = ResourceManagerUtils.getValueFromIdByName(id, "paymentHsmClusters");
-        if (paymentHsmClusterName == null) {
-            throw LOGGER.logExceptionAsError(new IllegalArgumentException(
-                String.format("The resource ID '%s' is not valid. Missing path segment 'paymentHsmClusters'.", id)));
-        }
-        return this.getByResourceGroupWithResponse(resourceGroupName, paymentHsmClusterName, Context.NONE).getValue();
+        return this.getByIdWithResponse(id, Context.NONE).getValue();
     }
 
     public Response<PaymentHsmCluster> getByIdWithResponse(String id, Context context) {
-        String resourceGroupName = ResourceManagerUtils.getValueFromIdByName(id, "resourceGroups");
-        if (resourceGroupName == null) {
-            throw LOGGER.logExceptionAsError(new IllegalArgumentException(
-                String.format("The resource ID '%s' is not valid. Missing path segment 'resourceGroups'.", id)));
-        }
-        String paymentHsmClusterName = ResourceManagerUtils.getValueFromIdByName(id, "paymentHsmClusters");
-        if (paymentHsmClusterName == null) {
-            throw LOGGER.logExceptionAsError(new IllegalArgumentException(
-                String.format("The resource ID '%s' is not valid. Missing path segment 'paymentHsmClusters'.", id)));
-        }
+        String resourceGroupName = ResourceManagerUtils.getRequiredValueFromIdByParameterName(id,
+            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.HardwareSecurityModules/paymentHsmClusters/{paymentHsmClusterName}",
+            "resourceGroupName", "resourceGroups", LOGGER);
+        String paymentHsmClusterName = ResourceManagerUtils.getRequiredValueFromIdByParameterName(id,
+            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.HardwareSecurityModules/paymentHsmClusters/{paymentHsmClusterName}",
+            "paymentHsmClusterName", "paymentHsmClusters", LOGGER);
         return this.getByResourceGroupWithResponse(resourceGroupName, paymentHsmClusterName, context);
     }
 
     public void deleteById(String id) {
-        String resourceGroupName = ResourceManagerUtils.getValueFromIdByName(id, "resourceGroups");
-        if (resourceGroupName == null) {
-            throw LOGGER.logExceptionAsError(new IllegalArgumentException(
-                String.format("The resource ID '%s' is not valid. Missing path segment 'resourceGroups'.", id)));
-        }
-        String paymentHsmClusterName = ResourceManagerUtils.getValueFromIdByName(id, "paymentHsmClusters");
-        if (paymentHsmClusterName == null) {
-            throw LOGGER.logExceptionAsError(new IllegalArgumentException(
-                String.format("The resource ID '%s' is not valid. Missing path segment 'paymentHsmClusters'.", id)));
-        }
-        this.delete(resourceGroupName, paymentHsmClusterName, Context.NONE);
+        this.deleteByIdWithResponse(id, Context.NONE);
     }
 
     public void deleteByIdWithResponse(String id, Context context) {
-        String resourceGroupName = ResourceManagerUtils.getValueFromIdByName(id, "resourceGroups");
-        if (resourceGroupName == null) {
-            throw LOGGER.logExceptionAsError(new IllegalArgumentException(
-                String.format("The resource ID '%s' is not valid. Missing path segment 'resourceGroups'.", id)));
-        }
-        String paymentHsmClusterName = ResourceManagerUtils.getValueFromIdByName(id, "paymentHsmClusters");
-        if (paymentHsmClusterName == null) {
-            throw LOGGER.logExceptionAsError(new IllegalArgumentException(
-                String.format("The resource ID '%s' is not valid. Missing path segment 'paymentHsmClusters'.", id)));
-        }
+        String resourceGroupName = ResourceManagerUtils.getRequiredValueFromIdByParameterName(id,
+            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.HardwareSecurityModules/paymentHsmClusters/{paymentHsmClusterName}",
+            "resourceGroupName", "resourceGroups", LOGGER);
+        String paymentHsmClusterName = ResourceManagerUtils.getRequiredValueFromIdByParameterName(id,
+            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.HardwareSecurityModules/paymentHsmClusters/{paymentHsmClusterName}",
+            "paymentHsmClusterName", "paymentHsmClusters", LOGGER);
         this.delete(resourceGroupName, paymentHsmClusterName, context);
     }
 

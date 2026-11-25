@@ -18,6 +18,7 @@ import com.azure.resourcemanager.hybridcompute.models.ArcKindEnum;
 import com.azure.resourcemanager.hybridcompute.models.CloudMetadata;
 import com.azure.resourcemanager.hybridcompute.models.FirmwareProfile;
 import com.azure.resourcemanager.hybridcompute.models.HardwareProfile;
+import com.azure.resourcemanager.hybridcompute.models.Identity;
 import com.azure.resourcemanager.hybridcompute.models.IdentityKeyStore;
 import com.azure.resourcemanager.hybridcompute.models.InstanceViewTypes;
 import com.azure.resourcemanager.hybridcompute.models.LicenseProfileMachineInstanceView;
@@ -27,7 +28,6 @@ import com.azure.resourcemanager.hybridcompute.models.MachineExtension;
 import com.azure.resourcemanager.hybridcompute.models.MachineExtensionInstanceView;
 import com.azure.resourcemanager.hybridcompute.models.MachineStatusReason;
 import com.azure.resourcemanager.hybridcompute.models.MachineUpdate;
-import com.azure.resourcemanager.hybridcompute.models.ManagedServiceIdentity;
 import com.azure.resourcemanager.hybridcompute.models.NetworkProfile;
 import com.azure.resourcemanager.hybridcompute.models.OSProfile;
 import com.azure.resourcemanager.hybridcompute.models.ServiceStatuses;
@@ -80,7 +80,7 @@ public final class MachineImpl implements Machine, Machine.Definition, Machine.U
         }
     }
 
-    public ManagedServiceIdentity identity() {
+    public Identity identity() {
         return this.innerModel().identity();
     }
 
@@ -303,11 +303,7 @@ public final class MachineImpl implements Machine, Machine.Definition, Machine.U
     }
 
     public Machine create() {
-        this.innerObject = serviceManager.serviceClient()
-            .getMachines()
-            .createOrUpdateWithResponse(resourceGroupName, machineName, this.innerModel(), createExpand, Context.NONE)
-            .getValue();
-        return this;
+        return this.create(Context.NONE);
     }
 
     public Machine create(Context context) {
@@ -331,11 +327,7 @@ public final class MachineImpl implements Machine, Machine.Definition, Machine.U
     }
 
     public Machine apply() {
-        this.innerObject = serviceManager.serviceClient()
-            .getMachines()
-            .updateWithResponse(resourceGroupName, machineName, updateParameters, Context.NONE)
-            .getValue();
-        return this;
+        return this.apply(Context.NONE);
     }
 
     public Machine apply(Context context) {
@@ -349,17 +341,16 @@ public final class MachineImpl implements Machine, Machine.Definition, Machine.U
     MachineImpl(MachineInner innerObject, com.azure.resourcemanager.hybridcompute.HybridComputeManager serviceManager) {
         this.innerObject = innerObject;
         this.serviceManager = serviceManager;
-        this.resourceGroupName = ResourceManagerUtils.getValueFromIdByName(innerObject.id(), "resourceGroups");
-        this.machineName = ResourceManagerUtils.getValueFromIdByName(innerObject.id(), "machines");
+        this.resourceGroupName = ResourceManagerUtils.getValueFromIdByParameterName(innerObject.id(),
+            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.HybridCompute/machines/{machineName}",
+            "resourceGroupName");
+        this.machineName = ResourceManagerUtils.getValueFromIdByParameterName(innerObject.id(),
+            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.HybridCompute/machines/{machineName}",
+            "machineName");
     }
 
     public Machine refresh() {
-        InstanceViewTypes localExpand = null;
-        this.innerObject = serviceManager.serviceClient()
-            .getMachines()
-            .getByResourceGroupWithResponse(resourceGroupName, machineName, localExpand, Context.NONE)
-            .getValue();
-        return this;
+        return this.refresh(Context.NONE);
     }
 
     public Machine refresh(Context context) {
@@ -391,7 +382,7 @@ public final class MachineImpl implements Machine, Machine.Definition, Machine.U
         }
     }
 
-    public MachineImpl withIdentity(ManagedServiceIdentity identity) {
+    public MachineImpl withIdentity(Identity identity) {
         if (isInCreateMode()) {
             this.innerModel().withIdentity(identity);
             return this;
@@ -467,8 +458,13 @@ public final class MachineImpl implements Machine, Machine.Definition, Machine.U
     }
 
     public MachineImpl withClientPublicKey(String clientPublicKey) {
-        this.innerModel().withClientPublicKey(clientPublicKey);
-        return this;
+        if (isInCreateMode()) {
+            this.innerModel().withClientPublicKey(clientPublicKey);
+            return this;
+        } else {
+            this.updateParameters.withClientPublicKey(clientPublicKey);
+            return this;
+        }
     }
 
     public MachineImpl withIdentityKeyStore(IdentityKeyStore identityKeyStore) {

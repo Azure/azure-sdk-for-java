@@ -24,6 +24,7 @@
 <suite name="long-emulator">
   <listeners>
     <listener class-name="com.azure.cosmos.CosmosNettyLeakDetectorFactory"/>
+    <listener class-name="com.azure.cosmos.CosmosTestResourceJanitor"/>
   </listeners>
   <test name="long-emulator" group-by-instances="true">
     <groups>

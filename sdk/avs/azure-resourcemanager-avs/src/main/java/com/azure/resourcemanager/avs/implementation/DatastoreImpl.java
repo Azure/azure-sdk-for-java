@@ -88,11 +88,7 @@ public final class DatastoreImpl implements Datastore, Datastore.Definition, Dat
     }
 
     public Datastore create() {
-        this.innerObject = serviceManager.serviceClient()
-            .getDatastores()
-            .createOrUpdate(resourceGroupName, privateCloudName, clusterName, datastoreName, this.innerModel(),
-                Context.NONE);
-        return this;
+        return this.create(Context.NONE);
     }
 
     public Datastore create(Context context) {
@@ -114,11 +110,7 @@ public final class DatastoreImpl implements Datastore, Datastore.Definition, Dat
     }
 
     public Datastore apply() {
-        this.innerObject = serviceManager.serviceClient()
-            .getDatastores()
-            .createOrUpdate(resourceGroupName, privateCloudName, clusterName, datastoreName, this.innerModel(),
-                Context.NONE);
-        return this;
+        return this.apply(Context.NONE);
     }
 
     public Datastore apply(Context context) {
@@ -132,18 +124,22 @@ public final class DatastoreImpl implements Datastore, Datastore.Definition, Dat
     DatastoreImpl(DatastoreInner innerObject, com.azure.resourcemanager.avs.AvsManager serviceManager) {
         this.innerObject = innerObject;
         this.serviceManager = serviceManager;
-        this.resourceGroupName = ResourceManagerUtils.getValueFromIdByName(innerObject.id(), "resourceGroups");
-        this.privateCloudName = ResourceManagerUtils.getValueFromIdByName(innerObject.id(), "privateClouds");
-        this.clusterName = ResourceManagerUtils.getValueFromIdByName(innerObject.id(), "clusters");
-        this.datastoreName = ResourceManagerUtils.getValueFromIdByName(innerObject.id(), "datastores");
+        this.resourceGroupName = ResourceManagerUtils.getValueFromIdByParameterName(innerObject.id(),
+            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.AVS/privateClouds/{privateCloudName}/clusters/{clusterName}/datastores/{datastoreName}",
+            "resourceGroupName");
+        this.privateCloudName = ResourceManagerUtils.getValueFromIdByParameterName(innerObject.id(),
+            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.AVS/privateClouds/{privateCloudName}/clusters/{clusterName}/datastores/{datastoreName}",
+            "privateCloudName");
+        this.clusterName = ResourceManagerUtils.getValueFromIdByParameterName(innerObject.id(),
+            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.AVS/privateClouds/{privateCloudName}/clusters/{clusterName}/datastores/{datastoreName}",
+            "clusterName");
+        this.datastoreName = ResourceManagerUtils.getValueFromIdByParameterName(innerObject.id(),
+            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.AVS/privateClouds/{privateCloudName}/clusters/{clusterName}/datastores/{datastoreName}",
+            "datastoreName");
     }
 
     public Datastore refresh() {
-        this.innerObject = serviceManager.serviceClient()
-            .getDatastores()
-            .getWithResponse(resourceGroupName, privateCloudName, clusterName, datastoreName, Context.NONE)
-            .getValue();
-        return this;
+        return this.refresh(Context.NONE);
     }
 
     public Datastore refresh(Context context) {

@@ -284,17 +284,7 @@ public final class WatchersClientImpl implements WatchersClient {
             .flatMap(res -> Mono.justOrEmpty(res.getValue()));
     }
 
-    /**
-     * Get a Watcher.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param watcherName The database watcher name.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return a Watcher along with {@link Response}.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Response<WatcherInner> getByResourceGroupWithResponse(String resourceGroupName, String watcherName,
         Context context) {
@@ -303,16 +293,7 @@ public final class WatchersClientImpl implements WatchersClient {
             this.client.getSubscriptionId(), resourceGroupName, watcherName, accept, context);
     }
 
-    /**
-     * Get a Watcher.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param watcherName The database watcher name.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return a Watcher.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public WatcherInner getByResourceGroup(String resourceGroupName, String watcherName) {
         return getByResourceGroupWithResponse(resourceGroupName, watcherName, Context.NONE).getValue();
@@ -356,11 +337,7 @@ public final class WatchersClientImpl implements WatchersClient {
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Response<BinaryData> createOrUpdateWithResponse(String resourceGroupName, String watcherName,
         WatcherInner resource) {
-        final String contentType = "application/json";
-        final String accept = "application/json";
-        return service.createOrUpdateSync(this.client.getEndpoint(), this.client.getApiVersion(),
-            this.client.getSubscriptionId(), resourceGroupName, watcherName, contentType, accept, resource,
-            Context.NONE);
+        return createOrUpdateWithResponse(resourceGroupName, watcherName, resource, Context.NONE);
     }
 
     /**
@@ -404,37 +381,14 @@ public final class WatchersClientImpl implements WatchersClient {
             WatcherInner.class, WatcherInner.class, this.client.getContext());
     }
 
-    /**
-     * Create a Watcher.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param watcherName The database watcher name.
-     * @param resource Resource create parameters.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the {@link SyncPoller} for polling of the DatabaseWatcherProviderHub resource.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public SyncPoller<PollResult<WatcherInner>, WatcherInner> beginCreateOrUpdate(String resourceGroupName,
         String watcherName, WatcherInner resource) {
-        Response<BinaryData> response = createOrUpdateWithResponse(resourceGroupName, watcherName, resource);
-        return this.client.<WatcherInner, WatcherInner>getLroResult(response, WatcherInner.class, WatcherInner.class,
-            Context.NONE);
+        return beginCreateOrUpdate(resourceGroupName, watcherName, resource, Context.NONE);
     }
 
-    /**
-     * Create a Watcher.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param watcherName The database watcher name.
-     * @param resource Resource create parameters.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the {@link SyncPoller} for polling of the DatabaseWatcherProviderHub resource.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public SyncPoller<PollResult<WatcherInner>, WatcherInner> beginCreateOrUpdate(String resourceGroupName,
         String watcherName, WatcherInner resource, Context context) {
@@ -461,38 +415,18 @@ public final class WatchersClientImpl implements WatchersClient {
             .flatMap(this.client::getLroFinalResultOrError);
     }
 
-    /**
-     * Create a Watcher.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param watcherName The database watcher name.
-     * @param resource Resource create parameters.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the DatabaseWatcherProviderHub resource.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public WatcherInner createOrUpdate(String resourceGroupName, String watcherName, WatcherInner resource) {
-        return beginCreateOrUpdate(resourceGroupName, watcherName, resource).getFinalResult();
+        return createOrUpdate(resourceGroupName, watcherName, resource, Context.NONE);
     }
 
-    /**
-     * Create a Watcher.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param watcherName The database watcher name.
-     * @param resource Resource create parameters.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the DatabaseWatcherProviderHub resource.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public WatcherInner createOrUpdate(String resourceGroupName, String watcherName, WatcherInner resource,
         Context context) {
-        return beginCreateOrUpdate(resourceGroupName, watcherName, resource, context).getFinalResult();
+        return this.client
+            .getLroFinalResultOrError(beginCreateOrUpdate(resourceGroupName, watcherName, resource, context));
     }
 
     /**
@@ -531,11 +465,7 @@ public final class WatchersClientImpl implements WatchersClient {
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Response<BinaryData> updateWithResponse(String resourceGroupName, String watcherName,
         WatcherUpdate properties) {
-        final String contentType = "application/json";
-        final String accept = "application/json";
-        return service.updateSync(this.client.getEndpoint(), this.client.getApiVersion(),
-            this.client.getSubscriptionId(), resourceGroupName, watcherName, contentType, accept, properties,
-            Context.NONE);
+        return updateWithResponse(resourceGroupName, watcherName, properties, Context.NONE);
     }
 
     /**
@@ -578,37 +508,14 @@ public final class WatchersClientImpl implements WatchersClient {
             WatcherInner.class, WatcherInner.class, this.client.getContext());
     }
 
-    /**
-     * Update a Watcher.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param watcherName The database watcher name.
-     * @param properties The resource properties to be updated.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the {@link SyncPoller} for polling of the DatabaseWatcherProviderHub resource.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public SyncPoller<PollResult<WatcherInner>, WatcherInner> beginUpdate(String resourceGroupName, String watcherName,
         WatcherUpdate properties) {
-        Response<BinaryData> response = updateWithResponse(resourceGroupName, watcherName, properties);
-        return this.client.<WatcherInner, WatcherInner>getLroResult(response, WatcherInner.class, WatcherInner.class,
-            Context.NONE);
+        return beginUpdate(resourceGroupName, watcherName, properties, Context.NONE);
     }
 
-    /**
-     * Update a Watcher.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param watcherName The database watcher name.
-     * @param properties The resource properties to be updated.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the {@link SyncPoller} for polling of the DatabaseWatcherProviderHub resource.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public SyncPoller<PollResult<WatcherInner>, WatcherInner> beginUpdate(String resourceGroupName, String watcherName,
         WatcherUpdate properties, Context context) {
@@ -634,38 +541,17 @@ public final class WatchersClientImpl implements WatchersClient {
             .flatMap(this.client::getLroFinalResultOrError);
     }
 
-    /**
-     * Update a Watcher.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param watcherName The database watcher name.
-     * @param properties The resource properties to be updated.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the DatabaseWatcherProviderHub resource.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public WatcherInner update(String resourceGroupName, String watcherName, WatcherUpdate properties) {
-        return beginUpdate(resourceGroupName, watcherName, properties).getFinalResult();
+        return update(resourceGroupName, watcherName, properties, Context.NONE);
     }
 
-    /**
-     * Update a Watcher.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param watcherName The database watcher name.
-     * @param properties The resource properties to be updated.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the DatabaseWatcherProviderHub resource.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public WatcherInner update(String resourceGroupName, String watcherName, WatcherUpdate properties,
         Context context) {
-        return beginUpdate(resourceGroupName, watcherName, properties, context).getFinalResult();
+        return this.client.getLroFinalResultOrError(beginUpdate(resourceGroupName, watcherName, properties, context));
     }
 
     /**
@@ -698,8 +584,7 @@ public final class WatchersClientImpl implements WatchersClient {
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Response<BinaryData> deleteWithResponse(String resourceGroupName, String watcherName) {
-        return service.deleteSync(this.client.getEndpoint(), this.client.getApiVersion(),
-            this.client.getSubscriptionId(), resourceGroupName, watcherName, Context.NONE);
+        return deleteWithResponse(resourceGroupName, watcherName, Context.NONE);
     }
 
     /**
@@ -736,33 +621,13 @@ public final class WatchersClientImpl implements WatchersClient {
             this.client.getContext());
     }
 
-    /**
-     * Delete a Watcher.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param watcherName The database watcher name.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the {@link SyncPoller} for polling of long-running operation.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public SyncPoller<PollResult<Void>, Void> beginDelete(String resourceGroupName, String watcherName) {
-        Response<BinaryData> response = deleteWithResponse(resourceGroupName, watcherName);
-        return this.client.<Void, Void>getLroResult(response, Void.class, Void.class, Context.NONE);
+        return beginDelete(resourceGroupName, watcherName, Context.NONE);
     }
 
-    /**
-     * Delete a Watcher.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param watcherName The database watcher name.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the {@link SyncPoller} for polling of long-running operation.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public SyncPoller<PollResult<Void>, Void> beginDelete(String resourceGroupName, String watcherName,
         Context context) {
@@ -785,33 +650,16 @@ public final class WatchersClientImpl implements WatchersClient {
         return beginDeleteAsync(resourceGroupName, watcherName).last().flatMap(this.client::getLroFinalResultOrError);
     }
 
-    /**
-     * Delete a Watcher.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param watcherName The database watcher name.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public void delete(String resourceGroupName, String watcherName) {
-        beginDelete(resourceGroupName, watcherName).getFinalResult();
+        delete(resourceGroupName, watcherName, Context.NONE);
     }
 
-    /**
-     * Delete a Watcher.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param watcherName The database watcher name.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public void delete(String resourceGroupName, String watcherName, Context context) {
-        beginDelete(resourceGroupName, watcherName, context).getFinalResult();
+        this.client.getLroFinalResultOrError(beginDelete(resourceGroupName, watcherName, context));
     }
 
     /**
@@ -861,11 +709,7 @@ public final class WatchersClientImpl implements WatchersClient {
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private PagedResponse<WatcherInner> listByResourceGroupSinglePage(String resourceGroupName) {
-        final String accept = "application/json";
-        Response<WatcherListResult> res = service.listByResourceGroupSync(this.client.getEndpoint(),
-            this.client.getApiVersion(), this.client.getSubscriptionId(), resourceGroupName, accept, Context.NONE);
-        return new PagedResponseBase<>(res.getRequest(), res.getStatusCode(), res.getHeaders(), res.getValue().value(),
-            res.getValue().nextLink(), null);
+        return listByResourceGroupSinglePage(resourceGroupName, Context.NONE);
     }
 
     /**
@@ -887,31 +731,13 @@ public final class WatchersClientImpl implements WatchersClient {
             res.getValue().nextLink(), null);
     }
 
-    /**
-     * List Watcher resources by resource group.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the response of a Watcher list operation as paginated response with {@link PagedIterable}.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.COLLECTION)
     public PagedIterable<WatcherInner> listByResourceGroup(String resourceGroupName) {
-        return new PagedIterable<>(() -> listByResourceGroupSinglePage(resourceGroupName),
-            nextLink -> listByResourceGroupNextSinglePage(nextLink));
+        return listByResourceGroup(resourceGroupName, Context.NONE);
     }
 
-    /**
-     * List Watcher resources by resource group.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the response of a Watcher list operation as paginated response with {@link PagedIterable}.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.COLLECTION)
     public PagedIterable<WatcherInner> listByResourceGroup(String resourceGroupName, Context context) {
         return new PagedIterable<>(() -> listByResourceGroupSinglePage(resourceGroupName, context),
@@ -959,11 +785,7 @@ public final class WatchersClientImpl implements WatchersClient {
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private PagedResponse<WatcherInner> listSinglePage() {
-        final String accept = "application/json";
-        Response<WatcherListResult> res = service.listSync(this.client.getEndpoint(), this.client.getApiVersion(),
-            this.client.getSubscriptionId(), accept, Context.NONE);
-        return new PagedResponseBase<>(res.getRequest(), res.getStatusCode(), res.getHeaders(), res.getValue().value(),
-            res.getValue().nextLink(), null);
+        return listSinglePage(Context.NONE);
     }
 
     /**
@@ -984,27 +806,13 @@ public final class WatchersClientImpl implements WatchersClient {
             res.getValue().nextLink(), null);
     }
 
-    /**
-     * List Watcher resources by subscription ID.
-     * 
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the response of a Watcher list operation as paginated response with {@link PagedIterable}.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.COLLECTION)
     public PagedIterable<WatcherInner> list() {
-        return new PagedIterable<>(() -> listSinglePage(), nextLink -> listBySubscriptionNextSinglePage(nextLink));
+        return list(Context.NONE);
     }
 
-    /**
-     * List Watcher resources by subscription ID.
-     * 
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the response of a Watcher list operation as paginated response with {@link PagedIterable}.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.COLLECTION)
     public PagedIterable<WatcherInner> list(Context context) {
         return new PagedIterable<>(() -> listSinglePage(context),
@@ -1042,9 +850,7 @@ public final class WatchersClientImpl implements WatchersClient {
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Response<BinaryData> startWithResponse(String resourceGroupName, String watcherName) {
-        final String accept = "application/json";
-        return service.startSync(this.client.getEndpoint(), this.client.getApiVersion(),
-            this.client.getSubscriptionId(), resourceGroupName, watcherName, accept, Context.NONE);
+        return startWithResponse(resourceGroupName, watcherName, Context.NONE);
     }
 
     /**
@@ -1082,33 +888,13 @@ public final class WatchersClientImpl implements WatchersClient {
             this.client.getContext());
     }
 
-    /**
-     * The action to start monitoring all targets configured for a database watcher.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param watcherName The database watcher name.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the {@link SyncPoller} for polling of long-running operation.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public SyncPoller<PollResult<Void>, Void> beginStart(String resourceGroupName, String watcherName) {
-        Response<BinaryData> response = startWithResponse(resourceGroupName, watcherName);
-        return this.client.<Void, Void>getLroResult(response, Void.class, Void.class, Context.NONE);
+        return beginStart(resourceGroupName, watcherName, Context.NONE);
     }
 
-    /**
-     * The action to start monitoring all targets configured for a database watcher.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param watcherName The database watcher name.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the {@link SyncPoller} for polling of long-running operation.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public SyncPoller<PollResult<Void>, Void> beginStart(String resourceGroupName, String watcherName,
         Context context) {
@@ -1131,33 +917,16 @@ public final class WatchersClientImpl implements WatchersClient {
         return beginStartAsync(resourceGroupName, watcherName).last().flatMap(this.client::getLroFinalResultOrError);
     }
 
-    /**
-     * The action to start monitoring all targets configured for a database watcher.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param watcherName The database watcher name.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public void start(String resourceGroupName, String watcherName) {
-        beginStart(resourceGroupName, watcherName).getFinalResult();
+        start(resourceGroupName, watcherName, Context.NONE);
     }
 
-    /**
-     * The action to start monitoring all targets configured for a database watcher.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param watcherName The database watcher name.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public void start(String resourceGroupName, String watcherName, Context context) {
-        beginStart(resourceGroupName, watcherName, context).getFinalResult();
+        this.client.getLroFinalResultOrError(beginStart(resourceGroupName, watcherName, context));
     }
 
     /**
@@ -1191,9 +960,7 @@ public final class WatchersClientImpl implements WatchersClient {
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Response<BinaryData> stopWithResponse(String resourceGroupName, String watcherName) {
-        final String accept = "application/json";
-        return service.stopSync(this.client.getEndpoint(), this.client.getApiVersion(), this.client.getSubscriptionId(),
-            resourceGroupName, watcherName, accept, Context.NONE);
+        return stopWithResponse(resourceGroupName, watcherName, Context.NONE);
     }
 
     /**
@@ -1231,33 +998,13 @@ public final class WatchersClientImpl implements WatchersClient {
             this.client.getContext());
     }
 
-    /**
-     * The action to stop monitoring all targets configured for a database watcher.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param watcherName The database watcher name.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the {@link SyncPoller} for polling of long-running operation.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public SyncPoller<PollResult<Void>, Void> beginStop(String resourceGroupName, String watcherName) {
-        Response<BinaryData> response = stopWithResponse(resourceGroupName, watcherName);
-        return this.client.<Void, Void>getLroResult(response, Void.class, Void.class, Context.NONE);
+        return beginStop(resourceGroupName, watcherName, Context.NONE);
     }
 
-    /**
-     * The action to stop monitoring all targets configured for a database watcher.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param watcherName The database watcher name.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the {@link SyncPoller} for polling of long-running operation.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public SyncPoller<PollResult<Void>, Void> beginStop(String resourceGroupName, String watcherName, Context context) {
         Response<BinaryData> response = stopWithResponse(resourceGroupName, watcherName, context);
@@ -1279,33 +1026,16 @@ public final class WatchersClientImpl implements WatchersClient {
         return beginStopAsync(resourceGroupName, watcherName).last().flatMap(this.client::getLroFinalResultOrError);
     }
 
-    /**
-     * The action to stop monitoring all targets configured for a database watcher.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param watcherName The database watcher name.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public void stop(String resourceGroupName, String watcherName) {
-        beginStop(resourceGroupName, watcherName).getFinalResult();
+        stop(resourceGroupName, watcherName, Context.NONE);
     }
 
-    /**
-     * The action to stop monitoring all targets configured for a database watcher.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param watcherName The database watcher name.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public void stop(String resourceGroupName, String watcherName, Context context) {
-        beginStop(resourceGroupName, watcherName, context).getFinalResult();
+        this.client.getLroFinalResultOrError(beginStop(resourceGroupName, watcherName, context));
     }
 
     /**
@@ -1340,11 +1070,7 @@ public final class WatchersClientImpl implements WatchersClient {
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private PagedResponse<WatcherInner> listByResourceGroupNextSinglePage(String nextLink) {
-        final String accept = "application/json";
-        Response<WatcherListResult> res
-            = service.listByResourceGroupNextSync(nextLink, this.client.getEndpoint(), accept, Context.NONE);
-        return new PagedResponseBase<>(res.getRequest(), res.getStatusCode(), res.getHeaders(), res.getValue().value(),
-            res.getValue().nextLink(), null);
+        return listByResourceGroupNextSinglePage(nextLink, Context.NONE);
     }
 
     /**
@@ -1398,11 +1124,7 @@ public final class WatchersClientImpl implements WatchersClient {
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private PagedResponse<WatcherInner> listBySubscriptionNextSinglePage(String nextLink) {
-        final String accept = "application/json";
-        Response<WatcherListResult> res
-            = service.listBySubscriptionNextSync(nextLink, this.client.getEndpoint(), accept, Context.NONE);
-        return new PagedResponseBase<>(res.getRequest(), res.getStatusCode(), res.getHeaders(), res.getValue().value(),
-            res.getValue().nextLink(), null);
+        return listBySubscriptionNextSinglePage(nextLink, Context.NONE);
     }
 
     /**

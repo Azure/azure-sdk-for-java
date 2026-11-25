@@ -24,17 +24,16 @@ import com.microsoft.azure.eventhubs.impl.ReactorDispatcher;
 import com.microsoft.azure.eventhubs.impl.RequestResponseChannel;
 import com.microsoft.azure.eventhubs.lib.ApiTestBase;
 import com.microsoft.azure.eventhubs.lib.TestContext;
-import junit.framework.AssertionFailedError;
 import org.apache.qpid.proton.Proton;
 import org.apache.qpid.proton.amqp.Symbol;
 import org.apache.qpid.proton.amqp.messaging.AmqpValue;
 import org.apache.qpid.proton.amqp.messaging.ApplicationProperties;
 import org.apache.qpid.proton.amqp.transport.ErrorCondition;
 import org.apache.qpid.proton.message.Message;
-import org.junit.AfterClass;
-import org.junit.Assert;
-import org.junit.BeforeClass;
-import org.junit.Test;
+import org.junit.jupiter.api.AfterAll;
+import org.junit.jupiter.api.Assertions;
+import org.junit.jupiter.api.BeforeAll;
+import org.junit.jupiter.api.Test;
 
 import java.io.IOException;
 import java.lang.reflect.Field;
@@ -49,20 +48,20 @@ public class RequestResponseTest extends ApiTestBase {
     static MessagingFactory factory;
     static ConnectionStringBuilder connectionString;
 
-    @BeforeClass
+    @BeforeAll
     public static void initializeEventHub() throws Exception {
         connectionString = TestContext.getConnectionString();
         factory = MessagingFactory.createFromConnectionString(connectionString.toString(), TestContext.EXECUTOR_SERVICE).get();
     }
 
-    @AfterClass()
+    @AfterAll
     public static void cleanup() throws EventHubException {
         if (factory != null) {
             factory.closeSync();
         }
     }
 
-    @Test()
+    @Test
     public void testRequestResponse() throws Exception {
 
         final ReactorDispatcher dispatcher = factory.getReactorDispatcher();
@@ -169,7 +168,7 @@ public class RequestResponseTest extends ApiTestBase {
                                             if (connectionString.getEventHubName().equalsIgnoreCase((String) resultMap.get(ClientConstants.MANAGEMENT_ENTITY_NAME_KEY))) {
                                                 task.complete(null);
                                             } else {
-                                                task.completeExceptionally(new AssertionFailedError("response doesn't have correct eventhub name"));
+                                                task.completeExceptionally(new AssertionError("response doesn't have correct eventhub name"));
                                             }
                                         }
 
@@ -221,31 +220,31 @@ public class RequestResponseTest extends ApiTestBase {
         EventHubClient ehc = EventHubClient.createFromConnectionStringSync(connectionString.toString(), TestContext.EXECUTOR_SERVICE);
         EventHubRuntimeInformation ehInfo = ehc.getRuntimeInformation().get();
 
-        Assert.assertNotNull(ehInfo);
-        Assert.assertTrue(connectionString.getEventHubName().equalsIgnoreCase(ehInfo.getPath()));
-        Assert.assertNotNull(ehInfo.getCreatedAt()); // creation time could be almost anything, can't really check value
-        Assert.assertTrue(ehInfo.getPartitionCount() >= 1); // max legal partition count is variable but 2 is hard minimum
-        Assert.assertEquals(ehInfo.getPartitionIds().length, ehInfo.getPartitionCount());
+        Assertions.assertNotNull(ehInfo);
+        Assertions.assertTrue(connectionString.getEventHubName().equalsIgnoreCase(ehInfo.getPath()));
+        Assertions.assertNotNull(ehInfo.getCreatedAt()); // creation time could be almost anything, can't really check value
+        Assertions.assertTrue(ehInfo.getPartitionCount() >= 1); // max legal partition count is variable but 2 is hard minimum
+        Assertions.assertEquals(ehInfo.getPartitionIds().length, ehInfo.getPartitionCount());
 
         for (int i = 0; i < ehInfo.getPartitionCount(); i++) {
             String id = ehInfo.getPartitionIds()[i];
-            Assert.assertNotNull(id);
-            Assert.assertFalse(id.isEmpty());
+            Assertions.assertNotNull(id);
+            Assertions.assertFalse(id.isEmpty());
             //System.out.println("Partition id[" + i + "]: " + ehInfo.getPartitionIds()[i]);
         }
 
         for (String id : ehInfo.getPartitionIds()) {
             PartitionRuntimeInformation partInfo = ehc.getPartitionRuntimeInformation(id).get();
 
-            Assert.assertNotNull(partInfo);
-            Assert.assertTrue(connectionString.getEventHubName().equalsIgnoreCase(partInfo.getEventHubPath()));
-            Assert.assertTrue(id.equalsIgnoreCase(partInfo.getPartitionId()));
-            Assert.assertTrue(partInfo.getBeginSequenceNumber() >= -1);
-            Assert.assertTrue(partInfo.getLastEnqueuedSequenceNumber() >= -1);
-            Assert.assertTrue(partInfo.getLastEnqueuedSequenceNumber() >= partInfo.getBeginSequenceNumber());
-            Assert.assertNotNull(partInfo.getLastEnqueuedOffset());
-            Assert.assertFalse(partInfo.getLastEnqueuedOffset().isEmpty());
-            Assert.assertNotNull(partInfo.getLastEnqueuedTimeUtc());  // last enqueued time could be almost anything, can't really check value
+            Assertions.assertNotNull(partInfo);
+            Assertions.assertTrue(connectionString.getEventHubName().equalsIgnoreCase(partInfo.getEventHubPath()));
+            Assertions.assertTrue(id.equalsIgnoreCase(partInfo.getPartitionId()));
+            Assertions.assertTrue(partInfo.getBeginSequenceNumber() >= -1);
+            Assertions.assertTrue(partInfo.getLastEnqueuedSequenceNumber() >= -1);
+            Assertions.assertTrue(partInfo.getLastEnqueuedSequenceNumber() >= partInfo.getBeginSequenceNumber());
+            Assertions.assertNotNull(partInfo.getLastEnqueuedOffset());
+            Assertions.assertFalse(partInfo.getLastEnqueuedOffset().isEmpty());
+            Assertions.assertNotNull(partInfo.getLastEnqueuedTimeUtc());  // last enqueued time could be almost anything, can't really check value
         }
 
         ehc.closeSync();
@@ -274,9 +273,9 @@ public class RequestResponseTest extends ApiTestBase {
 
         try {
             eventHubClient.getPartitionRuntimeInformation("0").get();
-            Assert.assertTrue(false); // exception should be thrown
+            Assertions.assertTrue(false); // exception should be thrown
         } catch (ExecutionException exception) {
-            Assert.assertTrue(exception.getCause() instanceof TimeoutException);
+            Assertions.assertTrue(exception.getCause() instanceof TimeoutException);
         } finally {
             timeoutField.set(factory, originalTimeout);
             eventHubClient.closeSync();
@@ -294,32 +293,32 @@ public class RequestResponseTest extends ApiTestBase {
 
         try {
             ehc.getRuntimeInformation().get();
-            Assert.fail("Expected exception, got success");
+            Assertions.fail("Expected exception, got success");
         } catch (ExecutionException e) {
             if (e.getCause() == null) {
-                Assert.fail("Got ExecutionException but no inner exception");
+                Assertions.fail("Got ExecutionException but no inner exception");
             } else if (e.getCause() instanceof IllegalEntityException) {
-                Assert.assertTrue(e.getCause().getMessage().contains("could not be found"));
+                Assertions.assertTrue(e.getCause().getMessage().contains("could not be found"));
             } else {
-                Assert.fail("Got unexpected inner exception " + e.getCause().toString());
+                Assertions.fail("Got unexpected inner exception " + e.getCause().toString());
             }
         } catch (Exception e) {
-            Assert.fail("Unexpected exception " + e.toString());
+            Assertions.fail("Unexpected exception " + e.toString());
         }
 
         try {
             ehc.getPartitionRuntimeInformation("0").get();
-            Assert.fail("Expected exception, got success");
+            Assertions.fail("Expected exception, got success");
         } catch (ExecutionException e) {
             if (e.getCause() == null) {
-                Assert.fail("Got ExecutionException but no inner exception");
+                Assertions.fail("Got ExecutionException but no inner exception");
             } else if (e.getCause() instanceof IllegalEntityException) {
-                Assert.assertTrue(e.getCause().getMessage().contains("could not be found"));
+                Assertions.assertTrue(e.getCause().getMessage().contains("could not be found"));
             } else {
-                Assert.fail("Got unexpected inner exception " + e.getCause().toString());
+                Assertions.fail("Got unexpected inner exception " + e.getCause().toString());
             }
         } catch (Exception e) {
-            Assert.fail("Unexpected exception " + e.toString());
+            Assertions.fail("Unexpected exception " + e.toString());
         }
 
         ehc.closeSync();
@@ -336,22 +335,22 @@ public class RequestResponseTest extends ApiTestBase {
 
         try {
             ehc.getRuntimeInformation().get();
-            Assert.fail("Expected exception, got success");
+            Assertions.fail("Expected exception, got success");
         } catch (ExecutionException e) {
-            Assert.assertNotNull(e.getCause());
-            Assert.assertTrue(e.getCause() instanceof AuthorizationFailedException);
+            Assertions.assertNotNull(e.getCause());
+            Assertions.assertTrue(e.getCause() instanceof AuthorizationFailedException);
         } catch (Exception e) {
-            Assert.fail("Unexpected exception " + e.toString());
+            Assertions.fail("Unexpected exception " + e.toString());
         }
 
         try {
             ehc.getPartitionRuntimeInformation("0").get();
-            Assert.fail("Expected exception, got success");
+            Assertions.fail("Expected exception, got success");
         } catch (ExecutionException e) {
-            Assert.assertNotNull(e.getCause());
-            Assert.assertTrue(e.getCause() instanceof AuthorizationFailedException);
+            Assertions.assertNotNull(e.getCause());
+            Assertions.assertTrue(e.getCause() instanceof AuthorizationFailedException);
         } catch (Exception e) {
-            Assert.fail("Unexpected exception " + e.toString());
+            Assertions.fail("Unexpected exception " + e.toString());
         }
 
         ehc.closeSync();
@@ -364,20 +363,20 @@ public class RequestResponseTest extends ApiTestBase {
 
         try {
             ehc.getRuntimeInformation().get();
-            Assert.fail("getRuntimeInformation did not throw as expected");
+            Assertions.fail("getRuntimeInformation did not throw as expected");
         } catch (IllegalStateException e) {
             // Success
         } catch (Exception e) {
-            Assert.fail("Unexpected exception from getRuntimeInformation " + e.toString());
+            Assertions.fail("Unexpected exception from getRuntimeInformation " + e.toString());
         }
 
         try {
             ehc.getPartitionRuntimeInformation("0").get();
-            Assert.fail("getPartitionRuntimeInformation did not throw as expected");
+            Assertions.fail("getPartitionRuntimeInformation did not throw as expected");
         } catch (IllegalStateException e) {
             // Success
         } catch (Exception e) {
-            Assert.fail("Unexpected exception from getPartitionRuntimeInformation " + e.toString());
+            Assertions.fail("Unexpected exception from getPartitionRuntimeInformation " + e.toString());
         }
     }
 }

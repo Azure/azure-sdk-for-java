@@ -4,14 +4,18 @@
 
 package com.azure.analytics.planetarycomputer.generated;
 
+import com.azure.analytics.planetarycomputer.models.ColorMapNames;
 import com.azure.analytics.planetarycomputer.models.FeatureType;
 import com.azure.analytics.planetarycomputer.models.GeoJsonFeature;
 import com.azure.analytics.planetarycomputer.models.GeoJsonPolygon;
+import com.azure.analytics.planetarycomputer.models.Resampling;
 import com.azure.analytics.planetarycomputer.models.SelMethod;
+import com.azure.analytics.planetarycomputer.models.TerrainAlgorithm;
 import com.azure.analytics.planetarycomputer.models.WarpKernelResampling;
 import com.azure.core.util.BinaryData;
 import java.util.Arrays;
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.Disabled;
@@ -32,10 +36,12 @@ public final class MosaicItemsFeatureGeoJsonFormatCropFormatTests extends Planet
                                 Arrays.asList(-84.3814, 33.6714), Arrays.asList(-84.3814, 33.6806),
                                 Arrays.asList(-84.3906, 33.6806), Arrays.asList(-84.3906, 33.6714)))),
                         FeatureType.FEATURE).setProperties(mapOf()),
-                    Arrays.asList(1, 2, 3), Arrays.asList("image"), null, Arrays.asList("image|1,2,3"), null, null,
-                    null, WarpKernelResampling.NEAREST, null, null, null, null, null, null, null, null, null, null,
-                    null, null, null, null, null, "epsg:4326", "2024-01-01T00:00:00Z", Arrays.asList("band=1"),
-                    SelMethod.NEAREST);
+                    Arrays.asList(1, 2, 3), Arrays.asList("image"), (String) null, Arrays.asList("image|1,2,3"),
+                    (Boolean) null, (String) null, (Boolean) null, WarpKernelResampling.NEAREST,
+                    (TerrainAlgorithm) null, (String) null, (String) null, (String) null, (Resampling) null,
+                    (Integer) null, (Integer) null, (Integer) null, (List<String>) null, (ColorMapNames) null,
+                    (String) null, (Boolean) null, (String) null, (String) null, (List<Integer>) null, "epsg:4326",
+                    "2024-01-01T00:00:00Z", Arrays.asList("band=1"), SelMethod.NEAREST);
 
         // response assertion
         Assertions.assertNotNull(response);

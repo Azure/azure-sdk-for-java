@@ -4,6 +4,7 @@
 
 package com.azure.resourcemanager.compute.bulkactions.models;
 
+import com.azure.core.http.rest.PagedIterable;
 import com.azure.core.management.SystemData;
 import com.azure.core.util.Context;
 import com.azure.resourcemanager.compute.bulkactions.fluent.models.LocationBasedBulkCreateCustomInner;
@@ -48,6 +49,22 @@ public interface LocationBasedBulkCreateCustom {
      * @return the zones value.
      */
     List<String> zones();
+
+    /**
+     * Gets the extendedLocation property: The extended location of the virtual machines created by the BulkCreateCustom
+     * operation.
+     * 
+     * @return the extendedLocation value.
+     */
+    ExtendedLocation extendedLocation();
+
+    /**
+     * Gets the placement property: The availability zone placement constraints applied to the virtual machines created
+     * by the BulkCreateCustom operation.
+     * 
+     * @return the placement value.
+     */
+    Placement placement();
 
     /**
      * Gets the tags property: Resource tags.
@@ -128,7 +145,8 @@ public interface LocationBasedBulkCreateCustom {
          * for the resource to be created, but also allows for any other optional properties to be specified.
          */
         interface WithCreate extends DefinitionStages.WithTags, DefinitionStages.WithProperties,
-            DefinitionStages.WithZones, DefinitionStages.WithIdentity, DefinitionStages.WithPlan {
+            DefinitionStages.WithZones, DefinitionStages.WithExtendedLocation, DefinitionStages.WithPlacement,
+            DefinitionStages.WithIdentity, DefinitionStages.WithPlan {
             /**
              * Executes the create request.
              * 
@@ -185,6 +203,36 @@ public interface LocationBasedBulkCreateCustom {
         }
 
         /**
+         * The stage of the LocationBasedBulkCreateCustom definition allowing to specify extendedLocation.
+         */
+        interface WithExtendedLocation {
+            /**
+             * Specifies the extendedLocation property: The extended location of the virtual machines created by the
+             * BulkCreateCustom operation..
+             * 
+             * @param extendedLocation The extended location of the virtual machines created by the BulkCreateCustom
+             * operation.
+             * @return the next definition stage.
+             */
+            WithCreate withExtendedLocation(ExtendedLocation extendedLocation);
+        }
+
+        /**
+         * The stage of the LocationBasedBulkCreateCustom definition allowing to specify placement.
+         */
+        interface WithPlacement {
+            /**
+             * Specifies the placement property: The availability zone placement constraints applied to the virtual
+             * machines created by the BulkCreateCustom operation..
+             * 
+             * @param placement The availability zone placement constraints applied to the virtual machines created by
+             * the BulkCreateCustom operation.
+             * @return the next definition stage.
+             */
+            WithCreate withPlacement(Placement placement);
+        }
+
+        /**
          * The stage of the LocationBasedBulkCreateCustom definition allowing to specify identity.
          */
         interface WithIdentity {
@@ -221,8 +269,8 @@ public interface LocationBasedBulkCreateCustom {
     /**
      * The template for LocationBasedBulkCreateCustom update.
      */
-    interface Update extends UpdateStages.WithTags, UpdateStages.WithProperties, UpdateStages.WithZones,
-        UpdateStages.WithIdentity, UpdateStages.WithPlan {
+    interface Update
+        extends UpdateStages.WithTags, UpdateStages.WithProperties, UpdateStages.WithIdentity, UpdateStages.WithPlan {
         /**
          * Executes the update request.
          * 
@@ -267,19 +315,6 @@ public interface LocationBasedBulkCreateCustom {
              * @return the next definition stage.
              */
             Update withProperties(BulkCreateCustomProperties properties);
-        }
-
-        /**
-         * The stage of the LocationBasedBulkCreateCustom update allowing to specify zones.
-         */
-        interface WithZones {
-            /**
-             * Specifies the zones property: Zones in which the BulkCreateCustom is available.
-             * 
-             * @param zones Zones in which the BulkCreateCustom is available.
-             * @return the next definition stage.
-             */
-            Update withZones(List<String> zones);
         }
 
         /**
@@ -341,4 +376,26 @@ public interface LocationBasedBulkCreateCustom {
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      */
     void cancel(Context context);
+
+    /**
+     * Gets the operation status for virtual machines in a BulkCreateCustom operation.
+     * 
+     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return the operation status for virtual machines in a BulkCreateCustom operation as paginated response with
+     * {@link PagedIterable}.
+     */
+    PagedIterable<ResourceOperation> virtualMachinesGetOperationStatus();
+
+    /**
+     * Gets the operation status for virtual machines in a BulkCreateCustom operation.
+     * 
+     * @param context The context to associate with this operation.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return the operation status for virtual machines in a BulkCreateCustom operation as paginated response with
+     * {@link PagedIterable}.
+     */
+    PagedIterable<ResourceOperation> virtualMachinesGetOperationStatus(Context context);
 }

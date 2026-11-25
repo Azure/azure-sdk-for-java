@@ -136,17 +136,7 @@ public final class VirtualRoutersClientImpl implements InnerSupportsGet<VirtualR
             @HostParam("endpoint") String endpoint, @HeaderParam("Accept") String accept, Context context);
     }
 
-    /**
-     * Gets the specified Virtual Router.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param virtualRouterName The name of the Virtual Router.
-     * @param expand Expands referenced resources.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ErrorException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the specified Virtual Router along with {@link Response} on successful completion of {@link Mono}.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Response<VirtualRouterInner>> getByResourceGroupWithResponseAsync(String resourceGroupName,
         String virtualRouterName, String expand) {
@@ -166,7 +156,7 @@ public final class VirtualRoutersClientImpl implements InnerSupportsGet<VirtualR
             return Mono
                 .error(new IllegalArgumentException("Parameter virtualRouterName is required and cannot be null."));
         }
-        final String apiVersion = "2025-07-01";
+        final String apiVersion = "2026-05-01";
         final String accept = "application/json";
         return FluxUtil
             .withContext(context -> service.getByResourceGroup(this.client.getEndpoint(), apiVersion,
@@ -205,23 +195,14 @@ public final class VirtualRoutersClientImpl implements InnerSupportsGet<VirtualR
             return Mono
                 .error(new IllegalArgumentException("Parameter virtualRouterName is required and cannot be null."));
         }
-        final String apiVersion = "2025-07-01";
+        final String apiVersion = "2026-05-01";
         final String accept = "application/json";
         context = this.client.mergeContext(context);
         return service.getByResourceGroup(this.client.getEndpoint(), apiVersion, this.client.getSubscriptionId(),
             resourceGroupName, virtualRouterName, expand, accept, context);
     }
 
-    /**
-     * Gets the specified Virtual Router.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param virtualRouterName The name of the Virtual Router.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ErrorException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the specified Virtual Router on successful completion of {@link Mono}.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<VirtualRouterInner> getByResourceGroupAsync(String resourceGroupName, String virtualRouterName) {
         final String expand = null;
@@ -229,51 +210,21 @@ public final class VirtualRoutersClientImpl implements InnerSupportsGet<VirtualR
             .flatMap(res -> Mono.justOrEmpty(res.getValue()));
     }
 
-    /**
-     * Gets the specified Virtual Router.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param virtualRouterName The name of the Virtual Router.
-     * @param expand Expands referenced resources.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ErrorException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the specified Virtual Router along with {@link Response}.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Response<VirtualRouterInner> getByResourceGroupWithResponse(String resourceGroupName,
         String virtualRouterName, String expand, Context context) {
         return getByResourceGroupWithResponseAsync(resourceGroupName, virtualRouterName, expand, context).block();
     }
 
-    /**
-     * Gets the specified Virtual Router.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param virtualRouterName The name of the Virtual Router.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ErrorException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the specified Virtual Router.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public VirtualRouterInner getByResourceGroup(String resourceGroupName, String virtualRouterName) {
         final String expand = null;
         return getByResourceGroupWithResponse(resourceGroupName, virtualRouterName, expand, Context.NONE).getValue();
     }
 
-    /**
-     * Creates or updates the specified Virtual Router.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param virtualRouterName The name of the Virtual Router.
-     * @param parameters Parameters supplied to the create or update Virtual Router.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ErrorException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return virtualRouter Resource along with {@link Response} on successful completion of {@link Mono}.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Response<Flux<ByteBuffer>>> createOrUpdateWithResponseAsync(String resourceGroupName,
         String virtualRouterName, VirtualRouterInner parameters) {
@@ -298,7 +249,7 @@ public final class VirtualRoutersClientImpl implements InnerSupportsGet<VirtualR
         } else {
             parameters.validate();
         }
-        final String apiVersion = "2025-07-01";
+        final String apiVersion = "2026-05-01";
         final String contentType = "application/json";
         final String accept = "application/json";
         return FluxUtil
@@ -344,7 +295,7 @@ public final class VirtualRoutersClientImpl implements InnerSupportsGet<VirtualR
         } else {
             parameters.validate();
         }
-        final String apiVersion = "2025-07-01";
+        final String apiVersion = "2026-05-01";
         final String contentType = "application/json";
         final String accept = "application/json";
         context = this.client.mergeContext(context);
@@ -352,17 +303,7 @@ public final class VirtualRoutersClientImpl implements InnerSupportsGet<VirtualR
             resourceGroupName, virtualRouterName, contentType, accept, parameters, context);
     }
 
-    /**
-     * Creates or updates the specified Virtual Router.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param virtualRouterName The name of the Virtual Router.
-     * @param parameters Parameters supplied to the create or update Virtual Router.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ErrorException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the {@link PollerFlux} for polling of virtualRouter Resource.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public PollerFlux<PollResult<VirtualRouterInner>, VirtualRouterInner>
         beginCreateOrUpdateAsync(String resourceGroupName, String virtualRouterName, VirtualRouterInner parameters) {
@@ -394,52 +335,21 @@ public final class VirtualRoutersClientImpl implements InnerSupportsGet<VirtualR
             VirtualRouterInner.class, VirtualRouterInner.class, context);
     }
 
-    /**
-     * Creates or updates the specified Virtual Router.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param virtualRouterName The name of the Virtual Router.
-     * @param parameters Parameters supplied to the create or update Virtual Router.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ErrorException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the {@link SyncPoller} for polling of virtualRouter Resource.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public SyncPoller<PollResult<VirtualRouterInner>, VirtualRouterInner> beginCreateOrUpdate(String resourceGroupName,
         String virtualRouterName, VirtualRouterInner parameters) {
         return this.beginCreateOrUpdateAsync(resourceGroupName, virtualRouterName, parameters).getSyncPoller();
     }
 
-    /**
-     * Creates or updates the specified Virtual Router.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param virtualRouterName The name of the Virtual Router.
-     * @param parameters Parameters supplied to the create or update Virtual Router.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ErrorException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the {@link SyncPoller} for polling of virtualRouter Resource.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public SyncPoller<PollResult<VirtualRouterInner>, VirtualRouterInner> beginCreateOrUpdate(String resourceGroupName,
         String virtualRouterName, VirtualRouterInner parameters, Context context) {
         return this.beginCreateOrUpdateAsync(resourceGroupName, virtualRouterName, parameters, context).getSyncPoller();
     }
 
-    /**
-     * Creates or updates the specified Virtual Router.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param virtualRouterName The name of the Virtual Router.
-     * @param parameters Parameters supplied to the create or update Virtual Router.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ErrorException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return virtualRouter Resource on successful completion of {@link Mono}.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<VirtualRouterInner> createOrUpdateAsync(String resourceGroupName, String virtualRouterName,
         VirtualRouterInner parameters) {
@@ -466,51 +376,21 @@ public final class VirtualRoutersClientImpl implements InnerSupportsGet<VirtualR
             .flatMap(this.client::getLroFinalResultOrError);
     }
 
-    /**
-     * Creates or updates the specified Virtual Router.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param virtualRouterName The name of the Virtual Router.
-     * @param parameters Parameters supplied to the create or update Virtual Router.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ErrorException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return virtualRouter Resource.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public VirtualRouterInner createOrUpdate(String resourceGroupName, String virtualRouterName,
         VirtualRouterInner parameters) {
         return createOrUpdateAsync(resourceGroupName, virtualRouterName, parameters).block();
     }
 
-    /**
-     * Creates or updates the specified Virtual Router.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param virtualRouterName The name of the Virtual Router.
-     * @param parameters Parameters supplied to the create or update Virtual Router.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ErrorException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return virtualRouter Resource.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public VirtualRouterInner createOrUpdate(String resourceGroupName, String virtualRouterName,
         VirtualRouterInner parameters, Context context) {
         return createOrUpdateAsync(resourceGroupName, virtualRouterName, parameters, context).block();
     }
 
-    /**
-     * Deletes the specified Virtual Router.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param virtualRouterName The name of the Virtual Router.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ErrorException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the {@link Response} on successful completion of {@link Mono}.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Response<Flux<ByteBuffer>>> deleteWithResponseAsync(String resourceGroupName,
         String virtualRouterName) {
@@ -530,7 +410,7 @@ public final class VirtualRoutersClientImpl implements InnerSupportsGet<VirtualR
             return Mono
                 .error(new IllegalArgumentException("Parameter virtualRouterName is required and cannot be null."));
         }
-        final String apiVersion = "2025-07-01";
+        final String apiVersion = "2026-05-01";
         return FluxUtil
             .withContext(context -> service.delete(this.client.getEndpoint(), apiVersion,
                 this.client.getSubscriptionId(), resourceGroupName, virtualRouterName, context))
@@ -567,22 +447,13 @@ public final class VirtualRoutersClientImpl implements InnerSupportsGet<VirtualR
             return Mono
                 .error(new IllegalArgumentException("Parameter virtualRouterName is required and cannot be null."));
         }
-        final String apiVersion = "2025-07-01";
+        final String apiVersion = "2026-05-01";
         context = this.client.mergeContext(context);
         return service.delete(this.client.getEndpoint(), apiVersion, this.client.getSubscriptionId(), resourceGroupName,
             virtualRouterName, context);
     }
 
-    /**
-     * Deletes the specified Virtual Router.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param virtualRouterName The name of the Virtual Router.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ErrorException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the {@link PollerFlux} for polling of long-running operation.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public PollerFlux<PollResult<Void>, Void> beginDeleteAsync(String resourceGroupName, String virtualRouterName) {
         Mono<Response<Flux<ByteBuffer>>> mono = deleteWithResponseAsync(resourceGroupName, virtualRouterName);
@@ -610,48 +481,20 @@ public final class VirtualRoutersClientImpl implements InnerSupportsGet<VirtualR
             context);
     }
 
-    /**
-     * Deletes the specified Virtual Router.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param virtualRouterName The name of the Virtual Router.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ErrorException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the {@link SyncPoller} for polling of long-running operation.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public SyncPoller<PollResult<Void>, Void> beginDelete(String resourceGroupName, String virtualRouterName) {
         return this.beginDeleteAsync(resourceGroupName, virtualRouterName).getSyncPoller();
     }
 
-    /**
-     * Deletes the specified Virtual Router.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param virtualRouterName The name of the Virtual Router.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ErrorException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the {@link SyncPoller} for polling of long-running operation.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public SyncPoller<PollResult<Void>, Void> beginDelete(String resourceGroupName, String virtualRouterName,
         Context context) {
         return this.beginDeleteAsync(resourceGroupName, virtualRouterName, context).getSyncPoller();
     }
 
-    /**
-     * Deletes the specified Virtual Router.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param virtualRouterName The name of the Virtual Router.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ErrorException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return A {@link Mono} that completes when a successful response is received.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Void> deleteAsync(String resourceGroupName, String virtualRouterName) {
         return beginDeleteAsync(resourceGroupName, virtualRouterName).last()
@@ -675,30 +518,13 @@ public final class VirtualRoutersClientImpl implements InnerSupportsGet<VirtualR
             .flatMap(this.client::getLroFinalResultOrError);
     }
 
-    /**
-     * Deletes the specified Virtual Router.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param virtualRouterName The name of the Virtual Router.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ErrorException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public void delete(String resourceGroupName, String virtualRouterName) {
         deleteAsync(resourceGroupName, virtualRouterName).block();
     }
 
-    /**
-     * Deletes the specified Virtual Router.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param virtualRouterName The name of the Virtual Router.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ErrorException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public void delete(String resourceGroupName, String virtualRouterName, Context context) {
         deleteAsync(resourceGroupName, virtualRouterName, context).block();
@@ -728,7 +554,7 @@ public final class VirtualRoutersClientImpl implements InnerSupportsGet<VirtualR
             return Mono
                 .error(new IllegalArgumentException("Parameter resourceGroupName is required and cannot be null."));
         }
-        final String apiVersion = "2025-07-01";
+        final String apiVersion = "2026-05-01";
         final String accept = "application/json";
         return FluxUtil
             .withContext(context -> service.listByResourceGroup(this.client.getEndpoint(), apiVersion,
@@ -764,7 +590,7 @@ public final class VirtualRoutersClientImpl implements InnerSupportsGet<VirtualR
             return Mono
                 .error(new IllegalArgumentException("Parameter resourceGroupName is required and cannot be null."));
         }
-        final String apiVersion = "2025-07-01";
+        final String apiVersion = "2026-05-01";
         final String accept = "application/json";
         context = this.client.mergeContext(context);
         return service
@@ -774,15 +600,7 @@ public final class VirtualRoutersClientImpl implements InnerSupportsGet<VirtualR
                 res.getValue().value(), res.getValue().nextLink(), null));
     }
 
-    /**
-     * Lists all Virtual Routers in a resource group.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ErrorException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the response of a VirtualRouter list operation as paginated response with {@link PagedFlux}.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.COLLECTION)
     public PagedFlux<VirtualRouterInner> listByResourceGroupAsync(String resourceGroupName) {
         return new PagedFlux<>(() -> listByResourceGroupSinglePageAsync(resourceGroupName),
@@ -805,30 +623,13 @@ public final class VirtualRoutersClientImpl implements InnerSupportsGet<VirtualR
             nextLink -> listByResourceGroupNextSinglePageAsync(nextLink, context));
     }
 
-    /**
-     * Lists all Virtual Routers in a resource group.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ErrorException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the response of a VirtualRouter list operation as paginated response with {@link PagedIterable}.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.COLLECTION)
     public PagedIterable<VirtualRouterInner> listByResourceGroup(String resourceGroupName) {
         return new PagedIterable<>(listByResourceGroupAsync(resourceGroupName));
     }
 
-    /**
-     * Lists all Virtual Routers in a resource group.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ErrorException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the response of a VirtualRouter list operation as paginated response with {@link PagedIterable}.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.COLLECTION)
     public PagedIterable<VirtualRouterInner> listByResourceGroup(String resourceGroupName, Context context) {
         return new PagedIterable<>(listByResourceGroupAsync(resourceGroupName, context));
@@ -852,7 +653,7 @@ public final class VirtualRoutersClientImpl implements InnerSupportsGet<VirtualR
             return Mono.error(new IllegalArgumentException(
                 "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
-        final String apiVersion = "2025-07-01";
+        final String apiVersion = "2026-05-01";
         final String accept = "application/json";
         return FluxUtil
             .withContext(context -> service.list(this.client.getEndpoint(), apiVersion, this.client.getSubscriptionId(),
@@ -882,7 +683,7 @@ public final class VirtualRoutersClientImpl implements InnerSupportsGet<VirtualR
             return Mono.error(new IllegalArgumentException(
                 "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
-        final String apiVersion = "2025-07-01";
+        final String apiVersion = "2026-05-01";
         final String accept = "application/json";
         context = this.client.mergeContext(context);
         return service.list(this.client.getEndpoint(), apiVersion, this.client.getSubscriptionId(), accept, context)
@@ -890,13 +691,7 @@ public final class VirtualRoutersClientImpl implements InnerSupportsGet<VirtualR
                 res.getValue().value(), res.getValue().nextLink(), null));
     }
 
-    /**
-     * Gets all the Virtual Routers in a subscription.
-     * 
-     * @throws ErrorException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return all the Virtual Routers in a subscription as paginated response with {@link PagedFlux}.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.COLLECTION)
     public PagedFlux<VirtualRouterInner> listAsync() {
         return new PagedFlux<>(() -> listSinglePageAsync(), nextLink -> listNextSinglePageAsync(nextLink));
@@ -917,27 +712,13 @@ public final class VirtualRoutersClientImpl implements InnerSupportsGet<VirtualR
             nextLink -> listNextSinglePageAsync(nextLink, context));
     }
 
-    /**
-     * Gets all the Virtual Routers in a subscription.
-     * 
-     * @throws ErrorException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return all the Virtual Routers in a subscription as paginated response with {@link PagedIterable}.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.COLLECTION)
     public PagedIterable<VirtualRouterInner> list() {
         return new PagedIterable<>(listAsync());
     }
 
-    /**
-     * Gets all the Virtual Routers in a subscription.
-     * 
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ErrorException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return all the Virtual Routers in a subscription as paginated response with {@link PagedIterable}.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.COLLECTION)
     public PagedIterable<VirtualRouterInner> list(Context context) {
         return new PagedIterable<>(listAsync(context));

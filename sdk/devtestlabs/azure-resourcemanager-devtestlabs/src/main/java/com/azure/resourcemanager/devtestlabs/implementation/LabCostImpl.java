@@ -135,11 +135,7 @@ public final class LabCostImpl implements LabCost, LabCost.Definition, LabCost.U
     }
 
     public LabCost create() {
-        this.innerObject = serviceManager.serviceClient()
-            .getCosts()
-            .createOrUpdateWithResponse(resourceGroupName, labName, name, this.innerModel(), Context.NONE)
-            .getValue();
-        return this;
+        return this.create(Context.NONE);
     }
 
     public LabCost create(Context context) {
@@ -161,11 +157,7 @@ public final class LabCostImpl implements LabCost, LabCost.Definition, LabCost.U
     }
 
     public LabCost apply() {
-        this.innerObject = serviceManager.serviceClient()
-            .getCosts()
-            .createOrUpdateWithResponse(resourceGroupName, labName, name, this.innerModel(), Context.NONE)
-            .getValue();
-        return this;
+        return this.apply(Context.NONE);
     }
 
     public LabCost apply(Context context) {
@@ -179,18 +171,19 @@ public final class LabCostImpl implements LabCost, LabCost.Definition, LabCost.U
     LabCostImpl(LabCostInner innerObject, com.azure.resourcemanager.devtestlabs.DevTestLabsManager serviceManager) {
         this.innerObject = innerObject;
         this.serviceManager = serviceManager;
-        this.resourceGroupName = ResourceManagerUtils.getValueFromIdByName(innerObject.id(), "resourceGroups");
-        this.labName = ResourceManagerUtils.getValueFromIdByName(innerObject.id(), "labs");
-        this.name = ResourceManagerUtils.getValueFromIdByName(innerObject.id(), "costs");
+        this.resourceGroupName = ResourceManagerUtils.getValueFromIdByParameterName(innerObject.id(),
+            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.DevTestLab/labs/{labName}/costs/{name}",
+            "resourceGroupName");
+        this.labName = ResourceManagerUtils.getValueFromIdByParameterName(innerObject.id(),
+            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.DevTestLab/labs/{labName}/costs/{name}",
+            "labName");
+        this.name = ResourceManagerUtils.getValueFromIdByParameterName(innerObject.id(),
+            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.DevTestLab/labs/{labName}/costs/{name}",
+            "name");
     }
 
     public LabCost refresh() {
-        String localExpand = null;
-        this.innerObject = serviceManager.serviceClient()
-            .getCosts()
-            .getWithResponse(resourceGroupName, labName, name, localExpand, Context.NONE)
-            .getValue();
-        return this;
+        return this.refresh(Context.NONE);
     }
 
     public LabCost refresh(Context context) {

@@ -13,6 +13,7 @@ import com.azure.search.documents.indexes.models.FreshnessScoringFunction;
 import com.azure.search.documents.indexes.models.FreshnessScoringParameters;
 import com.azure.search.documents.indexes.models.GetIndexStatisticsResult;
 import com.azure.search.documents.indexes.models.LexicalAnalyzerName;
+import com.azure.search.documents.indexes.models.ListingSearchType;
 import com.azure.search.documents.indexes.models.MagnitudeScoringFunction;
 import com.azure.search.documents.indexes.models.MagnitudeScoringParameters;
 import com.azure.search.documents.indexes.models.ScoringFunctionAggregation;
@@ -22,6 +23,7 @@ import com.azure.search.documents.indexes.models.SearchField;
 import com.azure.search.documents.indexes.models.SearchFieldDataType;
 import com.azure.search.documents.indexes.models.SearchIndex;
 import com.azure.search.documents.indexes.models.SearchServiceStatistics;
+import com.azure.search.documents.indexes.models.ServiceIndexersRuntime;
 import com.azure.search.documents.indexes.models.SearchSuggester;
 import com.azure.search.documents.indexes.models.TagScoringFunction;
 import com.azure.search.documents.indexes.models.TagScoringParameters;
@@ -55,6 +57,11 @@ public class IndexAndServiceStatisticsExample {
     private static void getServiceStatistics(SearchIndexClient client) {
         SearchServiceStatistics searchServiceStatistics = client.getServiceStatistics();
 
+        ServiceIndexersRuntime runtime = searchServiceStatistics.getIndexersRuntime();
+        if (runtime != null) {
+            System.out.printf("Service indexer runtime: %d used, %s remaining seconds, period %s to %s%n",
+                runtime.getUsedSeconds(), runtime.getRemainingSeconds(), runtime.getBeginningTime(), runtime.getEndingTime());
+        }
         System.out.println(":" + searchServiceStatistics);
         try {
             System.out.println(searchServiceStatistics.toJsonString());
@@ -110,9 +117,18 @@ public class IndexAndServiceStatisticsExample {
         System.out.println("document Count:" + documentCount);
         System.out.println("storage Size:" + storageSize);
 
+        listIndexStatistics(client, index.getName());
+
         // Output:
         // document Count:0
         // storage Size:0
+    }
+
+    static void listIndexStatistics(SearchIndexClient client, String indexName) {
+        client.listIndexStatsSummary(indexName, 1, ListingSearchType.PREFIX).iterableByPage().forEach(page ->
+            page.getValue().forEach(statistics -> System.out.printf(
+                "Index %s: %d documents, %d storage bytes, %d vector bytes%n", statistics.getName(),
+                statistics.getDocumentCount(), statistics.getStorageSize(), statistics.getVectorIndexSize())));
     }
 
     /**

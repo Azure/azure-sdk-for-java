@@ -95,10 +95,7 @@ public final class NetworkAnchorImpl implements NetworkAnchor, NetworkAnchor.Def
     }
 
     public NetworkAnchor create() {
-        this.innerObject = serviceManager.serviceClient()
-            .getNetworkAnchors()
-            .createOrUpdate(resourceGroupName, networkAnchorName, this.innerModel(), Context.NONE);
-        return this;
+        return this.create(Context.NONE);
     }
 
     public NetworkAnchor create(Context context) {
@@ -120,10 +117,7 @@ public final class NetworkAnchorImpl implements NetworkAnchor, NetworkAnchor.Def
     }
 
     public NetworkAnchor apply() {
-        this.innerObject = serviceManager.serviceClient()
-            .getNetworkAnchors()
-            .update(resourceGroupName, networkAnchorName, updateProperties, Context.NONE);
-        return this;
+        return this.apply(Context.NONE);
     }
 
     public NetworkAnchor apply(Context context) {
@@ -137,16 +131,16 @@ public final class NetworkAnchorImpl implements NetworkAnchor, NetworkAnchor.Def
         com.azure.resourcemanager.oracledatabase.OracleDatabaseManager serviceManager) {
         this.innerObject = innerObject;
         this.serviceManager = serviceManager;
-        this.resourceGroupName = ResourceManagerUtils.getValueFromIdByName(innerObject.id(), "resourceGroups");
-        this.networkAnchorName = ResourceManagerUtils.getValueFromIdByName(innerObject.id(), "networkAnchors");
+        this.resourceGroupName = ResourceManagerUtils.getValueFromIdByParameterName(innerObject.id(),
+            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Oracle.Database/networkAnchors/{networkAnchorName}",
+            "resourceGroupName");
+        this.networkAnchorName = ResourceManagerUtils.getValueFromIdByParameterName(innerObject.id(),
+            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Oracle.Database/networkAnchors/{networkAnchorName}",
+            "networkAnchorName");
     }
 
     public NetworkAnchor refresh() {
-        this.innerObject = serviceManager.serviceClient()
-            .getNetworkAnchors()
-            .getByResourceGroupWithResponse(resourceGroupName, networkAnchorName, Context.NONE)
-            .getValue();
-        return this;
+        return this.refresh(Context.NONE);
     }
 
     public NetworkAnchor refresh(Context context) {

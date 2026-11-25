@@ -147,11 +147,7 @@ public final class FactoryImpl implements Factory, Factory.Definition, Factory.U
     }
 
     public Factory create() {
-        this.innerObject = serviceManager.serviceClient()
-            .getFactories()
-            .createOrUpdateWithResponse(resourceGroupName, factoryName, this.innerModel(), createIfMatch, Context.NONE)
-            .getValue();
-        return this;
+        return this.create(Context.NONE);
     }
 
     public Factory create(Context context) {
@@ -175,11 +171,7 @@ public final class FactoryImpl implements Factory, Factory.Definition, Factory.U
     }
 
     public Factory apply() {
-        this.innerObject = serviceManager.serviceClient()
-            .getFactories()
-            .updateWithResponse(resourceGroupName, factoryName, updateFactoryUpdateParameters, Context.NONE)
-            .getValue();
-        return this;
+        return this.apply(Context.NONE);
     }
 
     public Factory apply(Context context) {
@@ -193,17 +185,16 @@ public final class FactoryImpl implements Factory, Factory.Definition, Factory.U
     FactoryImpl(FactoryInner innerObject, com.azure.resourcemanager.datafactory.DataFactoryManager serviceManager) {
         this.innerObject = innerObject;
         this.serviceManager = serviceManager;
-        this.resourceGroupName = ResourceManagerUtils.getValueFromIdByName(innerObject.id(), "resourceGroups");
-        this.factoryName = ResourceManagerUtils.getValueFromIdByName(innerObject.id(), "factories");
+        this.resourceGroupName = ResourceManagerUtils.getValueFromIdByParameterName(innerObject.id(),
+            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.DataFactory/factories/{factoryName}",
+            "resourceGroupName");
+        this.factoryName = ResourceManagerUtils.getValueFromIdByParameterName(innerObject.id(),
+            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.DataFactory/factories/{factoryName}",
+            "factoryName");
     }
 
     public Factory refresh() {
-        String localIfNoneMatch = null;
-        this.innerObject = serviceManager.serviceClient()
-            .getFactories()
-            .getByResourceGroupWithResponse(resourceGroupName, factoryName, localIfNoneMatch, Context.NONE)
-            .getValue();
-        return this;
+        return this.refresh(Context.NONE);
     }
 
     public Factory refresh(Context context) {

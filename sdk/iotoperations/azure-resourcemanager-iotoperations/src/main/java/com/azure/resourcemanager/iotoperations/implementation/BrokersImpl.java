@@ -45,7 +45,7 @@ public final class BrokersImpl implements Brokers {
     }
 
     public void delete(String resourceGroupName, String instanceName, String brokerName) {
-        this.serviceClient().delete(resourceGroupName, instanceName, brokerName);
+        this.delete(resourceGroupName, instanceName, brokerName, Context.NONE);
     }
 
     public void delete(String resourceGroupName, String instanceName, String brokerName, Context context) {
@@ -53,9 +53,7 @@ public final class BrokersImpl implements Brokers {
     }
 
     public PagedIterable<BrokerResource> listByResourceGroup(String resourceGroupName, String instanceName) {
-        PagedIterable<BrokerResourceInner> inner
-            = this.serviceClient().listByResourceGroup(resourceGroupName, instanceName);
-        return ResourceManagerUtils.mapPage(inner, inner1 -> new BrokerResourceImpl(inner1, this.manager()));
+        return this.listByResourceGroup(resourceGroupName, instanceName, Context.NONE);
     }
 
     public PagedIterable<BrokerResource> listByResourceGroup(String resourceGroupName, String instanceName,
@@ -66,78 +64,36 @@ public final class BrokersImpl implements Brokers {
     }
 
     public BrokerResource getById(String id) {
-        String resourceGroupName = ResourceManagerUtils.getValueFromIdByName(id, "resourceGroups");
-        if (resourceGroupName == null) {
-            throw LOGGER.logExceptionAsError(new IllegalArgumentException(
-                String.format("The resource ID '%s' is not valid. Missing path segment 'resourceGroups'.", id)));
-        }
-        String instanceName = ResourceManagerUtils.getValueFromIdByName(id, "instances");
-        if (instanceName == null) {
-            throw LOGGER.logExceptionAsError(new IllegalArgumentException(
-                String.format("The resource ID '%s' is not valid. Missing path segment 'instances'.", id)));
-        }
-        String brokerName = ResourceManagerUtils.getValueFromIdByName(id, "brokers");
-        if (brokerName == null) {
-            throw LOGGER.logExceptionAsError(new IllegalArgumentException(
-                String.format("The resource ID '%s' is not valid. Missing path segment 'brokers'.", id)));
-        }
-        return this.getWithResponse(resourceGroupName, instanceName, brokerName, Context.NONE).getValue();
+        return this.getByIdWithResponse(id, Context.NONE).getValue();
     }
 
     public Response<BrokerResource> getByIdWithResponse(String id, Context context) {
-        String resourceGroupName = ResourceManagerUtils.getValueFromIdByName(id, "resourceGroups");
-        if (resourceGroupName == null) {
-            throw LOGGER.logExceptionAsError(new IllegalArgumentException(
-                String.format("The resource ID '%s' is not valid. Missing path segment 'resourceGroups'.", id)));
-        }
-        String instanceName = ResourceManagerUtils.getValueFromIdByName(id, "instances");
-        if (instanceName == null) {
-            throw LOGGER.logExceptionAsError(new IllegalArgumentException(
-                String.format("The resource ID '%s' is not valid. Missing path segment 'instances'.", id)));
-        }
-        String brokerName = ResourceManagerUtils.getValueFromIdByName(id, "brokers");
-        if (brokerName == null) {
-            throw LOGGER.logExceptionAsError(new IllegalArgumentException(
-                String.format("The resource ID '%s' is not valid. Missing path segment 'brokers'.", id)));
-        }
+        String resourceGroupName = ResourceManagerUtils.getRequiredValueFromIdByParameterName(id,
+            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.IoTOperations/instances/{instanceName}/brokers/{brokerName}",
+            "resourceGroupName", "resourceGroups", LOGGER);
+        String instanceName = ResourceManagerUtils.getRequiredValueFromIdByParameterName(id,
+            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.IoTOperations/instances/{instanceName}/brokers/{brokerName}",
+            "instanceName", "instances", LOGGER);
+        String brokerName = ResourceManagerUtils.getRequiredValueFromIdByParameterName(id,
+            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.IoTOperations/instances/{instanceName}/brokers/{brokerName}",
+            "brokerName", "brokers", LOGGER);
         return this.getWithResponse(resourceGroupName, instanceName, brokerName, context);
     }
 
     public void deleteById(String id) {
-        String resourceGroupName = ResourceManagerUtils.getValueFromIdByName(id, "resourceGroups");
-        if (resourceGroupName == null) {
-            throw LOGGER.logExceptionAsError(new IllegalArgumentException(
-                String.format("The resource ID '%s' is not valid. Missing path segment 'resourceGroups'.", id)));
-        }
-        String instanceName = ResourceManagerUtils.getValueFromIdByName(id, "instances");
-        if (instanceName == null) {
-            throw LOGGER.logExceptionAsError(new IllegalArgumentException(
-                String.format("The resource ID '%s' is not valid. Missing path segment 'instances'.", id)));
-        }
-        String brokerName = ResourceManagerUtils.getValueFromIdByName(id, "brokers");
-        if (brokerName == null) {
-            throw LOGGER.logExceptionAsError(new IllegalArgumentException(
-                String.format("The resource ID '%s' is not valid. Missing path segment 'brokers'.", id)));
-        }
-        this.delete(resourceGroupName, instanceName, brokerName, Context.NONE);
+        this.deleteByIdWithResponse(id, Context.NONE);
     }
 
     public void deleteByIdWithResponse(String id, Context context) {
-        String resourceGroupName = ResourceManagerUtils.getValueFromIdByName(id, "resourceGroups");
-        if (resourceGroupName == null) {
-            throw LOGGER.logExceptionAsError(new IllegalArgumentException(
-                String.format("The resource ID '%s' is not valid. Missing path segment 'resourceGroups'.", id)));
-        }
-        String instanceName = ResourceManagerUtils.getValueFromIdByName(id, "instances");
-        if (instanceName == null) {
-            throw LOGGER.logExceptionAsError(new IllegalArgumentException(
-                String.format("The resource ID '%s' is not valid. Missing path segment 'instances'.", id)));
-        }
-        String brokerName = ResourceManagerUtils.getValueFromIdByName(id, "brokers");
-        if (brokerName == null) {
-            throw LOGGER.logExceptionAsError(new IllegalArgumentException(
-                String.format("The resource ID '%s' is not valid. Missing path segment 'brokers'.", id)));
-        }
+        String resourceGroupName = ResourceManagerUtils.getRequiredValueFromIdByParameterName(id,
+            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.IoTOperations/instances/{instanceName}/brokers/{brokerName}",
+            "resourceGroupName", "resourceGroups", LOGGER);
+        String instanceName = ResourceManagerUtils.getRequiredValueFromIdByParameterName(id,
+            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.IoTOperations/instances/{instanceName}/brokers/{brokerName}",
+            "instanceName", "instances", LOGGER);
+        String brokerName = ResourceManagerUtils.getRequiredValueFromIdByParameterName(id,
+            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.IoTOperations/instances/{instanceName}/brokers/{brokerName}",
+            "brokerName", "brokers", LOGGER);
         this.delete(resourceGroupName, instanceName, brokerName, context);
     }
 

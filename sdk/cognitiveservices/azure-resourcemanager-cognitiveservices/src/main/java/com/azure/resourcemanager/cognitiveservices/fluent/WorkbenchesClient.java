@@ -12,6 +12,7 @@ import com.azure.core.management.polling.PollResult;
 import com.azure.core.util.Context;
 import com.azure.core.util.polling.SyncPoller;
 import com.azure.resourcemanager.cognitiveservices.fluent.models.WorkbenchInner;
+import com.azure.resourcemanager.cognitiveservices.models.WorkbenchUpdate;
 
 /**
  * An instance of this class provides access to all the operations defined in WorkbenchesClient.
@@ -131,34 +132,16 @@ public interface WorkbenchesClient {
      * @param projectName The name of Cognitive Services account's project.
      * @param workbenchName The name of the workbench associated with the project.
      * @param properties The workbench properties to update.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the {@link SyncPoller} for polling of workbench resource under a Cognitive Services project.
-     * Provides interactive compute with data access for AI development.
-     */
-    @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
-    SyncPoller<PollResult<WorkbenchInner>, WorkbenchInner> beginUpdate(String resourceGroupName, String accountName,
-        String projectName, String workbenchName, WorkbenchInner properties);
-
-    /**
-     * Updates a workbench associated with the project.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param accountName The name of Cognitive Services account.
-     * @param projectName The name of Cognitive Services account's project.
-     * @param workbenchName The name of the workbench associated with the project.
-     * @param properties The workbench properties to update.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the {@link SyncPoller} for polling of workbench resource under a Cognitive Services project.
-     * Provides interactive compute with data access for AI development.
+     * @return workbench resource under a Cognitive Services project.
+     * Provides interactive compute with data access for AI development along with {@link Response}.
      */
-    @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
-    SyncPoller<PollResult<WorkbenchInner>, WorkbenchInner> beginUpdate(String resourceGroupName, String accountName,
-        String projectName, String workbenchName, WorkbenchInner properties, Context context);
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    Response<WorkbenchInner> updateWithResponse(String resourceGroupName, String accountName, String projectName,
+        String workbenchName, WorkbenchUpdate properties, Context context);
 
     /**
      * Updates a workbench associated with the project.
@@ -176,26 +159,7 @@ public interface WorkbenchesClient {
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     WorkbenchInner update(String resourceGroupName, String accountName, String projectName, String workbenchName,
-        WorkbenchInner properties);
-
-    /**
-     * Updates a workbench associated with the project.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param accountName The name of Cognitive Services account.
-     * @param projectName The name of Cognitive Services account's project.
-     * @param workbenchName The name of the workbench associated with the project.
-     * @param properties The workbench properties to update.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return workbench resource under a Cognitive Services project.
-     * Provides interactive compute with data access for AI development.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    WorkbenchInner update(String resourceGroupName, String accountName, String projectName, String workbenchName,
-        WorkbenchInner properties, Context context);
+        WorkbenchUpdate properties);
 
     /**
      * Deletes the specified workbench associated with the project.

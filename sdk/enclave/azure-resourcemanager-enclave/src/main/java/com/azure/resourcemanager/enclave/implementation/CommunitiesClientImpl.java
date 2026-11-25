@@ -273,17 +273,7 @@ public final class CommunitiesClientImpl implements CommunitiesClient {
             .flatMap(res -> Mono.justOrEmpty(res.getValue()));
     }
 
-    /**
-     * Get a CommunityResource.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param communityName The name of the communityResource Resource.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return a CommunityResource along with {@link Response}.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Response<CommunityResourceInner> getByResourceGroupWithResponse(String resourceGroupName,
         String communityName, Context context) {
@@ -292,16 +282,7 @@ public final class CommunitiesClientImpl implements CommunitiesClient {
             this.client.getSubscriptionId(), resourceGroupName, communityName, accept, context);
     }
 
-    /**
-     * Get a CommunityResource.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param communityName The name of the communityResource Resource.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return a CommunityResource.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public CommunityResourceInner getByResourceGroup(String resourceGroupName, String communityName) {
         return getByResourceGroupWithResponse(resourceGroupName, communityName, Context.NONE).getValue();
@@ -344,11 +325,7 @@ public final class CommunitiesClientImpl implements CommunitiesClient {
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Response<BinaryData> createOrUpdateWithResponse(String resourceGroupName, String communityName,
         CommunityResourceInner resource) {
-        final String contentType = "application/json";
-        final String accept = "application/json";
-        return service.createOrUpdateSync(this.client.getEndpoint(), this.client.getApiVersion(),
-            this.client.getSubscriptionId(), resourceGroupName, communityName, contentType, accept, resource,
-            Context.NONE);
+        return createOrUpdateWithResponse(resourceGroupName, communityName, resource, Context.NONE);
     }
 
     /**
@@ -393,37 +370,14 @@ public final class CommunitiesClientImpl implements CommunitiesClient {
             this.client.getContext());
     }
 
-    /**
-     * Create a CommunityResource.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param communityName The name of the communityResource Resource.
-     * @param resource Resource create parameters.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the {@link SyncPoller} for polling of community Model Resource.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public SyncPoller<PollResult<CommunityResourceInner>, CommunityResourceInner>
         beginCreateOrUpdate(String resourceGroupName, String communityName, CommunityResourceInner resource) {
-        Response<BinaryData> response = createOrUpdateWithResponse(resourceGroupName, communityName, resource);
-        return this.client.<CommunityResourceInner, CommunityResourceInner>getLroResult(response,
-            CommunityResourceInner.class, CommunityResourceInner.class, Context.NONE);
+        return beginCreateOrUpdate(resourceGroupName, communityName, resource, Context.NONE);
     }
 
-    /**
-     * Create a CommunityResource.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param communityName The name of the communityResource Resource.
-     * @param resource Resource create parameters.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the {@link SyncPoller} for polling of community Model Resource.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public SyncPoller<PollResult<CommunityResourceInner>, CommunityResourceInner> beginCreateOrUpdate(
         String resourceGroupName, String communityName, CommunityResourceInner resource, Context context) {
@@ -450,39 +404,19 @@ public final class CommunitiesClientImpl implements CommunitiesClient {
             .flatMap(this.client::getLroFinalResultOrError);
     }
 
-    /**
-     * Create a CommunityResource.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param communityName The name of the communityResource Resource.
-     * @param resource Resource create parameters.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return community Model Resource.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public CommunityResourceInner createOrUpdate(String resourceGroupName, String communityName,
         CommunityResourceInner resource) {
-        return beginCreateOrUpdate(resourceGroupName, communityName, resource).getFinalResult();
+        return createOrUpdate(resourceGroupName, communityName, resource, Context.NONE);
     }
 
-    /**
-     * Create a CommunityResource.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param communityName The name of the communityResource Resource.
-     * @param resource Resource create parameters.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return community Model Resource.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public CommunityResourceInner createOrUpdate(String resourceGroupName, String communityName,
         CommunityResourceInner resource, Context context) {
-        return beginCreateOrUpdate(resourceGroupName, communityName, resource, context).getFinalResult();
+        return this.client
+            .getLroFinalResultOrError(beginCreateOrUpdate(resourceGroupName, communityName, resource, context));
     }
 
     /**
@@ -522,11 +456,7 @@ public final class CommunitiesClientImpl implements CommunitiesClient {
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Response<BinaryData> updateWithResponse(String resourceGroupName, String communityName,
         CommunityPatchModel properties) {
-        final String contentType = "application/json";
-        final String accept = "application/json";
-        return service.updateSync(this.client.getEndpoint(), this.client.getApiVersion(),
-            this.client.getSubscriptionId(), resourceGroupName, communityName, contentType, accept, properties,
-            Context.NONE);
+        return updateWithResponse(resourceGroupName, communityName, properties, Context.NONE);
     }
 
     /**
@@ -571,37 +501,14 @@ public final class CommunitiesClientImpl implements CommunitiesClient {
             this.client.getContext());
     }
 
-    /**
-     * Update a CommunityResource.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param communityName The name of the communityResource Resource.
-     * @param properties The resource properties to be updated.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the {@link SyncPoller} for polling of community Model Resource.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public SyncPoller<PollResult<CommunityResourceInner>, CommunityResourceInner> beginUpdate(String resourceGroupName,
         String communityName, CommunityPatchModel properties) {
-        Response<BinaryData> response = updateWithResponse(resourceGroupName, communityName, properties);
-        return this.client.<CommunityResourceInner, CommunityResourceInner>getLroResult(response,
-            CommunityResourceInner.class, CommunityResourceInner.class, Context.NONE);
+        return beginUpdate(resourceGroupName, communityName, properties, Context.NONE);
     }
 
-    /**
-     * Update a CommunityResource.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param communityName The name of the communityResource Resource.
-     * @param properties The resource properties to be updated.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the {@link SyncPoller} for polling of community Model Resource.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public SyncPoller<PollResult<CommunityResourceInner>, CommunityResourceInner> beginUpdate(String resourceGroupName,
         String communityName, CommunityPatchModel properties, Context context) {
@@ -628,39 +535,18 @@ public final class CommunitiesClientImpl implements CommunitiesClient {
             .flatMap(this.client::getLroFinalResultOrError);
     }
 
-    /**
-     * Update a CommunityResource.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param communityName The name of the communityResource Resource.
-     * @param properties The resource properties to be updated.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return community Model Resource.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public CommunityResourceInner update(String resourceGroupName, String communityName,
         CommunityPatchModel properties) {
-        return beginUpdate(resourceGroupName, communityName, properties).getFinalResult();
+        return update(resourceGroupName, communityName, properties, Context.NONE);
     }
 
-    /**
-     * Update a CommunityResource.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param communityName The name of the communityResource Resource.
-     * @param properties The resource properties to be updated.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return community Model Resource.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public CommunityResourceInner update(String resourceGroupName, String communityName, CommunityPatchModel properties,
         Context context) {
-        return beginUpdate(resourceGroupName, communityName, properties, context).getFinalResult();
+        return this.client.getLroFinalResultOrError(beginUpdate(resourceGroupName, communityName, properties, context));
     }
 
     /**
@@ -693,8 +579,7 @@ public final class CommunitiesClientImpl implements CommunitiesClient {
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Response<BinaryData> deleteWithResponse(String resourceGroupName, String communityName) {
-        return service.deleteSync(this.client.getEndpoint(), this.client.getApiVersion(),
-            this.client.getSubscriptionId(), resourceGroupName, communityName, Context.NONE);
+        return deleteWithResponse(resourceGroupName, communityName, Context.NONE);
     }
 
     /**
@@ -731,33 +616,13 @@ public final class CommunitiesClientImpl implements CommunitiesClient {
             this.client.getContext());
     }
 
-    /**
-     * Delete a CommunityResource.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param communityName The name of the communityResource Resource.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the {@link SyncPoller} for polling of long-running operation.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public SyncPoller<PollResult<Void>, Void> beginDelete(String resourceGroupName, String communityName) {
-        Response<BinaryData> response = deleteWithResponse(resourceGroupName, communityName);
-        return this.client.<Void, Void>getLroResult(response, Void.class, Void.class, Context.NONE);
+        return beginDelete(resourceGroupName, communityName, Context.NONE);
     }
 
-    /**
-     * Delete a CommunityResource.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param communityName The name of the communityResource Resource.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the {@link SyncPoller} for polling of long-running operation.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public SyncPoller<PollResult<Void>, Void> beginDelete(String resourceGroupName, String communityName,
         Context context) {
@@ -780,33 +645,16 @@ public final class CommunitiesClientImpl implements CommunitiesClient {
         return beginDeleteAsync(resourceGroupName, communityName).last().flatMap(this.client::getLroFinalResultOrError);
     }
 
-    /**
-     * Delete a CommunityResource.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param communityName The name of the communityResource Resource.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public void delete(String resourceGroupName, String communityName) {
-        beginDelete(resourceGroupName, communityName).getFinalResult();
+        delete(resourceGroupName, communityName, Context.NONE);
     }
 
-    /**
-     * Delete a CommunityResource.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param communityName The name of the communityResource Resource.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public void delete(String resourceGroupName, String communityName, Context context) {
-        beginDelete(resourceGroupName, communityName, context).getFinalResult();
+        this.client.getLroFinalResultOrError(beginDelete(resourceGroupName, communityName, context));
     }
 
     /**
@@ -856,11 +704,7 @@ public final class CommunitiesClientImpl implements CommunitiesClient {
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private PagedResponse<CommunityResourceInner> listByResourceGroupSinglePage(String resourceGroupName) {
-        final String accept = "application/json";
-        Response<CommunityResourceListResult> res = service.listByResourceGroupSync(this.client.getEndpoint(),
-            this.client.getApiVersion(), this.client.getSubscriptionId(), resourceGroupName, accept, Context.NONE);
-        return new PagedResponseBase<>(res.getRequest(), res.getStatusCode(), res.getHeaders(), res.getValue().value(),
-            res.getValue().nextLink(), null);
+        return listByResourceGroupSinglePage(resourceGroupName, Context.NONE);
     }
 
     /**
@@ -883,31 +727,13 @@ public final class CommunitiesClientImpl implements CommunitiesClient {
             res.getValue().nextLink(), null);
     }
 
-    /**
-     * List CommunityResource resources by resource group.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the response of a CommunityResource list operation as paginated response with {@link PagedIterable}.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.COLLECTION)
     public PagedIterable<CommunityResourceInner> listByResourceGroup(String resourceGroupName) {
-        return new PagedIterable<>(() -> listByResourceGroupSinglePage(resourceGroupName),
-            nextLink -> listByResourceGroupNextSinglePage(nextLink));
+        return listByResourceGroup(resourceGroupName, Context.NONE);
     }
 
-    /**
-     * List CommunityResource resources by resource group.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the response of a CommunityResource list operation as paginated response with {@link PagedIterable}.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.COLLECTION)
     public PagedIterable<CommunityResourceInner> listByResourceGroup(String resourceGroupName, Context context) {
         return new PagedIterable<>(() -> listByResourceGroupSinglePage(resourceGroupName, context),
@@ -955,11 +781,7 @@ public final class CommunitiesClientImpl implements CommunitiesClient {
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private PagedResponse<CommunityResourceInner> listSinglePage() {
-        final String accept = "application/json";
-        Response<CommunityResourceListResult> res = service.listSync(this.client.getEndpoint(),
-            this.client.getApiVersion(), this.client.getSubscriptionId(), accept, Context.NONE);
-        return new PagedResponseBase<>(res.getRequest(), res.getStatusCode(), res.getHeaders(), res.getValue().value(),
-            res.getValue().nextLink(), null);
+        return listSinglePage(Context.NONE);
     }
 
     /**
@@ -980,27 +802,13 @@ public final class CommunitiesClientImpl implements CommunitiesClient {
             res.getValue().nextLink(), null);
     }
 
-    /**
-     * List CommunityResource resources by subscription ID.
-     * 
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the response of a CommunityResource list operation as paginated response with {@link PagedIterable}.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.COLLECTION)
     public PagedIterable<CommunityResourceInner> list() {
-        return new PagedIterable<>(() -> listSinglePage(), nextLink -> listBySubscriptionNextSinglePage(nextLink));
+        return list(Context.NONE);
     }
 
-    /**
-     * List CommunityResource resources by subscription ID.
-     * 
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the response of a CommunityResource list operation as paginated response with {@link PagedIterable}.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.COLLECTION)
     public PagedIterable<CommunityResourceInner> list(Context context) {
         return new PagedIterable<>(() -> listSinglePage(context),
@@ -1051,18 +859,7 @@ public final class CommunitiesClientImpl implements CommunitiesClient {
             checkAddressSpaceAvailabilityRequest).flatMap(res -> Mono.justOrEmpty(res.getValue()));
     }
 
-    /**
-     * Checks that the IP Address Space to be allocated for this Community is available.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param communityName The name of the communityResource Resource.
-     * @param checkAddressSpaceAvailabilityRequest Check IP Address Space request body.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return response of availability of the requested address space along with {@link Response}.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Response<CheckAddressSpaceAvailabilityResponseInner> checkAddressSpaceAvailabilityWithResponse(
         String resourceGroupName, String communityName,
@@ -1074,17 +871,7 @@ public final class CommunitiesClientImpl implements CommunitiesClient {
             checkAddressSpaceAvailabilityRequest, context);
     }
 
-    /**
-     * Checks that the IP Address Space to be allocated for this Community is available.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param communityName The name of the communityResource Resource.
-     * @param checkAddressSpaceAvailabilityRequest Check IP Address Space request body.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return response of availability of the requested address space.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public CheckAddressSpaceAvailabilityResponseInner checkAddressSpaceAvailability(String resourceGroupName,
         String communityName, CheckAddressSpaceAvailabilityRequest checkAddressSpaceAvailabilityRequest) {
@@ -1124,11 +911,7 @@ public final class CommunitiesClientImpl implements CommunitiesClient {
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private PagedResponse<CommunityResourceInner> listByResourceGroupNextSinglePage(String nextLink) {
-        final String accept = "application/json";
-        Response<CommunityResourceListResult> res
-            = service.listByResourceGroupNextSync(nextLink, this.client.getEndpoint(), accept, Context.NONE);
-        return new PagedResponseBase<>(res.getRequest(), res.getStatusCode(), res.getHeaders(), res.getValue().value(),
-            res.getValue().nextLink(), null);
+        return listByResourceGroupNextSinglePage(nextLink, Context.NONE);
     }
 
     /**
@@ -1182,11 +965,7 @@ public final class CommunitiesClientImpl implements CommunitiesClient {
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private PagedResponse<CommunityResourceInner> listBySubscriptionNextSinglePage(String nextLink) {
-        final String accept = "application/json";
-        Response<CommunityResourceListResult> res
-            = service.listBySubscriptionNextSync(nextLink, this.client.getEndpoint(), accept, Context.NONE);
-        return new PagedResponseBase<>(res.getRequest(), res.getStatusCode(), res.getHeaders(), res.getValue().value(),
-            res.getValue().nextLink(), null);
+        return listBySubscriptionNextSinglePage(nextLink, Context.NONE);
     }
 
     /**

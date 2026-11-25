@@ -141,16 +141,7 @@ public final class ScheduledQueryRulesClientImpl implements InnerSupportsGet<Sch
             @HeaderParam("Accept") String accept, Context context);
     }
 
-    /**
-     * Retrieve an scheduled query rule definition.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param ruleName The name of the rule.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the scheduled query rule resource along with {@link Response} on successful completion of {@link Mono}.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Response<ScheduledQueryRuleResourceInner>> getByResourceGroupWithResponseAsync(String resourceGroupName,
         String ruleName) {
@@ -213,65 +204,27 @@ public final class ScheduledQueryRulesClientImpl implements InnerSupportsGet<Sch
             resourceGroupName, ruleName, accept, context);
     }
 
-    /**
-     * Retrieve an scheduled query rule definition.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param ruleName The name of the rule.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the scheduled query rule resource on successful completion of {@link Mono}.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<ScheduledQueryRuleResourceInner> getByResourceGroupAsync(String resourceGroupName, String ruleName) {
         return getByResourceGroupWithResponseAsync(resourceGroupName, ruleName)
             .flatMap(res -> Mono.justOrEmpty(res.getValue()));
     }
 
-    /**
-     * Retrieve an scheduled query rule definition.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param ruleName The name of the rule.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the scheduled query rule resource along with {@link Response}.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Response<ScheduledQueryRuleResourceInner> getByResourceGroupWithResponse(String resourceGroupName,
         String ruleName, Context context) {
         return getByResourceGroupWithResponseAsync(resourceGroupName, ruleName, context).block();
     }
 
-    /**
-     * Retrieve an scheduled query rule definition.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param ruleName The name of the rule.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the scheduled query rule resource.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public ScheduledQueryRuleResourceInner getByResourceGroup(String resourceGroupName, String ruleName) {
         return getByResourceGroupWithResponse(resourceGroupName, ruleName, Context.NONE).getValue();
     }
 
-    /**
-     * Creates or updates a scheduled query rule.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param ruleName The name of the rule.
-     * @param parameters The parameters of the rule to create or update.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the scheduled query rule resource along with {@link Response} on successful completion of {@link Mono}.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Response<ScheduledQueryRuleResourceInner>> createOrUpdateWithResponseAsync(String resourceGroupName,
         String ruleName, ScheduledQueryRuleResourceInner parameters) {
@@ -347,17 +300,7 @@ public final class ScheduledQueryRulesClientImpl implements InnerSupportsGet<Sch
             resourceGroupName, ruleName, contentType, accept, parameters, context);
     }
 
-    /**
-     * Creates or updates a scheduled query rule.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param ruleName The name of the rule.
-     * @param parameters The parameters of the rule to create or update.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the scheduled query rule resource on successful completion of {@link Mono}.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<ScheduledQueryRuleResourceInner> createOrUpdateAsync(String resourceGroupName, String ruleName,
         ScheduledQueryRuleResourceInner parameters) {
@@ -365,52 +308,21 @@ public final class ScheduledQueryRulesClientImpl implements InnerSupportsGet<Sch
             .flatMap(res -> Mono.justOrEmpty(res.getValue()));
     }
 
-    /**
-     * Creates or updates a scheduled query rule.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param ruleName The name of the rule.
-     * @param parameters The parameters of the rule to create or update.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the scheduled query rule resource along with {@link Response}.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Response<ScheduledQueryRuleResourceInner> createOrUpdateWithResponse(String resourceGroupName,
         String ruleName, ScheduledQueryRuleResourceInner parameters, Context context) {
         return createOrUpdateWithResponseAsync(resourceGroupName, ruleName, parameters, context).block();
     }
 
-    /**
-     * Creates or updates a scheduled query rule.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param ruleName The name of the rule.
-     * @param parameters The parameters of the rule to create or update.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the scheduled query rule resource.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public ScheduledQueryRuleResourceInner createOrUpdate(String resourceGroupName, String ruleName,
         ScheduledQueryRuleResourceInner parameters) {
         return createOrUpdateWithResponse(resourceGroupName, ruleName, parameters, Context.NONE).getValue();
     }
 
-    /**
-     * Update a scheduled query rule.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param ruleName The name of the rule.
-     * @param parameters The parameters of the rule to update.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the scheduled query rule resource along with {@link Response} on successful completion of {@link Mono}.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Response<ScheduledQueryRuleResourceInner>> updateWithResponseAsync(String resourceGroupName,
         String ruleName, ScheduledQueryRuleResourcePatch parameters) {
@@ -486,17 +398,7 @@ public final class ScheduledQueryRulesClientImpl implements InnerSupportsGet<Sch
             ruleName, contentType, accept, parameters, context);
     }
 
-    /**
-     * Update a scheduled query rule.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param ruleName The name of the rule.
-     * @param parameters The parameters of the rule to update.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the scheduled query rule resource on successful completion of {@link Mono}.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<ScheduledQueryRuleResourceInner> updateAsync(String resourceGroupName, String ruleName,
         ScheduledQueryRuleResourcePatch parameters) {
@@ -504,51 +406,21 @@ public final class ScheduledQueryRulesClientImpl implements InnerSupportsGet<Sch
             .flatMap(res -> Mono.justOrEmpty(res.getValue()));
     }
 
-    /**
-     * Update a scheduled query rule.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param ruleName The name of the rule.
-     * @param parameters The parameters of the rule to update.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the scheduled query rule resource along with {@link Response}.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Response<ScheduledQueryRuleResourceInner> updateWithResponse(String resourceGroupName, String ruleName,
         ScheduledQueryRuleResourcePatch parameters, Context context) {
         return updateWithResponseAsync(resourceGroupName, ruleName, parameters, context).block();
     }
 
-    /**
-     * Update a scheduled query rule.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param ruleName The name of the rule.
-     * @param parameters The parameters of the rule to update.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the scheduled query rule resource.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public ScheduledQueryRuleResourceInner update(String resourceGroupName, String ruleName,
         ScheduledQueryRuleResourcePatch parameters) {
         return updateWithResponse(resourceGroupName, ruleName, parameters, Context.NONE).getValue();
     }
 
-    /**
-     * Deletes a scheduled query rule.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param ruleName The name of the rule.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the {@link Response} on successful completion of {@link Mono}.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Response<Void>> deleteWithResponseAsync(String resourceGroupName, String ruleName) {
         if (this.client.getEndpoint() == null) {
@@ -607,46 +479,19 @@ public final class ScheduledQueryRulesClientImpl implements InnerSupportsGet<Sch
             ruleName, context);
     }
 
-    /**
-     * Deletes a scheduled query rule.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param ruleName The name of the rule.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return A {@link Mono} that completes when a successful response is received.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Void> deleteAsync(String resourceGroupName, String ruleName) {
         return deleteWithResponseAsync(resourceGroupName, ruleName).flatMap(ignored -> Mono.empty());
     }
 
-    /**
-     * Deletes a scheduled query rule.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param ruleName The name of the rule.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the {@link Response}.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Response<Void> deleteWithResponse(String resourceGroupName, String ruleName, Context context) {
         return deleteWithResponseAsync(resourceGroupName, ruleName, context).block();
     }
 
-    /**
-     * Deletes a scheduled query rule.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param ruleName The name of the rule.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public void delete(String resourceGroupName, String ruleName) {
         deleteWithResponse(resourceGroupName, ruleName, Context.NONE);
@@ -723,15 +568,7 @@ public final class ScheduledQueryRulesClientImpl implements InnerSupportsGet<Sch
                 res.getValue().value(), res.getValue().nextLink(), null));
     }
 
-    /**
-     * Retrieve scheduled query rule definitions in a resource group.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return represents a collection of scheduled query rule resources as paginated response with {@link PagedFlux}.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.COLLECTION)
     public PagedFlux<ScheduledQueryRuleResourceInner> listByResourceGroupAsync(String resourceGroupName) {
         return new PagedFlux<>(() -> listByResourceGroupSinglePageAsync(resourceGroupName),
@@ -755,32 +592,13 @@ public final class ScheduledQueryRulesClientImpl implements InnerSupportsGet<Sch
             nextLink -> listByResourceGroupNextSinglePageAsync(nextLink, context));
     }
 
-    /**
-     * Retrieve scheduled query rule definitions in a resource group.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return represents a collection of scheduled query rule resources as paginated response with
-     * {@link PagedIterable}.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.COLLECTION)
     public PagedIterable<ScheduledQueryRuleResourceInner> listByResourceGroup(String resourceGroupName) {
         return new PagedIterable<>(listByResourceGroupAsync(resourceGroupName));
     }
 
-    /**
-     * Retrieve scheduled query rule definitions in a resource group.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return represents a collection of scheduled query rule resources as paginated response with
-     * {@link PagedIterable}.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.COLLECTION)
     public PagedIterable<ScheduledQueryRuleResourceInner> listByResourceGroup(String resourceGroupName,
         Context context) {
@@ -843,13 +661,7 @@ public final class ScheduledQueryRulesClientImpl implements InnerSupportsGet<Sch
                 res.getValue().value(), res.getValue().nextLink(), null));
     }
 
-    /**
-     * Retrieve a scheduled query rule definitions in a subscription.
-     * 
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return represents a collection of scheduled query rule resources as paginated response with {@link PagedFlux}.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.COLLECTION)
     public PagedFlux<ScheduledQueryRuleResourceInner> listAsync() {
         return new PagedFlux<>(() -> listSinglePageAsync(),
@@ -871,29 +683,13 @@ public final class ScheduledQueryRulesClientImpl implements InnerSupportsGet<Sch
             nextLink -> listBySubscriptionNextSinglePageAsync(nextLink, context));
     }
 
-    /**
-     * Retrieve a scheduled query rule definitions in a subscription.
-     * 
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return represents a collection of scheduled query rule resources as paginated response with
-     * {@link PagedIterable}.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.COLLECTION)
     public PagedIterable<ScheduledQueryRuleResourceInner> list() {
         return new PagedIterable<>(listAsync());
     }
 
-    /**
-     * Retrieve a scheduled query rule definitions in a subscription.
-     * 
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return represents a collection of scheduled query rule resources as paginated response with
-     * {@link PagedIterable}.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.COLLECTION)
     public PagedIterable<ScheduledQueryRuleResourceInner> list(Context context) {
         return new PagedIterable<>(listAsync(context));

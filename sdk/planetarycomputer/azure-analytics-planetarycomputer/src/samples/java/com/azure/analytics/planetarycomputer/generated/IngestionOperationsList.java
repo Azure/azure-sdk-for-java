@@ -7,6 +7,7 @@ package com.azure.analytics.planetarycomputer.generated;
 import com.azure.analytics.planetarycomputer.IngestionClient;
 import com.azure.analytics.planetarycomputer.PlanetaryComputerProClientBuilder;
 import com.azure.analytics.planetarycomputer.models.Operation;
+import com.azure.analytics.planetarycomputer.models.OperationStatus;
 import com.azure.core.http.rest.PagedIterable;
 import com.azure.core.util.Configuration;
 import com.azure.identity.DefaultAzureCredentialBuilder;
@@ -18,7 +19,8 @@ public class IngestionOperationsList {
                 .endpoint(Configuration.getGlobalConfiguration().get("ENDPOINT"))
                 .buildIngestionClient();
         // BEGIN:com.azure.analytics.planetarycomputer.generated.ingestion-list-operations.ingestion-operations-list
-        PagedIterable<Operation> response = ingestionClient.listOperations(null, null, null, null);
+        PagedIterable<Operation> response
+            = ingestionClient.listOperations((Integer) null, (Integer) null, (String) null, (OperationStatus) null);
         // END:com.azure.analytics.planetarycomputer.generated.ingestion-list-operations.ingestion-operations-list
     }
 }

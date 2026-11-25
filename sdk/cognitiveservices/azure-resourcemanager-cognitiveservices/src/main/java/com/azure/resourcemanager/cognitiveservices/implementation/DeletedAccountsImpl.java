@@ -28,8 +28,7 @@ public final class DeletedAccountsImpl implements DeletedAccounts {
     }
 
     public PagedIterable<Account> list() {
-        PagedIterable<AccountInner> inner = this.serviceClient().list();
-        return ResourceManagerUtils.mapPage(inner, inner1 -> new AccountImpl(inner1, this.manager()));
+        return this.list(Context.NONE);
     }
 
     public PagedIterable<Account> list(Context context) {
@@ -55,7 +54,7 @@ public final class DeletedAccountsImpl implements DeletedAccounts {
     }
 
     public void purge(String location, String resourceGroupName, String accountName) {
-        this.serviceClient().purge(location, resourceGroupName, accountName);
+        this.purge(location, resourceGroupName, accountName, Context.NONE);
     }
 
     public void purge(String location, String resourceGroupName, String accountName, Context context) {

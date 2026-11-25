@@ -46,7 +46,7 @@ public final class WorkflowVersionsImpl implements WorkflowVersions {
     }
 
     public void delete(String resourceGroupName, String contextName, String workflowName, String versionName) {
-        this.serviceClient().delete(resourceGroupName, contextName, workflowName, versionName);
+        this.delete(resourceGroupName, contextName, workflowName, versionName, Context.NONE);
     }
 
     public void delete(String resourceGroupName, String contextName, String workflowName, String versionName,
@@ -56,9 +56,7 @@ public final class WorkflowVersionsImpl implements WorkflowVersions {
 
     public PagedIterable<WorkflowVersion> listByWorkflow(String resourceGroupName, String contextName,
         String workflowName) {
-        PagedIterable<WorkflowVersionInner> inner
-            = this.serviceClient().listByWorkflow(resourceGroupName, contextName, workflowName);
-        return ResourceManagerUtils.mapPage(inner, inner1 -> new WorkflowVersionImpl(inner1, this.manager()));
+        return this.listByWorkflow(resourceGroupName, contextName, workflowName, Context.NONE);
     }
 
     public PagedIterable<WorkflowVersion> listByWorkflow(String resourceGroupName, String contextName,
@@ -69,98 +67,42 @@ public final class WorkflowVersionsImpl implements WorkflowVersions {
     }
 
     public WorkflowVersion getById(String id) {
-        String resourceGroupName = ResourceManagerUtils.getValueFromIdByName(id, "resourceGroups");
-        if (resourceGroupName == null) {
-            throw LOGGER.logExceptionAsError(new IllegalArgumentException(
-                String.format("The resource ID '%s' is not valid. Missing path segment 'resourceGroups'.", id)));
-        }
-        String contextName = ResourceManagerUtils.getValueFromIdByName(id, "contexts");
-        if (contextName == null) {
-            throw LOGGER.logExceptionAsError(new IllegalArgumentException(
-                String.format("The resource ID '%s' is not valid. Missing path segment 'contexts'.", id)));
-        }
-        String workflowName = ResourceManagerUtils.getValueFromIdByName(id, "workflows");
-        if (workflowName == null) {
-            throw LOGGER.logExceptionAsError(new IllegalArgumentException(
-                String.format("The resource ID '%s' is not valid. Missing path segment 'workflows'.", id)));
-        }
-        String versionName = ResourceManagerUtils.getValueFromIdByName(id, "versions");
-        if (versionName == null) {
-            throw LOGGER.logExceptionAsError(new IllegalArgumentException(
-                String.format("The resource ID '%s' is not valid. Missing path segment 'versions'.", id)));
-        }
-        return this.getWithResponse(resourceGroupName, contextName, workflowName, versionName, Context.NONE).getValue();
+        return this.getByIdWithResponse(id, Context.NONE).getValue();
     }
 
     public Response<WorkflowVersion> getByIdWithResponse(String id, Context context) {
-        String resourceGroupName = ResourceManagerUtils.getValueFromIdByName(id, "resourceGroups");
-        if (resourceGroupName == null) {
-            throw LOGGER.logExceptionAsError(new IllegalArgumentException(
-                String.format("The resource ID '%s' is not valid. Missing path segment 'resourceGroups'.", id)));
-        }
-        String contextName = ResourceManagerUtils.getValueFromIdByName(id, "contexts");
-        if (contextName == null) {
-            throw LOGGER.logExceptionAsError(new IllegalArgumentException(
-                String.format("The resource ID '%s' is not valid. Missing path segment 'contexts'.", id)));
-        }
-        String workflowName = ResourceManagerUtils.getValueFromIdByName(id, "workflows");
-        if (workflowName == null) {
-            throw LOGGER.logExceptionAsError(new IllegalArgumentException(
-                String.format("The resource ID '%s' is not valid. Missing path segment 'workflows'.", id)));
-        }
-        String versionName = ResourceManagerUtils.getValueFromIdByName(id, "versions");
-        if (versionName == null) {
-            throw LOGGER.logExceptionAsError(new IllegalArgumentException(
-                String.format("The resource ID '%s' is not valid. Missing path segment 'versions'.", id)));
-        }
+        String resourceGroupName = ResourceManagerUtils.getRequiredValueFromIdByParameterName(id,
+            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Edge/contexts/{contextName}/workflows/{workflowName}/versions/{versionName}",
+            "resourceGroupName", "resourceGroups", LOGGER);
+        String contextName = ResourceManagerUtils.getRequiredValueFromIdByParameterName(id,
+            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Edge/contexts/{contextName}/workflows/{workflowName}/versions/{versionName}",
+            "contextName", "contexts", LOGGER);
+        String workflowName = ResourceManagerUtils.getRequiredValueFromIdByParameterName(id,
+            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Edge/contexts/{contextName}/workflows/{workflowName}/versions/{versionName}",
+            "workflowName", "workflows", LOGGER);
+        String versionName = ResourceManagerUtils.getRequiredValueFromIdByParameterName(id,
+            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Edge/contexts/{contextName}/workflows/{workflowName}/versions/{versionName}",
+            "versionName", "versions", LOGGER);
         return this.getWithResponse(resourceGroupName, contextName, workflowName, versionName, context);
     }
 
     public void deleteById(String id) {
-        String resourceGroupName = ResourceManagerUtils.getValueFromIdByName(id, "resourceGroups");
-        if (resourceGroupName == null) {
-            throw LOGGER.logExceptionAsError(new IllegalArgumentException(
-                String.format("The resource ID '%s' is not valid. Missing path segment 'resourceGroups'.", id)));
-        }
-        String contextName = ResourceManagerUtils.getValueFromIdByName(id, "contexts");
-        if (contextName == null) {
-            throw LOGGER.logExceptionAsError(new IllegalArgumentException(
-                String.format("The resource ID '%s' is not valid. Missing path segment 'contexts'.", id)));
-        }
-        String workflowName = ResourceManagerUtils.getValueFromIdByName(id, "workflows");
-        if (workflowName == null) {
-            throw LOGGER.logExceptionAsError(new IllegalArgumentException(
-                String.format("The resource ID '%s' is not valid. Missing path segment 'workflows'.", id)));
-        }
-        String versionName = ResourceManagerUtils.getValueFromIdByName(id, "versions");
-        if (versionName == null) {
-            throw LOGGER.logExceptionAsError(new IllegalArgumentException(
-                String.format("The resource ID '%s' is not valid. Missing path segment 'versions'.", id)));
-        }
-        this.delete(resourceGroupName, contextName, workflowName, versionName, Context.NONE);
+        this.deleteByIdWithResponse(id, Context.NONE);
     }
 
     public void deleteByIdWithResponse(String id, Context context) {
-        String resourceGroupName = ResourceManagerUtils.getValueFromIdByName(id, "resourceGroups");
-        if (resourceGroupName == null) {
-            throw LOGGER.logExceptionAsError(new IllegalArgumentException(
-                String.format("The resource ID '%s' is not valid. Missing path segment 'resourceGroups'.", id)));
-        }
-        String contextName = ResourceManagerUtils.getValueFromIdByName(id, "contexts");
-        if (contextName == null) {
-            throw LOGGER.logExceptionAsError(new IllegalArgumentException(
-                String.format("The resource ID '%s' is not valid. Missing path segment 'contexts'.", id)));
-        }
-        String workflowName = ResourceManagerUtils.getValueFromIdByName(id, "workflows");
-        if (workflowName == null) {
-            throw LOGGER.logExceptionAsError(new IllegalArgumentException(
-                String.format("The resource ID '%s' is not valid. Missing path segment 'workflows'.", id)));
-        }
-        String versionName = ResourceManagerUtils.getValueFromIdByName(id, "versions");
-        if (versionName == null) {
-            throw LOGGER.logExceptionAsError(new IllegalArgumentException(
-                String.format("The resource ID '%s' is not valid. Missing path segment 'versions'.", id)));
-        }
+        String resourceGroupName = ResourceManagerUtils.getRequiredValueFromIdByParameterName(id,
+            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Edge/contexts/{contextName}/workflows/{workflowName}/versions/{versionName}",
+            "resourceGroupName", "resourceGroups", LOGGER);
+        String contextName = ResourceManagerUtils.getRequiredValueFromIdByParameterName(id,
+            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Edge/contexts/{contextName}/workflows/{workflowName}/versions/{versionName}",
+            "contextName", "contexts", LOGGER);
+        String workflowName = ResourceManagerUtils.getRequiredValueFromIdByParameterName(id,
+            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Edge/contexts/{contextName}/workflows/{workflowName}/versions/{versionName}",
+            "workflowName", "workflows", LOGGER);
+        String versionName = ResourceManagerUtils.getRequiredValueFromIdByParameterName(id,
+            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Edge/contexts/{contextName}/workflows/{workflowName}/versions/{versionName}",
+            "versionName", "versions", LOGGER);
         this.delete(resourceGroupName, contextName, workflowName, versionName, context);
     }
 

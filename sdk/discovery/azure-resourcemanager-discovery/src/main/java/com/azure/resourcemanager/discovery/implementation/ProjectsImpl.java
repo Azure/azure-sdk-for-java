@@ -45,7 +45,7 @@ public final class ProjectsImpl implements Projects {
     }
 
     public void delete(String resourceGroupName, String workspaceName, String projectName) {
-        this.serviceClient().delete(resourceGroupName, workspaceName, projectName);
+        this.delete(resourceGroupName, workspaceName, projectName, Context.NONE);
     }
 
     public void delete(String resourceGroupName, String workspaceName, String projectName, Context context) {
@@ -53,8 +53,7 @@ public final class ProjectsImpl implements Projects {
     }
 
     public PagedIterable<Project> listByWorkspace(String resourceGroupName, String workspaceName) {
-        PagedIterable<ProjectInner> inner = this.serviceClient().listByWorkspace(resourceGroupName, workspaceName);
-        return ResourceManagerUtils.mapPage(inner, inner1 -> new ProjectImpl(inner1, this.manager()));
+        return this.listByWorkspace(resourceGroupName, workspaceName, Context.NONE);
     }
 
     public PagedIterable<Project> listByWorkspace(String resourceGroupName, String workspaceName, Context context) {
@@ -64,78 +63,36 @@ public final class ProjectsImpl implements Projects {
     }
 
     public Project getById(String id) {
-        String resourceGroupName = ResourceManagerUtils.getValueFromIdByName(id, "resourceGroups");
-        if (resourceGroupName == null) {
-            throw LOGGER.logExceptionAsError(new IllegalArgumentException(
-                String.format("The resource ID '%s' is not valid. Missing path segment 'resourceGroups'.", id)));
-        }
-        String workspaceName = ResourceManagerUtils.getValueFromIdByName(id, "workspaces");
-        if (workspaceName == null) {
-            throw LOGGER.logExceptionAsError(new IllegalArgumentException(
-                String.format("The resource ID '%s' is not valid. Missing path segment 'workspaces'.", id)));
-        }
-        String projectName = ResourceManagerUtils.getValueFromIdByName(id, "projects");
-        if (projectName == null) {
-            throw LOGGER.logExceptionAsError(new IllegalArgumentException(
-                String.format("The resource ID '%s' is not valid. Missing path segment 'projects'.", id)));
-        }
-        return this.getWithResponse(resourceGroupName, workspaceName, projectName, Context.NONE).getValue();
+        return this.getByIdWithResponse(id, Context.NONE).getValue();
     }
 
     public Response<Project> getByIdWithResponse(String id, Context context) {
-        String resourceGroupName = ResourceManagerUtils.getValueFromIdByName(id, "resourceGroups");
-        if (resourceGroupName == null) {
-            throw LOGGER.logExceptionAsError(new IllegalArgumentException(
-                String.format("The resource ID '%s' is not valid. Missing path segment 'resourceGroups'.", id)));
-        }
-        String workspaceName = ResourceManagerUtils.getValueFromIdByName(id, "workspaces");
-        if (workspaceName == null) {
-            throw LOGGER.logExceptionAsError(new IllegalArgumentException(
-                String.format("The resource ID '%s' is not valid. Missing path segment 'workspaces'.", id)));
-        }
-        String projectName = ResourceManagerUtils.getValueFromIdByName(id, "projects");
-        if (projectName == null) {
-            throw LOGGER.logExceptionAsError(new IllegalArgumentException(
-                String.format("The resource ID '%s' is not valid. Missing path segment 'projects'.", id)));
-        }
+        String resourceGroupName = ResourceManagerUtils.getRequiredValueFromIdByParameterName(id,
+            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Discovery/workspaces/{workspaceName}/projects/{projectName}",
+            "resourceGroupName", "resourceGroups", LOGGER);
+        String workspaceName = ResourceManagerUtils.getRequiredValueFromIdByParameterName(id,
+            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Discovery/workspaces/{workspaceName}/projects/{projectName}",
+            "workspaceName", "workspaces", LOGGER);
+        String projectName = ResourceManagerUtils.getRequiredValueFromIdByParameterName(id,
+            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Discovery/workspaces/{workspaceName}/projects/{projectName}",
+            "projectName", "projects", LOGGER);
         return this.getWithResponse(resourceGroupName, workspaceName, projectName, context);
     }
 
     public void deleteById(String id) {
-        String resourceGroupName = ResourceManagerUtils.getValueFromIdByName(id, "resourceGroups");
-        if (resourceGroupName == null) {
-            throw LOGGER.logExceptionAsError(new IllegalArgumentException(
-                String.format("The resource ID '%s' is not valid. Missing path segment 'resourceGroups'.", id)));
-        }
-        String workspaceName = ResourceManagerUtils.getValueFromIdByName(id, "workspaces");
-        if (workspaceName == null) {
-            throw LOGGER.logExceptionAsError(new IllegalArgumentException(
-                String.format("The resource ID '%s' is not valid. Missing path segment 'workspaces'.", id)));
-        }
-        String projectName = ResourceManagerUtils.getValueFromIdByName(id, "projects");
-        if (projectName == null) {
-            throw LOGGER.logExceptionAsError(new IllegalArgumentException(
-                String.format("The resource ID '%s' is not valid. Missing path segment 'projects'.", id)));
-        }
-        this.delete(resourceGroupName, workspaceName, projectName, Context.NONE);
+        this.deleteByIdWithResponse(id, Context.NONE);
     }
 
     public void deleteByIdWithResponse(String id, Context context) {
-        String resourceGroupName = ResourceManagerUtils.getValueFromIdByName(id, "resourceGroups");
-        if (resourceGroupName == null) {
-            throw LOGGER.logExceptionAsError(new IllegalArgumentException(
-                String.format("The resource ID '%s' is not valid. Missing path segment 'resourceGroups'.", id)));
-        }
-        String workspaceName = ResourceManagerUtils.getValueFromIdByName(id, "workspaces");
-        if (workspaceName == null) {
-            throw LOGGER.logExceptionAsError(new IllegalArgumentException(
-                String.format("The resource ID '%s' is not valid. Missing path segment 'workspaces'.", id)));
-        }
-        String projectName = ResourceManagerUtils.getValueFromIdByName(id, "projects");
-        if (projectName == null) {
-            throw LOGGER.logExceptionAsError(new IllegalArgumentException(
-                String.format("The resource ID '%s' is not valid. Missing path segment 'projects'.", id)));
-        }
+        String resourceGroupName = ResourceManagerUtils.getRequiredValueFromIdByParameterName(id,
+            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Discovery/workspaces/{workspaceName}/projects/{projectName}",
+            "resourceGroupName", "resourceGroups", LOGGER);
+        String workspaceName = ResourceManagerUtils.getRequiredValueFromIdByParameterName(id,
+            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Discovery/workspaces/{workspaceName}/projects/{projectName}",
+            "workspaceName", "workspaces", LOGGER);
+        String projectName = ResourceManagerUtils.getRequiredValueFromIdByParameterName(id,
+            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Discovery/workspaces/{workspaceName}/projects/{projectName}",
+            "projectName", "projects", LOGGER);
         this.delete(resourceGroupName, workspaceName, projectName, context);
     }
 

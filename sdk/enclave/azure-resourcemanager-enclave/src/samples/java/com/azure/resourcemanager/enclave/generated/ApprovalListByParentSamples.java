@@ -9,7 +9,7 @@ package com.azure.resourcemanager.enclave.generated;
  */
 public final class ApprovalListByParentSamples {
     /*
-     * x-ms-original-file: 2026-03-01-preview/Approvals_ListByParent.json
+     * x-ms-original-file: 2026-04-01/Approvals_ListByParent.json
      */
     /**
      * Sample code: Approval_ListByParent.

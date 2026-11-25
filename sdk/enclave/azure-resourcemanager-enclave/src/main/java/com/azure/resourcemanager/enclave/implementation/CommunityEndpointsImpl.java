@@ -50,7 +50,7 @@ public final class CommunityEndpointsImpl implements CommunityEndpoints {
     }
 
     public void delete(String resourceGroupName, String communityName, String communityEndpointName) {
-        this.serviceClient().delete(resourceGroupName, communityName, communityEndpointName);
+        this.delete(resourceGroupName, communityName, communityEndpointName, Context.NONE);
     }
 
     public void delete(String resourceGroupName, String communityName, String communityEndpointName, Context context) {
@@ -59,9 +59,7 @@ public final class CommunityEndpointsImpl implements CommunityEndpoints {
 
     public PagedIterable<CommunityEndpointResource> listByCommunityResource(String resourceGroupName,
         String communityName) {
-        PagedIterable<CommunityEndpointResourceInner> inner
-            = this.serviceClient().listByCommunityResource(resourceGroupName, communityName);
-        return ResourceManagerUtils.mapPage(inner, inner1 -> new CommunityEndpointResourceImpl(inner1, this.manager()));
+        return this.listByCommunityResource(resourceGroupName, communityName, Context.NONE);
     }
 
     public PagedIterable<CommunityEndpointResource> listByCommunityResource(String resourceGroupName,
@@ -72,8 +70,7 @@ public final class CommunityEndpointsImpl implements CommunityEndpoints {
     }
 
     public PagedIterable<CommunityEndpointResource> listBySubscription(String communityName) {
-        PagedIterable<CommunityEndpointResourceInner> inner = this.serviceClient().listBySubscription(communityName);
-        return ResourceManagerUtils.mapPage(inner, inner1 -> new CommunityEndpointResourceImpl(inner1, this.manager()));
+        return this.listBySubscription(communityName, Context.NONE);
     }
 
     public PagedIterable<CommunityEndpointResource> listBySubscription(String communityName, Context context) {
@@ -84,13 +81,7 @@ public final class CommunityEndpointsImpl implements CommunityEndpoints {
 
     public ApprovalActionResponse handleApprovalCreation(String resourceGroupName, String communityName,
         String communityEndpointName, ApprovalCallbackRequest body) {
-        ApprovalActionResponseInner inner = this.serviceClient()
-            .handleApprovalCreation(resourceGroupName, communityName, communityEndpointName, body);
-        if (inner != null) {
-            return new ApprovalActionResponseImpl(inner, this.manager());
-        } else {
-            return null;
-        }
+        return this.handleApprovalCreation(resourceGroupName, communityName, communityEndpointName, body, Context.NONE);
     }
 
     public ApprovalActionResponse handleApprovalCreation(String resourceGroupName, String communityName,
@@ -106,13 +97,7 @@ public final class CommunityEndpointsImpl implements CommunityEndpoints {
 
     public ApprovalActionResponse handleApprovalDeletion(String resourceGroupName, String communityName,
         String communityEndpointName, ApprovalDeletionCallbackRequest body) {
-        ApprovalActionResponseInner inner = this.serviceClient()
-            .handleApprovalDeletion(resourceGroupName, communityName, communityEndpointName, body);
-        if (inner != null) {
-            return new ApprovalActionResponseImpl(inner, this.manager());
-        } else {
-            return null;
-        }
+        return this.handleApprovalDeletion(resourceGroupName, communityName, communityEndpointName, body, Context.NONE);
     }
 
     public ApprovalActionResponse handleApprovalDeletion(String resourceGroupName, String communityName,
@@ -127,78 +112,36 @@ public final class CommunityEndpointsImpl implements CommunityEndpoints {
     }
 
     public CommunityEndpointResource getById(String id) {
-        String resourceGroupName = ResourceManagerUtils.getValueFromIdByName(id, "resourceGroups");
-        if (resourceGroupName == null) {
-            throw LOGGER.logExceptionAsError(new IllegalArgumentException(
-                String.format("The resource ID '%s' is not valid. Missing path segment 'resourceGroups'.", id)));
-        }
-        String communityName = ResourceManagerUtils.getValueFromIdByName(id, "communities");
-        if (communityName == null) {
-            throw LOGGER.logExceptionAsError(new IllegalArgumentException(
-                String.format("The resource ID '%s' is not valid. Missing path segment 'communities'.", id)));
-        }
-        String communityEndpointName = ResourceManagerUtils.getValueFromIdByName(id, "communityEndpoints");
-        if (communityEndpointName == null) {
-            throw LOGGER.logExceptionAsError(new IllegalArgumentException(
-                String.format("The resource ID '%s' is not valid. Missing path segment 'communityEndpoints'.", id)));
-        }
-        return this.getWithResponse(resourceGroupName, communityName, communityEndpointName, Context.NONE).getValue();
+        return this.getByIdWithResponse(id, Context.NONE).getValue();
     }
 
     public Response<CommunityEndpointResource> getByIdWithResponse(String id, Context context) {
-        String resourceGroupName = ResourceManagerUtils.getValueFromIdByName(id, "resourceGroups");
-        if (resourceGroupName == null) {
-            throw LOGGER.logExceptionAsError(new IllegalArgumentException(
-                String.format("The resource ID '%s' is not valid. Missing path segment 'resourceGroups'.", id)));
-        }
-        String communityName = ResourceManagerUtils.getValueFromIdByName(id, "communities");
-        if (communityName == null) {
-            throw LOGGER.logExceptionAsError(new IllegalArgumentException(
-                String.format("The resource ID '%s' is not valid. Missing path segment 'communities'.", id)));
-        }
-        String communityEndpointName = ResourceManagerUtils.getValueFromIdByName(id, "communityEndpoints");
-        if (communityEndpointName == null) {
-            throw LOGGER.logExceptionAsError(new IllegalArgumentException(
-                String.format("The resource ID '%s' is not valid. Missing path segment 'communityEndpoints'.", id)));
-        }
+        String resourceGroupName = ResourceManagerUtils.getRequiredValueFromIdByParameterName(id,
+            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Mission/communities/{communityName}/communityEndpoints/{communityEndpointName}",
+            "resourceGroupName", "resourceGroups", LOGGER);
+        String communityName = ResourceManagerUtils.getRequiredValueFromIdByParameterName(id,
+            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Mission/communities/{communityName}/communityEndpoints/{communityEndpointName}",
+            "communityName", "communities", LOGGER);
+        String communityEndpointName = ResourceManagerUtils.getRequiredValueFromIdByParameterName(id,
+            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Mission/communities/{communityName}/communityEndpoints/{communityEndpointName}",
+            "communityEndpointName", "communityEndpoints", LOGGER);
         return this.getWithResponse(resourceGroupName, communityName, communityEndpointName, context);
     }
 
     public void deleteById(String id) {
-        String resourceGroupName = ResourceManagerUtils.getValueFromIdByName(id, "resourceGroups");
-        if (resourceGroupName == null) {
-            throw LOGGER.logExceptionAsError(new IllegalArgumentException(
-                String.format("The resource ID '%s' is not valid. Missing path segment 'resourceGroups'.", id)));
-        }
-        String communityName = ResourceManagerUtils.getValueFromIdByName(id, "communities");
-        if (communityName == null) {
-            throw LOGGER.logExceptionAsError(new IllegalArgumentException(
-                String.format("The resource ID '%s' is not valid. Missing path segment 'communities'.", id)));
-        }
-        String communityEndpointName = ResourceManagerUtils.getValueFromIdByName(id, "communityEndpoints");
-        if (communityEndpointName == null) {
-            throw LOGGER.logExceptionAsError(new IllegalArgumentException(
-                String.format("The resource ID '%s' is not valid. Missing path segment 'communityEndpoints'.", id)));
-        }
-        this.delete(resourceGroupName, communityName, communityEndpointName, Context.NONE);
+        this.deleteByIdWithResponse(id, Context.NONE);
     }
 
     public void deleteByIdWithResponse(String id, Context context) {
-        String resourceGroupName = ResourceManagerUtils.getValueFromIdByName(id, "resourceGroups");
-        if (resourceGroupName == null) {
-            throw LOGGER.logExceptionAsError(new IllegalArgumentException(
-                String.format("The resource ID '%s' is not valid. Missing path segment 'resourceGroups'.", id)));
-        }
-        String communityName = ResourceManagerUtils.getValueFromIdByName(id, "communities");
-        if (communityName == null) {
-            throw LOGGER.logExceptionAsError(new IllegalArgumentException(
-                String.format("The resource ID '%s' is not valid. Missing path segment 'communities'.", id)));
-        }
-        String communityEndpointName = ResourceManagerUtils.getValueFromIdByName(id, "communityEndpoints");
-        if (communityEndpointName == null) {
-            throw LOGGER.logExceptionAsError(new IllegalArgumentException(
-                String.format("The resource ID '%s' is not valid. Missing path segment 'communityEndpoints'.", id)));
-        }
+        String resourceGroupName = ResourceManagerUtils.getRequiredValueFromIdByParameterName(id,
+            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Mission/communities/{communityName}/communityEndpoints/{communityEndpointName}",
+            "resourceGroupName", "resourceGroups", LOGGER);
+        String communityName = ResourceManagerUtils.getRequiredValueFromIdByParameterName(id,
+            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Mission/communities/{communityName}/communityEndpoints/{communityEndpointName}",
+            "communityName", "communities", LOGGER);
+        String communityEndpointName = ResourceManagerUtils.getRequiredValueFromIdByParameterName(id,
+            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Mission/communities/{communityName}/communityEndpoints/{communityEndpointName}",
+            "communityEndpointName", "communityEndpoints", LOGGER);
         this.delete(resourceGroupName, communityName, communityEndpointName, context);
     }
 

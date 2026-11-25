@@ -15,7 +15,7 @@
 //      - One for primary resource, one for secondary resource
 //   4. Model deployments (Microsoft.CognitiveServices/accounts/deployments)
 //      - Deployed via test-resources-post.ps1 script after resource creation
-//      - Creates deployments for: gpt-4.1, gpt-4.1-mini, text-embedding-3-large
+//      - Creates deployments for: gpt-5.2, text-embedding-3-large
 //
 // Environment Variables Generated (outputs):
 //   Primary Resource:
@@ -30,10 +30,13 @@
 //     - CONTENTUNDERSTANDING_TARGET_RESOURCE_ID: Secondary Foundry resource ID
 //     - CONTENTUNDERSTANDING_TARGET_REGION: Secondary resource region
 //
-//   Model Deployment Names:
-//     - GPT_4_1_DEPLOYMENT: Deployment name for gpt-4.1 model
-//     - GPT_4_1_MINI_DEPLOYMENT: Deployment name for gpt-4.1-mini model
-//     - TEXT_EMBEDDING_3_LARGE_DEPLOYMENT: Deployment name for text-embedding-3-large model
+//   Model and Deployment Settings:
+//     - CU_COMPLETION_MODEL: Logical completion model name
+//     - CU_COMPLETION_MODEL_MINI: Logical mini completion model name
+//     - CU_EMBEDDING_MODEL: Logical embedding model name
+//     - CU_COMPLETION_MODEL_DEPLOYMENT: Completion deployment name
+//     - CU_COMPLETION_MINI_DEPLOYMENT: Mini completion deployment name
+//     - CU_EMBEDDING_DEPLOYMENT: Embedding deployment name
 //
 // Authentication:
 //   - Uses DefaultAzureCredential (no API keys needed)
@@ -113,7 +116,7 @@ resource targetRoleAssignment 'Microsoft.Authorization/roleAssignments@2022-04-0
 // Deployments can take 5-15 minutes to complete.
 
 // Outputs - these become environment variables for tests
-// Variable names match what ContentUnderstandingClientTestEnvironment expects
+// Variable names match the Content Understanding test configuration
 // Note: We use DefaultAzureCredential for authentication, so API keys are not needed
 // Role assignments grant the test application/service principal access via the 'Cognitive Services User' role
 // Construct endpoint from variable (endpoint format: https://{customSubDomainName}.services.ai.azure.com/)
@@ -131,9 +134,11 @@ output CONTENTUNDERSTANDING_TARGET_ENDPOINT string = 'https://${toLower(targetFo
 output CONTENTUNDERSTANDING_TARGET_RESOURCE_ID string = targetFoundry.id
 output CONTENTUNDERSTANDING_TARGET_REGION string = location
 
-// Model deployment outputs - deployment names for tests
-// These match what ContentUnderstandingClientTestEnvironment expects
-output GPT_4_1_DEPLOYMENT string = 'gpt-4.1'
-output GPT_4_1_MINI_DEPLOYMENT string = 'gpt-4.1-mini'
-output TEXT_EMBEDDING_3_LARGE_DEPLOYMENT string = 'text-embedding-3-large'
+// Model and deployment outputs used by ContentUnderstandingLiveTestSetup and ContentUnderstandingModelProfile
+output CU_COMPLETION_MODEL string = 'gpt-5.2'
+output CU_COMPLETION_MODEL_MINI string = 'gpt-5.2'
+output CU_EMBEDDING_MODEL string = 'text-embedding-3-large'
+output CU_COMPLETION_MODEL_DEPLOYMENT string = 'gpt-5.2'
+output CU_COMPLETION_MINI_DEPLOYMENT string = 'gpt-5.2'
+output CU_EMBEDDING_DEPLOYMENT string = 'text-embedding-3-large'
 

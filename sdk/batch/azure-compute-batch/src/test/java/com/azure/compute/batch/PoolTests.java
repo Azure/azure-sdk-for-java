@@ -114,7 +114,7 @@ public class PoolTests extends BatchClientTestBase {
             pool.getVirtualMachineConfiguration().getDataDisks().get(0).getDiskSizeGb());
         // DELETE
         try {
-            SyncPoller<BatchPool, Void> deletePoller = setPlaybackSyncPollerPollInterval(
+            SyncPoller<BatchPool, BatchPool> deletePoller = setPlaybackSyncPollerPollInterval(
                 SyncAsyncExtension.execute(() -> batchClient.beginDeletePool(poolId),
                     () -> Mono.fromCallable(() -> batchAsyncClient.beginDeletePool(poolId).getSyncPoller())));
 
@@ -274,7 +274,7 @@ public class PoolTests extends BatchClientTestBase {
         Assertions.assertEquals(1, (long) resizedPool.getTargetLowPriorityNodes());
 
         // DELETE using LRO
-        SyncPoller<BatchPool, Void> poller
+        SyncPoller<BatchPool, BatchPool> poller
             = setPlaybackSyncPollerPollInterval(SyncAsyncExtension.execute(() -> batchClient.beginDeletePool(poolId),
                 () -> Mono.fromCallable(() -> batchAsyncClient.beginDeletePool(poolId).getSyncPoller())));
 
@@ -297,9 +297,11 @@ public class PoolTests extends BatchClientTestBase {
 
         Assertions.assertEquals(404, httpErrorRes.getResponse().getStatusCode());
 
-        // Final result should be null after successful deletion
+        // Final result should expose the last observed pool state (the DELETING snapshot) after deletion
         PollResponse<BatchPool> finalResponse = poller.poll();
-        Assertions.assertNull(finalResponse.getValue(), "Expected final result to be null after successful deletion");
+        Assertions.assertNotNull(finalResponse.getValue(),
+            "Expected final result to expose the last observed pool state after deletion");
+        Assertions.assertEquals(poolId, finalResponse.getValue().getId());
     }
 
     @Test
@@ -394,7 +396,7 @@ public class PoolTests extends BatchClientTestBase {
             disk.getManagedDisk().getSecurityProfile().getSecurityEncryptionType());
         // DELETE
         try {
-            SyncPoller<BatchPool, Void> deletePoller = setPlaybackSyncPollerPollInterval(
+            SyncPoller<BatchPool, BatchPool> deletePoller = setPlaybackSyncPollerPollInterval(
                 SyncAsyncExtension.execute(() -> batchClient.beginDeletePool(poolId),
                     () -> Mono.fromCallable(() -> batchAsyncClient.beginDeletePool(poolId).getSyncPoller())));
 
@@ -460,8 +462,7 @@ public class PoolTests extends BatchClientTestBase {
             = new BatchNodeDeallocateParameters().setNodeDeallocateOption(BatchNodeDeallocateOption.TERMINATE);
 
         BatchNodeDeallocateOptions deallocateOptions
-            = new BatchNodeDeallocateOptions().setTimeOutInSeconds(Duration.ofSeconds(30))
-                .setParameters(deallocateParams);
+            = new BatchNodeDeallocateOptions().setTimeout(Duration.ofSeconds(30)).setParameters(deallocateParams);
 
         SyncPoller<BatchNode, BatchNode> deallocatePoller = setPlaybackSyncPollerPollInterval(SyncAsyncExtension
             .execute(() -> batchClient.beginDeallocateNode(poolId, nodeId, deallocateOptions), () -> Mono.fromCallable(
@@ -513,7 +514,7 @@ public class PoolTests extends BatchClientTestBase {
 
         // DELETE
         try {
-            SyncPoller<BatchPool, Void> deletePoller = setPlaybackSyncPollerPollInterval(
+            SyncPoller<BatchPool, BatchPool> deletePoller = setPlaybackSyncPollerPollInterval(
                 SyncAsyncExtension.execute(() -> batchClient.beginDeletePool(poolId),
                     () -> Mono.fromCallable(() -> batchAsyncClient.beginDeletePool(poolId).getSyncPoller())));
 
@@ -525,7 +526,7 @@ public class PoolTests extends BatchClientTestBase {
     }
 
     @SyncAsyncTest
-    public void canRebootReimageRemoveNodesAndStopResize() throws Exception {
+    public void canRebootRemoveNodesAndStopResize() throws Exception {
         String modeSuffix = SyncAsyncExtension.execute(() -> "sync", () -> Mono.just("async"));
         String poolId = getStringIdWithUserNamePrefix("-nodeOpsPool" + modeSuffix);
 
@@ -584,36 +585,6 @@ public class PoolTests extends BatchClientTestBase {
         rebootPoller.waitForCompletion();
         BatchNode rebootedNode = rebootPoller.getFinalResult();
         Assertions.assertNotNull(rebootedNode, "Final result of beginRebootNode should not be null");
-
-        // Reimage node
-        SyncPoller<BatchNode, BatchNode> reimagePoller = setPlaybackSyncPollerPollInterval(
-            SyncAsyncExtension.execute(() -> batchClient.beginReimageNode(poolId, nodeIdB),
-                () -> Mono.fromCallable(() -> batchAsyncClient.beginReimageNode(poolId, nodeIdB).getSyncPoller())));
-
-        // First poll – should still be re-imaging OR may already have finished
-        PollResponse<BatchNode> reimageFirst = reimagePoller.poll();
-        BatchNode nodeDuringReimage = reimageFirst.getValue();
-
-        if (reimageFirst.getStatus() == LongRunningOperationStatus.IN_PROGRESS) {
-            // Only possible when state is REIMAGING
-            Assertions.assertNotNull(nodeDuringReimage);
-            Assertions.assertEquals(BatchNodeState.REIMAGING, nodeDuringReimage.getState(),
-                "When IN_PROGRESS the node must be REIMAGING");
-        } else {
-            // Operation finished in a single poll
-            Assertions.assertEquals(LongRunningOperationStatus.SUCCESSFULLY_COMPLETED, reimageFirst.getStatus());
-            Assertions.assertNotNull(nodeDuringReimage);
-            Assertions.assertNotEquals(BatchNodeState.REIMAGING, nodeDuringReimage.getState(),
-                "Node should have left REIMAGING when operation already completed");
-        }
-
-        // Wait until the OS has been re-applied and the node is usable
-        reimagePoller.waitForCompletion();
-        BatchNode reimagedNode = reimagePoller.getFinalResult();
-        Assertions.assertNotNull(reimagedNode, "Final result of beginReimageNode should not be null");
-
-        Assertions.assertNotEquals(BatchNodeState.REIMAGING, reimagedNode.getState(),
-            "Node should have left the REIMAGING state once the operation completes");
 
         // Shrink pool by one node
         BatchNodeRemoveParameters removeParams = new BatchNodeRemoveParameters(Collections.singletonList(nodeIdB))
@@ -691,7 +662,7 @@ public class PoolTests extends BatchClientTestBase {
 
         // Clean-up
         try {
-            SyncPoller<BatchPool, Void> deletePoller = setPlaybackSyncPollerPollInterval(
+            SyncPoller<BatchPool, BatchPool> deletePoller = setPlaybackSyncPollerPollInterval(
                 SyncAsyncExtension.execute(() -> batchClient.beginDeletePool(poolId),
                     () -> Mono.fromCallable(() -> batchAsyncClient.beginDeletePool(poolId).getSyncPoller())));
             deletePoller.waitForCompletion();

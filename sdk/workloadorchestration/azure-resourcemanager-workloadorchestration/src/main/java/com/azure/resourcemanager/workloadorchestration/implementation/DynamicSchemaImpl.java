@@ -64,10 +64,7 @@ public final class DynamicSchemaImpl implements DynamicSchema, DynamicSchema.Def
     }
 
     public DynamicSchema create() {
-        this.innerObject = serviceManager.serviceClient()
-            .getDynamicSchemas()
-            .createOrUpdate(resourceGroupName, schemaName, dynamicSchemaName, this.innerModel(), Context.NONE);
-        return this;
+        return this.create(Context.NONE);
     }
 
     public DynamicSchema create(Context context) {
@@ -89,11 +86,7 @@ public final class DynamicSchemaImpl implements DynamicSchema, DynamicSchema.Def
     }
 
     public DynamicSchema apply() {
-        this.innerObject = serviceManager.serviceClient()
-            .getDynamicSchemas()
-            .updateWithResponse(resourceGroupName, schemaName, dynamicSchemaName, this.innerModel(), Context.NONE)
-            .getValue();
-        return this;
+        return this.apply(Context.NONE);
     }
 
     public DynamicSchema apply(Context context) {
@@ -108,17 +101,19 @@ public final class DynamicSchemaImpl implements DynamicSchema, DynamicSchema.Def
         com.azure.resourcemanager.workloadorchestration.WorkloadOrchestrationManager serviceManager) {
         this.innerObject = innerObject;
         this.serviceManager = serviceManager;
-        this.resourceGroupName = ResourceManagerUtils.getValueFromIdByName(innerObject.id(), "resourceGroups");
-        this.schemaName = ResourceManagerUtils.getValueFromIdByName(innerObject.id(), "schemas");
-        this.dynamicSchemaName = ResourceManagerUtils.getValueFromIdByName(innerObject.id(), "dynamicSchemas");
+        this.resourceGroupName = ResourceManagerUtils.getValueFromIdByParameterName(innerObject.id(),
+            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Edge/schemas/{schemaName}/dynamicSchemas/{dynamicSchemaName}",
+            "resourceGroupName");
+        this.schemaName = ResourceManagerUtils.getValueFromIdByParameterName(innerObject.id(),
+            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Edge/schemas/{schemaName}/dynamicSchemas/{dynamicSchemaName}",
+            "schemaName");
+        this.dynamicSchemaName = ResourceManagerUtils.getValueFromIdByParameterName(innerObject.id(),
+            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Edge/schemas/{schemaName}/dynamicSchemas/{dynamicSchemaName}",
+            "dynamicSchemaName");
     }
 
     public DynamicSchema refresh() {
-        this.innerObject = serviceManager.serviceClient()
-            .getDynamicSchemas()
-            .getWithResponse(resourceGroupName, schemaName, dynamicSchemaName, Context.NONE)
-            .getValue();
-        return this;
+        return this.refresh(Context.NONE);
     }
 
     public DynamicSchema refresh(Context context) {

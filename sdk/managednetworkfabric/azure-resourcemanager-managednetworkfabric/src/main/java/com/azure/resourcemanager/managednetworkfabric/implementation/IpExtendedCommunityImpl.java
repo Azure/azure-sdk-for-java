@@ -119,10 +119,7 @@ public final class IpExtendedCommunityImpl
     }
 
     public IpExtendedCommunity create() {
-        this.innerObject = serviceManager.serviceClient()
-            .getIpExtendedCommunities()
-            .create(resourceGroupName, ipExtendedCommunityName, this.innerModel(), Context.NONE);
-        return this;
+        return this.create(Context.NONE);
     }
 
     public IpExtendedCommunity create(Context context) {
@@ -145,10 +142,7 @@ public final class IpExtendedCommunityImpl
     }
 
     public IpExtendedCommunity apply() {
-        this.innerObject = serviceManager.serviceClient()
-            .getIpExtendedCommunities()
-            .update(resourceGroupName, ipExtendedCommunityName, updateBody, Context.NONE);
-        return this;
+        return this.apply(Context.NONE);
     }
 
     public IpExtendedCommunity apply(Context context) {
@@ -162,17 +156,16 @@ public final class IpExtendedCommunityImpl
         com.azure.resourcemanager.managednetworkfabric.ManagedNetworkFabricManager serviceManager) {
         this.innerObject = innerObject;
         this.serviceManager = serviceManager;
-        this.resourceGroupName = ResourceManagerUtils.getValueFromIdByName(innerObject.id(), "resourceGroups");
-        this.ipExtendedCommunityName
-            = ResourceManagerUtils.getValueFromIdByName(innerObject.id(), "ipExtendedCommunities");
+        this.resourceGroupName = ResourceManagerUtils.getValueFromIdByParameterName(innerObject.id(),
+            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.ManagedNetworkFabric/ipExtendedCommunities/{ipExtendedCommunityName}",
+            "resourceGroupName");
+        this.ipExtendedCommunityName = ResourceManagerUtils.getValueFromIdByParameterName(innerObject.id(),
+            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.ManagedNetworkFabric/ipExtendedCommunities/{ipExtendedCommunityName}",
+            "ipExtendedCommunityName");
     }
 
     public IpExtendedCommunity refresh() {
-        this.innerObject = serviceManager.serviceClient()
-            .getIpExtendedCommunities()
-            .getByResourceGroupWithResponse(resourceGroupName, ipExtendedCommunityName, Context.NONE)
-            .getValue();
-        return this;
+        return this.refresh(Context.NONE);
     }
 
     public IpExtendedCommunity refresh(Context context) {

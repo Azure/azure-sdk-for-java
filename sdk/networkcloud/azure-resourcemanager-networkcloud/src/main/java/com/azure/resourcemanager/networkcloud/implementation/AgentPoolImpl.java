@@ -180,11 +180,7 @@ public final class AgentPoolImpl implements AgentPool, AgentPool.Definition, Age
     }
 
     public AgentPool create() {
-        this.innerObject = serviceManager.serviceClient()
-            .getAgentPools()
-            .createOrUpdate(resourceGroupName, kubernetesClusterName, agentPoolName, this.innerModel(), createIfMatch,
-                createIfNoneMatch, Context.NONE);
-        return this;
+        return this.create(Context.NONE);
     }
 
     public AgentPool create(Context context) {
@@ -211,11 +207,7 @@ public final class AgentPoolImpl implements AgentPool, AgentPool.Definition, Age
     }
 
     public AgentPool apply() {
-        this.innerObject = serviceManager.serviceClient()
-            .getAgentPools()
-            .update(resourceGroupName, kubernetesClusterName, agentPoolName, updateIfMatch, updateIfNoneMatch,
-                updateAgentPoolUpdateParameters, Context.NONE);
-        return this;
+        return this.apply(Context.NONE);
     }
 
     public AgentPool apply(Context context) {
@@ -230,17 +222,19 @@ public final class AgentPoolImpl implements AgentPool, AgentPool.Definition, Age
         com.azure.resourcemanager.networkcloud.NetworkCloudManager serviceManager) {
         this.innerObject = innerObject;
         this.serviceManager = serviceManager;
-        this.resourceGroupName = ResourceManagerUtils.getValueFromIdByName(innerObject.id(), "resourceGroups");
-        this.kubernetesClusterName = ResourceManagerUtils.getValueFromIdByName(innerObject.id(), "kubernetesClusters");
-        this.agentPoolName = ResourceManagerUtils.getValueFromIdByName(innerObject.id(), "agentPools");
+        this.resourceGroupName = ResourceManagerUtils.getValueFromIdByParameterName(innerObject.id(),
+            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.NetworkCloud/kubernetesClusters/{kubernetesClusterName}/agentPools/{agentPoolName}",
+            "resourceGroupName");
+        this.kubernetesClusterName = ResourceManagerUtils.getValueFromIdByParameterName(innerObject.id(),
+            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.NetworkCloud/kubernetesClusters/{kubernetesClusterName}/agentPools/{agentPoolName}",
+            "kubernetesClusterName");
+        this.agentPoolName = ResourceManagerUtils.getValueFromIdByParameterName(innerObject.id(),
+            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.NetworkCloud/kubernetesClusters/{kubernetesClusterName}/agentPools/{agentPoolName}",
+            "agentPoolName");
     }
 
     public AgentPool refresh() {
-        this.innerObject = serviceManager.serviceClient()
-            .getAgentPools()
-            .getWithResponse(resourceGroupName, kubernetesClusterName, agentPoolName, Context.NONE)
-            .getValue();
-        return this;
+        return this.refresh(Context.NONE);
     }
 
     public AgentPool refresh(Context context) {

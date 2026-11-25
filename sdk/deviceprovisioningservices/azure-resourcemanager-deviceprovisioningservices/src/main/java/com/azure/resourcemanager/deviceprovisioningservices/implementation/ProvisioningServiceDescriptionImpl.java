@@ -109,10 +109,7 @@ public final class ProvisioningServiceDescriptionImpl implements ProvisioningSer
     }
 
     public ProvisioningServiceDescription create() {
-        this.innerObject = serviceManager.serviceClient()
-            .getIotDpsResources()
-            .createOrUpdate(resourceGroupName, provisioningServiceName, this.innerModel(), Context.NONE);
-        return this;
+        return this.create(Context.NONE);
     }
 
     public ProvisioningServiceDescription create(Context context) {
@@ -135,10 +132,7 @@ public final class ProvisioningServiceDescriptionImpl implements ProvisioningSer
     }
 
     public ProvisioningServiceDescription apply() {
-        this.innerObject = serviceManager.serviceClient()
-            .getIotDpsResources()
-            .update(resourceGroupName, provisioningServiceName, updateProvisioningServiceTags, Context.NONE);
-        return this;
+        return this.apply(Context.NONE);
     }
 
     public ProvisioningServiceDescription apply(Context context) {
@@ -152,23 +146,22 @@ public final class ProvisioningServiceDescriptionImpl implements ProvisioningSer
         com.azure.resourcemanager.deviceprovisioningservices.IotDpsManager serviceManager) {
         this.innerObject = innerObject;
         this.serviceManager = serviceManager;
-        this.resourceGroupName = ResourceManagerUtils.getValueFromIdByName(innerObject.id(), "resourceGroups");
-        this.provisioningServiceName
-            = ResourceManagerUtils.getValueFromIdByName(innerObject.id(), "provisioningServices");
+        this.resourceGroupName = ResourceManagerUtils.getValueFromIdByParameterName(innerObject.id(),
+            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Devices/provisioningServices/{provisioningServiceName}",
+            "resourceGroupName");
+        this.provisioningServiceName = ResourceManagerUtils.getValueFromIdByParameterName(innerObject.id(),
+            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Devices/provisioningServices/{provisioningServiceName}",
+            "provisioningServiceName");
     }
 
     public ProvisioningServiceDescription refresh() {
-        this.innerObject = serviceManager.serviceClient()
-            .getIotDpsResources()
-            .getByResourceGroupWithResponse(provisioningServiceName, resourceGroupName, Context.NONE)
-            .getValue();
-        return this;
+        return this.refresh(Context.NONE);
     }
 
     public ProvisioningServiceDescription refresh(Context context) {
         this.innerObject = serviceManager.serviceClient()
             .getIotDpsResources()
-            .getByResourceGroupWithResponse(provisioningServiceName, resourceGroupName, context)
+            .getByResourceGroupWithResponse(resourceGroupName, provisioningServiceName, context)
             .getValue();
         return this;
     }

@@ -112,18 +112,7 @@ public final class SecretsClientImpl implements SecretsClient {
             @HostParam("endpoint") String endpoint, @HeaderParam("Accept") String accept, Context context);
     }
 
-    /**
-     * Gets the specified secret. NOTE: This API is intended for internal use in ARM deployments. Users should use the
-     * data-plane REST service for interaction with vault secrets.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param vaultName The name of the vault.
-     * @param secretName The name of the secret.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the specified secret along with {@link Response} on successful completion of {@link Mono}.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Response<SecretInner>> getWithResponseAsync(String resourceGroupName, String vaultName,
         String secretName) {
@@ -192,74 +181,27 @@ public final class SecretsClientImpl implements SecretsClient {
             resourceGroupName, vaultName, secretName, accept, context);
     }
 
-    /**
-     * Gets the specified secret. NOTE: This API is intended for internal use in ARM deployments. Users should use the
-     * data-plane REST service for interaction with vault secrets.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param vaultName The name of the vault.
-     * @param secretName The name of the secret.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the specified secret on successful completion of {@link Mono}.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<SecretInner> getAsync(String resourceGroupName, String vaultName, String secretName) {
         return getWithResponseAsync(resourceGroupName, vaultName, secretName)
             .flatMap(res -> Mono.justOrEmpty(res.getValue()));
     }
 
-    /**
-     * Gets the specified secret. NOTE: This API is intended for internal use in ARM deployments. Users should use the
-     * data-plane REST service for interaction with vault secrets.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param vaultName The name of the vault.
-     * @param secretName The name of the secret.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the specified secret along with {@link Response}.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Response<SecretInner> getWithResponse(String resourceGroupName, String vaultName, String secretName,
         Context context) {
         return getWithResponseAsync(resourceGroupName, vaultName, secretName, context).block();
     }
 
-    /**
-     * Gets the specified secret. NOTE: This API is intended for internal use in ARM deployments. Users should use the
-     * data-plane REST service for interaction with vault secrets.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param vaultName The name of the vault.
-     * @param secretName The name of the secret.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the specified secret.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public SecretInner get(String resourceGroupName, String vaultName, String secretName) {
         return getWithResponse(resourceGroupName, vaultName, secretName, Context.NONE).getValue();
     }
 
-    /**
-     * Create or update a secret in a key vault in the specified subscription. NOTE: This API is intended for internal
-     * use in ARM deployments. Users should use the data-plane REST service for interaction with vault secrets.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param vaultName The name of the vault.
-     * @param secretName The name of the secret.
-     * @param parameters Parameters to create or update the secret.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return resource information with extended details along with {@link Response} on successful completion of
-     * {@link Mono}.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Response<SecretInner>> createOrUpdateWithResponseAsync(String resourceGroupName, String vaultName,
         String secretName, SecretCreateOrUpdateParameters parameters) {
@@ -344,19 +286,7 @@ public final class SecretsClientImpl implements SecretsClient {
             context);
     }
 
-    /**
-     * Create or update a secret in a key vault in the specified subscription. NOTE: This API is intended for internal
-     * use in ARM deployments. Users should use the data-plane REST service for interaction with vault secrets.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param vaultName The name of the vault.
-     * @param secretName The name of the secret.
-     * @param parameters Parameters to create or update the secret.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return resource information with extended details on successful completion of {@link Mono}.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<SecretInner> createOrUpdateAsync(String resourceGroupName, String vaultName, String secretName,
         SecretCreateOrUpdateParameters parameters) {
@@ -364,39 +294,14 @@ public final class SecretsClientImpl implements SecretsClient {
             .flatMap(res -> Mono.justOrEmpty(res.getValue()));
     }
 
-    /**
-     * Create or update a secret in a key vault in the specified subscription. NOTE: This API is intended for internal
-     * use in ARM deployments. Users should use the data-plane REST service for interaction with vault secrets.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param vaultName The name of the vault.
-     * @param secretName The name of the secret.
-     * @param parameters Parameters to create or update the secret.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return resource information with extended details along with {@link Response}.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Response<SecretInner> createOrUpdateWithResponse(String resourceGroupName, String vaultName,
         String secretName, SecretCreateOrUpdateParameters parameters, Context context) {
         return createOrUpdateWithResponseAsync(resourceGroupName, vaultName, secretName, parameters, context).block();
     }
 
-    /**
-     * Create or update a secret in a key vault in the specified subscription. NOTE: This API is intended for internal
-     * use in ARM deployments. Users should use the data-plane REST service for interaction with vault secrets.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param vaultName The name of the vault.
-     * @param secretName The name of the secret.
-     * @param parameters Parameters to create or update the secret.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return resource information with extended details.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public SecretInner createOrUpdate(String resourceGroupName, String vaultName, String secretName,
         SecretCreateOrUpdateParameters parameters) {
@@ -404,20 +309,7 @@ public final class SecretsClientImpl implements SecretsClient {
             .getValue();
     }
 
-    /**
-     * Update a secret in the specified subscription. NOTE: This API is intended for internal use in ARM deployments.
-     * Users should use the data-plane REST service for interaction with vault secrets.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param vaultName The name of the vault.
-     * @param secretName The name of the secret.
-     * @param parameters Parameters to patch the secret.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return resource information with extended details along with {@link Response} on successful completion of
-     * {@link Mono}.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Response<SecretInner>> updateWithResponseAsync(String resourceGroupName, String vaultName,
         String secretName, SecretPatchParameters parameters) {
@@ -501,19 +393,7 @@ public final class SecretsClientImpl implements SecretsClient {
             resourceGroupName, vaultName, secretName, contentType, accept, parameters, context);
     }
 
-    /**
-     * Update a secret in the specified subscription. NOTE: This API is intended for internal use in ARM deployments.
-     * Users should use the data-plane REST service for interaction with vault secrets.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param vaultName The name of the vault.
-     * @param secretName The name of the secret.
-     * @param parameters Parameters to patch the secret.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return resource information with extended details on successful completion of {@link Mono}.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<SecretInner> updateAsync(String resourceGroupName, String vaultName, String secretName,
         SecretPatchParameters parameters) {
@@ -521,39 +401,14 @@ public final class SecretsClientImpl implements SecretsClient {
             .flatMap(res -> Mono.justOrEmpty(res.getValue()));
     }
 
-    /**
-     * Update a secret in the specified subscription. NOTE: This API is intended for internal use in ARM deployments.
-     * Users should use the data-plane REST service for interaction with vault secrets.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param vaultName The name of the vault.
-     * @param secretName The name of the secret.
-     * @param parameters Parameters to patch the secret.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return resource information with extended details along with {@link Response}.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Response<SecretInner> updateWithResponse(String resourceGroupName, String vaultName, String secretName,
         SecretPatchParameters parameters, Context context) {
         return updateWithResponseAsync(resourceGroupName, vaultName, secretName, parameters, context).block();
     }
 
-    /**
-     * Update a secret in the specified subscription. NOTE: This API is intended for internal use in ARM deployments.
-     * Users should use the data-plane REST service for interaction with vault secrets.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param vaultName The name of the vault.
-     * @param secretName The name of the secret.
-     * @param parameters Parameters to patch the secret.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return resource information with extended details.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public SecretInner update(String resourceGroupName, String vaultName, String secretName,
         SecretPatchParameters parameters) {
@@ -641,35 +496,14 @@ public final class SecretsClientImpl implements SecretsClient {
                 res.getValue().value(), res.getValue().nextLink(), null));
     }
 
-    /**
-     * The List operation gets information about the secrets in a vault. NOTE: This API is intended for internal use in
-     * ARM deployments. Users should use the data-plane REST service for interaction with vault secrets.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param vaultName The name of the vault.
-     * @param top Maximum number of results to return.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the response of a Secret list operation as paginated response with {@link PagedFlux}.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.COLLECTION)
     public PagedFlux<SecretInner> listAsync(String resourceGroupName, String vaultName, Integer top) {
         return new PagedFlux<>(() -> listSinglePageAsync(resourceGroupName, vaultName, top),
             nextLink -> listNextSinglePageAsync(nextLink));
     }
 
-    /**
-     * The List operation gets information about the secrets in a vault. NOTE: This API is intended for internal use in
-     * ARM deployments. Users should use the data-plane REST service for interaction with vault secrets.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param vaultName The name of the vault.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the response of a Secret list operation as paginated response with {@link PagedFlux}.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.COLLECTION)
     public PagedFlux<SecretInner> listAsync(String resourceGroupName, String vaultName) {
         final Integer top = null;
@@ -696,36 +530,14 @@ public final class SecretsClientImpl implements SecretsClient {
             nextLink -> listNextSinglePageAsync(nextLink, context));
     }
 
-    /**
-     * The List operation gets information about the secrets in a vault. NOTE: This API is intended for internal use in
-     * ARM deployments. Users should use the data-plane REST service for interaction with vault secrets.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param vaultName The name of the vault.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the response of a Secret list operation as paginated response with {@link PagedIterable}.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.COLLECTION)
     public PagedIterable<SecretInner> list(String resourceGroupName, String vaultName) {
         final Integer top = null;
         return new PagedIterable<>(listAsync(resourceGroupName, vaultName, top));
     }
 
-    /**
-     * The List operation gets information about the secrets in a vault. NOTE: This API is intended for internal use in
-     * ARM deployments. Users should use the data-plane REST service for interaction with vault secrets.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param vaultName The name of the vault.
-     * @param top Maximum number of results to return.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the response of a Secret list operation as paginated response with {@link PagedIterable}.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.COLLECTION)
     public PagedIterable<SecretInner> list(String resourceGroupName, String vaultName, Integer top, Context context) {
         return new PagedIterable<>(listAsync(resourceGroupName, vaultName, top, context));

@@ -21,7 +21,7 @@ public final class TargetsGetWithResponseMockTests {
     @Test
     public void testGetWithResponse() throws Exception {
         String responseStr
-            = "{\"properties\":{\"rogtuwkf\":\"\\\"dataurbuhhlkyqltq\\\"\",\"sysidfvclglxnf\":\"\\\"datadjk\\\"\",\"usqogsfikayia\":\"\\\"dataijtk\\\"\",\"qxfzyjqttvwk\":\"\\\"datasharujtj\\\"\"},\"location\":\"hjpenuygbq\",\"id\":\"qekewvnqvcd\",\"name\":\"guaucmfdjwnla\",\"type\":\"punj\"}";
+            = "{\"properties\":{\"wkojpllndnpd\":\"\\\"datahs\\\"\",\"fugsnnfhyetefy\":\"\\\"datarpqaf\\\"\"},\"location\":\"coc\",\"id\":\"jgtixr\",\"name\":\"vzuyturmlmu\",\"type\":\"wolba\"}";
 
         HttpClient httpClient
             = response -> Mono.just(new MockHttpResponse(response, 200, responseStr.getBytes(StandardCharsets.UTF_8)));
@@ -31,9 +31,10 @@ public final class TargetsGetWithResponseMockTests {
                 new AzureProfile("", "", AzureCloud.AZURE_PUBLIC_CLOUD));
 
         Target response = manager.targets()
-            .getWithResponse("bnfxofvc", "k", "dirazf", "xejw", "bmdujtmvcopexc", com.azure.core.util.Context.NONE)
+            .getWithResponse("mfqhppubowse", "dfgkmtdh", "rngbtcjuahokqtob", "auxofshfph", "pnulaiywzej",
+                com.azure.core.util.Context.NONE)
             .getValue();
 
-        Assertions.assertEquals("hjpenuygbq", response.location());
+        Assertions.assertEquals("coc", response.location());
     }
 }

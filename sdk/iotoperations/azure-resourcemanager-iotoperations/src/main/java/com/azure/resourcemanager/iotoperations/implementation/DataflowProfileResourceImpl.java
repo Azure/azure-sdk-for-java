@@ -66,10 +66,7 @@ public final class DataflowProfileResourceImpl
     }
 
     public DataflowProfileResource create() {
-        this.innerObject = serviceManager.serviceClient()
-            .getDataflowProfiles()
-            .createOrUpdate(resourceGroupName, instanceName, dataflowProfileName, this.innerModel(), Context.NONE);
-        return this;
+        return this.create(Context.NONE);
     }
 
     public DataflowProfileResource create(Context context) {
@@ -91,10 +88,7 @@ public final class DataflowProfileResourceImpl
     }
 
     public DataflowProfileResource apply() {
-        this.innerObject = serviceManager.serviceClient()
-            .getDataflowProfiles()
-            .createOrUpdate(resourceGroupName, instanceName, dataflowProfileName, this.innerModel(), Context.NONE);
-        return this;
+        return this.apply(Context.NONE);
     }
 
     public DataflowProfileResource apply(Context context) {
@@ -108,17 +102,19 @@ public final class DataflowProfileResourceImpl
         com.azure.resourcemanager.iotoperations.IoTOperationsManager serviceManager) {
         this.innerObject = innerObject;
         this.serviceManager = serviceManager;
-        this.resourceGroupName = ResourceManagerUtils.getValueFromIdByName(innerObject.id(), "resourceGroups");
-        this.instanceName = ResourceManagerUtils.getValueFromIdByName(innerObject.id(), "instances");
-        this.dataflowProfileName = ResourceManagerUtils.getValueFromIdByName(innerObject.id(), "dataflowProfiles");
+        this.resourceGroupName = ResourceManagerUtils.getValueFromIdByParameterName(innerObject.id(),
+            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.IoTOperations/instances/{instanceName}/dataflowProfiles/{dataflowProfileName}",
+            "resourceGroupName");
+        this.instanceName = ResourceManagerUtils.getValueFromIdByParameterName(innerObject.id(),
+            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.IoTOperations/instances/{instanceName}/dataflowProfiles/{dataflowProfileName}",
+            "instanceName");
+        this.dataflowProfileName = ResourceManagerUtils.getValueFromIdByParameterName(innerObject.id(),
+            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.IoTOperations/instances/{instanceName}/dataflowProfiles/{dataflowProfileName}",
+            "dataflowProfileName");
     }
 
     public DataflowProfileResource refresh() {
-        this.innerObject = serviceManager.serviceClient()
-            .getDataflowProfiles()
-            .getWithResponse(resourceGroupName, instanceName, dataflowProfileName, Context.NONE)
-            .getValue();
-        return this;
+        return this.refresh(Context.NONE);
     }
 
     public DataflowProfileResource refresh(Context context) {

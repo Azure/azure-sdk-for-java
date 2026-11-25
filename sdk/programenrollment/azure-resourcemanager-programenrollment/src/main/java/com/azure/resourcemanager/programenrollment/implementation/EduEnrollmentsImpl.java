@@ -45,7 +45,7 @@ public final class EduEnrollmentsImpl implements EduEnrollments {
     }
 
     public void deleteByResourceGroup(String resourceGroupName, String enrollmentName) {
-        this.serviceClient().delete(resourceGroupName, enrollmentName);
+        this.delete(resourceGroupName, enrollmentName, Context.NONE);
     }
 
     public void delete(String resourceGroupName, String enrollmentName, Context context) {
@@ -53,8 +53,7 @@ public final class EduEnrollmentsImpl implements EduEnrollments {
     }
 
     public PagedIterable<EduEnrollment> listByResourceGroup(String resourceGroupName) {
-        PagedIterable<EduEnrollmentInner> inner = this.serviceClient().listByResourceGroup(resourceGroupName);
-        return ResourceManagerUtils.mapPage(inner, inner1 -> new EduEnrollmentImpl(inner1, this.manager()));
+        return this.listByResourceGroup(resourceGroupName, Context.NONE);
     }
 
     public PagedIterable<EduEnrollment> listByResourceGroup(String resourceGroupName, Context context) {
@@ -63,8 +62,7 @@ public final class EduEnrollmentsImpl implements EduEnrollments {
     }
 
     public PagedIterable<EduEnrollment> list() {
-        PagedIterable<EduEnrollmentInner> inner = this.serviceClient().list();
-        return ResourceManagerUtils.mapPage(inner, inner1 -> new EduEnrollmentImpl(inner1, this.manager()));
+        return this.list(Context.NONE);
     }
 
     public PagedIterable<EduEnrollment> list(Context context) {
@@ -73,58 +71,30 @@ public final class EduEnrollmentsImpl implements EduEnrollments {
     }
 
     public EduEnrollment getById(String id) {
-        String resourceGroupName = ResourceManagerUtils.getValueFromIdByName(id, "resourceGroups");
-        if (resourceGroupName == null) {
-            throw LOGGER.logExceptionAsError(new IllegalArgumentException(
-                String.format("The resource ID '%s' is not valid. Missing path segment 'resourceGroups'.", id)));
-        }
-        String enrollmentName = ResourceManagerUtils.getValueFromIdByName(id, "eduEnrollments");
-        if (enrollmentName == null) {
-            throw LOGGER.logExceptionAsError(new IllegalArgumentException(
-                String.format("The resource ID '%s' is not valid. Missing path segment 'eduEnrollments'.", id)));
-        }
-        return this.getByResourceGroupWithResponse(resourceGroupName, enrollmentName, Context.NONE).getValue();
+        return this.getByIdWithResponse(id, Context.NONE).getValue();
     }
 
     public Response<EduEnrollment> getByIdWithResponse(String id, Context context) {
-        String resourceGroupName = ResourceManagerUtils.getValueFromIdByName(id, "resourceGroups");
-        if (resourceGroupName == null) {
-            throw LOGGER.logExceptionAsError(new IllegalArgumentException(
-                String.format("The resource ID '%s' is not valid. Missing path segment 'resourceGroups'.", id)));
-        }
-        String enrollmentName = ResourceManagerUtils.getValueFromIdByName(id, "eduEnrollments");
-        if (enrollmentName == null) {
-            throw LOGGER.logExceptionAsError(new IllegalArgumentException(
-                String.format("The resource ID '%s' is not valid. Missing path segment 'eduEnrollments'.", id)));
-        }
+        String resourceGroupName = ResourceManagerUtils.getRequiredValueFromIdByParameterName(id,
+            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.ProgramEnrollment/eduEnrollments/{enrollmentName}",
+            "resourceGroupName", "resourceGroups", LOGGER);
+        String enrollmentName = ResourceManagerUtils.getRequiredValueFromIdByParameterName(id,
+            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.ProgramEnrollment/eduEnrollments/{enrollmentName}",
+            "enrollmentName", "eduEnrollments", LOGGER);
         return this.getByResourceGroupWithResponse(resourceGroupName, enrollmentName, context);
     }
 
     public void deleteById(String id) {
-        String resourceGroupName = ResourceManagerUtils.getValueFromIdByName(id, "resourceGroups");
-        if (resourceGroupName == null) {
-            throw LOGGER.logExceptionAsError(new IllegalArgumentException(
-                String.format("The resource ID '%s' is not valid. Missing path segment 'resourceGroups'.", id)));
-        }
-        String enrollmentName = ResourceManagerUtils.getValueFromIdByName(id, "eduEnrollments");
-        if (enrollmentName == null) {
-            throw LOGGER.logExceptionAsError(new IllegalArgumentException(
-                String.format("The resource ID '%s' is not valid. Missing path segment 'eduEnrollments'.", id)));
-        }
-        this.delete(resourceGroupName, enrollmentName, Context.NONE);
+        this.deleteByIdWithResponse(id, Context.NONE);
     }
 
     public void deleteByIdWithResponse(String id, Context context) {
-        String resourceGroupName = ResourceManagerUtils.getValueFromIdByName(id, "resourceGroups");
-        if (resourceGroupName == null) {
-            throw LOGGER.logExceptionAsError(new IllegalArgumentException(
-                String.format("The resource ID '%s' is not valid. Missing path segment 'resourceGroups'.", id)));
-        }
-        String enrollmentName = ResourceManagerUtils.getValueFromIdByName(id, "eduEnrollments");
-        if (enrollmentName == null) {
-            throw LOGGER.logExceptionAsError(new IllegalArgumentException(
-                String.format("The resource ID '%s' is not valid. Missing path segment 'eduEnrollments'.", id)));
-        }
+        String resourceGroupName = ResourceManagerUtils.getRequiredValueFromIdByParameterName(id,
+            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.ProgramEnrollment/eduEnrollments/{enrollmentName}",
+            "resourceGroupName", "resourceGroups", LOGGER);
+        String enrollmentName = ResourceManagerUtils.getRequiredValueFromIdByParameterName(id,
+            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.ProgramEnrollment/eduEnrollments/{enrollmentName}",
+            "enrollmentName", "eduEnrollments", LOGGER);
         this.delete(resourceGroupName, enrollmentName, context);
     }
 

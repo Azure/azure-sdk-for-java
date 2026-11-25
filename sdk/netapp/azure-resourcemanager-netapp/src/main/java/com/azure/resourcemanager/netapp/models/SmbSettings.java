@@ -22,14 +22,19 @@ public final class SmbSettings implements JsonSerializable<SmbSettings> {
     private SmbEncryptionState smbEncryption;
 
     /*
-     * Enables access-based enumeration share property for SMB Shares. Only applicable for SMB/DualProtocol volume
+     * Enables access-based enumeration share property for SMB Shares. Only applicable for SMB/DualProtocol cache
      */
     private SmbAccessBasedEnumeration smbAccessBasedEnumeration;
 
     /*
-     * Enables non-browsable property for SMB Shares. Only applicable for SMB/DualProtocol volume
+     * Enables non-browsable property for SMB Shares. Only applicable for SMB/DualProtocol cache
      */
     private SmbNonBrowsable smbNonBrowsable;
+
+    /*
+     * Enables or disables SMB opportunistic lock property for SMB Shares. Only applicable for SMB/DualProtocol cache
+     */
+    private SmbOplocks smbOplocks;
 
     /**
      * Creates an instance of SmbSettings class.
@@ -61,7 +66,7 @@ public final class SmbSettings implements JsonSerializable<SmbSettings> {
 
     /**
      * Get the smbAccessBasedEnumeration property: Enables access-based enumeration share property for SMB Shares. Only
-     * applicable for SMB/DualProtocol volume.
+     * applicable for SMB/DualProtocol cache.
      * 
      * @return the smbAccessBasedEnumeration value.
      */
@@ -71,7 +76,7 @@ public final class SmbSettings implements JsonSerializable<SmbSettings> {
 
     /**
      * Set the smbAccessBasedEnumeration property: Enables access-based enumeration share property for SMB Shares. Only
-     * applicable for SMB/DualProtocol volume.
+     * applicable for SMB/DualProtocol cache.
      * 
      * @param smbAccessBasedEnumeration the smbAccessBasedEnumeration value to set.
      * @return the SmbSettings object itself.
@@ -83,7 +88,7 @@ public final class SmbSettings implements JsonSerializable<SmbSettings> {
 
     /**
      * Get the smbNonBrowsable property: Enables non-browsable property for SMB Shares. Only applicable for
-     * SMB/DualProtocol volume.
+     * SMB/DualProtocol cache.
      * 
      * @return the smbNonBrowsable value.
      */
@@ -93,13 +98,35 @@ public final class SmbSettings implements JsonSerializable<SmbSettings> {
 
     /**
      * Set the smbNonBrowsable property: Enables non-browsable property for SMB Shares. Only applicable for
-     * SMB/DualProtocol volume.
+     * SMB/DualProtocol cache.
      * 
      * @param smbNonBrowsable the smbNonBrowsable value to set.
      * @return the SmbSettings object itself.
      */
     public SmbSettings withSmbNonBrowsable(SmbNonBrowsable smbNonBrowsable) {
         this.smbNonBrowsable = smbNonBrowsable;
+        return this;
+    }
+
+    /**
+     * Get the smbOplocks property: Enables or disables SMB opportunistic lock property for SMB Shares. Only applicable
+     * for SMB/DualProtocol cache.
+     * 
+     * @return the smbOplocks value.
+     */
+    public SmbOplocks smbOplocks() {
+        return this.smbOplocks;
+    }
+
+    /**
+     * Set the smbOplocks property: Enables or disables SMB opportunistic lock property for SMB Shares. Only applicable
+     * for SMB/DualProtocol cache.
+     * 
+     * @param smbOplocks the smbOplocks value to set.
+     * @return the SmbSettings object itself.
+     */
+    public SmbSettings withSmbOplocks(SmbOplocks smbOplocks) {
+        this.smbOplocks = smbOplocks;
         return this;
     }
 
@@ -122,6 +149,7 @@ public final class SmbSettings implements JsonSerializable<SmbSettings> {
             this.smbAccessBasedEnumeration == null ? null : this.smbAccessBasedEnumeration.toString());
         jsonWriter.writeStringField("smbNonBrowsable",
             this.smbNonBrowsable == null ? null : this.smbNonBrowsable.toString());
+        jsonWriter.writeStringField("smbOplocks", this.smbOplocks == null ? null : this.smbOplocks.toString());
         return jsonWriter.writeEndObject();
     }
 
@@ -147,6 +175,8 @@ public final class SmbSettings implements JsonSerializable<SmbSettings> {
                         = SmbAccessBasedEnumeration.fromString(reader.getString());
                 } else if ("smbNonBrowsable".equals(fieldName)) {
                     deserializedSmbSettings.smbNonBrowsable = SmbNonBrowsable.fromString(reader.getString());
+                } else if ("smbOplocks".equals(fieldName)) {
+                    deserializedSmbSettings.smbOplocks = SmbOplocks.fromString(reader.getString());
                 } else {
                     reader.skipChildren();
                 }

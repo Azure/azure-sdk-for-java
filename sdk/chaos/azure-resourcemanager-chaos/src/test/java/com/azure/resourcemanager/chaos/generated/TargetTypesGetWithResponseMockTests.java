@@ -20,7 +20,7 @@ public final class TargetTypesGetWithResponseMockTests {
     @Test
     public void testGetWithResponse() throws Exception {
         String responseStr
-            = "{\"properties\":{\"displayName\":\"sgftipwc\",\"description\":\"yubhiqdx\",\"propertiesSchema\":\"rnpnuhzafccnuh\",\"resourceTypes\":[\"byl\",\"ui\"]},\"id\":\"xvatvcr\",\"name\":\"dlbnbqxvhcsy\",\"type\":\"zlwxaeaovur\"}";
+            = "{\"properties\":{\"displayName\":\"kyojwyvfk\",\"description\":\"tsu\",\"propertiesSchema\":\"xsgxjcmmzrrs\",\"resourceTypes\":[\"i\",\"sd\"]},\"id\":\"pxqwo\",\"name\":\"iffjxcjrm\",\"type\":\"uabwibvjogjo\"}";
 
         HttpClient httpClient
             = response -> Mono.just(new MockHttpResponse(response, 200, responseStr.getBytes(StandardCharsets.UTF_8)));
@@ -30,7 +30,7 @@ public final class TargetTypesGetWithResponseMockTests {
                 new AzureProfile("", "", AzureCloud.AZURE_PUBLIC_CLOUD));
 
         TargetType response = manager.targetTypes()
-            .getWithResponse("bbcccgz", "raoxnyuff", com.azure.core.util.Context.NONE)
+            .getWithResponse("hntasfaymx", "ulpzealb", com.azure.core.util.Context.NONE)
             .getValue();
 
     }

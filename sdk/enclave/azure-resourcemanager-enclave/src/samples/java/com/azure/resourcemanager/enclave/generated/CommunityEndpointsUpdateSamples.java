@@ -19,7 +19,7 @@ import java.util.Map;
  */
 public final class CommunityEndpointsUpdateSamples {
     /*
-     * x-ms-original-file: 2026-03-01-preview/CommunityEndpoints_Update.json
+     * x-ms-original-file: 2026-04-01/CommunityEndpoints_Update.json
      */
     /**
      * Sample code: CommunityEndpoints_Update.

@@ -45,7 +45,7 @@ public final class SupercomputersImpl implements Supercomputers {
     }
 
     public void deleteByResourceGroup(String resourceGroupName, String supercomputerName) {
-        this.serviceClient().delete(resourceGroupName, supercomputerName);
+        this.delete(resourceGroupName, supercomputerName, Context.NONE);
     }
 
     public void delete(String resourceGroupName, String supercomputerName, Context context) {
@@ -53,8 +53,7 @@ public final class SupercomputersImpl implements Supercomputers {
     }
 
     public PagedIterable<Supercomputer> listByResourceGroup(String resourceGroupName) {
-        PagedIterable<SupercomputerInner> inner = this.serviceClient().listByResourceGroup(resourceGroupName);
-        return ResourceManagerUtils.mapPage(inner, inner1 -> new SupercomputerImpl(inner1, this.manager()));
+        return this.listByResourceGroup(resourceGroupName, Context.NONE);
     }
 
     public PagedIterable<Supercomputer> listByResourceGroup(String resourceGroupName, Context context) {
@@ -63,8 +62,7 @@ public final class SupercomputersImpl implements Supercomputers {
     }
 
     public PagedIterable<Supercomputer> list() {
-        PagedIterable<SupercomputerInner> inner = this.serviceClient().list();
-        return ResourceManagerUtils.mapPage(inner, inner1 -> new SupercomputerImpl(inner1, this.manager()));
+        return this.list(Context.NONE);
     }
 
     public PagedIterable<Supercomputer> list(Context context) {
@@ -73,58 +71,30 @@ public final class SupercomputersImpl implements Supercomputers {
     }
 
     public Supercomputer getById(String id) {
-        String resourceGroupName = ResourceManagerUtils.getValueFromIdByName(id, "resourceGroups");
-        if (resourceGroupName == null) {
-            throw LOGGER.logExceptionAsError(new IllegalArgumentException(
-                String.format("The resource ID '%s' is not valid. Missing path segment 'resourceGroups'.", id)));
-        }
-        String supercomputerName = ResourceManagerUtils.getValueFromIdByName(id, "supercomputers");
-        if (supercomputerName == null) {
-            throw LOGGER.logExceptionAsError(new IllegalArgumentException(
-                String.format("The resource ID '%s' is not valid. Missing path segment 'supercomputers'.", id)));
-        }
-        return this.getByResourceGroupWithResponse(resourceGroupName, supercomputerName, Context.NONE).getValue();
+        return this.getByIdWithResponse(id, Context.NONE).getValue();
     }
 
     public Response<Supercomputer> getByIdWithResponse(String id, Context context) {
-        String resourceGroupName = ResourceManagerUtils.getValueFromIdByName(id, "resourceGroups");
-        if (resourceGroupName == null) {
-            throw LOGGER.logExceptionAsError(new IllegalArgumentException(
-                String.format("The resource ID '%s' is not valid. Missing path segment 'resourceGroups'.", id)));
-        }
-        String supercomputerName = ResourceManagerUtils.getValueFromIdByName(id, "supercomputers");
-        if (supercomputerName == null) {
-            throw LOGGER.logExceptionAsError(new IllegalArgumentException(
-                String.format("The resource ID '%s' is not valid. Missing path segment 'supercomputers'.", id)));
-        }
+        String resourceGroupName = ResourceManagerUtils.getRequiredValueFromIdByParameterName(id,
+            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Discovery/supercomputers/{supercomputerName}",
+            "resourceGroupName", "resourceGroups", LOGGER);
+        String supercomputerName = ResourceManagerUtils.getRequiredValueFromIdByParameterName(id,
+            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Discovery/supercomputers/{supercomputerName}",
+            "supercomputerName", "supercomputers", LOGGER);
         return this.getByResourceGroupWithResponse(resourceGroupName, supercomputerName, context);
     }
 
     public void deleteById(String id) {
-        String resourceGroupName = ResourceManagerUtils.getValueFromIdByName(id, "resourceGroups");
-        if (resourceGroupName == null) {
-            throw LOGGER.logExceptionAsError(new IllegalArgumentException(
-                String.format("The resource ID '%s' is not valid. Missing path segment 'resourceGroups'.", id)));
-        }
-        String supercomputerName = ResourceManagerUtils.getValueFromIdByName(id, "supercomputers");
-        if (supercomputerName == null) {
-            throw LOGGER.logExceptionAsError(new IllegalArgumentException(
-                String.format("The resource ID '%s' is not valid. Missing path segment 'supercomputers'.", id)));
-        }
-        this.delete(resourceGroupName, supercomputerName, Context.NONE);
+        this.deleteByIdWithResponse(id, Context.NONE);
     }
 
     public void deleteByIdWithResponse(String id, Context context) {
-        String resourceGroupName = ResourceManagerUtils.getValueFromIdByName(id, "resourceGroups");
-        if (resourceGroupName == null) {
-            throw LOGGER.logExceptionAsError(new IllegalArgumentException(
-                String.format("The resource ID '%s' is not valid. Missing path segment 'resourceGroups'.", id)));
-        }
-        String supercomputerName = ResourceManagerUtils.getValueFromIdByName(id, "supercomputers");
-        if (supercomputerName == null) {
-            throw LOGGER.logExceptionAsError(new IllegalArgumentException(
-                String.format("The resource ID '%s' is not valid. Missing path segment 'supercomputers'.", id)));
-        }
+        String resourceGroupName = ResourceManagerUtils.getRequiredValueFromIdByParameterName(id,
+            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Discovery/supercomputers/{supercomputerName}",
+            "resourceGroupName", "resourceGroups", LOGGER);
+        String supercomputerName = ResourceManagerUtils.getRequiredValueFromIdByParameterName(id,
+            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Discovery/supercomputers/{supercomputerName}",
+            "supercomputerName", "supercomputers", LOGGER);
         this.delete(resourceGroupName, supercomputerName, context);
     }
 

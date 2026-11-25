@@ -8,7 +8,6 @@ import com.azure.core.management.Region;
 import com.azure.core.management.SystemData;
 import com.azure.core.util.Context;
 import com.azure.resourcemanager.edgeactions.fluent.models.EdgeActionVersionInner;
-import com.azure.resourcemanager.edgeactions.fluent.models.EdgeActionVersionPropertiesInner;
 import com.azure.resourcemanager.edgeactions.fluent.models.VersionCodeInner;
 import com.azure.resourcemanager.edgeactions.models.EdgeActionVersion;
 import com.azure.resourcemanager.edgeactions.models.EdgeActionVersionProperties;
@@ -50,12 +49,7 @@ public final class EdgeActionVersionImpl
     }
 
     public EdgeActionVersionProperties properties() {
-        EdgeActionVersionPropertiesInner inner = this.innerModel().properties();
-        if (inner != null) {
-            return new EdgeActionVersionPropertiesImpl(inner, this.manager());
-        } else {
-            return null;
-        }
+        return this.innerModel().properties();
     }
 
     public SystemData systemData() {
@@ -97,10 +91,7 @@ public final class EdgeActionVersionImpl
     }
 
     public EdgeActionVersion create() {
-        this.innerObject = serviceManager.serviceClient()
-            .getEdgeActionVersions()
-            .create(resourceGroupName, edgeActionName, version, this.innerModel(), Context.NONE);
-        return this;
+        return this.create(Context.NONE);
     }
 
     public EdgeActionVersion create(Context context) {
@@ -122,10 +113,7 @@ public final class EdgeActionVersionImpl
     }
 
     public EdgeActionVersion apply() {
-        this.innerObject = serviceManager.serviceClient()
-            .getEdgeActionVersions()
-            .update(resourceGroupName, edgeActionName, version, updateProperties, Context.NONE);
-        return this;
+        return this.apply(Context.NONE);
     }
 
     public EdgeActionVersion apply(Context context) {
@@ -139,17 +127,19 @@ public final class EdgeActionVersionImpl
         com.azure.resourcemanager.edgeactions.EdgeActionsManager serviceManager) {
         this.innerObject = innerObject;
         this.serviceManager = serviceManager;
-        this.resourceGroupName = ResourceManagerUtils.getValueFromIdByName(innerObject.id(), "resourceGroups");
-        this.edgeActionName = ResourceManagerUtils.getValueFromIdByName(innerObject.id(), "edgeActions");
-        this.version = ResourceManagerUtils.getValueFromIdByName(innerObject.id(), "versions");
+        this.resourceGroupName = ResourceManagerUtils.getValueFromIdByParameterName(innerObject.id(),
+            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Cdn/edgeActions/{edgeActionName}/versions/{version}",
+            "resourceGroupName");
+        this.edgeActionName = ResourceManagerUtils.getValueFromIdByParameterName(innerObject.id(),
+            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Cdn/edgeActions/{edgeActionName}/versions/{version}",
+            "edgeActionName");
+        this.version = ResourceManagerUtils.getValueFromIdByParameterName(innerObject.id(),
+            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Cdn/edgeActions/{edgeActionName}/versions/{version}",
+            "version");
     }
 
     public EdgeActionVersion refresh() {
-        this.innerObject = serviceManager.serviceClient()
-            .getEdgeActionVersions()
-            .getWithResponse(resourceGroupName, edgeActionName, version, Context.NONE)
-            .getValue();
-        return this;
+        return this.refresh(Context.NONE);
     }
 
     public EdgeActionVersion refresh(Context context) {
@@ -160,11 +150,11 @@ public final class EdgeActionVersionImpl
         return this;
     }
 
-    public EdgeActionVersionProperties deployVersionCode(VersionCodeInner body) {
+    public EdgeActionVersion deployVersionCode(VersionCodeInner body) {
         return serviceManager.edgeActionVersions().deployVersionCode(resourceGroupName, edgeActionName, version, body);
     }
 
-    public EdgeActionVersionProperties deployVersionCode(VersionCodeInner body, Context context) {
+    public EdgeActionVersion deployVersionCode(VersionCodeInner body, Context context) {
         return serviceManager.edgeActionVersions()
             .deployVersionCode(resourceGroupName, edgeActionName, version, body, context);
     }
@@ -205,7 +195,7 @@ public final class EdgeActionVersionImpl
         }
     }
 
-    public EdgeActionVersionImpl withProperties(EdgeActionVersionPropertiesInner properties) {
+    public EdgeActionVersionImpl withProperties(EdgeActionVersionProperties properties) {
         this.innerModel().withProperties(properties);
         return this;
     }

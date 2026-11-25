@@ -70,16 +70,7 @@ public final class FirewallPolicyDeploymentsClientImpl implements FirewallPolicy
             @PathParam("firewallPolicyName") String firewallPolicyName, Context context);
     }
 
-    /**
-     * Deploys the firewall policy draft and child rule collection group drafts.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param firewallPolicyName The name of the Firewall Policy.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the {@link Response} on successful completion of {@link Mono}.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Response<Flux<ByteBuffer>>> deployWithResponseAsync(String resourceGroupName,
         String firewallPolicyName) {
@@ -99,7 +90,7 @@ public final class FirewallPolicyDeploymentsClientImpl implements FirewallPolicy
             return Mono
                 .error(new IllegalArgumentException("Parameter firewallPolicyName is required and cannot be null."));
         }
-        final String apiVersion = "2025-07-01";
+        final String apiVersion = "2026-05-01";
         return FluxUtil
             .withContext(context -> service.deploy(this.client.getEndpoint(), apiVersion,
                 this.client.getSubscriptionId(), resourceGroupName, firewallPolicyName, context))
@@ -136,22 +127,13 @@ public final class FirewallPolicyDeploymentsClientImpl implements FirewallPolicy
             return Mono
                 .error(new IllegalArgumentException("Parameter firewallPolicyName is required and cannot be null."));
         }
-        final String apiVersion = "2025-07-01";
+        final String apiVersion = "2026-05-01";
         context = this.client.mergeContext(context);
         return service.deploy(this.client.getEndpoint(), apiVersion, this.client.getSubscriptionId(), resourceGroupName,
             firewallPolicyName, context);
     }
 
-    /**
-     * Deploys the firewall policy draft and child rule collection group drafts.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param firewallPolicyName The name of the Firewall Policy.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the {@link PollerFlux} for polling of long-running operation.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public PollerFlux<PollResult<Void>, Void> beginDeployAsync(String resourceGroupName, String firewallPolicyName) {
         Mono<Response<Flux<ByteBuffer>>> mono = deployWithResponseAsync(resourceGroupName, firewallPolicyName);
@@ -179,48 +161,20 @@ public final class FirewallPolicyDeploymentsClientImpl implements FirewallPolicy
             context);
     }
 
-    /**
-     * Deploys the firewall policy draft and child rule collection group drafts.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param firewallPolicyName The name of the Firewall Policy.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the {@link SyncPoller} for polling of long-running operation.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public SyncPoller<PollResult<Void>, Void> beginDeploy(String resourceGroupName, String firewallPolicyName) {
         return this.beginDeployAsync(resourceGroupName, firewallPolicyName).getSyncPoller();
     }
 
-    /**
-     * Deploys the firewall policy draft and child rule collection group drafts.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param firewallPolicyName The name of the Firewall Policy.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the {@link SyncPoller} for polling of long-running operation.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public SyncPoller<PollResult<Void>, Void> beginDeploy(String resourceGroupName, String firewallPolicyName,
         Context context) {
         return this.beginDeployAsync(resourceGroupName, firewallPolicyName, context).getSyncPoller();
     }
 
-    /**
-     * Deploys the firewall policy draft and child rule collection group drafts.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param firewallPolicyName The name of the Firewall Policy.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return A {@link Mono} that completes when a successful response is received.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Void> deployAsync(String resourceGroupName, String firewallPolicyName) {
         return beginDeployAsync(resourceGroupName, firewallPolicyName).last()
@@ -244,30 +198,13 @@ public final class FirewallPolicyDeploymentsClientImpl implements FirewallPolicy
             .flatMap(this.client::getLroFinalResultOrError);
     }
 
-    /**
-     * Deploys the firewall policy draft and child rule collection group drafts.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param firewallPolicyName The name of the Firewall Policy.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public void deploy(String resourceGroupName, String firewallPolicyName) {
         deployAsync(resourceGroupName, firewallPolicyName).block();
     }
 
-    /**
-     * Deploys the firewall policy draft and child rule collection group drafts.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param firewallPolicyName The name of the Firewall Policy.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public void deploy(String resourceGroupName, String firewallPolicyName, Context context) {
         deployAsync(resourceGroupName, firewallPolicyName, context).block();

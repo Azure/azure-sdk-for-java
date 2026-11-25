@@ -9,7 +9,7 @@ package com.azure.resourcemanager.search.generated;
  */
 public final class UsagesListBySubscriptionSamples {
     /*
-     * x-ms-original-file: 2026-03-01-preview/GetQuotaUsagesList.json
+     * x-ms-original-file: 2026-11-01/GetQuotaUsagesList.json
      */
     /**
      * Sample code: GetQuotaUsagesList.

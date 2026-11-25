@@ -91,18 +91,7 @@ public final class DefaultSecurityRulesClientImpl implements DefaultSecurityRule
             @HostParam("endpoint") String endpoint, @HeaderParam("Accept") String accept, Context context);
     }
 
-    /**
-     * Get the specified default network security rule.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param networkSecurityGroupName The name of the network security group.
-     * @param defaultSecurityRuleName The name of the default security rule.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the specified default network security rule along with {@link Response} on successful completion of
-     * {@link Mono}.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Response<SecurityRuleInner>> getWithResponseAsync(String resourceGroupName,
         String networkSecurityGroupName, String defaultSecurityRuleName) {
@@ -126,7 +115,7 @@ public final class DefaultSecurityRulesClientImpl implements DefaultSecurityRule
             return Mono.error(
                 new IllegalArgumentException("Parameter defaultSecurityRuleName is required and cannot be null."));
         }
-        final String apiVersion = "2025-07-01";
+        final String apiVersion = "2026-05-01";
         final String accept = "application/json";
         return FluxUtil
             .withContext(context -> service.get(this.client.getEndpoint(), apiVersion, this.client.getSubscriptionId(),
@@ -170,24 +159,14 @@ public final class DefaultSecurityRulesClientImpl implements DefaultSecurityRule
             return Mono.error(
                 new IllegalArgumentException("Parameter defaultSecurityRuleName is required and cannot be null."));
         }
-        final String apiVersion = "2025-07-01";
+        final String apiVersion = "2026-05-01";
         final String accept = "application/json";
         context = this.client.mergeContext(context);
         return service.get(this.client.getEndpoint(), apiVersion, this.client.getSubscriptionId(), resourceGroupName,
             networkSecurityGroupName, defaultSecurityRuleName, accept, context);
     }
 
-    /**
-     * Get the specified default network security rule.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param networkSecurityGroupName The name of the network security group.
-     * @param defaultSecurityRuleName The name of the default security rule.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the specified default network security rule on successful completion of {@link Mono}.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<SecurityRuleInner> getAsync(String resourceGroupName, String networkSecurityGroupName,
         String defaultSecurityRuleName) {
@@ -195,18 +174,7 @@ public final class DefaultSecurityRulesClientImpl implements DefaultSecurityRule
             .flatMap(res -> Mono.justOrEmpty(res.getValue()));
     }
 
-    /**
-     * Get the specified default network security rule.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param networkSecurityGroupName The name of the network security group.
-     * @param defaultSecurityRuleName The name of the default security rule.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the specified default network security rule along with {@link Response}.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Response<SecurityRuleInner> getWithResponse(String resourceGroupName, String networkSecurityGroupName,
         String defaultSecurityRuleName, Context context) {
@@ -214,17 +182,7 @@ public final class DefaultSecurityRulesClientImpl implements DefaultSecurityRule
             .block();
     }
 
-    /**
-     * Get the specified default network security rule.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param networkSecurityGroupName The name of the network security group.
-     * @param defaultSecurityRuleName The name of the default security rule.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the specified default network security rule.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public SecurityRuleInner get(String resourceGroupName, String networkSecurityGroupName,
         String defaultSecurityRuleName) {
@@ -262,7 +220,7 @@ public final class DefaultSecurityRulesClientImpl implements DefaultSecurityRule
             return Mono.error(
                 new IllegalArgumentException("Parameter networkSecurityGroupName is required and cannot be null."));
         }
-        final String apiVersion = "2025-07-01";
+        final String apiVersion = "2026-05-01";
         final String accept = "application/json";
         return FluxUtil
             .withContext(context -> service.list(this.client.getEndpoint(), apiVersion, this.client.getSubscriptionId(),
@@ -303,7 +261,7 @@ public final class DefaultSecurityRulesClientImpl implements DefaultSecurityRule
             return Mono.error(
                 new IllegalArgumentException("Parameter networkSecurityGroupName is required and cannot be null."));
         }
-        final String apiVersion = "2025-07-01";
+        final String apiVersion = "2026-05-01";
         final String accept = "application/json";
         context = this.client.mergeContext(context);
         return service
@@ -313,16 +271,7 @@ public final class DefaultSecurityRulesClientImpl implements DefaultSecurityRule
                 res.getValue().value(), res.getValue().nextLink(), null));
     }
 
-    /**
-     * Gets all default security rules in a network security group.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param networkSecurityGroupName The name of the network security group.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return all default security rules in a network security group as paginated response with {@link PagedFlux}.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.COLLECTION)
     public PagedFlux<SecurityRuleInner> listAsync(String resourceGroupName, String networkSecurityGroupName) {
         return new PagedFlux<>(() -> listSinglePageAsync(resourceGroupName, networkSecurityGroupName),
@@ -347,32 +296,13 @@ public final class DefaultSecurityRulesClientImpl implements DefaultSecurityRule
             nextLink -> listNextSinglePageAsync(nextLink, context));
     }
 
-    /**
-     * Gets all default security rules in a network security group.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param networkSecurityGroupName The name of the network security group.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return all default security rules in a network security group as paginated response with {@link PagedIterable}.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.COLLECTION)
     public PagedIterable<SecurityRuleInner> list(String resourceGroupName, String networkSecurityGroupName) {
         return new PagedIterable<>(listAsync(resourceGroupName, networkSecurityGroupName));
     }
 
-    /**
-     * Gets all default security rules in a network security group.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param networkSecurityGroupName The name of the network security group.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return all default security rules in a network security group as paginated response with {@link PagedIterable}.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.COLLECTION)
     public PagedIterable<SecurityRuleInner> list(String resourceGroupName, String networkSecurityGroupName,
         Context context) {

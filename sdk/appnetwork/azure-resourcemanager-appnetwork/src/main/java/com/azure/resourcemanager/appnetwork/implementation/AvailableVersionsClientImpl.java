@@ -98,7 +98,7 @@ public final class AvailableVersionsClientImpl implements AvailableVersionsClien
     }
 
     /**
-     * List AvailableVersion resources by location.
+     * List the Azure Kubernetes Application Network versions available in a location.
      * 
      * @param location The name of the Azure region.
      * @param kubernetesVersion Kubernetes version to filter profiles.
@@ -121,7 +121,7 @@ public final class AvailableVersionsClientImpl implements AvailableVersionsClien
     }
 
     /**
-     * List AvailableVersion resources by location.
+     * List the Azure Kubernetes Application Network versions available in a location.
      * 
      * @param location The name of the Azure region.
      * @param kubernetesVersion Kubernetes version to filter profiles.
@@ -137,7 +137,7 @@ public final class AvailableVersionsClientImpl implements AvailableVersionsClien
     }
 
     /**
-     * List AvailableVersion resources by location.
+     * List the Azure Kubernetes Application Network versions available in a location.
      * 
      * @param location The name of the Azure region.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -153,7 +153,7 @@ public final class AvailableVersionsClientImpl implements AvailableVersionsClien
     }
 
     /**
-     * List AvailableVersion resources by location.
+     * List the Azure Kubernetes Application Network versions available in a location.
      * 
      * @param location The name of the Azure region.
      * @param kubernetesVersion Kubernetes version to filter profiles.
@@ -164,16 +164,11 @@ public final class AvailableVersionsClientImpl implements AvailableVersionsClien
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private PagedResponse<AvailableVersionInner> listByLocationSinglePage(String location, String kubernetesVersion) {
-        final String accept = "application/json";
-        Response<AvailableVersionListResult> res
-            = service.listByLocationSync(this.client.getEndpoint(), this.client.getApiVersion(),
-                this.client.getSubscriptionId(), location, kubernetesVersion, accept, Context.NONE);
-        return new PagedResponseBase<>(res.getRequest(), res.getStatusCode(), res.getHeaders(), res.getValue().value(),
-            res.getValue().nextLink(), null);
+        return listByLocationSinglePage(location, kubernetesVersion, Context.NONE);
     }
 
     /**
-     * List AvailableVersion resources by location.
+     * List the Azure Kubernetes Application Network versions available in a location.
      * 
      * @param location The name of the Azure region.
      * @param kubernetesVersion Kubernetes version to filter profiles.
@@ -193,33 +188,14 @@ public final class AvailableVersionsClientImpl implements AvailableVersionsClien
             res.getValue().nextLink(), null);
     }
 
-    /**
-     * List AvailableVersion resources by location.
-     * 
-     * @param location The name of the Azure region.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the response of a AvailableVersion list operation as paginated response with {@link PagedIterable}.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.COLLECTION)
     public PagedIterable<AvailableVersionInner> listByLocation(String location) {
         final String kubernetesVersion = null;
-        return new PagedIterable<>(() -> listByLocationSinglePage(location, kubernetesVersion),
-            nextLink -> listByLocationNextSinglePage(nextLink));
+        return listByLocation(location, kubernetesVersion, Context.NONE);
     }
 
-    /**
-     * List AvailableVersion resources by location.
-     * 
-     * @param location The name of the Azure region.
-     * @param kubernetesVersion Kubernetes version to filter profiles.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the response of a AvailableVersion list operation as paginated response with {@link PagedIterable}.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.COLLECTION)
     public PagedIterable<AvailableVersionInner> listByLocation(String location, String kubernetesVersion,
         Context context) {
@@ -258,11 +234,7 @@ public final class AvailableVersionsClientImpl implements AvailableVersionsClien
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private PagedResponse<AvailableVersionInner> listByLocationNextSinglePage(String nextLink) {
-        final String accept = "application/json";
-        Response<AvailableVersionListResult> res
-            = service.listByLocationNextSync(nextLink, this.client.getEndpoint(), accept, Context.NONE);
-        return new PagedResponseBase<>(res.getRequest(), res.getStatusCode(), res.getHeaders(), res.getValue().value(),
-            res.getValue().nextLink(), null);
+        return listByLocationNextSinglePage(nextLink, Context.NONE);
     }
 
     /**

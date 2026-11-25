@@ -21,7 +21,7 @@ import reactor.core.publisher.Mono;
 public final class EdgeDevicesValidateMockTests {
     @Test
     public void testValidate() throws Exception {
-        String responseStr = "{\"status\":\"jilzfbpntogke\"}";
+        String responseStr = "{\"status\":\"yrqvelrmd\"}";
 
         HttpClient httpClient
             = response -> Mono.just(new MockHttpResponse(response, 200, responseStr.getBytes(StandardCharsets.UTF_8)));
@@ -31,9 +31,9 @@ public final class EdgeDevicesValidateMockTests {
                 new AzureProfile("", "", AzureCloud.AZURE_PUBLIC_CLOUD));
 
         ValidateResponse response = manager.edgeDevices()
-            .validate("dibfmthi", "at",
-                new ValidateRequest().withEdgeDeviceIds(Arrays.asList("jrnm", "nzqplgtkihonikzs"))
-                    .withAdditionalInfo("f"),
+            .validate("ivxdifbwblijhp", "ukxgoyxontbwdq",
+                new ValidateRequest().withEdgeDeviceIds(Arrays.asList("rosuqrrldxfuae"))
+                    .withAdditionalInfo("wxatktwjrppi"),
                 com.azure.core.util.Context.NONE);
 
     }

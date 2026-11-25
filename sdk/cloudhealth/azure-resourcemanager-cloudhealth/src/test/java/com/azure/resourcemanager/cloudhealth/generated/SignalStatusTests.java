@@ -12,8 +12,8 @@ public final class SignalStatusTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
         SignalStatus model = BinaryData.fromString(
-            "{\"healthState\":\"Healthy\",\"value\":85.72325317752029,\"reportedAt\":\"2021-08-12T09:54:47Z\",\"error\":\"amvdkfwynwcvtbv\",\"additionalContext\":\"yhmtnvyqiat\"}")
+            "{\"healthState\":\"Degraded\",\"value\":8.115316899565684,\"reportedAt\":\"2021-05-05T07:20:02Z\",\"error\":\"pip\",\"additionalContext\":\"ltha\"}")
             .toObject(SignalStatus.class);
-        Assertions.assertEquals("yhmtnvyqiat", model.additionalContext());
+        Assertions.assertEquals("ltha", model.additionalContext());
     }
 }

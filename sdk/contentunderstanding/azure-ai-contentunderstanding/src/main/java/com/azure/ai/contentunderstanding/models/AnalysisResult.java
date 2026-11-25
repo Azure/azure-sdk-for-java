@@ -47,6 +47,12 @@ public final class AnalysisResult implements JsonSerializable<AnalysisResult> {
     private List<ResponseError> warnings;
 
     /*
+     * Additional diagnostic information about the analysis.
+     */
+    @Generated
+    private List<ResponseError> infos;
+
+    /*
      * The string encoding format for content spans in the
      * response.
      * Possible values are 'codePoint', 'utf16', and `utf8`. Default is `codePoint`.")
@@ -111,6 +117,16 @@ public final class AnalysisResult implements JsonSerializable<AnalysisResult> {
     }
 
     /**
+     * Get the infos property: Additional diagnostic information about the analysis.
+     * 
+     * @return the infos value.
+     */
+    @Generated
+    public List<ResponseError> getInfos() {
+        return this.infos;
+    }
+
+    /**
      * Get the stringEncoding property: The string encoding format for content spans in the
      * response.
      * Possible values are 'codePoint', 'utf16', and `utf8`. Default is `codePoint`.").
@@ -145,6 +161,7 @@ public final class AnalysisResult implements JsonSerializable<AnalysisResult> {
         jsonWriter.writeStringField("createdAt",
             this.createdAt == null ? null : DateTimeFormatter.ISO_OFFSET_DATE_TIME.format(this.createdAt));
         jsonWriter.writeArrayField("warnings", this.warnings, (writer, element) -> writer.writeJson(element));
+        jsonWriter.writeArrayField("infos", this.infos, (writer, element) -> writer.writeJson(element));
         jsonWriter.writeStringField("stringEncoding", this.stringEncoding);
         return jsonWriter.writeEndObject();
     }
@@ -166,6 +183,7 @@ public final class AnalysisResult implements JsonSerializable<AnalysisResult> {
             String apiVersion = null;
             OffsetDateTime createdAt = null;
             List<ResponseError> warnings = null;
+            List<ResponseError> infos = null;
             String stringEncoding = null;
             while (reader.nextToken() != JsonToken.END_OBJECT) {
                 String fieldName = reader.getFieldName();
@@ -182,6 +200,8 @@ public final class AnalysisResult implements JsonSerializable<AnalysisResult> {
                         .getNullable(nonNullReader -> CoreUtils.parseBestOffsetDateTime(nonNullReader.getString()));
                 } else if ("warnings".equals(fieldName)) {
                     warnings = reader.readArray(reader1 -> ResponseError.fromJson(reader1));
+                } else if ("infos".equals(fieldName)) {
+                    infos = reader.readArray(reader1 -> ResponseError.fromJson(reader1));
                 } else if ("stringEncoding".equals(fieldName)) {
                     stringEncoding = reader.getString();
                 } else {
@@ -193,6 +213,7 @@ public final class AnalysisResult implements JsonSerializable<AnalysisResult> {
             deserializedAnalysisResult.apiVersion = apiVersion;
             deserializedAnalysisResult.createdAt = createdAt;
             deserializedAnalysisResult.warnings = warnings;
+            deserializedAnalysisResult.infos = infos;
             deserializedAnalysisResult.stringEncoding = stringEncoding;
 
             return deserializedAnalysisResult;

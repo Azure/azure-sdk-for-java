@@ -14,7 +14,7 @@ import com.azure.resourcemanager.durabletask.models.PrivateLinkServiceConnection
  */
 public final class SchedulersCreateOrUpdatePrivateEndpointConnectionSamples {
     /*
-     * x-ms-original-file: 2026-02-01/PrivateEndpointConnections_Create_MaximumSet_Gen.json
+     * x-ms-original-file: 2026-07-01-preview/PrivateEndpointConnections_Create_MaximumSet_Gen.json
      */
     /**
      * Sample code: PrivateEndpointConnections_Create_MaximumSet.

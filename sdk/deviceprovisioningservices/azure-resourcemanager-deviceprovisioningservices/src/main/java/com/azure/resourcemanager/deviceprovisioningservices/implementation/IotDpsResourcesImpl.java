@@ -63,17 +63,17 @@ public final class IotDpsResourcesImpl implements IotDpsResources {
         }
     }
 
-    public Response<ProvisioningServiceDescription> getByResourceGroupWithResponse(String provisioningServiceName,
-        String resourceGroupName, Context context) {
+    public Response<ProvisioningServiceDescription> getByResourceGroupWithResponse(String resourceGroupName,
+        String provisioningServiceName, Context context) {
         Response<ProvisioningServiceDescriptionInner> inner
-            = this.serviceClient().getByResourceGroupWithResponse(provisioningServiceName, resourceGroupName, context);
+            = this.serviceClient().getByResourceGroupWithResponse(resourceGroupName, provisioningServiceName, context);
         return new SimpleResponse<>(inner.getRequest(), inner.getStatusCode(), inner.getHeaders(),
             new ProvisioningServiceDescriptionImpl(inner.getValue(), this.manager()));
     }
 
-    public ProvisioningServiceDescription getByResourceGroup(String provisioningServiceName, String resourceGroupName) {
+    public ProvisioningServiceDescription getByResourceGroup(String resourceGroupName, String provisioningServiceName) {
         ProvisioningServiceDescriptionInner inner
-            = this.serviceClient().getByResourceGroup(provisioningServiceName, resourceGroupName);
+            = this.serviceClient().getByResourceGroup(resourceGroupName, provisioningServiceName);
         if (inner != null) {
             return new ProvisioningServiceDescriptionImpl(inner, this.manager());
         } else {
@@ -81,19 +81,16 @@ public final class IotDpsResourcesImpl implements IotDpsResources {
         }
     }
 
-    public void deleteByResourceGroup(String provisioningServiceName, String resourceGroupName) {
-        this.serviceClient().delete(provisioningServiceName, resourceGroupName);
+    public void deleteByResourceGroup(String resourceGroupName, String provisioningServiceName) {
+        this.delete(resourceGroupName, provisioningServiceName, Context.NONE);
     }
 
-    public void delete(String provisioningServiceName, String resourceGroupName, Context context) {
-        this.serviceClient().delete(provisioningServiceName, resourceGroupName, context);
+    public void delete(String resourceGroupName, String provisioningServiceName, Context context) {
+        this.serviceClient().delete(resourceGroupName, provisioningServiceName, context);
     }
 
     public PagedIterable<ProvisioningServiceDescription> listByResourceGroup(String resourceGroupName) {
-        PagedIterable<ProvisioningServiceDescriptionInner> inner
-            = this.serviceClient().listByResourceGroup(resourceGroupName);
-        return ResourceManagerUtils.mapPage(inner,
-            inner1 -> new ProvisioningServiceDescriptionImpl(inner1, this.manager()));
+        return this.listByResourceGroup(resourceGroupName, Context.NONE);
     }
 
     public PagedIterable<ProvisioningServiceDescription> listByResourceGroup(String resourceGroupName,
@@ -105,9 +102,7 @@ public final class IotDpsResourcesImpl implements IotDpsResources {
     }
 
     public PagedIterable<ProvisioningServiceDescription> list() {
-        PagedIterable<ProvisioningServiceDescriptionInner> inner = this.serviceClient().list();
-        return ResourceManagerUtils.mapPage(inner,
-            inner1 -> new ProvisioningServiceDescriptionImpl(inner1, this.manager()));
+        return this.list(Context.NONE);
     }
 
     public PagedIterable<ProvisioningServiceDescription> list(Context context) {
@@ -117,9 +112,7 @@ public final class IotDpsResourcesImpl implements IotDpsResources {
     }
 
     public PagedIterable<IotDpsSkuDefinition> listValidSkus(String provisioningServiceName, String resourceGroupName) {
-        PagedIterable<IotDpsSkuDefinitionInner> inner
-            = this.serviceClient().listValidSkus(provisioningServiceName, resourceGroupName);
-        return ResourceManagerUtils.mapPage(inner, inner1 -> new IotDpsSkuDefinitionImpl(inner1, this.manager()));
+        return this.listValidSkus(provisioningServiceName, resourceGroupName, Context.NONE);
     }
 
     public PagedIterable<IotDpsSkuDefinition> listValidSkus(String provisioningServiceName, String resourceGroupName,
@@ -131,10 +124,7 @@ public final class IotDpsResourcesImpl implements IotDpsResources {
 
     public PagedIterable<SharedAccessSignatureAuthorizationRule> listKeys(String provisioningServiceName,
         String resourceGroupName) {
-        PagedIterable<SharedAccessSignatureAuthorizationRuleInner> inner
-            = this.serviceClient().listKeys(provisioningServiceName, resourceGroupName);
-        return ResourceManagerUtils.mapPage(inner,
-            inner1 -> new SharedAccessSignatureAuthorizationRuleImpl(inner1, this.manager()));
+        return this.listKeys(provisioningServiceName, resourceGroupName, Context.NONE);
     }
 
     public PagedIterable<SharedAccessSignatureAuthorizationRule> listKeys(String provisioningServiceName,
@@ -183,9 +173,7 @@ public final class IotDpsResourcesImpl implements IotDpsResources {
     }
 
     public PagedIterable<GroupIdInformation> listPrivateLinkResources(String resourceGroupName, String resourceName) {
-        PagedIterable<GroupIdInformationInner> inner
-            = this.serviceClient().listPrivateLinkResources(resourceGroupName, resourceName);
-        return ResourceManagerUtils.mapPage(inner, inner1 -> new GroupIdInformationImpl(inner1, this.manager()));
+        return this.listPrivateLinkResources(resourceGroupName, resourceName, Context.NONE);
     }
 
     public PagedIterable<GroupIdInformation> listPrivateLinkResources(String resourceGroupName, String resourceName,
@@ -217,8 +205,8 @@ public final class IotDpsResourcesImpl implements IotDpsResources {
 
     public void deletePrivateEndpointConnection(String resourceGroupName, String resourceName,
         String privateEndpointConnectionName) {
-        this.serviceClient()
-            .deletePrivateEndpointConnection(resourceGroupName, resourceName, privateEndpointConnectionName);
+        this.deletePrivateEndpointConnection(resourceGroupName, resourceName, privateEndpointConnectionName,
+            Context.NONE);
     }
 
     public void deletePrivateEndpointConnection(String resourceGroupName, String resourceName,
@@ -269,144 +257,66 @@ public final class IotDpsResourcesImpl implements IotDpsResources {
     }
 
     public ProvisioningServiceDescription getById(String id) {
-        String provisioningServiceName = ResourceManagerUtils.getValueFromIdByName(id, "provisioningServices");
-        if (provisioningServiceName == null) {
-            throw LOGGER.logExceptionAsError(new IllegalArgumentException(
-                String.format("The resource ID '%s' is not valid. Missing path segment 'provisioningServices'.", id)));
-        }
-        String resourceGroupName = ResourceManagerUtils.getValueFromIdByName(id, "resourceGroups");
-        if (resourceGroupName == null) {
-            throw LOGGER.logExceptionAsError(new IllegalArgumentException(
-                String.format("The resource ID '%s' is not valid. Missing path segment 'resourceGroups'.", id)));
-        }
-        return this.getByResourceGroupWithResponse(provisioningServiceName, resourceGroupName, Context.NONE).getValue();
+        return this.getByIdWithResponse(id, Context.NONE).getValue();
     }
 
     public Response<ProvisioningServiceDescription> getByIdWithResponse(String id, Context context) {
-        String provisioningServiceName = ResourceManagerUtils.getValueFromIdByName(id, "provisioningServices");
-        if (provisioningServiceName == null) {
-            throw LOGGER.logExceptionAsError(new IllegalArgumentException(
-                String.format("The resource ID '%s' is not valid. Missing path segment 'provisioningServices'.", id)));
-        }
-        String resourceGroupName = ResourceManagerUtils.getValueFromIdByName(id, "resourceGroups");
-        if (resourceGroupName == null) {
-            throw LOGGER.logExceptionAsError(new IllegalArgumentException(
-                String.format("The resource ID '%s' is not valid. Missing path segment 'resourceGroups'.", id)));
-        }
-        return this.getByResourceGroupWithResponse(provisioningServiceName, resourceGroupName, context);
+        String resourceGroupName = ResourceManagerUtils.getRequiredValueFromIdByParameterName(id,
+            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Devices/provisioningServices/{provisioningServiceName}",
+            "resourceGroupName", "resourceGroups", LOGGER);
+        String provisioningServiceName = ResourceManagerUtils.getRequiredValueFromIdByParameterName(id,
+            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Devices/provisioningServices/{provisioningServiceName}",
+            "provisioningServiceName", "provisioningServices", LOGGER);
+        return this.getByResourceGroupWithResponse(resourceGroupName, provisioningServiceName, context);
     }
 
     public PrivateEndpointConnection getPrivateEndpointConnectionById(String id) {
-        String resourceGroupName = ResourceManagerUtils.getValueFromIdByName(id, "resourceGroups");
-        if (resourceGroupName == null) {
-            throw LOGGER.logExceptionAsError(new IllegalArgumentException(
-                String.format("The resource ID '%s' is not valid. Missing path segment 'resourceGroups'.", id)));
-        }
-        String resourceName = ResourceManagerUtils.getValueFromIdByName(id, "provisioningServices");
-        if (resourceName == null) {
-            throw LOGGER.logExceptionAsError(new IllegalArgumentException(
-                String.format("The resource ID '%s' is not valid. Missing path segment 'provisioningServices'.", id)));
-        }
-        String privateEndpointConnectionName
-            = ResourceManagerUtils.getValueFromIdByName(id, "privateEndpointConnections");
-        if (privateEndpointConnectionName == null) {
-            throw LOGGER.logExceptionAsError(new IllegalArgumentException(String
-                .format("The resource ID '%s' is not valid. Missing path segment 'privateEndpointConnections'.", id)));
-        }
-        return this
-            .getPrivateEndpointConnectionWithResponse(resourceGroupName, resourceName, privateEndpointConnectionName,
-                Context.NONE)
-            .getValue();
+        return this.getPrivateEndpointConnectionByIdWithResponse(id, Context.NONE).getValue();
     }
 
     public Response<PrivateEndpointConnection> getPrivateEndpointConnectionByIdWithResponse(String id,
         Context context) {
-        String resourceGroupName = ResourceManagerUtils.getValueFromIdByName(id, "resourceGroups");
-        if (resourceGroupName == null) {
-            throw LOGGER.logExceptionAsError(new IllegalArgumentException(
-                String.format("The resource ID '%s' is not valid. Missing path segment 'resourceGroups'.", id)));
-        }
-        String resourceName = ResourceManagerUtils.getValueFromIdByName(id, "provisioningServices");
-        if (resourceName == null) {
-            throw LOGGER.logExceptionAsError(new IllegalArgumentException(
-                String.format("The resource ID '%s' is not valid. Missing path segment 'provisioningServices'.", id)));
-        }
-        String privateEndpointConnectionName
-            = ResourceManagerUtils.getValueFromIdByName(id, "privateEndpointConnections");
-        if (privateEndpointConnectionName == null) {
-            throw LOGGER.logExceptionAsError(new IllegalArgumentException(String
-                .format("The resource ID '%s' is not valid. Missing path segment 'privateEndpointConnections'.", id)));
-        }
+        String resourceGroupName = ResourceManagerUtils.getRequiredValueFromIdByParameterName(id,
+            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Devices/provisioningServices/{resourceName}/privateEndpointConnections/{privateEndpointConnectionName}",
+            "resourceGroupName", "resourceGroups", LOGGER);
+        String resourceName = ResourceManagerUtils.getRequiredValueFromIdByParameterName(id,
+            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Devices/provisioningServices/{resourceName}/privateEndpointConnections/{privateEndpointConnectionName}",
+            "resourceName", "provisioningServices", LOGGER);
+        String privateEndpointConnectionName = ResourceManagerUtils.getRequiredValueFromIdByParameterName(id,
+            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Devices/provisioningServices/{resourceName}/privateEndpointConnections/{privateEndpointConnectionName}",
+            "privateEndpointConnectionName", "privateEndpointConnections", LOGGER);
         return this.getPrivateEndpointConnectionWithResponse(resourceGroupName, resourceName,
             privateEndpointConnectionName, context);
     }
 
     public void deleteById(String id) {
-        String provisioningServiceName = ResourceManagerUtils.getValueFromIdByName(id, "provisioningServices");
-        if (provisioningServiceName == null) {
-            throw LOGGER.logExceptionAsError(new IllegalArgumentException(
-                String.format("The resource ID '%s' is not valid. Missing path segment 'provisioningServices'.", id)));
-        }
-        String resourceGroupName = ResourceManagerUtils.getValueFromIdByName(id, "resourceGroups");
-        if (resourceGroupName == null) {
-            throw LOGGER.logExceptionAsError(new IllegalArgumentException(
-                String.format("The resource ID '%s' is not valid. Missing path segment 'resourceGroups'.", id)));
-        }
-        this.delete(provisioningServiceName, resourceGroupName, Context.NONE);
+        this.deleteByIdWithResponse(id, Context.NONE);
     }
 
     public void deleteByIdWithResponse(String id, Context context) {
-        String provisioningServiceName = ResourceManagerUtils.getValueFromIdByName(id, "provisioningServices");
-        if (provisioningServiceName == null) {
-            throw LOGGER.logExceptionAsError(new IllegalArgumentException(
-                String.format("The resource ID '%s' is not valid. Missing path segment 'provisioningServices'.", id)));
-        }
-        String resourceGroupName = ResourceManagerUtils.getValueFromIdByName(id, "resourceGroups");
-        if (resourceGroupName == null) {
-            throw LOGGER.logExceptionAsError(new IllegalArgumentException(
-                String.format("The resource ID '%s' is not valid. Missing path segment 'resourceGroups'.", id)));
-        }
-        this.delete(provisioningServiceName, resourceGroupName, context);
+        String resourceGroupName = ResourceManagerUtils.getRequiredValueFromIdByParameterName(id,
+            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Devices/provisioningServices/{provisioningServiceName}",
+            "resourceGroupName", "resourceGroups", LOGGER);
+        String provisioningServiceName = ResourceManagerUtils.getRequiredValueFromIdByParameterName(id,
+            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Devices/provisioningServices/{provisioningServiceName}",
+            "provisioningServiceName", "provisioningServices", LOGGER);
+        this.delete(resourceGroupName, provisioningServiceName, context);
     }
 
     public void deletePrivateEndpointConnectionById(String id) {
-        String resourceGroupName = ResourceManagerUtils.getValueFromIdByName(id, "resourceGroups");
-        if (resourceGroupName == null) {
-            throw LOGGER.logExceptionAsError(new IllegalArgumentException(
-                String.format("The resource ID '%s' is not valid. Missing path segment 'resourceGroups'.", id)));
-        }
-        String resourceName = ResourceManagerUtils.getValueFromIdByName(id, "provisioningServices");
-        if (resourceName == null) {
-            throw LOGGER.logExceptionAsError(new IllegalArgumentException(
-                String.format("The resource ID '%s' is not valid. Missing path segment 'provisioningServices'.", id)));
-        }
-        String privateEndpointConnectionName
-            = ResourceManagerUtils.getValueFromIdByName(id, "privateEndpointConnections");
-        if (privateEndpointConnectionName == null) {
-            throw LOGGER.logExceptionAsError(new IllegalArgumentException(String
-                .format("The resource ID '%s' is not valid. Missing path segment 'privateEndpointConnections'.", id)));
-        }
-        this.deletePrivateEndpointConnection(resourceGroupName, resourceName, privateEndpointConnectionName,
-            Context.NONE);
+        this.deletePrivateEndpointConnectionByIdWithResponse(id, Context.NONE);
     }
 
     public void deletePrivateEndpointConnectionByIdWithResponse(String id, Context context) {
-        String resourceGroupName = ResourceManagerUtils.getValueFromIdByName(id, "resourceGroups");
-        if (resourceGroupName == null) {
-            throw LOGGER.logExceptionAsError(new IllegalArgumentException(
-                String.format("The resource ID '%s' is not valid. Missing path segment 'resourceGroups'.", id)));
-        }
-        String resourceName = ResourceManagerUtils.getValueFromIdByName(id, "provisioningServices");
-        if (resourceName == null) {
-            throw LOGGER.logExceptionAsError(new IllegalArgumentException(
-                String.format("The resource ID '%s' is not valid. Missing path segment 'provisioningServices'.", id)));
-        }
-        String privateEndpointConnectionName
-            = ResourceManagerUtils.getValueFromIdByName(id, "privateEndpointConnections");
-        if (privateEndpointConnectionName == null) {
-            throw LOGGER.logExceptionAsError(new IllegalArgumentException(String
-                .format("The resource ID '%s' is not valid. Missing path segment 'privateEndpointConnections'.", id)));
-        }
+        String resourceGroupName = ResourceManagerUtils.getRequiredValueFromIdByParameterName(id,
+            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Devices/provisioningServices/{resourceName}/privateEndpointConnections/{privateEndpointConnectionName}",
+            "resourceGroupName", "resourceGroups", LOGGER);
+        String resourceName = ResourceManagerUtils.getRequiredValueFromIdByParameterName(id,
+            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Devices/provisioningServices/{resourceName}/privateEndpointConnections/{privateEndpointConnectionName}",
+            "resourceName", "provisioningServices", LOGGER);
+        String privateEndpointConnectionName = ResourceManagerUtils.getRequiredValueFromIdByParameterName(id,
+            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Devices/provisioningServices/{resourceName}/privateEndpointConnections/{privateEndpointConnectionName}",
+            "privateEndpointConnectionName", "privateEndpointConnections", LOGGER);
         this.deletePrivateEndpointConnection(resourceGroupName, resourceName, privateEndpointConnectionName, context);
     }
 

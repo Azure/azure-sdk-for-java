@@ -5,6 +5,7 @@
 package com.azure.resourcemanager.compute.recommender.implementation;
 
 import com.azure.resourcemanager.compute.recommender.fluent.models.SkuMixPlacementResponseInner;
+import com.azure.resourcemanager.compute.recommender.models.SkuMixPlacementCapacityLimit;
 import com.azure.resourcemanager.compute.recommender.models.SkuMixPlacementDeploymentChoice;
 import com.azure.resourcemanager.compute.recommender.models.SkuMixPlacementPartialFulfillmentReason;
 import com.azure.resourcemanager.compute.recommender.models.SkuMixPlacementResponse;
@@ -23,6 +24,10 @@ public final class SkuMixPlacementResponseImpl implements SkuMixPlacementRespons
         this.serviceManager = serviceManager;
     }
 
+    public String id() {
+        return this.innerModel().id();
+    }
+
     public List<SkuMixPlacementDeploymentChoice> placementChoices() {
         List<SkuMixPlacementDeploymentChoice> inner = this.innerModel().placementChoices();
         if (inner != null) {
@@ -38,6 +43,15 @@ public final class SkuMixPlacementResponseImpl implements SkuMixPlacementRespons
 
     public SkuMixPlacementPartialFulfillmentReason partialFulfillmentReason() {
         return this.innerModel().partialFulfillmentReason();
+    }
+
+    public List<SkuMixPlacementCapacityLimit> capacityLimits() {
+        List<SkuMixPlacementCapacityLimit> inner = this.innerModel().capacityLimits();
+        if (inner != null) {
+            return Collections.unmodifiableList(inner);
+        } else {
+            return Collections.emptyList();
+        }
     }
 
     public SkuMixPlacementResponseInner innerModel() {

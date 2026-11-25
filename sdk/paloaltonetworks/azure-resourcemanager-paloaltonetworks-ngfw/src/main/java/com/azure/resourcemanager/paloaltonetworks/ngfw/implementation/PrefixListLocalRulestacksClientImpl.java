@@ -206,18 +206,7 @@ public final class PrefixListLocalRulestacksClientImpl implements PrefixListLoca
             .flatMap(res -> Mono.justOrEmpty(res.getValue()));
     }
 
-    /**
-     * Get a PrefixListResource.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param localRulestackName LocalRulestack resource name.
-     * @param name Local Rule priority.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return a PrefixListResource along with {@link Response}.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Response<PrefixListResourceInner> getWithResponse(String resourceGroupName, String localRulestackName,
         String name, Context context) {
@@ -226,17 +215,7 @@ public final class PrefixListLocalRulestacksClientImpl implements PrefixListLoca
             resourceGroupName, localRulestackName, name, accept, context);
     }
 
-    /**
-     * Get a PrefixListResource.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param localRulestackName LocalRulestack resource name.
-     * @param name Local Rule priority.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return a PrefixListResource.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public PrefixListResourceInner get(String resourceGroupName, String localRulestackName, String name) {
         return getWithResponse(resourceGroupName, localRulestackName, name, Context.NONE).getValue();
@@ -281,11 +260,7 @@ public final class PrefixListLocalRulestacksClientImpl implements PrefixListLoca
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Response<BinaryData> createOrUpdateWithResponse(String resourceGroupName, String localRulestackName,
         String name, PrefixListResourceInner resource) {
-        final String contentType = "application/json";
-        final String accept = "application/json";
-        return service.createOrUpdateSync(this.client.getEndpoint(), this.client.getApiVersion(),
-            this.client.getSubscriptionId(), resourceGroupName, localRulestackName, name, contentType, accept, resource,
-            Context.NONE);
+        return createOrUpdateWithResponse(resourceGroupName, localRulestackName, name, resource, Context.NONE);
     }
 
     /**
@@ -333,40 +308,14 @@ public final class PrefixListLocalRulestacksClientImpl implements PrefixListLoca
             this.client.getContext());
     }
 
-    /**
-     * Create a PrefixListResource.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param localRulestackName LocalRulestack resource name.
-     * @param name Local Rule priority.
-     * @param resource Resource create parameters.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the {@link SyncPoller} for polling of localRulestack prefixList.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public SyncPoller<PollResult<PrefixListResourceInner>, PrefixListResourceInner> beginCreateOrUpdate(
         String resourceGroupName, String localRulestackName, String name, PrefixListResourceInner resource) {
-        Response<BinaryData> response
-            = createOrUpdateWithResponse(resourceGroupName, localRulestackName, name, resource);
-        return this.client.<PrefixListResourceInner, PrefixListResourceInner>getLroResult(response,
-            PrefixListResourceInner.class, PrefixListResourceInner.class, Context.NONE);
+        return beginCreateOrUpdate(resourceGroupName, localRulestackName, name, resource, Context.NONE);
     }
 
-    /**
-     * Create a PrefixListResource.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param localRulestackName LocalRulestack resource name.
-     * @param name Local Rule priority.
-     * @param resource Resource create parameters.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the {@link SyncPoller} for polling of localRulestack prefixList.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public SyncPoller<PollResult<PrefixListResourceInner>, PrefixListResourceInner> beginCreateOrUpdate(
         String resourceGroupName, String localRulestackName, String name, PrefixListResourceInner resource,
@@ -396,41 +345,19 @@ public final class PrefixListLocalRulestacksClientImpl implements PrefixListLoca
             .flatMap(this.client::getLroFinalResultOrError);
     }
 
-    /**
-     * Create a PrefixListResource.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param localRulestackName LocalRulestack resource name.
-     * @param name Local Rule priority.
-     * @param resource Resource create parameters.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return localRulestack prefixList.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public PrefixListResourceInner createOrUpdate(String resourceGroupName, String localRulestackName, String name,
         PrefixListResourceInner resource) {
-        return beginCreateOrUpdate(resourceGroupName, localRulestackName, name, resource).getFinalResult();
+        return createOrUpdate(resourceGroupName, localRulestackName, name, resource, Context.NONE);
     }
 
-    /**
-     * Create a PrefixListResource.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param localRulestackName LocalRulestack resource name.
-     * @param name Local Rule priority.
-     * @param resource Resource create parameters.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return localRulestack prefixList.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public PrefixListResourceInner createOrUpdate(String resourceGroupName, String localRulestackName, String name,
         PrefixListResourceInner resource, Context context) {
-        return beginCreateOrUpdate(resourceGroupName, localRulestackName, name, resource, context).getFinalResult();
+        return this.client.getLroFinalResultOrError(
+            beginCreateOrUpdate(resourceGroupName, localRulestackName, name, resource, context));
     }
 
     /**
@@ -466,8 +393,7 @@ public final class PrefixListLocalRulestacksClientImpl implements PrefixListLoca
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Response<BinaryData> deleteWithResponse(String resourceGroupName, String localRulestackName, String name) {
-        return service.deleteSync(this.client.getEndpoint(), this.client.getApiVersion(),
-            this.client.getSubscriptionId(), resourceGroupName, localRulestackName, name, Context.NONE);
+        return deleteWithResponse(resourceGroupName, localRulestackName, name, Context.NONE);
     }
 
     /**
@@ -508,36 +434,14 @@ public final class PrefixListLocalRulestacksClientImpl implements PrefixListLoca
             this.client.getContext());
     }
 
-    /**
-     * Delete a PrefixListResource.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param localRulestackName LocalRulestack resource name.
-     * @param name Local Rule priority.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the {@link SyncPoller} for polling of long-running operation.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public SyncPoller<PollResult<Void>, Void> beginDelete(String resourceGroupName, String localRulestackName,
         String name) {
-        Response<BinaryData> response = deleteWithResponse(resourceGroupName, localRulestackName, name);
-        return this.client.<Void, Void>getLroResult(response, Void.class, Void.class, Context.NONE);
+        return beginDelete(resourceGroupName, localRulestackName, name, Context.NONE);
     }
 
-    /**
-     * Delete a PrefixListResource.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param localRulestackName LocalRulestack resource name.
-     * @param name Local Rule priority.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the {@link SyncPoller} for polling of long-running operation.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public SyncPoller<PollResult<Void>, Void> beginDelete(String resourceGroupName, String localRulestackName,
         String name, Context context) {
@@ -562,35 +466,16 @@ public final class PrefixListLocalRulestacksClientImpl implements PrefixListLoca
             .flatMap(this.client::getLroFinalResultOrError);
     }
 
-    /**
-     * Delete a PrefixListResource.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param localRulestackName LocalRulestack resource name.
-     * @param name Local Rule priority.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public void delete(String resourceGroupName, String localRulestackName, String name) {
-        beginDelete(resourceGroupName, localRulestackName, name).getFinalResult();
+        delete(resourceGroupName, localRulestackName, name, Context.NONE);
     }
 
-    /**
-     * Delete a PrefixListResource.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param localRulestackName LocalRulestack resource name.
-     * @param name Local Rule priority.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public void delete(String resourceGroupName, String localRulestackName, String name, Context context) {
-        beginDelete(resourceGroupName, localRulestackName, name, context).getFinalResult();
+        this.client.getLroFinalResultOrError(beginDelete(resourceGroupName, localRulestackName, name, context));
     }
 
     /**
@@ -647,12 +532,7 @@ public final class PrefixListLocalRulestacksClientImpl implements PrefixListLoca
     @ServiceMethod(returns = ReturnType.SINGLE)
     private PagedResponse<PrefixListResourceInner> listByLocalRulestacksSinglePage(String resourceGroupName,
         String localRulestackName) {
-        final String accept = "application/json";
-        Response<PrefixListResourceListResult> res
-            = service.listByLocalRulestacksSync(this.client.getEndpoint(), this.client.getApiVersion(),
-                this.client.getSubscriptionId(), resourceGroupName, localRulestackName, accept, Context.NONE);
-        return new PagedResponseBase<>(res.getRequest(), res.getStatusCode(), res.getHeaders(), res.getValue().value(),
-            res.getValue().nextLink(), null);
+        return listByLocalRulestacksSinglePage(resourceGroupName, localRulestackName, Context.NONE);
     }
 
     /**
@@ -677,34 +557,14 @@ public final class PrefixListLocalRulestacksClientImpl implements PrefixListLoca
             res.getValue().nextLink(), null);
     }
 
-    /**
-     * List PrefixListResource resources by LocalRulestacks.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param localRulestackName LocalRulestack resource name.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the response of a PrefixListResource list operation as paginated response with {@link PagedIterable}.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.COLLECTION)
     public PagedIterable<PrefixListResourceInner> listByLocalRulestacks(String resourceGroupName,
         String localRulestackName) {
-        return new PagedIterable<>(() -> listByLocalRulestacksSinglePage(resourceGroupName, localRulestackName),
-            nextLink -> listByLocalRulestacksNextSinglePage(nextLink));
+        return listByLocalRulestacks(resourceGroupName, localRulestackName, Context.NONE);
     }
 
-    /**
-     * List PrefixListResource resources by LocalRulestacks.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param localRulestackName LocalRulestack resource name.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the response of a PrefixListResource list operation as paginated response with {@link PagedIterable}.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.COLLECTION)
     public PagedIterable<PrefixListResourceInner> listByLocalRulestacks(String resourceGroupName,
         String localRulestackName, Context context) {
@@ -745,11 +605,7 @@ public final class PrefixListLocalRulestacksClientImpl implements PrefixListLoca
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private PagedResponse<PrefixListResourceInner> listByLocalRulestacksNextSinglePage(String nextLink) {
-        final String accept = "application/json";
-        Response<PrefixListResourceListResult> res
-            = service.listByLocalRulestacksNextSync(nextLink, this.client.getEndpoint(), accept, Context.NONE);
-        return new PagedResponseBase<>(res.getRequest(), res.getStatusCode(), res.getHeaders(), res.getValue().value(),
-            res.getValue().nextLink(), null);
+        return listByLocalRulestacksNextSinglePage(nextLink, Context.NONE);
     }
 
     /**

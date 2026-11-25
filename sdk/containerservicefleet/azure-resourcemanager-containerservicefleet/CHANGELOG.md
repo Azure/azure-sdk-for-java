@@ -1,6 +1,6 @@
 # Release History
 
-## 1.4.0-beta.1 (Unreleased)
+## 1.5.0-beta.2 (Unreleased)
 
 ### Features Added
 
@@ -9,6 +9,338 @@
 ### Bugs Fixed
 
 ### Other Changes
+
+## 1.5.0-beta.1 (2026-11-13)
+
+- Azure Resource Manager Container Service Fleet client library for Java. This package contains Microsoft Azure SDK for Container Service Fleet Management SDK. Azure Kubernetes Fleet Manager api client. Package api-version 2026-11-02-preview. For documentation on how to use this package, please see [Azure Management Libraries for Java](https://aka.ms/azsdk/java/mgmt).
+
+### Features Added
+
+* `models.IdentityBindingManagedIdentityProfile` was added
+
+* `models.IdentityBindingProperties` was added
+
+* `models.IdentityBindingProfile$UpdateStages` was added
+
+* `models.IdentityBindingLabelSelector` was added
+
+* `models.IdentityBindingProfile` was added
+
+* `models.IdentityBindingProfiles` was added
+
+* `models.IdentityBindingOidcIssuerProfile` was added
+
+* `models.IdentityBindingProfile$Definition` was added
+
+* `models.IdentityBindingProfile$Update` was added
+
+* `models.IdentityBindingLabelSelectorRequirement` was added
+
+* `models.IdentityBindingProfileStatus` was added
+
+* `models.IdentityBindingProfileProvisioningState` was added
+
+* `models.IdentityBindingLabelSelectorOperator` was added
+
+* `models.IdentityBindingProfile$DefinitionStages` was added
+
+* `models.AllowedSubject` was added
+
+#### `ContainerServiceFleetManager` was modified
+
+* `identityBindingProfiles()` was added
+
+#### `models.UpdateStageStatus` was modified
+
+* `failureCount()` was added
+* `maxAllowedFailures()` was added
+
+#### `models.UpdateGroupStatus` was modified
+
+* `maxAllowedFailures()` was added
+* `failureCount()` was added
+
+#### `models.UpdateGroup` was modified
+
+* `withMaxAllowedFailures(java.lang.String)` was added
+* `maxAllowedFailures()` was added
+
+#### `models.UpdateRunStatus` was modified
+
+* `failureCount()` was added
+
+#### `models.UpdateStage` was modified
+
+* `withMaxAllowedFailures(java.lang.String)` was added
+* `maxAllowedFailures()` was added
+
+## 1.4.0 (2026-11-11)
+
+- Azure Resource Manager Container Service Fleet client library for Java. This package contains Microsoft Azure SDK for Container Service Fleet Management SDK. Azure Kubernetes Fleet Manager api client. Package api-version 2026-11-01. For documentation on how to use this package, please see [Azure Management Libraries for Java](https://aka.ms/azsdk/java/mgmt).
+
+### Features Added
+
+* `models.ClusterMeshProfile$Update` was added
+
+* `models.ClusterMeshProfile$UpdateStages` was added
+
+* `models.ScheduledStartConfiguration` was added
+
+* `models.ClusterMeshProfileProvisioningState` was added
+
+* `models.PropagationPolicyPatch` was added
+
+* `models.ClusterMeshProfiles` was added
+
+* `models.PlacementPolicyPatch` was added
+
+* `models.ClusterResourcePlacementSpecPatch` was added
+
+* `models.PropertySelectorPatch` was added
+
+* `models.MeshMemberStatus` was added
+
+* `models.RolloutStrategyType` was added
+
+* `models.CiliumProperties` was added
+
+* `models.MeshMemberState` was added
+
+* `models.ClusterSelectorPatch` was added
+
+* `models.PlacementProfilePatch` was added
+
+* `models.ClusterSelectorTermPatch` was added
+
+* `models.AffinityPatch` was added
+
+* `models.ClusterMeshProfileStatus` was added
+
+* `models.ClusterAffinityPatch` was added
+
+* `models.ClusterMeshState` was added
+
+* `models.MeshProperties` was added
+
+* `models.ClusterMeshProfile$Definition` was added
+
+* `models.DayOfWeek` was added
+
+* `models.FleetManagedNamespacePropertiesPatch` was added
+
+* `models.PropertySelectorRequirementPatch` was added
+
+* `models.LabelSelectorPatch` was added
+
+* `models.MemberSelector` was added
+
+* `models.RolloutStrategy` was added
+
+* `models.ScheduledStartProperties` was added
+
+* `models.ClusterMeshProfile$DefinitionStages` was added
+
+* `models.ClusterUpdateStrategyReference` was added
+
+* `models.LabelSelectorRequirementPatch` was added
+
+* `models.ClusterMeshProfile` was added
+
+#### `models.UpgradeChannel` was modified
+
+* `SECURITY_PATCH` was added
+
+#### `ContainerServiceFleetManager` was modified
+
+* `clusterMeshProfiles()` was added
+
+#### `models.FleetMember` was modified
+
+* `meshProperties()` was added
+
+#### `models.UpdateGroup` was modified
+
+* `withMemberSelector(models.MemberSelector)` was added
+* `memberSelector()` was added
+
+#### `models.Gate` was modified
+
+* `scheduledStartProperties()` was added
+
+#### `models.ClusterResourcePlacementSpec` was modified
+
+* `rolloutStrategy()` was added
+* `withRolloutStrategy(models.RolloutStrategy)` was added
+
+#### `models.GateConfiguration` was modified
+
+* `withScheduledStartConfiguration(models.ScheduledStartConfiguration)` was added
+* `scheduledStartConfiguration()` was added
+
+#### `models.GateType` was modified
+
+* `SCHEDULED_START` was added
+
+#### `models.FleetManagedNamespacePatch` was modified
+
+* `withProperties(models.FleetManagedNamespacePropertiesPatch)` was added
+* `properties()` was added
+
+#### `models.UpdateStage` was modified
+
+* `memberSelector()` was added
+* `withMemberSelector(models.MemberSelector)` was added
+
+#### `models.FleetManagedNamespace$Update` was modified
+
+* `withProperties(models.FleetManagedNamespacePropertiesPatch)` was added
+
+#### `models.AutoUpgradeProfileStatus` was modified
+
+* `lastTriggerMessage()` was added
+
+## 1.4.0-beta.1 (2026-09-03)
+
+- Azure Resource Manager Container Service Fleet client library for Java. This package contains Microsoft Azure SDK for Container Service Fleet Management SDK. Azure Kubernetes Fleet Manager api client. Package api-version 2026-06-02-preview. For documentation on how to use this package, please see [Azure Management Libraries for Java](https://aka.ms/azsdk/java/mgmt).
+
+### Features Added
+
+* `models.ClusterMeshProfile$Update` was added
+
+* `models.ClusterMeshProfile$UpdateStages` was added
+
+* `models.ScheduledStartConfiguration` was added
+
+* `models.ClusterMeshProfileProvisioningState` was added
+
+* `models.PropagationPolicyPatch` was added
+
+* `models.ClusterMeshProfiles` was added
+
+* `models.PlacementPolicyPatch` was added
+
+* `models.ClusterResourcePlacementSpecPatch` was added
+
+* `models.PropertySelectorPatch` was added
+
+* `models.MeshMemberStatus` was added
+
+* `models.RolloutStrategyType` was added
+
+* `models.CiliumProperties` was added
+
+* `models.MeshMemberState` was added
+
+* `models.ClusterSelectorPatch` was added
+
+* `models.PlacementProfilePatch` was added
+
+* `models.ClusterSelectorTermPatch` was added
+
+* `models.AffinityPatch` was added
+
+* `models.ClusterMeshProfileStatus` was added
+
+* `models.ClusterAffinityPatch` was added
+
+* `models.ClusterMeshState` was added
+
+* `models.MeshProperties` was added
+
+* `models.ClusterMeshProfile$Definition` was added
+
+* `models.DayOfWeek` was added
+
+* `models.FleetManagedNamespacePropertiesPatch` was added
+
+* `models.PropertySelectorRequirementPatch` was added
+
+* `models.LabelSelectorPatch` was added
+
+* `models.MemberSelector` was added
+
+* `models.RolloutStrategy` was added
+
+* `models.ScheduledStartProperties` was added
+
+* `models.ClusterMeshProfile$DefinitionStages` was added
+
+* `models.ClusterUpdateStrategyReference` was added
+
+* `models.LabelSelectorRequirementPatch` was added
+
+* `models.ClusterMeshProfile` was added
+
+#### `models.UpgradeChannel` was modified
+
+* `SECURITY_PATCH` was added
+
+#### `ContainerServiceFleetManager` was modified
+
+* `clusterMeshProfiles()` was added
+
+#### `models.FleetMember` was modified
+
+* `meshProperties()` was added
+
+#### `models.UpdateStageStatus` was modified
+
+* `failureCount()` was added
+* `maxAllowedFailures()` was added
+
+#### `models.UpdateGroupStatus` was modified
+
+* `maxAllowedFailures()` was added
+* `failureCount()` was added
+
+#### `models.UpdateGroup` was modified
+
+* `withMemberSelector(models.MemberSelector)` was added
+* `maxAllowedFailures()` was added
+* `memberSelector()` was added
+* `withMaxAllowedFailures(java.lang.String)` was added
+
+#### `models.Gate` was modified
+
+* `scheduledStartProperties()` was added
+
+#### `models.UpdateRunStatus` was modified
+
+* `failureCount()` was added
+
+#### `models.ClusterResourcePlacementSpec` was modified
+
+* `rolloutStrategy()` was added
+* `withRolloutStrategy(models.RolloutStrategy)` was added
+
+#### `models.GateConfiguration` was modified
+
+* `withScheduledStartConfiguration(models.ScheduledStartConfiguration)` was added
+* `scheduledStartConfiguration()` was added
+
+#### `models.GateType` was modified
+
+* `SCHEDULED_START` was added
+
+#### `models.FleetManagedNamespacePatch` was modified
+
+* `properties()` was added
+* `withProperties(models.FleetManagedNamespacePropertiesPatch)` was added
+
+#### `models.UpdateStage` was modified
+
+* `memberSelector()` was added
+* `maxAllowedFailures()` was added
+* `withMemberSelector(models.MemberSelector)` was added
+* `withMaxAllowedFailures(java.lang.String)` was added
+
+#### `models.FleetManagedNamespace$Update` was modified
+
+* `withProperties(models.FleetManagedNamespacePropertiesPatch)` was added
+
+#### `models.AutoUpgradeProfileStatus` was modified
+
+* `lastTriggerMessage()` was added
 
 ## 1.3.0 (2026-08-03)
 

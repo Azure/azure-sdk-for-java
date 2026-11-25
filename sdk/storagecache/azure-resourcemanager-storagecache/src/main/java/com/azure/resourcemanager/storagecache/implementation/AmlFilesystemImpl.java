@@ -157,10 +157,7 @@ public final class AmlFilesystemImpl implements AmlFilesystem, AmlFilesystem.Def
     }
 
     public AmlFilesystem create() {
-        this.innerObject = serviceManager.serviceClient()
-            .getAmlFilesystems()
-            .createOrUpdate(resourceGroupName, amlFilesystemName, this.innerModel(), Context.NONE);
-        return this;
+        return this.create(Context.NONE);
     }
 
     public AmlFilesystem create(Context context) {
@@ -182,10 +179,7 @@ public final class AmlFilesystemImpl implements AmlFilesystem, AmlFilesystem.Def
     }
 
     public AmlFilesystem apply() {
-        this.innerObject = serviceManager.serviceClient()
-            .getAmlFilesystems()
-            .update(resourceGroupName, amlFilesystemName, updateAmlFilesystem, Context.NONE);
-        return this;
+        return this.apply(Context.NONE);
     }
 
     public AmlFilesystem apply(Context context) {
@@ -199,16 +193,16 @@ public final class AmlFilesystemImpl implements AmlFilesystem, AmlFilesystem.Def
         com.azure.resourcemanager.storagecache.StorageCacheManager serviceManager) {
         this.innerObject = innerObject;
         this.serviceManager = serviceManager;
-        this.resourceGroupName = ResourceManagerUtils.getValueFromIdByName(innerObject.id(), "resourceGroups");
-        this.amlFilesystemName = ResourceManagerUtils.getValueFromIdByName(innerObject.id(), "amlFilesystems");
+        this.resourceGroupName = ResourceManagerUtils.getValueFromIdByParameterName(innerObject.id(),
+            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.StorageCache/amlFilesystems/{amlFilesystemName}",
+            "resourceGroupName");
+        this.amlFilesystemName = ResourceManagerUtils.getValueFromIdByParameterName(innerObject.id(),
+            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.StorageCache/amlFilesystems/{amlFilesystemName}",
+            "amlFilesystemName");
     }
 
     public AmlFilesystem refresh() {
-        this.innerObject = serviceManager.serviceClient()
-            .getAmlFilesystems()
-            .getByResourceGroupWithResponse(resourceGroupName, amlFilesystemName, Context.NONE)
-            .getValue();
-        return this;
+        return this.refresh(Context.NONE);
     }
 
     public AmlFilesystem refresh(Context context) {

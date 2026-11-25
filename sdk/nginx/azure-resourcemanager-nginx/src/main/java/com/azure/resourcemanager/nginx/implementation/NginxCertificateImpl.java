@@ -74,10 +74,7 @@ public final class NginxCertificateImpl
     }
 
     public NginxCertificate create() {
-        this.innerObject = serviceManager.serviceClient()
-            .getCertificates()
-            .createOrUpdate(resourceGroupName, deploymentName, certificateName, this.innerModel(), Context.NONE);
-        return this;
+        return this.create(Context.NONE);
     }
 
     public NginxCertificate create(Context context) {
@@ -98,10 +95,7 @@ public final class NginxCertificateImpl
     }
 
     public NginxCertificate apply() {
-        this.innerObject = serviceManager.serviceClient()
-            .getCertificates()
-            .createOrUpdate(resourceGroupName, deploymentName, certificateName, this.innerModel(), Context.NONE);
-        return this;
+        return this.apply(Context.NONE);
     }
 
     public NginxCertificate apply(Context context) {
@@ -115,17 +109,19 @@ public final class NginxCertificateImpl
         com.azure.resourcemanager.nginx.NginxManager serviceManager) {
         this.innerObject = innerObject;
         this.serviceManager = serviceManager;
-        this.resourceGroupName = ResourceManagerUtils.getValueFromIdByName(innerObject.id(), "resourceGroups");
-        this.deploymentName = ResourceManagerUtils.getValueFromIdByName(innerObject.id(), "nginxDeployments");
-        this.certificateName = ResourceManagerUtils.getValueFromIdByName(innerObject.id(), "certificates");
+        this.resourceGroupName = ResourceManagerUtils.getValueFromIdByParameterName(innerObject.id(),
+            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Nginx.NginxPlus/nginxDeployments/{deploymentName}/certificates/{certificateName}",
+            "resourceGroupName");
+        this.deploymentName = ResourceManagerUtils.getValueFromIdByParameterName(innerObject.id(),
+            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Nginx.NginxPlus/nginxDeployments/{deploymentName}/certificates/{certificateName}",
+            "deploymentName");
+        this.certificateName = ResourceManagerUtils.getValueFromIdByParameterName(innerObject.id(),
+            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Nginx.NginxPlus/nginxDeployments/{deploymentName}/certificates/{certificateName}",
+            "certificateName");
     }
 
     public NginxCertificate refresh() {
-        this.innerObject = serviceManager.serviceClient()
-            .getCertificates()
-            .getWithResponse(resourceGroupName, deploymentName, certificateName, Context.NONE)
-            .getValue();
-        return this;
+        return this.refresh(Context.NONE);
     }
 
     public NginxCertificate refresh(Context context) {

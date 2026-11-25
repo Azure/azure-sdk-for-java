@@ -101,11 +101,7 @@ public final class SecurityAssessmentResponseImpl
     }
 
     public SecurityAssessmentResponse create() {
-        this.innerObject = serviceManager.serviceClient()
-            .getAssessments()
-            .createOrUpdateWithResponse(resourceId, assessmentName, createAssessment, Context.NONE)
-            .getValue();
-        return this;
+        return this.create(Context.NONE);
     }
 
     public SecurityAssessmentResponse create(Context context) {
@@ -128,11 +124,7 @@ public final class SecurityAssessmentResponseImpl
     }
 
     public SecurityAssessmentResponse apply() {
-        this.innerObject = serviceManager.serviceClient()
-            .getAssessments()
-            .createOrUpdateWithResponse(resourceId, assessmentName, updateAssessment, Context.NONE)
-            .getValue();
-        return this;
+        return this.apply(Context.NONE);
     }
 
     public SecurityAssessmentResponse apply(Context context) {
@@ -154,12 +146,7 @@ public final class SecurityAssessmentResponseImpl
     }
 
     public SecurityAssessmentResponse refresh() {
-        ExpandEnum localExpand = null;
-        this.innerObject = serviceManager.serviceClient()
-            .getAssessments()
-            .getWithResponse(resourceId, assessmentName, localExpand, Context.NONE)
-            .getValue();
-        return this;
+        return this.refresh(Context.NONE);
     }
 
     public SecurityAssessmentResponse refresh(Context context) {

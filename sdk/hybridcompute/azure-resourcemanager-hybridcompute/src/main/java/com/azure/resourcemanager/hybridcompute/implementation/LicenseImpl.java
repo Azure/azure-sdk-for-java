@@ -102,10 +102,7 @@ public final class LicenseImpl implements License, License.Definition, License.U
     }
 
     public License create() {
-        this.innerObject = serviceManager.serviceClient()
-            .getLicenses()
-            .createOrUpdate(resourceGroupName, licenseName, this.innerModel(), Context.NONE);
-        return this;
+        return this.create(Context.NONE);
     }
 
     public License create(Context context) {
@@ -127,10 +124,7 @@ public final class LicenseImpl implements License, License.Definition, License.U
     }
 
     public License apply() {
-        this.innerObject = serviceManager.serviceClient()
-            .getLicenses()
-            .update(resourceGroupName, licenseName, updateParameters, Context.NONE);
-        return this;
+        return this.apply(Context.NONE);
     }
 
     public License apply(Context context) {
@@ -143,16 +137,16 @@ public final class LicenseImpl implements License, License.Definition, License.U
     LicenseImpl(LicenseInner innerObject, com.azure.resourcemanager.hybridcompute.HybridComputeManager serviceManager) {
         this.innerObject = innerObject;
         this.serviceManager = serviceManager;
-        this.resourceGroupName = ResourceManagerUtils.getValueFromIdByName(innerObject.id(), "resourceGroups");
-        this.licenseName = ResourceManagerUtils.getValueFromIdByName(innerObject.id(), "licenses");
+        this.resourceGroupName = ResourceManagerUtils.getValueFromIdByParameterName(innerObject.id(),
+            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.HybridCompute/licenses/{licenseName}",
+            "resourceGroupName");
+        this.licenseName = ResourceManagerUtils.getValueFromIdByParameterName(innerObject.id(),
+            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.HybridCompute/licenses/{licenseName}",
+            "licenseName");
     }
 
     public License refresh() {
-        this.innerObject = serviceManager.serviceClient()
-            .getLicenses()
-            .getByResourceGroupWithResponse(resourceGroupName, licenseName, Context.NONE)
-            .getValue();
-        return this;
+        return this.refresh(Context.NONE);
     }
 
     public License refresh(Context context) {

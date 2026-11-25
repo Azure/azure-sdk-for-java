@@ -91,10 +91,7 @@ public final class DeidServiceImpl implements DeidService, DeidService.Definitio
     }
 
     public DeidService create() {
-        this.innerObject = serviceManager.serviceClient()
-            .getDeidServices()
-            .create(resourceGroupName, deidServiceName, this.innerModel(), Context.NONE);
-        return this;
+        return this.create(Context.NONE);
     }
 
     public DeidService create(Context context) {
@@ -117,10 +114,7 @@ public final class DeidServiceImpl implements DeidService, DeidService.Definitio
     }
 
     public DeidService apply() {
-        this.innerObject = serviceManager.serviceClient()
-            .getDeidServices()
-            .update(resourceGroupName, deidServiceName, updateProperties, Context.NONE);
-        return this;
+        return this.apply(Context.NONE);
     }
 
     public DeidService apply(Context context) {
@@ -134,16 +128,16 @@ public final class DeidServiceImpl implements DeidService, DeidService.Definitio
         com.azure.resourcemanager.healthdataaiservices.HealthDataAIServicesManager serviceManager) {
         this.innerObject = innerObject;
         this.serviceManager = serviceManager;
-        this.resourceGroupName = ResourceManagerUtils.getValueFromIdByName(innerObject.id(), "resourceGroups");
-        this.deidServiceName = ResourceManagerUtils.getValueFromIdByName(innerObject.id(), "deidServices");
+        this.resourceGroupName = ResourceManagerUtils.getValueFromIdByParameterName(innerObject.id(),
+            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.HealthDataAIServices/deidServices/{deidServiceName}",
+            "resourceGroupName");
+        this.deidServiceName = ResourceManagerUtils.getValueFromIdByParameterName(innerObject.id(),
+            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.HealthDataAIServices/deidServices/{deidServiceName}",
+            "deidServiceName");
     }
 
     public DeidService refresh() {
-        this.innerObject = serviceManager.serviceClient()
-            .getDeidServices()
-            .getByResourceGroupWithResponse(resourceGroupName, deidServiceName, Context.NONE)
-            .getValue();
-        return this;
+        return this.refresh(Context.NONE);
     }
 
     public DeidService refresh(Context context) {

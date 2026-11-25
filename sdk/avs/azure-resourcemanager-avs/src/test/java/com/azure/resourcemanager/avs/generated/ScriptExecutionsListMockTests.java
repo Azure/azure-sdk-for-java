@@ -22,7 +22,7 @@ public final class ScriptExecutionsListMockTests {
     @Test
     public void testList() throws Exception {
         String responseStr
-            = "{\"value\":[{\"properties\":{\"scriptCmdletId\":\"ijkgqxnhm\",\"parameters\":[{\"type\":\"ScriptExecutionParameter\",\"name\":\"znj\"},{\"type\":\"ScriptExecutionParameter\",\"name\":\"ujvaannggi\"}],\"hiddenParameters\":[{\"type\":\"ScriptExecutionParameter\",\"name\":\"kdtaaw\"},{\"type\":\"ScriptExecutionParameter\",\"name\":\"wfekaumrrqmb\"},{\"type\":\"ScriptExecutionParameter\",\"name\":\"mqkra\"}],\"failureReason\":\"nxwbjsidbirkfp\",\"timeout\":\"sokdgoge\",\"retention\":\"jymrhbg\",\"submittedAt\":\"2021-09-10T17:22:19Z\",\"startedAt\":\"2021-06-13T01:32:21Z\",\"finishedAt\":\"2021-08-10T16:12:14Z\",\"provisioningState\":\"Pending\",\"output\":[\"zhhh\",\"o\"],\"namedOutputs\":{\"g\":\"datafjkutycyarnroo\",\"ocnhzqrottjzcfyj\":\"dataabzoghktdpyczhco\",\"rl\":\"datapt\",\"pqinf\":\"datah\"},\"information\":[\"yglqdhmrjzral\",\"xpjb\",\"ypsjoq\",\"jenkyh\"],\"warnings\":[\"vsqxfxjelgcmpzqj\"],\"errors\":[\"qxuwyvca\"]},\"id\":\"yv\",\"name\":\"vbsizusjszlbscm\",\"type\":\"lzijiufehgmvflnw\"}]}";
+            = "{\"value\":[{\"properties\":{\"scriptCmdletId\":\"egxyivpinbmhwbji\",\"parameters\":[{\"type\":\"ScriptExecutionParameter\",\"name\":\"qxnhmb\"},{\"type\":\"ScriptExecutionParameter\",\"name\":\"eznjaujv\"},{\"type\":\"ScriptExecutionParameter\",\"name\":\"annggiy\"}],\"hiddenParameters\":[{\"type\":\"ScriptExecutionParameter\",\"name\":\"dtaawxwf\"},{\"type\":\"ScriptExecutionParameter\",\"name\":\"ka\"}],\"failureReason\":\"rrqmbzmqk\",\"timeout\":\"atbnxwbj\",\"retention\":\"dbirkfpksokdgo\",\"submittedAt\":\"2021-02-18T03:41:50Z\",\"startedAt\":\"2021-11-12T09:39:06Z\",\"finishedAt\":\"2021-04-23T14:24:18Z\",\"provisioningState\":\"Canceled\",\"output\":[\"u\",\"ozkyewnfnzh\",\"hqosmf\"],\"namedOutputs\":{\"oghktdpycz\":\"\\\"datautycyarnroohguab\\\"\",\"cnhz\":\"\\\"datacoe\\\"\",\"lohap\":\"\\\"datarottjzcfyjzptw\\\"\",\"yglqdhmrjzral\":\"\\\"datainfsz\\\"\"},\"information\":[\"jb\"],\"warnings\":[\"sjoqcjenkyhfqzvs\",\"xfxjelgcmpzqj\",\"hhqxuwyvcacoyviv\"],\"errors\":[\"zusjsz\"]},\"id\":\"scmnlziji\",\"name\":\"fehgmv\",\"type\":\"lnwyvqkxr\"}]}";
 
         HttpClient httpClient
             = response -> Mono.just(new MockHttpResponse(response, 200, responseStr.getBytes(StandardCharsets.UTF_8)));
@@ -32,14 +32,14 @@ public final class ScriptExecutionsListMockTests {
                 new AzureProfile("", "", AzureCloud.AZURE_PUBLIC_CLOUD));
 
         PagedIterable<ScriptExecution> response
-            = manager.scriptExecutions().list("iv", "inbmh", com.azure.core.util.Context.NONE);
+            = manager.scriptExecutions().list("mr", "ad", com.azure.core.util.Context.NONE);
 
-        Assertions.assertEquals("ijkgqxnhm", response.iterator().next().scriptCmdletId());
-        Assertions.assertEquals("znj", response.iterator().next().parameters().get(0).name());
-        Assertions.assertEquals("kdtaaw", response.iterator().next().hiddenParameters().get(0).name());
-        Assertions.assertEquals("nxwbjsidbirkfp", response.iterator().next().failureReason());
-        Assertions.assertEquals("sokdgoge", response.iterator().next().timeout());
-        Assertions.assertEquals("jymrhbg", response.iterator().next().retention());
-        Assertions.assertEquals("zhhh", response.iterator().next().output().get(0));
+        Assertions.assertEquals("egxyivpinbmhwbji", response.iterator().next().scriptCmdletId());
+        Assertions.assertEquals("qxnhmb", response.iterator().next().parameters().get(0).name());
+        Assertions.assertEquals("dtaawxwf", response.iterator().next().hiddenParameters().get(0).name());
+        Assertions.assertEquals("rrqmbzmqk", response.iterator().next().failureReason());
+        Assertions.assertEquals("atbnxwbj", response.iterator().next().timeout());
+        Assertions.assertEquals("dbirkfpksokdgo", response.iterator().next().retention());
+        Assertions.assertEquals("u", response.iterator().next().output().get(0));
     }
 }

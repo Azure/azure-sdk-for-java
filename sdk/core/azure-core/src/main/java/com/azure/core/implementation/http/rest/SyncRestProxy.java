@@ -145,7 +145,9 @@ public class SyncRestProxy extends RestProxyBase {
                 response.getSourceResponse().close();
                 return createResponse(response, entityType, null);
             } else {
-                Object bodyAsObject = handleBodyReturnType(response, methodParser, bodyType);
+                Object bodyAsObject = TypeUtil.isTypeOrSubTypeOf(bodyType, BinaryData.class)
+                    ? getOwnedResponseBody(response.getSourceResponse())
+                    : handleBodyReturnType(response, methodParser, bodyType);
                 Response<?> httpResponse = createResponse(response, entityType, bodyAsObject);
                 if (httpResponse == null) {
                     return createResponse(response, entityType, null);

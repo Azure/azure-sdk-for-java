@@ -68,10 +68,7 @@ public final class FirewallRuleImpl implements FirewallRule, FirewallRule.Defini
     }
 
     public FirewallRule create() {
-        this.innerObject = serviceManager.serviceClient()
-            .getFirewallRules()
-            .createOrUpdate(resourceGroupName, clusterName, firewallRuleName, this.innerModel(), Context.NONE);
-        return this;
+        return this.create(Context.NONE);
     }
 
     public FirewallRule create(Context context) {
@@ -93,10 +90,7 @@ public final class FirewallRuleImpl implements FirewallRule, FirewallRule.Defini
     }
 
     public FirewallRule apply() {
-        this.innerObject = serviceManager.serviceClient()
-            .getFirewallRules()
-            .createOrUpdate(resourceGroupName, clusterName, firewallRuleName, this.innerModel(), Context.NONE);
-        return this;
+        return this.apply(Context.NONE);
     }
 
     public FirewallRule apply(Context context) {
@@ -110,17 +104,19 @@ public final class FirewallRuleImpl implements FirewallRule, FirewallRule.Defini
         com.azure.resourcemanager.cosmosdbforpostgresql.CosmosDBForPostgreSqlManager serviceManager) {
         this.innerObject = innerObject;
         this.serviceManager = serviceManager;
-        this.resourceGroupName = ResourceManagerUtils.getValueFromIdByName(innerObject.id(), "resourceGroups");
-        this.clusterName = ResourceManagerUtils.getValueFromIdByName(innerObject.id(), "serverGroupsv2");
-        this.firewallRuleName = ResourceManagerUtils.getValueFromIdByName(innerObject.id(), "firewallRules");
+        this.resourceGroupName = ResourceManagerUtils.getValueFromIdByParameterName(innerObject.id(),
+            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.DBforPostgreSQL/serverGroupsv2/{clusterName}/firewallRules/{firewallRuleName}",
+            "resourceGroupName");
+        this.clusterName = ResourceManagerUtils.getValueFromIdByParameterName(innerObject.id(),
+            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.DBforPostgreSQL/serverGroupsv2/{clusterName}/firewallRules/{firewallRuleName}",
+            "clusterName");
+        this.firewallRuleName = ResourceManagerUtils.getValueFromIdByParameterName(innerObject.id(),
+            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.DBforPostgreSQL/serverGroupsv2/{clusterName}/firewallRules/{firewallRuleName}",
+            "firewallRuleName");
     }
 
     public FirewallRule refresh() {
-        this.innerObject = serviceManager.serviceClient()
-            .getFirewallRules()
-            .getWithResponse(resourceGroupName, clusterName, firewallRuleName, Context.NONE)
-            .getValue();
-        return this;
+        return this.refresh(Context.NONE);
     }
 
     public FirewallRule refresh(Context context) {

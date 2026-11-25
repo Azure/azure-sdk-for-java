@@ -150,28 +150,14 @@ public final class CopilotSettingsClientImpl implements CopilotSettingsClient {
         return getWithResponseAsync().flatMap(res -> Mono.justOrEmpty(res.getValue()));
     }
 
-    /**
-     * Get a CopilotSettingsResource.
-     * 
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return a CopilotSettingsResource along with {@link Response}.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Response<CopilotSettingsResourceInner> getWithResponse(Context context) {
         final String accept = "application/json";
         return service.getSync(this.client.getEndpoint(), this.client.getApiVersion(), accept, context);
     }
 
-    /**
-     * Get a CopilotSettingsResource.
-     * 
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return a CopilotSettingsResource.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public CopilotSettingsResourceInner get() {
         return getWithResponse(Context.NONE).getValue();
@@ -212,16 +198,7 @@ public final class CopilotSettingsClientImpl implements CopilotSettingsClient {
         return createOrUpdateWithResponseAsync(resource).flatMap(res -> Mono.justOrEmpty(res.getValue()));
     }
 
-    /**
-     * Create a CopilotSettingsResource.
-     * 
-     * @param resource Resource create parameters.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the copilot settings tenant resource definition along with {@link Response}.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Response<CopilotSettingsResourceInner> createOrUpdateWithResponse(CopilotSettingsResourceInner resource,
         Context context) {
@@ -231,15 +208,7 @@ public final class CopilotSettingsClientImpl implements CopilotSettingsClient {
             resource, context);
     }
 
-    /**
-     * Create a CopilotSettingsResource.
-     * 
-     * @param resource Resource create parameters.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the copilot settings tenant resource definition.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public CopilotSettingsResourceInner createOrUpdate(CopilotSettingsResourceInner resource) {
         return createOrUpdateWithResponse(resource, Context.NONE).getValue();
@@ -280,16 +249,7 @@ public final class CopilotSettingsClientImpl implements CopilotSettingsClient {
         return updateWithResponseAsync(properties).flatMap(res -> Mono.justOrEmpty(res.getValue()));
     }
 
-    /**
-     * Update a CopilotSettingsResource.
-     * 
-     * @param properties The resource properties to be updated.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the copilot settings tenant resource definition along with {@link Response}.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Response<CopilotSettingsResourceInner> updateWithResponse(CopilotSettingsResourceUpdate properties,
         Context context) {
@@ -299,15 +259,7 @@ public final class CopilotSettingsClientImpl implements CopilotSettingsClient {
             properties, context);
     }
 
-    /**
-     * Update a CopilotSettingsResource.
-     * 
-     * @param properties The resource properties to be updated.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the copilot settings tenant resource definition.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public CopilotSettingsResourceInner update(CopilotSettingsResourceUpdate properties) {
         return updateWithResponse(properties, Context.NONE).getValue();
@@ -339,26 +291,13 @@ public final class CopilotSettingsClientImpl implements CopilotSettingsClient {
         return deleteWithResponseAsync().flatMap(ignored -> Mono.empty());
     }
 
-    /**
-     * Delete a CopilotSettingsResource.
-     * 
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the {@link Response}.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Response<Void> deleteWithResponse(Context context) {
         return service.deleteSync(this.client.getEndpoint(), this.client.getApiVersion(), context);
     }
 
-    /**
-     * Delete a CopilotSettingsResource.
-     * 
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public void delete() {
         deleteWithResponse(Context.NONE);

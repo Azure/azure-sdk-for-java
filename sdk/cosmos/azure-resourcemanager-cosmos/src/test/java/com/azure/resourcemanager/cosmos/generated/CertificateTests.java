@@ -11,14 +11,14 @@ import org.junit.jupiter.api.Assertions;
 public final class CertificateTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
-        Certificate model = BinaryData.fromString("{\"pem\":\"aj\"}").toObject(Certificate.class);
-        Assertions.assertEquals("aj", model.pem());
+        Certificate model = BinaryData.fromString("{\"pem\":\"kqiyvnd\"}").toObject(Certificate.class);
+        Assertions.assertEquals("kqiyvnd", model.pem());
     }
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
-        Certificate model = new Certificate().withPem("aj");
+        Certificate model = new Certificate().withPem("kqiyvnd");
         model = BinaryData.fromObject(model).toObject(Certificate.class);
-        Assertions.assertEquals("aj", model.pem());
+        Assertions.assertEquals("kqiyvnd", model.pem());
     }
 }

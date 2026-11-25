@@ -9,7 +9,7 @@ package com.azure.resourcemanager.enclave.generated;
  */
 public final class ApprovalGetSamples {
     /*
-     * x-ms-original-file: 2026-03-01-preview/Approvals_Get.json
+     * x-ms-original-file: 2026-04-01/Approvals_Get.json
      */
     /**
      * Sample code: Approval_Get.

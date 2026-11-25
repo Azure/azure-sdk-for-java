@@ -139,21 +139,7 @@ public final class CapacityReservationsClientImpl implements CapacityReservation
             @HeaderParam("Accept") String accept, Context context);
     }
 
-    /**
-     * The operation that retrieves information about the capacity reservation.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param capacityReservationGroupName The name of the capacity reservation group.
-     * @param capacityReservationName The name of the capacity reservation.
-     * @param expand The expand expression to apply on the operation. 'InstanceView' retrieves a snapshot of the runtime
-     * properties of the capacity reservation that is managed by the platform and can change outside of control plane
-     * operations.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ApiErrorException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return specifies information about the capacity reservation along with {@link Response} on successful completion
-     * of {@link Mono}.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Response<CapacityReservationInner>> getWithResponseAsync(String resourceGroupName,
         String capacityReservationGroupName, String capacityReservationName,
@@ -178,7 +164,7 @@ public final class CapacityReservationsClientImpl implements CapacityReservation
             return Mono.error(
                 new IllegalArgumentException("Parameter capacityReservationName is required and cannot be null."));
         }
-        final String apiVersion = "2026-03-01";
+        final String apiVersion = "2026-04-01";
         final String accept = "application/json";
         return FluxUtil
             .withContext(context -> service.get(this.client.getEndpoint(), apiVersion, this.client.getSubscriptionId(),
@@ -226,24 +212,14 @@ public final class CapacityReservationsClientImpl implements CapacityReservation
             return Mono.error(
                 new IllegalArgumentException("Parameter capacityReservationName is required and cannot be null."));
         }
-        final String apiVersion = "2026-03-01";
+        final String apiVersion = "2026-04-01";
         final String accept = "application/json";
         context = this.client.mergeContext(context);
         return service.get(this.client.getEndpoint(), apiVersion, this.client.getSubscriptionId(), resourceGroupName,
             capacityReservationGroupName, capacityReservationName, expand, accept, context);
     }
 
-    /**
-     * The operation that retrieves information about the capacity reservation.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param capacityReservationGroupName The name of the capacity reservation group.
-     * @param capacityReservationName The name of the capacity reservation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ApiErrorException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return specifies information about the capacity reservation on successful completion of {@link Mono}.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<CapacityReservationInner> getAsync(String resourceGroupName, String capacityReservationGroupName,
         String capacityReservationName) {
@@ -252,21 +228,7 @@ public final class CapacityReservationsClientImpl implements CapacityReservation
             .flatMap(res -> Mono.justOrEmpty(res.getValue()));
     }
 
-    /**
-     * The operation that retrieves information about the capacity reservation.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param capacityReservationGroupName The name of the capacity reservation group.
-     * @param capacityReservationName The name of the capacity reservation.
-     * @param expand The expand expression to apply on the operation. 'InstanceView' retrieves a snapshot of the runtime
-     * properties of the capacity reservation that is managed by the platform and can change outside of control plane
-     * operations.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ApiErrorException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return specifies information about the capacity reservation along with {@link Response}.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Response<CapacityReservationInner> getWithResponse(String resourceGroupName,
         String capacityReservationGroupName, String capacityReservationName,
@@ -275,17 +237,7 @@ public final class CapacityReservationsClientImpl implements CapacityReservation
             context).block();
     }
 
-    /**
-     * The operation that retrieves information about the capacity reservation.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param capacityReservationGroupName The name of the capacity reservation group.
-     * @param capacityReservationName The name of the capacity reservation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ApiErrorException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return specifies information about the capacity reservation.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public CapacityReservationInner get(String resourceGroupName, String capacityReservationGroupName,
         String capacityReservationName) {
@@ -294,20 +246,7 @@ public final class CapacityReservationsClientImpl implements CapacityReservation
             Context.NONE).getValue();
     }
 
-    /**
-     * The operation to create or update a capacity reservation. Please note some properties can be set only during
-     * capacity reservation creation. Please refer to https://aka.ms/CapacityReservation for more details.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param capacityReservationGroupName The name of the capacity reservation group.
-     * @param capacityReservationName The name of the capacity reservation.
-     * @param parameters Parameters supplied to the Create capacity reservation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ApiErrorException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return specifies information about the capacity reservation along with {@link Response} on successful completion
-     * of {@link Mono}.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Response<Flux<ByteBuffer>>> createOrUpdateWithResponseAsync(String resourceGroupName,
         String capacityReservationGroupName, String capacityReservationName, CapacityReservationInner parameters) {
@@ -336,7 +275,7 @@ public final class CapacityReservationsClientImpl implements CapacityReservation
         } else {
             parameters.validate();
         }
-        final String apiVersion = "2026-03-01";
+        final String apiVersion = "2026-04-01";
         final String contentType = "application/json";
         final String accept = "application/json";
         return FluxUtil
@@ -390,7 +329,7 @@ public final class CapacityReservationsClientImpl implements CapacityReservation
         } else {
             parameters.validate();
         }
-        final String apiVersion = "2026-03-01";
+        final String apiVersion = "2026-04-01";
         final String contentType = "application/json";
         final String accept = "application/json";
         context = this.client.mergeContext(context);
@@ -399,19 +338,7 @@ public final class CapacityReservationsClientImpl implements CapacityReservation
             context);
     }
 
-    /**
-     * The operation to create or update a capacity reservation. Please note some properties can be set only during
-     * capacity reservation creation. Please refer to https://aka.ms/CapacityReservation for more details.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param capacityReservationGroupName The name of the capacity reservation group.
-     * @param capacityReservationName The name of the capacity reservation.
-     * @param parameters Parameters supplied to the Create capacity reservation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ApiErrorException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the {@link PollerFlux} for polling of specifies information about the capacity reservation.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public PollerFlux<PollResult<CapacityReservationInner>, CapacityReservationInner> beginCreateOrUpdateAsync(
         String resourceGroupName, String capacityReservationGroupName, String capacityReservationName,
@@ -448,19 +375,7 @@ public final class CapacityReservationsClientImpl implements CapacityReservation
             this.client.getHttpPipeline(), CapacityReservationInner.class, CapacityReservationInner.class, context);
     }
 
-    /**
-     * The operation to create or update a capacity reservation. Please note some properties can be set only during
-     * capacity reservation creation. Please refer to https://aka.ms/CapacityReservation for more details.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param capacityReservationGroupName The name of the capacity reservation group.
-     * @param capacityReservationName The name of the capacity reservation.
-     * @param parameters Parameters supplied to the Create capacity reservation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ApiErrorException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the {@link SyncPoller} for polling of specifies information about the capacity reservation.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public SyncPoller<PollResult<CapacityReservationInner>, CapacityReservationInner> beginCreateOrUpdate(
         String resourceGroupName, String capacityReservationGroupName, String capacityReservationName,
@@ -471,20 +386,7 @@ public final class CapacityReservationsClientImpl implements CapacityReservation
             .getSyncPoller();
     }
 
-    /**
-     * The operation to create or update a capacity reservation. Please note some properties can be set only during
-     * capacity reservation creation. Please refer to https://aka.ms/CapacityReservation for more details.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param capacityReservationGroupName The name of the capacity reservation group.
-     * @param capacityReservationName The name of the capacity reservation.
-     * @param parameters Parameters supplied to the Create capacity reservation.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ApiErrorException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the {@link SyncPoller} for polling of specifies information about the capacity reservation.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public SyncPoller<PollResult<CapacityReservationInner>, CapacityReservationInner> beginCreateOrUpdate(
         String resourceGroupName, String capacityReservationGroupName, String capacityReservationName,
@@ -495,19 +397,7 @@ public final class CapacityReservationsClientImpl implements CapacityReservation
             .getSyncPoller();
     }
 
-    /**
-     * The operation to create or update a capacity reservation. Please note some properties can be set only during
-     * capacity reservation creation. Please refer to https://aka.ms/CapacityReservation for more details.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param capacityReservationGroupName The name of the capacity reservation group.
-     * @param capacityReservationName The name of the capacity reservation.
-     * @param parameters Parameters supplied to the Create capacity reservation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ApiErrorException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return specifies information about the capacity reservation on successful completion of {@link Mono}.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<CapacityReservationInner> createOrUpdateAsync(String resourceGroupName,
         String capacityReservationGroupName, String capacityReservationName, CapacityReservationInner parameters) {
@@ -537,19 +427,7 @@ public final class CapacityReservationsClientImpl implements CapacityReservation
             parameters, context).last().flatMap(this.client::getLroFinalResultOrError);
     }
 
-    /**
-     * The operation to create or update a capacity reservation. Please note some properties can be set only during
-     * capacity reservation creation. Please refer to https://aka.ms/CapacityReservation for more details.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param capacityReservationGroupName The name of the capacity reservation group.
-     * @param capacityReservationName The name of the capacity reservation.
-     * @param parameters Parameters supplied to the Create capacity reservation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ApiErrorException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return specifies information about the capacity reservation.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public CapacityReservationInner createOrUpdate(String resourceGroupName, String capacityReservationGroupName,
         String capacityReservationName, CapacityReservationInner parameters) {
@@ -557,20 +435,7 @@ public final class CapacityReservationsClientImpl implements CapacityReservation
             .block();
     }
 
-    /**
-     * The operation to create or update a capacity reservation. Please note some properties can be set only during
-     * capacity reservation creation. Please refer to https://aka.ms/CapacityReservation for more details.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param capacityReservationGroupName The name of the capacity reservation group.
-     * @param capacityReservationName The name of the capacity reservation.
-     * @param parameters Parameters supplied to the Create capacity reservation.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ApiErrorException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return specifies information about the capacity reservation.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public CapacityReservationInner createOrUpdate(String resourceGroupName, String capacityReservationGroupName,
         String capacityReservationName, CapacityReservationInner parameters, Context context) {
@@ -578,19 +443,7 @@ public final class CapacityReservationsClientImpl implements CapacityReservation
             context).block();
     }
 
-    /**
-     * The operation to update a capacity reservation.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param capacityReservationGroupName The name of the capacity reservation group.
-     * @param capacityReservationName The name of the capacity reservation.
-     * @param parameters Parameters supplied to the Update capacity reservation operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ApiErrorException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return specifies information about the capacity reservation along with {@link Response} on successful completion
-     * of {@link Mono}.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Response<Flux<ByteBuffer>>> updateWithResponseAsync(String resourceGroupName,
         String capacityReservationGroupName, String capacityReservationName, CapacityReservationUpdate parameters) {
@@ -619,7 +472,7 @@ public final class CapacityReservationsClientImpl implements CapacityReservation
         } else {
             parameters.validate();
         }
-        final String apiVersion = "2026-03-01";
+        final String apiVersion = "2026-04-01";
         final String contentType = "application/json";
         final String accept = "application/json";
         return FluxUtil
@@ -672,7 +525,7 @@ public final class CapacityReservationsClientImpl implements CapacityReservation
         } else {
             parameters.validate();
         }
-        final String apiVersion = "2026-03-01";
+        final String apiVersion = "2026-04-01";
         final String contentType = "application/json";
         final String accept = "application/json";
         context = this.client.mergeContext(context);
@@ -680,18 +533,7 @@ public final class CapacityReservationsClientImpl implements CapacityReservation
             capacityReservationGroupName, capacityReservationName, contentType, accept, parameters, context);
     }
 
-    /**
-     * The operation to update a capacity reservation.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param capacityReservationGroupName The name of the capacity reservation group.
-     * @param capacityReservationName The name of the capacity reservation.
-     * @param parameters Parameters supplied to the Update capacity reservation operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ApiErrorException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the {@link PollerFlux} for polling of specifies information about the capacity reservation.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public PollerFlux<PollResult<CapacityReservationInner>, CapacityReservationInner> beginUpdateAsync(
         String resourceGroupName, String capacityReservationGroupName, String capacityReservationName,
@@ -727,18 +569,7 @@ public final class CapacityReservationsClientImpl implements CapacityReservation
             this.client.getHttpPipeline(), CapacityReservationInner.class, CapacityReservationInner.class, context);
     }
 
-    /**
-     * The operation to update a capacity reservation.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param capacityReservationGroupName The name of the capacity reservation group.
-     * @param capacityReservationName The name of the capacity reservation.
-     * @param parameters Parameters supplied to the Update capacity reservation operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ApiErrorException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the {@link SyncPoller} for polling of specifies information about the capacity reservation.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public SyncPoller<PollResult<CapacityReservationInner>, CapacityReservationInner> beginUpdate(
         String resourceGroupName, String capacityReservationGroupName, String capacityReservationName,
@@ -748,19 +579,7 @@ public final class CapacityReservationsClientImpl implements CapacityReservation
             .getSyncPoller();
     }
 
-    /**
-     * The operation to update a capacity reservation.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param capacityReservationGroupName The name of the capacity reservation group.
-     * @param capacityReservationName The name of the capacity reservation.
-     * @param parameters Parameters supplied to the Update capacity reservation operation.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ApiErrorException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the {@link SyncPoller} for polling of specifies information about the capacity reservation.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public SyncPoller<PollResult<CapacityReservationInner>, CapacityReservationInner> beginUpdate(
         String resourceGroupName, String capacityReservationGroupName, String capacityReservationName,
@@ -771,18 +590,7 @@ public final class CapacityReservationsClientImpl implements CapacityReservation
             .getSyncPoller();
     }
 
-    /**
-     * The operation to update a capacity reservation.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param capacityReservationGroupName The name of the capacity reservation group.
-     * @param capacityReservationName The name of the capacity reservation.
-     * @param parameters Parameters supplied to the Update capacity reservation operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ApiErrorException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return specifies information about the capacity reservation on successful completion of {@link Mono}.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<CapacityReservationInner> updateAsync(String resourceGroupName, String capacityReservationGroupName,
         String capacityReservationName, CapacityReservationUpdate parameters) {
@@ -811,18 +619,7 @@ public final class CapacityReservationsClientImpl implements CapacityReservation
             context).last().flatMap(this.client::getLroFinalResultOrError);
     }
 
-    /**
-     * The operation to update a capacity reservation.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param capacityReservationGroupName The name of the capacity reservation group.
-     * @param capacityReservationName The name of the capacity reservation.
-     * @param parameters Parameters supplied to the Update capacity reservation operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ApiErrorException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return specifies information about the capacity reservation.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public CapacityReservationInner update(String resourceGroupName, String capacityReservationGroupName,
         String capacityReservationName, CapacityReservationUpdate parameters) {
@@ -830,19 +627,7 @@ public final class CapacityReservationsClientImpl implements CapacityReservation
             .block();
     }
 
-    /**
-     * The operation to update a capacity reservation.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param capacityReservationGroupName The name of the capacity reservation group.
-     * @param capacityReservationName The name of the capacity reservation.
-     * @param parameters Parameters supplied to the Update capacity reservation operation.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ApiErrorException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return specifies information about the capacity reservation.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public CapacityReservationInner update(String resourceGroupName, String capacityReservationGroupName,
         String capacityReservationName, CapacityReservationUpdate parameters, Context context) {
@@ -850,20 +635,7 @@ public final class CapacityReservationsClientImpl implements CapacityReservation
             context).block();
     }
 
-    /**
-     * The operation to delete a capacity reservation. This operation is allowed only when all the associated resources
-     * are disassociated from the capacity reservation. Please refer to https://aka.ms/CapacityReservation for more
-     * details. Note: Block capacity reservations cannot be deleted after it has been successfully allocated until the
-     * schedule end time.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param capacityReservationGroupName The name of the capacity reservation group.
-     * @param capacityReservationName The name of the capacity reservation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ApiErrorException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the {@link Response} on successful completion of {@link Mono}.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Response<Flux<ByteBuffer>>> deleteWithResponseAsync(String resourceGroupName,
         String capacityReservationGroupName, String capacityReservationName) {
@@ -887,7 +659,7 @@ public final class CapacityReservationsClientImpl implements CapacityReservation
             return Mono.error(
                 new IllegalArgumentException("Parameter capacityReservationName is required and cannot be null."));
         }
-        final String apiVersion = "2026-03-01";
+        final String apiVersion = "2026-04-01";
         return FluxUtil
             .withContext(
                 context -> service.delete(this.client.getEndpoint(), apiVersion, this.client.getSubscriptionId(),
@@ -898,8 +670,11 @@ public final class CapacityReservationsClientImpl implements CapacityReservation
     /**
      * The operation to delete a capacity reservation. This operation is allowed only when all the associated resources
      * are disassociated from the capacity reservation. Please refer to https://aka.ms/CapacityReservation for more
-     * details. Note: Block capacity reservations cannot be deleted after it has been successfully allocated until the
-     * schedule end time.
+     * details. Note: Block capacity reservations cannot be deleted after they have been successfully allocated until
+     * the schedule end time. Future capacity reservations (Minimum API version: 2026-04-01) can be deleted if their
+     * reservation state is one of: Pending, Declined, FulfillmentFailed, or Approved. Otherwise, Future capacity
+     * reservations in the Committed, Live, or PartiallyFulfilled state cannot be deleted until minimumCommitmentDays
+     * have elapsed since their scheduled start date.
      * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param capacityReservationGroupName The name of the capacity reservation group.
@@ -933,26 +708,13 @@ public final class CapacityReservationsClientImpl implements CapacityReservation
             return Mono.error(
                 new IllegalArgumentException("Parameter capacityReservationName is required and cannot be null."));
         }
-        final String apiVersion = "2026-03-01";
+        final String apiVersion = "2026-04-01";
         context = this.client.mergeContext(context);
         return service.delete(this.client.getEndpoint(), apiVersion, this.client.getSubscriptionId(), resourceGroupName,
             capacityReservationGroupName, capacityReservationName, context);
     }
 
-    /**
-     * The operation to delete a capacity reservation. This operation is allowed only when all the associated resources
-     * are disassociated from the capacity reservation. Please refer to https://aka.ms/CapacityReservation for more
-     * details. Note: Block capacity reservations cannot be deleted after it has been successfully allocated until the
-     * schedule end time.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param capacityReservationGroupName The name of the capacity reservation group.
-     * @param capacityReservationName The name of the capacity reservation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ApiErrorException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the {@link PollerFlux} for polling of long-running operation.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public PollerFlux<PollResult<Void>, Void> beginDeleteAsync(String resourceGroupName,
         String capacityReservationGroupName, String capacityReservationName) {
@@ -965,8 +727,11 @@ public final class CapacityReservationsClientImpl implements CapacityReservation
     /**
      * The operation to delete a capacity reservation. This operation is allowed only when all the associated resources
      * are disassociated from the capacity reservation. Please refer to https://aka.ms/CapacityReservation for more
-     * details. Note: Block capacity reservations cannot be deleted after it has been successfully allocated until the
-     * schedule end time.
+     * details. Note: Block capacity reservations cannot be deleted after they have been successfully allocated until
+     * the schedule end time. Future capacity reservations (Minimum API version: 2026-04-01) can be deleted if their
+     * reservation state is one of: Pending, Declined, FulfillmentFailed, or Approved. Otherwise, Future capacity
+     * reservations in the Committed, Live, or PartiallyFulfilled state cannot be deleted until minimumCommitmentDays
+     * have elapsed since their scheduled start date.
      * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param capacityReservationGroupName The name of the capacity reservation group.
@@ -987,20 +752,7 @@ public final class CapacityReservationsClientImpl implements CapacityReservation
             context);
     }
 
-    /**
-     * The operation to delete a capacity reservation. This operation is allowed only when all the associated resources
-     * are disassociated from the capacity reservation. Please refer to https://aka.ms/CapacityReservation for more
-     * details. Note: Block capacity reservations cannot be deleted after it has been successfully allocated until the
-     * schedule end time.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param capacityReservationGroupName The name of the capacity reservation group.
-     * @param capacityReservationName The name of the capacity reservation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ApiErrorException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the {@link SyncPoller} for polling of long-running operation.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public SyncPoller<PollResult<Void>, Void> beginDelete(String resourceGroupName, String capacityReservationGroupName,
         String capacityReservationName) {
@@ -1008,21 +760,7 @@ public final class CapacityReservationsClientImpl implements CapacityReservation
             .getSyncPoller();
     }
 
-    /**
-     * The operation to delete a capacity reservation. This operation is allowed only when all the associated resources
-     * are disassociated from the capacity reservation. Please refer to https://aka.ms/CapacityReservation for more
-     * details. Note: Block capacity reservations cannot be deleted after it has been successfully allocated until the
-     * schedule end time.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param capacityReservationGroupName The name of the capacity reservation group.
-     * @param capacityReservationName The name of the capacity reservation.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ApiErrorException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the {@link SyncPoller} for polling of long-running operation.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public SyncPoller<PollResult<Void>, Void> beginDelete(String resourceGroupName, String capacityReservationGroupName,
         String capacityReservationName, Context context) {
@@ -1030,20 +768,7 @@ public final class CapacityReservationsClientImpl implements CapacityReservation
             .getSyncPoller();
     }
 
-    /**
-     * The operation to delete a capacity reservation. This operation is allowed only when all the associated resources
-     * are disassociated from the capacity reservation. Please refer to https://aka.ms/CapacityReservation for more
-     * details. Note: Block capacity reservations cannot be deleted after it has been successfully allocated until the
-     * schedule end time.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param capacityReservationGroupName The name of the capacity reservation group.
-     * @param capacityReservationName The name of the capacity reservation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ApiErrorException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return A {@link Mono} that completes when a successful response is received.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Void> deleteAsync(String resourceGroupName, String capacityReservationGroupName,
         String capacityReservationName) {
@@ -1054,8 +779,11 @@ public final class CapacityReservationsClientImpl implements CapacityReservation
     /**
      * The operation to delete a capacity reservation. This operation is allowed only when all the associated resources
      * are disassociated from the capacity reservation. Please refer to https://aka.ms/CapacityReservation for more
-     * details. Note: Block capacity reservations cannot be deleted after it has been successfully allocated until the
-     * schedule end time.
+     * details. Note: Block capacity reservations cannot be deleted after they have been successfully allocated until
+     * the schedule end time. Future capacity reservations (Minimum API version: 2026-04-01) can be deleted if their
+     * reservation state is one of: Pending, Declined, FulfillmentFailed, or Approved. Otherwise, Future capacity
+     * reservations in the Committed, Live, or PartiallyFulfilled state cannot be deleted until minimumCommitmentDays
+     * have elapsed since their scheduled start date.
      * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param capacityReservationGroupName The name of the capacity reservation group.
@@ -1074,38 +802,13 @@ public final class CapacityReservationsClientImpl implements CapacityReservation
             .flatMap(this.client::getLroFinalResultOrError);
     }
 
-    /**
-     * The operation to delete a capacity reservation. This operation is allowed only when all the associated resources
-     * are disassociated from the capacity reservation. Please refer to https://aka.ms/CapacityReservation for more
-     * details. Note: Block capacity reservations cannot be deleted after it has been successfully allocated until the
-     * schedule end time.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param capacityReservationGroupName The name of the capacity reservation group.
-     * @param capacityReservationName The name of the capacity reservation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ApiErrorException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public void delete(String resourceGroupName, String capacityReservationGroupName, String capacityReservationName) {
         deleteAsync(resourceGroupName, capacityReservationGroupName, capacityReservationName).block();
     }
 
-    /**
-     * The operation to delete a capacity reservation. This operation is allowed only when all the associated resources
-     * are disassociated from the capacity reservation. Please refer to https://aka.ms/CapacityReservation for more
-     * details. Note: Block capacity reservations cannot be deleted after it has been successfully allocated until the
-     * schedule end time.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param capacityReservationGroupName The name of the capacity reservation group.
-     * @param capacityReservationName The name of the capacity reservation.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ApiErrorException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public void delete(String resourceGroupName, String capacityReservationGroupName, String capacityReservationName,
         Context context) {
@@ -1147,7 +850,7 @@ public final class CapacityReservationsClientImpl implements CapacityReservation
             return Mono.error(
                 new IllegalArgumentException("Parameter capacityReservationGroupName is required and cannot be null."));
         }
-        final String apiVersion = "2026-03-01";
+        final String apiVersion = "2026-04-01";
         final String accept = "application/json";
         return FluxUtil
             .withContext(context -> service.listByCapacityReservationGroup(this.client.getEndpoint(), apiVersion,
@@ -1194,7 +897,7 @@ public final class CapacityReservationsClientImpl implements CapacityReservation
             return Mono.error(
                 new IllegalArgumentException("Parameter capacityReservationGroupName is required and cannot be null."));
         }
-        final String apiVersion = "2026-03-01";
+        final String apiVersion = "2026-04-01";
         final String accept = "application/json";
         context = this.client.mergeContext(context);
         return service
@@ -1204,20 +907,7 @@ public final class CapacityReservationsClientImpl implements CapacityReservation
                 res.getValue().value(), res.getValue().nextLink(), null));
     }
 
-    /**
-     * Lists all of the capacity reservations in the specified capacity reservation group. Use the nextLink property in
-     * the response to get the next page of capacity reservations.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param capacityReservationGroupName The name of the capacity reservation group.
-     * @param expand The expand expression to apply on the operation. Based on the expand param(s) specified we return
-     * Virtual Machine or ScaleSet VM Instance or both resource Ids which are associated to capacity reservation group
-     * in the response.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ApiErrorException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the list capacity reservation operation response as paginated response with {@link PagedFlux}.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.COLLECTION)
     public PagedFlux<CapacityReservationInner> listByCapacityReservationGroupAsync(String resourceGroupName,
         String capacityReservationGroupName, ExpandTypesForGetCapacityReservationGroups expand) {
@@ -1226,17 +916,7 @@ public final class CapacityReservationsClientImpl implements CapacityReservation
             nextLink -> listByCapacityReservationGroupNextSinglePageAsync(nextLink));
     }
 
-    /**
-     * Lists all of the capacity reservations in the specified capacity reservation group. Use the nextLink property in
-     * the response to get the next page of capacity reservations.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param capacityReservationGroupName The name of the capacity reservation group.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ApiErrorException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the list capacity reservation operation response as paginated response with {@link PagedFlux}.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.COLLECTION)
     public PagedFlux<CapacityReservationInner> listByCapacityReservationGroupAsync(String resourceGroupName,
         String capacityReservationGroupName) {
@@ -1269,17 +949,7 @@ public final class CapacityReservationsClientImpl implements CapacityReservation
             nextLink -> listByCapacityReservationGroupNextSinglePageAsync(nextLink, context));
     }
 
-    /**
-     * Lists all of the capacity reservations in the specified capacity reservation group. Use the nextLink property in
-     * the response to get the next page of capacity reservations.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param capacityReservationGroupName The name of the capacity reservation group.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ApiErrorException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the list capacity reservation operation response as paginated response with {@link PagedIterable}.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.COLLECTION)
     public PagedIterable<CapacityReservationInner> listByCapacityReservationGroup(String resourceGroupName,
         String capacityReservationGroupName) {
@@ -1288,21 +958,7 @@ public final class CapacityReservationsClientImpl implements CapacityReservation
             listByCapacityReservationGroupAsync(resourceGroupName, capacityReservationGroupName, expand));
     }
 
-    /**
-     * Lists all of the capacity reservations in the specified capacity reservation group. Use the nextLink property in
-     * the response to get the next page of capacity reservations.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param capacityReservationGroupName The name of the capacity reservation group.
-     * @param expand The expand expression to apply on the operation. Based on the expand param(s) specified we return
-     * Virtual Machine or ScaleSet VM Instance or both resource Ids which are associated to capacity reservation group
-     * in the response.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ApiErrorException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the list capacity reservation operation response as paginated response with {@link PagedIterable}.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.COLLECTION)
     public PagedIterable<CapacityReservationInner> listByCapacityReservationGroup(String resourceGroupName,
         String capacityReservationGroupName, ExpandTypesForGetCapacityReservationGroups expand, Context context) {

@@ -12,11 +12,11 @@ public final class AzureWorkloadJobExtendedInfoTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
         AzureWorkloadJobExtendedInfo model = BinaryData.fromString(
-            "{\"tasksList\":[{\"taskId\":\"lejchcsr\",\"status\":\"knmzlanrupdwvnp\"},{\"taskId\":\"nzqtpjhmqrhvt\",\"status\":\"aiwdcxsmlzzhz\"}],\"propertyBag\":{\"b\":\"etlgydlhqvlnnpx\",\"gjekglklby\":\"fiqgeaar\",\"hj\":\"lidwcwvmzegjon\"},\"dynamicErrorMessage\":\"wgdnqzbr\"}")
+            "{\"tasksList\":[{\"taskId\":\"a\",\"status\":\"gvaknokzwjjzrl\"},{\"taskId\":\"xldzyyfytpqsix\",\"status\":\"m\"},{\"taskId\":\"jivyqlkjuv\",\"status\":\"bmslzoyov\"},{\"taskId\":\"dbpqvybefgvm\",\"status\":\"okcvtlubses\"}],\"propertyBag\":{\"ndzfqivjreuyk\":\"uartrhunlpiryky\"},\"dynamicErrorMessage\":\"mnwagltbxoe\"}")
             .toObject(AzureWorkloadJobExtendedInfo.class);
-        Assertions.assertEquals("lejchcsr", model.tasksList().get(0).taskId());
-        Assertions.assertEquals("knmzlanrupdwvnp", model.tasksList().get(0).status());
-        Assertions.assertEquals("etlgydlhqvlnnpx", model.propertyBag().get("b"));
-        Assertions.assertEquals("wgdnqzbr", model.dynamicErrorMessage());
+        Assertions.assertEquals("a", model.tasksList().get(0).taskId());
+        Assertions.assertEquals("gvaknokzwjjzrl", model.tasksList().get(0).status());
+        Assertions.assertEquals("uartrhunlpiryky", model.propertyBag().get("ndzfqivjreuyk"));
+        Assertions.assertEquals("mnwagltbxoe", model.dynamicErrorMessage());
     }
 }

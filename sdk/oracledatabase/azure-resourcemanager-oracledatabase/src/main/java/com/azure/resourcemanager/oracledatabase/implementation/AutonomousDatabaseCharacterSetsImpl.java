@@ -45,9 +45,7 @@ public final class AutonomousDatabaseCharacterSetsImpl implements AutonomousData
     }
 
     public PagedIterable<AutonomousDatabaseCharacterSet> listByLocation(String location) {
-        PagedIterable<AutonomousDatabaseCharacterSetInner> inner = this.serviceClient().listByLocation(location);
-        return ResourceManagerUtils.mapPage(inner,
-            inner1 -> new AutonomousDatabaseCharacterSetImpl(inner1, this.manager()));
+        return this.listByLocation(location, Context.NONE);
     }
 
     public PagedIterable<AutonomousDatabaseCharacterSet> listByLocation(String location, Context context) {

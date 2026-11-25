@@ -16,7 +16,12 @@ import java.util.List;
  * Properties of the Resiliency Drill Resource.
  */
 @Immutable
-public final class DrillResourceProperties implements JsonSerializable<DrillResourceProperties> {
+public class DrillResourceProperties implements JsonSerializable<DrillResourceProperties> {
+    /*
+     * The discriminator for the Drill Resource object hierarchy. Matches the parent Drill type.
+     */
+    private DrillType drillType = DrillType.fromString("DrillResourceProperties");
+
     /*
      * ARM Id of the underlying resource.
      */
@@ -36,16 +41,6 @@ public final class DrillResourceProperties implements JsonSerializable<DrillReso
      * List of recovery locations and zones of the Azure resource.
      */
     private List<String> recoveryLocations;
-
-    /*
-     * Active Resource location and physical zones of Azure Resource.
-     */
-    private List<String> activePhysicalZones;
-
-    /*
-     * Recovery Resource location and physical zones of HA Azure Resource.
-     */
-    private List<String> recoveryPhysicalZones;
 
     /*
      * Inclusion State of the Drill resource in Drill
@@ -88,11 +83,6 @@ public final class DrillResourceProperties implements JsonSerializable<DrillReso
     private ForceInclusionAndUpdate forceInclusionState;
 
     /*
-     * HA status of the Drill resource
-     */
-    private HAStatus haStatus;
-
-    /*
      * Attention reason if the Status is 'NeedsAttention'.
      */
     private DrillResourceAttentionReason attentionReason;
@@ -101,11 +91,6 @@ public final class DrillResourceProperties implements JsonSerializable<DrillReso
      * Recommendation Type Id for the recommendation.
      */
     private String advisorRecommendationTypeId;
-
-    /*
-     * Associated Advisor Recommendation link, if HA is not enabled on this resource.
-     */
-    private String advisorHaRecommendationId;
 
     /*
      * Last RBAC assignment error, if any.
@@ -125,7 +110,17 @@ public final class DrillResourceProperties implements JsonSerializable<DrillReso
     /**
      * Creates an instance of DrillResourceProperties class.
      */
-    private DrillResourceProperties() {
+    protected DrillResourceProperties() {
+    }
+
+    /**
+     * Get the drillType property: The discriminator for the Drill Resource object hierarchy. Matches the parent Drill
+     * type.
+     * 
+     * @return the drillType value.
+     */
+    public DrillType drillType() {
+        return this.drillType;
     }
 
     /**
@@ -138,12 +133,34 @@ public final class DrillResourceProperties implements JsonSerializable<DrillReso
     }
 
     /**
+     * Set the resourceId property: ARM Id of the underlying resource.
+     * 
+     * @param resourceId the resourceId value to set.
+     * @return the DrillResourceProperties object itself.
+     */
+    DrillResourceProperties withResourceId(String resourceId) {
+        this.resourceId = resourceId;
+        return this;
+    }
+
+    /**
      * Get the resourceType property: Type of the Drill resource.
      * 
      * @return the resourceType value.
      */
     public String resourceType() {
         return this.resourceType;
+    }
+
+    /**
+     * Set the resourceType property: Type of the Drill resource.
+     * 
+     * @param resourceType the resourceType value to set.
+     * @return the DrillResourceProperties object itself.
+     */
+    DrillResourceProperties withResourceType(String resourceType) {
+        this.resourceType = resourceType;
+        return this;
     }
 
     /**
@@ -156,6 +173,17 @@ public final class DrillResourceProperties implements JsonSerializable<DrillReso
     }
 
     /**
+     * Set the activeLocations property: Active location and zones of the Azure resource.
+     * 
+     * @param activeLocations the activeLocations value to set.
+     * @return the DrillResourceProperties object itself.
+     */
+    DrillResourceProperties withActiveLocations(List<String> activeLocations) {
+        this.activeLocations = activeLocations;
+        return this;
+    }
+
+    /**
      * Get the recoveryLocations property: List of recovery locations and zones of the Azure resource.
      * 
      * @return the recoveryLocations value.
@@ -165,21 +193,14 @@ public final class DrillResourceProperties implements JsonSerializable<DrillReso
     }
 
     /**
-     * Get the activePhysicalZones property: Active Resource location and physical zones of Azure Resource.
+     * Set the recoveryLocations property: List of recovery locations and zones of the Azure resource.
      * 
-     * @return the activePhysicalZones value.
+     * @param recoveryLocations the recoveryLocations value to set.
+     * @return the DrillResourceProperties object itself.
      */
-    public List<String> activePhysicalZones() {
-        return this.activePhysicalZones;
-    }
-
-    /**
-     * Get the recoveryPhysicalZones property: Recovery Resource location and physical zones of HA Azure Resource.
-     * 
-     * @return the recoveryPhysicalZones value.
-     */
-    public List<String> recoveryPhysicalZones() {
-        return this.recoveryPhysicalZones;
+    DrillResourceProperties withRecoveryLocations(List<String> recoveryLocations) {
+        this.recoveryLocations = recoveryLocations;
+        return this;
     }
 
     /**
@@ -192,12 +213,34 @@ public final class DrillResourceProperties implements JsonSerializable<DrillReso
     }
 
     /**
+     * Set the inclusionState property: Inclusion State of the Drill resource in Drill.
+     * 
+     * @param inclusionState the inclusionState value to set.
+     * @return the DrillResourceProperties object itself.
+     */
+    DrillResourceProperties withInclusionState(DrillResourceInclusionState inclusionState) {
+        this.inclusionState = inclusionState;
+        return this;
+    }
+
+    /**
      * Get the recoveryPlanInclusionState property: Inclusion State of the Drill resource in Recovery Plan.
      * 
      * @return the recoveryPlanInclusionState value.
      */
     public ResourceInclusionState recoveryPlanInclusionState() {
         return this.recoveryPlanInclusionState;
+    }
+
+    /**
+     * Set the recoveryPlanInclusionState property: Inclusion State of the Drill resource in Recovery Plan.
+     * 
+     * @param recoveryPlanInclusionState the recoveryPlanInclusionState value to set.
+     * @return the DrillResourceProperties object itself.
+     */
+    DrillResourceProperties withRecoveryPlanInclusionState(ResourceInclusionState recoveryPlanInclusionState) {
+        this.recoveryPlanInclusionState = recoveryPlanInclusionState;
+        return this;
     }
 
     /**
@@ -210,12 +253,35 @@ public final class DrillResourceProperties implements JsonSerializable<DrillReso
     }
 
     /**
+     * Set the recoveryPlanExclusionReason property: Exclusion reason of the Drill resource in Recovery Plan.
+     * 
+     * @param recoveryPlanExclusionReason the recoveryPlanExclusionReason value to set.
+     * @return the DrillResourceProperties object itself.
+     */
+    DrillResourceProperties withRecoveryPlanExclusionReason(RecoveryPlanExclusionReason recoveryPlanExclusionReason) {
+        this.recoveryPlanExclusionReason = recoveryPlanExclusionReason;
+        return this;
+    }
+
+    /**
      * Get the resourceProtectionSolutionType property: Protection Solution Type of the Drill resource.
      * 
      * @return the resourceProtectionSolutionType value.
      */
     public ResourceProtectionSolutionType resourceProtectionSolutionType() {
         return this.resourceProtectionSolutionType;
+    }
+
+    /**
+     * Set the resourceProtectionSolutionType property: Protection Solution Type of the Drill resource.
+     * 
+     * @param resourceProtectionSolutionType the resourceProtectionSolutionType value to set.
+     * @return the DrillResourceProperties object itself.
+     */
+    DrillResourceProperties
+        withResourceProtectionSolutionType(ResourceProtectionSolutionType resourceProtectionSolutionType) {
+        this.resourceProtectionSolutionType = resourceProtectionSolutionType;
+        return this;
     }
 
     /**
@@ -228,6 +294,17 @@ public final class DrillResourceProperties implements JsonSerializable<DrillReso
     }
 
     /**
+     * Set the readinessState property: Readiness State of the Drill resource.
+     * 
+     * @param readinessState the readinessState value to set.
+     * @return the DrillResourceProperties object itself.
+     */
+    DrillResourceProperties withReadinessState(DrillResourceReadinessState readinessState) {
+        this.readinessState = readinessState;
+        return this;
+    }
+
+    /**
      * Get the faultState property: Fault State of the Drill resource.
      * 
      * @return the faultState value.
@@ -237,12 +314,34 @@ public final class DrillResourceProperties implements JsonSerializable<DrillReso
     }
 
     /**
+     * Set the faultState property: Fault State of the Drill resource.
+     * 
+     * @param faultState the faultState value to set.
+     * @return the DrillResourceProperties object itself.
+     */
+    DrillResourceProperties withFaultState(DrillResourceFaultState faultState) {
+        this.faultState = faultState;
+        return this;
+    }
+
+    /**
      * Get the faultProperties property: Fault Properties.
      * 
      * @return the faultProperties value.
      */
     public FaultProperties faultProperties() {
         return this.faultProperties;
+    }
+
+    /**
+     * Set the faultProperties property: Fault Properties.
+     * 
+     * @param faultProperties the faultProperties value to set.
+     * @return the DrillResourceProperties object itself.
+     */
+    DrillResourceProperties withFaultProperties(FaultProperties faultProperties) {
+        this.faultProperties = faultProperties;
+        return this;
     }
 
     /**
@@ -256,12 +355,15 @@ public final class DrillResourceProperties implements JsonSerializable<DrillReso
     }
 
     /**
-     * Get the haStatus property: HA status of the Drill resource.
+     * Set the forceInclusionState property: ForceInclusion status for this resource. Has the customer forceIncluded
+     * it?.
      * 
-     * @return the haStatus value.
+     * @param forceInclusionState the forceInclusionState value to set.
+     * @return the DrillResourceProperties object itself.
      */
-    public HAStatus haStatus() {
-        return this.haStatus;
+    DrillResourceProperties withForceInclusionState(ForceInclusionAndUpdate forceInclusionState) {
+        this.forceInclusionState = forceInclusionState;
+        return this;
     }
 
     /**
@@ -274,6 +376,17 @@ public final class DrillResourceProperties implements JsonSerializable<DrillReso
     }
 
     /**
+     * Set the attentionReason property: Attention reason if the Status is 'NeedsAttention'.
+     * 
+     * @param attentionReason the attentionReason value to set.
+     * @return the DrillResourceProperties object itself.
+     */
+    DrillResourceProperties withAttentionReason(DrillResourceAttentionReason attentionReason) {
+        this.attentionReason = attentionReason;
+        return this;
+    }
+
+    /**
      * Get the advisorRecommendationTypeId property: Recommendation Type Id for the recommendation.
      * 
      * @return the advisorRecommendationTypeId value.
@@ -283,13 +396,14 @@ public final class DrillResourceProperties implements JsonSerializable<DrillReso
     }
 
     /**
-     * Get the advisorHaRecommendationId property: Associated Advisor Recommendation link, if HA is not enabled on this
-     * resource.
+     * Set the advisorRecommendationTypeId property: Recommendation Type Id for the recommendation.
      * 
-     * @return the advisorHaRecommendationId value.
+     * @param advisorRecommendationTypeId the advisorRecommendationTypeId value to set.
+     * @return the DrillResourceProperties object itself.
      */
-    public String advisorHaRecommendationId() {
-        return this.advisorHaRecommendationId;
+    DrillResourceProperties withAdvisorRecommendationTypeId(String advisorRecommendationTypeId) {
+        this.advisorRecommendationTypeId = advisorRecommendationTypeId;
+        return this;
     }
 
     /**
@@ -302,12 +416,34 @@ public final class DrillResourceProperties implements JsonSerializable<DrillReso
     }
 
     /**
+     * Set the rbacAssignmentError property: Last RBAC assignment error, if any.
+     * 
+     * @param rbacAssignmentError the rbacAssignmentError value to set.
+     * @return the DrillResourceProperties object itself.
+     */
+    DrillResourceProperties withRbacAssignmentError(ErrorDetails rbacAssignmentError) {
+        this.rbacAssignmentError = rbacAssignmentError;
+        return this;
+    }
+
+    /**
      * Get the monitoringRbacAssignmentError property: Monitoring RBAC assignment error, if any.
      * 
      * @return the monitoringRbacAssignmentError value.
      */
     public ErrorDetails monitoringRbacAssignmentError() {
         return this.monitoringRbacAssignmentError;
+    }
+
+    /**
+     * Set the monitoringRbacAssignmentError property: Monitoring RBAC assignment error, if any.
+     * 
+     * @param monitoringRbacAssignmentError the monitoringRbacAssignmentError value to set.
+     * @return the DrillResourceProperties object itself.
+     */
+    DrillResourceProperties withMonitoringRbacAssignmentError(ErrorDetails monitoringRbacAssignmentError) {
+        this.monitoringRbacAssignmentError = monitoringRbacAssignmentError;
+        return this;
     }
 
     /**
@@ -320,6 +456,17 @@ public final class DrillResourceProperties implements JsonSerializable<DrillReso
     }
 
     /**
+     * Set the provisioningState property: Provisioning state.
+     * 
+     * @param provisioningState the provisioningState value to set.
+     * @return the DrillResourceProperties object itself.
+     */
+    DrillResourceProperties withProvisioningState(ProvisioningState provisioningState) {
+        this.provisioningState = provisioningState;
+        return this;
+    }
+
+    /**
      * {@inheritDoc}
      */
     @Override
@@ -327,6 +474,7 @@ public final class DrillResourceProperties implements JsonSerializable<DrillReso
         jsonWriter.writeStartObject();
         jsonWriter.writeStringField("resourceId", this.resourceId);
         jsonWriter.writeStringField("resourceType", this.resourceType);
+        jsonWriter.writeStringField("drillType", this.drillType == null ? null : this.drillType.toString());
         jsonWriter.writeStringField("inclusionState",
             this.inclusionState == null ? null : this.inclusionState.toString());
         return jsonWriter.writeEndObject();
@@ -343,6 +491,33 @@ public final class DrillResourceProperties implements JsonSerializable<DrillReso
      */
     public static DrillResourceProperties fromJson(JsonReader jsonReader) throws IOException {
         return jsonReader.readObject(reader -> {
+            String discriminatorValue = null;
+            try (JsonReader readerToUse = reader.bufferObject()) {
+                readerToUse.nextToken(); // Prepare for reading
+                while (readerToUse.nextToken() != JsonToken.END_OBJECT) {
+                    String fieldName = readerToUse.getFieldName();
+                    readerToUse.nextToken();
+                    if ("drillType".equals(fieldName)) {
+                        discriminatorValue = readerToUse.getString();
+                        break;
+                    } else {
+                        readerToUse.skipChildren();
+                    }
+                }
+                // Use the discriminator value to determine which subtype should be deserialized.
+                if ("Zonal".equals(discriminatorValue)) {
+                    return ZonalDrillResourceProperties.fromJson(readerToUse.reset());
+                } else if ("Regional".equals(discriminatorValue)) {
+                    return RegionalDrillResourceProperties.fromJson(readerToUse.reset());
+                } else {
+                    return fromJsonKnownDiscriminator(readerToUse.reset());
+                }
+            }
+        });
+    }
+
+    static DrillResourceProperties fromJsonKnownDiscriminator(JsonReader jsonReader) throws IOException {
+        return jsonReader.readObject(reader -> {
             DrillResourceProperties deserializedDrillResourceProperties = new DrillResourceProperties();
             while (reader.nextToken() != JsonToken.END_OBJECT) {
                 String fieldName = reader.getFieldName();
@@ -352,18 +527,14 @@ public final class DrillResourceProperties implements JsonSerializable<DrillReso
                     deserializedDrillResourceProperties.resourceId = reader.getString();
                 } else if ("resourceType".equals(fieldName)) {
                     deserializedDrillResourceProperties.resourceType = reader.getString();
+                } else if ("drillType".equals(fieldName)) {
+                    deserializedDrillResourceProperties.drillType = DrillType.fromString(reader.getString());
                 } else if ("activeLocations".equals(fieldName)) {
                     List<String> activeLocations = reader.readArray(reader1 -> reader1.getString());
                     deserializedDrillResourceProperties.activeLocations = activeLocations;
                 } else if ("recoveryLocations".equals(fieldName)) {
                     List<String> recoveryLocations = reader.readArray(reader1 -> reader1.getString());
                     deserializedDrillResourceProperties.recoveryLocations = recoveryLocations;
-                } else if ("activePhysicalZones".equals(fieldName)) {
-                    List<String> activePhysicalZones = reader.readArray(reader1 -> reader1.getString());
-                    deserializedDrillResourceProperties.activePhysicalZones = activePhysicalZones;
-                } else if ("recoveryPhysicalZones".equals(fieldName)) {
-                    List<String> recoveryPhysicalZones = reader.readArray(reader1 -> reader1.getString());
-                    deserializedDrillResourceProperties.recoveryPhysicalZones = recoveryPhysicalZones;
                 } else if ("inclusionState".equals(fieldName)) {
                     deserializedDrillResourceProperties.inclusionState
                         = DrillResourceInclusionState.fromString(reader.getString());
@@ -387,14 +558,10 @@ public final class DrillResourceProperties implements JsonSerializable<DrillReso
                 } else if ("forceInclusionState".equals(fieldName)) {
                     deserializedDrillResourceProperties.forceInclusionState
                         = ForceInclusionAndUpdate.fromString(reader.getString());
-                } else if ("haStatus".equals(fieldName)) {
-                    deserializedDrillResourceProperties.haStatus = HAStatus.fromString(reader.getString());
                 } else if ("attentionReason".equals(fieldName)) {
                     deserializedDrillResourceProperties.attentionReason = DrillResourceAttentionReason.fromJson(reader);
                 } else if ("advisorRecommendationTypeId".equals(fieldName)) {
                     deserializedDrillResourceProperties.advisorRecommendationTypeId = reader.getString();
-                } else if ("advisorHaRecommendationId".equals(fieldName)) {
-                    deserializedDrillResourceProperties.advisorHaRecommendationId = reader.getString();
                 } else if ("rbacAssignmentError".equals(fieldName)) {
                     deserializedDrillResourceProperties.rbacAssignmentError = ErrorDetails.fromJson(reader);
                 } else if ("monitoringRbacAssignmentError".equals(fieldName)) {

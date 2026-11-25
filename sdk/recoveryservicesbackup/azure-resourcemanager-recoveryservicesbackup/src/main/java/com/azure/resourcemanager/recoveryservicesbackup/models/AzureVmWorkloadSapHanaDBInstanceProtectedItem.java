@@ -412,6 +412,8 @@ public final class AzureVmWorkloadSapHanaDBInstanceProtectedItem extends AzureVm
                 } else if ("softDeleteRetentionPeriodInDays".equals(fieldName)) {
                     deserializedAzureVmWorkloadSapHanaDBInstanceProtectedItem
                         .withSoftDeleteRetentionPeriodInDays(reader.getNullable(JsonReader::getInt));
+                } else if ("sourceLocation".equals(fieldName)) {
+                    deserializedAzureVmWorkloadSapHanaDBInstanceProtectedItem.withSourceLocation(reader.getString());
                 } else if ("vaultId".equals(fieldName)) {
                     deserializedAzureVmWorkloadSapHanaDBInstanceProtectedItem.withVaultId(reader.getString());
                 } else if ("sourceSideScanInfo".equals(fieldName)) {

@@ -17,13 +17,13 @@ import com.azure.resourcemanager.postgresqlflexibleserver.models.Cluster;
 import com.azure.resourcemanager.postgresqlflexibleserver.models.CreateMode;
 import com.azure.resourcemanager.postgresqlflexibleserver.models.CreateModeForPatch;
 import com.azure.resourcemanager.postgresqlflexibleserver.models.DataEncryption;
+import com.azure.resourcemanager.postgresqlflexibleserver.models.FipsMode;
 import com.azure.resourcemanager.postgresqlflexibleserver.models.HighAvailability;
 import com.azure.resourcemanager.postgresqlflexibleserver.models.HighAvailabilityForPatch;
 import com.azure.resourcemanager.postgresqlflexibleserver.models.MaintenanceWindow;
 import com.azure.resourcemanager.postgresqlflexibleserver.models.MaintenanceWindowForPatch;
 import com.azure.resourcemanager.postgresqlflexibleserver.models.MigrateNetworkStatus;
 import com.azure.resourcemanager.postgresqlflexibleserver.models.Network;
-import com.azure.resourcemanager.postgresqlflexibleserver.models.PostgresMajorVersion;
 import com.azure.resourcemanager.postgresqlflexibleserver.models.PrivateEndpointConnection;
 import com.azure.resourcemanager.postgresqlflexibleserver.models.Replica;
 import com.azure.resourcemanager.postgresqlflexibleserver.models.ReplicationRole;
@@ -93,7 +93,7 @@ public final class ServerImpl implements Server, Server.Definition, Server.Updat
         return this.innerModel().administratorLoginPassword();
     }
 
-    public PostgresMajorVersion version() {
+    public String version() {
         return this.innerModel().version();
     }
 
@@ -180,6 +180,10 @@ public final class ServerImpl implements Server, Server.Definition, Server.Updat
         return this.innerModel().cluster();
     }
 
+    public FipsMode fipsMode() {
+        return this.innerModel().fipsMode();
+    }
+
     public Region region() {
         return Region.fromName(this.regionName());
     }
@@ -212,10 +216,7 @@ public final class ServerImpl implements Server, Server.Definition, Server.Updat
     }
 
     public Server create() {
-        this.innerObject = serviceManager.serviceClient()
-            .getServers()
-            .createOrUpdate(resourceGroupName, serverName, this.innerModel(), Context.NONE);
-        return this;
+        return this.create(Context.NONE);
     }
 
     public Server create(Context context) {
@@ -237,10 +238,7 @@ public final class ServerImpl implements Server, Server.Definition, Server.Updat
     }
 
     public Server apply() {
-        this.innerObject = serviceManager.serviceClient()
-            .getServers()
-            .update(resourceGroupName, serverName, updateParameters, Context.NONE);
-        return this;
+        return this.apply(Context.NONE);
     }
 
     public Server apply(Context context) {
@@ -254,16 +252,16 @@ public final class ServerImpl implements Server, Server.Definition, Server.Updat
         com.azure.resourcemanager.postgresqlflexibleserver.PostgreSqlManager serviceManager) {
         this.innerObject = innerObject;
         this.serviceManager = serviceManager;
-        this.resourceGroupName = ResourceManagerUtils.getValueFromIdByName(innerObject.id(), "resourceGroups");
-        this.serverName = ResourceManagerUtils.getValueFromIdByName(innerObject.id(), "flexibleServers");
+        this.resourceGroupName = ResourceManagerUtils.getValueFromIdByParameterName(innerObject.id(),
+            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.DBforPostgreSQL/flexibleServers/{serverName}",
+            "resourceGroupName");
+        this.serverName = ResourceManagerUtils.getValueFromIdByParameterName(innerObject.id(),
+            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.DBforPostgreSQL/flexibleServers/{serverName}",
+            "serverName");
     }
 
     public Server refresh() {
-        this.innerObject = serviceManager.serviceClient()
-            .getServers()
-            .getByResourceGroupWithResponse(resourceGroupName, serverName, Context.NONE)
-            .getValue();
-        return this;
+        return this.refresh(Context.NONE);
     }
 
     public Server refresh(Context context) {
@@ -366,7 +364,7 @@ public final class ServerImpl implements Server, Server.Definition, Server.Updat
         }
     }
 
-    public ServerImpl withVersion(PostgresMajorVersion version) {
+    public ServerImpl withVersion(String version) {
         if (isInCreateMode()) {
             this.innerModel().withVersion(version);
             return this;
@@ -422,8 +420,13 @@ public final class ServerImpl implements Server, Server.Definition, Server.Updat
     }
 
     public ServerImpl withSourceServerResourceId(String sourceServerResourceId) {
-        this.innerModel().withSourceServerResourceId(sourceServerResourceId);
-        return this;
+        if (isInCreateMode()) {
+            this.innerModel().withSourceServerResourceId(sourceServerResourceId);
+            return this;
+        } else {
+            this.updateParameters.withSourceServerResourceId(sourceServerResourceId);
+            return this;
+        }
     }
 
     public ServerImpl withPointInTimeUtc(OffsetDateTime pointInTimeUtc) {
@@ -462,6 +465,16 @@ public final class ServerImpl implements Server, Server.Definition, Server.Updat
             return this;
         } else {
             this.updateParameters.withCluster(cluster);
+            return this;
+        }
+    }
+
+    public ServerImpl withFipsMode(FipsMode fipsMode) {
+        if (isInCreateMode()) {
+            this.innerModel().withFipsMode(fipsMode);
+            return this;
+        } else {
+            this.updateParameters.withFipsMode(fipsMode);
             return this;
         }
     }

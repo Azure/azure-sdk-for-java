@@ -5,32 +5,42 @@
 package com.azure.resourcemanager.compute.bulkactions.models;
 
 import com.azure.core.annotation.Fluent;
+import com.azure.core.util.BinaryData;
 import com.azure.json.JsonReader;
 import com.azure.json.JsonSerializable;
 import com.azure.json.JsonToken;
 import com.azure.json.JsonWriter;
 import java.io.IOException;
+import java.util.Map;
 
 /**
- * Extra details needed to run the user's request.
+ * The execution settings for a bulk action.
  */
 @Fluent
 public final class ExecutionParameters implements JsonSerializable<ExecutionParameters> {
     /*
-     * Details that could optimize the user's request
-     */
-    private OptimizationPreference optimizationPreference;
-
-    /*
-     * Retry policy the user can pass
+     * The retry settings for the bulk action.
      */
     private RetryPolicy retryPolicy;
 
     /*
-     * When true on an executeStart request, run a post-Start VM agent health check and engage the fallback chain if the
-     * guest agent does not report Ready. Ignored for non-Start operations.
+     * If true, Bulk Actions verifies the virtual machine guest agent health after a start operation. Setting this
+     * property to true for any other operation causes the request to fail.
      */
     private Boolean verifyVmAgentHealth;
+
+    /*
+     * Capacity recommendation parameters for the request. When provided on an executeStart request, the service
+     * computes placement recommendations only if the VM fails to start due to an allocation failure; the
+     * recommendations for the desired sizes and locations are then surfaced in the operation's capacityRecommendation
+     * response.
+     */
+    private CapacityRecommendationParameters capacityRecommendationParameters;
+
+    /*
+     * Additional configuration for Create.
+     */
+    private Map<String, BinaryData> additionalCreateParameters;
 
     /**
      * Creates an instance of ExecutionParameters class.
@@ -39,27 +49,7 @@ public final class ExecutionParameters implements JsonSerializable<ExecutionPara
     }
 
     /**
-     * Get the optimizationPreference property: Details that could optimize the user's request.
-     * 
-     * @return the optimizationPreference value.
-     */
-    public OptimizationPreference optimizationPreference() {
-        return this.optimizationPreference;
-    }
-
-    /**
-     * Set the optimizationPreference property: Details that could optimize the user's request.
-     * 
-     * @param optimizationPreference the optimizationPreference value to set.
-     * @return the ExecutionParameters object itself.
-     */
-    public ExecutionParameters withOptimizationPreference(OptimizationPreference optimizationPreference) {
-        this.optimizationPreference = optimizationPreference;
-        return this;
-    }
-
-    /**
-     * Get the retryPolicy property: Retry policy the user can pass.
+     * Get the retryPolicy property: The retry settings for the bulk action.
      * 
      * @return the retryPolicy value.
      */
@@ -68,7 +58,7 @@ public final class ExecutionParameters implements JsonSerializable<ExecutionPara
     }
 
     /**
-     * Set the retryPolicy property: Retry policy the user can pass.
+     * Set the retryPolicy property: The retry settings for the bulk action.
      * 
      * @param retryPolicy the retryPolicy value to set.
      * @return the ExecutionParameters object itself.
@@ -79,8 +69,8 @@ public final class ExecutionParameters implements JsonSerializable<ExecutionPara
     }
 
     /**
-     * Get the verifyVmAgentHealth property: When true on an executeStart request, run a post-Start VM agent health
-     * check and engage the fallback chain if the guest agent does not report Ready. Ignored for non-Start operations.
+     * Get the verifyVmAgentHealth property: If true, Bulk Actions verifies the virtual machine guest agent health after
+     * a start operation. Setting this property to true for any other operation causes the request to fail.
      * 
      * @return the verifyVmAgentHealth value.
      */
@@ -89,8 +79,8 @@ public final class ExecutionParameters implements JsonSerializable<ExecutionPara
     }
 
     /**
-     * Set the verifyVmAgentHealth property: When true on an executeStart request, run a post-Start VM agent health
-     * check and engage the fallback chain if the guest agent does not report Ready. Ignored for non-Start operations.
+     * Set the verifyVmAgentHealth property: If true, Bulk Actions verifies the virtual machine guest agent health after
+     * a start operation. Setting this property to true for any other operation causes the request to fail.
      * 
      * @param verifyVmAgentHealth the verifyVmAgentHealth value to set.
      * @return the ExecutionParameters object itself.
@@ -101,15 +91,68 @@ public final class ExecutionParameters implements JsonSerializable<ExecutionPara
     }
 
     /**
+     * Get the capacityRecommendationParameters property: Capacity recommendation parameters for the request. When
+     * provided on an executeStart request, the service computes placement recommendations only if the VM fails to start
+     * due to an allocation failure; the recommendations for the desired sizes and locations are then surfaced in the
+     * operation's capacityRecommendation response.
+     * 
+     * @return the capacityRecommendationParameters value.
+     */
+    public CapacityRecommendationParameters capacityRecommendationParameters() {
+        return this.capacityRecommendationParameters;
+    }
+
+    /**
+     * Set the capacityRecommendationParameters property: Capacity recommendation parameters for the request. When
+     * provided on an executeStart request, the service computes placement recommendations only if the VM fails to start
+     * due to an allocation failure; the recommendations for the desired sizes and locations are then surfaced in the
+     * operation's capacityRecommendation response.
+     * 
+     * @param capacityRecommendationParameters the capacityRecommendationParameters value to set.
+     * @return the ExecutionParameters object itself.
+     */
+    public ExecutionParameters
+        withCapacityRecommendationParameters(CapacityRecommendationParameters capacityRecommendationParameters) {
+        this.capacityRecommendationParameters = capacityRecommendationParameters;
+        return this;
+    }
+
+    /**
+     * Get the additionalCreateParameters property: Additional configuration for Create.
+     * 
+     * @return the additionalCreateParameters value.
+     */
+    public Map<String, BinaryData> additionalCreateParameters() {
+        return this.additionalCreateParameters;
+    }
+
+    /**
+     * Set the additionalCreateParameters property: Additional configuration for Create.
+     * 
+     * @param additionalCreateParameters the additionalCreateParameters value to set.
+     * @return the ExecutionParameters object itself.
+     */
+    public ExecutionParameters withAdditionalCreateParameters(Map<String, BinaryData> additionalCreateParameters) {
+        this.additionalCreateParameters = additionalCreateParameters;
+        return this;
+    }
+
+    /**
      * {@inheritDoc}
      */
     @Override
     public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
         jsonWriter.writeStartObject();
-        jsonWriter.writeStringField("optimizationPreference",
-            this.optimizationPreference == null ? null : this.optimizationPreference.toString());
         jsonWriter.writeJsonField("retryPolicy", this.retryPolicy);
         jsonWriter.writeBooleanField("verifyVmAgentHealth", this.verifyVmAgentHealth);
+        jsonWriter.writeJsonField("capacityRecommendationParameters", this.capacityRecommendationParameters);
+        jsonWriter.writeMapField("additionalCreateParameters", this.additionalCreateParameters, (writer, element) -> {
+            if (element == null) {
+                writer.writeNull();
+            } else {
+                element.writeTo(writer);
+            }
+        });
         return jsonWriter.writeEndObject();
     }
 
@@ -128,13 +171,17 @@ public final class ExecutionParameters implements JsonSerializable<ExecutionPara
                 String fieldName = reader.getFieldName();
                 reader.nextToken();
 
-                if ("optimizationPreference".equals(fieldName)) {
-                    deserializedExecutionParameters.optimizationPreference
-                        = OptimizationPreference.fromString(reader.getString());
-                } else if ("retryPolicy".equals(fieldName)) {
+                if ("retryPolicy".equals(fieldName)) {
                     deserializedExecutionParameters.retryPolicy = RetryPolicy.fromJson(reader);
                 } else if ("verifyVmAgentHealth".equals(fieldName)) {
                     deserializedExecutionParameters.verifyVmAgentHealth = reader.getNullable(JsonReader::getBoolean);
+                } else if ("capacityRecommendationParameters".equals(fieldName)) {
+                    deserializedExecutionParameters.capacityRecommendationParameters
+                        = CapacityRecommendationParameters.fromJson(reader);
+                } else if ("additionalCreateParameters".equals(fieldName)) {
+                    Map<String, BinaryData> additionalCreateParameters = reader.readMap(reader1 -> reader1
+                        .getNullable(nonNullReader -> BinaryData.fromObject(nonNullReader.readUntyped())));
+                    deserializedExecutionParameters.additionalCreateParameters = additionalCreateParameters;
                 } else {
                     reader.skipChildren();
                 }

@@ -238,19 +238,7 @@ public final class ConfigurationsClientImpl implements ConfigurationsClient {
             .flatMap(res -> Mono.justOrEmpty(res.getValue()));
     }
 
-    /**
-     * Get the NGINX configuration of given NGINX deployment.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param deploymentName The name of targeted NGINX deployment.
-     * @param configurationName The name of configuration, only 'default' is supported value due to the singleton of
-     * NGINX conf.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the NGINX configuration of given NGINX deployment along with {@link Response}.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Response<NginxConfigurationResponseInner> getWithResponse(String resourceGroupName, String deploymentName,
         String configurationName, Context context) {
@@ -259,18 +247,7 @@ public final class ConfigurationsClientImpl implements ConfigurationsClient {
             resourceGroupName, deploymentName, configurationName, accept, context);
     }
 
-    /**
-     * Get the NGINX configuration of given NGINX deployment.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param deploymentName The name of targeted NGINX deployment.
-     * @param configurationName The name of configuration, only 'default' is supported value due to the singleton of
-     * NGINX conf.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the NGINX configuration of given NGINX deployment.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public NginxConfigurationResponseInner get(String resourceGroupName, String deploymentName,
         String configurationName) {
@@ -317,10 +294,7 @@ public final class ConfigurationsClientImpl implements ConfigurationsClient {
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Response<BinaryData> createOrUpdateWithResponse(String resourceGroupName, String deploymentName,
         String configurationName, NginxConfigurationRequest body) {
-        final String accept = "application/json";
-        return service.createOrUpdateSync(this.client.getEndpoint(), this.client.getApiVersion(),
-            this.client.getSubscriptionId(), resourceGroupName, deploymentName, configurationName, accept, body,
-            Context.NONE);
+        return createOrUpdateWithResponse(resourceGroupName, deploymentName, configurationName, body, Context.NONE);
     }
 
     /**
@@ -407,50 +381,21 @@ public final class ConfigurationsClientImpl implements ConfigurationsClient {
      * @return the {@link SyncPoller} for polling of nginx Configuration Response.
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
-    public SyncPoller<PollResult<NginxConfigurationResponseInner>, NginxConfigurationResponseInner> beginCreateOrUpdate(
-        String resourceGroupName, String deploymentName, String configurationName, NginxConfigurationRequest body) {
-        Response<BinaryData> response
-            = createOrUpdateWithResponse(resourceGroupName, deploymentName, configurationName, body);
-        return this.client.<NginxConfigurationResponseInner, NginxConfigurationResponseInner>getLroResult(response,
-            NginxConfigurationResponseInner.class, NginxConfigurationResponseInner.class, Context.NONE);
+    private SyncPoller<PollResult<NginxConfigurationResponseInner>, NginxConfigurationResponseInner>
+        beginCreateOrUpdate(String resourceGroupName, String deploymentName, String configurationName,
+            NginxConfigurationRequest body) {
+        return beginCreateOrUpdate(resourceGroupName, deploymentName, configurationName, body, Context.NONE);
     }
 
-    /**
-     * Create or update the NGINX configuration for given NGINX deployment.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param deploymentName The name of targeted NGINX deployment.
-     * @param configurationName The name of configuration, only 'default' is supported value due to the singleton of
-     * NGINX conf.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the {@link SyncPoller} for polling of nginx Configuration Response.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public SyncPoller<PollResult<NginxConfigurationResponseInner>, NginxConfigurationResponseInner>
         beginCreateOrUpdate(String resourceGroupName, String deploymentName, String configurationName) {
         final NginxConfigurationRequest body = null;
-        Response<BinaryData> response
-            = createOrUpdateWithResponse(resourceGroupName, deploymentName, configurationName, body);
-        return this.client.<NginxConfigurationResponseInner, NginxConfigurationResponseInner>getLroResult(response,
-            NginxConfigurationResponseInner.class, NginxConfigurationResponseInner.class, Context.NONE);
+        return beginCreateOrUpdate(resourceGroupName, deploymentName, configurationName, body, Context.NONE);
     }
 
-    /**
-     * Create or update the NGINX configuration for given NGINX deployment.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param deploymentName The name of targeted NGINX deployment.
-     * @param configurationName The name of configuration, only 'default' is supported value due to the singleton of
-     * NGINX conf.
-     * @param body The NGINX configuration.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the {@link SyncPoller} for polling of nginx Configuration Response.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public SyncPoller<PollResult<NginxConfigurationResponseInner>, NginxConfigurationResponseInner> beginCreateOrUpdate(
         String resourceGroupName, String deploymentName, String configurationName, NginxConfigurationRequest body,
@@ -501,44 +446,20 @@ public final class ConfigurationsClientImpl implements ConfigurationsClient {
             .flatMap(this.client::getLroFinalResultOrError);
     }
 
-    /**
-     * Create or update the NGINX configuration for given NGINX deployment.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param deploymentName The name of targeted NGINX deployment.
-     * @param configurationName The name of configuration, only 'default' is supported value due to the singleton of
-     * NGINX conf.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return nginx Configuration Response.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public NginxConfigurationResponseInner createOrUpdate(String resourceGroupName, String deploymentName,
         String configurationName) {
         final NginxConfigurationRequest body = null;
-        return beginCreateOrUpdate(resourceGroupName, deploymentName, configurationName, body).getFinalResult();
+        return createOrUpdate(resourceGroupName, deploymentName, configurationName, body, Context.NONE);
     }
 
-    /**
-     * Create or update the NGINX configuration for given NGINX deployment.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param deploymentName The name of targeted NGINX deployment.
-     * @param configurationName The name of configuration, only 'default' is supported value due to the singleton of
-     * NGINX conf.
-     * @param body The NGINX configuration.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return nginx Configuration Response.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public NginxConfigurationResponseInner createOrUpdate(String resourceGroupName, String deploymentName,
         String configurationName, NginxConfigurationRequest body, Context context) {
-        return beginCreateOrUpdate(resourceGroupName, deploymentName, configurationName, body, context)
-            .getFinalResult();
+        return this.client.getLroFinalResultOrError(
+            beginCreateOrUpdate(resourceGroupName, deploymentName, configurationName, body, context));
     }
 
     /**
@@ -577,8 +498,7 @@ public final class ConfigurationsClientImpl implements ConfigurationsClient {
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Response<BinaryData> deleteWithResponse(String resourceGroupName, String deploymentName,
         String configurationName) {
-        return service.deleteSync(this.client.getEndpoint(), this.client.getApiVersion(),
-            this.client.getSubscriptionId(), resourceGroupName, deploymentName, configurationName, Context.NONE);
+        return deleteWithResponse(resourceGroupName, deploymentName, configurationName, Context.NONE);
     }
 
     /**
@@ -622,38 +542,14 @@ public final class ConfigurationsClientImpl implements ConfigurationsClient {
             this.client.getContext());
     }
 
-    /**
-     * Reset the NGINX configuration of given NGINX deployment to default.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param deploymentName The name of targeted NGINX deployment.
-     * @param configurationName The name of configuration, only 'default' is supported value due to the singleton of
-     * NGINX conf.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the {@link SyncPoller} for polling of long-running operation.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public SyncPoller<PollResult<Void>, Void> beginDelete(String resourceGroupName, String deploymentName,
         String configurationName) {
-        Response<BinaryData> response = deleteWithResponse(resourceGroupName, deploymentName, configurationName);
-        return this.client.<Void, Void>getLroResult(response, Void.class, Void.class, Context.NONE);
+        return beginDelete(resourceGroupName, deploymentName, configurationName, Context.NONE);
     }
 
-    /**
-     * Reset the NGINX configuration of given NGINX deployment to default.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param deploymentName The name of targeted NGINX deployment.
-     * @param configurationName The name of configuration, only 'default' is supported value due to the singleton of
-     * NGINX conf.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the {@link SyncPoller} for polling of long-running operation.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public SyncPoller<PollResult<Void>, Void> beginDelete(String resourceGroupName, String deploymentName,
         String configurationName, Context context) {
@@ -680,37 +576,17 @@ public final class ConfigurationsClientImpl implements ConfigurationsClient {
             .flatMap(this.client::getLroFinalResultOrError);
     }
 
-    /**
-     * Reset the NGINX configuration of given NGINX deployment to default.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param deploymentName The name of targeted NGINX deployment.
-     * @param configurationName The name of configuration, only 'default' is supported value due to the singleton of
-     * NGINX conf.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public void delete(String resourceGroupName, String deploymentName, String configurationName) {
-        beginDelete(resourceGroupName, deploymentName, configurationName).getFinalResult();
+        delete(resourceGroupName, deploymentName, configurationName, Context.NONE);
     }
 
-    /**
-     * Reset the NGINX configuration of given NGINX deployment to default.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param deploymentName The name of targeted NGINX deployment.
-     * @param configurationName The name of configuration, only 'default' is supported value due to the singleton of
-     * NGINX conf.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public void delete(String resourceGroupName, String deploymentName, String configurationName, Context context) {
-        beginDelete(resourceGroupName, deploymentName, configurationName, context).getFinalResult();
+        this.client
+            .getLroFinalResultOrError(beginDelete(resourceGroupName, deploymentName, configurationName, context));
     }
 
     /**
@@ -764,12 +640,7 @@ public final class ConfigurationsClientImpl implements ConfigurationsClient {
     @ServiceMethod(returns = ReturnType.SINGLE)
     private PagedResponse<NginxConfigurationResponseInner> listSinglePage(String resourceGroupName,
         String deploymentName) {
-        final String accept = "application/json";
-        Response<NginxConfigurationListResponse> res
-            = service.listSync(this.client.getEndpoint(), this.client.getApiVersion(), this.client.getSubscriptionId(),
-                resourceGroupName, deploymentName, accept, Context.NONE);
-        return new PagedResponseBase<>(res.getRequest(), res.getStatusCode(), res.getHeaders(), res.getValue().value(),
-            res.getValue().nextLink(), null);
+        return listSinglePage(resourceGroupName, deploymentName, Context.NONE);
     }
 
     /**
@@ -794,33 +665,13 @@ public final class ConfigurationsClientImpl implements ConfigurationsClient {
             res.getValue().nextLink(), null);
     }
 
-    /**
-     * List the NGINX configuration of given NGINX deployment.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param deploymentName The name of targeted NGINX deployment.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return response of a list operation as paginated response with {@link PagedIterable}.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.COLLECTION)
     public PagedIterable<NginxConfigurationResponseInner> list(String resourceGroupName, String deploymentName) {
-        return new PagedIterable<>(() -> listSinglePage(resourceGroupName, deploymentName),
-            nextLink -> listNextSinglePage(nextLink));
+        return list(resourceGroupName, deploymentName, Context.NONE);
     }
 
-    /**
-     * List the NGINX configuration of given NGINX deployment.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param deploymentName The name of targeted NGINX deployment.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return response of a list operation as paginated response with {@link PagedIterable}.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.COLLECTION)
     public PagedIterable<NginxConfigurationResponseInner> list(String resourceGroupName, String deploymentName,
         Context context) {
@@ -873,20 +724,7 @@ public final class ConfigurationsClientImpl implements ConfigurationsClient {
             .flatMap(res -> Mono.justOrEmpty(res.getValue()));
     }
 
-    /**
-     * Analyze an NGINX configuration without applying it to the NGINXaaS deployment.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param deploymentName The name of targeted NGINX deployment.
-     * @param configurationName The name of configuration, only 'default' is supported value due to the singleton of
-     * NGINX conf.
-     * @param body The NGINX configuration to analyze.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the response body for an analysis request along with {@link Response}.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Response<AnalysisResultInner> analysisWithResponse(String resourceGroupName, String deploymentName,
         String configurationName, AnalysisCreate body, Context context) {
@@ -896,18 +734,7 @@ public final class ConfigurationsClientImpl implements ConfigurationsClient {
             context);
     }
 
-    /**
-     * Analyze an NGINX configuration without applying it to the NGINXaaS deployment.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param deploymentName The name of targeted NGINX deployment.
-     * @param configurationName The name of configuration, only 'default' is supported value due to the singleton of
-     * NGINX conf.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the response body for an analysis request.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public AnalysisResultInner analysis(String resourceGroupName, String deploymentName, String configurationName) {
         final AnalysisCreate body = null;
@@ -944,11 +771,7 @@ public final class ConfigurationsClientImpl implements ConfigurationsClient {
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private PagedResponse<NginxConfigurationResponseInner> listNextSinglePage(String nextLink) {
-        final String accept = "application/json";
-        Response<NginxConfigurationListResponse> res
-            = service.listNextSync(nextLink, this.client.getEndpoint(), accept, Context.NONE);
-        return new PagedResponseBase<>(res.getRequest(), res.getStatusCode(), res.getHeaders(), res.getValue().value(),
-            res.getValue().nextLink(), null);
+        return listNextSinglePage(nextLink, Context.NONE);
     }
 
     /**

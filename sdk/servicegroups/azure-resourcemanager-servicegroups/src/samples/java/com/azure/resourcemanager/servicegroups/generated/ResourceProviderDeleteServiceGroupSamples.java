@@ -9,7 +9,7 @@ package com.azure.resourcemanager.servicegroups.generated;
  */
 public final class ResourceProviderDeleteServiceGroupSamples {
     /*
-     * x-ms-original-file: 2024-02-01-preview/ServiceGroup_Delete.json
+     * x-ms-original-file: 2026-08-01/ServiceGroup_Delete.json
      */
     /**
      * Sample code: DeleteServiceGroup.

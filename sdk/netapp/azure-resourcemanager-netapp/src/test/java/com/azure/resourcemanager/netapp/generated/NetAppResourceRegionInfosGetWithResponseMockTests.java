@@ -22,7 +22,7 @@ public final class NetAppResourceRegionInfosGetWithResponseMockTests {
     @Test
     public void testGetWithResponse() throws Exception {
         String responseStr
-            = "{\"properties\":{\"storageToNetworkProximity\":\"T1AndT2\",\"availabilityZoneMappings\":[{\"availabilityZone\":\"eseyqr\",\"isAvailable\":false},{\"availabilityZone\":\"ldotjvdkwisws\",\"isAvailable\":false},{\"availabilityZone\":\"tasbvw\",\"isAvailable\":true}]},\"id\":\"xkdtxfkndlqvtwkn\",\"name\":\"gmmbu\",\"type\":\"tywatmqaq\"}";
+            = "{\"properties\":{\"storageToNetworkProximity\":\"T1AndT2\",\"availabilityZoneMappings\":[{\"availabilityZone\":\"faqegplwryshwddk\",\"isAvailable\":true},{\"availabilityZone\":\"kqusybwptda\",\"isAvailable\":false},{\"availabilityZone\":\"vlf\",\"isAvailable\":false},{\"availabilityZone\":\"tpo\",\"isAvailable\":true}]},\"id\":\"azerohzrsq\",\"name\":\"lsxkd\",\"type\":\"wqapfgsdp\"}";
 
         HttpClient httpClient
             = response -> Mono.just(new MockHttpResponse(response, 200, responseStr.getBytes(StandardCharsets.UTF_8)));
@@ -32,10 +32,10 @@ public final class NetAppResourceRegionInfosGetWithResponseMockTests {
                 new AzureProfile("", "", AzureCloud.AZURE_PUBLIC_CLOUD));
 
         RegionInfoResource response
-            = manager.netAppResourceRegionInfos().getWithResponse("h", com.azure.core.util.Context.NONE).getValue();
+            = manager.netAppResourceRegionInfos().getWithResponse("req", com.azure.core.util.Context.NONE).getValue();
 
         Assertions.assertEquals(RegionStorageToNetworkProximity.T1AND_T2, response.storageToNetworkProximity());
-        Assertions.assertEquals("eseyqr", response.availabilityZoneMappings().get(0).availabilityZone());
-        Assertions.assertFalse(response.availabilityZoneMappings().get(0).isAvailable());
+        Assertions.assertEquals("faqegplwryshwddk", response.availabilityZoneMappings().get(0).availabilityZone());
+        Assertions.assertTrue(response.availabilityZoneMappings().get(0).isAvailable());
     }
 }

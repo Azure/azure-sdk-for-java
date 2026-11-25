@@ -496,6 +496,54 @@ public final class AzureFirewallInner extends Resource {
     }
 
     /**
+     * Get the aiSecurityAddOn property: Indicates whether the AI security add-on is enabled for the Azure Firewall.
+     * 
+     * @return the aiSecurityAddOn value.
+     */
+    public Boolean aiSecurityAddOn() {
+        return this.innerProperties() == null ? null : this.innerProperties().aiSecurityAddOn();
+    }
+
+    /**
+     * Set the aiSecurityAddOn property: Indicates whether the AI security add-on is enabled for the Azure Firewall.
+     * 
+     * @param aiSecurityAddOn the aiSecurityAddOn value to set.
+     * @return the AzureFirewallInner object itself.
+     */
+    public AzureFirewallInner withAiSecurityAddOn(Boolean aiSecurityAddOn) {
+        if (this.innerProperties() == null) {
+            this.innerProperties = new AzureFirewallPropertiesFormat();
+        }
+        this.innerProperties().withAiSecurityAddOn(aiSecurityAddOn);
+        return this;
+    }
+
+    /**
+     * Get the tcpIdleTimeoutInMinutes property: The TCP idle timeout for the Azure Firewall, in minutes. Valid values
+     * range from 4 to 64, inclusive.
+     * 
+     * @return the tcpIdleTimeoutInMinutes value.
+     */
+    public Integer tcpIdleTimeoutInMinutes() {
+        return this.innerProperties() == null ? null : this.innerProperties().tcpIdleTimeoutInMinutes();
+    }
+
+    /**
+     * Set the tcpIdleTimeoutInMinutes property: The TCP idle timeout for the Azure Firewall, in minutes. Valid values
+     * range from 4 to 64, inclusive.
+     * 
+     * @param tcpIdleTimeoutInMinutes the tcpIdleTimeoutInMinutes value to set.
+     * @return the AzureFirewallInner object itself.
+     */
+    public AzureFirewallInner withTcpIdleTimeoutInMinutes(Integer tcpIdleTimeoutInMinutes) {
+        if (this.innerProperties() == null) {
+            this.innerProperties = new AzureFirewallPropertiesFormat();
+        }
+        this.innerProperties().withTcpIdleTimeoutInMinutes(tcpIdleTimeoutInMinutes);
+        return this;
+    }
+
+    /**
      * Validates the instance.
      * 
      * @throws IllegalArgumentException thrown if the instance is not valid.

@@ -12,16 +12,17 @@ public final class ApplicationInsightsTopologySpecificationTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
         ApplicationInsightsTopologySpecification model = BinaryData
-            .fromString("{\"kind\":\"ApplicationInsightsTopology\",\"applicationInsightsResourceId\":\"ttymsjny\"}")
+            .fromString(
+                "{\"kind\":\"ApplicationInsightsTopology\",\"applicationInsightsResourceId\":\"yefrpmpdnqqska\"}")
             .toObject(ApplicationInsightsTopologySpecification.class);
-        Assertions.assertEquals("ttymsjny", model.applicationInsightsResourceId());
+        Assertions.assertEquals("yefrpmpdnqqska", model.applicationInsightsResourceId());
     }
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
         ApplicationInsightsTopologySpecification model
-            = new ApplicationInsightsTopologySpecification().withApplicationInsightsResourceId("ttymsjny");
+            = new ApplicationInsightsTopologySpecification().withApplicationInsightsResourceId("yefrpmpdnqqska");
         model = BinaryData.fromObject(model).toObject(ApplicationInsightsTopologySpecification.class);
-        Assertions.assertEquals("ttymsjny", model.applicationInsightsResourceId());
+        Assertions.assertEquals("yefrpmpdnqqska", model.applicationInsightsResourceId());
     }
 }

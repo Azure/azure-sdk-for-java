@@ -24,7 +24,7 @@ public final class ScheduledActionsListResourcesMockTests {
     @Test
     public void testListResources() throws Exception {
         String responseStr
-            = "{\"value\":[{\"name\":\"wtoaukhfk\",\"id\":\"cisiz\",\"type\":\"a\",\"resourceId\":\"dsxjwuivedw\",\"notificationSettings\":[{\"destination\":\"eewxeiqbpsmg\",\"type\":\"Email\",\"language\":\"en-us\",\"disabled\":true}]}]}";
+            = "{\"value\":[{\"name\":\"sjgqrsxyp\",\"id\":\"uuuybnchrsziz\",\"type\":\"uelyetndn\",\"resourceId\":\"fqyggagflnlgmtr\",\"notificationSettings\":[{\"destination\":\"zjmucftbyrplroh\",\"type\":\"Email\",\"language\":\"en-us\",\"disabled\":true},{\"destination\":\"fusuckzmkwklsno\",\"type\":\"Email\",\"language\":\"en-us\",\"disabled\":false},{\"destination\":\"e\",\"type\":\"Email\",\"language\":\"en-us\",\"disabled\":true}]}]}";
 
         HttpClient httpClient
             = response -> Mono.just(new MockHttpResponse(response, 200, responseStr.getBytes(StandardCharsets.UTF_8)));
@@ -33,11 +33,12 @@ public final class ScheduledActionsListResourcesMockTests {
             .authenticate(tokenRequestContext -> Mono.just(new AccessToken("this_is_a_token", OffsetDateTime.MAX)),
                 new AzureProfile("", "", AzureCloud.AZURE_PUBLIC_CLOUD));
 
-        PagedIterable<ScheduledActionResource> response
-            = manager.scheduledActions().listResources("eeyaswl", "augmrmfjlr", com.azure.core.util.Context.NONE);
+        PagedIterable<ScheduledActionResource> response = manager.scheduledActions()
+            .listResources("ikczvvitacgxmf", "sserxhtvsoxhlwn", com.azure.core.util.Context.NONE);
 
-        Assertions.assertEquals("dsxjwuivedw", response.iterator().next().resourceId());
-        Assertions.assertEquals("eewxeiqbpsmg", response.iterator().next().notificationSettings().get(0).destination());
+        Assertions.assertEquals("fqyggagflnlgmtr", response.iterator().next().resourceId());
+        Assertions.assertEquals("zjmucftbyrplroh",
+            response.iterator().next().notificationSettings().get(0).destination());
         Assertions.assertEquals(NotificationType.EMAIL,
             response.iterator().next().notificationSettings().get(0).type());
         Assertions.assertEquals(Language.EN_US, response.iterator().next().notificationSettings().get(0).language());

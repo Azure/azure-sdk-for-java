@@ -22,7 +22,7 @@ public final class VolumeQuotaRulesGetWithResponseMockTests {
     @Test
     public void testGetWithResponse() throws Exception {
         String responseStr
-            = "{\"properties\":{\"provisioningState\":\"Creating\",\"quotaSizeInKiBs\":7253922179126888644,\"quotaType\":\"DefaultUserQuota\",\"quotaTarget\":\"gv\"},\"location\":\"pcrrk\",\"tags\":{\"mjsmwr\":\"w\",\"jafi\":\"kcdxfzzzw\"},\"id\":\"lhguyn\",\"name\":\"chl\",\"type\":\"mltx\"}";
+            = "{\"properties\":{\"provisioningState\":\"Moving\",\"quotaSizeInKiBs\":6913073722004998035,\"quotaType\":\"DefaultUserQuota\",\"quotaTarget\":\"jfulbmoic\"},\"location\":\"lpnfpubntnb\",\"tags\":{\"uhplrvkmjcwmjv\":\"viqsowsaaelcattc\",\"sfxsf\":\"gfggcvkyylizrzbj\",\"ukoveofi\":\"ztlvtmvagbwidqlv\"},\"id\":\"rvjfnmjmvlw\",\"name\":\"z\",\"type\":\"iblkujr\"}";
 
         HttpClient httpClient
             = response -> Mono.just(new MockHttpResponse(response, 200, responseStr.getBytes(StandardCharsets.UTF_8)));
@@ -32,13 +32,14 @@ public final class VolumeQuotaRulesGetWithResponseMockTests {
                 new AzureProfile("", "", AzureCloud.AZURE_PUBLIC_CLOUD));
 
         VolumeQuotaRule response = manager.volumeQuotaRules()
-            .getWithResponse("uyjucejikzo", "ovvtzejetjkln", "ikyju", "k", "bqzolxr", com.azure.core.util.Context.NONE)
+            .getWithResponse("wlpxuzzjg", "refqy", "qotoihiqakydiwfb", "kwpzdqtvh", "spodaqax",
+                com.azure.core.util.Context.NONE)
             .getValue();
 
-        Assertions.assertEquals("pcrrk", response.location());
-        Assertions.assertEquals("w", response.tags().get("mjsmwr"));
-        Assertions.assertEquals(7253922179126888644L, response.quotaSizeInKiBs());
+        Assertions.assertEquals("lpnfpubntnb", response.location());
+        Assertions.assertEquals("viqsowsaaelcattc", response.tags().get("uhplrvkmjcwmjv"));
+        Assertions.assertEquals(6913073722004998035L, response.quotaSizeInKiBs());
         Assertions.assertEquals(QuotaType.DEFAULT_USER_QUOTA, response.quotaType());
-        Assertions.assertEquals("gv", response.quotaTarget());
+        Assertions.assertEquals("jfulbmoic", response.quotaTarget());
     }
 }

@@ -55,7 +55,7 @@ public final class ProtectionIntentsImpl implements ProtectionIntents {
     }
 
     public void delete(String vaultName, String resourceGroupName, String fabricName, String intentObjectName) {
-        this.serviceClient().delete(vaultName, resourceGroupName, fabricName, intentObjectName);
+        this.deleteWithResponse(vaultName, resourceGroupName, fabricName, intentObjectName, Context.NONE);
     }
 
     public Response<PreValidateEnableBackupResponse> validateWithResponse(String azureRegion,
@@ -76,99 +76,42 @@ public final class ProtectionIntentsImpl implements ProtectionIntents {
     }
 
     public ProtectionIntentResource getById(String id) {
-        String vaultName = ResourceManagerUtils.getValueFromIdByName(id, "vaults");
-        if (vaultName == null) {
-            throw LOGGER.logExceptionAsError(new IllegalArgumentException(
-                String.format("The resource ID '%s' is not valid. Missing path segment 'vaults'.", id)));
-        }
-        String resourceGroupName = ResourceManagerUtils.getValueFromIdByName(id, "resourceGroups");
-        if (resourceGroupName == null) {
-            throw LOGGER.logExceptionAsError(new IllegalArgumentException(
-                String.format("The resource ID '%s' is not valid. Missing path segment 'resourceGroups'.", id)));
-        }
-        String fabricName = ResourceManagerUtils.getValueFromIdByName(id, "backupFabrics");
-        if (fabricName == null) {
-            throw LOGGER.logExceptionAsError(new IllegalArgumentException(
-                String.format("The resource ID '%s' is not valid. Missing path segment 'backupFabrics'.", id)));
-        }
-        String intentObjectName = ResourceManagerUtils.getValueFromIdByName(id, "backupProtectionIntent");
-        if (intentObjectName == null) {
-            throw LOGGER.logExceptionAsError(new IllegalArgumentException(String
-                .format("The resource ID '%s' is not valid. Missing path segment 'backupProtectionIntent'.", id)));
-        }
-        return this.getWithResponse(vaultName, resourceGroupName, fabricName, intentObjectName, Context.NONE)
-            .getValue();
+        return this.getByIdWithResponse(id, Context.NONE).getValue();
     }
 
     public Response<ProtectionIntentResource> getByIdWithResponse(String id, Context context) {
-        String vaultName = ResourceManagerUtils.getValueFromIdByName(id, "vaults");
-        if (vaultName == null) {
-            throw LOGGER.logExceptionAsError(new IllegalArgumentException(
-                String.format("The resource ID '%s' is not valid. Missing path segment 'vaults'.", id)));
-        }
-        String resourceGroupName = ResourceManagerUtils.getValueFromIdByName(id, "resourceGroups");
-        if (resourceGroupName == null) {
-            throw LOGGER.logExceptionAsError(new IllegalArgumentException(
-                String.format("The resource ID '%s' is not valid. Missing path segment 'resourceGroups'.", id)));
-        }
-        String fabricName = ResourceManagerUtils.getValueFromIdByName(id, "backupFabrics");
-        if (fabricName == null) {
-            throw LOGGER.logExceptionAsError(new IllegalArgumentException(
-                String.format("The resource ID '%s' is not valid. Missing path segment 'backupFabrics'.", id)));
-        }
-        String intentObjectName = ResourceManagerUtils.getValueFromIdByName(id, "backupProtectionIntent");
-        if (intentObjectName == null) {
-            throw LOGGER.logExceptionAsError(new IllegalArgumentException(String
-                .format("The resource ID '%s' is not valid. Missing path segment 'backupProtectionIntent'.", id)));
-        }
+        String vaultName = ResourceManagerUtils.getRequiredValueFromIdByParameterName(id,
+            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.RecoveryServices/vaults/{vaultName}/backupFabrics/{fabricName}/backupProtectionIntent/{intentObjectName}",
+            "vaultName", "vaults", LOGGER);
+        String resourceGroupName = ResourceManagerUtils.getRequiredValueFromIdByParameterName(id,
+            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.RecoveryServices/vaults/{vaultName}/backupFabrics/{fabricName}/backupProtectionIntent/{intentObjectName}",
+            "resourceGroupName", "resourceGroups", LOGGER);
+        String fabricName = ResourceManagerUtils.getRequiredValueFromIdByParameterName(id,
+            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.RecoveryServices/vaults/{vaultName}/backupFabrics/{fabricName}/backupProtectionIntent/{intentObjectName}",
+            "fabricName", "backupFabrics", LOGGER);
+        String intentObjectName = ResourceManagerUtils.getRequiredValueFromIdByParameterName(id,
+            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.RecoveryServices/vaults/{vaultName}/backupFabrics/{fabricName}/backupProtectionIntent/{intentObjectName}",
+            "intentObjectName", "backupProtectionIntent", LOGGER);
         return this.getWithResponse(vaultName, resourceGroupName, fabricName, intentObjectName, context);
     }
 
     public void deleteById(String id) {
-        String vaultName = ResourceManagerUtils.getValueFromIdByName(id, "vaults");
-        if (vaultName == null) {
-            throw LOGGER.logExceptionAsError(new IllegalArgumentException(
-                String.format("The resource ID '%s' is not valid. Missing path segment 'vaults'.", id)));
-        }
-        String resourceGroupName = ResourceManagerUtils.getValueFromIdByName(id, "resourceGroups");
-        if (resourceGroupName == null) {
-            throw LOGGER.logExceptionAsError(new IllegalArgumentException(
-                String.format("The resource ID '%s' is not valid. Missing path segment 'resourceGroups'.", id)));
-        }
-        String fabricName = ResourceManagerUtils.getValueFromIdByName(id, "backupFabrics");
-        if (fabricName == null) {
-            throw LOGGER.logExceptionAsError(new IllegalArgumentException(
-                String.format("The resource ID '%s' is not valid. Missing path segment 'backupFabrics'.", id)));
-        }
-        String intentObjectName = ResourceManagerUtils.getValueFromIdByName(id, "backupProtectionIntent");
-        if (intentObjectName == null) {
-            throw LOGGER.logExceptionAsError(new IllegalArgumentException(String
-                .format("The resource ID '%s' is not valid. Missing path segment 'backupProtectionIntent'.", id)));
-        }
-        this.deleteWithResponse(vaultName, resourceGroupName, fabricName, intentObjectName, Context.NONE);
+        this.deleteByIdWithResponse(id, Context.NONE);
     }
 
     public Response<Void> deleteByIdWithResponse(String id, Context context) {
-        String vaultName = ResourceManagerUtils.getValueFromIdByName(id, "vaults");
-        if (vaultName == null) {
-            throw LOGGER.logExceptionAsError(new IllegalArgumentException(
-                String.format("The resource ID '%s' is not valid. Missing path segment 'vaults'.", id)));
-        }
-        String resourceGroupName = ResourceManagerUtils.getValueFromIdByName(id, "resourceGroups");
-        if (resourceGroupName == null) {
-            throw LOGGER.logExceptionAsError(new IllegalArgumentException(
-                String.format("The resource ID '%s' is not valid. Missing path segment 'resourceGroups'.", id)));
-        }
-        String fabricName = ResourceManagerUtils.getValueFromIdByName(id, "backupFabrics");
-        if (fabricName == null) {
-            throw LOGGER.logExceptionAsError(new IllegalArgumentException(
-                String.format("The resource ID '%s' is not valid. Missing path segment 'backupFabrics'.", id)));
-        }
-        String intentObjectName = ResourceManagerUtils.getValueFromIdByName(id, "backupProtectionIntent");
-        if (intentObjectName == null) {
-            throw LOGGER.logExceptionAsError(new IllegalArgumentException(String
-                .format("The resource ID '%s' is not valid. Missing path segment 'backupProtectionIntent'.", id)));
-        }
+        String vaultName = ResourceManagerUtils.getRequiredValueFromIdByParameterName(id,
+            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.RecoveryServices/vaults/{vaultName}/backupFabrics/{fabricName}/backupProtectionIntent/{intentObjectName}",
+            "vaultName", "vaults", LOGGER);
+        String resourceGroupName = ResourceManagerUtils.getRequiredValueFromIdByParameterName(id,
+            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.RecoveryServices/vaults/{vaultName}/backupFabrics/{fabricName}/backupProtectionIntent/{intentObjectName}",
+            "resourceGroupName", "resourceGroups", LOGGER);
+        String fabricName = ResourceManagerUtils.getRequiredValueFromIdByParameterName(id,
+            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.RecoveryServices/vaults/{vaultName}/backupFabrics/{fabricName}/backupProtectionIntent/{intentObjectName}",
+            "fabricName", "backupFabrics", LOGGER);
+        String intentObjectName = ResourceManagerUtils.getRequiredValueFromIdByParameterName(id,
+            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.RecoveryServices/vaults/{vaultName}/backupFabrics/{fabricName}/backupProtectionIntent/{intentObjectName}",
+            "intentObjectName", "backupProtectionIntent", LOGGER);
         return this.deleteWithResponse(vaultName, resourceGroupName, fabricName, intentObjectName, context);
     }
 

@@ -50,13 +50,7 @@ public final class SolutionTemplatesImpl implements SolutionTemplates {
 
     public SolutionTemplateVersion createVersion(String resourceGroupName, String solutionTemplateName,
         SolutionTemplateVersionWithUpdateTypeInner body) {
-        SolutionTemplateVersionInner inner
-            = this.serviceClient().createVersion(resourceGroupName, solutionTemplateName, body);
-        if (inner != null) {
-            return new SolutionTemplateVersionImpl(inner, this.manager());
-        } else {
-            return null;
-        }
+        return this.createVersion(resourceGroupName, solutionTemplateName, body, Context.NONE);
     }
 
     public SolutionTemplateVersion createVersion(String resourceGroupName, String solutionTemplateName,
@@ -71,7 +65,7 @@ public final class SolutionTemplatesImpl implements SolutionTemplates {
     }
 
     public void removeVersion(String resourceGroupName, String solutionTemplateName, VersionParameter body) {
-        this.serviceClient().removeVersion(resourceGroupName, solutionTemplateName, body);
+        this.removeVersion(resourceGroupName, solutionTemplateName, body, Context.NONE);
     }
 
     public void removeVersion(String resourceGroupName, String solutionTemplateName, VersionParameter body,
@@ -80,7 +74,7 @@ public final class SolutionTemplatesImpl implements SolutionTemplates {
     }
 
     public void deleteByResourceGroup(String resourceGroupName, String solutionTemplateName) {
-        this.serviceClient().delete(resourceGroupName, solutionTemplateName);
+        this.delete(resourceGroupName, solutionTemplateName, Context.NONE);
     }
 
     public void delete(String resourceGroupName, String solutionTemplateName, Context context) {
@@ -88,8 +82,7 @@ public final class SolutionTemplatesImpl implements SolutionTemplates {
     }
 
     public PagedIterable<SolutionTemplate> listByResourceGroup(String resourceGroupName) {
-        PagedIterable<SolutionTemplateInner> inner = this.serviceClient().listByResourceGroup(resourceGroupName);
-        return ResourceManagerUtils.mapPage(inner, inner1 -> new SolutionTemplateImpl(inner1, this.manager()));
+        return this.listByResourceGroup(resourceGroupName, Context.NONE);
     }
 
     public PagedIterable<SolutionTemplate> listByResourceGroup(String resourceGroupName, Context context) {
@@ -99,8 +92,7 @@ public final class SolutionTemplatesImpl implements SolutionTemplates {
     }
 
     public PagedIterable<SolutionTemplate> list() {
-        PagedIterable<SolutionTemplateInner> inner = this.serviceClient().list();
-        return ResourceManagerUtils.mapPage(inner, inner1 -> new SolutionTemplateImpl(inner1, this.manager()));
+        return this.list(Context.NONE);
     }
 
     public PagedIterable<SolutionTemplate> list(Context context) {
@@ -109,58 +101,30 @@ public final class SolutionTemplatesImpl implements SolutionTemplates {
     }
 
     public SolutionTemplate getById(String id) {
-        String resourceGroupName = ResourceManagerUtils.getValueFromIdByName(id, "resourceGroups");
-        if (resourceGroupName == null) {
-            throw LOGGER.logExceptionAsError(new IllegalArgumentException(
-                String.format("The resource ID '%s' is not valid. Missing path segment 'resourceGroups'.", id)));
-        }
-        String solutionTemplateName = ResourceManagerUtils.getValueFromIdByName(id, "solutionTemplates");
-        if (solutionTemplateName == null) {
-            throw LOGGER.logExceptionAsError(new IllegalArgumentException(
-                String.format("The resource ID '%s' is not valid. Missing path segment 'solutionTemplates'.", id)));
-        }
-        return this.getByResourceGroupWithResponse(resourceGroupName, solutionTemplateName, Context.NONE).getValue();
+        return this.getByIdWithResponse(id, Context.NONE).getValue();
     }
 
     public Response<SolutionTemplate> getByIdWithResponse(String id, Context context) {
-        String resourceGroupName = ResourceManagerUtils.getValueFromIdByName(id, "resourceGroups");
-        if (resourceGroupName == null) {
-            throw LOGGER.logExceptionAsError(new IllegalArgumentException(
-                String.format("The resource ID '%s' is not valid. Missing path segment 'resourceGroups'.", id)));
-        }
-        String solutionTemplateName = ResourceManagerUtils.getValueFromIdByName(id, "solutionTemplates");
-        if (solutionTemplateName == null) {
-            throw LOGGER.logExceptionAsError(new IllegalArgumentException(
-                String.format("The resource ID '%s' is not valid. Missing path segment 'solutionTemplates'.", id)));
-        }
+        String resourceGroupName = ResourceManagerUtils.getRequiredValueFromIdByParameterName(id,
+            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Edge/solutionTemplates/{solutionTemplateName}",
+            "resourceGroupName", "resourceGroups", LOGGER);
+        String solutionTemplateName = ResourceManagerUtils.getRequiredValueFromIdByParameterName(id,
+            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Edge/solutionTemplates/{solutionTemplateName}",
+            "solutionTemplateName", "solutionTemplates", LOGGER);
         return this.getByResourceGroupWithResponse(resourceGroupName, solutionTemplateName, context);
     }
 
     public void deleteById(String id) {
-        String resourceGroupName = ResourceManagerUtils.getValueFromIdByName(id, "resourceGroups");
-        if (resourceGroupName == null) {
-            throw LOGGER.logExceptionAsError(new IllegalArgumentException(
-                String.format("The resource ID '%s' is not valid. Missing path segment 'resourceGroups'.", id)));
-        }
-        String solutionTemplateName = ResourceManagerUtils.getValueFromIdByName(id, "solutionTemplates");
-        if (solutionTemplateName == null) {
-            throw LOGGER.logExceptionAsError(new IllegalArgumentException(
-                String.format("The resource ID '%s' is not valid. Missing path segment 'solutionTemplates'.", id)));
-        }
-        this.delete(resourceGroupName, solutionTemplateName, Context.NONE);
+        this.deleteByIdWithResponse(id, Context.NONE);
     }
 
     public void deleteByIdWithResponse(String id, Context context) {
-        String resourceGroupName = ResourceManagerUtils.getValueFromIdByName(id, "resourceGroups");
-        if (resourceGroupName == null) {
-            throw LOGGER.logExceptionAsError(new IllegalArgumentException(
-                String.format("The resource ID '%s' is not valid. Missing path segment 'resourceGroups'.", id)));
-        }
-        String solutionTemplateName = ResourceManagerUtils.getValueFromIdByName(id, "solutionTemplates");
-        if (solutionTemplateName == null) {
-            throw LOGGER.logExceptionAsError(new IllegalArgumentException(
-                String.format("The resource ID '%s' is not valid. Missing path segment 'solutionTemplates'.", id)));
-        }
+        String resourceGroupName = ResourceManagerUtils.getRequiredValueFromIdByParameterName(id,
+            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Edge/solutionTemplates/{solutionTemplateName}",
+            "resourceGroupName", "resourceGroups", LOGGER);
+        String solutionTemplateName = ResourceManagerUtils.getRequiredValueFromIdByParameterName(id,
+            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Edge/solutionTemplates/{solutionTemplateName}",
+            "solutionTemplateName", "solutionTemplates", LOGGER);
         this.delete(resourceGroupName, solutionTemplateName, context);
     }
 

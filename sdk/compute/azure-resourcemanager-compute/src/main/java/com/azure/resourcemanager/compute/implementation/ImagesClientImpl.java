@@ -144,17 +144,7 @@ public final class ImagesClientImpl
             @HostParam("endpoint") String endpoint, @HeaderParam("Accept") String accept, Context context);
     }
 
-    /**
-     * Gets an image.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param imageName The name of the image.
-     * @param expand The expand expression to apply on the operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ApiErrorException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return an image along with {@link Response} on successful completion of {@link Mono}.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Response<ImageInner>> getByResourceGroupWithResponseAsync(String resourceGroupName, String imageName,
         String expand) {
@@ -173,7 +163,7 @@ public final class ImagesClientImpl
         if (imageName == null) {
             return Mono.error(new IllegalArgumentException("Parameter imageName is required and cannot be null."));
         }
-        final String apiVersion = "2026-03-01";
+        final String apiVersion = "2026-04-01";
         final String accept = "application/json";
         return FluxUtil
             .withContext(context -> service.getByResourceGroup(this.client.getEndpoint(), apiVersion,
@@ -211,23 +201,14 @@ public final class ImagesClientImpl
         if (imageName == null) {
             return Mono.error(new IllegalArgumentException("Parameter imageName is required and cannot be null."));
         }
-        final String apiVersion = "2026-03-01";
+        final String apiVersion = "2026-04-01";
         final String accept = "application/json";
         context = this.client.mergeContext(context);
         return service.getByResourceGroup(this.client.getEndpoint(), apiVersion, this.client.getSubscriptionId(),
             resourceGroupName, imageName, expand, accept, context);
     }
 
-    /**
-     * Gets an image.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param imageName The name of the image.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ApiErrorException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return an image on successful completion of {@link Mono}.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<ImageInner> getByResourceGroupAsync(String resourceGroupName, String imageName) {
         final String expand = null;
@@ -235,52 +216,21 @@ public final class ImagesClientImpl
             .flatMap(res -> Mono.justOrEmpty(res.getValue()));
     }
 
-    /**
-     * Gets an image.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param imageName The name of the image.
-     * @param expand The expand expression to apply on the operation.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ApiErrorException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return an image along with {@link Response}.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Response<ImageInner> getByResourceGroupWithResponse(String resourceGroupName, String imageName,
         String expand, Context context) {
         return getByResourceGroupWithResponseAsync(resourceGroupName, imageName, expand, context).block();
     }
 
-    /**
-     * Gets an image.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param imageName The name of the image.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ApiErrorException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return an image.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public ImageInner getByResourceGroup(String resourceGroupName, String imageName) {
         final String expand = null;
         return getByResourceGroupWithResponse(resourceGroupName, imageName, expand, Context.NONE).getValue();
     }
 
-    /**
-     * Create or update an image.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param imageName The name of the image.
-     * @param parameters Parameters supplied to the Create Image operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ApiErrorException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the source user image virtual hard disk along with {@link Response} on successful completion of
-     * {@link Mono}.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Response<Flux<ByteBuffer>>> createOrUpdateWithResponseAsync(String resourceGroupName, String imageName,
         ImageInner parameters) {
@@ -304,7 +254,7 @@ public final class ImagesClientImpl
         } else {
             parameters.validate();
         }
-        final String apiVersion = "2026-03-01";
+        final String apiVersion = "2026-04-01";
         final String contentType = "application/json";
         final String accept = "application/json";
         return FluxUtil.withContext(context -> service.createOrUpdate(this.client.getEndpoint(), apiVersion,
@@ -348,7 +298,7 @@ public final class ImagesClientImpl
         } else {
             parameters.validate();
         }
-        final String apiVersion = "2026-03-01";
+        final String apiVersion = "2026-04-01";
         final String contentType = "application/json";
         final String accept = "application/json";
         context = this.client.mergeContext(context);
@@ -356,17 +306,7 @@ public final class ImagesClientImpl
             resourceGroupName, imageName, contentType, accept, parameters, context);
     }
 
-    /**
-     * Create or update an image.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param imageName The name of the image.
-     * @param parameters Parameters supplied to the Create Image operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ApiErrorException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the {@link PollerFlux} for polling of the source user image virtual hard disk.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public PollerFlux<PollResult<ImageInner>, ImageInner> beginCreateOrUpdateAsync(String resourceGroupName,
         String imageName, ImageInner parameters) {
@@ -398,52 +338,21 @@ public final class ImagesClientImpl
             ImageInner.class, context);
     }
 
-    /**
-     * Create or update an image.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param imageName The name of the image.
-     * @param parameters Parameters supplied to the Create Image operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ApiErrorException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the {@link SyncPoller} for polling of the source user image virtual hard disk.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public SyncPoller<PollResult<ImageInner>, ImageInner> beginCreateOrUpdate(String resourceGroupName,
         String imageName, ImageInner parameters) {
         return this.beginCreateOrUpdateAsync(resourceGroupName, imageName, parameters).getSyncPoller();
     }
 
-    /**
-     * Create or update an image.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param imageName The name of the image.
-     * @param parameters Parameters supplied to the Create Image operation.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ApiErrorException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the {@link SyncPoller} for polling of the source user image virtual hard disk.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public SyncPoller<PollResult<ImageInner>, ImageInner> beginCreateOrUpdate(String resourceGroupName,
         String imageName, ImageInner parameters, Context context) {
         return this.beginCreateOrUpdateAsync(resourceGroupName, imageName, parameters, context).getSyncPoller();
     }
 
-    /**
-     * Create or update an image.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param imageName The name of the image.
-     * @param parameters Parameters supplied to the Create Image operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ApiErrorException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the source user image virtual hard disk on successful completion of {@link Mono}.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<ImageInner> createOrUpdateAsync(String resourceGroupName, String imageName, ImageInner parameters) {
         return beginCreateOrUpdateAsync(resourceGroupName, imageName, parameters).last()
@@ -469,52 +378,20 @@ public final class ImagesClientImpl
             .flatMap(this.client::getLroFinalResultOrError);
     }
 
-    /**
-     * Create or update an image.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param imageName The name of the image.
-     * @param parameters Parameters supplied to the Create Image operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ApiErrorException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the source user image virtual hard disk.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public ImageInner createOrUpdate(String resourceGroupName, String imageName, ImageInner parameters) {
         return createOrUpdateAsync(resourceGroupName, imageName, parameters).block();
     }
 
-    /**
-     * Create or update an image.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param imageName The name of the image.
-     * @param parameters Parameters supplied to the Create Image operation.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ApiErrorException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the source user image virtual hard disk.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public ImageInner createOrUpdate(String resourceGroupName, String imageName, ImageInner parameters,
         Context context) {
         return createOrUpdateAsync(resourceGroupName, imageName, parameters, context).block();
     }
 
-    /**
-     * Update an image.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param imageName The name of the image.
-     * @param parameters Parameters supplied to the Update Image operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ApiErrorException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the source user image virtual hard disk along with {@link Response} on successful completion of
-     * {@link Mono}.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Response<Flux<ByteBuffer>>> updateWithResponseAsync(String resourceGroupName, String imageName,
         ImageUpdate parameters) {
@@ -538,7 +415,7 @@ public final class ImagesClientImpl
         } else {
             parameters.validate();
         }
-        final String apiVersion = "2026-03-01";
+        final String apiVersion = "2026-04-01";
         final String contentType = "application/json";
         final String accept = "application/json";
         return FluxUtil
@@ -584,7 +461,7 @@ public final class ImagesClientImpl
         } else {
             parameters.validate();
         }
-        final String apiVersion = "2026-03-01";
+        final String apiVersion = "2026-04-01";
         final String contentType = "application/json";
         final String accept = "application/json";
         context = this.client.mergeContext(context);
@@ -592,17 +469,7 @@ public final class ImagesClientImpl
             imageName, contentType, accept, parameters, context);
     }
 
-    /**
-     * Update an image.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param imageName The name of the image.
-     * @param parameters Parameters supplied to the Update Image operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ApiErrorException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the {@link PollerFlux} for polling of the source user image virtual hard disk.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public PollerFlux<PollResult<ImageInner>, ImageInner> beginUpdateAsync(String resourceGroupName, String imageName,
         ImageUpdate parameters) {
@@ -633,52 +500,21 @@ public final class ImagesClientImpl
             ImageInner.class, context);
     }
 
-    /**
-     * Update an image.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param imageName The name of the image.
-     * @param parameters Parameters supplied to the Update Image operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ApiErrorException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the {@link SyncPoller} for polling of the source user image virtual hard disk.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public SyncPoller<PollResult<ImageInner>, ImageInner> beginUpdate(String resourceGroupName, String imageName,
         ImageUpdate parameters) {
         return this.beginUpdateAsync(resourceGroupName, imageName, parameters).getSyncPoller();
     }
 
-    /**
-     * Update an image.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param imageName The name of the image.
-     * @param parameters Parameters supplied to the Update Image operation.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ApiErrorException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the {@link SyncPoller} for polling of the source user image virtual hard disk.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public SyncPoller<PollResult<ImageInner>, ImageInner> beginUpdate(String resourceGroupName, String imageName,
         ImageUpdate parameters, Context context) {
         return this.beginUpdateAsync(resourceGroupName, imageName, parameters, context).getSyncPoller();
     }
 
-    /**
-     * Update an image.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param imageName The name of the image.
-     * @param parameters Parameters supplied to the Update Image operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ApiErrorException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the source user image virtual hard disk on successful completion of {@link Mono}.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<ImageInner> updateAsync(String resourceGroupName, String imageName, ImageUpdate parameters) {
         return beginUpdateAsync(resourceGroupName, imageName, parameters).last()
@@ -704,49 +540,19 @@ public final class ImagesClientImpl
             .flatMap(this.client::getLroFinalResultOrError);
     }
 
-    /**
-     * Update an image.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param imageName The name of the image.
-     * @param parameters Parameters supplied to the Update Image operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ApiErrorException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the source user image virtual hard disk.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public ImageInner update(String resourceGroupName, String imageName, ImageUpdate parameters) {
         return updateAsync(resourceGroupName, imageName, parameters).block();
     }
 
-    /**
-     * Update an image.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param imageName The name of the image.
-     * @param parameters Parameters supplied to the Update Image operation.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ApiErrorException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the source user image virtual hard disk.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public ImageInner update(String resourceGroupName, String imageName, ImageUpdate parameters, Context context) {
         return updateAsync(resourceGroupName, imageName, parameters, context).block();
     }
 
-    /**
-     * Deletes an Image.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param imageName The name of the image.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ApiErrorException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the {@link Response} on successful completion of {@link Mono}.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Response<Flux<ByteBuffer>>> deleteWithResponseAsync(String resourceGroupName, String imageName) {
         if (this.client.getEndpoint() == null) {
@@ -764,7 +570,7 @@ public final class ImagesClientImpl
         if (imageName == null) {
             return Mono.error(new IllegalArgumentException("Parameter imageName is required and cannot be null."));
         }
-        final String apiVersion = "2026-03-01";
+        final String apiVersion = "2026-04-01";
         return FluxUtil
             .withContext(context -> service.delete(this.client.getEndpoint(), apiVersion,
                 this.client.getSubscriptionId(), resourceGroupName, imageName, context))
@@ -800,22 +606,13 @@ public final class ImagesClientImpl
         if (imageName == null) {
             return Mono.error(new IllegalArgumentException("Parameter imageName is required and cannot be null."));
         }
-        final String apiVersion = "2026-03-01";
+        final String apiVersion = "2026-04-01";
         context = this.client.mergeContext(context);
         return service.delete(this.client.getEndpoint(), apiVersion, this.client.getSubscriptionId(), resourceGroupName,
             imageName, context);
     }
 
-    /**
-     * Deletes an Image.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param imageName The name of the image.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ApiErrorException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the {@link PollerFlux} for polling of long-running operation.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public PollerFlux<PollResult<Void>, Void> beginDeleteAsync(String resourceGroupName, String imageName) {
         Mono<Response<Flux<ByteBuffer>>> mono = deleteWithResponseAsync(resourceGroupName, imageName);
@@ -843,47 +640,19 @@ public final class ImagesClientImpl
             context);
     }
 
-    /**
-     * Deletes an Image.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param imageName The name of the image.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ApiErrorException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the {@link SyncPoller} for polling of long-running operation.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public SyncPoller<PollResult<Void>, Void> beginDelete(String resourceGroupName, String imageName) {
         return this.beginDeleteAsync(resourceGroupName, imageName).getSyncPoller();
     }
 
-    /**
-     * Deletes an Image.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param imageName The name of the image.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ApiErrorException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the {@link SyncPoller} for polling of long-running operation.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public SyncPoller<PollResult<Void>, Void> beginDelete(String resourceGroupName, String imageName, Context context) {
         return this.beginDeleteAsync(resourceGroupName, imageName, context).getSyncPoller();
     }
 
-    /**
-     * Deletes an Image.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param imageName The name of the image.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ApiErrorException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return A {@link Mono} that completes when a successful response is received.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Void> deleteAsync(String resourceGroupName, String imageName) {
         return beginDeleteAsync(resourceGroupName, imageName).last().flatMap(this.client::getLroFinalResultOrError);
@@ -906,30 +675,13 @@ public final class ImagesClientImpl
             .flatMap(this.client::getLroFinalResultOrError);
     }
 
-    /**
-     * Deletes an Image.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param imageName The name of the image.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ApiErrorException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public void delete(String resourceGroupName, String imageName) {
         deleteAsync(resourceGroupName, imageName).block();
     }
 
-    /**
-     * Deletes an Image.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param imageName The name of the image.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ApiErrorException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public void delete(String resourceGroupName, String imageName, Context context) {
         deleteAsync(resourceGroupName, imageName, context).block();
@@ -960,7 +712,7 @@ public final class ImagesClientImpl
             return Mono
                 .error(new IllegalArgumentException("Parameter resourceGroupName is required and cannot be null."));
         }
-        final String apiVersion = "2026-03-01";
+        final String apiVersion = "2026-04-01";
         final String accept = "application/json";
         return FluxUtil
             .withContext(context -> service.listByResourceGroup(this.client.getEndpoint(), apiVersion,
@@ -997,7 +749,7 @@ public final class ImagesClientImpl
             return Mono
                 .error(new IllegalArgumentException("Parameter resourceGroupName is required and cannot be null."));
         }
-        final String apiVersion = "2026-03-01";
+        final String apiVersion = "2026-04-01";
         final String accept = "application/json";
         context = this.client.mergeContext(context);
         return service
@@ -1007,16 +759,7 @@ public final class ImagesClientImpl
                 res.getValue().value(), res.getValue().nextLink(), null));
     }
 
-    /**
-     * Gets the list of images under a resource group. Use nextLink property in the response to get the next page of
-     * Images. Do this till nextLink is null to fetch all the Images.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ApiErrorException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the list of images under a resource group as paginated response with {@link PagedFlux}.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.COLLECTION)
     public PagedFlux<ImageInner> listByResourceGroupAsync(String resourceGroupName) {
         return new PagedFlux<>(() -> listByResourceGroupSinglePageAsync(resourceGroupName),
@@ -1040,32 +783,13 @@ public final class ImagesClientImpl
             nextLink -> listByResourceGroupNextSinglePageAsync(nextLink, context));
     }
 
-    /**
-     * Gets the list of images under a resource group. Use nextLink property in the response to get the next page of
-     * Images. Do this till nextLink is null to fetch all the Images.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ApiErrorException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the list of images under a resource group as paginated response with {@link PagedIterable}.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.COLLECTION)
     public PagedIterable<ImageInner> listByResourceGroup(String resourceGroupName) {
         return new PagedIterable<>(listByResourceGroupAsync(resourceGroupName));
     }
 
-    /**
-     * Gets the list of images under a resource group. Use nextLink property in the response to get the next page of
-     * Images. Do this till nextLink is null to fetch all the Images.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ApiErrorException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the list of images under a resource group as paginated response with {@link PagedIterable}.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.COLLECTION)
     public PagedIterable<ImageInner> listByResourceGroup(String resourceGroupName, Context context) {
         return new PagedIterable<>(listByResourceGroupAsync(resourceGroupName, context));
@@ -1090,7 +814,7 @@ public final class ImagesClientImpl
             return Mono.error(new IllegalArgumentException(
                 "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
-        final String apiVersion = "2026-03-01";
+        final String apiVersion = "2026-04-01";
         final String accept = "application/json";
         return FluxUtil
             .withContext(context -> service.list(this.client.getEndpoint(), apiVersion, this.client.getSubscriptionId(),
@@ -1121,7 +845,7 @@ public final class ImagesClientImpl
             return Mono.error(new IllegalArgumentException(
                 "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
-        final String apiVersion = "2026-03-01";
+        final String apiVersion = "2026-04-01";
         final String accept = "application/json";
         context = this.client.mergeContext(context);
         return service.list(this.client.getEndpoint(), apiVersion, this.client.getSubscriptionId(), accept, context)
@@ -1129,14 +853,7 @@ public final class ImagesClientImpl
                 res.getValue().value(), res.getValue().nextLink(), null));
     }
 
-    /**
-     * Gets the list of Images in the subscription. Use nextLink property in the response to get the next page of
-     * Images. Do this till nextLink is null to fetch all the Images.
-     * 
-     * @throws ApiErrorException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the list of Images in the subscription as paginated response with {@link PagedFlux}.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.COLLECTION)
     public PagedFlux<ImageInner> listAsync() {
         return new PagedFlux<>(() -> listSinglePageAsync(), nextLink -> listNextSinglePageAsync(nextLink));
@@ -1158,29 +875,13 @@ public final class ImagesClientImpl
             nextLink -> listNextSinglePageAsync(nextLink, context));
     }
 
-    /**
-     * Gets the list of Images in the subscription. Use nextLink property in the response to get the next page of
-     * Images. Do this till nextLink is null to fetch all the Images.
-     * 
-     * @throws ApiErrorException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the list of Images in the subscription as paginated response with {@link PagedIterable}.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.COLLECTION)
     public PagedIterable<ImageInner> list() {
         return new PagedIterable<>(listAsync());
     }
 
-    /**
-     * Gets the list of Images in the subscription. Use nextLink property in the response to get the next page of
-     * Images. Do this till nextLink is null to fetch all the Images.
-     * 
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ApiErrorException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the list of Images in the subscription as paginated response with {@link PagedIterable}.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.COLLECTION)
     public PagedIterable<ImageInner> list(Context context) {
         return new PagedIterable<>(listAsync(context));

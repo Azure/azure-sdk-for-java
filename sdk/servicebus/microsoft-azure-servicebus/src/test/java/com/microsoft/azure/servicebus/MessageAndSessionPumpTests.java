@@ -18,7 +18,7 @@ import java.util.concurrent.TimeUnit;
 import com.microsoft.azure.servicebus.primitives.ServiceBusException;
 import com.microsoft.azure.servicebus.primitives.StringUtil;
 
-import org.junit.Assert;
+import org.junit.jupiter.api.Assertions;
 
 public class MessageAndSessionPumpTests {
     private static final int DEFAULT_MAX_CONCURRENT_CALLS = 5;
@@ -35,11 +35,11 @@ public class MessageAndSessionPumpTests {
         CountingMessageHandler messageHandler = new CountingMessageHandler(messagePump, !autoComplete, numMessages, false);
         messagePump.registerMessageHandler(messageHandler, new MessageHandlerOptions(DEFAULT_MAX_CONCURRENT_CALLS, autoComplete, Duration.ofMinutes(10)), EXECUTOR_SERVICE);
         if (!messageHandler.getMessageCountDownLatch().await(2, TimeUnit.MINUTES)) {
-            Assert.assertEquals("All messages not pumped even after waiting for 2 minutes.", numMessages, numMessages - messageHandler.getMessageCountDownLatch().getCount());
+            Assertions.assertEquals(numMessages, numMessages - messageHandler.getMessageCountDownLatch().getCount(), "All messages not pumped even after waiting for 2 minutes.");
         }
 
-        Assert.assertTrue("OnMessage called by maximum of one concurrent thread.", messageHandler.getMaxConcurrencyCounter().getMaxConcurrencyCount() > 1);
-        Assert.assertTrue("OnMessage called by more than maxconcurrentcalls threads.", messageHandler.getMaxConcurrencyCounter().getMaxConcurrencyCount() <= DEFAULT_MAX_CONCURRENT_CALLS);
+        Assertions.assertTrue(messageHandler.getMaxConcurrencyCounter().getMaxConcurrencyCount() > 1, "OnMessage called by maximum of one concurrent thread.");
+        Assertions.assertTrue(messageHandler.getMaxConcurrencyCounter().getMaxConcurrencyCount() <= DEFAULT_MAX_CONCURRENT_CALLS, "OnMessage called by more than maxconcurrentcalls threads.");
         // So completes will pass before links are closed by teardown
         Thread.sleep(1000);
     }
@@ -54,10 +54,10 @@ public class MessageAndSessionPumpTests {
         CountingMessageHandler messageHandler = new CountingMessageHandler(messagePump, !autoComplete, numMessages, false);
         messagePump.registerMessageHandler(messageHandler, new MessageHandlerOptions(DEFAULT_MAX_CONCURRENT_CALLS, autoComplete, Duration.ofMinutes(10)), EXECUTOR_SERVICE);
         if (!messageHandler.getMessageCountDownLatch().await(2, TimeUnit.MINUTES)) {
-            Assert.assertEquals("All messages not pumped even after waiting for 2 minutes.", numMessages, numMessages - messageHandler.getMessageCountDownLatch().getCount());
+            Assertions.assertEquals(numMessages, numMessages - messageHandler.getMessageCountDownLatch().getCount(), "All messages not pumped even after waiting for 2 minutes.");
         }
-        Assert.assertTrue("OnMessage called by maximum of one concurrent thread.", messageHandler.getMaxConcurrencyCounter().getMaxConcurrencyCount() > 1);
-        Assert.assertTrue("OnMessage called by more than maxconcurrentcalls threads.", messageHandler.getMaxConcurrencyCounter().getMaxConcurrencyCount() <= DEFAULT_MAX_CONCURRENT_CALLS);
+        Assertions.assertTrue(messageHandler.getMaxConcurrencyCounter().getMaxConcurrencyCount() > 1, "OnMessage called by maximum of one concurrent thread.");
+        Assertions.assertTrue(messageHandler.getMaxConcurrencyCounter().getMaxConcurrencyCount() <= DEFAULT_MAX_CONCURRENT_CALLS, "OnMessage called by more than maxconcurrentcalls threads.");
     }
 
     public static void testMessagePumpAbandonOnException(IMessageSender sender, IMessageAndSessionPump messagePump) throws InterruptedException, ServiceBusException {
@@ -69,10 +69,10 @@ public class MessageAndSessionPumpTests {
         CountingMessageHandler messageHandler = new CountingMessageHandler(messagePump, !autoComplete, numMessages, true);
         messagePump.registerMessageHandler(messageHandler, new MessageHandlerOptions(DEFAULT_MAX_CONCURRENT_CALLS, autoComplete, Duration.ofMinutes(10)), EXECUTOR_SERVICE);
         if (!messageHandler.getMessageCountDownLatch().await(4, TimeUnit.MINUTES)) {
-            Assert.assertEquals("All messages not pumped even after waiting for 4 minutes.", numMessages * 2, numMessages * 2 - messageHandler.getMessageCountDownLatch().getCount());
+            Assertions.assertEquals(numMessages * 2, numMessages * 2 - messageHandler.getMessageCountDownLatch().getCount(), "All messages not pumped even after waiting for 4 minutes.");
         }
-        Assert.assertTrue("OnMessage called by maximum of one concurrent thread.", messageHandler.getMaxConcurrencyCounter().getMaxConcurrencyCount() > 1);
-        Assert.assertTrue("OnMessage called by more than maxconcurrentcalls threads.", messageHandler.getMaxConcurrencyCounter().getMaxConcurrencyCount() <= DEFAULT_MAX_CONCURRENT_CALLS);
+        Assertions.assertTrue(messageHandler.getMaxConcurrencyCounter().getMaxConcurrencyCount() > 1, "OnMessage called by maximum of one concurrent thread.");
+        Assertions.assertTrue(messageHandler.getMaxConcurrencyCounter().getMaxConcurrencyCount() <= DEFAULT_MAX_CONCURRENT_CALLS, "OnMessage called by more than maxconcurrentcalls threads.");
     }
 
     public static void testMessagePumpRenewLock(IMessageSender sender, IMessageAndSessionPump messagePump) throws InterruptedException, ServiceBusException {
@@ -86,10 +86,10 @@ public class MessageAndSessionPumpTests {
         messagePump.registerMessageHandler(messageHandler, new MessageHandlerOptions(numMessages, autoComplete, Duration.ofMinutes(10)), EXECUTOR_SERVICE);
         int waitMinutes = 2 * sleepMinutes;
         if (!messageHandler.getMessageCountDownLatch().await(waitMinutes, TimeUnit.MINUTES)) {
-            Assert.assertEquals("All messages not pumped even after waiting for " + waitMinutes + " minutes.", numMessages, numMessages - messageHandler.getMessageCountDownLatch().getCount());
+            Assertions.assertEquals(numMessages, numMessages - messageHandler.getMessageCountDownLatch().getCount(), "All messages not pumped even after waiting for " + waitMinutes + " minutes.");
         }
-        Assert.assertTrue("OnMessage called by maximum of one concurrent thread.", messageHandler.getMaxConcurrencyCounter().getMaxConcurrencyCount() > 1);
-        Assert.assertTrue("OnMessage called by more than maxconcurrentcalls threads.", messageHandler.getMaxConcurrencyCounter().getMaxConcurrencyCount() <= numMessages);
+        Assertions.assertTrue(messageHandler.getMaxConcurrencyCounter().getMaxConcurrencyCount() > 1, "OnMessage called by maximum of one concurrent thread.");
+        Assertions.assertTrue(messageHandler.getMaxConcurrencyCounter().getMaxConcurrencyCount() <= numMessages, "OnMessage called by more than maxconcurrentcalls threads.");
         // So completes will pass before links are closed by teardown
         Thread.sleep(1000);
     }
@@ -100,14 +100,14 @@ public class MessageAndSessionPumpTests {
 
         try {
             messagePump.registerMessageHandler(messageHandler, EXECUTOR_SERVICE);
-            Assert.fail("Once a handler is already registered, another handle shouldn't be registered.");
+            Assertions.fail("Once a handler is already registered, another handle shouldn't be registered.");
         } catch (UnsupportedOperationException e) {
             // Expected
         }
 
         try {
             messagePump.registerSessionHandler(new CountingSessionHandler(messagePump, true, 1, false, Duration.ofMinutes(1)), EXECUTOR_SERVICE);
-            Assert.fail("Once a handler is already registered, another handle shouldn't be registered.");
+            Assertions.fail("Once a handler is already registered, another handle shouldn't be registered.");
         } catch (UnsupportedOperationException e) {
             // Expected
         }
@@ -119,14 +119,14 @@ public class MessageAndSessionPumpTests {
 
         try {
             messagePump.registerSessionHandler(countingSessionHandler, EXECUTOR_SERVICE);
-            Assert.fail("Once a handler is already registered, another handle shouldn't be registered.");
+            Assertions.fail("Once a handler is already registered, another handle shouldn't be registered.");
         } catch (UnsupportedOperationException e) {
             // Expected
         }
 
         try {
             messagePump.registerMessageHandler(new CountingMessageHandler(messagePump, true, 1, false, Duration.ofMinutes(1)), EXECUTOR_SERVICE);
-            Assert.fail("Once a handler is already registered, another handle shouldn't be registered.");
+            Assertions.fail("Once a handler is already registered, another handle shouldn't be registered.");
         } catch (UnsupportedOperationException e) {
             // Expected
         }
@@ -158,13 +158,13 @@ public class MessageAndSessionPumpTests {
         CountingSessionHandler sessionHandler = new CountingSessionHandler(sessionPump, !autoComplete, numSessions * numMessagePerSession, false);
         sessionPump.registerSessionHandler(sessionHandler, new SessionHandlerOptions(DEFAULT_MAX_CONCURRENT_SESSIONS, maxConcurrentCallsPerSession, autoComplete, Duration.ofMinutes(10)), EXECUTOR_SERVICE);
         if (!sessionHandler.getMessageCountDownLatch().await(5, TimeUnit.MINUTES)) {
-            Assert.assertEquals("All messages not pumped even after waiting for 5 minutes.", numSessions * numMessagePerSession, numSessions * numMessagePerSession - sessionHandler.getMessageCountDownLatch().getCount());
+            Assertions.assertEquals(numSessions * numMessagePerSession, numSessions * numMessagePerSession - sessionHandler.getMessageCountDownLatch().getCount(), "All messages not pumped even after waiting for 5 minutes.");
         }
 
-        Assert.assertTrue("All sessions not received by session pump", sessionHandler.getReceivedSessions().containsAll(sessionIds));
+        Assertions.assertTrue(sessionHandler.getReceivedSessions().containsAll(sessionIds), "All sessions not received by session pump");
 
-        Assert.assertTrue("OnMessage called by maximum of one concurrent thread.", sessionHandler.getMaxConcurrencyCounter().getMaxConcurrencyCount() > 1);
-        Assert.assertTrue("OnMessage called by more than maxconcurrentcalls threads.", sessionHandler.getMaxConcurrencyCounter().getMaxConcurrencyCount() <= (DEFAULT_MAX_CONCURRENT_SESSIONS * maxConcurrentCallsPerSession));
+        Assertions.assertTrue(sessionHandler.getMaxConcurrencyCounter().getMaxConcurrencyCount() > 1, "OnMessage called by maximum of one concurrent thread.");
+        Assertions.assertTrue(sessionHandler.getMaxConcurrencyCounter().getMaxConcurrencyCount() <= (DEFAULT_MAX_CONCURRENT_SESSIONS * maxConcurrentCallsPerSession), "OnMessage called by more than maxconcurrentcalls threads.");
         // So completes will pass before links are closed by teardown
         Thread.sleep(1000);
     }
@@ -187,13 +187,13 @@ public class MessageAndSessionPumpTests {
         CountingSessionHandler sessionHandler = new CountingSessionHandler(sessionPump, !autoComplete, numSessions * numMessagePerSession, false);
         sessionPump.registerSessionHandler(sessionHandler, new SessionHandlerOptions(DEFAULT_MAX_CONCURRENT_SESSIONS, DEFAULT_MAX_CONCURRENT_CALLS_PER_SESSION, autoComplete, Duration.ofMinutes(10)), EXECUTOR_SERVICE);
         if (!sessionHandler.getMessageCountDownLatch().await(5, TimeUnit.MINUTES)) {
-            Assert.assertEquals("All messages not pumped even after waiting for 5 minutes.", numSessions * numMessagePerSession, numSessions * numMessagePerSession - sessionHandler.getMessageCountDownLatch().getCount());
+            Assertions.assertEquals(numSessions * numMessagePerSession, numSessions * numMessagePerSession - sessionHandler.getMessageCountDownLatch().getCount(), "All messages not pumped even after waiting for 5 minutes.");
         }
 
-        Assert.assertTrue("All sessions not received by session pump", sessionHandler.getReceivedSessions().containsAll(sessionIds));
+        Assertions.assertTrue(sessionHandler.getReceivedSessions().containsAll(sessionIds), "All sessions not received by session pump");
 
-        Assert.assertTrue("OnMessage called by maximum of one concurrent thread.", sessionHandler.getMaxConcurrencyCounter().getMaxConcurrencyCount() > 1);
-        Assert.assertTrue("OnMessage called by more than maxconcurrentcalls threads.", sessionHandler.getMaxConcurrencyCounter().getMaxConcurrencyCount() <= (DEFAULT_MAX_CONCURRENT_SESSIONS * DEFAULT_MAX_CONCURRENT_CALLS_PER_SESSION));
+        Assertions.assertTrue(sessionHandler.getMaxConcurrencyCounter().getMaxConcurrencyCount() > 1, "OnMessage called by maximum of one concurrent thread.");
+        Assertions.assertTrue(sessionHandler.getMaxConcurrencyCounter().getMaxConcurrencyCount() <= (DEFAULT_MAX_CONCURRENT_SESSIONS * DEFAULT_MAX_CONCURRENT_CALLS_PER_SESSION), "OnMessage called by more than maxconcurrentcalls threads.");
     }
 
     public static void testSessionPumpAbandonOnException(IMessageSender sender, IMessageAndSessionPump sessionPump) throws InterruptedException, ServiceBusException {
@@ -214,13 +214,13 @@ public class MessageAndSessionPumpTests {
         CountingSessionHandler sessionHandler = new CountingSessionHandler(sessionPump, !autoComplete, numSessions * numMessagePerSession, true);
         sessionPump.registerSessionHandler(sessionHandler, new SessionHandlerOptions(DEFAULT_MAX_CONCURRENT_SESSIONS, DEFAULT_MAX_CONCURRENT_CALLS_PER_SESSION, autoComplete, Duration.ofMinutes(10)), EXECUTOR_SERVICE);
         if (!sessionHandler.getMessageCountDownLatch().await(5, TimeUnit.MINUTES)) {
-            Assert.assertEquals("All messages not pumped even after waiting for 5 minutes.", 2 * numSessions * numMessagePerSession, 2 * numSessions * numMessagePerSession - sessionHandler.getMessageCountDownLatch().getCount());
+            Assertions.assertEquals(2 * numSessions * numMessagePerSession, 2 * numSessions * numMessagePerSession - sessionHandler.getMessageCountDownLatch().getCount(), "All messages not pumped even after waiting for 5 minutes.");
         }
 
-        Assert.assertTrue("All sessions not received by session pump", sessionHandler.getReceivedSessions().containsAll(sessionIds));
+        Assertions.assertTrue(sessionHandler.getReceivedSessions().containsAll(sessionIds), "All sessions not received by session pump");
 
-        Assert.assertTrue("OnMessage called by maximum of one concurrent thread.", sessionHandler.getMaxConcurrencyCounter().getMaxConcurrencyCount() > 1);
-        Assert.assertTrue("OnMessage called by more than maxconcurrentcalls threads.", sessionHandler.getMaxConcurrencyCounter().getMaxConcurrencyCount() <= (DEFAULT_MAX_CONCURRENT_SESSIONS * DEFAULT_MAX_CONCURRENT_CALLS_PER_SESSION));
+        Assertions.assertTrue(sessionHandler.getMaxConcurrencyCounter().getMaxConcurrencyCount() > 1, "OnMessage called by maximum of one concurrent thread.");
+        Assertions.assertTrue(sessionHandler.getMaxConcurrencyCounter().getMaxConcurrencyCount() <= (DEFAULT_MAX_CONCURRENT_SESSIONS * DEFAULT_MAX_CONCURRENT_CALLS_PER_SESSION), "OnMessage called by more than maxconcurrentcalls threads.");
         // So completes will pass before links are closed by teardown
         Thread.sleep(1000);
     }
@@ -245,13 +245,13 @@ public class MessageAndSessionPumpTests {
         sessionPump.registerSessionHandler(sessionHandler, new SessionHandlerOptions(DEFAULT_MAX_CONCURRENT_SESSIONS, 1, autoComplete, Duration.ofMinutes(10)), EXECUTOR_SERVICE);
         int waitMinutes = 5 * sleepMinutes;
         if (!sessionHandler.getMessageCountDownLatch().await(waitMinutes, TimeUnit.MINUTES)) {
-            Assert.assertEquals("All messages not pumped even after waiting for" + waitMinutes + " minutes.", numSessions * numMessagePerSession, numSessions * numMessagePerSession - sessionHandler.getMessageCountDownLatch().getCount());
+            Assertions.assertEquals(numSessions * numMessagePerSession, numSessions * numMessagePerSession - sessionHandler.getMessageCountDownLatch().getCount(), "All messages not pumped even after waiting for" + waitMinutes + " minutes.");
         }
 
-        Assert.assertTrue("All sessions not received by session pump", sessionHandler.getReceivedSessions().containsAll(sessionIds));
+        Assertions.assertTrue(sessionHandler.getReceivedSessions().containsAll(sessionIds), "All sessions not received by session pump");
 
-        Assert.assertTrue("OnMessage called by maximum of one concurrent thread.", sessionHandler.getMaxConcurrencyCounter().getMaxConcurrencyCount() > 1);
-        Assert.assertTrue("OnMessage called by more than maxconcurrentcalls threads.", sessionHandler.getMaxConcurrencyCounter().getMaxConcurrencyCount() <= (DEFAULT_MAX_CONCURRENT_SESSIONS * DEFAULT_MAX_CONCURRENT_CALLS_PER_SESSION));
+        Assertions.assertTrue(sessionHandler.getMaxConcurrencyCounter().getMaxConcurrencyCount() > 1, "OnMessage called by maximum of one concurrent thread.");
+        Assertions.assertTrue(sessionHandler.getMaxConcurrencyCounter().getMaxConcurrencyCount() <= (DEFAULT_MAX_CONCURRENT_SESSIONS * DEFAULT_MAX_CONCURRENT_CALLS_PER_SESSION), "OnMessage called by more than maxconcurrentcalls threads.");
         // So completes will pass before links are closed by teardown
         Thread.sleep(1000);
     }
@@ -279,7 +279,7 @@ public class MessageAndSessionPumpTests {
         // Session lock should be lost and a new session should be accepted.
         Thread.sleep(1000 * 60 * 3);
 
-        Assert.assertTrue("Another session not received by session pump, after session lock lost", sessionHandler.getReceivedSessions().size() > 1);
+        Assertions.assertTrue(sessionHandler.getReceivedSessions().size() > 1, "Another session not received by session pump, after session lock lost");
         // So completes will pass before links are closed by teardown
         Thread.sleep(1000);
     }

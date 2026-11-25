@@ -93,10 +93,7 @@ public final class ProjectImpl implements Project, Project.Definition, Project.U
     }
 
     public Project create() {
-        this.innerObject = serviceManager.serviceClient()
-            .getProjects()
-            .create(resourceGroupName, accountName, projectName, this.innerModel(), Context.NONE);
-        return this;
+        return this.create(Context.NONE);
     }
 
     public Project create(Context context) {
@@ -117,10 +114,7 @@ public final class ProjectImpl implements Project, Project.Definition, Project.U
     }
 
     public Project apply() {
-        this.innerObject = serviceManager.serviceClient()
-            .getProjects()
-            .update(resourceGroupName, accountName, projectName, this.innerModel(), Context.NONE);
-        return this;
+        return this.apply(Context.NONE);
     }
 
     public Project apply(Context context) {
@@ -134,17 +128,19 @@ public final class ProjectImpl implements Project, Project.Definition, Project.U
         com.azure.resourcemanager.cognitiveservices.CognitiveServicesManager serviceManager) {
         this.innerObject = innerObject;
         this.serviceManager = serviceManager;
-        this.resourceGroupName = ResourceManagerUtils.getValueFromIdByName(innerObject.id(), "resourceGroups");
-        this.accountName = ResourceManagerUtils.getValueFromIdByName(innerObject.id(), "accounts");
-        this.projectName = ResourceManagerUtils.getValueFromIdByName(innerObject.id(), "projects");
+        this.resourceGroupName = ResourceManagerUtils.getValueFromIdByParameterName(innerObject.id(),
+            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.CognitiveServices/accounts/{accountName}/projects/{projectName}",
+            "resourceGroupName");
+        this.accountName = ResourceManagerUtils.getValueFromIdByParameterName(innerObject.id(),
+            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.CognitiveServices/accounts/{accountName}/projects/{projectName}",
+            "accountName");
+        this.projectName = ResourceManagerUtils.getValueFromIdByParameterName(innerObject.id(),
+            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.CognitiveServices/accounts/{accountName}/projects/{projectName}",
+            "projectName");
     }
 
     public Project refresh() {
-        this.innerObject = serviceManager.serviceClient()
-            .getProjects()
-            .getWithResponse(resourceGroupName, accountName, projectName, Context.NONE)
-            .getValue();
-        return this;
+        return this.refresh(Context.NONE);
     }
 
     public Project refresh(Context context) {

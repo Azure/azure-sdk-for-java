@@ -50,10 +50,7 @@ public final class ManagedOpImpl implements ManagedOp, ManagedOp.Definition, Man
     private ManagedOpUpdate updateProperties;
 
     public ManagedOp create() {
-        this.innerObject = serviceManager.serviceClient()
-            .getManagedOps()
-            .createOrUpdate(managedOpsName, this.innerModel(), Context.NONE);
-        return this;
+        return this.create(Context.NONE);
     }
 
     public ManagedOp create(Context context) {
@@ -74,9 +71,7 @@ public final class ManagedOpImpl implements ManagedOp, ManagedOp.Definition, Man
     }
 
     public ManagedOp apply() {
-        this.innerObject
-            = serviceManager.serviceClient().getManagedOps().update(managedOpsName, updateProperties, Context.NONE);
-        return this;
+        return this.apply(Context.NONE);
     }
 
     public ManagedOp apply(Context context) {
@@ -88,13 +83,13 @@ public final class ManagedOpImpl implements ManagedOp, ManagedOp.Definition, Man
     ManagedOpImpl(ManagedOpInner innerObject, com.azure.resourcemanager.managedops.ManagedOpsManager serviceManager) {
         this.innerObject = innerObject;
         this.serviceManager = serviceManager;
-        this.managedOpsName = ResourceManagerUtils.getValueFromIdByName(innerObject.id(), "managedOps");
+        this.managedOpsName = ResourceManagerUtils.getValueFromIdByParameterName(innerObject.id(),
+            "/subscriptions/{subscriptionId}/providers/Microsoft.ManagedOps/managedOps/{managedOpsName}",
+            "managedOpsName");
     }
 
     public ManagedOp refresh() {
-        this.innerObject
-            = serviceManager.serviceClient().getManagedOps().getWithResponse(managedOpsName, Context.NONE).getValue();
-        return this;
+        return this.refresh(Context.NONE);
     }
 
     public ManagedOp refresh(Context context) {

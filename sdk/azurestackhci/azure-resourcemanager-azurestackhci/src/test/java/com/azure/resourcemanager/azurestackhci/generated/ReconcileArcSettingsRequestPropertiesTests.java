@@ -13,16 +13,16 @@ public final class ReconcileArcSettingsRequestPropertiesTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
         ReconcileArcSettingsRequestProperties model
-            = BinaryData.fromString("{\"clusterNodes\":[\"yxwjkcp\",\"bnwbxgjvtbvpyssz\",\"nruj\",\"guhmuouqfpr\"]}")
+            = BinaryData.fromString("{\"clusterNodes\":[\"lefgugnxk\",\"xdqmidtthzrvqdra\",\"hjybigehoqfbo\"]}")
                 .toObject(ReconcileArcSettingsRequestProperties.class);
-        Assertions.assertEquals("yxwjkcp", model.clusterNodes().get(0));
+        Assertions.assertEquals("lefgugnxk", model.clusterNodes().get(0));
     }
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
         ReconcileArcSettingsRequestProperties model = new ReconcileArcSettingsRequestProperties()
-            .withClusterNodes(Arrays.asList("yxwjkcp", "bnwbxgjvtbvpyssz", "nruj", "guhmuouqfpr"));
+            .withClusterNodes(Arrays.asList("lefgugnxk", "xdqmidtthzrvqdra", "hjybigehoqfbo"));
         model = BinaryData.fromObject(model).toObject(ReconcileArcSettingsRequestProperties.class);
-        Assertions.assertEquals("yxwjkcp", model.clusterNodes().get(0));
+        Assertions.assertEquals("lefgugnxk", model.clusterNodes().get(0));
     }
 }

@@ -5,13 +5,17 @@
 package com.azure.resourcemanager.netapp.generated;
 
 import com.azure.resourcemanager.netapp.models.ServiceLevel;
+import com.azure.resourcemanager.netapp.models.SmbAccessBasedEnumeration;
+import com.azure.resourcemanager.netapp.models.SmbNonBrowsable;
+import com.azure.resourcemanager.netapp.models.SmbOplocks;
+import java.util.Arrays;
 
 /**
  * Samples for Volumes CreateOrUpdate.
  */
 public final class VolumesCreateOrUpdateSamples {
     /*
-     * x-ms-original-file: 2026-05-01/Volumes_CreateOrUpdate.json
+     * x-ms-original-file: 2026-09-01/Volumes_CreateOrUpdate.json
      */
     /**
      * Sample code: Volumes_CreateOrUpdate.
@@ -26,8 +30,35 @@ public final class VolumesCreateOrUpdateSamples {
             .withCreationToken("my-unique-file-path")
             .withUsageThreshold(107374182400L)
             .withSubnetId(
-                "/subscriptions/9760acf5-4638-11e7-9bdb-020073ca7778/resourceGroups/myRP/providers/Microsoft.Network/virtualNetworks/testvnet3/subnets/testsubnet3")
+                "/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/myRP/providers/Microsoft.Network/virtualNetworks/testvnet3/subnets/testsubnet3")
             .withServiceLevel(ServiceLevel.PREMIUM)
+            .create();
+    }
+
+    /*
+     * x-ms-original-file: 2026-09-01/Volumes_CreateOrUpdate_SMB.json
+     */
+    /**
+     * Sample code: Volumes_CreateOrUpdate_SMB.
+     * 
+     * @param manager Entry point to NetAppFilesManager.
+     */
+    public static void volumesCreateOrUpdateSMB(com.azure.resourcemanager.netapp.NetAppFilesManager manager) {
+        manager.volumes()
+            .define("volume1")
+            .withRegion("eastus")
+            .withExistingCapacityPool("myRG", "account1", "pool1")
+            .withCreationToken("my-smb-volume")
+            .withUsageThreshold(107374182400L)
+            .withSubnetId(
+                "/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/myRP/providers/Microsoft.Network/virtualNetworks/testvnet3/subnets/testsubnet3")
+            .withServiceLevel(ServiceLevel.PREMIUM)
+            .withProtocolTypes(Arrays.asList("CIFS"))
+            .withSmbEncryption(true)
+            .withSmbAccessBasedEnumeration(SmbAccessBasedEnumeration.ENABLED)
+            .withSmbNonBrowsable(SmbNonBrowsable.ENABLED)
+            .withSmbContinuouslyAvailable(true)
+            .withSmbOplocks(SmbOplocks.ENABLED)
             .create();
     }
 }

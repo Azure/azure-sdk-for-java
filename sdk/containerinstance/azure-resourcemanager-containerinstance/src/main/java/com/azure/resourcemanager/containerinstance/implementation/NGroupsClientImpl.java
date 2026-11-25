@@ -172,18 +172,7 @@ public final class NGroupsClientImpl implements InnerSupportsGet<NGroupInner>, I
             @HostParam("endpoint") String endpoint, @HeaderParam("Accept") String accept, Context context);
     }
 
-    /**
-     * NGroups GET REST API
-     * 
-     * Get the properties of the specified NGroups resource.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param ngroupsName The NGroups name.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return describes the NGroups resource along with {@link Response} on successful completion of {@link Mono}.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Response<NGroupInner>> getByResourceGroupWithResponseAsync(String resourceGroupName,
         String ngroupsName) {
@@ -246,73 +235,27 @@ public final class NGroupsClientImpl implements InnerSupportsGet<NGroupInner>, I
             this.client.getSubscriptionId(), resourceGroupName, ngroupsName, accept, context);
     }
 
-    /**
-     * NGroups GET REST API
-     * 
-     * Get the properties of the specified NGroups resource.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param ngroupsName The NGroups name.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return describes the NGroups resource on successful completion of {@link Mono}.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<NGroupInner> getByResourceGroupAsync(String resourceGroupName, String ngroupsName) {
         return getByResourceGroupWithResponseAsync(resourceGroupName, ngroupsName)
             .flatMap(res -> Mono.justOrEmpty(res.getValue()));
     }
 
-    /**
-     * NGroups GET REST API
-     * 
-     * Get the properties of the specified NGroups resource.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param ngroupsName The NGroups name.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return describes the NGroups resource along with {@link Response}.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Response<NGroupInner> getByResourceGroupWithResponse(String resourceGroupName, String ngroupsName,
         Context context) {
         return getByResourceGroupWithResponseAsync(resourceGroupName, ngroupsName, context).block();
     }
 
-    /**
-     * NGroups GET REST API
-     * 
-     * Get the properties of the specified NGroups resource.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param ngroupsName The NGroups name.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return describes the NGroups resource.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public NGroupInner getByResourceGroup(String resourceGroupName, String ngroupsName) {
         return getByResourceGroupWithResponse(resourceGroupName, ngroupsName, Context.NONE).getValue();
     }
 
-    /**
-     * NGroup PUT REST API
-     * 
-     * Create or update a NGroups resource.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param ngroupsName The NGroups name.
-     * @param nGroup The NGroup object.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return describes the NGroups resource along with {@link Response} on successful completion of {@link Mono}.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Response<Flux<ByteBuffer>>> createOrUpdateWithResponseAsync(String resourceGroupName,
         String ngroupsName, NGroupInner nGroup) {
@@ -388,19 +331,7 @@ public final class NGroupsClientImpl implements InnerSupportsGet<NGroupInner>, I
             this.client.getSubscriptionId(), resourceGroupName, ngroupsName, contentType, accept, nGroup, context);
     }
 
-    /**
-     * NGroup PUT REST API
-     * 
-     * Create or update a NGroups resource.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param ngroupsName The NGroups name.
-     * @param nGroup The NGroup object.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the {@link PollerFlux} for polling of describes the NGroups resource.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public PollerFlux<PollResult<NGroupInner>, NGroupInner> beginCreateOrUpdateAsync(String resourceGroupName,
         String ngroupsName, NGroupInner nGroup) {
@@ -433,58 +364,21 @@ public final class NGroupsClientImpl implements InnerSupportsGet<NGroupInner>, I
             NGroupInner.class, NGroupInner.class, context);
     }
 
-    /**
-     * NGroup PUT REST API
-     * 
-     * Create or update a NGroups resource.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param ngroupsName The NGroups name.
-     * @param nGroup The NGroup object.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the {@link SyncPoller} for polling of describes the NGroups resource.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public SyncPoller<PollResult<NGroupInner>, NGroupInner> beginCreateOrUpdate(String resourceGroupName,
         String ngroupsName, NGroupInner nGroup) {
         return this.beginCreateOrUpdateAsync(resourceGroupName, ngroupsName, nGroup).getSyncPoller();
     }
 
-    /**
-     * NGroup PUT REST API
-     * 
-     * Create or update a NGroups resource.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param ngroupsName The NGroups name.
-     * @param nGroup The NGroup object.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the {@link SyncPoller} for polling of describes the NGroups resource.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public SyncPoller<PollResult<NGroupInner>, NGroupInner> beginCreateOrUpdate(String resourceGroupName,
         String ngroupsName, NGroupInner nGroup, Context context) {
         return this.beginCreateOrUpdateAsync(resourceGroupName, ngroupsName, nGroup, context).getSyncPoller();
     }
 
-    /**
-     * NGroup PUT REST API
-     * 
-     * Create or update a NGroups resource.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param ngroupsName The NGroups name.
-     * @param nGroup The NGroup object.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return describes the NGroups resource on successful completion of {@link Mono}.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<NGroupInner> createOrUpdateAsync(String resourceGroupName, String ngroupsName, NGroupInner nGroup) {
         return beginCreateOrUpdateAsync(resourceGroupName, ngroupsName, nGroup).last()
@@ -512,57 +406,20 @@ public final class NGroupsClientImpl implements InnerSupportsGet<NGroupInner>, I
             .flatMap(this.client::getLroFinalResultOrError);
     }
 
-    /**
-     * NGroup PUT REST API
-     * 
-     * Create or update a NGroups resource.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param ngroupsName The NGroups name.
-     * @param nGroup The NGroup object.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return describes the NGroups resource.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public NGroupInner createOrUpdate(String resourceGroupName, String ngroupsName, NGroupInner nGroup) {
         return createOrUpdateAsync(resourceGroupName, ngroupsName, nGroup).block();
     }
 
-    /**
-     * NGroup PUT REST API
-     * 
-     * Create or update a NGroups resource.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param ngroupsName The NGroups name.
-     * @param nGroup The NGroup object.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return describes the NGroups resource.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public NGroupInner createOrUpdate(String resourceGroupName, String ngroupsName, NGroupInner nGroup,
         Context context) {
         return createOrUpdateAsync(resourceGroupName, ngroupsName, nGroup, context).block();
     }
 
-    /**
-     * NGroups PATCH REST API
-     * 
-     * Update a specified NGroups resource.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param ngroupsName The NGroups name.
-     * @param nGroup The NGroup object.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return describes the NGroups resource along with {@link Response} on successful completion of {@link Mono}.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Response<Flux<ByteBuffer>>> updateWithResponseAsync(String resourceGroupName, String ngroupsName,
         NGroupPatch nGroup) {
@@ -638,19 +495,7 @@ public final class NGroupsClientImpl implements InnerSupportsGet<NGroupInner>, I
             resourceGroupName, ngroupsName, contentType, accept, nGroup, context);
     }
 
-    /**
-     * NGroups PATCH REST API
-     * 
-     * Update a specified NGroups resource.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param ngroupsName The NGroups name.
-     * @param nGroup The NGroup object.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the {@link PollerFlux} for polling of describes the NGroups resource.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public PollerFlux<PollResult<NGroupInner>, NGroupInner> beginUpdateAsync(String resourceGroupName,
         String ngroupsName, NGroupPatch nGroup) {
@@ -683,58 +528,21 @@ public final class NGroupsClientImpl implements InnerSupportsGet<NGroupInner>, I
             NGroupInner.class, NGroupInner.class, context);
     }
 
-    /**
-     * NGroups PATCH REST API
-     * 
-     * Update a specified NGroups resource.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param ngroupsName The NGroups name.
-     * @param nGroup The NGroup object.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the {@link SyncPoller} for polling of describes the NGroups resource.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public SyncPoller<PollResult<NGroupInner>, NGroupInner> beginUpdate(String resourceGroupName, String ngroupsName,
         NGroupPatch nGroup) {
         return this.beginUpdateAsync(resourceGroupName, ngroupsName, nGroup).getSyncPoller();
     }
 
-    /**
-     * NGroups PATCH REST API
-     * 
-     * Update a specified NGroups resource.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param ngroupsName The NGroups name.
-     * @param nGroup The NGroup object.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the {@link SyncPoller} for polling of describes the NGroups resource.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public SyncPoller<PollResult<NGroupInner>, NGroupInner> beginUpdate(String resourceGroupName, String ngroupsName,
         NGroupPatch nGroup, Context context) {
         return this.beginUpdateAsync(resourceGroupName, ngroupsName, nGroup, context).getSyncPoller();
     }
 
-    /**
-     * NGroups PATCH REST API
-     * 
-     * Update a specified NGroups resource.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param ngroupsName The NGroups name.
-     * @param nGroup The NGroup object.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return describes the NGroups resource on successful completion of {@link Mono}.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<NGroupInner> updateAsync(String resourceGroupName, String ngroupsName, NGroupPatch nGroup) {
         return beginUpdateAsync(resourceGroupName, ngroupsName, nGroup).last()
@@ -762,55 +570,19 @@ public final class NGroupsClientImpl implements InnerSupportsGet<NGroupInner>, I
             .flatMap(this.client::getLroFinalResultOrError);
     }
 
-    /**
-     * NGroups PATCH REST API
-     * 
-     * Update a specified NGroups resource.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param ngroupsName The NGroups name.
-     * @param nGroup The NGroup object.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return describes the NGroups resource.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public NGroupInner update(String resourceGroupName, String ngroupsName, NGroupPatch nGroup) {
         return updateAsync(resourceGroupName, ngroupsName, nGroup).block();
     }
 
-    /**
-     * NGroups PATCH REST API
-     * 
-     * Update a specified NGroups resource.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param ngroupsName The NGroups name.
-     * @param nGroup The NGroup object.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return describes the NGroups resource.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public NGroupInner update(String resourceGroupName, String ngroupsName, NGroupPatch nGroup, Context context) {
         return updateAsync(resourceGroupName, ngroupsName, nGroup, context).block();
     }
 
-    /**
-     * NGroups Delete REST API
-     * 
-     * Deletes the NGroups resource.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param ngroupsName The NGroups name.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the {@link Response} on successful completion of {@link Mono}.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Response<Flux<ByteBuffer>>> deleteWithResponseAsync(String resourceGroupName, String ngroupsName) {
         if (this.client.getEndpoint() == null) {
@@ -870,18 +642,7 @@ public final class NGroupsClientImpl implements InnerSupportsGet<NGroupInner>, I
             resourceGroupName, ngroupsName, context);
     }
 
-    /**
-     * NGroups Delete REST API
-     * 
-     * Deletes the NGroups resource.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param ngroupsName The NGroups name.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the {@link PollerFlux} for polling of long-running operation.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public PollerFlux<PollResult<Void>, Void> beginDeleteAsync(String resourceGroupName, String ngroupsName) {
         Mono<Response<Flux<ByteBuffer>>> mono = deleteWithResponseAsync(resourceGroupName, ngroupsName);
@@ -911,54 +672,20 @@ public final class NGroupsClientImpl implements InnerSupportsGet<NGroupInner>, I
             context);
     }
 
-    /**
-     * NGroups Delete REST API
-     * 
-     * Deletes the NGroups resource.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param ngroupsName The NGroups name.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the {@link SyncPoller} for polling of long-running operation.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public SyncPoller<PollResult<Void>, Void> beginDelete(String resourceGroupName, String ngroupsName) {
         return this.beginDeleteAsync(resourceGroupName, ngroupsName).getSyncPoller();
     }
 
-    /**
-     * NGroups Delete REST API
-     * 
-     * Deletes the NGroups resource.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param ngroupsName The NGroups name.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the {@link SyncPoller} for polling of long-running operation.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public SyncPoller<PollResult<Void>, Void> beginDelete(String resourceGroupName, String ngroupsName,
         Context context) {
         return this.beginDeleteAsync(resourceGroupName, ngroupsName, context).getSyncPoller();
     }
 
-    /**
-     * NGroups Delete REST API
-     * 
-     * Deletes the NGroups resource.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param ngroupsName The NGroups name.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return A {@link Mono} that completes when a successful response is received.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Void> deleteAsync(String resourceGroupName, String ngroupsName) {
         return beginDeleteAsync(resourceGroupName, ngroupsName).last().flatMap(this.client::getLroFinalResultOrError);
@@ -983,34 +710,13 @@ public final class NGroupsClientImpl implements InnerSupportsGet<NGroupInner>, I
             .flatMap(this.client::getLroFinalResultOrError);
     }
 
-    /**
-     * NGroups Delete REST API
-     * 
-     * Deletes the NGroups resource.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param ngroupsName The NGroups name.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public void delete(String resourceGroupName, String ngroupsName) {
         deleteAsync(resourceGroupName, ngroupsName).block();
     }
 
-    /**
-     * NGroups Delete REST API
-     * 
-     * Deletes the NGroups resource.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param ngroupsName The NGroups name.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public void delete(String resourceGroupName, String ngroupsName, Context context) {
         deleteAsync(resourceGroupName, ngroupsName, context).block();
@@ -1092,19 +798,7 @@ public final class NGroupsClientImpl implements InnerSupportsGet<NGroupInner>, I
                 res.getValue().value(), res.getValue().nextLink(), null));
     }
 
-    /**
-     * GET NGroups under a resource group REST API.
-     * 
-     * Gets a list of all NGroups resources under a resource group.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return nGroups under a resource group REST API.
-     * 
-     * Gets a list of all NGroups resources under a resource group as paginated response with {@link PagedFlux}.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.COLLECTION)
     public PagedFlux<NGroupInner> listByResourceGroupAsync(String resourceGroupName) {
         return new PagedFlux<>(() -> listByResourceGroupSinglePageAsync(resourceGroupName),
@@ -1131,38 +825,13 @@ public final class NGroupsClientImpl implements InnerSupportsGet<NGroupInner>, I
             nextLink -> listByResourceGroupNextSinglePageAsync(nextLink, context));
     }
 
-    /**
-     * GET NGroups under a resource group REST API.
-     * 
-     * Gets a list of all NGroups resources under a resource group.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return nGroups under a resource group REST API.
-     * 
-     * Gets a list of all NGroups resources under a resource group as paginated response with {@link PagedIterable}.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.COLLECTION)
     public PagedIterable<NGroupInner> listByResourceGroup(String resourceGroupName) {
         return new PagedIterable<>(listByResourceGroupAsync(resourceGroupName));
     }
 
-    /**
-     * GET NGroups under a resource group REST API.
-     * 
-     * Gets a list of all NGroups resources under a resource group.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return nGroups under a resource group REST API.
-     * 
-     * Gets a list of all NGroups resources under a resource group as paginated response with {@link PagedIterable}.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.COLLECTION)
     public PagedIterable<NGroupInner> listByResourceGroup(String resourceGroupName, Context context) {
         return new PagedIterable<>(listByResourceGroupAsync(resourceGroupName, context));
@@ -1228,15 +897,7 @@ public final class NGroupsClientImpl implements InnerSupportsGet<NGroupInner>, I
                 res.getValue().value(), res.getValue().nextLink(), null));
     }
 
-    /**
-     * List NGroups in a subscription.
-     * 
-     * Gets a list of all NGroups resources under a subscription.
-     * 
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the response of a NGroups list operation as paginated response with {@link PagedFlux}.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.COLLECTION)
     public PagedFlux<NGroupInner> listAsync() {
         return new PagedFlux<>(() -> listSinglePageAsync(), nextLink -> listNextSinglePageAsync(nextLink));
@@ -1259,49 +920,19 @@ public final class NGroupsClientImpl implements InnerSupportsGet<NGroupInner>, I
             nextLink -> listNextSinglePageAsync(nextLink, context));
     }
 
-    /**
-     * List NGroups in a subscription.
-     * 
-     * Gets a list of all NGroups resources under a subscription.
-     * 
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the response of a NGroups list operation as paginated response with {@link PagedIterable}.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.COLLECTION)
     public PagedIterable<NGroupInner> list() {
         return new PagedIterable<>(listAsync());
     }
 
-    /**
-     * List NGroups in a subscription.
-     * 
-     * Gets a list of all NGroups resources under a subscription.
-     * 
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the response of a NGroups list operation as paginated response with {@link PagedIterable}.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.COLLECTION)
     public PagedIterable<NGroupInner> list(Context context) {
         return new PagedIterable<>(listAsync(context));
     }
 
-    /**
-     * Starts all container groups in the specified NGroups resource.
-     * 
-     * Starts all container groups in the specified NGroups resource. Compute resources will be allocated and billing
-     * will start.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param ngroupsName The NGroups name.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the {@link Response} on successful completion of {@link Mono}.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Response<Flux<ByteBuffer>>> startWithResponseAsync(String resourceGroupName, String ngroupsName) {
         if (this.client.getEndpoint() == null) {
@@ -1362,19 +993,7 @@ public final class NGroupsClientImpl implements InnerSupportsGet<NGroupInner>, I
             resourceGroupName, ngroupsName, context);
     }
 
-    /**
-     * Starts all container groups in the specified NGroups resource.
-     * 
-     * Starts all container groups in the specified NGroups resource. Compute resources will be allocated and billing
-     * will start.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param ngroupsName The NGroups name.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the {@link PollerFlux} for polling of long-running operation.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public PollerFlux<PollResult<Void>, Void> beginStartAsync(String resourceGroupName, String ngroupsName) {
         Mono<Response<Flux<ByteBuffer>>> mono = startWithResponseAsync(resourceGroupName, ngroupsName);
@@ -1405,57 +1024,20 @@ public final class NGroupsClientImpl implements InnerSupportsGet<NGroupInner>, I
             context);
     }
 
-    /**
-     * Starts all container groups in the specified NGroups resource.
-     * 
-     * Starts all container groups in the specified NGroups resource. Compute resources will be allocated and billing
-     * will start.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param ngroupsName The NGroups name.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the {@link SyncPoller} for polling of long-running operation.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public SyncPoller<PollResult<Void>, Void> beginStart(String resourceGroupName, String ngroupsName) {
         return this.beginStartAsync(resourceGroupName, ngroupsName).getSyncPoller();
     }
 
-    /**
-     * Starts all container groups in the specified NGroups resource.
-     * 
-     * Starts all container groups in the specified NGroups resource. Compute resources will be allocated and billing
-     * will start.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param ngroupsName The NGroups name.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the {@link SyncPoller} for polling of long-running operation.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public SyncPoller<PollResult<Void>, Void> beginStart(String resourceGroupName, String ngroupsName,
         Context context) {
         return this.beginStartAsync(resourceGroupName, ngroupsName, context).getSyncPoller();
     }
 
-    /**
-     * Starts all container groups in the specified NGroups resource.
-     * 
-     * Starts all container groups in the specified NGroups resource. Compute resources will be allocated and billing
-     * will start.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param ngroupsName The NGroups name.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return A {@link Mono} that completes when a successful response is received.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Void> startAsync(String resourceGroupName, String ngroupsName) {
         return beginStartAsync(resourceGroupName, ngroupsName).last().flatMap(this.client::getLroFinalResultOrError);
@@ -1481,54 +1063,19 @@ public final class NGroupsClientImpl implements InnerSupportsGet<NGroupInner>, I
             .flatMap(this.client::getLroFinalResultOrError);
     }
 
-    /**
-     * Starts all container groups in the specified NGroups resource.
-     * 
-     * Starts all container groups in the specified NGroups resource. Compute resources will be allocated and billing
-     * will start.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param ngroupsName The NGroups name.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public void start(String resourceGroupName, String ngroupsName) {
         startAsync(resourceGroupName, ngroupsName).block();
     }
 
-    /**
-     * Starts all container groups in the specified NGroups resource.
-     * 
-     * Starts all container groups in the specified NGroups resource. Compute resources will be allocated and billing
-     * will start.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param ngroupsName The NGroups name.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public void start(String resourceGroupName, String ngroupsName, Context context) {
         startAsync(resourceGroupName, ngroupsName, context).block();
     }
 
-    /**
-     * Stops all container groups in the specified NGroups resource.
-     * 
-     * Stops all container groups in the specified NGroups resource. Compute resources will be deallocated and billing
-     * will stop.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param ngroupsName The NGroups name.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the {@link Response} on successful completion of {@link Mono}.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Response<Void>> stopWithResponseAsync(String resourceGroupName, String ngroupsName) {
         if (this.client.getEndpoint() == null) {
@@ -1588,73 +1135,25 @@ public final class NGroupsClientImpl implements InnerSupportsGet<NGroupInner>, I
             resourceGroupName, ngroupsName, context);
     }
 
-    /**
-     * Stops all container groups in the specified NGroups resource.
-     * 
-     * Stops all container groups in the specified NGroups resource. Compute resources will be deallocated and billing
-     * will stop.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param ngroupsName The NGroups name.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return A {@link Mono} that completes when a successful response is received.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Void> stopAsync(String resourceGroupName, String ngroupsName) {
         return stopWithResponseAsync(resourceGroupName, ngroupsName).flatMap(ignored -> Mono.empty());
     }
 
-    /**
-     * Stops all container groups in the specified NGroups resource.
-     * 
-     * Stops all container groups in the specified NGroups resource. Compute resources will be deallocated and billing
-     * will stop.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param ngroupsName The NGroups name.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the {@link Response}.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Response<Void> stopWithResponse(String resourceGroupName, String ngroupsName, Context context) {
         return stopWithResponseAsync(resourceGroupName, ngroupsName, context).block();
     }
 
-    /**
-     * Stops all container groups in the specified NGroups resource.
-     * 
-     * Stops all container groups in the specified NGroups resource. Compute resources will be deallocated and billing
-     * will stop.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param ngroupsName The NGroups name.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public void stop(String resourceGroupName, String ngroupsName) {
         stopWithResponse(resourceGroupName, ngroupsName, Context.NONE);
     }
 
-    /**
-     * Restarts all container groups in the specified NGroups resource.
-     * 
-     * Restarts all container groups in the specified NGroups resource in place. If container image has updates, new
-     * image will be downloaded.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param ngroupsName The NGroups name.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the {@link Response} on successful completion of {@link Mono}.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Response<Flux<ByteBuffer>>> restartWithResponseAsync(String resourceGroupName, String ngroupsName) {
         if (this.client.getEndpoint() == null) {
@@ -1715,19 +1214,7 @@ public final class NGroupsClientImpl implements InnerSupportsGet<NGroupInner>, I
             resourceGroupName, ngroupsName, context);
     }
 
-    /**
-     * Restarts all container groups in the specified NGroups resource.
-     * 
-     * Restarts all container groups in the specified NGroups resource in place. If container image has updates, new
-     * image will be downloaded.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param ngroupsName The NGroups name.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the {@link PollerFlux} for polling of long-running operation.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public PollerFlux<PollResult<Void>, Void> beginRestartAsync(String resourceGroupName, String ngroupsName) {
         Mono<Response<Flux<ByteBuffer>>> mono = restartWithResponseAsync(resourceGroupName, ngroupsName);
@@ -1758,57 +1245,20 @@ public final class NGroupsClientImpl implements InnerSupportsGet<NGroupInner>, I
             context);
     }
 
-    /**
-     * Restarts all container groups in the specified NGroups resource.
-     * 
-     * Restarts all container groups in the specified NGroups resource in place. If container image has updates, new
-     * image will be downloaded.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param ngroupsName The NGroups name.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the {@link SyncPoller} for polling of long-running operation.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public SyncPoller<PollResult<Void>, Void> beginRestart(String resourceGroupName, String ngroupsName) {
         return this.beginRestartAsync(resourceGroupName, ngroupsName).getSyncPoller();
     }
 
-    /**
-     * Restarts all container groups in the specified NGroups resource.
-     * 
-     * Restarts all container groups in the specified NGroups resource in place. If container image has updates, new
-     * image will be downloaded.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param ngroupsName The NGroups name.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the {@link SyncPoller} for polling of long-running operation.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public SyncPoller<PollResult<Void>, Void> beginRestart(String resourceGroupName, String ngroupsName,
         Context context) {
         return this.beginRestartAsync(resourceGroupName, ngroupsName, context).getSyncPoller();
     }
 
-    /**
-     * Restarts all container groups in the specified NGroups resource.
-     * 
-     * Restarts all container groups in the specified NGroups resource in place. If container image has updates, new
-     * image will be downloaded.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param ngroupsName The NGroups name.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return A {@link Mono} that completes when a successful response is received.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Void> restartAsync(String resourceGroupName, String ngroupsName) {
         return beginRestartAsync(resourceGroupName, ngroupsName).last().flatMap(this.client::getLroFinalResultOrError);
@@ -1834,36 +1284,13 @@ public final class NGroupsClientImpl implements InnerSupportsGet<NGroupInner>, I
             .flatMap(this.client::getLroFinalResultOrError);
     }
 
-    /**
-     * Restarts all container groups in the specified NGroups resource.
-     * 
-     * Restarts all container groups in the specified NGroups resource in place. If container image has updates, new
-     * image will be downloaded.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param ngroupsName The NGroups name.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public void restart(String resourceGroupName, String ngroupsName) {
         restartAsync(resourceGroupName, ngroupsName).block();
     }
 
-    /**
-     * Restarts all container groups in the specified NGroups resource.
-     * 
-     * Restarts all container groups in the specified NGroups resource in place. If container image has updates, new
-     * image will be downloaded.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param ngroupsName The NGroups name.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public void restart(String resourceGroupName, String ngroupsName, Context context) {
         restartAsync(resourceGroupName, ngroupsName, context).block();

@@ -319,17 +319,7 @@ public final class RoutePoliciesClientImpl implements RoutePoliciesClient {
             .flatMap(res -> Mono.justOrEmpty(res.getValue()));
     }
 
-    /**
-     * Implements Route Policy GET method.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param routePolicyName Name of the Route Policy.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the RoutePolicy resource definition along with {@link Response}.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Response<RoutePolicyInner> getByResourceGroupWithResponse(String resourceGroupName, String routePolicyName,
         Context context) {
@@ -338,16 +328,7 @@ public final class RoutePoliciesClientImpl implements RoutePoliciesClient {
             this.client.getSubscriptionId(), resourceGroupName, routePolicyName, accept, context);
     }
 
-    /**
-     * Implements Route Policy GET method.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param routePolicyName Name of the Route Policy.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the RoutePolicy resource definition.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public RoutePolicyInner getByResourceGroup(String resourceGroupName, String routePolicyName) {
         return getByResourceGroupWithResponse(resourceGroupName, routePolicyName, Context.NONE).getValue();
@@ -388,11 +369,7 @@ public final class RoutePoliciesClientImpl implements RoutePoliciesClient {
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Response<BinaryData> createWithResponse(String resourceGroupName, String routePolicyName,
         RoutePolicyInner body) {
-        final String contentType = "application/json";
-        final String accept = "application/json";
-        return service.createSync(this.client.getEndpoint(), this.client.getApiVersion(),
-            this.client.getSubscriptionId(), resourceGroupName, routePolicyName, contentType, accept, body,
-            Context.NONE);
+        return createWithResponse(resourceGroupName, routePolicyName, body, Context.NONE);
     }
 
     /**
@@ -435,37 +412,14 @@ public final class RoutePoliciesClientImpl implements RoutePoliciesClient {
             RoutePolicyInner.class, RoutePolicyInner.class, this.client.getContext());
     }
 
-    /**
-     * Implements Route Policy PUT method.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param routePolicyName Name of the Route Policy.
-     * @param body Request payload.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the {@link SyncPoller} for polling of the RoutePolicy resource definition.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public SyncPoller<PollResult<RoutePolicyInner>, RoutePolicyInner> beginCreate(String resourceGroupName,
         String routePolicyName, RoutePolicyInner body) {
-        Response<BinaryData> response = createWithResponse(resourceGroupName, routePolicyName, body);
-        return this.client.<RoutePolicyInner, RoutePolicyInner>getLroResult(response, RoutePolicyInner.class,
-            RoutePolicyInner.class, Context.NONE);
+        return beginCreate(resourceGroupName, routePolicyName, body, Context.NONE);
     }
 
-    /**
-     * Implements Route Policy PUT method.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param routePolicyName Name of the Route Policy.
-     * @param body Request payload.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the {@link SyncPoller} for polling of the RoutePolicy resource definition.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public SyncPoller<PollResult<RoutePolicyInner>, RoutePolicyInner> beginCreate(String resourceGroupName,
         String routePolicyName, RoutePolicyInner body, Context context) {
@@ -492,38 +446,17 @@ public final class RoutePoliciesClientImpl implements RoutePoliciesClient {
             .flatMap(this.client::getLroFinalResultOrError);
     }
 
-    /**
-     * Implements Route Policy PUT method.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param routePolicyName Name of the Route Policy.
-     * @param body Request payload.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the RoutePolicy resource definition.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public RoutePolicyInner create(String resourceGroupName, String routePolicyName, RoutePolicyInner body) {
-        return beginCreate(resourceGroupName, routePolicyName, body).getFinalResult();
+        return create(resourceGroupName, routePolicyName, body, Context.NONE);
     }
 
-    /**
-     * Implements Route Policy PUT method.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param routePolicyName Name of the Route Policy.
-     * @param body Request payload.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the RoutePolicy resource definition.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public RoutePolicyInner create(String resourceGroupName, String routePolicyName, RoutePolicyInner body,
         Context context) {
-        return beginCreate(resourceGroupName, routePolicyName, body, context).getFinalResult();
+        return this.client.getLroFinalResultOrError(beginCreate(resourceGroupName, routePolicyName, body, context));
     }
 
     /**
@@ -561,11 +494,7 @@ public final class RoutePoliciesClientImpl implements RoutePoliciesClient {
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Response<BinaryData> updateWithResponse(String resourceGroupName, String routePolicyName,
         RoutePolicyPatch body) {
-        final String contentType = "application/json";
-        final String accept = "application/json";
-        return service.updateSync(this.client.getEndpoint(), this.client.getApiVersion(),
-            this.client.getSubscriptionId(), resourceGroupName, routePolicyName, contentType, accept, body,
-            Context.NONE);
+        return updateWithResponse(resourceGroupName, routePolicyName, body, Context.NONE);
     }
 
     /**
@@ -608,37 +537,14 @@ public final class RoutePoliciesClientImpl implements RoutePoliciesClient {
             RoutePolicyInner.class, RoutePolicyInner.class, this.client.getContext());
     }
 
-    /**
-     * API to update certain properties of the Route Policy resource.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param routePolicyName Name of the Route Policy.
-     * @param body Route Policy properties to update.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the {@link SyncPoller} for polling of the RoutePolicy resource definition.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public SyncPoller<PollResult<RoutePolicyInner>, RoutePolicyInner> beginUpdate(String resourceGroupName,
         String routePolicyName, RoutePolicyPatch body) {
-        Response<BinaryData> response = updateWithResponse(resourceGroupName, routePolicyName, body);
-        return this.client.<RoutePolicyInner, RoutePolicyInner>getLroResult(response, RoutePolicyInner.class,
-            RoutePolicyInner.class, Context.NONE);
+        return beginUpdate(resourceGroupName, routePolicyName, body, Context.NONE);
     }
 
-    /**
-     * API to update certain properties of the Route Policy resource.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param routePolicyName Name of the Route Policy.
-     * @param body Route Policy properties to update.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the {@link SyncPoller} for polling of the RoutePolicy resource definition.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public SyncPoller<PollResult<RoutePolicyInner>, RoutePolicyInner> beginUpdate(String resourceGroupName,
         String routePolicyName, RoutePolicyPatch body, Context context) {
@@ -665,38 +571,17 @@ public final class RoutePoliciesClientImpl implements RoutePoliciesClient {
             .flatMap(this.client::getLroFinalResultOrError);
     }
 
-    /**
-     * API to update certain properties of the Route Policy resource.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param routePolicyName Name of the Route Policy.
-     * @param body Route Policy properties to update.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the RoutePolicy resource definition.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public RoutePolicyInner update(String resourceGroupName, String routePolicyName, RoutePolicyPatch body) {
-        return beginUpdate(resourceGroupName, routePolicyName, body).getFinalResult();
+        return update(resourceGroupName, routePolicyName, body, Context.NONE);
     }
 
-    /**
-     * API to update certain properties of the Route Policy resource.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param routePolicyName Name of the Route Policy.
-     * @param body Route Policy properties to update.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the RoutePolicy resource definition.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public RoutePolicyInner update(String resourceGroupName, String routePolicyName, RoutePolicyPatch body,
         Context context) {
-        return beginUpdate(resourceGroupName, routePolicyName, body, context).getFinalResult();
+        return this.client.getLroFinalResultOrError(beginUpdate(resourceGroupName, routePolicyName, body, context));
     }
 
     /**
@@ -729,8 +614,7 @@ public final class RoutePoliciesClientImpl implements RoutePoliciesClient {
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Response<BinaryData> deleteWithResponse(String resourceGroupName, String routePolicyName) {
-        return service.deleteSync(this.client.getEndpoint(), this.client.getApiVersion(),
-            this.client.getSubscriptionId(), resourceGroupName, routePolicyName, Context.NONE);
+        return deleteWithResponse(resourceGroupName, routePolicyName, Context.NONE);
     }
 
     /**
@@ -767,33 +651,13 @@ public final class RoutePoliciesClientImpl implements RoutePoliciesClient {
             this.client.getContext());
     }
 
-    /**
-     * Implements Route Policy DELETE method.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param routePolicyName Name of the Route Policy.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the {@link SyncPoller} for polling of long-running operation.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public SyncPoller<PollResult<Void>, Void> beginDelete(String resourceGroupName, String routePolicyName) {
-        Response<BinaryData> response = deleteWithResponse(resourceGroupName, routePolicyName);
-        return this.client.<Void, Void>getLroResult(response, Void.class, Void.class, Context.NONE);
+        return beginDelete(resourceGroupName, routePolicyName, Context.NONE);
     }
 
-    /**
-     * Implements Route Policy DELETE method.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param routePolicyName Name of the Route Policy.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the {@link SyncPoller} for polling of long-running operation.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public SyncPoller<PollResult<Void>, Void> beginDelete(String resourceGroupName, String routePolicyName,
         Context context) {
@@ -817,33 +681,16 @@ public final class RoutePoliciesClientImpl implements RoutePoliciesClient {
             .flatMap(this.client::getLroFinalResultOrError);
     }
 
-    /**
-     * Implements Route Policy DELETE method.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param routePolicyName Name of the Route Policy.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public void delete(String resourceGroupName, String routePolicyName) {
-        beginDelete(resourceGroupName, routePolicyName).getFinalResult();
+        delete(resourceGroupName, routePolicyName, Context.NONE);
     }
 
-    /**
-     * Implements Route Policy DELETE method.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param routePolicyName Name of the Route Policy.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public void delete(String resourceGroupName, String routePolicyName, Context context) {
-        beginDelete(resourceGroupName, routePolicyName, context).getFinalResult();
+        this.client.getLroFinalResultOrError(beginDelete(resourceGroupName, routePolicyName, context));
     }
 
     /**
@@ -893,11 +740,7 @@ public final class RoutePoliciesClientImpl implements RoutePoliciesClient {
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private PagedResponse<RoutePolicyInner> listByResourceGroupSinglePage(String resourceGroupName) {
-        final String accept = "application/json";
-        Response<RoutePoliciesListResult> res = service.listByResourceGroupSync(this.client.getEndpoint(),
-            this.client.getApiVersion(), this.client.getSubscriptionId(), resourceGroupName, accept, Context.NONE);
-        return new PagedResponseBase<>(res.getRequest(), res.getStatusCode(), res.getHeaders(), res.getValue().value(),
-            res.getValue().nextLink(), null);
+        return listByResourceGroupSinglePage(resourceGroupName, Context.NONE);
     }
 
     /**
@@ -919,31 +762,13 @@ public final class RoutePoliciesClientImpl implements RoutePoliciesClient {
             res.getValue().nextLink(), null);
     }
 
-    /**
-     * Implements RoutePolicies list by resource group GET method.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return paged collection of RoutePolicy items as paginated response with {@link PagedIterable}.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.COLLECTION)
     public PagedIterable<RoutePolicyInner> listByResourceGroup(String resourceGroupName) {
-        return new PagedIterable<>(() -> listByResourceGroupSinglePage(resourceGroupName),
-            nextLink -> listByResourceGroupNextSinglePage(nextLink));
+        return listByResourceGroup(resourceGroupName, Context.NONE);
     }
 
-    /**
-     * Implements RoutePolicies list by resource group GET method.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return paged collection of RoutePolicy items as paginated response with {@link PagedIterable}.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.COLLECTION)
     public PagedIterable<RoutePolicyInner> listByResourceGroup(String resourceGroupName, Context context) {
         return new PagedIterable<>(() -> listByResourceGroupSinglePage(resourceGroupName, context),
@@ -991,11 +816,7 @@ public final class RoutePoliciesClientImpl implements RoutePoliciesClient {
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private PagedResponse<RoutePolicyInner> listSinglePage() {
-        final String accept = "application/json";
-        Response<RoutePoliciesListResult> res = service.listSync(this.client.getEndpoint(), this.client.getApiVersion(),
-            this.client.getSubscriptionId(), accept, Context.NONE);
-        return new PagedResponseBase<>(res.getRequest(), res.getStatusCode(), res.getHeaders(), res.getValue().value(),
-            res.getValue().nextLink(), null);
+        return listSinglePage(Context.NONE);
     }
 
     /**
@@ -1016,27 +837,13 @@ public final class RoutePoliciesClientImpl implements RoutePoliciesClient {
             res.getValue().nextLink(), null);
     }
 
-    /**
-     * Implements RoutePolicies list by subscription GET method.
-     * 
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return paged collection of RoutePolicy items as paginated response with {@link PagedIterable}.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.COLLECTION)
     public PagedIterable<RoutePolicyInner> list() {
-        return new PagedIterable<>(() -> listSinglePage(), nextLink -> listBySubscriptionNextSinglePage(nextLink));
+        return list(Context.NONE);
     }
 
-    /**
-     * Implements RoutePolicies list by subscription GET method.
-     * 
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return paged collection of RoutePolicy items as paginated response with {@link PagedIterable}.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.COLLECTION)
     public PagedIterable<RoutePolicyInner> list(Context context) {
         return new PagedIterable<>(() -> listSinglePage(context),
@@ -1081,11 +888,7 @@ public final class RoutePoliciesClientImpl implements RoutePoliciesClient {
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Response<BinaryData> updateAdministrativeStateWithResponse(String resourceGroupName, String routePolicyName,
         UpdateAdministrativeState body) {
-        final String contentType = "application/json";
-        final String accept = "application/json";
-        return service.updateAdministrativeStateSync(this.client.getEndpoint(), this.client.getApiVersion(),
-            this.client.getSubscriptionId(), resourceGroupName, routePolicyName, contentType, accept, body,
-            Context.NONE);
+        return updateAdministrativeStateWithResponse(resourceGroupName, routePolicyName, body, Context.NONE);
     }
 
     /**
@@ -1131,39 +934,15 @@ public final class RoutePoliciesClientImpl implements RoutePoliciesClient {
             UpdateAdministrativeStateResponseInner.class, this.client.getContext());
     }
 
-    /**
-     * Updated the admin state for this Route Policy.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param routePolicyName Name of the Route Policy.
-     * @param body Request payload.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the {@link SyncPoller} for polling of update Administrative State Response.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public SyncPoller<PollResult<UpdateAdministrativeStateResponseInner>, UpdateAdministrativeStateResponseInner>
         beginUpdateAdministrativeState(String resourceGroupName, String routePolicyName,
             UpdateAdministrativeState body) {
-        Response<BinaryData> response = updateAdministrativeStateWithResponse(resourceGroupName, routePolicyName, body);
-        return this.client.<UpdateAdministrativeStateResponseInner, UpdateAdministrativeStateResponseInner>getLroResult(
-            response, UpdateAdministrativeStateResponseInner.class, UpdateAdministrativeStateResponseInner.class,
-            Context.NONE);
+        return beginUpdateAdministrativeState(resourceGroupName, routePolicyName, body, Context.NONE);
     }
 
-    /**
-     * Updated the admin state for this Route Policy.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param routePolicyName Name of the Route Policy.
-     * @param body Request payload.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the {@link SyncPoller} for polling of update Administrative State Response.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public SyncPoller<PollResult<UpdateAdministrativeStateResponseInner>, UpdateAdministrativeStateResponseInner>
         beginUpdateAdministrativeState(String resourceGroupName, String routePolicyName, UpdateAdministrativeState body,
@@ -1193,39 +972,19 @@ public final class RoutePoliciesClientImpl implements RoutePoliciesClient {
             .flatMap(this.client::getLroFinalResultOrError);
     }
 
-    /**
-     * Updated the admin state for this Route Policy.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param routePolicyName Name of the Route Policy.
-     * @param body Request payload.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return update Administrative State Response.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public UpdateAdministrativeStateResponseInner updateAdministrativeState(String resourceGroupName,
         String routePolicyName, UpdateAdministrativeState body) {
-        return beginUpdateAdministrativeState(resourceGroupName, routePolicyName, body).getFinalResult();
+        return updateAdministrativeState(resourceGroupName, routePolicyName, body, Context.NONE);
     }
 
-    /**
-     * Updated the admin state for this Route Policy.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param routePolicyName Name of the Route Policy.
-     * @param body Request payload.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return update Administrative State Response.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public UpdateAdministrativeStateResponseInner updateAdministrativeState(String resourceGroupName,
         String routePolicyName, UpdateAdministrativeState body, Context context) {
-        return beginUpdateAdministrativeState(resourceGroupName, routePolicyName, body, context).getFinalResult();
+        return this.client.getLroFinalResultOrError(
+            beginUpdateAdministrativeState(resourceGroupName, routePolicyName, body, context));
     }
 
     /**
@@ -1262,9 +1021,7 @@ public final class RoutePoliciesClientImpl implements RoutePoliciesClient {
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Response<BinaryData> validateConfigurationWithResponse(String resourceGroupName, String routePolicyName) {
-        final String accept = "application/json";
-        return service.validateConfigurationSync(this.client.getEndpoint(), this.client.getApiVersion(),
-            this.client.getSubscriptionId(), resourceGroupName, routePolicyName, accept, Context.NONE);
+        return validateConfigurationWithResponse(resourceGroupName, routePolicyName, Context.NONE);
     }
 
     /**
@@ -1306,35 +1063,14 @@ public final class RoutePoliciesClientImpl implements RoutePoliciesClient {
             ValidateConfigurationResponseInner.class, this.client.getContext());
     }
 
-    /**
-     * Validates the configuration of the resources.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param routePolicyName Name of the Route Policy.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the {@link SyncPoller} for polling of the response of the action validate configuration.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public SyncPoller<PollResult<ValidateConfigurationResponseInner>, ValidateConfigurationResponseInner>
         beginValidateConfiguration(String resourceGroupName, String routePolicyName) {
-        Response<BinaryData> response = validateConfigurationWithResponse(resourceGroupName, routePolicyName);
-        return this.client.<ValidateConfigurationResponseInner, ValidateConfigurationResponseInner>getLroResult(
-            response, ValidateConfigurationResponseInner.class, ValidateConfigurationResponseInner.class, Context.NONE);
+        return beginValidateConfiguration(resourceGroupName, routePolicyName, Context.NONE);
     }
 
-    /**
-     * Validates the configuration of the resources.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param routePolicyName Name of the Route Policy.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the {@link SyncPoller} for polling of the response of the action validate configuration.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public SyncPoller<PollResult<ValidateConfigurationResponseInner>, ValidateConfigurationResponseInner>
         beginValidateConfiguration(String resourceGroupName, String routePolicyName, Context context) {
@@ -1360,36 +1096,18 @@ public final class RoutePoliciesClientImpl implements RoutePoliciesClient {
             .flatMap(this.client::getLroFinalResultOrError);
     }
 
-    /**
-     * Validates the configuration of the resources.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param routePolicyName Name of the Route Policy.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the response of the action validate configuration.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public ValidateConfigurationResponseInner validateConfiguration(String resourceGroupName, String routePolicyName) {
-        return beginValidateConfiguration(resourceGroupName, routePolicyName).getFinalResult();
+        return validateConfiguration(resourceGroupName, routePolicyName, Context.NONE);
     }
 
-    /**
-     * Validates the configuration of the resources.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param routePolicyName Name of the Route Policy.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the response of the action validate configuration.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public ValidateConfigurationResponseInner validateConfiguration(String resourceGroupName, String routePolicyName,
         Context context) {
-        return beginValidateConfiguration(resourceGroupName, routePolicyName, context).getFinalResult();
+        return this.client
+            .getLroFinalResultOrError(beginValidateConfiguration(resourceGroupName, routePolicyName, context));
     }
 
     /**
@@ -1425,9 +1143,7 @@ public final class RoutePoliciesClientImpl implements RoutePoliciesClient {
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Response<BinaryData> commitConfigurationWithResponse(String resourceGroupName, String routePolicyName) {
-        final String accept = "application/json";
-        return service.commitConfigurationSync(this.client.getEndpoint(), this.client.getApiVersion(),
-            this.client.getSubscriptionId(), resourceGroupName, routePolicyName, accept, Context.NONE);
+        return commitConfigurationWithResponse(resourceGroupName, routePolicyName, Context.NONE);
     }
 
     /**
@@ -1471,38 +1187,15 @@ public final class RoutePoliciesClientImpl implements RoutePoliciesClient {
                 CommonPostActionResponseForStateUpdateInner.class, this.client.getContext());
     }
 
-    /**
-     * Commits the configuration of the given resources.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param routePolicyName Name of the Route Policy.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the {@link SyncPoller} for polling of common response for the state updates.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public
         SyncPoller<PollResult<CommonPostActionResponseForStateUpdateInner>, CommonPostActionResponseForStateUpdateInner>
         beginCommitConfiguration(String resourceGroupName, String routePolicyName) {
-        Response<BinaryData> response = commitConfigurationWithResponse(resourceGroupName, routePolicyName);
-        return this.client
-            .<CommonPostActionResponseForStateUpdateInner, CommonPostActionResponseForStateUpdateInner>getLroResult(
-                response, CommonPostActionResponseForStateUpdateInner.class,
-                CommonPostActionResponseForStateUpdateInner.class, Context.NONE);
+        return beginCommitConfiguration(resourceGroupName, routePolicyName, Context.NONE);
     }
 
-    /**
-     * Commits the configuration of the given resources.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param routePolicyName Name of the Route Policy.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the {@link SyncPoller} for polling of common response for the state updates.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public
         SyncPoller<PollResult<CommonPostActionResponseForStateUpdateInner>, CommonPostActionResponseForStateUpdateInner>
@@ -1531,37 +1224,19 @@ public final class RoutePoliciesClientImpl implements RoutePoliciesClient {
             .flatMap(this.client::getLroFinalResultOrError);
     }
 
-    /**
-     * Commits the configuration of the given resources.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param routePolicyName Name of the Route Policy.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return common response for the state updates.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public CommonPostActionResponseForStateUpdateInner commitConfiguration(String resourceGroupName,
         String routePolicyName) {
-        return beginCommitConfiguration(resourceGroupName, routePolicyName).getFinalResult();
+        return commitConfiguration(resourceGroupName, routePolicyName, Context.NONE);
     }
 
-    /**
-     * Commits the configuration of the given resources.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param routePolicyName Name of the Route Policy.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return common response for the state updates.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public CommonPostActionResponseForStateUpdateInner commitConfiguration(String resourceGroupName,
         String routePolicyName, Context context) {
-        return beginCommitConfiguration(resourceGroupName, routePolicyName, context).getFinalResult();
+        return this.client
+            .getLroFinalResultOrError(beginCommitConfiguration(resourceGroupName, routePolicyName, context));
     }
 
     /**
@@ -1596,11 +1271,7 @@ public final class RoutePoliciesClientImpl implements RoutePoliciesClient {
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private PagedResponse<RoutePolicyInner> listByResourceGroupNextSinglePage(String nextLink) {
-        final String accept = "application/json";
-        Response<RoutePoliciesListResult> res
-            = service.listByResourceGroupNextSync(nextLink, this.client.getEndpoint(), accept, Context.NONE);
-        return new PagedResponseBase<>(res.getRequest(), res.getStatusCode(), res.getHeaders(), res.getValue().value(),
-            res.getValue().nextLink(), null);
+        return listByResourceGroupNextSinglePage(nextLink, Context.NONE);
     }
 
     /**
@@ -1654,11 +1325,7 @@ public final class RoutePoliciesClientImpl implements RoutePoliciesClient {
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private PagedResponse<RoutePolicyInner> listBySubscriptionNextSinglePage(String nextLink) {
-        final String accept = "application/json";
-        Response<RoutePoliciesListResult> res
-            = service.listBySubscriptionNextSync(nextLink, this.client.getEndpoint(), accept, Context.NONE);
-        return new PagedResponseBase<>(res.getRequest(), res.getStatusCode(), res.getHeaders(), res.getValue().value(),
-            res.getValue().nextLink(), null);
+        return listBySubscriptionNextSinglePage(nextLink, Context.NONE);
     }
 
     /**

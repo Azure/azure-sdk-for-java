@@ -13,9 +13,9 @@ public final class CacheHealthTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
         CacheHealth model = BinaryData.fromString(
-            "{\"state\":\"Upgrading\",\"statusDescription\":\"acfi\",\"conditions\":[{\"timestamp\":\"2021-03-20T17:28:20Z\",\"message\":\"etqgtzxdpnq\"}]}")
+            "{\"state\":\"WaitingForKey\",\"statusDescription\":\"tgrhpdjpjumas\",\"conditions\":[{\"timestamp\":\"2021-05-13T06:58:13Z\",\"message\":\"yegu\"}]}")
             .toObject(CacheHealth.class);
-        Assertions.assertEquals(HealthStateType.UPGRADING, model.state());
-        Assertions.assertEquals("acfi", model.statusDescription());
+        Assertions.assertEquals(HealthStateType.WAITING_FOR_KEY, model.state());
+        Assertions.assertEquals("tgrhpdjpjumas", model.statusDescription());
     }
 }

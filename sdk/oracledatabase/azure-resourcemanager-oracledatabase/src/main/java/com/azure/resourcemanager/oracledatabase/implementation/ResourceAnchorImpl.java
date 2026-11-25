@@ -84,10 +84,7 @@ public final class ResourceAnchorImpl implements ResourceAnchor, ResourceAnchor.
     }
 
     public ResourceAnchor create() {
-        this.innerObject = serviceManager.serviceClient()
-            .getResourceAnchors()
-            .createOrUpdate(resourceGroupName, resourceAnchorName, this.innerModel(), Context.NONE);
-        return this;
+        return this.create(Context.NONE);
     }
 
     public ResourceAnchor create(Context context) {
@@ -109,10 +106,7 @@ public final class ResourceAnchorImpl implements ResourceAnchor, ResourceAnchor.
     }
 
     public ResourceAnchor apply() {
-        this.innerObject = serviceManager.serviceClient()
-            .getResourceAnchors()
-            .update(resourceGroupName, resourceAnchorName, updateProperties, Context.NONE);
-        return this;
+        return this.apply(Context.NONE);
     }
 
     public ResourceAnchor apply(Context context) {
@@ -126,16 +120,16 @@ public final class ResourceAnchorImpl implements ResourceAnchor, ResourceAnchor.
         com.azure.resourcemanager.oracledatabase.OracleDatabaseManager serviceManager) {
         this.innerObject = innerObject;
         this.serviceManager = serviceManager;
-        this.resourceGroupName = ResourceManagerUtils.getValueFromIdByName(innerObject.id(), "resourceGroups");
-        this.resourceAnchorName = ResourceManagerUtils.getValueFromIdByName(innerObject.id(), "resourceAnchors");
+        this.resourceGroupName = ResourceManagerUtils.getValueFromIdByParameterName(innerObject.id(),
+            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Oracle.Database/resourceAnchors/{resourceAnchorName}",
+            "resourceGroupName");
+        this.resourceAnchorName = ResourceManagerUtils.getValueFromIdByParameterName(innerObject.id(),
+            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Oracle.Database/resourceAnchors/{resourceAnchorName}",
+            "resourceAnchorName");
     }
 
     public ResourceAnchor refresh() {
-        this.innerObject = serviceManager.serviceClient()
-            .getResourceAnchors()
-            .getByResourceGroupWithResponse(resourceGroupName, resourceAnchorName, Context.NONE)
-            .getValue();
-        return this;
+        return this.refresh(Context.NONE);
     }
 
     public ResourceAnchor refresh(Context context) {

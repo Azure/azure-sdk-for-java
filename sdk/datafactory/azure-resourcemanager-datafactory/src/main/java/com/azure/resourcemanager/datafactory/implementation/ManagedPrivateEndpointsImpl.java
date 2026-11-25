@@ -56,16 +56,13 @@ public final class ManagedPrivateEndpointsImpl implements ManagedPrivateEndpoint
 
     public void delete(String resourceGroupName, String factoryName, String managedVirtualNetworkName,
         String managedPrivateEndpointName) {
-        this.serviceClient()
-            .delete(resourceGroupName, factoryName, managedVirtualNetworkName, managedPrivateEndpointName);
+        this.deleteWithResponse(resourceGroupName, factoryName, managedVirtualNetworkName, managedPrivateEndpointName,
+            Context.NONE);
     }
 
     public PagedIterable<ManagedPrivateEndpointResource> listByFactory(String resourceGroupName, String factoryName,
         String managedVirtualNetworkName) {
-        PagedIterable<ManagedPrivateEndpointResourceInner> inner
-            = this.serviceClient().listByFactory(resourceGroupName, factoryName, managedVirtualNetworkName);
-        return ResourceManagerUtils.mapPage(inner,
-            inner1 -> new ManagedPrivateEndpointResourceImpl(inner1, this.manager()));
+        return this.listByFactory(resourceGroupName, factoryName, managedVirtualNetworkName, Context.NONE);
     }
 
     public PagedIterable<ManagedPrivateEndpointResource> listByFactory(String resourceGroupName, String factoryName,
@@ -77,105 +74,45 @@ public final class ManagedPrivateEndpointsImpl implements ManagedPrivateEndpoint
     }
 
     public ManagedPrivateEndpointResource getById(String id) {
-        String resourceGroupName = ResourceManagerUtils.getValueFromIdByName(id, "resourceGroups");
-        if (resourceGroupName == null) {
-            throw LOGGER.logExceptionAsError(new IllegalArgumentException(
-                String.format("The resource ID '%s' is not valid. Missing path segment 'resourceGroups'.", id)));
-        }
-        String factoryName = ResourceManagerUtils.getValueFromIdByName(id, "factories");
-        if (factoryName == null) {
-            throw LOGGER.logExceptionAsError(new IllegalArgumentException(
-                String.format("The resource ID '%s' is not valid. Missing path segment 'factories'.", id)));
-        }
-        String managedVirtualNetworkName = ResourceManagerUtils.getValueFromIdByName(id, "managedVirtualNetworks");
-        if (managedVirtualNetworkName == null) {
-            throw LOGGER.logExceptionAsError(new IllegalArgumentException(String
-                .format("The resource ID '%s' is not valid. Missing path segment 'managedVirtualNetworks'.", id)));
-        }
-        String managedPrivateEndpointName = ResourceManagerUtils.getValueFromIdByName(id, "managedPrivateEndpoints");
-        if (managedPrivateEndpointName == null) {
-            throw LOGGER.logExceptionAsError(new IllegalArgumentException(String
-                .format("The resource ID '%s' is not valid. Missing path segment 'managedPrivateEndpoints'.", id)));
-        }
         String localIfNoneMatch = null;
-        return this
-            .getWithResponse(resourceGroupName, factoryName, managedVirtualNetworkName, managedPrivateEndpointName,
-                localIfNoneMatch, Context.NONE)
-            .getValue();
+        return this.getByIdWithResponse(id, localIfNoneMatch, Context.NONE).getValue();
     }
 
     public Response<ManagedPrivateEndpointResource> getByIdWithResponse(String id, String ifNoneMatch,
         Context context) {
-        String resourceGroupName = ResourceManagerUtils.getValueFromIdByName(id, "resourceGroups");
-        if (resourceGroupName == null) {
-            throw LOGGER.logExceptionAsError(new IllegalArgumentException(
-                String.format("The resource ID '%s' is not valid. Missing path segment 'resourceGroups'.", id)));
-        }
-        String factoryName = ResourceManagerUtils.getValueFromIdByName(id, "factories");
-        if (factoryName == null) {
-            throw LOGGER.logExceptionAsError(new IllegalArgumentException(
-                String.format("The resource ID '%s' is not valid. Missing path segment 'factories'.", id)));
-        }
-        String managedVirtualNetworkName = ResourceManagerUtils.getValueFromIdByName(id, "managedVirtualNetworks");
-        if (managedVirtualNetworkName == null) {
-            throw LOGGER.logExceptionAsError(new IllegalArgumentException(String
-                .format("The resource ID '%s' is not valid. Missing path segment 'managedVirtualNetworks'.", id)));
-        }
-        String managedPrivateEndpointName = ResourceManagerUtils.getValueFromIdByName(id, "managedPrivateEndpoints");
-        if (managedPrivateEndpointName == null) {
-            throw LOGGER.logExceptionAsError(new IllegalArgumentException(String
-                .format("The resource ID '%s' is not valid. Missing path segment 'managedPrivateEndpoints'.", id)));
-        }
+        String resourceGroupName = ResourceManagerUtils.getRequiredValueFromIdByParameterName(id,
+            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.DataFactory/factories/{factoryName}/managedVirtualNetworks/{managedVirtualNetworkName}/managedPrivateEndpoints/{managedPrivateEndpointName}",
+            "resourceGroupName", "resourceGroups", LOGGER);
+        String factoryName = ResourceManagerUtils.getRequiredValueFromIdByParameterName(id,
+            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.DataFactory/factories/{factoryName}/managedVirtualNetworks/{managedVirtualNetworkName}/managedPrivateEndpoints/{managedPrivateEndpointName}",
+            "factoryName", "factories", LOGGER);
+        String managedVirtualNetworkName = ResourceManagerUtils.getRequiredValueFromIdByParameterName(id,
+            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.DataFactory/factories/{factoryName}/managedVirtualNetworks/{managedVirtualNetworkName}/managedPrivateEndpoints/{managedPrivateEndpointName}",
+            "managedVirtualNetworkName", "managedVirtualNetworks", LOGGER);
+        String managedPrivateEndpointName = ResourceManagerUtils.getRequiredValueFromIdByParameterName(id,
+            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.DataFactory/factories/{factoryName}/managedVirtualNetworks/{managedVirtualNetworkName}/managedPrivateEndpoints/{managedPrivateEndpointName}",
+            "managedPrivateEndpointName", "managedPrivateEndpoints", LOGGER);
         return this.getWithResponse(resourceGroupName, factoryName, managedVirtualNetworkName,
             managedPrivateEndpointName, ifNoneMatch, context);
     }
 
     public void deleteById(String id) {
-        String resourceGroupName = ResourceManagerUtils.getValueFromIdByName(id, "resourceGroups");
-        if (resourceGroupName == null) {
-            throw LOGGER.logExceptionAsError(new IllegalArgumentException(
-                String.format("The resource ID '%s' is not valid. Missing path segment 'resourceGroups'.", id)));
-        }
-        String factoryName = ResourceManagerUtils.getValueFromIdByName(id, "factories");
-        if (factoryName == null) {
-            throw LOGGER.logExceptionAsError(new IllegalArgumentException(
-                String.format("The resource ID '%s' is not valid. Missing path segment 'factories'.", id)));
-        }
-        String managedVirtualNetworkName = ResourceManagerUtils.getValueFromIdByName(id, "managedVirtualNetworks");
-        if (managedVirtualNetworkName == null) {
-            throw LOGGER.logExceptionAsError(new IllegalArgumentException(String
-                .format("The resource ID '%s' is not valid. Missing path segment 'managedVirtualNetworks'.", id)));
-        }
-        String managedPrivateEndpointName = ResourceManagerUtils.getValueFromIdByName(id, "managedPrivateEndpoints");
-        if (managedPrivateEndpointName == null) {
-            throw LOGGER.logExceptionAsError(new IllegalArgumentException(String
-                .format("The resource ID '%s' is not valid. Missing path segment 'managedPrivateEndpoints'.", id)));
-        }
-        this.deleteWithResponse(resourceGroupName, factoryName, managedVirtualNetworkName, managedPrivateEndpointName,
-            Context.NONE);
+        this.deleteByIdWithResponse(id, Context.NONE);
     }
 
     public Response<Void> deleteByIdWithResponse(String id, Context context) {
-        String resourceGroupName = ResourceManagerUtils.getValueFromIdByName(id, "resourceGroups");
-        if (resourceGroupName == null) {
-            throw LOGGER.logExceptionAsError(new IllegalArgumentException(
-                String.format("The resource ID '%s' is not valid. Missing path segment 'resourceGroups'.", id)));
-        }
-        String factoryName = ResourceManagerUtils.getValueFromIdByName(id, "factories");
-        if (factoryName == null) {
-            throw LOGGER.logExceptionAsError(new IllegalArgumentException(
-                String.format("The resource ID '%s' is not valid. Missing path segment 'factories'.", id)));
-        }
-        String managedVirtualNetworkName = ResourceManagerUtils.getValueFromIdByName(id, "managedVirtualNetworks");
-        if (managedVirtualNetworkName == null) {
-            throw LOGGER.logExceptionAsError(new IllegalArgumentException(String
-                .format("The resource ID '%s' is not valid. Missing path segment 'managedVirtualNetworks'.", id)));
-        }
-        String managedPrivateEndpointName = ResourceManagerUtils.getValueFromIdByName(id, "managedPrivateEndpoints");
-        if (managedPrivateEndpointName == null) {
-            throw LOGGER.logExceptionAsError(new IllegalArgumentException(String
-                .format("The resource ID '%s' is not valid. Missing path segment 'managedPrivateEndpoints'.", id)));
-        }
+        String resourceGroupName = ResourceManagerUtils.getRequiredValueFromIdByParameterName(id,
+            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.DataFactory/factories/{factoryName}/managedVirtualNetworks/{managedVirtualNetworkName}/managedPrivateEndpoints/{managedPrivateEndpointName}",
+            "resourceGroupName", "resourceGroups", LOGGER);
+        String factoryName = ResourceManagerUtils.getRequiredValueFromIdByParameterName(id,
+            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.DataFactory/factories/{factoryName}/managedVirtualNetworks/{managedVirtualNetworkName}/managedPrivateEndpoints/{managedPrivateEndpointName}",
+            "factoryName", "factories", LOGGER);
+        String managedVirtualNetworkName = ResourceManagerUtils.getRequiredValueFromIdByParameterName(id,
+            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.DataFactory/factories/{factoryName}/managedVirtualNetworks/{managedVirtualNetworkName}/managedPrivateEndpoints/{managedPrivateEndpointName}",
+            "managedVirtualNetworkName", "managedVirtualNetworks", LOGGER);
+        String managedPrivateEndpointName = ResourceManagerUtils.getRequiredValueFromIdByParameterName(id,
+            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.DataFactory/factories/{factoryName}/managedVirtualNetworks/{managedVirtualNetworkName}/managedPrivateEndpoints/{managedPrivateEndpointName}",
+            "managedPrivateEndpointName", "managedPrivateEndpoints", LOGGER);
         return this.deleteWithResponse(resourceGroupName, factoryName, managedVirtualNetworkName,
             managedPrivateEndpointName, context);
     }

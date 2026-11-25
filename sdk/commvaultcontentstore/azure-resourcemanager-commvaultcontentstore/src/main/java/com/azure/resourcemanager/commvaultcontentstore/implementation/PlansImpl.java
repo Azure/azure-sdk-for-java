@@ -45,7 +45,7 @@ public final class PlansImpl implements Plans {
     }
 
     public void delete(String resourceGroupName, String cloudAccountName, String planName) {
-        this.serviceClient().delete(resourceGroupName, cloudAccountName, planName);
+        this.delete(resourceGroupName, cloudAccountName, planName, Context.NONE);
     }
 
     public void delete(String resourceGroupName, String cloudAccountName, String planName, Context context) {
@@ -53,9 +53,7 @@ public final class PlansImpl implements Plans {
     }
 
     public PagedIterable<CommvaultPlan> listByCloudAccount(String resourceGroupName, String cloudAccountName) {
-        PagedIterable<CommvaultPlanInner> inner
-            = this.serviceClient().listByCloudAccount(resourceGroupName, cloudAccountName);
-        return ResourceManagerUtils.mapPage(inner, inner1 -> new CommvaultPlanImpl(inner1, this.manager()));
+        return this.listByCloudAccount(resourceGroupName, cloudAccountName, Context.NONE);
     }
 
     public PagedIterable<CommvaultPlan> listByCloudAccount(String resourceGroupName, String cloudAccountName,
@@ -66,78 +64,36 @@ public final class PlansImpl implements Plans {
     }
 
     public CommvaultPlan getById(String id) {
-        String resourceGroupName = ResourceManagerUtils.getValueFromIdByName(id, "resourceGroups");
-        if (resourceGroupName == null) {
-            throw LOGGER.logExceptionAsError(new IllegalArgumentException(
-                String.format("The resource ID '%s' is not valid. Missing path segment 'resourceGroups'.", id)));
-        }
-        String cloudAccountName = ResourceManagerUtils.getValueFromIdByName(id, "cloudAccounts");
-        if (cloudAccountName == null) {
-            throw LOGGER.logExceptionAsError(new IllegalArgumentException(
-                String.format("The resource ID '%s' is not valid. Missing path segment 'cloudAccounts'.", id)));
-        }
-        String planName = ResourceManagerUtils.getValueFromIdByName(id, "plans");
-        if (planName == null) {
-            throw LOGGER.logExceptionAsError(new IllegalArgumentException(
-                String.format("The resource ID '%s' is not valid. Missing path segment 'plans'.", id)));
-        }
-        return this.getWithResponse(resourceGroupName, cloudAccountName, planName, Context.NONE).getValue();
+        return this.getByIdWithResponse(id, Context.NONE).getValue();
     }
 
     public Response<CommvaultPlan> getByIdWithResponse(String id, Context context) {
-        String resourceGroupName = ResourceManagerUtils.getValueFromIdByName(id, "resourceGroups");
-        if (resourceGroupName == null) {
-            throw LOGGER.logExceptionAsError(new IllegalArgumentException(
-                String.format("The resource ID '%s' is not valid. Missing path segment 'resourceGroups'.", id)));
-        }
-        String cloudAccountName = ResourceManagerUtils.getValueFromIdByName(id, "cloudAccounts");
-        if (cloudAccountName == null) {
-            throw LOGGER.logExceptionAsError(new IllegalArgumentException(
-                String.format("The resource ID '%s' is not valid. Missing path segment 'cloudAccounts'.", id)));
-        }
-        String planName = ResourceManagerUtils.getValueFromIdByName(id, "plans");
-        if (planName == null) {
-            throw LOGGER.logExceptionAsError(new IllegalArgumentException(
-                String.format("The resource ID '%s' is not valid. Missing path segment 'plans'.", id)));
-        }
+        String resourceGroupName = ResourceManagerUtils.getRequiredValueFromIdByParameterName(id,
+            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Commvault.ContentStore/cloudAccounts/{cloudAccountName}/plans/{planName}",
+            "resourceGroupName", "resourceGroups", LOGGER);
+        String cloudAccountName = ResourceManagerUtils.getRequiredValueFromIdByParameterName(id,
+            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Commvault.ContentStore/cloudAccounts/{cloudAccountName}/plans/{planName}",
+            "cloudAccountName", "cloudAccounts", LOGGER);
+        String planName = ResourceManagerUtils.getRequiredValueFromIdByParameterName(id,
+            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Commvault.ContentStore/cloudAccounts/{cloudAccountName}/plans/{planName}",
+            "planName", "plans", LOGGER);
         return this.getWithResponse(resourceGroupName, cloudAccountName, planName, context);
     }
 
     public void deleteById(String id) {
-        String resourceGroupName = ResourceManagerUtils.getValueFromIdByName(id, "resourceGroups");
-        if (resourceGroupName == null) {
-            throw LOGGER.logExceptionAsError(new IllegalArgumentException(
-                String.format("The resource ID '%s' is not valid. Missing path segment 'resourceGroups'.", id)));
-        }
-        String cloudAccountName = ResourceManagerUtils.getValueFromIdByName(id, "cloudAccounts");
-        if (cloudAccountName == null) {
-            throw LOGGER.logExceptionAsError(new IllegalArgumentException(
-                String.format("The resource ID '%s' is not valid. Missing path segment 'cloudAccounts'.", id)));
-        }
-        String planName = ResourceManagerUtils.getValueFromIdByName(id, "plans");
-        if (planName == null) {
-            throw LOGGER.logExceptionAsError(new IllegalArgumentException(
-                String.format("The resource ID '%s' is not valid. Missing path segment 'plans'.", id)));
-        }
-        this.delete(resourceGroupName, cloudAccountName, planName, Context.NONE);
+        this.deleteByIdWithResponse(id, Context.NONE);
     }
 
     public void deleteByIdWithResponse(String id, Context context) {
-        String resourceGroupName = ResourceManagerUtils.getValueFromIdByName(id, "resourceGroups");
-        if (resourceGroupName == null) {
-            throw LOGGER.logExceptionAsError(new IllegalArgumentException(
-                String.format("The resource ID '%s' is not valid. Missing path segment 'resourceGroups'.", id)));
-        }
-        String cloudAccountName = ResourceManagerUtils.getValueFromIdByName(id, "cloudAccounts");
-        if (cloudAccountName == null) {
-            throw LOGGER.logExceptionAsError(new IllegalArgumentException(
-                String.format("The resource ID '%s' is not valid. Missing path segment 'cloudAccounts'.", id)));
-        }
-        String planName = ResourceManagerUtils.getValueFromIdByName(id, "plans");
-        if (planName == null) {
-            throw LOGGER.logExceptionAsError(new IllegalArgumentException(
-                String.format("The resource ID '%s' is not valid. Missing path segment 'plans'.", id)));
-        }
+        String resourceGroupName = ResourceManagerUtils.getRequiredValueFromIdByParameterName(id,
+            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Commvault.ContentStore/cloudAccounts/{cloudAccountName}/plans/{planName}",
+            "resourceGroupName", "resourceGroups", LOGGER);
+        String cloudAccountName = ResourceManagerUtils.getRequiredValueFromIdByParameterName(id,
+            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Commvault.ContentStore/cloudAccounts/{cloudAccountName}/plans/{planName}",
+            "cloudAccountName", "cloudAccounts", LOGGER);
+        String planName = ResourceManagerUtils.getRequiredValueFromIdByParameterName(id,
+            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Commvault.ContentStore/cloudAccounts/{cloudAccountName}/plans/{planName}",
+            "planName", "plans", LOGGER);
         this.delete(resourceGroupName, cloudAccountName, planName, context);
     }
 

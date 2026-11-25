@@ -50,7 +50,7 @@ public final class ConfigurationStoresImpl implements ConfigurationStores {
     }
 
     public void deleteByResourceGroup(String resourceGroupName, String configStoreName) {
-        this.serviceClient().delete(resourceGroupName, configStoreName);
+        this.delete(resourceGroupName, configStoreName, Context.NONE);
     }
 
     public void delete(String resourceGroupName, String configStoreName, Context context) {
@@ -128,7 +128,7 @@ public final class ConfigurationStoresImpl implements ConfigurationStores {
     }
 
     public void purgeDeleted(String location, String configStoreName) {
-        this.serviceClient().purgeDeleted(location, configStoreName);
+        this.purgeDeleted(location, configStoreName, Context.NONE);
     }
 
     public void purgeDeleted(String location, String configStoreName, Context context) {
@@ -136,8 +136,7 @@ public final class ConfigurationStoresImpl implements ConfigurationStores {
     }
 
     public PagedIterable<DeletedConfigurationStore> listDeleted() {
-        PagedIterable<DeletedConfigurationStoreInner> inner = this.serviceClient().listDeleted();
-        return ResourceManagerUtils.mapPage(inner, inner1 -> new DeletedConfigurationStoreImpl(inner1, this.manager()));
+        return this.listDeleted(Context.NONE);
     }
 
     public PagedIterable<DeletedConfigurationStore> listDeleted(Context context) {
@@ -146,58 +145,30 @@ public final class ConfigurationStoresImpl implements ConfigurationStores {
     }
 
     public ConfigurationStore getById(String id) {
-        String resourceGroupName = ResourceManagerUtils.getValueFromIdByName(id, "resourceGroups");
-        if (resourceGroupName == null) {
-            throw LOGGER.logExceptionAsError(new IllegalArgumentException(
-                String.format("The resource ID '%s' is not valid. Missing path segment 'resourceGroups'.", id)));
-        }
-        String configStoreName = ResourceManagerUtils.getValueFromIdByName(id, "configurationStores");
-        if (configStoreName == null) {
-            throw LOGGER.logExceptionAsError(new IllegalArgumentException(
-                String.format("The resource ID '%s' is not valid. Missing path segment 'configurationStores'.", id)));
-        }
-        return this.getByResourceGroupWithResponse(resourceGroupName, configStoreName, Context.NONE).getValue();
+        return this.getByIdWithResponse(id, Context.NONE).getValue();
     }
 
     public Response<ConfigurationStore> getByIdWithResponse(String id, Context context) {
-        String resourceGroupName = ResourceManagerUtils.getValueFromIdByName(id, "resourceGroups");
-        if (resourceGroupName == null) {
-            throw LOGGER.logExceptionAsError(new IllegalArgumentException(
-                String.format("The resource ID '%s' is not valid. Missing path segment 'resourceGroups'.", id)));
-        }
-        String configStoreName = ResourceManagerUtils.getValueFromIdByName(id, "configurationStores");
-        if (configStoreName == null) {
-            throw LOGGER.logExceptionAsError(new IllegalArgumentException(
-                String.format("The resource ID '%s' is not valid. Missing path segment 'configurationStores'.", id)));
-        }
+        String resourceGroupName = ResourceManagerUtils.getRequiredValueFromIdByParameterName(id,
+            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.AppConfiguration/configurationStores/{configStoreName}",
+            "resourceGroupName", "resourceGroups", LOGGER);
+        String configStoreName = ResourceManagerUtils.getRequiredValueFromIdByParameterName(id,
+            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.AppConfiguration/configurationStores/{configStoreName}",
+            "configStoreName", "configurationStores", LOGGER);
         return this.getByResourceGroupWithResponse(resourceGroupName, configStoreName, context);
     }
 
     public void deleteById(String id) {
-        String resourceGroupName = ResourceManagerUtils.getValueFromIdByName(id, "resourceGroups");
-        if (resourceGroupName == null) {
-            throw LOGGER.logExceptionAsError(new IllegalArgumentException(
-                String.format("The resource ID '%s' is not valid. Missing path segment 'resourceGroups'.", id)));
-        }
-        String configStoreName = ResourceManagerUtils.getValueFromIdByName(id, "configurationStores");
-        if (configStoreName == null) {
-            throw LOGGER.logExceptionAsError(new IllegalArgumentException(
-                String.format("The resource ID '%s' is not valid. Missing path segment 'configurationStores'.", id)));
-        }
-        this.delete(resourceGroupName, configStoreName, Context.NONE);
+        this.deleteByIdWithResponse(id, Context.NONE);
     }
 
     public void deleteByIdWithResponse(String id, Context context) {
-        String resourceGroupName = ResourceManagerUtils.getValueFromIdByName(id, "resourceGroups");
-        if (resourceGroupName == null) {
-            throw LOGGER.logExceptionAsError(new IllegalArgumentException(
-                String.format("The resource ID '%s' is not valid. Missing path segment 'resourceGroups'.", id)));
-        }
-        String configStoreName = ResourceManagerUtils.getValueFromIdByName(id, "configurationStores");
-        if (configStoreName == null) {
-            throw LOGGER.logExceptionAsError(new IllegalArgumentException(
-                String.format("The resource ID '%s' is not valid. Missing path segment 'configurationStores'.", id)));
-        }
+        String resourceGroupName = ResourceManagerUtils.getRequiredValueFromIdByParameterName(id,
+            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.AppConfiguration/configurationStores/{configStoreName}",
+            "resourceGroupName", "resourceGroups", LOGGER);
+        String configStoreName = ResourceManagerUtils.getRequiredValueFromIdByParameterName(id,
+            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.AppConfiguration/configurationStores/{configStoreName}",
+            "configStoreName", "configurationStores", LOGGER);
         this.delete(resourceGroupName, configStoreName, context);
     }
 

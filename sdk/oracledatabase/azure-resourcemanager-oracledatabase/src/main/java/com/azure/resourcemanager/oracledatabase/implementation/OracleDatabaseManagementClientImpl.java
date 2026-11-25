@@ -22,6 +22,7 @@ import com.azure.core.util.CoreUtils;
 import com.azure.core.util.logging.ClientLogger;
 import com.azure.core.util.polling.AsyncPollResponse;
 import com.azure.core.util.polling.LongRunningOperationStatus;
+import com.azure.core.util.polling.PollResponse;
 import com.azure.core.util.polling.PollerFlux;
 import com.azure.core.util.polling.SyncPoller;
 import com.azure.core.util.serializer.SerializerAdapter;
@@ -33,6 +34,8 @@ import com.azure.resourcemanager.oracledatabase.fluent.AutonomousDatabaseVersion
 import com.azure.resourcemanager.oracledatabase.fluent.AutonomousDatabasesClient;
 import com.azure.resourcemanager.oracledatabase.fluent.CloudExadataInfrastructuresClient;
 import com.azure.resourcemanager.oracledatabase.fluent.CloudVmClustersClient;
+import com.azure.resourcemanager.oracledatabase.fluent.DatabaseEditionsClient;
+import com.azure.resourcemanager.oracledatabase.fluent.DatabaseSystemShapeResourcesClient;
 import com.azure.resourcemanager.oracledatabase.fluent.DbNodesClient;
 import com.azure.resourcemanager.oracledatabase.fluent.DbServersClient;
 import com.azure.resourcemanager.oracledatabase.fluent.DbSystemShapesClient;
@@ -46,6 +49,8 @@ import com.azure.resourcemanager.oracledatabase.fluent.ExascaleDbStorageVaultsCl
 import com.azure.resourcemanager.oracledatabase.fluent.FlexComponentsClient;
 import com.azure.resourcemanager.oracledatabase.fluent.GiMinorVersionsClient;
 import com.azure.resourcemanager.oracledatabase.fluent.GiVersionsClient;
+import com.azure.resourcemanager.oracledatabase.fluent.GoldenGateConnectionsClient;
+import com.azure.resourcemanager.oracledatabase.fluent.GoldenGateDeploymentsClient;
 import com.azure.resourcemanager.oracledatabase.fluent.NetworkAnchorsClient;
 import com.azure.resourcemanager.oracledatabase.fluent.OperationsClient;
 import com.azure.resourcemanager.oracledatabase.fluent.OracleDatabaseManagementClient;
@@ -516,6 +521,62 @@ public final class OracleDatabaseManagementClientImpl implements OracleDatabaseM
     }
 
     /**
+     * The DatabaseEditionsClient object to access its operations.
+     */
+    private final DatabaseEditionsClient databaseEditions;
+
+    /**
+     * Gets the DatabaseEditionsClient object to access its operations.
+     * 
+     * @return the DatabaseEditionsClient object.
+     */
+    public DatabaseEditionsClient getDatabaseEditions() {
+        return this.databaseEditions;
+    }
+
+    /**
+     * The DatabaseSystemShapeResourcesClient object to access its operations.
+     */
+    private final DatabaseSystemShapeResourcesClient databaseSystemShapeResources;
+
+    /**
+     * Gets the DatabaseSystemShapeResourcesClient object to access its operations.
+     * 
+     * @return the DatabaseSystemShapeResourcesClient object.
+     */
+    public DatabaseSystemShapeResourcesClient getDatabaseSystemShapeResources() {
+        return this.databaseSystemShapeResources;
+    }
+
+    /**
+     * The GoldenGateConnectionsClient object to access its operations.
+     */
+    private final GoldenGateConnectionsClient goldenGateConnections;
+
+    /**
+     * Gets the GoldenGateConnectionsClient object to access its operations.
+     * 
+     * @return the GoldenGateConnectionsClient object.
+     */
+    public GoldenGateConnectionsClient getGoldenGateConnections() {
+        return this.goldenGateConnections;
+    }
+
+    /**
+     * The GoldenGateDeploymentsClient object to access its operations.
+     */
+    private final GoldenGateDeploymentsClient goldenGateDeployments;
+
+    /**
+     * Gets the GoldenGateDeploymentsClient object to access its operations.
+     * 
+     * @return the GoldenGateDeploymentsClient object.
+     */
+    public GoldenGateDeploymentsClient getGoldenGateDeployments() {
+        return this.goldenGateDeployments;
+    }
+
+    /**
      * Initializes an instance of OracleDatabaseManagementClient client.
      * 
      * @param httpPipeline The HTTP pipeline to send requests through.
@@ -532,7 +593,7 @@ public final class OracleDatabaseManagementClientImpl implements OracleDatabaseM
         this.defaultPollInterval = defaultPollInterval;
         this.endpoint = endpoint;
         this.subscriptionId = subscriptionId;
-        this.apiVersion = "2025-09-01";
+        this.apiVersion = "2026-06-01";
         this.operations = new OperationsClientImpl(this);
         this.cloudExadataInfrastructures = new CloudExadataInfrastructuresClientImpl(this);
         this.dbServers = new DbServersClientImpl(this);
@@ -559,6 +620,10 @@ public final class OracleDatabaseManagementClientImpl implements OracleDatabaseM
         this.resourceAnchors = new ResourceAnchorsClientImpl(this);
         this.dbSystems = new DbSystemsClientImpl(this);
         this.dbVersions = new DbVersionsClientImpl(this);
+        this.databaseEditions = new DatabaseEditionsClientImpl(this);
+        this.databaseSystemShapeResources = new DatabaseSystemShapeResourcesClientImpl(this);
+        this.goldenGateConnections = new GoldenGateConnectionsClientImpl(this);
+        this.goldenGateDeployments = new GoldenGateDeploymentsClientImpl(this);
     }
 
     /**
@@ -616,6 +681,24 @@ public final class OracleDatabaseManagementClientImpl implements OracleDatabaseM
     }
 
     /**
+     * Waits for completion and gets the final result, or throws an error.
+     * 
+     * @param poller the synchronous poller.
+     * @param <T> type of poll result.
+     * @param <U> type of final result.
+     * @return the final result.
+     * @throws ManagementException if the long running operation fails.
+     */
+    public <T, U> U getLroFinalResultOrError(SyncPoller<PollResult<T>, U> poller) {
+        PollResponse<PollResult<T>> response = poller.waitForCompletion();
+        ManagementException exception = getLroException(response.getStatus(), response.getValue());
+        if (exception != null) {
+            throw exception;
+        }
+        return poller.getFinalResult();
+    }
+
+    /**
      * Gets the final result, or an error, based on last async poll response.
      * 
      * @param response the last async poll response.
@@ -624,17 +707,25 @@ public final class OracleDatabaseManagementClientImpl implements OracleDatabaseM
      * @return the final result, or an error.
      */
     public <T, U> Mono<U> getLroFinalResultOrError(AsyncPollResponse<PollResult<T>, U> response) {
-        if (response.getStatus() != LongRunningOperationStatus.SUCCESSFULLY_COMPLETED) {
+        ManagementException exception = getLroException(response.getStatus(), response.getValue());
+        if (exception != null) {
+            return Mono.error(exception);
+        }
+        return response.getFinalResult();
+    }
+
+    private ManagementException getLroException(LongRunningOperationStatus status, PollResult<?> result) {
+        PollResult.Error lroError = result == null ? null : result.getError();
+        if (status != LongRunningOperationStatus.SUCCESSFULLY_COMPLETED || lroError != null) {
             String errorMessage;
             ManagementError managementError = null;
             HttpResponse errorResponse = null;
-            PollResult.Error lroError = response.getValue().getError();
             if (lroError != null) {
                 errorResponse = new HttpResponseImpl(lroError.getResponseStatusCode(), lroError.getResponseHeaders(),
                     lroError.getResponseBody());
 
-                errorMessage = response.getValue().getError().getMessage();
-                String errorBody = response.getValue().getError().getResponseBody();
+                errorMessage = lroError.getMessage();
+                String errorBody = lroError.getResponseBody();
                 if (errorBody != null) {
                     // try to deserialize error body to ManagementError
                     try {
@@ -653,12 +744,11 @@ public final class OracleDatabaseManagementClientImpl implements OracleDatabaseM
             }
             if (managementError == null) {
                 // fallback to default ManagementError
-                managementError = new ManagementError(response.getStatus().toString(), errorMessage);
+                managementError = new ManagementError(status.toString(), errorMessage);
             }
-            return Mono.error(new ManagementException(errorMessage, errorResponse, managementError));
-        } else {
-            return response.getFinalResult();
+            return new ManagementException(errorMessage, errorResponse, managementError);
         }
+        return null;
     }
 
     private static final class HttpResponseImpl extends HttpResponse {

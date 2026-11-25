@@ -120,19 +120,7 @@ public final class VirtualApplianceSitesClientImpl implements VirtualApplianceSi
             @HeaderParam("Accept") String accept, Context context);
     }
 
-    /**
-     * Gets the specified Virtual Appliance Site.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param networkVirtualApplianceName The name of Network Virtual Appliance.
-     * @param siteName The name of the resource that is unique within a resource group. This name can be used to access
-     * the resource.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the specified Virtual Appliance Site along with {@link Response} on successful completion of
-     * {@link Mono}.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Response<VirtualApplianceSiteInner>> getWithResponseAsync(String resourceGroupName,
         String networkVirtualApplianceName, String siteName) {
@@ -155,7 +143,7 @@ public final class VirtualApplianceSitesClientImpl implements VirtualApplianceSi
         if (siteName == null) {
             return Mono.error(new IllegalArgumentException("Parameter siteName is required and cannot be null."));
         }
-        final String apiVersion = "2025-07-01";
+        final String apiVersion = "2026-05-01";
         final String accept = "application/json";
         return FluxUtil
             .withContext(context -> service.get(this.client.getEndpoint(), apiVersion, this.client.getSubscriptionId(),
@@ -199,25 +187,14 @@ public final class VirtualApplianceSitesClientImpl implements VirtualApplianceSi
         if (siteName == null) {
             return Mono.error(new IllegalArgumentException("Parameter siteName is required and cannot be null."));
         }
-        final String apiVersion = "2025-07-01";
+        final String apiVersion = "2026-05-01";
         final String accept = "application/json";
         context = this.client.mergeContext(context);
         return service.get(this.client.getEndpoint(), apiVersion, this.client.getSubscriptionId(), resourceGroupName,
             networkVirtualApplianceName, siteName, accept, context);
     }
 
-    /**
-     * Gets the specified Virtual Appliance Site.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param networkVirtualApplianceName The name of Network Virtual Appliance.
-     * @param siteName The name of the resource that is unique within a resource group. This name can be used to access
-     * the resource.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the specified Virtual Appliance Site on successful completion of {@link Mono}.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<VirtualApplianceSiteInner> getAsync(String resourceGroupName, String networkVirtualApplianceName,
         String siteName) {
@@ -225,56 +202,21 @@ public final class VirtualApplianceSitesClientImpl implements VirtualApplianceSi
             .flatMap(res -> Mono.justOrEmpty(res.getValue()));
     }
 
-    /**
-     * Gets the specified Virtual Appliance Site.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param networkVirtualApplianceName The name of Network Virtual Appliance.
-     * @param siteName The name of the resource that is unique within a resource group. This name can be used to access
-     * the resource.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the specified Virtual Appliance Site along with {@link Response}.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Response<VirtualApplianceSiteInner> getWithResponse(String resourceGroupName,
         String networkVirtualApplianceName, String siteName, Context context) {
         return getWithResponseAsync(resourceGroupName, networkVirtualApplianceName, siteName, context).block();
     }
 
-    /**
-     * Gets the specified Virtual Appliance Site.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param networkVirtualApplianceName The name of Network Virtual Appliance.
-     * @param siteName The name of the resource that is unique within a resource group. This name can be used to access
-     * the resource.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the specified Virtual Appliance Site.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public VirtualApplianceSiteInner get(String resourceGroupName, String networkVirtualApplianceName,
         String siteName) {
         return getWithResponse(resourceGroupName, networkVirtualApplianceName, siteName, Context.NONE).getValue();
     }
 
-    /**
-     * Creates or updates the specified Network Virtual Appliance Site.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param networkVirtualApplianceName The name of Network Virtual Appliance.
-     * @param siteName The name of the resource that is unique within a resource group. This name can be used to access
-     * the resource.
-     * @param parameters Parameters supplied to the create or update Network Virtual Appliance Site operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return virtual Appliance Site resource along with {@link Response} on successful completion of {@link Mono}.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Response<Flux<ByteBuffer>>> createOrUpdateWithResponseAsync(String resourceGroupName,
         String networkVirtualApplianceName, String siteName, VirtualApplianceSiteInner parameters) {
@@ -302,7 +244,7 @@ public final class VirtualApplianceSitesClientImpl implements VirtualApplianceSi
         } else {
             parameters.validate();
         }
-        final String apiVersion = "2025-07-01";
+        final String apiVersion = "2026-05-01";
         final String contentType = "application/json";
         final String accept = "application/json";
         return FluxUtil
@@ -353,7 +295,7 @@ public final class VirtualApplianceSitesClientImpl implements VirtualApplianceSi
         } else {
             parameters.validate();
         }
-        final String apiVersion = "2025-07-01";
+        final String apiVersion = "2026-05-01";
         final String contentType = "application/json";
         final String accept = "application/json";
         context = this.client.mergeContext(context);
@@ -361,19 +303,7 @@ public final class VirtualApplianceSitesClientImpl implements VirtualApplianceSi
             resourceGroupName, networkVirtualApplianceName, siteName, contentType, accept, parameters, context);
     }
 
-    /**
-     * Creates or updates the specified Network Virtual Appliance Site.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param networkVirtualApplianceName The name of Network Virtual Appliance.
-     * @param siteName The name of the resource that is unique within a resource group. This name can be used to access
-     * the resource.
-     * @param parameters Parameters supplied to the create or update Network Virtual Appliance Site operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the {@link PollerFlux} for polling of virtual Appliance Site resource.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public PollerFlux<PollResult<VirtualApplianceSiteInner>, VirtualApplianceSiteInner> beginCreateOrUpdateAsync(
         String resourceGroupName, String networkVirtualApplianceName, String siteName,
@@ -410,19 +340,7 @@ public final class VirtualApplianceSitesClientImpl implements VirtualApplianceSi
             this.client.getHttpPipeline(), VirtualApplianceSiteInner.class, VirtualApplianceSiteInner.class, context);
     }
 
-    /**
-     * Creates or updates the specified Network Virtual Appliance Site.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param networkVirtualApplianceName The name of Network Virtual Appliance.
-     * @param siteName The name of the resource that is unique within a resource group. This name can be used to access
-     * the resource.
-     * @param parameters Parameters supplied to the create or update Network Virtual Appliance Site operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the {@link SyncPoller} for polling of virtual Appliance Site resource.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public SyncPoller<PollResult<VirtualApplianceSiteInner>, VirtualApplianceSiteInner> beginCreateOrUpdate(
         String resourceGroupName, String networkVirtualApplianceName, String siteName,
@@ -431,20 +349,7 @@ public final class VirtualApplianceSitesClientImpl implements VirtualApplianceSi
             .getSyncPoller();
     }
 
-    /**
-     * Creates or updates the specified Network Virtual Appliance Site.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param networkVirtualApplianceName The name of Network Virtual Appliance.
-     * @param siteName The name of the resource that is unique within a resource group. This name can be used to access
-     * the resource.
-     * @param parameters Parameters supplied to the create or update Network Virtual Appliance Site operation.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the {@link SyncPoller} for polling of virtual Appliance Site resource.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public SyncPoller<PollResult<VirtualApplianceSiteInner>, VirtualApplianceSiteInner> beginCreateOrUpdate(
         String resourceGroupName, String networkVirtualApplianceName, String siteName,
@@ -454,19 +359,7 @@ public final class VirtualApplianceSitesClientImpl implements VirtualApplianceSi
             .getSyncPoller();
     }
 
-    /**
-     * Creates or updates the specified Network Virtual Appliance Site.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param networkVirtualApplianceName The name of Network Virtual Appliance.
-     * @param siteName The name of the resource that is unique within a resource group. This name can be used to access
-     * the resource.
-     * @param parameters Parameters supplied to the create or update Network Virtual Appliance Site operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return virtual Appliance Site resource on successful completion of {@link Mono}.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<VirtualApplianceSiteInner> createOrUpdateAsync(String resourceGroupName,
         String networkVirtualApplianceName, String siteName, VirtualApplianceSiteInner parameters) {
@@ -496,39 +389,14 @@ public final class VirtualApplianceSitesClientImpl implements VirtualApplianceSi
             .flatMap(this.client::getLroFinalResultOrError);
     }
 
-    /**
-     * Creates or updates the specified Network Virtual Appliance Site.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param networkVirtualApplianceName The name of Network Virtual Appliance.
-     * @param siteName The name of the resource that is unique within a resource group. This name can be used to access
-     * the resource.
-     * @param parameters Parameters supplied to the create or update Network Virtual Appliance Site operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return virtual Appliance Site resource.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public VirtualApplianceSiteInner createOrUpdate(String resourceGroupName, String networkVirtualApplianceName,
         String siteName, VirtualApplianceSiteInner parameters) {
         return createOrUpdateAsync(resourceGroupName, networkVirtualApplianceName, siteName, parameters).block();
     }
 
-    /**
-     * Creates or updates the specified Network Virtual Appliance Site.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param networkVirtualApplianceName The name of Network Virtual Appliance.
-     * @param siteName The name of the resource that is unique within a resource group. This name can be used to access
-     * the resource.
-     * @param parameters Parameters supplied to the create or update Network Virtual Appliance Site operation.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return virtual Appliance Site resource.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public VirtualApplianceSiteInner createOrUpdate(String resourceGroupName, String networkVirtualApplianceName,
         String siteName, VirtualApplianceSiteInner parameters, Context context) {
@@ -536,18 +404,7 @@ public final class VirtualApplianceSitesClientImpl implements VirtualApplianceSi
             .block();
     }
 
-    /**
-     * Deletes the specified site from a Virtual Appliance.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param networkVirtualApplianceName The name of Network Virtual Appliance.
-     * @param siteName The name of the resource that is unique within a resource group. This name can be used to access
-     * the resource.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the {@link Response} on successful completion of {@link Mono}.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Response<Flux<ByteBuffer>>> deleteWithResponseAsync(String resourceGroupName,
         String networkVirtualApplianceName, String siteName) {
@@ -570,7 +427,7 @@ public final class VirtualApplianceSitesClientImpl implements VirtualApplianceSi
         if (siteName == null) {
             return Mono.error(new IllegalArgumentException("Parameter siteName is required and cannot be null."));
         }
-        final String apiVersion = "2025-07-01";
+        final String apiVersion = "2026-05-01";
         return FluxUtil
             .withContext(context -> service.delete(this.client.getEndpoint(), apiVersion,
                 this.client.getSubscriptionId(), resourceGroupName, networkVirtualApplianceName, siteName, context))
@@ -612,24 +469,13 @@ public final class VirtualApplianceSitesClientImpl implements VirtualApplianceSi
         if (siteName == null) {
             return Mono.error(new IllegalArgumentException("Parameter siteName is required and cannot be null."));
         }
-        final String apiVersion = "2025-07-01";
+        final String apiVersion = "2026-05-01";
         context = this.client.mergeContext(context);
         return service.delete(this.client.getEndpoint(), apiVersion, this.client.getSubscriptionId(), resourceGroupName,
             networkVirtualApplianceName, siteName, context);
     }
 
-    /**
-     * Deletes the specified site from a Virtual Appliance.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param networkVirtualApplianceName The name of Network Virtual Appliance.
-     * @param siteName The name of the resource that is unique within a resource group. This name can be used to access
-     * the resource.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the {@link PollerFlux} for polling of long-running operation.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public PollerFlux<PollResult<Void>, Void> beginDeleteAsync(String resourceGroupName,
         String networkVirtualApplianceName, String siteName) {
@@ -662,55 +508,21 @@ public final class VirtualApplianceSitesClientImpl implements VirtualApplianceSi
             context);
     }
 
-    /**
-     * Deletes the specified site from a Virtual Appliance.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param networkVirtualApplianceName The name of Network Virtual Appliance.
-     * @param siteName The name of the resource that is unique within a resource group. This name can be used to access
-     * the resource.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the {@link SyncPoller} for polling of long-running operation.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public SyncPoller<PollResult<Void>, Void> beginDelete(String resourceGroupName, String networkVirtualApplianceName,
         String siteName) {
         return this.beginDeleteAsync(resourceGroupName, networkVirtualApplianceName, siteName).getSyncPoller();
     }
 
-    /**
-     * Deletes the specified site from a Virtual Appliance.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param networkVirtualApplianceName The name of Network Virtual Appliance.
-     * @param siteName The name of the resource that is unique within a resource group. This name can be used to access
-     * the resource.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the {@link SyncPoller} for polling of long-running operation.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public SyncPoller<PollResult<Void>, Void> beginDelete(String resourceGroupName, String networkVirtualApplianceName,
         String siteName, Context context) {
         return this.beginDeleteAsync(resourceGroupName, networkVirtualApplianceName, siteName, context).getSyncPoller();
     }
 
-    /**
-     * Deletes the specified site from a Virtual Appliance.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param networkVirtualApplianceName The name of Network Virtual Appliance.
-     * @param siteName The name of the resource that is unique within a resource group. This name can be used to access
-     * the resource.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return A {@link Mono} that completes when a successful response is received.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Void> deleteAsync(String resourceGroupName, String networkVirtualApplianceName, String siteName) {
         return beginDeleteAsync(resourceGroupName, networkVirtualApplianceName, siteName).last()
@@ -737,34 +549,13 @@ public final class VirtualApplianceSitesClientImpl implements VirtualApplianceSi
             .flatMap(this.client::getLroFinalResultOrError);
     }
 
-    /**
-     * Deletes the specified site from a Virtual Appliance.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param networkVirtualApplianceName The name of Network Virtual Appliance.
-     * @param siteName The name of the resource that is unique within a resource group. This name can be used to access
-     * the resource.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public void delete(String resourceGroupName, String networkVirtualApplianceName, String siteName) {
         deleteAsync(resourceGroupName, networkVirtualApplianceName, siteName).block();
     }
 
-    /**
-     * Deletes the specified site from a Virtual Appliance.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param networkVirtualApplianceName The name of Network Virtual Appliance.
-     * @param siteName The name of the resource that is unique within a resource group. This name can be used to access
-     * the resource.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public void delete(String resourceGroupName, String networkVirtualApplianceName, String siteName, Context context) {
         deleteAsync(resourceGroupName, networkVirtualApplianceName, siteName, context).block();
@@ -800,7 +591,7 @@ public final class VirtualApplianceSitesClientImpl implements VirtualApplianceSi
             return Mono.error(
                 new IllegalArgumentException("Parameter networkVirtualApplianceName is required and cannot be null."));
         }
-        final String apiVersion = "2025-07-01";
+        final String apiVersion = "2026-05-01";
         final String accept = "application/json";
         return FluxUtil
             .withContext(context -> service.list(this.client.getEndpoint(), apiVersion, this.client.getSubscriptionId(),
@@ -841,7 +632,7 @@ public final class VirtualApplianceSitesClientImpl implements VirtualApplianceSi
             return Mono.error(
                 new IllegalArgumentException("Parameter networkVirtualApplianceName is required and cannot be null."));
         }
-        final String apiVersion = "2025-07-01";
+        final String apiVersion = "2026-05-01";
         final String accept = "application/json";
         context = this.client.mergeContext(context);
         return service
@@ -851,16 +642,7 @@ public final class VirtualApplianceSitesClientImpl implements VirtualApplianceSi
                 res.getValue().value(), res.getValue().nextLink(), null));
     }
 
-    /**
-     * Lists all Network Virtual Appliance Sites in a Network Virtual Appliance resource.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param networkVirtualApplianceName The name of Network Virtual Appliance.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return paged collection of VirtualApplianceSite items as paginated response with {@link PagedFlux}.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.COLLECTION)
     public PagedFlux<VirtualApplianceSiteInner> listAsync(String resourceGroupName,
         String networkVirtualApplianceName) {
@@ -886,32 +668,13 @@ public final class VirtualApplianceSitesClientImpl implements VirtualApplianceSi
             nextLink -> listNextSinglePageAsync(nextLink, context));
     }
 
-    /**
-     * Lists all Network Virtual Appliance Sites in a Network Virtual Appliance resource.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param networkVirtualApplianceName The name of Network Virtual Appliance.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return paged collection of VirtualApplianceSite items as paginated response with {@link PagedIterable}.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.COLLECTION)
     public PagedIterable<VirtualApplianceSiteInner> list(String resourceGroupName, String networkVirtualApplianceName) {
         return new PagedIterable<>(listAsync(resourceGroupName, networkVirtualApplianceName));
     }
 
-    /**
-     * Lists all Network Virtual Appliance Sites in a Network Virtual Appliance resource.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param networkVirtualApplianceName The name of Network Virtual Appliance.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return paged collection of VirtualApplianceSite items as paginated response with {@link PagedIterable}.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.COLLECTION)
     public PagedIterable<VirtualApplianceSiteInner> list(String resourceGroupName, String networkVirtualApplianceName,
         Context context) {

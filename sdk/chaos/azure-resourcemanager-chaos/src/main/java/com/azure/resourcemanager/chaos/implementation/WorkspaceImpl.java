@@ -10,9 +10,11 @@ import com.azure.core.util.Context;
 import com.azure.resourcemanager.chaos.fluent.models.WorkspaceInner;
 import com.azure.resourcemanager.chaos.models.ResourceIdentity;
 import com.azure.resourcemanager.chaos.models.Workspace;
+import com.azure.resourcemanager.chaos.models.WorkspaceDiscovery;
 import com.azure.resourcemanager.chaos.models.WorkspaceEvaluation;
 import com.azure.resourcemanager.chaos.models.WorkspaceProperties;
 import com.azure.resourcemanager.chaos.models.WorkspaceUpdate;
+import com.azure.resourcemanager.chaos.models.WorkspaceUpdateProperties;
 import java.util.Collections;
 import java.util.Map;
 
@@ -82,6 +84,10 @@ public final class WorkspaceImpl implements Workspace, Workspace.Definition, Wor
 
     private String workspaceName;
 
+    private String createIfNoneMatch;
+
+    private String createIfMatch;
+
     private WorkspaceUpdate updateProperties;
 
     public WorkspaceImpl withExistingResourceGroup(String resourceGroupName) {
@@ -90,16 +96,14 @@ public final class WorkspaceImpl implements Workspace, Workspace.Definition, Wor
     }
 
     public Workspace create() {
-        this.innerObject = serviceManager.serviceClient()
-            .getWorkspaces()
-            .createOrUpdate(resourceGroupName, workspaceName, this.innerModel(), Context.NONE);
-        return this;
+        return this.create(Context.NONE);
     }
 
     public Workspace create(Context context) {
         this.innerObject = serviceManager.serviceClient()
             .getWorkspaces()
-            .createOrUpdate(resourceGroupName, workspaceName, this.innerModel(), context);
+            .createOrUpdate(resourceGroupName, workspaceName, this.innerModel(), createIfNoneMatch, createIfMatch,
+                context);
         return this;
     }
 
@@ -107,6 +111,8 @@ public final class WorkspaceImpl implements Workspace, Workspace.Definition, Wor
         this.innerObject = new WorkspaceInner();
         this.serviceManager = serviceManager;
         this.workspaceName = name;
+        this.createIfNoneMatch = null;
+        this.createIfMatch = null;
     }
 
     public WorkspaceImpl update() {
@@ -115,10 +121,7 @@ public final class WorkspaceImpl implements Workspace, Workspace.Definition, Wor
     }
 
     public Workspace apply() {
-        this.innerObject = serviceManager.serviceClient()
-            .getWorkspaces()
-            .update(resourceGroupName, workspaceName, updateProperties, Context.NONE);
-        return this;
+        return this.apply(Context.NONE);
     }
 
     public Workspace apply(Context context) {
@@ -131,16 +134,16 @@ public final class WorkspaceImpl implements Workspace, Workspace.Definition, Wor
     WorkspaceImpl(WorkspaceInner innerObject, com.azure.resourcemanager.chaos.ChaosManager serviceManager) {
         this.innerObject = innerObject;
         this.serviceManager = serviceManager;
-        this.resourceGroupName = ResourceManagerUtils.getValueFromIdByName(innerObject.id(), "resourceGroups");
-        this.workspaceName = ResourceManagerUtils.getValueFromIdByName(innerObject.id(), "workspaces");
+        this.resourceGroupName = ResourceManagerUtils.getValueFromIdByParameterName(innerObject.id(),
+            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Chaos/workspaces/{workspaceName}",
+            "resourceGroupName");
+        this.workspaceName = ResourceManagerUtils.getValueFromIdByParameterName(innerObject.id(),
+            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Chaos/workspaces/{workspaceName}",
+            "workspaceName");
     }
 
     public Workspace refresh() {
-        this.innerObject = serviceManager.serviceClient()
-            .getWorkspaces()
-            .getByResourceGroupWithResponse(resourceGroupName, workspaceName, Context.NONE)
-            .getValue();
-        return this;
+        return this.refresh(Context.NONE);
     }
 
     public Workspace refresh(Context context) {
@@ -151,12 +154,20 @@ public final class WorkspaceImpl implements Workspace, Workspace.Definition, Wor
         return this;
     }
 
-    public WorkspaceEvaluation refreshRecommendations() {
-        return serviceManager.workspaces().refreshRecommendations(resourceGroupName, workspaceName);
+    public WorkspaceDiscovery discover() {
+        return serviceManager.workspaces().discover(resourceGroupName, workspaceName);
     }
 
-    public WorkspaceEvaluation refreshRecommendations(Context context) {
-        return serviceManager.workspaces().refreshRecommendations(resourceGroupName, workspaceName, context);
+    public WorkspaceDiscovery discover(Context context) {
+        return serviceManager.workspaces().discover(resourceGroupName, workspaceName, context);
+    }
+
+    public WorkspaceEvaluation evaluate() {
+        return serviceManager.workspaces().evaluate(resourceGroupName, workspaceName);
+    }
+
+    public WorkspaceEvaluation evaluate(Context context) {
+        return serviceManager.workspaces().evaluate(resourceGroupName, workspaceName, context);
     }
 
     public WorkspaceImpl withRegion(Region location) {
@@ -192,6 +203,21 @@ public final class WorkspaceImpl implements Workspace, Workspace.Definition, Wor
             this.updateProperties.withIdentity(identity);
             return this;
         }
+    }
+
+    public WorkspaceImpl withIfNoneMatch(String ifNoneMatch) {
+        this.createIfNoneMatch = ifNoneMatch;
+        return this;
+    }
+
+    public WorkspaceImpl withIfMatch(String ifMatch) {
+        this.createIfMatch = ifMatch;
+        return this;
+    }
+
+    public WorkspaceImpl withProperties(WorkspaceUpdateProperties properties) {
+        this.updateProperties.withProperties(properties);
+        return this;
     }
 
     private boolean isInCreateMode() {

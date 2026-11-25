@@ -214,17 +214,7 @@ public final class SitesClientImpl implements SitesClient {
             .flatMap(res -> Mono.justOrEmpty(res.getValue()));
     }
 
-    /**
-     * Get a Site.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param siteName Name of Site resource.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return a Site along with {@link Response}.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Response<SiteInner> getByResourceGroupWithResponse(String resourceGroupName, String siteName,
         Context context) {
@@ -233,16 +223,7 @@ public final class SitesClientImpl implements SitesClient {
             this.client.getSubscriptionId(), resourceGroupName, siteName, accept, context);
     }
 
-    /**
-     * Get a Site.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param siteName Name of Site resource.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return a Site.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public SiteInner getByResourceGroup(String resourceGroupName, String siteName) {
         return getByResourceGroupWithResponse(resourceGroupName, siteName, Context.NONE).getValue();
@@ -284,10 +265,7 @@ public final class SitesClientImpl implements SitesClient {
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Response<BinaryData> createOrUpdateWithResponse(String resourceGroupName, String siteName,
         SiteInner resource) {
-        final String contentType = "application/json";
-        final String accept = "application/json";
-        return service.createOrUpdateSync(this.client.getEndpoint(), this.client.getApiVersion(),
-            this.client.getSubscriptionId(), resourceGroupName, siteName, contentType, accept, resource, Context.NONE);
+        return createOrUpdateWithResponse(resourceGroupName, siteName, resource, Context.NONE);
     }
 
     /**
@@ -330,36 +308,14 @@ public final class SitesClientImpl implements SitesClient {
             SiteInner.class, this.client.getContext());
     }
 
-    /**
-     * Create a Site.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param siteName Name of Site resource.
-     * @param resource Resource create parameters.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the {@link SyncPoller} for polling of site as ARM Resource.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public SyncPoller<PollResult<SiteInner>, SiteInner> beginCreateOrUpdate(String resourceGroupName, String siteName,
         SiteInner resource) {
-        Response<BinaryData> response = createOrUpdateWithResponse(resourceGroupName, siteName, resource);
-        return this.client.<SiteInner, SiteInner>getLroResult(response, SiteInner.class, SiteInner.class, Context.NONE);
+        return beginCreateOrUpdate(resourceGroupName, siteName, resource, Context.NONE);
     }
 
-    /**
-     * Create a Site.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param siteName Name of Site resource.
-     * @param resource Resource create parameters.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the {@link SyncPoller} for polling of site as ARM Resource.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public SyncPoller<PollResult<SiteInner>, SiteInner> beginCreateOrUpdate(String resourceGroupName, String siteName,
         SiteInner resource, Context context) {
@@ -384,37 +340,17 @@ public final class SitesClientImpl implements SitesClient {
             .flatMap(this.client::getLroFinalResultOrError);
     }
 
-    /**
-     * Create a Site.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param siteName Name of Site resource.
-     * @param resource Resource create parameters.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return site as ARM Resource.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public SiteInner createOrUpdate(String resourceGroupName, String siteName, SiteInner resource) {
-        return beginCreateOrUpdate(resourceGroupName, siteName, resource).getFinalResult();
+        return createOrUpdate(resourceGroupName, siteName, resource, Context.NONE);
     }
 
-    /**
-     * Create a Site.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param siteName Name of Site resource.
-     * @param resource Resource create parameters.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return site as ARM Resource.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public SiteInner createOrUpdate(String resourceGroupName, String siteName, SiteInner resource, Context context) {
-        return beginCreateOrUpdate(resourceGroupName, siteName, resource, context).getFinalResult();
+        return this.client
+            .getLroFinalResultOrError(beginCreateOrUpdate(resourceGroupName, siteName, resource, context));
     }
 
     /**
@@ -456,18 +392,7 @@ public final class SitesClientImpl implements SitesClient {
             .flatMap(res -> Mono.justOrEmpty(res.getValue()));
     }
 
-    /**
-     * Update a Site.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param siteName Name of Site resource.
-     * @param properties The resource properties to be updated.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return site as ARM Resource along with {@link Response}.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Response<SiteInner> updateWithResponse(String resourceGroupName, String siteName, SiteUpdate properties,
         Context context) {
@@ -477,17 +402,7 @@ public final class SitesClientImpl implements SitesClient {
             this.client.getSubscriptionId(), resourceGroupName, siteName, contentType, accept, properties, context);
     }
 
-    /**
-     * Update a Site.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param siteName Name of Site resource.
-     * @param properties The resource properties to be updated.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return site as ARM Resource.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public SiteInner update(String resourceGroupName, String siteName, SiteUpdate properties) {
         return updateWithResponse(resourceGroupName, siteName, properties, Context.NONE).getValue();
@@ -526,32 +441,14 @@ public final class SitesClientImpl implements SitesClient {
         return deleteWithResponseAsync(resourceGroupName, siteName).flatMap(ignored -> Mono.empty());
     }
 
-    /**
-     * Delete a Site.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param siteName Name of Site resource.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the {@link Response}.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Response<Void> deleteWithResponse(String resourceGroupName, String siteName, Context context) {
         return service.deleteSync(this.client.getEndpoint(), this.client.getApiVersion(),
             this.client.getSubscriptionId(), resourceGroupName, siteName, context);
     }
 
-    /**
-     * Delete a Site.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param siteName Name of Site resource.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public void delete(String resourceGroupName, String siteName) {
         deleteWithResponse(resourceGroupName, siteName, Context.NONE);
@@ -604,11 +501,7 @@ public final class SitesClientImpl implements SitesClient {
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private PagedResponse<SiteInner> listByResourceGroupSinglePage(String resourceGroupName) {
-        final String accept = "application/json";
-        Response<SiteListResult> res = service.listByResourceGroupSync(this.client.getEndpoint(),
-            this.client.getApiVersion(), this.client.getSubscriptionId(), resourceGroupName, accept, Context.NONE);
-        return new PagedResponseBase<>(res.getRequest(), res.getStatusCode(), res.getHeaders(), res.getValue().value(),
-            res.getValue().nextLink(), null);
+        return listByResourceGroupSinglePage(resourceGroupName, Context.NONE);
     }
 
     /**
@@ -630,31 +523,13 @@ public final class SitesClientImpl implements SitesClient {
             res.getValue().nextLink(), null);
     }
 
-    /**
-     * List Site resources by resource group.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the response of a Site list operation as paginated response with {@link PagedIterable}.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.COLLECTION)
     public PagedIterable<SiteInner> listByResourceGroup(String resourceGroupName) {
-        return new PagedIterable<>(() -> listByResourceGroupSinglePage(resourceGroupName),
-            nextLink -> listByResourceGroupNextSinglePage(nextLink));
+        return listByResourceGroup(resourceGroupName, Context.NONE);
     }
 
-    /**
-     * List Site resources by resource group.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the response of a Site list operation as paginated response with {@link PagedIterable}.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.COLLECTION)
     public PagedIterable<SiteInner> listByResourceGroup(String resourceGroupName, Context context) {
         return new PagedIterable<>(() -> listByResourceGroupSinglePage(resourceGroupName, context),
@@ -693,11 +568,7 @@ public final class SitesClientImpl implements SitesClient {
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private PagedResponse<SiteInner> listByResourceGroupNextSinglePage(String nextLink) {
-        final String accept = "application/json";
-        Response<SiteListResult> res
-            = service.listByResourceGroupNextSync(nextLink, this.client.getEndpoint(), accept, Context.NONE);
-        return new PagedResponseBase<>(res.getRequest(), res.getStatusCode(), res.getHeaders(), res.getValue().value(),
-            res.getValue().nextLink(), null);
+        return listByResourceGroupNextSinglePage(nextLink, Context.NONE);
     }
 
     /**

@@ -12,7 +12,7 @@ import java.util.Collection;
  */
 public final class ResourceTypeCategories extends ExpandableStringEnum<ResourceTypeCategories> {
     /**
-     * Indicates that alteast one Azure Site Recovery VMs are present.
+     * Indicates that at least one Azure Site Recovery VM is present.
      */
     public static final ResourceTypeCategories AZURE_SITE_RECOVERY_VMS_PRESENT
         = fromString("AzureSiteRecoveryVMsPresent");

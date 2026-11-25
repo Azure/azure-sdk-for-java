@@ -8,7 +8,7 @@ import com.azure.core.util.ExpandableStringEnum;
 import java.util.Collection;
 
 /**
- * The authentication modes supporting on the Mongo cluster.
+ * The authentication modes supporting on the DocumentDB cluster.
  */
 public final class AuthenticationMode extends ExpandableStringEnum<AuthenticationMode> {
     /**

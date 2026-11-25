@@ -119,10 +119,7 @@ public final class BackupImpl implements Backup, Backup.Definition, Backup.Updat
     }
 
     public Backup create() {
-        this.innerObject = serviceManager.serviceClient()
-            .getBackups()
-            .create(resourceGroupName, accountName, backupVaultName, backupName, this.innerModel(), Context.NONE);
-        return this;
+        return this.create(Context.NONE);
     }
 
     public Backup create(Context context) {
@@ -144,10 +141,7 @@ public final class BackupImpl implements Backup, Backup.Definition, Backup.Updat
     }
 
     public Backup apply() {
-        this.innerObject = serviceManager.serviceClient()
-            .getBackups()
-            .update(resourceGroupName, accountName, backupVaultName, backupName, updateBody, Context.NONE);
-        return this;
+        return this.apply(Context.NONE);
     }
 
     public Backup apply(Context context) {
@@ -160,18 +154,22 @@ public final class BackupImpl implements Backup, Backup.Definition, Backup.Updat
     BackupImpl(BackupInner innerObject, com.azure.resourcemanager.netapp.NetAppFilesManager serviceManager) {
         this.innerObject = innerObject;
         this.serviceManager = serviceManager;
-        this.resourceGroupName = ResourceManagerUtils.getValueFromIdByName(innerObject.id(), "resourceGroups");
-        this.accountName = ResourceManagerUtils.getValueFromIdByName(innerObject.id(), "netAppAccounts");
-        this.backupVaultName = ResourceManagerUtils.getValueFromIdByName(innerObject.id(), "backupVaults");
-        this.backupName = ResourceManagerUtils.getValueFromIdByName(innerObject.id(), "backups");
+        this.resourceGroupName = ResourceManagerUtils.getValueFromIdByParameterName(innerObject.id(),
+            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.NetApp/netAppAccounts/{accountName}/backupVaults/{backupVaultName}/backups/{backupName}",
+            "resourceGroupName");
+        this.accountName = ResourceManagerUtils.getValueFromIdByParameterName(innerObject.id(),
+            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.NetApp/netAppAccounts/{accountName}/backupVaults/{backupVaultName}/backups/{backupName}",
+            "accountName");
+        this.backupVaultName = ResourceManagerUtils.getValueFromIdByParameterName(innerObject.id(),
+            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.NetApp/netAppAccounts/{accountName}/backupVaults/{backupVaultName}/backups/{backupName}",
+            "backupVaultName");
+        this.backupName = ResourceManagerUtils.getValueFromIdByParameterName(innerObject.id(),
+            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.NetApp/netAppAccounts/{accountName}/backupVaults/{backupVaultName}/backups/{backupName}",
+            "backupName");
     }
 
     public Backup refresh() {
-        this.innerObject = serviceManager.serviceClient()
-            .getBackups()
-            .getWithResponse(resourceGroupName, accountName, backupVaultName, backupName, Context.NONE)
-            .getValue();
-        return this;
+        return this.refresh(Context.NONE);
     }
 
     public Backup refresh(Context context) {

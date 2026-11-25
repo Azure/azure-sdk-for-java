@@ -28,8 +28,7 @@ public final class NetAppResourceUsagesImpl implements NetAppResourceUsages {
     }
 
     public PagedIterable<UsageResult> list(String location) {
-        PagedIterable<UsageResultInner> inner = this.serviceClient().list(location);
-        return ResourceManagerUtils.mapPage(inner, inner1 -> new UsageResultImpl(inner1, this.manager()));
+        return this.list(location, Context.NONE);
     }
 
     public PagedIterable<UsageResult> list(String location, Context context) {

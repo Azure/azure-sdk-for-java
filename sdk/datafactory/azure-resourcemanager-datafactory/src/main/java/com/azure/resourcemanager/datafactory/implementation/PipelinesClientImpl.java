@@ -229,20 +229,7 @@ public final class PipelinesClientImpl implements PipelinesClient {
             .flatMap(res -> Mono.justOrEmpty(res.getValue()));
     }
 
-    /**
-     * Gets a pipeline.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param factoryName The factory name.
-     * @param pipelineName The pipeline name.
-     * @param ifNoneMatch ETag of the pipeline entity. Should only be specified for get. If the ETag matches the
-     * existing entity tag, or if * was provided, then no content will be returned.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return a pipeline along with {@link Response}.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Response<PipelineResourceInner> getWithResponse(String resourceGroupName, String factoryName,
         String pipelineName, String ifNoneMatch, Context context) {
@@ -251,17 +238,7 @@ public final class PipelinesClientImpl implements PipelinesClient {
             resourceGroupName, factoryName, pipelineName, ifNoneMatch, accept, context);
     }
 
-    /**
-     * Gets a pipeline.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param factoryName The factory name.
-     * @param pipelineName The pipeline name.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return a pipeline.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public PipelineResourceInner get(String resourceGroupName, String factoryName, String pipelineName) {
         final String ifNoneMatch = null;
@@ -314,21 +291,7 @@ public final class PipelinesClientImpl implements PipelinesClient {
             .flatMap(res -> Mono.justOrEmpty(res.getValue()));
     }
 
-    /**
-     * Creates or updates a pipeline.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param factoryName The factory name.
-     * @param pipelineName The pipeline name.
-     * @param pipeline Pipeline resource definition.
-     * @param ifMatch ETag of the pipeline entity. Should only be specified for update, for which it should match
-     * existing entity or can be * for unconditional update.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return pipeline resource type along with {@link Response}.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Response<PipelineResourceInner> createOrUpdateWithResponse(String resourceGroupName, String factoryName,
         String pipelineName, PipelineResourceInner pipeline, String ifMatch, Context context) {
@@ -339,18 +302,7 @@ public final class PipelinesClientImpl implements PipelinesClient {
             pipeline, context);
     }
 
-    /**
-     * Creates or updates a pipeline.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param factoryName The factory name.
-     * @param pipelineName The pipeline name.
-     * @param pipeline Pipeline resource definition.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return pipeline resource type.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public PipelineResourceInner createOrUpdate(String resourceGroupName, String factoryName, String pipelineName,
         PipelineResourceInner pipeline) {
@@ -395,18 +347,7 @@ public final class PipelinesClientImpl implements PipelinesClient {
         return deleteWithResponseAsync(resourceGroupName, factoryName, pipelineName).flatMap(ignored -> Mono.empty());
     }
 
-    /**
-     * Deletes a pipeline.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param factoryName The factory name.
-     * @param pipelineName The pipeline name.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the {@link Response}.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Response<Void> deleteWithResponse(String resourceGroupName, String factoryName, String pipelineName,
         Context context) {
@@ -414,16 +355,7 @@ public final class PipelinesClientImpl implements PipelinesClient {
             this.client.getSubscriptionId(), resourceGroupName, factoryName, pipelineName, context);
     }
 
-    /**
-     * Deletes a pipeline.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param factoryName The factory name.
-     * @param pipelineName The pipeline name.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public void delete(String resourceGroupName, String factoryName, String pipelineName) {
         deleteWithResponse(resourceGroupName, factoryName, pipelineName, Context.NONE);
@@ -479,12 +411,7 @@ public final class PipelinesClientImpl implements PipelinesClient {
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private PagedResponse<PipelineResourceInner> listByFactorySinglePage(String resourceGroupName, String factoryName) {
-        final String accept = "application/json";
-        Response<PipelineListResponse> res
-            = service.listByFactorySync(this.client.getEndpoint(), this.client.getApiVersion(),
-                this.client.getSubscriptionId(), resourceGroupName, factoryName, accept, Context.NONE);
-        return new PagedResponseBase<>(res.getRequest(), res.getStatusCode(), res.getHeaders(), res.getValue().value(),
-            res.getValue().nextLink(), null);
+        return listByFactorySinglePage(resourceGroupName, factoryName, Context.NONE);
     }
 
     /**
@@ -509,33 +436,13 @@ public final class PipelinesClientImpl implements PipelinesClient {
             res.getValue().nextLink(), null);
     }
 
-    /**
-     * Lists pipelines.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param factoryName The factory name.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return a list of pipeline resources as paginated response with {@link PagedIterable}.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.COLLECTION)
     public PagedIterable<PipelineResourceInner> listByFactory(String resourceGroupName, String factoryName) {
-        return new PagedIterable<>(() -> listByFactorySinglePage(resourceGroupName, factoryName),
-            nextLink -> listByFactoryNextSinglePage(nextLink));
+        return listByFactory(resourceGroupName, factoryName, Context.NONE);
     }
 
-    /**
-     * Lists pipelines.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param factoryName The factory name.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return a list of pipeline resources as paginated response with {@link PagedIterable}.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.COLLECTION)
     public PagedIterable<PipelineResourceInner> listByFactory(String resourceGroupName, String factoryName,
         Context context) {
@@ -600,28 +507,7 @@ public final class PipelinesClientImpl implements PipelinesClient {
                 .flatMap(res -> Mono.justOrEmpty(res.getValue()));
     }
 
-    /**
-     * Creates a run of a pipeline.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param factoryName The factory name.
-     * @param pipelineName The pipeline name.
-     * @param referencePipelineRunId The pipeline run identifier. If run ID is specified the parameters of the specified
-     * run will be used to create a new run.
-     * @param isRecovery Recovery mode flag. If recovery mode is set to true, the specified referenced pipeline run and
-     * the new run will be grouped under the same groupId.
-     * @param startActivityName In recovery mode, the rerun will start from this activity. If not specified, all
-     * activities will run.
-     * @param startFromFailure In recovery mode, if set to true, the rerun will start from failed activities. The
-     * property will be used only if startActivityName is not specified.
-     * @param parameters Parameters of the pipeline run. These parameters will be used only if the runId is not
-     * specified.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return response body with a run identifier along with {@link Response}.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Response<CreateRunResponseInner> createRunWithResponse(String resourceGroupName, String factoryName,
         String pipelineName, String referencePipelineRunId, Boolean isRecovery, String startActivityName,
@@ -632,17 +518,7 @@ public final class PipelinesClientImpl implements PipelinesClient {
             isRecovery, startActivityName, startFromFailure, accept, parameters, context);
     }
 
-    /**
-     * Creates a run of a pipeline.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param factoryName The factory name.
-     * @param pipelineName The pipeline name.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return response body with a run identifier.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public CreateRunResponseInner createRun(String resourceGroupName, String factoryName, String pipelineName) {
         final String referencePipelineRunId = null;
@@ -684,11 +560,7 @@ public final class PipelinesClientImpl implements PipelinesClient {
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private PagedResponse<PipelineResourceInner> listByFactoryNextSinglePage(String nextLink) {
-        final String accept = "application/json";
-        Response<PipelineListResponse> res
-            = service.listByFactoryNextSync(nextLink, this.client.getEndpoint(), accept, Context.NONE);
-        return new PagedResponseBase<>(res.getRequest(), res.getStatusCode(), res.getHeaders(), res.getValue().value(),
-            res.getValue().nextLink(), null);
+        return listByFactoryNextSinglePage(nextLink, Context.NONE);
     }
 
     /**
