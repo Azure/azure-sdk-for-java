@@ -220,20 +220,7 @@ public final class AccessPointResourcesClientImpl implements AccessPointResource
             .flatMap(res -> Mono.justOrEmpty(res.getValue()));
     }
 
-    /**
-     * Get confluent access point by Id.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param organizationName Organization resource name.
-     * @param environmentId Confluent environment id.
-     * @param networkGatewayId Confluent network gateway id.
-     * @param accessPointId Confluent access point id.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return confluent access point by Id along with {@link Response}.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Response<AccessPointResourceInner> getWithResponse(String resourceGroupName, String organizationName,
         String environmentId, String networkGatewayId, String accessPointId, Context context) {
@@ -242,19 +229,7 @@ public final class AccessPointResourcesClientImpl implements AccessPointResource
             resourceGroupName, organizationName, environmentId, networkGatewayId, accessPointId, accept, context);
     }
 
-    /**
-     * Get confluent access point by Id.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param organizationName Organization resource name.
-     * @param environmentId Confluent environment id.
-     * @param networkGatewayId Confluent network gateway id.
-     * @param accessPointId Confluent access point id.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return confluent access point by Id.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public AccessPointResourceInner get(String resourceGroupName, String organizationName, String environmentId,
         String networkGatewayId, String accessPointId) {
@@ -306,11 +281,8 @@ public final class AccessPointResourcesClientImpl implements AccessPointResource
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Response<BinaryData> createOrReplaceWithResponse(String resourceGroupName, String organizationName,
         String environmentId, String networkGatewayId, String accessPointId, AccessPointResourceInner resource) {
-        final String contentType = "application/json";
-        final String accept = "application/json";
-        return service.createOrReplaceSync(this.client.getEndpoint(), this.client.getApiVersion(),
-            this.client.getSubscriptionId(), resourceGroupName, organizationName, environmentId, networkGatewayId,
-            accessPointId, contentType, accept, resource, Context.NONE);
+        return createOrReplaceWithResponse(resourceGroupName, organizationName, environmentId, networkGatewayId,
+            accessPointId, resource, Context.NONE);
     }
 
     /**
@@ -364,45 +336,16 @@ public final class AccessPointResourcesClientImpl implements AccessPointResource
             this.client.getContext());
     }
 
-    /**
-     * Create or replace a confluent access point.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param organizationName Organization resource name.
-     * @param environmentId Confluent environment id.
-     * @param networkGatewayId Confluent network gateway id.
-     * @param accessPointId Confluent access point id.
-     * @param resource Confluent Access Point resource model.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the {@link SyncPoller} for polling of details of access point record.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public SyncPoller<PollResult<AccessPointResourceInner>, AccessPointResourceInner> beginCreateOrReplace(
         String resourceGroupName, String organizationName, String environmentId, String networkGatewayId,
         String accessPointId, AccessPointResourceInner resource) {
-        Response<BinaryData> response = createOrReplaceWithResponse(resourceGroupName, organizationName, environmentId,
-            networkGatewayId, accessPointId, resource);
-        return this.client.<AccessPointResourceInner, AccessPointResourceInner>getLroResult(response,
-            AccessPointResourceInner.class, AccessPointResourceInner.class, Context.NONE);
+        return beginCreateOrReplace(resourceGroupName, organizationName, environmentId, networkGatewayId, accessPointId,
+            resource, Context.NONE);
     }
 
-    /**
-     * Create or replace a confluent access point.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param organizationName Organization resource name.
-     * @param environmentId Confluent environment id.
-     * @param networkGatewayId Confluent network gateway id.
-     * @param accessPointId Confluent access point id.
-     * @param resource Confluent Access Point resource model.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the {@link SyncPoller} for polling of details of access point record.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public SyncPoller<PollResult<AccessPointResourceInner>, AccessPointResourceInner> beginCreateOrReplace(
         String resourceGroupName, String organizationName, String environmentId, String networkGatewayId,
@@ -434,48 +377,21 @@ public final class AccessPointResourcesClientImpl implements AccessPointResource
             accessPointId, resource).last().flatMap(this.client::getLroFinalResultOrError);
     }
 
-    /**
-     * Create or replace a confluent access point.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param organizationName Organization resource name.
-     * @param environmentId Confluent environment id.
-     * @param networkGatewayId Confluent network gateway id.
-     * @param accessPointId Confluent access point id.
-     * @param resource Confluent Access Point resource model.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return details of access point record.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public AccessPointResourceInner createOrReplace(String resourceGroupName, String organizationName,
         String environmentId, String networkGatewayId, String accessPointId, AccessPointResourceInner resource) {
-        return beginCreateOrReplace(resourceGroupName, organizationName, environmentId, networkGatewayId, accessPointId,
-            resource).getFinalResult();
+        return createOrReplace(resourceGroupName, organizationName, environmentId, networkGatewayId, accessPointId,
+            resource, Context.NONE);
     }
 
-    /**
-     * Create or replace a confluent access point.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param organizationName Organization resource name.
-     * @param environmentId Confluent environment id.
-     * @param networkGatewayId Confluent network gateway id.
-     * @param accessPointId Confluent access point id.
-     * @param resource Confluent Access Point resource model.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return details of access point record.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public AccessPointResourceInner createOrReplace(String resourceGroupName, String organizationName,
         String environmentId, String networkGatewayId, String accessPointId, AccessPointResourceInner resource,
         Context context) {
-        return beginCreateOrReplace(resourceGroupName, organizationName, environmentId, networkGatewayId, accessPointId,
-            resource, context).getFinalResult();
+        return this.client.getLroFinalResultOrError(beginCreateOrReplace(resourceGroupName, organizationName,
+            environmentId, networkGatewayId, accessPointId, resource, context));
     }
 
     /**
@@ -517,9 +433,8 @@ public final class AccessPointResourcesClientImpl implements AccessPointResource
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Response<BinaryData> deleteWithResponse(String resourceGroupName, String organizationName,
         String environmentId, String networkGatewayId, String accessPointId) {
-        return service.deleteSync(this.client.getEndpoint(), this.client.getApiVersion(),
-            this.client.getSubscriptionId(), resourceGroupName, organizationName, environmentId, networkGatewayId,
-            accessPointId, Context.NONE);
+        return deleteWithResponse(resourceGroupName, organizationName, environmentId, networkGatewayId, accessPointId,
+            Context.NONE);
     }
 
     /**
@@ -566,41 +481,15 @@ public final class AccessPointResourcesClientImpl implements AccessPointResource
             this.client.getContext());
     }
 
-    /**
-     * Delete confluent access point by id.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param organizationName Organization resource name.
-     * @param environmentId Confluent environment id.
-     * @param networkGatewayId Confluent network gateway id.
-     * @param accessPointId Confluent access point id.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the {@link SyncPoller} for polling of long-running operation.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public SyncPoller<PollResult<Void>, Void> beginDelete(String resourceGroupName, String organizationName,
         String environmentId, String networkGatewayId, String accessPointId) {
-        Response<BinaryData> response
-            = deleteWithResponse(resourceGroupName, organizationName, environmentId, networkGatewayId, accessPointId);
-        return this.client.<Void, Void>getLroResult(response, Void.class, Void.class, Context.NONE);
+        return beginDelete(resourceGroupName, organizationName, environmentId, networkGatewayId, accessPointId,
+            Context.NONE);
     }
 
-    /**
-     * Delete confluent access point by id.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param organizationName Organization resource name.
-     * @param environmentId Confluent environment id.
-     * @param networkGatewayId Confluent network gateway id.
-     * @param accessPointId Confluent access point id.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the {@link SyncPoller} for polling of long-running operation.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public SyncPoller<PollResult<Void>, Void> beginDelete(String resourceGroupName, String organizationName,
         String environmentId, String networkGatewayId, String accessPointId, Context context) {
@@ -630,43 +519,19 @@ public final class AccessPointResourcesClientImpl implements AccessPointResource
             .flatMap(this.client::getLroFinalResultOrError);
     }
 
-    /**
-     * Delete confluent access point by id.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param organizationName Organization resource name.
-     * @param environmentId Confluent environment id.
-     * @param networkGatewayId Confluent network gateway id.
-     * @param accessPointId Confluent access point id.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public void delete(String resourceGroupName, String organizationName, String environmentId, String networkGatewayId,
         String accessPointId) {
-        beginDelete(resourceGroupName, organizationName, environmentId, networkGatewayId, accessPointId)
-            .getFinalResult();
+        delete(resourceGroupName, organizationName, environmentId, networkGatewayId, accessPointId, Context.NONE);
     }
 
-    /**
-     * Delete confluent access point by id.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param organizationName Organization resource name.
-     * @param environmentId Confluent environment id.
-     * @param networkGatewayId Confluent network gateway id.
-     * @param accessPointId Confluent access point id.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public void delete(String resourceGroupName, String organizationName, String environmentId, String networkGatewayId,
         String accessPointId, Context context) {
-        beginDelete(resourceGroupName, organizationName, environmentId, networkGatewayId, accessPointId, context)
-            .getFinalResult();
+        this.client.getLroFinalResultOrError(
+            beginDelete(resourceGroupName, organizationName, environmentId, networkGatewayId, accessPointId, context));
     }
 
     /**
@@ -730,12 +595,7 @@ public final class AccessPointResourcesClientImpl implements AccessPointResource
     @ServiceMethod(returns = ReturnType.SINGLE)
     private PagedResponse<AccessPointResourceInner> listSinglePage(String resourceGroupName, String organizationName,
         String environmentId, String networkGatewayId) {
-        final String accept = "application/json";
-        Response<AccessPointResourceListResult> res
-            = service.listSync(this.client.getEndpoint(), this.client.getApiVersion(), this.client.getSubscriptionId(),
-                resourceGroupName, organizationName, environmentId, networkGatewayId, accept, Context.NONE);
-        return new PagedResponseBase<>(res.getRequest(), res.getStatusCode(), res.getHeaders(), res.getValue().value(),
-            res.getValue().nextLink(), null);
+        return listSinglePage(resourceGroupName, organizationName, environmentId, networkGatewayId, Context.NONE);
     }
 
     /**
@@ -762,39 +622,14 @@ public final class AccessPointResourcesClientImpl implements AccessPointResource
             res.getValue().nextLink(), null);
     }
 
-    /**
-     * Lists all access points in a network gateway.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param organizationName Organization resource name.
-     * @param environmentId Confluent environment id.
-     * @param networkGatewayId Confluent network gateway id.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the response of a AccessPointResource list operation as paginated response with {@link PagedIterable}.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.COLLECTION)
     public PagedIterable<AccessPointResourceInner> list(String resourceGroupName, String organizationName,
         String environmentId, String networkGatewayId) {
-        return new PagedIterable<>(
-            () -> listSinglePage(resourceGroupName, organizationName, environmentId, networkGatewayId),
-            nextLink -> listNextSinglePage(nextLink));
+        return list(resourceGroupName, organizationName, environmentId, networkGatewayId, Context.NONE);
     }
 
-    /**
-     * Lists all access points in a network gateway.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param organizationName Organization resource name.
-     * @param environmentId Confluent environment id.
-     * @param networkGatewayId Confluent network gateway id.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the response of a AccessPointResource list operation as paginated response with {@link PagedIterable}.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.COLLECTION)
     public PagedIterable<AccessPointResourceInner> list(String resourceGroupName, String organizationName,
         String environmentId, String networkGatewayId, Context context) {
@@ -833,11 +668,7 @@ public final class AccessPointResourcesClientImpl implements AccessPointResource
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private PagedResponse<AccessPointResourceInner> listNextSinglePage(String nextLink) {
-        final String accept = "application/json";
-        Response<AccessPointResourceListResult> res
-            = service.listNextSync(nextLink, this.client.getEndpoint(), accept, Context.NONE);
-        return new PagedResponseBase<>(res.getRequest(), res.getStatusCode(), res.getHeaders(), res.getValue().value(),
-            res.getValue().nextLink(), null);
+        return listNextSinglePage(nextLink, Context.NONE);
     }
 
     /**

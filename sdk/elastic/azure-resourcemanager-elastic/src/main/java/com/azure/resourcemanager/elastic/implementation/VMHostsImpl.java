@@ -25,8 +25,7 @@ public final class VMHostsImpl implements VMHosts {
     }
 
     public PagedIterable<VMResources> list(String resourceGroupName, String monitorName) {
-        PagedIterable<VMResourcesInner> inner = this.serviceClient().list(resourceGroupName, monitorName);
-        return ResourceManagerUtils.mapPage(inner, inner1 -> new VMResourcesImpl(inner1, this.manager()));
+        return this.list(resourceGroupName, monitorName, Context.NONE);
     }
 
     public PagedIterable<VMResources> list(String resourceGroupName, String monitorName, Context context) {

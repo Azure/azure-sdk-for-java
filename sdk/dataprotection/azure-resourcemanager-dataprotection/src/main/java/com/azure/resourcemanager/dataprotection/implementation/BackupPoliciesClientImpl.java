@@ -198,18 +198,7 @@ public final class BackupPoliciesClientImpl implements BackupPoliciesClient {
             .flatMap(res -> Mono.justOrEmpty(res.getValue()));
     }
 
-    /**
-     * Gets a backup policy belonging to a backup vault.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param vaultName The name of the backup vault.
-     * @param backupPolicyName The backupPolicyName parameter.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return a backup policy belonging to a backup vault along with {@link Response}.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Response<BaseBackupPolicyResourceInner> getWithResponse(String resourceGroupName, String vaultName,
         String backupPolicyName, Context context) {
@@ -218,17 +207,7 @@ public final class BackupPoliciesClientImpl implements BackupPoliciesClient {
             resourceGroupName, vaultName, backupPolicyName, accept, context);
     }
 
-    /**
-     * Gets a backup policy belonging to a backup vault.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param vaultName The name of the backup vault.
-     * @param backupPolicyName The backupPolicyName parameter.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return a backup policy belonging to a backup vault.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public BaseBackupPolicyResourceInner get(String resourceGroupName, String vaultName, String backupPolicyName) {
         return getWithResponse(resourceGroupName, vaultName, backupPolicyName, Context.NONE).getValue();
@@ -277,19 +256,7 @@ public final class BackupPoliciesClientImpl implements BackupPoliciesClient {
             .flatMap(res -> Mono.justOrEmpty(res.getValue()));
     }
 
-    /**
-     * Creates or Updates a backup policy belonging to a backup vault.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param vaultName The name of the backup vault.
-     * @param backupPolicyName The backupPolicyName parameter.
-     * @param parameters Request body for operation.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return baseBackupPolicy resource along with {@link Response}.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Response<BaseBackupPolicyResourceInner> createOrUpdateWithResponse(String resourceGroupName,
         String vaultName, String backupPolicyName, BaseBackupPolicyResourceInner parameters, Context context) {
@@ -300,18 +267,7 @@ public final class BackupPoliciesClientImpl implements BackupPoliciesClient {
             parameters, context);
     }
 
-    /**
-     * Creates or Updates a backup policy belonging to a backup vault.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param vaultName The name of the backup vault.
-     * @param backupPolicyName The backupPolicyName parameter.
-     * @param parameters Request body for operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return baseBackupPolicy resource.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public BaseBackupPolicyResourceInner createOrUpdate(String resourceGroupName, String vaultName,
         String backupPolicyName, BaseBackupPolicyResourceInner parameters) {
@@ -355,18 +311,7 @@ public final class BackupPoliciesClientImpl implements BackupPoliciesClient {
         return deleteWithResponseAsync(resourceGroupName, vaultName, backupPolicyName).flatMap(ignored -> Mono.empty());
     }
 
-    /**
-     * Deletes a backup policy belonging to a backup vault.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param vaultName The name of the backup vault.
-     * @param backupPolicyName The backupPolicyName parameter.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the {@link Response}.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Response<Void> deleteWithResponse(String resourceGroupName, String vaultName, String backupPolicyName,
         Context context) {
@@ -374,16 +319,7 @@ public final class BackupPoliciesClientImpl implements BackupPoliciesClient {
             this.client.getSubscriptionId(), resourceGroupName, vaultName, backupPolicyName, context);
     }
 
-    /**
-     * Deletes a backup policy belonging to a backup vault.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param vaultName The name of the backup vault.
-     * @param backupPolicyName The backupPolicyName parameter.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public void delete(String resourceGroupName, String vaultName, String backupPolicyName) {
         deleteWithResponse(resourceGroupName, vaultName, backupPolicyName, Context.NONE);
@@ -440,12 +376,7 @@ public final class BackupPoliciesClientImpl implements BackupPoliciesClient {
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private PagedResponse<BaseBackupPolicyResourceInner> listSinglePage(String resourceGroupName, String vaultName) {
-        final String accept = "application/json";
-        Response<BaseBackupPolicyResourceList> res
-            = service.listSync(this.client.getEndpoint(), this.client.getApiVersion(), this.client.getSubscriptionId(),
-                resourceGroupName, vaultName, accept, Context.NONE);
-        return new PagedResponseBase<>(res.getRequest(), res.getStatusCode(), res.getHeaders(), res.getValue().value(),
-            res.getValue().nextLink(), null);
+        return listSinglePage(resourceGroupName, vaultName, Context.NONE);
     }
 
     /**
@@ -470,33 +401,13 @@ public final class BackupPoliciesClientImpl implements BackupPoliciesClient {
             res.getValue().nextLink(), null);
     }
 
-    /**
-     * Returns list of backup policies belonging to a backup vault.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param vaultName The name of the backup vault.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return list of BaseBackupPolicy resources as paginated response with {@link PagedIterable}.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.COLLECTION)
     public PagedIterable<BaseBackupPolicyResourceInner> list(String resourceGroupName, String vaultName) {
-        return new PagedIterable<>(() -> listSinglePage(resourceGroupName, vaultName),
-            nextLink -> listNextSinglePage(nextLink));
+        return list(resourceGroupName, vaultName, Context.NONE);
     }
 
-    /**
-     * Returns list of backup policies belonging to a backup vault.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param vaultName The name of the backup vault.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return list of BaseBackupPolicy resources as paginated response with {@link PagedIterable}.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.COLLECTION)
     public PagedIterable<BaseBackupPolicyResourceInner> list(String resourceGroupName, String vaultName,
         Context context) {
@@ -534,11 +445,7 @@ public final class BackupPoliciesClientImpl implements BackupPoliciesClient {
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private PagedResponse<BaseBackupPolicyResourceInner> listNextSinglePage(String nextLink) {
-        final String accept = "application/json";
-        Response<BaseBackupPolicyResourceList> res
-            = service.listNextSync(nextLink, this.client.getEndpoint(), accept, Context.NONE);
-        return new PagedResponseBase<>(res.getRequest(), res.getStatusCode(), res.getHeaders(), res.getValue().value(),
-            res.getValue().nextLink(), null);
+        return listNextSinglePage(nextLink, Context.NONE);
     }
 
     /**

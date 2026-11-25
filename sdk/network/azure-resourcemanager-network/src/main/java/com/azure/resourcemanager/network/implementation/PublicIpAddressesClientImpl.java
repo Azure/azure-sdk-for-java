@@ -295,22 +295,7 @@ public final class PublicIpAddressesClientImpl implements InnerSupportsGet<Publi
             @HeaderParam("Accept") String accept, Context context);
     }
 
-    /**
-     * Get the specified public IP address in a cloud service.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param cloudServiceName The name of the cloud service.
-     * @param roleInstanceName The role instance name.
-     * @param networkInterfaceName The name of the network interface.
-     * @param ipConfigurationName The name of the IP configuration.
-     * @param publicIpAddressName The name of the public IP Address.
-     * @param expand Expands referenced resources.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the specified public IP address in a cloud service along with {@link Response} on successful completion
-     * of {@link Mono}.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Response<PublicIpAddressInner>> getCloudServicePublicIpAddressWithResponseAsync(
         String resourceGroupName, String cloudServiceName, String roleInstanceName, String networkInterfaceName,
@@ -417,20 +402,7 @@ public final class PublicIpAddressesClientImpl implements InnerSupportsGet<Publi
             networkInterfaceName, ipConfigurationName, publicIpAddressName, expand, accept, context);
     }
 
-    /**
-     * Get the specified public IP address in a cloud service.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param cloudServiceName The name of the cloud service.
-     * @param roleInstanceName The role instance name.
-     * @param networkInterfaceName The name of the network interface.
-     * @param ipConfigurationName The name of the IP configuration.
-     * @param publicIpAddressName The name of the public IP Address.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the specified public IP address in a cloud service on successful completion of {@link Mono}.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<PublicIpAddressInner> getCloudServicePublicIpAddressAsync(String resourceGroupName,
         String cloudServiceName, String roleInstanceName, String networkInterfaceName, String ipConfigurationName,
@@ -441,22 +413,7 @@ public final class PublicIpAddressesClientImpl implements InnerSupportsGet<Publi
                 .flatMap(res -> Mono.justOrEmpty(res.getValue()));
     }
 
-    /**
-     * Get the specified public IP address in a cloud service.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param cloudServiceName The name of the cloud service.
-     * @param roleInstanceName The role instance name.
-     * @param networkInterfaceName The name of the network interface.
-     * @param ipConfigurationName The name of the IP configuration.
-     * @param publicIpAddressName The name of the public IP Address.
-     * @param expand Expands referenced resources.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the specified public IP address in a cloud service along with {@link Response}.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Response<PublicIpAddressInner> getCloudServicePublicIpAddressWithResponse(String resourceGroupName,
         String cloudServiceName, String roleInstanceName, String networkInterfaceName, String ipConfigurationName,
@@ -465,20 +422,7 @@ public final class PublicIpAddressesClientImpl implements InnerSupportsGet<Publi
             networkInterfaceName, ipConfigurationName, publicIpAddressName, expand, context).block();
     }
 
-    /**
-     * Get the specified public IP address in a cloud service.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param cloudServiceName The name of the cloud service.
-     * @param roleInstanceName The role instance name.
-     * @param networkInterfaceName The name of the network interface.
-     * @param ipConfigurationName The name of the IP configuration.
-     * @param publicIpAddressName The name of the public IP Address.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the specified public IP address in a cloud service.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public PublicIpAddressInner getCloudServicePublicIpAddress(String resourceGroupName, String cloudServiceName,
         String roleInstanceName, String networkInterfaceName, String ipConfigurationName, String publicIpAddressName) {
@@ -602,20 +546,7 @@ public final class PublicIpAddressesClientImpl implements InnerSupportsGet<Publi
                 res.getValue().value(), res.getValue().nextLink(), null));
     }
 
-    /**
-     * Gets information about all public IP addresses in a role instance IP configuration in a cloud service.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param cloudServiceName The name of the cloud service.
-     * @param roleInstanceName The role instance name.
-     * @param networkInterfaceName The name of the network interface.
-     * @param ipConfigurationName The name of the IP configuration.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return information about all public IP addresses in a role instance IP configuration in a cloud service as
-     * paginated response with {@link PagedFlux}.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.COLLECTION)
     public PagedFlux<PublicIpAddressInner> listCloudServiceRoleInstancePublicIpAddressesAsync(String resourceGroupName,
         String cloudServiceName, String roleInstanceName, String networkInterfaceName, String ipConfigurationName) {
@@ -650,20 +581,7 @@ public final class PublicIpAddressesClientImpl implements InnerSupportsGet<Publi
             nextLink -> listCloudServiceRoleInstancePublicIpAddressesNextSinglePageAsync(nextLink, context));
     }
 
-    /**
-     * Gets information about all public IP addresses in a role instance IP configuration in a cloud service.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param cloudServiceName The name of the cloud service.
-     * @param roleInstanceName The role instance name.
-     * @param networkInterfaceName The name of the network interface.
-     * @param ipConfigurationName The name of the IP configuration.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return information about all public IP addresses in a role instance IP configuration in a cloud service as
-     * paginated response with {@link PagedIterable}.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.COLLECTION)
     public PagedIterable<PublicIpAddressInner> listCloudServiceRoleInstancePublicIpAddresses(String resourceGroupName,
         String cloudServiceName, String roleInstanceName, String networkInterfaceName, String ipConfigurationName) {
@@ -671,21 +589,7 @@ public final class PublicIpAddressesClientImpl implements InnerSupportsGet<Publi
             cloudServiceName, roleInstanceName, networkInterfaceName, ipConfigurationName));
     }
 
-    /**
-     * Gets information about all public IP addresses in a role instance IP configuration in a cloud service.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param cloudServiceName The name of the cloud service.
-     * @param roleInstanceName The role instance name.
-     * @param networkInterfaceName The name of the network interface.
-     * @param ipConfigurationName The name of the IP configuration.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return information about all public IP addresses in a role instance IP configuration in a cloud service as
-     * paginated response with {@link PagedIterable}.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.COLLECTION)
     public PagedIterable<PublicIpAddressInner> listCloudServiceRoleInstancePublicIpAddresses(String resourceGroupName,
         String cloudServiceName, String roleInstanceName, String networkInterfaceName, String ipConfigurationName,
@@ -694,22 +598,7 @@ public final class PublicIpAddressesClientImpl implements InnerSupportsGet<Publi
             cloudServiceName, roleInstanceName, networkInterfaceName, ipConfigurationName, context));
     }
 
-    /**
-     * Get the specified public IP address in a virtual machine scale set.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param virtualMachineScaleSetName The virtualMachineScaleSetName parameter.
-     * @param virtualmachineIndex The virtualmachineIndex parameter.
-     * @param networkInterfaceName The networkInterfaceName parameter.
-     * @param ipConfigurationName The ipConfigurationName parameter.
-     * @param publicIpAddressName The publicIpAddressName parameter.
-     * @param expand Expands referenced resources.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the specified public IP address in a virtual machine scale set along with {@link Response} on successful
-     * completion of {@link Mono}.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Response<PublicIpAddressInner>> getVirtualMachineScaleSetPublicIpAddressWithResponseAsync(
         String resourceGroupName, String virtualMachineScaleSetName, String virtualmachineIndex,
@@ -818,20 +707,7 @@ public final class PublicIpAddressesClientImpl implements InnerSupportsGet<Publi
             networkInterfaceName, ipConfigurationName, publicIpAddressName, expand, accept, context);
     }
 
-    /**
-     * Get the specified public IP address in a virtual machine scale set.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param virtualMachineScaleSetName The virtualMachineScaleSetName parameter.
-     * @param virtualmachineIndex The virtualmachineIndex parameter.
-     * @param networkInterfaceName The networkInterfaceName parameter.
-     * @param ipConfigurationName The ipConfigurationName parameter.
-     * @param publicIpAddressName The publicIpAddressName parameter.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the specified public IP address in a virtual machine scale set on successful completion of {@link Mono}.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<PublicIpAddressInner> getVirtualMachineScaleSetPublicIpAddressAsync(String resourceGroupName,
         String virtualMachineScaleSetName, String virtualmachineIndex, String networkInterfaceName,
@@ -842,22 +718,7 @@ public final class PublicIpAddressesClientImpl implements InnerSupportsGet<Publi
                 .flatMap(res -> Mono.justOrEmpty(res.getValue()));
     }
 
-    /**
-     * Get the specified public IP address in a virtual machine scale set.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param virtualMachineScaleSetName The virtualMachineScaleSetName parameter.
-     * @param virtualmachineIndex The virtualmachineIndex parameter.
-     * @param networkInterfaceName The networkInterfaceName parameter.
-     * @param ipConfigurationName The ipConfigurationName parameter.
-     * @param publicIpAddressName The publicIpAddressName parameter.
-     * @param expand Expands referenced resources.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the specified public IP address in a virtual machine scale set along with {@link Response}.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Response<PublicIpAddressInner> getVirtualMachineScaleSetPublicIpAddressWithResponse(String resourceGroupName,
         String virtualMachineScaleSetName, String virtualmachineIndex, String networkInterfaceName,
@@ -867,20 +728,7 @@ public final class PublicIpAddressesClientImpl implements InnerSupportsGet<Publi
                 .block();
     }
 
-    /**
-     * Get the specified public IP address in a virtual machine scale set.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param virtualMachineScaleSetName The virtualMachineScaleSetName parameter.
-     * @param virtualmachineIndex The virtualmachineIndex parameter.
-     * @param networkInterfaceName The networkInterfaceName parameter.
-     * @param ipConfigurationName The ipConfigurationName parameter.
-     * @param publicIpAddressName The publicIpAddressName parameter.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the specified public IP address in a virtual machine scale set.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public PublicIpAddressInner getVirtualMachineScaleSetPublicIpAddress(String resourceGroupName,
         String virtualMachineScaleSetName, String virtualmachineIndex, String networkInterfaceName,
@@ -1008,21 +856,7 @@ public final class PublicIpAddressesClientImpl implements InnerSupportsGet<Publi
                 res.getValue().value(), res.getValue().nextLink(), null));
     }
 
-    /**
-     * Gets information about all public IP addresses in a virtual machine IP configuration in a virtual machine scale
-     * set.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param virtualMachineScaleSetName The virtualMachineScaleSetName parameter.
-     * @param virtualmachineIndex The virtualmachineIndex parameter.
-     * @param networkInterfaceName The networkInterfaceName parameter.
-     * @param ipConfigurationName The ipConfigurationName parameter.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return information about all public IP addresses in a virtual machine IP configuration in a virtual machine
-     * scale set as paginated response with {@link PagedFlux}.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.COLLECTION)
     public PagedFlux<PublicIpAddressInner> listVirtualMachineScaleSetVMPublicIpAddressesAsync(String resourceGroupName,
         String virtualMachineScaleSetName, String virtualmachineIndex, String networkInterfaceName,
@@ -1059,21 +893,7 @@ public final class PublicIpAddressesClientImpl implements InnerSupportsGet<Publi
             nextLink -> listVirtualMachineScaleSetVMPublicIpAddressesNextSinglePageAsync(nextLink, context));
     }
 
-    /**
-     * Gets information about all public IP addresses in a virtual machine IP configuration in a virtual machine scale
-     * set.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param virtualMachineScaleSetName The virtualMachineScaleSetName parameter.
-     * @param virtualmachineIndex The virtualmachineIndex parameter.
-     * @param networkInterfaceName The networkInterfaceName parameter.
-     * @param ipConfigurationName The ipConfigurationName parameter.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return information about all public IP addresses in a virtual machine IP configuration in a virtual machine
-     * scale set as paginated response with {@link PagedIterable}.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.COLLECTION)
     public PagedIterable<PublicIpAddressInner> listVirtualMachineScaleSetVMPublicIpAddresses(String resourceGroupName,
         String virtualMachineScaleSetName, String virtualmachineIndex, String networkInterfaceName,
@@ -1082,22 +902,7 @@ public final class PublicIpAddressesClientImpl implements InnerSupportsGet<Publi
             virtualMachineScaleSetName, virtualmachineIndex, networkInterfaceName, ipConfigurationName));
     }
 
-    /**
-     * Gets information about all public IP addresses in a virtual machine IP configuration in a virtual machine scale
-     * set.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param virtualMachineScaleSetName The virtualMachineScaleSetName parameter.
-     * @param virtualmachineIndex The virtualmachineIndex parameter.
-     * @param networkInterfaceName The networkInterfaceName parameter.
-     * @param ipConfigurationName The ipConfigurationName parameter.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return information about all public IP addresses in a virtual machine IP configuration in a virtual machine
-     * scale set as paginated response with {@link PagedIterable}.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.COLLECTION)
     public PagedIterable<PublicIpAddressInner> listVirtualMachineScaleSetVMPublicIpAddresses(String resourceGroupName,
         String virtualMachineScaleSetName, String virtualmachineIndex, String networkInterfaceName,
@@ -1106,18 +911,7 @@ public final class PublicIpAddressesClientImpl implements InnerSupportsGet<Publi
             virtualMachineScaleSetName, virtualmachineIndex, networkInterfaceName, ipConfigurationName, context));
     }
 
-    /**
-     * Gets the specified public IP address in a specified resource group.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param publicIpAddressName The name of the public IP address.
-     * @param expand Expands referenced resources.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the specified public IP address in a specified resource group along with {@link Response} on successful
-     * completion of {@link Mono}.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Response<PublicIpAddressInner>> getByResourceGroupWithResponseAsync(String resourceGroupName,
         String publicIpAddressName, String expand) {
@@ -1184,16 +978,7 @@ public final class PublicIpAddressesClientImpl implements InnerSupportsGet<Publi
             resourceGroupName, publicIpAddressName, expand, accept, context);
     }
 
-    /**
-     * Gets the specified public IP address in a specified resource group.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param publicIpAddressName The name of the public IP address.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the specified public IP address in a specified resource group on successful completion of {@link Mono}.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<PublicIpAddressInner> getByResourceGroupAsync(String resourceGroupName, String publicIpAddressName) {
         final String expand = null;
@@ -1201,51 +986,21 @@ public final class PublicIpAddressesClientImpl implements InnerSupportsGet<Publi
             .flatMap(res -> Mono.justOrEmpty(res.getValue()));
     }
 
-    /**
-     * Gets the specified public IP address in a specified resource group.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param publicIpAddressName The name of the public IP address.
-     * @param expand Expands referenced resources.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the specified public IP address in a specified resource group along with {@link Response}.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Response<PublicIpAddressInner> getByResourceGroupWithResponse(String resourceGroupName,
         String publicIpAddressName, String expand, Context context) {
         return getByResourceGroupWithResponseAsync(resourceGroupName, publicIpAddressName, expand, context).block();
     }
 
-    /**
-     * Gets the specified public IP address in a specified resource group.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param publicIpAddressName The name of the public IP address.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the specified public IP address in a specified resource group.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public PublicIpAddressInner getByResourceGroup(String resourceGroupName, String publicIpAddressName) {
         final String expand = null;
         return getByResourceGroupWithResponse(resourceGroupName, publicIpAddressName, expand, Context.NONE).getValue();
     }
 
-    /**
-     * Creates or updates a static or dynamic public IP address.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param publicIpAddressName The name of the public IP address.
-     * @param parameters Parameters supplied to the create or update public IP address operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return public IP address resource along with {@link Response} on successful completion of {@link Mono}.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Response<Flux<ByteBuffer>>> createOrUpdateWithResponseAsync(String resourceGroupName,
         String publicIpAddressName, PublicIpAddressInner parameters) {
@@ -1324,17 +1079,7 @@ public final class PublicIpAddressesClientImpl implements InnerSupportsGet<Publi
             resourceGroupName, publicIpAddressName, contentType, accept, parameters, context);
     }
 
-    /**
-     * Creates or updates a static or dynamic public IP address.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param publicIpAddressName The name of the public IP address.
-     * @param parameters Parameters supplied to the create or update public IP address operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the {@link PollerFlux} for polling of public IP address resource.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public PollerFlux<PollResult<PublicIpAddressInner>, PublicIpAddressInner> beginCreateOrUpdateAsync(
         String resourceGroupName, String publicIpAddressName, PublicIpAddressInner parameters) {
@@ -1366,35 +1111,14 @@ public final class PublicIpAddressesClientImpl implements InnerSupportsGet<Publi
             PublicIpAddressInner.class, PublicIpAddressInner.class, context);
     }
 
-    /**
-     * Creates or updates a static or dynamic public IP address.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param publicIpAddressName The name of the public IP address.
-     * @param parameters Parameters supplied to the create or update public IP address operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the {@link SyncPoller} for polling of public IP address resource.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public SyncPoller<PollResult<PublicIpAddressInner>, PublicIpAddressInner>
         beginCreateOrUpdate(String resourceGroupName, String publicIpAddressName, PublicIpAddressInner parameters) {
         return this.beginCreateOrUpdateAsync(resourceGroupName, publicIpAddressName, parameters).getSyncPoller();
     }
 
-    /**
-     * Creates or updates a static or dynamic public IP address.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param publicIpAddressName The name of the public IP address.
-     * @param parameters Parameters supplied to the create or update public IP address operation.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the {@link SyncPoller} for polling of public IP address resource.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public SyncPoller<PollResult<PublicIpAddressInner>, PublicIpAddressInner> beginCreateOrUpdate(
         String resourceGroupName, String publicIpAddressName, PublicIpAddressInner parameters, Context context) {
@@ -1402,17 +1126,7 @@ public final class PublicIpAddressesClientImpl implements InnerSupportsGet<Publi
             .getSyncPoller();
     }
 
-    /**
-     * Creates or updates a static or dynamic public IP address.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param publicIpAddressName The name of the public IP address.
-     * @param parameters Parameters supplied to the create or update public IP address operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return public IP address resource on successful completion of {@link Mono}.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<PublicIpAddressInner> createOrUpdateAsync(String resourceGroupName, String publicIpAddressName,
         PublicIpAddressInner parameters) {
@@ -1439,52 +1153,21 @@ public final class PublicIpAddressesClientImpl implements InnerSupportsGet<Publi
             .flatMap(this.client::getLroFinalResultOrError);
     }
 
-    /**
-     * Creates or updates a static or dynamic public IP address.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param publicIpAddressName The name of the public IP address.
-     * @param parameters Parameters supplied to the create or update public IP address operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return public IP address resource.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public PublicIpAddressInner createOrUpdate(String resourceGroupName, String publicIpAddressName,
         PublicIpAddressInner parameters) {
         return createOrUpdateAsync(resourceGroupName, publicIpAddressName, parameters).block();
     }
 
-    /**
-     * Creates or updates a static or dynamic public IP address.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param publicIpAddressName The name of the public IP address.
-     * @param parameters Parameters supplied to the create or update public IP address operation.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return public IP address resource.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public PublicIpAddressInner createOrUpdate(String resourceGroupName, String publicIpAddressName,
         PublicIpAddressInner parameters, Context context) {
         return createOrUpdateAsync(resourceGroupName, publicIpAddressName, parameters, context).block();
     }
 
-    /**
-     * Updates public IP address tags.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param publicIpAddressName The name of the public IP address.
-     * @param parameters Parameters supplied to update public IP address tags.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return public IP address resource along with {@link Response} on successful completion of {@link Mono}.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Response<PublicIpAddressInner>> updateTagsWithResponseAsync(String resourceGroupName,
         String publicIpAddressName, TagsObject parameters) {
@@ -1563,17 +1246,7 @@ public final class PublicIpAddressesClientImpl implements InnerSupportsGet<Publi
             resourceGroupName, publicIpAddressName, contentType, accept, parameters, context);
     }
 
-    /**
-     * Updates public IP address tags.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param publicIpAddressName The name of the public IP address.
-     * @param parameters Parameters supplied to update public IP address tags.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return public IP address resource on successful completion of {@link Mono}.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<PublicIpAddressInner> updateTagsAsync(String resourceGroupName, String publicIpAddressName,
         TagsObject parameters) {
@@ -1581,51 +1254,21 @@ public final class PublicIpAddressesClientImpl implements InnerSupportsGet<Publi
             .flatMap(res -> Mono.justOrEmpty(res.getValue()));
     }
 
-    /**
-     * Updates public IP address tags.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param publicIpAddressName The name of the public IP address.
-     * @param parameters Parameters supplied to update public IP address tags.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return public IP address resource along with {@link Response}.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Response<PublicIpAddressInner> updateTagsWithResponse(String resourceGroupName, String publicIpAddressName,
         TagsObject parameters, Context context) {
         return updateTagsWithResponseAsync(resourceGroupName, publicIpAddressName, parameters, context).block();
     }
 
-    /**
-     * Updates public IP address tags.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param publicIpAddressName The name of the public IP address.
-     * @param parameters Parameters supplied to update public IP address tags.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return public IP address resource.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public PublicIpAddressInner updateTags(String resourceGroupName, String publicIpAddressName,
         TagsObject parameters) {
         return updateTagsWithResponse(resourceGroupName, publicIpAddressName, parameters, Context.NONE).getValue();
     }
 
-    /**
-     * Deletes the specified public IP address.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param publicIpAddressName The name of the public IP address.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the {@link Response} on successful completion of {@link Mono}.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Response<Flux<ByteBuffer>>> deleteWithResponseAsync(String resourceGroupName,
         String publicIpAddressName) {
@@ -1688,16 +1331,7 @@ public final class PublicIpAddressesClientImpl implements InnerSupportsGet<Publi
             publicIpAddressName, context);
     }
 
-    /**
-     * Deletes the specified public IP address.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param publicIpAddressName The name of the public IP address.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the {@link PollerFlux} for polling of long-running operation.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public PollerFlux<PollResult<Void>, Void> beginDeleteAsync(String resourceGroupName, String publicIpAddressName) {
         Mono<Response<Flux<ByteBuffer>>> mono = deleteWithResponseAsync(resourceGroupName, publicIpAddressName);
@@ -1726,48 +1360,20 @@ public final class PublicIpAddressesClientImpl implements InnerSupportsGet<Publi
             context);
     }
 
-    /**
-     * Deletes the specified public IP address.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param publicIpAddressName The name of the public IP address.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the {@link SyncPoller} for polling of long-running operation.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public SyncPoller<PollResult<Void>, Void> beginDelete(String resourceGroupName, String publicIpAddressName) {
         return this.beginDeleteAsync(resourceGroupName, publicIpAddressName).getSyncPoller();
     }
 
-    /**
-     * Deletes the specified public IP address.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param publicIpAddressName The name of the public IP address.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the {@link SyncPoller} for polling of long-running operation.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public SyncPoller<PollResult<Void>, Void> beginDelete(String resourceGroupName, String publicIpAddressName,
         Context context) {
         return this.beginDeleteAsync(resourceGroupName, publicIpAddressName, context).getSyncPoller();
     }
 
-    /**
-     * Deletes the specified public IP address.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param publicIpAddressName The name of the public IP address.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return A {@link Mono} that completes when a successful response is received.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Void> deleteAsync(String resourceGroupName, String publicIpAddressName) {
         return beginDeleteAsync(resourceGroupName, publicIpAddressName).last()
@@ -1791,30 +1397,13 @@ public final class PublicIpAddressesClientImpl implements InnerSupportsGet<Publi
             .flatMap(this.client::getLroFinalResultOrError);
     }
 
-    /**
-     * Deletes the specified public IP address.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param publicIpAddressName The name of the public IP address.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public void delete(String resourceGroupName, String publicIpAddressName) {
         deleteAsync(resourceGroupName, publicIpAddressName).block();
     }
 
-    /**
-     * Deletes the specified public IP address.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param publicIpAddressName The name of the public IP address.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public void delete(String resourceGroupName, String publicIpAddressName, Context context) {
         deleteAsync(resourceGroupName, publicIpAddressName, context).block();
@@ -1890,15 +1479,7 @@ public final class PublicIpAddressesClientImpl implements InnerSupportsGet<Publi
                 res.getValue().value(), res.getValue().nextLink(), null));
     }
 
-    /**
-     * Gets all public IP addresses in a resource group.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return all public IP addresses in a resource group as paginated response with {@link PagedFlux}.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.COLLECTION)
     public PagedFlux<PublicIpAddressInner> listByResourceGroupAsync(String resourceGroupName) {
         return new PagedFlux<>(() -> listByResourceGroupSinglePageAsync(resourceGroupName),
@@ -1921,30 +1502,13 @@ public final class PublicIpAddressesClientImpl implements InnerSupportsGet<Publi
             nextLink -> listNextSinglePageAsync(nextLink, context));
     }
 
-    /**
-     * Gets all public IP addresses in a resource group.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return all public IP addresses in a resource group as paginated response with {@link PagedIterable}.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.COLLECTION)
     public PagedIterable<PublicIpAddressInner> listByResourceGroup(String resourceGroupName) {
         return new PagedIterable<>(listByResourceGroupAsync(resourceGroupName));
     }
 
-    /**
-     * Gets all public IP addresses in a resource group.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return all public IP addresses in a resource group as paginated response with {@link PagedIterable}.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.COLLECTION)
     public PagedIterable<PublicIpAddressInner> listByResourceGroup(String resourceGroupName, Context context) {
         return new PagedIterable<>(listByResourceGroupAsync(resourceGroupName, context));
@@ -2006,13 +1570,7 @@ public final class PublicIpAddressesClientImpl implements InnerSupportsGet<Publi
                 res.getValue().value(), res.getValue().nextLink(), null));
     }
 
-    /**
-     * Gets all the public IP addresses in a subscription.
-     * 
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return all the public IP addresses in a subscription as paginated response with {@link PagedFlux}.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.COLLECTION)
     public PagedFlux<PublicIpAddressInner> listAsync() {
         return new PagedFlux<>(() -> listSinglePageAsync(), nextLink -> listAllNextSinglePageAsync(nextLink));
@@ -2033,43 +1591,19 @@ public final class PublicIpAddressesClientImpl implements InnerSupportsGet<Publi
             nextLink -> listAllNextSinglePageAsync(nextLink, context));
     }
 
-    /**
-     * Gets all the public IP addresses in a subscription.
-     * 
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return all the public IP addresses in a subscription as paginated response with {@link PagedIterable}.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.COLLECTION)
     public PagedIterable<PublicIpAddressInner> list() {
         return new PagedIterable<>(listAsync());
     }
 
-    /**
-     * Gets all the public IP addresses in a subscription.
-     * 
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return all the public IP addresses in a subscription as paginated response with {@link PagedIterable}.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.COLLECTION)
     public PagedIterable<PublicIpAddressInner> list(Context context) {
         return new PagedIterable<>(listAsync(context));
     }
 
-    /**
-     * Gets the Ddos Protection Status of a Public IP Address.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param publicIpAddressName The name of the public IP address.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the Ddos Protection Status of a Public IP Address along with {@link Response} on successful completion of
-     * {@link Mono}.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Response<Flux<ByteBuffer>>> ddosProtectionStatusWithResponseAsync(String resourceGroupName,
         String publicIpAddressName) {
@@ -2135,16 +1669,7 @@ public final class PublicIpAddressesClientImpl implements InnerSupportsGet<Publi
             resourceGroupName, publicIpAddressName, accept, context);
     }
 
-    /**
-     * Gets the Ddos Protection Status of a Public IP Address.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param publicIpAddressName The name of the public IP address.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the {@link PollerFlux} for polling of the Ddos Protection Status of a Public IP Address.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public PollerFlux<PollResult<PublicIpDdosProtectionStatusResultInner>, PublicIpDdosProtectionStatusResultInner>
         beginDdosProtectionStatusAsync(String resourceGroupName, String publicIpAddressName) {
@@ -2179,49 +1704,21 @@ public final class PublicIpAddressesClientImpl implements InnerSupportsGet<Publi
                 PublicIpDdosProtectionStatusResultInner.class, context);
     }
 
-    /**
-     * Gets the Ddos Protection Status of a Public IP Address.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param publicIpAddressName The name of the public IP address.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the {@link SyncPoller} for polling of the Ddos Protection Status of a Public IP Address.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public SyncPoller<PollResult<PublicIpDdosProtectionStatusResultInner>, PublicIpDdosProtectionStatusResultInner>
         beginDdosProtectionStatus(String resourceGroupName, String publicIpAddressName) {
         return this.beginDdosProtectionStatusAsync(resourceGroupName, publicIpAddressName).getSyncPoller();
     }
 
-    /**
-     * Gets the Ddos Protection Status of a Public IP Address.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param publicIpAddressName The name of the public IP address.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the {@link SyncPoller} for polling of the Ddos Protection Status of a Public IP Address.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public SyncPoller<PollResult<PublicIpDdosProtectionStatusResultInner>, PublicIpDdosProtectionStatusResultInner>
         beginDdosProtectionStatus(String resourceGroupName, String publicIpAddressName, Context context) {
         return this.beginDdosProtectionStatusAsync(resourceGroupName, publicIpAddressName, context).getSyncPoller();
     }
 
-    /**
-     * Gets the Ddos Protection Status of a Public IP Address.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param publicIpAddressName The name of the public IP address.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the Ddos Protection Status of a Public IP Address on successful completion of {@link Mono}.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<PublicIpDdosProtectionStatusResultInner> ddosProtectionStatusAsync(String resourceGroupName,
         String publicIpAddressName) {
@@ -2247,52 +1744,21 @@ public final class PublicIpAddressesClientImpl implements InnerSupportsGet<Publi
             .flatMap(this.client::getLroFinalResultOrError);
     }
 
-    /**
-     * Gets the Ddos Protection Status of a Public IP Address.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param publicIpAddressName The name of the public IP address.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the Ddos Protection Status of a Public IP Address.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public PublicIpDdosProtectionStatusResultInner ddosProtectionStatus(String resourceGroupName,
         String publicIpAddressName) {
         return ddosProtectionStatusAsync(resourceGroupName, publicIpAddressName).block();
     }
 
-    /**
-     * Gets the Ddos Protection Status of a Public IP Address.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param publicIpAddressName The name of the public IP address.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the Ddos Protection Status of a Public IP Address.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public PublicIpDdosProtectionStatusResultInner ddosProtectionStatus(String resourceGroupName,
         String publicIpAddressName, Context context) {
         return ddosProtectionStatusAsync(resourceGroupName, publicIpAddressName, context).block();
     }
 
-    /**
-     * Reserves the specified Cloud Service Public IP by switching its allocation method to Static. If rollback is
-     * requested, reverts the allocation method to Dynamic.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param publicIpAddressName The name of the public IP address.
-     * @param parameters Parameter that define which Public IP Address should be associated in place of given Public IP
-     * Address.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return public IP address resource along with {@link Response} on successful completion of {@link Mono}.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Response<Flux<ByteBuffer>>> reserveCloudServicePublicIpAddressWithResponseAsync(
         String resourceGroupName, String publicIpAddressName, ReserveCloudServicePublicIpAddressRequest parameters) {
@@ -2375,19 +1841,7 @@ public final class PublicIpAddressesClientImpl implements InnerSupportsGet<Publi
             context);
     }
 
-    /**
-     * Reserves the specified Cloud Service Public IP by switching its allocation method to Static. If rollback is
-     * requested, reverts the allocation method to Dynamic.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param publicIpAddressName The name of the public IP address.
-     * @param parameters Parameter that define which Public IP Address should be associated in place of given Public IP
-     * Address.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the {@link PollerFlux} for polling of public IP address resource.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public PollerFlux<PollResult<PublicIpAddressInner>, PublicIpAddressInner>
         beginReserveCloudServicePublicIpAddressAsync(String resourceGroupName, String publicIpAddressName,
@@ -2423,19 +1877,7 @@ public final class PublicIpAddressesClientImpl implements InnerSupportsGet<Publi
             PublicIpAddressInner.class, PublicIpAddressInner.class, context);
     }
 
-    /**
-     * Reserves the specified Cloud Service Public IP by switching its allocation method to Static. If rollback is
-     * requested, reverts the allocation method to Dynamic.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param publicIpAddressName The name of the public IP address.
-     * @param parameters Parameter that define which Public IP Address should be associated in place of given Public IP
-     * Address.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the {@link SyncPoller} for polling of public IP address resource.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public SyncPoller<PollResult<PublicIpAddressInner>, PublicIpAddressInner> beginReserveCloudServicePublicIpAddress(
         String resourceGroupName, String publicIpAddressName, ReserveCloudServicePublicIpAddressRequest parameters) {
@@ -2443,20 +1885,7 @@ public final class PublicIpAddressesClientImpl implements InnerSupportsGet<Publi
             .getSyncPoller();
     }
 
-    /**
-     * Reserves the specified Cloud Service Public IP by switching its allocation method to Static. If rollback is
-     * requested, reverts the allocation method to Dynamic.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param publicIpAddressName The name of the public IP address.
-     * @param parameters Parameter that define which Public IP Address should be associated in place of given Public IP
-     * Address.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the {@link SyncPoller} for polling of public IP address resource.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public SyncPoller<PollResult<PublicIpAddressInner>, PublicIpAddressInner> beginReserveCloudServicePublicIpAddress(
         String resourceGroupName, String publicIpAddressName, ReserveCloudServicePublicIpAddressRequest parameters,
@@ -2466,19 +1895,7 @@ public final class PublicIpAddressesClientImpl implements InnerSupportsGet<Publi
             .getSyncPoller();
     }
 
-    /**
-     * Reserves the specified Cloud Service Public IP by switching its allocation method to Static. If rollback is
-     * requested, reverts the allocation method to Dynamic.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param publicIpAddressName The name of the public IP address.
-     * @param parameters Parameter that define which Public IP Address should be associated in place of given Public IP
-     * Address.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return public IP address resource on successful completion of {@link Mono}.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<PublicIpAddressInner> reserveCloudServicePublicIpAddressAsync(String resourceGroupName,
         String publicIpAddressName, ReserveCloudServicePublicIpAddressRequest parameters) {
@@ -2508,39 +1925,14 @@ public final class PublicIpAddressesClientImpl implements InnerSupportsGet<Publi
             .flatMap(this.client::getLroFinalResultOrError);
     }
 
-    /**
-     * Reserves the specified Cloud Service Public IP by switching its allocation method to Static. If rollback is
-     * requested, reverts the allocation method to Dynamic.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param publicIpAddressName The name of the public IP address.
-     * @param parameters Parameter that define which Public IP Address should be associated in place of given Public IP
-     * Address.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return public IP address resource.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public PublicIpAddressInner reserveCloudServicePublicIpAddress(String resourceGroupName, String publicIpAddressName,
         ReserveCloudServicePublicIpAddressRequest parameters) {
         return reserveCloudServicePublicIpAddressAsync(resourceGroupName, publicIpAddressName, parameters).block();
     }
 
-    /**
-     * Reserves the specified Cloud Service Public IP by switching its allocation method to Static. If rollback is
-     * requested, reverts the allocation method to Dynamic.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param publicIpAddressName The name of the public IP address.
-     * @param parameters Parameter that define which Public IP Address should be associated in place of given Public IP
-     * Address.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return public IP address resource.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public PublicIpAddressInner reserveCloudServicePublicIpAddress(String resourceGroupName, String publicIpAddressName,
         ReserveCloudServicePublicIpAddressRequest parameters, Context context) {
@@ -2548,19 +1940,7 @@ public final class PublicIpAddressesClientImpl implements InnerSupportsGet<Publi
             .block();
     }
 
-    /**
-     * Disassociates the Cloud Service reserved Public IP and associates the specified Standalone Public IP to the same
-     * Cloud Service frontend.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param publicIpAddressName The name of the public IP address.
-     * @param parameters Parameter that define which Public IP Address should be associated in place of given Public IP
-     * Address.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return public IP address resource along with {@link Response} on successful completion of {@link Mono}.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Response<Flux<ByteBuffer>>> disassociateCloudServiceReservedPublicIpWithResponseAsync(
         String resourceGroupName, String publicIpAddressName, DisassociateCloudServicePublicIpRequest parameters) {
@@ -2643,19 +2023,7 @@ public final class PublicIpAddressesClientImpl implements InnerSupportsGet<Publi
             context);
     }
 
-    /**
-     * Disassociates the Cloud Service reserved Public IP and associates the specified Standalone Public IP to the same
-     * Cloud Service frontend.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param publicIpAddressName The name of the public IP address.
-     * @param parameters Parameter that define which Public IP Address should be associated in place of given Public IP
-     * Address.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the {@link PollerFlux} for polling of public IP address resource.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public PollerFlux<PollResult<PublicIpAddressInner>, PublicIpAddressInner>
         beginDisassociateCloudServiceReservedPublicIpAsync(String resourceGroupName, String publicIpAddressName,
@@ -2691,19 +2059,7 @@ public final class PublicIpAddressesClientImpl implements InnerSupportsGet<Publi
             PublicIpAddressInner.class, PublicIpAddressInner.class, context);
     }
 
-    /**
-     * Disassociates the Cloud Service reserved Public IP and associates the specified Standalone Public IP to the same
-     * Cloud Service frontend.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param publicIpAddressName The name of the public IP address.
-     * @param parameters Parameter that define which Public IP Address should be associated in place of given Public IP
-     * Address.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the {@link SyncPoller} for polling of public IP address resource.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public SyncPoller<PollResult<PublicIpAddressInner>, PublicIpAddressInner>
         beginDisassociateCloudServiceReservedPublicIp(String resourceGroupName, String publicIpAddressName,
@@ -2713,20 +2069,7 @@ public final class PublicIpAddressesClientImpl implements InnerSupportsGet<Publi
             .getSyncPoller();
     }
 
-    /**
-     * Disassociates the Cloud Service reserved Public IP and associates the specified Standalone Public IP to the same
-     * Cloud Service frontend.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param publicIpAddressName The name of the public IP address.
-     * @param parameters Parameter that define which Public IP Address should be associated in place of given Public IP
-     * Address.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the {@link SyncPoller} for polling of public IP address resource.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public SyncPoller<PollResult<PublicIpAddressInner>, PublicIpAddressInner>
         beginDisassociateCloudServiceReservedPublicIp(String resourceGroupName, String publicIpAddressName,
@@ -2737,19 +2080,7 @@ public final class PublicIpAddressesClientImpl implements InnerSupportsGet<Publi
             .getSyncPoller();
     }
 
-    /**
-     * Disassociates the Cloud Service reserved Public IP and associates the specified Standalone Public IP to the same
-     * Cloud Service frontend.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param publicIpAddressName The name of the public IP address.
-     * @param parameters Parameter that define which Public IP Address should be associated in place of given Public IP
-     * Address.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return public IP address resource on successful completion of {@link Mono}.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<PublicIpAddressInner> disassociateCloudServiceReservedPublicIpAsync(String resourceGroupName,
         String publicIpAddressName, DisassociateCloudServicePublicIpRequest parameters) {
@@ -2779,19 +2110,7 @@ public final class PublicIpAddressesClientImpl implements InnerSupportsGet<Publi
             context).last().flatMap(this.client::getLroFinalResultOrError);
     }
 
-    /**
-     * Disassociates the Cloud Service reserved Public IP and associates the specified Standalone Public IP to the same
-     * Cloud Service frontend.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param publicIpAddressName The name of the public IP address.
-     * @param parameters Parameter that define which Public IP Address should be associated in place of given Public IP
-     * Address.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return public IP address resource.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public PublicIpAddressInner disassociateCloudServiceReservedPublicIp(String resourceGroupName,
         String publicIpAddressName, DisassociateCloudServicePublicIpRequest parameters) {
@@ -2799,20 +2118,7 @@ public final class PublicIpAddressesClientImpl implements InnerSupportsGet<Publi
             .block();
     }
 
-    /**
-     * Disassociates the Cloud Service reserved Public IP and associates the specified Standalone Public IP to the same
-     * Cloud Service frontend.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param publicIpAddressName The name of the public IP address.
-     * @param parameters Parameter that define which Public IP Address should be associated in place of given Public IP
-     * Address.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return public IP address resource.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public PublicIpAddressInner disassociateCloudServiceReservedPublicIp(String resourceGroupName,
         String publicIpAddressName, DisassociateCloudServicePublicIpRequest parameters, Context context) {
@@ -2901,17 +2207,7 @@ public final class PublicIpAddressesClientImpl implements InnerSupportsGet<Publi
                 res.getValue().value(), res.getValue().nextLink(), null));
     }
 
-    /**
-     * Gets information about all public IP addresses on a cloud service level.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param cloudServiceName The name of the cloud service.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return information about all public IP addresses on a cloud service level as paginated response with
-     * {@link PagedFlux}.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.COLLECTION)
     public PagedFlux<PublicIpAddressInner> listCloudServicePublicIpAddressesAsync(String resourceGroupName,
         String cloudServiceName) {
@@ -2940,35 +2236,14 @@ public final class PublicIpAddressesClientImpl implements InnerSupportsGet<Publi
             nextLink -> listCloudServicePublicIpAddressesNextSinglePageAsync(nextLink, context));
     }
 
-    /**
-     * Gets information about all public IP addresses on a cloud service level.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param cloudServiceName The name of the cloud service.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return information about all public IP addresses on a cloud service level as paginated response with
-     * {@link PagedIterable}.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.COLLECTION)
     public PagedIterable<PublicIpAddressInner> listCloudServicePublicIpAddresses(String resourceGroupName,
         String cloudServiceName) {
         return new PagedIterable<>(listCloudServicePublicIpAddressesAsync(resourceGroupName, cloudServiceName));
     }
 
-    /**
-     * Gets information about all public IP addresses on a cloud service level.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param cloudServiceName The name of the cloud service.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return information about all public IP addresses on a cloud service level as paginated response with
-     * {@link PagedIterable}.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.COLLECTION)
     public PagedIterable<PublicIpAddressInner> listCloudServicePublicIpAddresses(String resourceGroupName,
         String cloudServiceName, Context context) {
@@ -3058,17 +2333,7 @@ public final class PublicIpAddressesClientImpl implements InnerSupportsGet<Publi
                 res.getValue().value(), res.getValue().nextLink(), null));
     }
 
-    /**
-     * Gets information about all public IP addresses on a virtual machine scale set level.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param virtualMachineScaleSetName The name of the virtual machine scale set.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return information about all public IP addresses on a virtual machine scale set level as paginated response with
-     * {@link PagedFlux}.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.COLLECTION)
     public PagedFlux<PublicIpAddressInner> listVirtualMachineScaleSetPublicIpAddressesAsync(String resourceGroupName,
         String virtualMachineScaleSetName) {
@@ -3099,17 +2364,7 @@ public final class PublicIpAddressesClientImpl implements InnerSupportsGet<Publi
             nextLink -> listVirtualMachineScaleSetPublicIpAddressesNextSinglePageAsync(nextLink, context));
     }
 
-    /**
-     * Gets information about all public IP addresses on a virtual machine scale set level.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param virtualMachineScaleSetName The name of the virtual machine scale set.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return information about all public IP addresses on a virtual machine scale set level as paginated response with
-     * {@link PagedIterable}.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.COLLECTION)
     public PagedIterable<PublicIpAddressInner> listVirtualMachineScaleSetPublicIpAddresses(String resourceGroupName,
         String virtualMachineScaleSetName) {
@@ -3117,18 +2372,7 @@ public final class PublicIpAddressesClientImpl implements InnerSupportsGet<Publi
             listVirtualMachineScaleSetPublicIpAddressesAsync(resourceGroupName, virtualMachineScaleSetName));
     }
 
-    /**
-     * Gets information about all public IP addresses on a virtual machine scale set level.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param virtualMachineScaleSetName The name of the virtual machine scale set.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return information about all public IP addresses on a virtual machine scale set level as paginated response with
-     * {@link PagedIterable}.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.COLLECTION)
     public PagedIterable<PublicIpAddressInner> listVirtualMachineScaleSetPublicIpAddresses(String resourceGroupName,
         String virtualMachineScaleSetName, Context context) {

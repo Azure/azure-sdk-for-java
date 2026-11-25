@@ -92,10 +92,7 @@ public final class FileSystemResourceImpl
     }
 
     public FileSystemResource create() {
-        this.innerObject = serviceManager.serviceClient()
-            .getFileSystems()
-            .createOrUpdate(resourceGroupName, filesystemName, this.innerModel(), Context.NONE);
-        return this;
+        return this.create(Context.NONE);
     }
 
     public FileSystemResource create(Context context) {
@@ -117,11 +114,7 @@ public final class FileSystemResourceImpl
     }
 
     public FileSystemResource apply() {
-        this.innerObject = serviceManager.serviceClient()
-            .getFileSystems()
-            .updateWithResponse(resourceGroupName, filesystemName, updateProperties, Context.NONE)
-            .getValue();
-        return this;
+        return this.apply(Context.NONE);
     }
 
     public FileSystemResource apply(Context context) {
@@ -145,11 +138,7 @@ public final class FileSystemResourceImpl
     }
 
     public FileSystemResource refresh() {
-        this.innerObject = serviceManager.serviceClient()
-            .getFileSystems()
-            .getByResourceGroupWithResponse(resourceGroupName, filesystemName, Context.NONE)
-            .getValue();
-        return this;
+        return this.refresh(Context.NONE);
     }
 
     public FileSystemResource refresh(Context context) {

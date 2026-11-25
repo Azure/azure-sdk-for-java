@@ -170,12 +170,7 @@ public final class DeletedProtectionContainersClientImpl implements DeletedProte
     @ServiceMethod(returns = ReturnType.SINGLE)
     private PagedResponse<ProtectionContainerResourceInner> listSinglePage(String resourceGroupName, String vaultName,
         String filter) {
-        final String accept = "application/json";
-        Response<ProtectionContainerResourceList> res
-            = service.listSync(this.client.getEndpoint(), this.client.getApiVersion(), this.client.getSubscriptionId(),
-                resourceGroupName, vaultName, filter, accept, Context.NONE);
-        return new PagedResponseBase<>(res.getRequest(), res.getStatusCode(), res.getHeaders(), res.getValue().value(),
-            res.getValue().nextLink(), null);
+        return listSinglePage(resourceGroupName, vaultName, filter, Context.NONE);
     }
 
     /**
@@ -201,35 +196,14 @@ public final class DeletedProtectionContainersClientImpl implements DeletedProte
             res.getValue().nextLink(), null);
     }
 
-    /**
-     * Lists the soft deleted containers registered to Recovery Services Vault.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param vaultName The name of the recovery services vault.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return list of ProtectionContainer resources as paginated response with {@link PagedIterable}.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.COLLECTION)
     public PagedIterable<ProtectionContainerResourceInner> list(String resourceGroupName, String vaultName) {
         final String filter = null;
-        return new PagedIterable<>(() -> listSinglePage(resourceGroupName, vaultName, filter),
-            nextLink -> listNextSinglePage(nextLink));
+        return list(resourceGroupName, vaultName, filter, Context.NONE);
     }
 
-    /**
-     * Lists the soft deleted containers registered to Recovery Services Vault.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param vaultName The name of the recovery services vault.
-     * @param filter OData filter options.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return list of ProtectionContainer resources as paginated response with {@link PagedIterable}.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.COLLECTION)
     public PagedIterable<ProtectionContainerResourceInner> list(String resourceGroupName, String vaultName,
         String filter, Context context) {
@@ -267,11 +241,7 @@ public final class DeletedProtectionContainersClientImpl implements DeletedProte
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private PagedResponse<ProtectionContainerResourceInner> listNextSinglePage(String nextLink) {
-        final String accept = "application/json";
-        Response<ProtectionContainerResourceList> res
-            = service.listNextSync(nextLink, this.client.getEndpoint(), accept, Context.NONE);
-        return new PagedResponseBase<>(res.getRequest(), res.getStatusCode(), res.getHeaders(), res.getValue().value(),
-            res.getValue().nextLink(), null);
+        return listNextSinglePage(nextLink, Context.NONE);
     }
 
     /**

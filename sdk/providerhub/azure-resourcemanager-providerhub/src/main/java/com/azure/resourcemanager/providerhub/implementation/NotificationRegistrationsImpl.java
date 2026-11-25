@@ -50,13 +50,11 @@ public final class NotificationRegistrationsImpl implements NotificationRegistra
     }
 
     public void deleteByResourceGroup(String providerNamespace, String notificationRegistrationName) {
-        this.serviceClient().delete(providerNamespace, notificationRegistrationName);
+        this.deleteByResourceGroupWithResponse(providerNamespace, notificationRegistrationName, Context.NONE);
     }
 
     public PagedIterable<NotificationRegistration> listByProviderRegistration(String providerNamespace) {
-        PagedIterable<NotificationRegistrationInner> inner
-            = this.serviceClient().listByProviderRegistration(providerNamespace);
-        return ResourceManagerUtils.mapPage(inner, inner1 -> new NotificationRegistrationImpl(inner1, this.manager()));
+        return this.listByProviderRegistration(providerNamespace, Context.NONE);
     }
 
     public PagedIterable<NotificationRegistration> listByProviderRegistration(String providerNamespace,
@@ -67,74 +65,30 @@ public final class NotificationRegistrationsImpl implements NotificationRegistra
     }
 
     public NotificationRegistration getById(String id) {
-        String providerNamespace = ResourceManagerUtils.getValueFromIdByParameterName(id,
-            "/subscriptions/{subscriptionId}/providers/Microsoft.ProviderHub/providerRegistrations/{providerNamespace}/notificationRegistrations/{notificationRegistrationName}",
-            "providerNamespace");
-        if (providerNamespace == null) {
-            throw LOGGER.logExceptionAsError(new IllegalArgumentException(
-                String.format("The resource ID '%s' is not valid. Missing path segment 'providerRegistrations'.", id)));
-        }
-        String notificationRegistrationName = ResourceManagerUtils.getValueFromIdByParameterName(id,
-            "/subscriptions/{subscriptionId}/providers/Microsoft.ProviderHub/providerRegistrations/{providerNamespace}/notificationRegistrations/{notificationRegistrationName}",
-            "notificationRegistrationName");
-        if (notificationRegistrationName == null) {
-            throw LOGGER.logExceptionAsError(new IllegalArgumentException(String
-                .format("The resource ID '%s' is not valid. Missing path segment 'notificationRegistrations'.", id)));
-        }
-        return this.getWithResponse(providerNamespace, notificationRegistrationName, Context.NONE).getValue();
+        return this.getByIdWithResponse(id, Context.NONE).getValue();
     }
 
     public Response<NotificationRegistration> getByIdWithResponse(String id, Context context) {
-        String providerNamespace = ResourceManagerUtils.getValueFromIdByParameterName(id,
+        String providerNamespace = ResourceManagerUtils.getRequiredValueFromIdByParameterName(id,
             "/subscriptions/{subscriptionId}/providers/Microsoft.ProviderHub/providerRegistrations/{providerNamespace}/notificationRegistrations/{notificationRegistrationName}",
-            "providerNamespace");
-        if (providerNamespace == null) {
-            throw LOGGER.logExceptionAsError(new IllegalArgumentException(
-                String.format("The resource ID '%s' is not valid. Missing path segment 'providerRegistrations'.", id)));
-        }
-        String notificationRegistrationName = ResourceManagerUtils.getValueFromIdByParameterName(id,
+            "providerNamespace", "providerRegistrations", LOGGER);
+        String notificationRegistrationName = ResourceManagerUtils.getRequiredValueFromIdByParameterName(id,
             "/subscriptions/{subscriptionId}/providers/Microsoft.ProviderHub/providerRegistrations/{providerNamespace}/notificationRegistrations/{notificationRegistrationName}",
-            "notificationRegistrationName");
-        if (notificationRegistrationName == null) {
-            throw LOGGER.logExceptionAsError(new IllegalArgumentException(String
-                .format("The resource ID '%s' is not valid. Missing path segment 'notificationRegistrations'.", id)));
-        }
+            "notificationRegistrationName", "notificationRegistrations", LOGGER);
         return this.getWithResponse(providerNamespace, notificationRegistrationName, context);
     }
 
     public void deleteById(String id) {
-        String providerNamespace = ResourceManagerUtils.getValueFromIdByParameterName(id,
-            "/subscriptions/{subscriptionId}/providers/Microsoft.ProviderHub/providerRegistrations/{providerNamespace}/notificationRegistrations/{notificationRegistrationName}",
-            "providerNamespace");
-        if (providerNamespace == null) {
-            throw LOGGER.logExceptionAsError(new IllegalArgumentException(
-                String.format("The resource ID '%s' is not valid. Missing path segment 'providerRegistrations'.", id)));
-        }
-        String notificationRegistrationName = ResourceManagerUtils.getValueFromIdByParameterName(id,
-            "/subscriptions/{subscriptionId}/providers/Microsoft.ProviderHub/providerRegistrations/{providerNamespace}/notificationRegistrations/{notificationRegistrationName}",
-            "notificationRegistrationName");
-        if (notificationRegistrationName == null) {
-            throw LOGGER.logExceptionAsError(new IllegalArgumentException(String
-                .format("The resource ID '%s' is not valid. Missing path segment 'notificationRegistrations'.", id)));
-        }
-        this.deleteByResourceGroupWithResponse(providerNamespace, notificationRegistrationName, Context.NONE);
+        this.deleteByIdWithResponse(id, Context.NONE);
     }
 
     public Response<Void> deleteByIdWithResponse(String id, Context context) {
-        String providerNamespace = ResourceManagerUtils.getValueFromIdByParameterName(id,
+        String providerNamespace = ResourceManagerUtils.getRequiredValueFromIdByParameterName(id,
             "/subscriptions/{subscriptionId}/providers/Microsoft.ProviderHub/providerRegistrations/{providerNamespace}/notificationRegistrations/{notificationRegistrationName}",
-            "providerNamespace");
-        if (providerNamespace == null) {
-            throw LOGGER.logExceptionAsError(new IllegalArgumentException(
-                String.format("The resource ID '%s' is not valid. Missing path segment 'providerRegistrations'.", id)));
-        }
-        String notificationRegistrationName = ResourceManagerUtils.getValueFromIdByParameterName(id,
+            "providerNamespace", "providerRegistrations", LOGGER);
+        String notificationRegistrationName = ResourceManagerUtils.getRequiredValueFromIdByParameterName(id,
             "/subscriptions/{subscriptionId}/providers/Microsoft.ProviderHub/providerRegistrations/{providerNamespace}/notificationRegistrations/{notificationRegistrationName}",
-            "notificationRegistrationName");
-        if (notificationRegistrationName == null) {
-            throw LOGGER.logExceptionAsError(new IllegalArgumentException(String
-                .format("The resource ID '%s' is not valid. Missing path segment 'notificationRegistrations'.", id)));
-        }
+            "notificationRegistrationName", "notificationRegistrations", LOGGER);
         return this.deleteByResourceGroupWithResponse(providerNamespace, notificationRegistrationName, context);
     }
 

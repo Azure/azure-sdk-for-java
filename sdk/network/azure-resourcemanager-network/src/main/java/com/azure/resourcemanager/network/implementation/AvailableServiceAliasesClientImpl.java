@@ -162,16 +162,7 @@ public final class AvailableServiceAliasesClientImpl implements AvailableService
                 res.getValue().value(), res.getValue().nextLink(), null));
     }
 
-    /**
-     * Gets all available service aliases for this subscription in this region.
-     * 
-     * @param location The location name.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return all available service aliases for this subscription in this region as paginated response with
-     * {@link PagedFlux}.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.COLLECTION)
     public PagedFlux<AvailableServiceAliasInner> listAsync(String location) {
         return new PagedFlux<>(() -> listSinglePageAsync(location), nextLink -> listNextSinglePageAsync(nextLink));
@@ -194,32 +185,13 @@ public final class AvailableServiceAliasesClientImpl implements AvailableService
             nextLink -> listNextSinglePageAsync(nextLink, context));
     }
 
-    /**
-     * Gets all available service aliases for this subscription in this region.
-     * 
-     * @param location The location name.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return all available service aliases for this subscription in this region as paginated response with
-     * {@link PagedIterable}.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.COLLECTION)
     public PagedIterable<AvailableServiceAliasInner> list(String location) {
         return new PagedIterable<>(listAsync(location));
     }
 
-    /**
-     * Gets all available service aliases for this subscription in this region.
-     * 
-     * @param location The location name.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return all available service aliases for this subscription in this region as paginated response with
-     * {@link PagedIterable}.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.COLLECTION)
     public PagedIterable<AvailableServiceAliasInner> list(String location, Context context) {
         return new PagedIterable<>(listAsync(location, context));
@@ -304,17 +276,7 @@ public final class AvailableServiceAliasesClientImpl implements AvailableService
                 res.getValue().value(), res.getValue().nextLink(), null));
     }
 
-    /**
-     * Gets all available service aliases for this resource group in this region.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param location The location name.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return all available service aliases for this resource group in this region as paginated response with
-     * {@link PagedFlux}.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.COLLECTION)
     public PagedFlux<AvailableServiceAliasInner> listByResourceGroupAsync(String resourceGroupName, String location) {
         return new PagedFlux<>(() -> listByResourceGroupSinglePageAsync(resourceGroupName, location),
@@ -340,34 +302,13 @@ public final class AvailableServiceAliasesClientImpl implements AvailableService
             nextLink -> listByResourceGroupNextSinglePageAsync(nextLink, context));
     }
 
-    /**
-     * Gets all available service aliases for this resource group in this region.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param location The location name.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return all available service aliases for this resource group in this region as paginated response with
-     * {@link PagedIterable}.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.COLLECTION)
     public PagedIterable<AvailableServiceAliasInner> listByResourceGroup(String resourceGroupName, String location) {
         return new PagedIterable<>(listByResourceGroupAsync(resourceGroupName, location));
     }
 
-    /**
-     * Gets all available service aliases for this resource group in this region.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param location The location name.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return all available service aliases for this resource group in this region as paginated response with
-     * {@link PagedIterable}.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.COLLECTION)
     public PagedIterable<AvailableServiceAliasInner> listByResourceGroup(String resourceGroupName, String location,
         Context context) {

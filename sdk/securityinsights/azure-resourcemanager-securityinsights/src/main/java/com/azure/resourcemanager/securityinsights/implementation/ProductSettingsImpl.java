@@ -68,12 +68,11 @@ public final class ProductSettingsImpl implements ProductSettings {
     }
 
     public void delete(String resourceGroupName, String workspaceName, String settingsName) {
-        this.serviceClient().delete(resourceGroupName, workspaceName, settingsName);
+        this.deleteWithResponse(resourceGroupName, workspaceName, settingsName, Context.NONE);
     }
 
     public PagedIterable<Settings> list(String resourceGroupName, String workspaceName) {
-        PagedIterable<SettingsInner> inner = this.serviceClient().list(resourceGroupName, workspaceName);
-        return ResourceManagerUtils.mapPage(inner, inner1 -> new SettingsImpl(inner1, this.manager()));
+        return this.list(resourceGroupName, workspaceName, Context.NONE);
     }
 
     public PagedIterable<Settings> list(String resourceGroupName, String workspaceName, Context context) {

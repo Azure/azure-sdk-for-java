@@ -148,12 +148,7 @@ public final class ImageVersionsClientImpl implements ImageVersionsClient {
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private PagedResponse<ImageVersionInner> listByImageSinglePage(String resourceGroupName, String imageName) {
-        final String accept = "application/json";
-        Response<ImageVersionListResult> res
-            = service.listByImageSync(this.client.getEndpoint(), this.client.getApiVersion(),
-                this.client.getSubscriptionId(), resourceGroupName, imageName, accept, Context.NONE);
-        return new PagedResponseBase<>(res.getRequest(), res.getStatusCode(), res.getHeaders(), res.getValue().value(),
-            res.getValue().nextLink(), null);
+        return listByImageSinglePage(resourceGroupName, imageName, Context.NONE);
     }
 
     /**
@@ -178,33 +173,13 @@ public final class ImageVersionsClientImpl implements ImageVersionsClient {
             res.getValue().nextLink(), null);
     }
 
-    /**
-     * List ImageVersion resources by Image.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param imageName Name of the image.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the response of a ImageVersion list operation as paginated response with {@link PagedIterable}.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.COLLECTION)
     public PagedIterable<ImageVersionInner> listByImage(String resourceGroupName, String imageName) {
-        return new PagedIterable<>(() -> listByImageSinglePage(resourceGroupName, imageName),
-            nextLink -> listByImageNextSinglePage(nextLink));
+        return listByImage(resourceGroupName, imageName, Context.NONE);
     }
 
-    /**
-     * List ImageVersion resources by Image.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param imageName Name of the image.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the response of a ImageVersion list operation as paginated response with {@link PagedIterable}.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.COLLECTION)
     public PagedIterable<ImageVersionInner> listByImage(String resourceGroupName, String imageName, Context context) {
         return new PagedIterable<>(() -> listByImageSinglePage(resourceGroupName, imageName, context),
@@ -242,11 +217,7 @@ public final class ImageVersionsClientImpl implements ImageVersionsClient {
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private PagedResponse<ImageVersionInner> listByImageNextSinglePage(String nextLink) {
-        final String accept = "application/json";
-        Response<ImageVersionListResult> res
-            = service.listByImageNextSync(nextLink, this.client.getEndpoint(), accept, Context.NONE);
-        return new PagedResponseBase<>(res.getRequest(), res.getStatusCode(), res.getHeaders(), res.getValue().value(),
-            res.getValue().nextLink(), null);
+        return listByImageNextSinglePage(nextLink, Context.NONE);
     }
 
     /**

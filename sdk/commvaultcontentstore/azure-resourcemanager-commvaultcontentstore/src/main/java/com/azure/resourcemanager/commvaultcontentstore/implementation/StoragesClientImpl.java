@@ -266,18 +266,7 @@ public final class StoragesClientImpl implements StoragesClient {
             .flatMap(res -> Mono.justOrEmpty(res.getValue()));
     }
 
-    /**
-     * Get a Storage.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param cloudAccountName Name of the Cloud Account resource.
-     * @param storageName Name of the Storage resource.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return a Storage along with {@link Response}.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Response<StorageInner> getWithResponse(String resourceGroupName, String cloudAccountName, String storageName,
         Context context) {
@@ -286,17 +275,7 @@ public final class StoragesClientImpl implements StoragesClient {
             resourceGroupName, cloudAccountName, storageName, accept, context);
     }
 
-    /**
-     * Get a Storage.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param cloudAccountName Name of the Cloud Account resource.
-     * @param storageName Name of the Storage resource.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return a Storage.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public StorageInner get(String resourceGroupName, String cloudAccountName, String storageName) {
         return getWithResponse(resourceGroupName, cloudAccountName, storageName, Context.NONE).getValue();
@@ -341,11 +320,7 @@ public final class StoragesClientImpl implements StoragesClient {
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Response<BinaryData> createOrUpdateWithResponse(String resourceGroupName, String cloudAccountName,
         String storageName, StorageInner resource) {
-        final String contentType = "application/json";
-        final String accept = "application/json";
-        return service.createOrUpdateSync(this.client.getEndpoint(), this.client.getApiVersion(),
-            this.client.getSubscriptionId(), resourceGroupName, cloudAccountName, storageName, contentType, accept,
-            resource, Context.NONE);
+        return createOrUpdateWithResponse(resourceGroupName, cloudAccountName, storageName, resource, Context.NONE);
     }
 
     /**
@@ -392,40 +367,14 @@ public final class StoragesClientImpl implements StoragesClient {
             StorageInner.class, StorageInner.class, this.client.getContext());
     }
 
-    /**
-     * Create a Storage.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param cloudAccountName Name of the Cloud Account resource.
-     * @param storageName Name of the Storage resource.
-     * @param resource Resource create parameters.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the {@link SyncPoller} for polling of a Commvault Storage Resource.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public SyncPoller<PollResult<StorageInner>, StorageInner> beginCreateOrUpdate(String resourceGroupName,
         String cloudAccountName, String storageName, StorageInner resource) {
-        Response<BinaryData> response
-            = createOrUpdateWithResponse(resourceGroupName, cloudAccountName, storageName, resource);
-        return this.client.<StorageInner, StorageInner>getLroResult(response, StorageInner.class, StorageInner.class,
-            Context.NONE);
+        return beginCreateOrUpdate(resourceGroupName, cloudAccountName, storageName, resource, Context.NONE);
     }
 
-    /**
-     * Create a Storage.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param cloudAccountName Name of the Cloud Account resource.
-     * @param storageName Name of the Storage resource.
-     * @param resource Resource create parameters.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the {@link SyncPoller} for polling of a Commvault Storage Resource.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public SyncPoller<PollResult<StorageInner>, StorageInner> beginCreateOrUpdate(String resourceGroupName,
         String cloudAccountName, String storageName, StorageInner resource, Context context) {
@@ -454,42 +403,19 @@ public final class StoragesClientImpl implements StoragesClient {
             .flatMap(this.client::getLroFinalResultOrError);
     }
 
-    /**
-     * Create a Storage.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param cloudAccountName Name of the Cloud Account resource.
-     * @param storageName Name of the Storage resource.
-     * @param resource Resource create parameters.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return a Commvault Storage Resource.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public StorageInner createOrUpdate(String resourceGroupName, String cloudAccountName, String storageName,
         StorageInner resource) {
-        return beginCreateOrUpdate(resourceGroupName, cloudAccountName, storageName, resource).getFinalResult();
+        return createOrUpdate(resourceGroupName, cloudAccountName, storageName, resource, Context.NONE);
     }
 
-    /**
-     * Create a Storage.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param cloudAccountName Name of the Cloud Account resource.
-     * @param storageName Name of the Storage resource.
-     * @param resource Resource create parameters.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return a Commvault Storage Resource.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public StorageInner createOrUpdate(String resourceGroupName, String cloudAccountName, String storageName,
         StorageInner resource, Context context) {
-        return beginCreateOrUpdate(resourceGroupName, cloudAccountName, storageName, resource, context)
-            .getFinalResult();
+        return this.client.getLroFinalResultOrError(
+            beginCreateOrUpdate(resourceGroupName, cloudAccountName, storageName, resource, context));
     }
 
     /**
@@ -526,8 +452,7 @@ public final class StoragesClientImpl implements StoragesClient {
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Response<BinaryData> deleteWithResponse(String resourceGroupName, String cloudAccountName,
         String storageName) {
-        return service.deleteSync(this.client.getEndpoint(), this.client.getApiVersion(),
-            this.client.getSubscriptionId(), resourceGroupName, cloudAccountName, storageName, Context.NONE);
+        return deleteWithResponse(resourceGroupName, cloudAccountName, storageName, Context.NONE);
     }
 
     /**
@@ -569,36 +494,14 @@ public final class StoragesClientImpl implements StoragesClient {
             this.client.getContext());
     }
 
-    /**
-     * Delete a Storage.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param cloudAccountName Name of the Cloud Account resource.
-     * @param storageName Name of the Storage resource.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the {@link SyncPoller} for polling of long-running operation.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public SyncPoller<PollResult<Void>, Void> beginDelete(String resourceGroupName, String cloudAccountName,
         String storageName) {
-        Response<BinaryData> response = deleteWithResponse(resourceGroupName, cloudAccountName, storageName);
-        return this.client.<Void, Void>getLroResult(response, Void.class, Void.class, Context.NONE);
+        return beginDelete(resourceGroupName, cloudAccountName, storageName, Context.NONE);
     }
 
-    /**
-     * Delete a Storage.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param cloudAccountName Name of the Cloud Account resource.
-     * @param storageName Name of the Storage resource.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the {@link SyncPoller} for polling of long-running operation.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public SyncPoller<PollResult<Void>, Void> beginDelete(String resourceGroupName, String cloudAccountName,
         String storageName, Context context) {
@@ -623,35 +526,16 @@ public final class StoragesClientImpl implements StoragesClient {
             .flatMap(this.client::getLroFinalResultOrError);
     }
 
-    /**
-     * Delete a Storage.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param cloudAccountName Name of the Cloud Account resource.
-     * @param storageName Name of the Storage resource.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public void delete(String resourceGroupName, String cloudAccountName, String storageName) {
-        beginDelete(resourceGroupName, cloudAccountName, storageName).getFinalResult();
+        delete(resourceGroupName, cloudAccountName, storageName, Context.NONE);
     }
 
-    /**
-     * Delete a Storage.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param cloudAccountName Name of the Cloud Account resource.
-     * @param storageName Name of the Storage resource.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public void delete(String resourceGroupName, String cloudAccountName, String storageName, Context context) {
-        beginDelete(resourceGroupName, cloudAccountName, storageName, context).getFinalResult();
+        this.client.getLroFinalResultOrError(beginDelete(resourceGroupName, cloudAccountName, storageName, context));
     }
 
     /**
@@ -706,12 +590,7 @@ public final class StoragesClientImpl implements StoragesClient {
     @ServiceMethod(returns = ReturnType.SINGLE)
     private PagedResponse<StorageInner> listByCloudAccountSinglePage(String resourceGroupName,
         String cloudAccountName) {
-        final String accept = "application/json";
-        Response<StorageListResult> res
-            = service.listByCloudAccountSync(this.client.getEndpoint(), this.client.getApiVersion(),
-                this.client.getSubscriptionId(), resourceGroupName, cloudAccountName, accept, Context.NONE);
-        return new PagedResponseBase<>(res.getRequest(), res.getStatusCode(), res.getHeaders(), res.getValue().value(),
-            res.getValue().nextLink(), null);
+        return listByCloudAccountSinglePage(resourceGroupName, cloudAccountName, Context.NONE);
     }
 
     /**
@@ -736,33 +615,13 @@ public final class StoragesClientImpl implements StoragesClient {
             res.getValue().nextLink(), null);
     }
 
-    /**
-     * List Storage resources by CloudAccount.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param cloudAccountName Name of the Cloud Account resource.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the response of a Storage list operation as paginated response with {@link PagedIterable}.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.COLLECTION)
     public PagedIterable<StorageInner> listByCloudAccount(String resourceGroupName, String cloudAccountName) {
-        return new PagedIterable<>(() -> listByCloudAccountSinglePage(resourceGroupName, cloudAccountName),
-            nextLink -> listByCloudAccountNextSinglePage(nextLink));
+        return listByCloudAccount(resourceGroupName, cloudAccountName, Context.NONE);
     }
 
-    /**
-     * List Storage resources by CloudAccount.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param cloudAccountName Name of the Cloud Account resource.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the response of a Storage list operation as paginated response with {@link PagedIterable}.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.COLLECTION)
     public PagedIterable<StorageInner> listByCloudAccount(String resourceGroupName, String cloudAccountName,
         Context context) {
@@ -809,18 +668,7 @@ public final class StoragesClientImpl implements StoragesClient {
             .flatMap(res -> Mono.justOrEmpty(res.getValue()));
     }
 
-    /**
-     * Enable compliance lock on the storage. Synchronous operation.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param cloudAccountName Name of the Cloud Account resource.
-     * @param storageName Name of the Storage resource.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return a Commvault Storage Resource along with {@link Response}.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Response<StorageInner> enableComplianceLockWithResponse(String resourceGroupName, String cloudAccountName,
         String storageName, Context context) {
@@ -829,17 +677,7 @@ public final class StoragesClientImpl implements StoragesClient {
             this.client.getSubscriptionId(), resourceGroupName, cloudAccountName, storageName, accept, context);
     }
 
-    /**
-     * Enable compliance lock on the storage. Synchronous operation.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param cloudAccountName Name of the Cloud Account resource.
-     * @param storageName Name of the Storage resource.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return a Commvault Storage Resource.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public StorageInner enableComplianceLock(String resourceGroupName, String cloudAccountName, String storageName) {
         return enableComplianceLockWithResponse(resourceGroupName, cloudAccountName, storageName, Context.NONE)
@@ -890,20 +728,7 @@ public final class StoragesClientImpl implements StoragesClient {
             .flatMap(res -> Mono.justOrEmpty(res.getValue()));
     }
 
-    /**
-     * Disable compliance lock on the storage. Initiates an out-of-band multi-person authorization (MPA) email approval
-     * workflow on the partner side. The storage compliance lock status transitions to 'DisablementPending' immediately;
-     * once the MPA approval completes, the status becomes 'Disabled' (observable via the refresh action).
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param cloudAccountName Name of the Cloud Account resource.
-     * @param storageName Name of the Storage resource.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return a Commvault Storage Resource along with {@link Response}.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Response<StorageInner> disableComplianceLockWithResponse(String resourceGroupName, String cloudAccountName,
         String storageName, Context context) {
@@ -912,19 +737,7 @@ public final class StoragesClientImpl implements StoragesClient {
             this.client.getSubscriptionId(), resourceGroupName, cloudAccountName, storageName, accept, context);
     }
 
-    /**
-     * Disable compliance lock on the storage. Initiates an out-of-band multi-person authorization (MPA) email approval
-     * workflow on the partner side. The storage compliance lock status transitions to 'DisablementPending' immediately;
-     * once the MPA approval completes, the status becomes 'Disabled' (observable via the refresh action).
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param cloudAccountName Name of the Cloud Account resource.
-     * @param storageName Name of the Storage resource.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return a Commvault Storage Resource.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public StorageInner disableComplianceLock(String resourceGroupName, String cloudAccountName, String storageName) {
         return disableComplianceLockWithResponse(resourceGroupName, cloudAccountName, storageName, Context.NONE)
@@ -971,19 +784,7 @@ public final class StoragesClientImpl implements StoragesClient {
             .flatMap(res -> Mono.justOrEmpty(res.getValue()));
     }
 
-    /**
-     * Refresh storage state from partner. Fetches latest compliance lock status from Commvault and updates the ARM
-     * resource.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param cloudAccountName Name of the Cloud Account resource.
-     * @param storageName Name of the Storage resource.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return a Commvault Storage Resource along with {@link Response}.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Response<StorageInner> refreshWithResponse(String resourceGroupName, String cloudAccountName,
         String storageName, Context context) {
@@ -992,18 +793,7 @@ public final class StoragesClientImpl implements StoragesClient {
             this.client.getSubscriptionId(), resourceGroupName, cloudAccountName, storageName, accept, context);
     }
 
-    /**
-     * Refresh storage state from partner. Fetches latest compliance lock status from Commvault and updates the ARM
-     * resource.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param cloudAccountName Name of the Cloud Account resource.
-     * @param storageName Name of the Storage resource.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return a Commvault Storage Resource.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public StorageInner refresh(String resourceGroupName, String cloudAccountName, String storageName) {
         return refreshWithResponse(resourceGroupName, cloudAccountName, storageName, Context.NONE).getValue();
@@ -1041,11 +831,7 @@ public final class StoragesClientImpl implements StoragesClient {
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private PagedResponse<StorageInner> listByCloudAccountNextSinglePage(String nextLink) {
-        final String accept = "application/json";
-        Response<StorageListResult> res
-            = service.listByCloudAccountNextSync(nextLink, this.client.getEndpoint(), accept, Context.NONE);
-        return new PagedResponseBase<>(res.getRequest(), res.getStatusCode(), res.getHeaders(), res.getValue().value(),
-            res.getValue().nextLink(), null);
+        return listByCloudAccountNextSinglePage(nextLink, Context.NONE);
     }
 
     /**

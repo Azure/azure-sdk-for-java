@@ -182,18 +182,7 @@ public final class DeletedBackupInstancesClientImpl implements DeletedBackupInst
             .flatMap(res -> Mono.justOrEmpty(res.getValue()));
     }
 
-    /**
-     * Gets a deleted backup instance with name in a backup vault.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param vaultName The name of the backup vault.
-     * @param backupInstanceName The name of the deleted backup instance.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return a deleted backup instance with name in a backup vault along with {@link Response}.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Response<DeletedBackupInstanceResourceInner> getWithResponse(String resourceGroupName, String vaultName,
         String backupInstanceName, Context context) {
@@ -202,17 +191,7 @@ public final class DeletedBackupInstancesClientImpl implements DeletedBackupInst
             resourceGroupName, vaultName, backupInstanceName, accept, context);
     }
 
-    /**
-     * Gets a deleted backup instance with name in a backup vault.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param vaultName The name of the backup vault.
-     * @param backupInstanceName The name of the deleted backup instance.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return a deleted backup instance with name in a backup vault.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public DeletedBackupInstanceResourceInner get(String resourceGroupName, String vaultName,
         String backupInstanceName) {
@@ -271,12 +250,7 @@ public final class DeletedBackupInstancesClientImpl implements DeletedBackupInst
     @ServiceMethod(returns = ReturnType.SINGLE)
     private PagedResponse<DeletedBackupInstanceResourceInner> listSinglePage(String resourceGroupName,
         String vaultName) {
-        final String accept = "application/json";
-        Response<DeletedBackupInstanceResourceList> res
-            = service.listSync(this.client.getEndpoint(), this.client.getApiVersion(), this.client.getSubscriptionId(),
-                resourceGroupName, vaultName, accept, Context.NONE);
-        return new PagedResponseBase<>(res.getRequest(), res.getStatusCode(), res.getHeaders(), res.getValue().value(),
-            res.getValue().nextLink(), null);
+        return listSinglePage(resourceGroupName, vaultName, Context.NONE);
     }
 
     /**
@@ -301,33 +275,13 @@ public final class DeletedBackupInstancesClientImpl implements DeletedBackupInst
             res.getValue().nextLink(), null);
     }
 
-    /**
-     * Gets deleted backup instances belonging to a backup vault.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param vaultName The name of the backup vault.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return deleted backup instances belonging to a backup vault as paginated response with {@link PagedIterable}.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.COLLECTION)
     public PagedIterable<DeletedBackupInstanceResourceInner> list(String resourceGroupName, String vaultName) {
-        return new PagedIterable<>(() -> listSinglePage(resourceGroupName, vaultName),
-            nextLink -> listNextSinglePage(nextLink));
+        return list(resourceGroupName, vaultName, Context.NONE);
     }
 
-    /**
-     * Gets deleted backup instances belonging to a backup vault.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param vaultName The name of the backup vault.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return deleted backup instances belonging to a backup vault as paginated response with {@link PagedIterable}.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.COLLECTION)
     public PagedIterable<DeletedBackupInstanceResourceInner> list(String resourceGroupName, String vaultName,
         Context context) {
@@ -369,8 +323,7 @@ public final class DeletedBackupInstancesClientImpl implements DeletedBackupInst
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Response<BinaryData> undeleteWithResponse(String resourceGroupName, String vaultName,
         String backupInstanceName) {
-        return service.undeleteSync(this.client.getEndpoint(), this.client.getApiVersion(),
-            this.client.getSubscriptionId(), resourceGroupName, vaultName, backupInstanceName, Context.NONE);
+        return undeleteWithResponse(resourceGroupName, vaultName, backupInstanceName, Context.NONE);
     }
 
     /**
@@ -412,36 +365,14 @@ public final class DeletedBackupInstancesClientImpl implements DeletedBackupInst
             this.client.getContext());
     }
 
-    /**
-     * A long-running resource action.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param vaultName The name of the backup vault.
-     * @param backupInstanceName The name of the deleted backup instance.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the {@link SyncPoller} for polling of long-running operation.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public SyncPoller<PollResult<Void>, Void> beginUndelete(String resourceGroupName, String vaultName,
         String backupInstanceName) {
-        Response<BinaryData> response = undeleteWithResponse(resourceGroupName, vaultName, backupInstanceName);
-        return this.client.<Void, Void>getLroResult(response, Void.class, Void.class, Context.NONE);
+        return beginUndelete(resourceGroupName, vaultName, backupInstanceName, Context.NONE);
     }
 
-    /**
-     * A long-running resource action.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param vaultName The name of the backup vault.
-     * @param backupInstanceName The name of the deleted backup instance.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the {@link SyncPoller} for polling of long-running operation.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public SyncPoller<PollResult<Void>, Void> beginUndelete(String resourceGroupName, String vaultName,
         String backupInstanceName, Context context) {
@@ -466,35 +397,16 @@ public final class DeletedBackupInstancesClientImpl implements DeletedBackupInst
             .flatMap(this.client::getLroFinalResultOrError);
     }
 
-    /**
-     * A long-running resource action.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param vaultName The name of the backup vault.
-     * @param backupInstanceName The name of the deleted backup instance.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public void undelete(String resourceGroupName, String vaultName, String backupInstanceName) {
-        beginUndelete(resourceGroupName, vaultName, backupInstanceName).getFinalResult();
+        undelete(resourceGroupName, vaultName, backupInstanceName, Context.NONE);
     }
 
-    /**
-     * A long-running resource action.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param vaultName The name of the backup vault.
-     * @param backupInstanceName The name of the deleted backup instance.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public void undelete(String resourceGroupName, String vaultName, String backupInstanceName, Context context) {
-        beginUndelete(resourceGroupName, vaultName, backupInstanceName, context).getFinalResult();
+        this.client.getLroFinalResultOrError(beginUndelete(resourceGroupName, vaultName, backupInstanceName, context));
     }
 
     /**
@@ -527,11 +439,7 @@ public final class DeletedBackupInstancesClientImpl implements DeletedBackupInst
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private PagedResponse<DeletedBackupInstanceResourceInner> listNextSinglePage(String nextLink) {
-        final String accept = "application/json";
-        Response<DeletedBackupInstanceResourceList> res
-            = service.listNextSync(nextLink, this.client.getEndpoint(), accept, Context.NONE);
-        return new PagedResponseBase<>(res.getRequest(), res.getStatusCode(), res.getHeaders(), res.getValue().value(),
-            res.getValue().nextLink(), null);
+        return listNextSinglePage(nextLink, Context.NONE);
     }
 
     /**

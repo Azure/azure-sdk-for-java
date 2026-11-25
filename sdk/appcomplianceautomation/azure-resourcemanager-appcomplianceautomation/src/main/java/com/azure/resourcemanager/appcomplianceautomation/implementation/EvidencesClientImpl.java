@@ -211,17 +211,7 @@ public final class EvidencesClientImpl implements EvidencesClient {
         return getWithResponseAsync(reportName, evidenceName).flatMap(res -> Mono.justOrEmpty(res.getValue()));
     }
 
-    /**
-     * Get the evidence metadata.
-     * 
-     * @param reportName Report Name.
-     * @param evidenceName The evidence name.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the evidence metadata along with {@link Response}.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Response<EvidenceResourceInner> getWithResponse(String reportName, String evidenceName, Context context) {
         final String accept = "application/json";
@@ -229,16 +219,7 @@ public final class EvidencesClientImpl implements EvidencesClient {
             context);
     }
 
-    /**
-     * Get the evidence metadata.
-     * 
-     * @param reportName Report Name.
-     * @param evidenceName The evidence name.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the evidence metadata.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public EvidenceResourceInner get(String reportName, String evidenceName) {
         return getWithResponse(reportName, evidenceName, Context.NONE).getValue();
@@ -289,20 +270,7 @@ public final class EvidencesClientImpl implements EvidencesClient {
             .flatMap(res -> Mono.justOrEmpty(res.getValue()));
     }
 
-    /**
-     * Create or Update an evidence a specified report.
-     * 
-     * @param reportName Report Name.
-     * @param evidenceName The evidence name.
-     * @param properties Parameters for the create or update operation.
-     * @param offerGuid The offerGuid which mapping to the reports.
-     * @param reportCreatorTenantId The tenant id of the report creator.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return a class represent an AppComplianceAutomation evidence resource along with {@link Response}.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Response<EvidenceResourceInner> createOrUpdateWithResponse(String reportName, String evidenceName,
         EvidenceResourceInner properties, String offerGuid, String reportCreatorTenantId, Context context) {
@@ -312,17 +280,7 @@ public final class EvidencesClientImpl implements EvidencesClient {
             reportCreatorTenantId, reportName, evidenceName, contentType, accept, properties, context);
     }
 
-    /**
-     * Create or Update an evidence a specified report.
-     * 
-     * @param reportName Report Name.
-     * @param evidenceName The evidence name.
-     * @param properties Parameters for the create or update operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return a class represent an AppComplianceAutomation evidence resource.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public EvidenceResourceInner createOrUpdate(String reportName, String evidenceName,
         EvidenceResourceInner properties) {
@@ -365,32 +323,14 @@ public final class EvidencesClientImpl implements EvidencesClient {
         return deleteWithResponseAsync(reportName, evidenceName).flatMap(ignored -> Mono.empty());
     }
 
-    /**
-     * Delete an existent evidence from a specified report.
-     * 
-     * @param reportName Report Name.
-     * @param evidenceName The evidence name.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the {@link Response}.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Response<Void> deleteWithResponse(String reportName, String evidenceName, Context context) {
         return service.deleteSync(this.client.getEndpoint(), this.client.getApiVersion(), reportName, evidenceName,
             context);
     }
 
-    /**
-     * Delete an existent evidence from a specified report.
-     * 
-     * @param reportName Report Name.
-     * @param evidenceName The evidence name.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public void delete(String reportName, String evidenceName) {
         deleteWithResponse(reportName, evidenceName, Context.NONE);
@@ -492,12 +432,8 @@ public final class EvidencesClientImpl implements EvidencesClient {
     @ServiceMethod(returns = ReturnType.SINGLE)
     private PagedResponse<EvidenceResourceInner> listByReportSinglePage(String reportName, String skipToken,
         Integer top, String select, String filter, String orderby, String offerGuid, String reportCreatorTenantId) {
-        final String accept = "application/json";
-        Response<EvidenceResourceListResult> res
-            = service.listByReportSync(this.client.getEndpoint(), this.client.getApiVersion(), skipToken, top, select,
-                filter, orderby, offerGuid, reportCreatorTenantId, reportName, accept, Context.NONE);
-        return new PagedResponseBase<>(res.getRequest(), res.getStatusCode(), res.getHeaders(), res.getValue().value(),
-            res.getValue().nextLink(), null);
+        return listByReportSinglePage(reportName, skipToken, top, select, filter, orderby, offerGuid,
+            reportCreatorTenantId, Context.NONE);
     }
 
     /**
@@ -530,15 +466,7 @@ public final class EvidencesClientImpl implements EvidencesClient {
             res.getValue().nextLink(), null);
     }
 
-    /**
-     * Returns a paginated list of evidences for a specified report.
-     * 
-     * @param reportName Report Name.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the response of a EvidenceResource list operation as paginated response with {@link PagedIterable}.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.COLLECTION)
     public PagedIterable<EvidenceResourceInner> listByReport(String reportName) {
         final String skipToken = null;
@@ -548,28 +476,11 @@ public final class EvidencesClientImpl implements EvidencesClient {
         final String orderby = null;
         final String offerGuid = null;
         final String reportCreatorTenantId = null;
-        return new PagedIterable<>(() -> listByReportSinglePage(reportName, skipToken, top, select, filter, orderby,
-            offerGuid, reportCreatorTenantId), nextLink -> listByReportNextSinglePage(nextLink));
+        return listByReport(reportName, skipToken, top, select, filter, orderby, offerGuid, reportCreatorTenantId,
+            Context.NONE);
     }
 
-    /**
-     * Returns a paginated list of evidences for a specified report.
-     * 
-     * @param reportName Report Name.
-     * @param skipToken Skip over when retrieving results.
-     * @param top Number of elements to return when retrieving results.
-     * @param select OData Select statement. Limits the properties on each entry to just those requested, e.g.
-     * ?$select=reportName,id.
-     * @param filter The filter to apply on the operation.
-     * @param orderby OData order by query option.
-     * @param offerGuid The offerGuid which mapping to the reports.
-     * @param reportCreatorTenantId The tenant id of the report creator.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the response of a EvidenceResource list operation as paginated response with {@link PagedIterable}.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.COLLECTION)
     public PagedIterable<EvidenceResourceInner> listByReport(String reportName, String skipToken, Integer top,
         String select, String filter, String orderby, String offerGuid, String reportCreatorTenantId, Context context) {
@@ -619,19 +530,7 @@ public final class EvidencesClientImpl implements EvidencesClient {
             .flatMap(res -> Mono.justOrEmpty(res.getValue()));
     }
 
-    /**
-     * Download evidence file.
-     * 
-     * @param reportName Report Name.
-     * @param evidenceName The evidence name.
-     * @param body Parameters for the query operation.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return object that includes all the possible response for the evidence file download operation along with
-     * {@link Response}.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Response<EvidenceFileDownloadResponseInner> downloadWithResponse(String reportName, String evidenceName,
         EvidenceFileDownloadRequest body, Context context) {
@@ -641,17 +540,7 @@ public final class EvidencesClientImpl implements EvidencesClient {
             contentType, accept, body, context);
     }
 
-    /**
-     * Download evidence file.
-     * 
-     * @param reportName Report Name.
-     * @param evidenceName The evidence name.
-     * @param body Parameters for the query operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return object that includes all the possible response for the evidence file download operation.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public EvidenceFileDownloadResponseInner download(String reportName, String evidenceName,
         EvidenceFileDownloadRequest body) {
@@ -689,11 +578,7 @@ public final class EvidencesClientImpl implements EvidencesClient {
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private PagedResponse<EvidenceResourceInner> listByReportNextSinglePage(String nextLink) {
-        final String accept = "application/json";
-        Response<EvidenceResourceListResult> res
-            = service.listByReportNextSync(nextLink, this.client.getEndpoint(), accept, Context.NONE);
-        return new PagedResponseBase<>(res.getRequest(), res.getStatusCode(), res.getHeaders(), res.getValue().value(),
-            res.getValue().nextLink(), null);
+        return listByReportNextSinglePage(nextLink, Context.NONE);
     }
 
     /**

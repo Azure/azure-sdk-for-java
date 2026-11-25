@@ -145,21 +145,7 @@ public final class ManagedEnvironmentDiagnosticsClientImpl implements ManagedEnv
             .flatMap(res -> Mono.justOrEmpty(res.getValue()));
     }
 
-    /**
-     * Get the list of diagnostics for a given Managed Environment.
-     * 
-     * Get the list of diagnostics for a Managed Environment used to host container apps.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param environmentName Name of the Managed Environment.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws DefaultErrorResponseErrorException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the list of diagnostics for a given Managed Environment.
-     * 
-     * Get the list of diagnostics for a Managed Environment used to host container apps along with {@link Response}.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Response<DiagnosticsCollectionInner> listDetectorsWithResponse(String resourceGroupName,
         String environmentName, Context context) {
@@ -168,20 +154,7 @@ public final class ManagedEnvironmentDiagnosticsClientImpl implements ManagedEnv
             this.client.getSubscriptionId(), resourceGroupName, environmentName, accept, context);
     }
 
-    /**
-     * Get the list of diagnostics for a given Managed Environment.
-     * 
-     * Get the list of diagnostics for a Managed Environment used to host container apps.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param environmentName Name of the Managed Environment.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws DefaultErrorResponseErrorException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the list of diagnostics for a given Managed Environment.
-     * 
-     * Get the list of diagnostics for a Managed Environment used to host container apps.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public DiagnosticsCollectionInner listDetectors(String resourceGroupName, String environmentName) {
         return listDetectorsWithResponse(resourceGroupName, environmentName, Context.NONE).getValue();
@@ -236,22 +209,7 @@ public final class ManagedEnvironmentDiagnosticsClientImpl implements ManagedEnv
             .flatMap(res -> Mono.justOrEmpty(res.getValue()));
     }
 
-    /**
-     * Get the diagnostics data for a given Managed Environment.
-     * 
-     * Get the diagnostics data for a Managed Environment used to host container apps.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param environmentName Name of the Managed Environment.
-     * @param detectorName Name of the detector.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws DefaultErrorResponseErrorException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the diagnostics data for a given Managed Environment.
-     * 
-     * Get the diagnostics data for a Managed Environment used to host container apps along with {@link Response}.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Response<DiagnosticsInner> getDetectorWithResponse(String resourceGroupName, String environmentName,
         String detectorName, Context context) {
@@ -260,21 +218,7 @@ public final class ManagedEnvironmentDiagnosticsClientImpl implements ManagedEnv
             this.client.getSubscriptionId(), resourceGroupName, environmentName, detectorName, accept, context);
     }
 
-    /**
-     * Get the diagnostics data for a given Managed Environment.
-     * 
-     * Get the diagnostics data for a Managed Environment used to host container apps.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param environmentName Name of the Managed Environment.
-     * @param detectorName Name of the detector.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws DefaultErrorResponseErrorException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the diagnostics data for a given Managed Environment.
-     * 
-     * Get the diagnostics data for a Managed Environment used to host container apps.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public DiagnosticsInner getDetector(String resourceGroupName, String environmentName, String detectorName) {
         return getDetectorWithResponse(resourceGroupName, environmentName, detectorName, Context.NONE).getValue();

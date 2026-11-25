@@ -20,11 +20,11 @@ import com.azure.core.util.BinaryData;
 import com.azure.core.util.CloseableIterableStream;
 import com.azure.search.documents.SearchServiceVersion;
 import com.azure.search.documents.implementation.KnowledgeBaseRetrievalClientImpl;
-import com.azure.search.documents.knowledgebases.implementation.KnowledgeBaseRetrievalStreamEventConverter;
+import com.azure.search.documents.implementation.ServerSentEventStreamHelper;
+import com.azure.search.documents.knowledgebases.implementation.KnowledgeBaseRetrievalStreamEventSerializer;
 import com.azure.search.documents.knowledgebases.models.KnowledgeBaseRetrievalOptions;
 import com.azure.search.documents.knowledgebases.models.KnowledgeBaseRetrievalResult;
 import com.azure.search.documents.knowledgebases.models.KnowledgeBaseRetrievalStreamEvent;
-import com.azure.search.documents.models.implementation.sse.ServerSentEventStreams;
 
 /**
  * Initializes a new instance of the synchronous KnowledgeBaseRetrievalClient type.
@@ -398,73 +398,9 @@ public final class KnowledgeBaseRetrievalClient {
      * clients may expose the raw response without typed event parsing. Do not deserialize the
      * complete response body as a single JSON document.
      *
-     * @param retrievalRequest The retrieval request to process.
-     * @param querySourceAuthorization Token identifying the user for which the query is being executed. This token is
-     * used to enforce security restrictions on documents.
-     * @param queryWorkIQSourceAuthorization User assertion token for a customer-owned Entra app registration configured
-     * on a Work IQ knowledge source. Used for on-behalf-of authentication to the Work IQ API.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws HttpResponseException thrown if the request is rejected by server.
-     * @throws ClientAuthenticationException thrown if the request is rejected by server on status code 401.
-     * @throws ResourceNotFoundException thrown if the request is rejected by server on status code 404.
-     * @throws ResourceModifiedException thrown if the request is rejected by server on status code 409.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the response.
-     */
-    @Generated
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    BinaryData hiddenGeneratedRetrieveStream(KnowledgeBaseRetrievalOptions retrievalRequest,
-        String querySourceAuthorization, String queryWorkIQSourceAuthorization) {
-        // Generated convenience method for hiddenGeneratedRetrieveStreamWithResponse
-        RequestOptions requestOptions = new RequestOptions();
-        if (querySourceAuthorization != null) {
-            requestOptions.setHeader(HttpHeaderName.fromString("x-ms-query-source-authorization"),
-                querySourceAuthorization);
-        }
-        if (queryWorkIQSourceAuthorization != null) {
-            requestOptions.setHeader(HttpHeaderName.fromString("x-ms-query-work-iq-source-authorization"),
-                queryWorkIQSourceAuthorization);
-        }
-        return hiddenGeneratedRetrieveStreamWithResponse(BinaryData.fromObject(retrievalRequest), requestOptions)
-            .getValue();
-    }
-
-    /**
-     * Retrieves relevant data from backing stores and streams progress and results as server-sent
-     * events.
-     *
-     * Process the response incrementally using server-sent event framing. Each event contains an
-     * event name and a JSON-encoded data payload. The stream ends with either a `response.completed`
-     * event or an `error` event. OpenAPI 2.0 represents the response body as a string, so generated
-     * clients may expose the raw response without typed event parsing. Do not deserialize the
-     * complete response body as a single JSON document.
-     *
-     * @param retrievalRequest The retrieval request to process.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws HttpResponseException thrown if the request is rejected by server.
-     * @throws ClientAuthenticationException thrown if the request is rejected by server on status code 401.
-     * @throws ResourceNotFoundException thrown if the request is rejected by server on status code 404.
-     * @throws ResourceModifiedException thrown if the request is rejected by server on status code 409.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the response.
-     */
-    @Generated
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    BinaryData hiddenGeneratedRetrieveStream(KnowledgeBaseRetrievalOptions retrievalRequest) {
-        // Generated convenience method for hiddenGeneratedRetrieveStreamWithResponse
-        RequestOptions requestOptions = new RequestOptions();
-        return hiddenGeneratedRetrieveStreamWithResponse(BinaryData.fromObject(retrievalRequest), requestOptions)
-            .getValue();
-    }
-
-    /**
-     * Retrieves relevant data from backing stores and streams progress and results as server-sent events.
-     *
      * Events are polymorphic: see {@link KnowledgeBaseRetrievalStreamEvent} for the known subtypes. Use a known
-     * subtype's {@code getValue()} to access its typed payload, for example
-     * {@link com.azure.search.documents.knowledgebases.models.KnowledgeBaseAnswerCompletedStreamEvent#getValue()}.
-     * Unrecognized events expose only their names through {@link KnowledgeBaseRetrievalStreamEvent#getEventName()};
-     * their payloads are not available.
+     * subtype's {@code getValue()} to access its typed payload. Unrecognized events expose only their names through
+     * {@link KnowledgeBaseRetrievalStreamEvent#getEventName()}; their payloads are not available.
      *
      * Events are decoded lazily by a single iterator. Use try-with-resources to close the stream when iteration ends
      * early. The response is also closed on end-of-stream, a terminal event, or an iteration failure. Closing the
@@ -484,19 +420,24 @@ public final class KnowledgeBaseRetrievalClient {
     public CloseableIterableStream<KnowledgeBaseRetrievalStreamEvent>
         retrieveStream(KnowledgeBaseRetrievalOptions retrievalRequest) {
         RequestOptions requestOptions = createRetrieveRequestOptions(retrievalRequest, null);
-        return ServerSentEventStreams.toIterableStream(
+        return ServerSentEventStreamHelper.toIterableStream(
             hiddenGeneratedRetrieveStreamWithResponse(BinaryData.fromObject(retrievalRequest), requestOptions),
-            KnowledgeBaseRetrievalStreamEventConverter::convert, KnowledgeBaseRetrievalStreamEvent::isTerminal);
+            KnowledgeBaseRetrievalStreamEventSerializer::deserialize, KnowledgeBaseRetrievalStreamEvent::isTerminal);
     }
 
     /**
-     * Retrieves relevant data from backing stores and streams progress and results as server-sent events.
+     * Retrieves relevant data from backing stores and streams progress and results as server-sent
+     * events.
+     *
+     * Process the response incrementally using server-sent event framing. Each event contains an
+     * event name and a JSON-encoded data payload. The stream ends with either a `response.completed`
+     * event or an `error` event. OpenAPI 2.0 represents the response body as a string, so generated
+     * clients may expose the raw response without typed event parsing. Do not deserialize the
+     * complete response body as a single JSON document.
      *
      * Events are polymorphic: see {@link KnowledgeBaseRetrievalStreamEvent} for the known subtypes. Use a known
-     * subtype's {@code getValue()} to access its typed payload, for example
-     * {@link com.azure.search.documents.knowledgebases.models.KnowledgeBaseAnswerCompletedStreamEvent#getValue()}.
-     * Unrecognized events expose only their names through {@link KnowledgeBaseRetrievalStreamEvent#getEventName()};
-     * their payloads are not available.
+     * subtype's {@code getValue()} to access its typed payload. Unrecognized events expose only their names through
+     * {@link KnowledgeBaseRetrievalStreamEvent#getEventName()}; their payloads are not available.
      *
      * Events are decoded lazily by a single iterator. Use try-with-resources to close the stream when iteration ends
      * early. The response is also closed on end-of-stream, a terminal event, or an iteration failure. Closing the
@@ -520,9 +461,9 @@ public final class KnowledgeBaseRetrievalClient {
     public CloseableIterableStream<KnowledgeBaseRetrievalStreamEvent>
         retrieveStream(KnowledgeBaseRetrievalOptions retrievalRequest, String querySourceAuthorization) {
         RequestOptions requestOptions = createRetrieveRequestOptions(retrievalRequest, querySourceAuthorization);
-        return ServerSentEventStreams.toIterableStream(
+        return ServerSentEventStreamHelper.toIterableStream(
             hiddenGeneratedRetrieveStreamWithResponse(BinaryData.fromObject(retrievalRequest), requestOptions),
-            KnowledgeBaseRetrievalStreamEventConverter::convert, KnowledgeBaseRetrievalStreamEvent::isTerminal);
+            KnowledgeBaseRetrievalStreamEventSerializer::deserialize, KnowledgeBaseRetrievalStreamEvent::isTerminal);
     }
 
     /**
@@ -548,13 +489,18 @@ public final class KnowledgeBaseRetrievalClient {
     }
 
     /**
-     * Retrieves relevant data from backing stores and streams progress and results as server-sent events.
+     * Retrieves relevant data from backing stores and streams progress and results as server-sent
+     * events.
+     *
+     * Process the response incrementally using server-sent event framing. Each event contains an
+     * event name and a JSON-encoded data payload. The stream ends with either a `response.completed`
+     * event or an `error` event. OpenAPI 2.0 represents the response body as a string, so generated
+     * clients may expose the raw response without typed event parsing. Do not deserialize the
+     * complete response body as a single JSON document.
      *
      * Events are polymorphic: see {@link KnowledgeBaseRetrievalStreamEvent} for the known subtypes. Use a known
-     * subtype's {@code getValue()} to access its typed payload, for example
-     * {@link com.azure.search.documents.knowledgebases.models.KnowledgeBaseAnswerCompletedStreamEvent#getValue()}.
-     * Unrecognized events expose only their names through {@link KnowledgeBaseRetrievalStreamEvent#getEventName()};
-     * their payloads are not available.
+     * subtype's {@code getValue()} to access its typed payload. Unrecognized events expose only their names through
+     * {@link KnowledgeBaseRetrievalStreamEvent#getEventName()}; their payloads are not available.
      *
      * Events are decoded lazily by a single iterator. Use try-with-resources to close the stream when iteration ends
      * early. The response is also closed on end-of-stream, a terminal event, or an iteration failure. Closing the
@@ -573,7 +519,7 @@ public final class KnowledgeBaseRetrievalClient {
      * {@link KnowledgeBaseRetrievalOptions#getQuerySourceAuthorization()}; null falls back to it, and an empty string
      * is treated as an explicit value.
      * @param queryWorkIQSourceAuthorization User assertion token for a customer-owned Entra app registration configured
-     * on a Work IQ knowledge source.
+     * on a Work IQ knowledge source. Used for on-behalf-of authentication to the Work IQ API.
      * @return A closeable stream of typed knowledge base retrieval events.
      */
     @Generated
@@ -585,9 +531,9 @@ public final class KnowledgeBaseRetrievalClient {
             requestOptions.setHeader(HttpHeaderName.fromString("x-ms-query-work-iq-source-authorization"),
                 queryWorkIQSourceAuthorization);
         }
-        return ServerSentEventStreams.toIterableStream(
+        return ServerSentEventStreamHelper.toIterableStream(
             hiddenGeneratedRetrieveStreamWithResponse(BinaryData.fromObject(retrievalRequest), requestOptions),
-            KnowledgeBaseRetrievalStreamEventConverter::convert, KnowledgeBaseRetrievalStreamEvent::isTerminal);
+            KnowledgeBaseRetrievalStreamEventSerializer::deserialize, KnowledgeBaseRetrievalStreamEvent::isTerminal);
     }
 
     @Generated

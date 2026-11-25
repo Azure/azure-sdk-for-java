@@ -262,21 +262,7 @@ public final class NeuroShieldsClientImpl implements NeuroShieldsClient {
             .flatMap(res -> Mono.justOrEmpty(res.getValue()));
     }
 
-    /**
-     * Get a NeuroShield resource
-     * 
-     * Gets a NeuroShield resource.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param neuroShieldName The name of the NeuroShield resource.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return a NeuroShield resource
-     * 
-     * Gets a NeuroShield resource.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public NeuroShieldsGetByResourceGroupResponse getByResourceGroupWithResponse(String resourceGroupName,
         String neuroShieldName, Context context) {
@@ -286,20 +272,7 @@ public final class NeuroShieldsClientImpl implements NeuroShieldsClient {
             resourceGroupName, neuroShieldName, accept, context);
     }
 
-    /**
-     * Get a NeuroShield resource
-     * 
-     * Gets a NeuroShield resource.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param neuroShieldName The name of the NeuroShield resource.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return a NeuroShield resource
-     * 
-     * Gets a NeuroShield resource.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public NeuroShieldResourceInner getByResourceGroup(String resourceGroupName, String neuroShieldName) {
         return getByResourceGroupWithResponse(resourceGroupName, neuroShieldName, Context.NONE).getValue();
@@ -355,21 +328,7 @@ public final class NeuroShieldsClientImpl implements NeuroShieldsClient {
             .flatMap(res -> Mono.justOrEmpty(res.getValue()));
     }
 
-    /**
-     * Create or update a NeuroShield resource
-     * 
-     * Creates or updates a NeuroShield resource.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param neuroShieldName The name of the NeuroShield resource.
-     * @param resource The create or update request body.
-     * @param ifMatch The entity tag that makes the request conditional.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return azure Resource Manager tracked resource representing a NeuroShield instance.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public NeuroShieldsCreateOrUpdateResponse createOrUpdateWithResponse(String resourceGroupName,
         String neuroShieldName, NeuroShieldResourceInner resource, String ifMatch, Context context) {
@@ -380,19 +339,7 @@ public final class NeuroShieldsClientImpl implements NeuroShieldsClient {
             resourceGroupName, neuroShieldName, ifMatch, contentType, accept, resource, context);
     }
 
-    /**
-     * Create or update a NeuroShield resource
-     * 
-     * Creates or updates a NeuroShield resource.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param neuroShieldName The name of the NeuroShield resource.
-     * @param resource The create or update request body.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return azure Resource Manager tracked resource representing a NeuroShield instance.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public NeuroShieldResourceInner createOrUpdate(String resourceGroupName, String neuroShieldName,
         NeuroShieldResourceInner resource) {
@@ -451,21 +398,7 @@ public final class NeuroShieldsClientImpl implements NeuroShieldsClient {
             .flatMap(res -> Mono.justOrEmpty(res.getValue()));
     }
 
-    /**
-     * Update a NeuroShield resource
-     * 
-     * Updates the tags or properties of a NeuroShield resource.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param neuroShieldName The name of the NeuroShield resource.
-     * @param properties The patch request body.
-     * @param ifMatch The entity tag that makes the request conditional.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return azure Resource Manager tracked resource representing a NeuroShield instance.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public NeuroShieldsUpdateResponse updateWithResponse(String resourceGroupName, String neuroShieldName,
         NeuroShieldPatch properties, String ifMatch, Context context) {
@@ -476,19 +409,7 @@ public final class NeuroShieldsClientImpl implements NeuroShieldsClient {
             resourceGroupName, neuroShieldName, ifMatch, contentType, accept, properties, context);
     }
 
-    /**
-     * Update a NeuroShield resource
-     * 
-     * Updates the tags or properties of a NeuroShield resource.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param neuroShieldName The name of the NeuroShield resource.
-     * @param properties The patch request body.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return azure Resource Manager tracked resource representing a NeuroShield instance.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public NeuroShieldResourceInner update(String resourceGroupName, String neuroShieldName,
         NeuroShieldPatch properties) {
@@ -534,19 +455,7 @@ public final class NeuroShieldsClientImpl implements NeuroShieldsClient {
         return deleteWithResponseAsync(resourceGroupName, neuroShieldName).flatMap(ignored -> Mono.empty());
     }
 
-    /**
-     * Delete a NeuroShield resource
-     * 
-     * Deletes a NeuroShield resource.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param neuroShieldName The name of the NeuroShield resource.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the {@link Response}.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Response<Void> deleteWithResponse(String resourceGroupName, String neuroShieldName, Context context) {
         final String apiVersion = "2026-10-01-preview";
@@ -554,17 +463,7 @@ public final class NeuroShieldsClientImpl implements NeuroShieldsClient {
             resourceGroupName, neuroShieldName, context);
     }
 
-    /**
-     * Delete a NeuroShield resource
-     * 
-     * Deletes a NeuroShield resource.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param neuroShieldName The name of the NeuroShield resource.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public void delete(String resourceGroupName, String neuroShieldName) {
         deleteWithResponse(resourceGroupName, neuroShieldName, Context.NONE);
@@ -652,12 +551,7 @@ public final class NeuroShieldsClientImpl implements NeuroShieldsClient {
     @ServiceMethod(returns = ReturnType.SINGLE)
     private PagedResponse<NeuroShieldResourceInner> listByResourceGroupSinglePage(String resourceGroupName, Integer top,
         String skipToken) {
-        final String apiVersion = "2026-10-01-preview";
-        final String accept = "application/json";
-        Response<NeuroShieldResourceListResult> res = service.listByResourceGroupSync(this.client.getEndpoint(),
-            apiVersion, this.client.getSubscriptionId(), resourceGroupName, top, skipToken, accept, Context.NONE);
-        return new PagedResponseBase<>(res.getRequest(), res.getStatusCode(), res.getHeaders(), res.getValue().value(),
-            res.getValue().nextLink(), null);
+        return listByResourceGroupSinglePage(resourceGroupName, top, skipToken, Context.NONE);
     }
 
     /**
@@ -685,39 +579,15 @@ public final class NeuroShieldsClientImpl implements NeuroShieldsClient {
             res.getValue().nextLink(), null);
     }
 
-    /**
-     * List NeuroShield resources by resource group
-     * 
-     * Gets all NeuroShield resources in a resource group.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the response of a NeuroShieldResource list operation as paginated response with {@link PagedIterable}.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.COLLECTION)
     public PagedIterable<NeuroShieldResourceInner> listByResourceGroup(String resourceGroupName) {
         final Integer top = null;
         final String skipToken = null;
-        return new PagedIterable<>(() -> listByResourceGroupSinglePage(resourceGroupName, top, skipToken),
-            nextLink -> listByResourceGroupNextSinglePage(nextLink));
+        return listByResourceGroup(resourceGroupName, top, skipToken, Context.NONE);
     }
 
-    /**
-     * List NeuroShield resources by resource group
-     * 
-     * Gets all NeuroShield resources in a resource group.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param top The maximum number of items to return.
-     * @param skipToken The continuation token used to retrieve the next page.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the response of a NeuroShieldResource list operation as paginated response with {@link PagedIterable}.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.COLLECTION)
     public PagedIterable<NeuroShieldResourceInner> listByResourceGroup(String resourceGroupName, Integer top,
         String skipToken, Context context) {
@@ -799,12 +669,7 @@ public final class NeuroShieldsClientImpl implements NeuroShieldsClient {
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private PagedResponse<NeuroShieldResourceInner> listSinglePage(Integer top, String skipToken) {
-        final String apiVersion = "2026-10-01-preview";
-        final String accept = "application/json";
-        Response<NeuroShieldResourceListResult> res = service.listSync(this.client.getEndpoint(), apiVersion,
-            this.client.getSubscriptionId(), top, skipToken, accept, Context.NONE);
-        return new PagedResponseBase<>(res.getRequest(), res.getStatusCode(), res.getHeaders(), res.getValue().value(),
-            res.getValue().nextLink(), null);
+        return listSinglePage(top, skipToken, Context.NONE);
     }
 
     /**
@@ -830,36 +695,15 @@ public final class NeuroShieldsClientImpl implements NeuroShieldsClient {
             res.getValue().nextLink(), null);
     }
 
-    /**
-     * List NeuroShield resources by subscription
-     * 
-     * Gets all NeuroShield resources in a subscription.
-     * 
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the response of a NeuroShieldResource list operation as paginated response with {@link PagedIterable}.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.COLLECTION)
     public PagedIterable<NeuroShieldResourceInner> list() {
         final Integer top = null;
         final String skipToken = null;
-        return new PagedIterable<>(() -> listSinglePage(top, skipToken),
-            nextLink -> listBySubscriptionNextSinglePage(nextLink));
+        return list(top, skipToken, Context.NONE);
     }
 
-    /**
-     * List NeuroShield resources by subscription
-     * 
-     * Gets all NeuroShield resources in a subscription.
-     * 
-     * @param top The maximum number of items to return.
-     * @param skipToken The continuation token used to retrieve the next page.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the response of a NeuroShieldResource list operation as paginated response with {@link PagedIterable}.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.COLLECTION)
     public PagedIterable<NeuroShieldResourceInner> list(Integer top, String skipToken, Context context) {
         return new PagedIterable<>(() -> listSinglePage(top, skipToken, context),
@@ -902,11 +746,7 @@ public final class NeuroShieldsClientImpl implements NeuroShieldsClient {
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private PagedResponse<NeuroShieldResourceInner> listByResourceGroupNextSinglePage(String nextLink) {
-        final String accept = "application/json";
-        Response<NeuroShieldResourceListResult> res
-            = service.listByResourceGroupNextSync(nextLink, this.client.getEndpoint(), accept, Context.NONE);
-        return new PagedResponseBase<>(res.getRequest(), res.getStatusCode(), res.getHeaders(), res.getValue().value(),
-            res.getValue().nextLink(), null);
+        return listByResourceGroupNextSinglePage(nextLink, Context.NONE);
     }
 
     /**
@@ -967,11 +807,7 @@ public final class NeuroShieldsClientImpl implements NeuroShieldsClient {
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private PagedResponse<NeuroShieldResourceInner> listBySubscriptionNextSinglePage(String nextLink) {
-        final String accept = "application/json";
-        Response<NeuroShieldResourceListResult> res
-            = service.listBySubscriptionNextSync(nextLink, this.client.getEndpoint(), accept, Context.NONE);
-        return new PagedResponseBase<>(res.getRequest(), res.getStatusCode(), res.getHeaders(), res.getValue().value(),
-            res.getValue().nextLink(), null);
+        return listBySubscriptionNextSinglePage(nextLink, Context.NONE);
     }
 
     /**

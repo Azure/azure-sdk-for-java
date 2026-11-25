@@ -222,16 +222,7 @@ public final class ProviderRegistrationsClientImpl implements ProviderRegistrati
         return getWithResponseAsync(providerNamespace).flatMap(res -> Mono.justOrEmpty(res.getValue()));
     }
 
-    /**
-     * Gets the provider registration details.
-     * 
-     * @param providerNamespace The name of the resource provider hosted within ProviderHub.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the provider registration details along with {@link Response}.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Response<ProviderRegistrationInner> getWithResponse(String providerNamespace, Context context) {
         if (this.client.getEndpoint() == null) {
@@ -253,15 +244,7 @@ public final class ProviderRegistrationsClientImpl implements ProviderRegistrati
             providerNamespace, accept, context);
     }
 
-    /**
-     * Gets the provider registration details.
-     * 
-     * @param providerNamespace The name of the resource provider hosted within ProviderHub.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the provider registration details.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public ProviderRegistrationInner get(String providerNamespace) {
         return getWithResponse(providerNamespace, Context.NONE).getValue();
@@ -320,30 +303,7 @@ public final class ProviderRegistrationsClientImpl implements ProviderRegistrati
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Response<BinaryData> createOrUpdateWithResponse(String providerNamespace,
         ProviderRegistrationInner properties) {
-        if (this.client.getEndpoint() == null) {
-            throw LOGGER.atError()
-                .log(new IllegalArgumentException(
-                    "Parameter this.client.getEndpoint() is required and cannot be null."));
-        }
-        if (this.client.getSubscriptionId() == null) {
-            throw LOGGER.atError()
-                .log(new IllegalArgumentException(
-                    "Parameter this.client.getSubscriptionId() is required and cannot be null."));
-        }
-        if (providerNamespace == null) {
-            throw LOGGER.atError()
-                .log(new IllegalArgumentException("Parameter providerNamespace is required and cannot be null."));
-        }
-        if (properties == null) {
-            throw LOGGER.atError()
-                .log(new IllegalArgumentException("Parameter properties is required and cannot be null."));
-        } else {
-            properties.validate();
-        }
-        final String contentType = "application/json";
-        final String accept = "application/json";
-        return service.createOrUpdateSync(this.client.getEndpoint(), this.client.getApiVersion(),
-            this.client.getSubscriptionId(), providerNamespace, contentType, accept, properties, Context.NONE);
+        return createOrUpdateWithResponse(providerNamespace, properties, Context.NONE);
     }
 
     /**
@@ -407,37 +367,14 @@ public final class ProviderRegistrationsClientImpl implements ProviderRegistrati
             this.client.getContext());
     }
 
-    /**
-     * Creates or updates the provider registration.
-     * 
-     * @param providerNamespace The name of the resource provider hosted within ProviderHub.
-     * @param properties The provider registration properties supplied to the CreateOrUpdate operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the {@link SyncPoller} for polling of concrete proxy resource types can be created by aliasing this type
-     * using a specific property type.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public SyncPoller<PollResult<ProviderRegistrationInner>, ProviderRegistrationInner>
         beginCreateOrUpdate(String providerNamespace, ProviderRegistrationInner properties) {
-        Response<BinaryData> response = createOrUpdateWithResponse(providerNamespace, properties);
-        return this.client.<ProviderRegistrationInner, ProviderRegistrationInner>getLroResult(response,
-            ProviderRegistrationInner.class, ProviderRegistrationInner.class, Context.NONE);
+        return beginCreateOrUpdate(providerNamespace, properties, Context.NONE);
     }
 
-    /**
-     * Creates or updates the provider registration.
-     * 
-     * @param providerNamespace The name of the resource provider hosted within ProviderHub.
-     * @param properties The provider registration properties supplied to the CreateOrUpdate operation.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the {@link SyncPoller} for polling of concrete proxy resource types can be created by aliasing this type
-     * using a specific property type.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public SyncPoller<PollResult<ProviderRegistrationInner>, ProviderRegistrationInner>
         beginCreateOrUpdate(String providerNamespace, ProviderRegistrationInner properties, Context context) {
@@ -464,36 +401,17 @@ public final class ProviderRegistrationsClientImpl implements ProviderRegistrati
             .flatMap(this.client::getLroFinalResultOrError);
     }
 
-    /**
-     * Creates or updates the provider registration.
-     * 
-     * @param providerNamespace The name of the resource provider hosted within ProviderHub.
-     * @param properties The provider registration properties supplied to the CreateOrUpdate operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return concrete proxy resource types can be created by aliasing this type using a specific property type.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public ProviderRegistrationInner createOrUpdate(String providerNamespace, ProviderRegistrationInner properties) {
-        return beginCreateOrUpdate(providerNamespace, properties).getFinalResult();
+        return createOrUpdate(providerNamespace, properties, Context.NONE);
     }
 
-    /**
-     * Creates or updates the provider registration.
-     * 
-     * @param providerNamespace The name of the resource provider hosted within ProviderHub.
-     * @param properties The provider registration properties supplied to the CreateOrUpdate operation.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return concrete proxy resource types can be created by aliasing this type using a specific property type.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public ProviderRegistrationInner createOrUpdate(String providerNamespace, ProviderRegistrationInner properties,
         Context context) {
-        return beginCreateOrUpdate(providerNamespace, properties, context).getFinalResult();
+        return this.client.getLroFinalResultOrError(beginCreateOrUpdate(providerNamespace, properties, context));
     }
 
     /**
@@ -539,16 +457,7 @@ public final class ProviderRegistrationsClientImpl implements ProviderRegistrati
         return deleteWithResponseAsync(providerNamespace).flatMap(ignored -> Mono.empty());
     }
 
-    /**
-     * Deletes a provider registration.
-     * 
-     * @param providerNamespace The name of the resource provider hosted within ProviderHub.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the {@link Response}.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Response<Void> deleteWithResponse(String providerNamespace, Context context) {
         if (this.client.getEndpoint() == null) {
@@ -569,14 +478,7 @@ public final class ProviderRegistrationsClientImpl implements ProviderRegistrati
             this.client.getSubscriptionId(), providerNamespace, context);
     }
 
-    /**
-     * Deletes a provider registration.
-     * 
-     * @param providerNamespace The name of the resource provider hosted within ProviderHub.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public void delete(String providerNamespace) {
         deleteWithResponse(providerNamespace, Context.NONE);
@@ -630,21 +532,7 @@ public final class ProviderRegistrationsClientImpl implements ProviderRegistrati
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private PagedResponse<ProviderRegistrationInner> listSinglePage() {
-        if (this.client.getEndpoint() == null) {
-            throw LOGGER.atError()
-                .log(new IllegalArgumentException(
-                    "Parameter this.client.getEndpoint() is required and cannot be null."));
-        }
-        if (this.client.getSubscriptionId() == null) {
-            throw LOGGER.atError()
-                .log(new IllegalArgumentException(
-                    "Parameter this.client.getSubscriptionId() is required and cannot be null."));
-        }
-        final String accept = "application/json";
-        Response<ProviderRegistrationArrayResponseWithContinuation> res = service.listSync(this.client.getEndpoint(),
-            this.client.getApiVersion(), this.client.getSubscriptionId(), accept, Context.NONE);
-        return new PagedResponseBase<>(res.getRequest(), res.getStatusCode(), res.getHeaders(), res.getValue().value(),
-            res.getValue().nextLink(), null);
+        return listSinglePage(Context.NONE);
     }
 
     /**
@@ -675,29 +563,13 @@ public final class ProviderRegistrationsClientImpl implements ProviderRegistrati
             res.getValue().nextLink(), null);
     }
 
-    /**
-     * Gets the list of the provider registrations in the subscription.
-     * 
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the list of the provider registrations in the subscription as paginated response with
-     * {@link PagedIterable}.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.COLLECTION)
     public PagedIterable<ProviderRegistrationInner> list() {
-        return new PagedIterable<>(() -> listSinglePage(), nextLink -> listNextSinglePage(nextLink));
+        return list(Context.NONE);
     }
 
-    /**
-     * Gets the list of the provider registrations in the subscription.
-     * 
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the list of the provider registrations in the subscription as paginated response with
-     * {@link PagedIterable}.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.COLLECTION)
     public PagedIterable<ProviderRegistrationInner> list(Context context) {
         return new PagedIterable<>(() -> listSinglePage(context), nextLink -> listNextSinglePage(nextLink, context));
@@ -748,16 +620,7 @@ public final class ProviderRegistrationsClientImpl implements ProviderRegistrati
         return generateOperationsWithResponseAsync(providerNamespace).flatMap(res -> Mono.justOrEmpty(res.getValue()));
     }
 
-    /**
-     * Generates the operations api for the given provider.
-     * 
-     * @param providerNamespace The name of the resource provider hosted within ProviderHub.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the response body along with {@link Response}.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Response<List<OperationsDefinitionInner>> generateOperationsWithResponse(String providerNamespace,
         Context context) {
@@ -780,15 +643,7 @@ public final class ProviderRegistrationsClientImpl implements ProviderRegistrati
             this.client.getSubscriptionId(), providerNamespace, accept, context);
     }
 
-    /**
-     * Generates the operations api for the given provider.
-     * 
-     * @param providerNamespace The name of the resource provider hosted within ProviderHub.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the response.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public List<OperationsDefinitionInner> generateOperations(String providerNamespace) {
         return generateOperationsWithResponse(providerNamespace, Context.NONE).getValue();
@@ -831,20 +686,7 @@ public final class ProviderRegistrationsClientImpl implements ProviderRegistrati
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private PagedResponse<ProviderRegistrationInner> listNextSinglePage(String nextLink) {
-        if (nextLink == null) {
-            throw LOGGER.atError()
-                .log(new IllegalArgumentException("Parameter nextLink is required and cannot be null."));
-        }
-        if (this.client.getEndpoint() == null) {
-            throw LOGGER.atError()
-                .log(new IllegalArgumentException(
-                    "Parameter this.client.getEndpoint() is required and cannot be null."));
-        }
-        final String accept = "application/json";
-        Response<ProviderRegistrationArrayResponseWithContinuation> res
-            = service.listNextSync(nextLink, this.client.getEndpoint(), accept, Context.NONE);
-        return new PagedResponseBase<>(res.getRequest(), res.getStatusCode(), res.getHeaders(), res.getValue().value(),
-            res.getValue().nextLink(), null);
+        return listNextSinglePage(nextLink, Context.NONE);
     }
 
     /**

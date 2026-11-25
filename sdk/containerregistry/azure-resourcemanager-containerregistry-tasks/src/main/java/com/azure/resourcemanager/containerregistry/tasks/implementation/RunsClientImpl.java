@@ -213,18 +213,7 @@ public final class RunsClientImpl implements RunsClient {
             .flatMap(res -> Mono.justOrEmpty(res.getValue()));
     }
 
-    /**
-     * Gets the detailed information for a given run.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param registryName The name of the Registry.
-     * @param runId The run ID.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the detailed information for a given run along with {@link Response}.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Response<RunInner> getWithResponse(String resourceGroupName, String registryName, String runId,
         Context context) {
@@ -233,17 +222,7 @@ public final class RunsClientImpl implements RunsClient {
             resourceGroupName, registryName, runId, accept, context);
     }
 
-    /**
-     * Gets the detailed information for a given run.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param registryName The name of the Registry.
-     * @param runId The run ID.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the detailed information for a given run.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public RunInner get(String resourceGroupName, String registryName, String runId) {
         return getWithResponse(resourceGroupName, registryName, runId, Context.NONE).getValue();
@@ -292,19 +271,7 @@ public final class RunsClientImpl implements RunsClient {
             .flatMap(res -> Mono.justOrEmpty(res.getValue()));
     }
 
-    /**
-     * Patch the run properties.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param registryName The name of the Registry.
-     * @param runId The run ID.
-     * @param runUpdateParameters The run update properties.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return run resource properties along with {@link Response}.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Response<RunInner> updateWithResponse(String resourceGroupName, String registryName, String runId,
         RunUpdateParameters runUpdateParameters, Context context) {
@@ -315,18 +282,7 @@ public final class RunsClientImpl implements RunsClient {
             runUpdateParameters, context);
     }
 
-    /**
-     * Patch the run properties.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param registryName The name of the Registry.
-     * @param runId The run ID.
-     * @param runUpdateParameters The run update properties.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return run resource properties.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public RunInner update(String resourceGroupName, String registryName, String runId,
         RunUpdateParameters runUpdateParameters) {
@@ -411,11 +367,7 @@ public final class RunsClientImpl implements RunsClient {
     @ServiceMethod(returns = ReturnType.SINGLE)
     private PagedResponse<RunInner> listSinglePage(String resourceGroupName, String registryName, String filter,
         Integer top) {
-        final String accept = "application/json";
-        Response<RunListResult> res = service.listSync(this.client.getEndpoint(), this.client.getApiVersion(),
-            this.client.getSubscriptionId(), resourceGroupName, registryName, filter, top, accept, Context.NONE);
-        return new PagedResponseBase<>(res.getRequest(), res.getStatusCode(), res.getHeaders(), res.getValue().value(),
-            res.getValue().nextLink(), null);
+        return listSinglePage(resourceGroupName, registryName, filter, top, Context.NONE);
     }
 
     /**
@@ -442,38 +394,15 @@ public final class RunsClientImpl implements RunsClient {
             res.getValue().nextLink(), null);
     }
 
-    /**
-     * Gets all the runs for a registry.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param registryName The name of the Registry.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return all the runs for a registry as paginated response with {@link PagedIterable}.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.COLLECTION)
     public PagedIterable<RunInner> list(String resourceGroupName, String registryName) {
         final String filter = null;
         final Integer top = null;
-        return new PagedIterable<>(() -> listSinglePage(resourceGroupName, registryName, filter, top),
-            nextLink -> listNextSinglePage(nextLink));
+        return list(resourceGroupName, registryName, filter, top, Context.NONE);
     }
 
-    /**
-     * Gets all the runs for a registry.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param registryName The name of the Registry.
-     * @param filter The runs filter to apply on the operation. Arithmetic operators are not supported. The allowed
-     * string function is 'contains'. All logical operators except 'Not', 'Has', 'All' are allowed.
-     * @param top $top is supported for get list of runs, which limits the maximum number of runs to return.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return all the runs for a registry as paginated response with {@link PagedIterable}.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.COLLECTION)
     public PagedIterable<RunInner> list(String resourceGroupName, String registryName, String filter, Integer top,
         Context context) {
@@ -519,18 +448,7 @@ public final class RunsClientImpl implements RunsClient {
             .flatMap(res -> Mono.justOrEmpty(res.getValue()));
     }
 
-    /**
-     * Gets a link to download the run logs.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param registryName The name of the Registry.
-     * @param runId The run ID.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return a link to download the run logs along with {@link Response}.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Response<RunGetLogResultInner> getLogSasUrlWithResponse(String resourceGroupName, String registryName,
         String runId, Context context) {
@@ -539,17 +457,7 @@ public final class RunsClientImpl implements RunsClient {
             this.client.getSubscriptionId(), resourceGroupName, registryName, runId, accept, context);
     }
 
-    /**
-     * Gets a link to download the run logs.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param registryName The name of the Registry.
-     * @param runId The run ID.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return a link to download the run logs.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public RunGetLogResultInner getLogSasUrl(String resourceGroupName, String registryName, String runId) {
         return getLogSasUrlWithResponse(resourceGroupName, registryName, runId, Context.NONE).getValue();
@@ -590,18 +498,7 @@ public final class RunsClientImpl implements RunsClient {
         return cancelWithResponseAsync(resourceGroupName, registryName, runId).flatMap(ignored -> Mono.empty());
     }
 
-    /**
-     * Cancel an existing run.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param registryName The name of the Registry.
-     * @param runId The run ID.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the {@link Response}.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Response<Void> cancelWithResponse(String resourceGroupName, String registryName, String runId,
         Context context) {
@@ -609,16 +506,7 @@ public final class RunsClientImpl implements RunsClient {
             this.client.getSubscriptionId(), resourceGroupName, registryName, runId, context);
     }
 
-    /**
-     * Cancel an existing run.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param registryName The name of the Registry.
-     * @param runId The run ID.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public void cancel(String resourceGroupName, String registryName, String runId) {
         cancelWithResponse(resourceGroupName, registryName, runId, Context.NONE);
@@ -653,10 +541,7 @@ public final class RunsClientImpl implements RunsClient {
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private PagedResponse<RunInner> listNextSinglePage(String nextLink) {
-        final String accept = "application/json";
-        Response<RunListResult> res = service.listNextSync(nextLink, this.client.getEndpoint(), accept, Context.NONE);
-        return new PagedResponseBase<>(res.getRequest(), res.getStatusCode(), res.getHeaders(), res.getValue().value(),
-            res.getValue().nextLink(), null);
+        return listNextSinglePage(nextLink, Context.NONE);
     }
 
     /**

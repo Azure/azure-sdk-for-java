@@ -189,34 +189,14 @@ public final class CustomRecommendationsClientImpl implements CustomRecommendati
         return getWithResponseAsync(scope, customRecommendationName).flatMap(res -> Mono.justOrEmpty(res.getValue()));
     }
 
-    /**
-     * Get a specific custom recommendation for the requested scope by customRecommendationName.
-     * 
-     * @param scope The fully qualified Azure Resource manager identifier of the resource.
-     * @param customRecommendationName Name of the Custom Recommendation.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return a specific custom recommendation for the requested scope by customRecommendationName along with
-     * {@link Response}.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Response<CustomRecommendationInner> getWithResponse(String scope, String customRecommendationName,
         Context context) {
         return getWithResponseAsync(scope, customRecommendationName, context).block();
     }
 
-    /**
-     * Get a specific custom recommendation for the requested scope by customRecommendationName.
-     * 
-     * @param scope The fully qualified Azure Resource manager identifier of the resource.
-     * @param customRecommendationName Name of the Custom Recommendation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return a specific custom recommendation for the requested scope by customRecommendationName.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public CustomRecommendationInner get(String scope, String customRecommendationName) {
         return getWithResponse(scope, customRecommendationName, Context.NONE).getValue();
@@ -320,18 +300,7 @@ public final class CustomRecommendationsClientImpl implements CustomRecommendati
             .flatMap(res -> Mono.justOrEmpty(res.getValue()));
     }
 
-    /**
-     * Creates or updates a custom recommendation over a given scope.
-     * 
-     * @param scope The fully qualified Azure Resource manager identifier of the resource.
-     * @param customRecommendationName Name of the Custom Recommendation.
-     * @param customRecommendationBody Custom Recommendation body.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return custom Recommendation along with {@link Response}.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Response<CustomRecommendationInner> createOrUpdateWithResponse(String scope, String customRecommendationName,
         CustomRecommendationInner customRecommendationBody, Context context) {
@@ -339,17 +308,7 @@ public final class CustomRecommendationsClientImpl implements CustomRecommendati
             .block();
     }
 
-    /**
-     * Creates or updates a custom recommendation over a given scope.
-     * 
-     * @param scope The fully qualified Azure Resource manager identifier of the resource.
-     * @param customRecommendationName Name of the Custom Recommendation.
-     * @param customRecommendationBody Custom Recommendation body.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return custom Recommendation.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public CustomRecommendationInner createOrUpdate(String scope, String customRecommendationName,
         CustomRecommendationInner customRecommendationBody) {
@@ -431,31 +390,13 @@ public final class CustomRecommendationsClientImpl implements CustomRecommendati
         return deleteWithResponseAsync(scope, customRecommendationName).flatMap(ignored -> Mono.empty());
     }
 
-    /**
-     * Delete a custom recommendation over a given scope.
-     * 
-     * @param scope The fully qualified Azure Resource manager identifier of the resource.
-     * @param customRecommendationName Name of the Custom Recommendation.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the {@link Response}.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Response<Void> deleteWithResponse(String scope, String customRecommendationName, Context context) {
         return deleteWithResponseAsync(scope, customRecommendationName, context).block();
     }
 
-    /**
-     * Delete a custom recommendation over a given scope.
-     * 
-     * @param scope The fully qualified Azure Resource manager identifier of the resource.
-     * @param customRecommendationName Name of the Custom Recommendation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public void delete(String scope, String customRecommendationName) {
         deleteWithResponse(scope, customRecommendationName, Context.NONE);
@@ -547,32 +488,13 @@ public final class CustomRecommendationsClientImpl implements CustomRecommendati
             nextLink -> listNextSinglePageAsync(nextLink, context));
     }
 
-    /**
-     * Get a list of all relevant custom recommendations over a scope.
-     * 
-     * @param scope The fully qualified Azure Resource manager identifier of the resource.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return a list of all relevant custom recommendations over a scope as paginated response with
-     * {@link PagedIterable}.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.COLLECTION)
     public PagedIterable<CustomRecommendationInner> list(String scope) {
         return new PagedIterable<>(listAsync(scope));
     }
 
-    /**
-     * Get a list of all relevant custom recommendations over a scope.
-     * 
-     * @param scope The fully qualified Azure Resource manager identifier of the resource.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return a list of all relevant custom recommendations over a scope as paginated response with
-     * {@link PagedIterable}.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.COLLECTION)
     public PagedIterable<CustomRecommendationInner> list(String scope, Context context) {
         return new PagedIterable<>(listAsync(scope, context));

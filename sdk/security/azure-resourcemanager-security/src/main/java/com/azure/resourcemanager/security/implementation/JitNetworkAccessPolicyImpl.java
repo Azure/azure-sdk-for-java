@@ -103,12 +103,7 @@ public final class JitNetworkAccessPolicyImpl
     }
 
     public JitNetworkAccessPolicy create() {
-        this.innerObject = serviceManager.serviceClient()
-            .getJitNetworkAccessPolicies()
-            .createOrUpdateWithResponse(resourceGroupName, ascLocation, jitNetworkAccessPolicyName, this.innerModel(),
-                Context.NONE)
-            .getValue();
-        return this;
+        return this.create(Context.NONE);
     }
 
     public JitNetworkAccessPolicy create(Context context) {
@@ -131,12 +126,7 @@ public final class JitNetworkAccessPolicyImpl
     }
 
     public JitNetworkAccessPolicy apply() {
-        this.innerObject = serviceManager.serviceClient()
-            .getJitNetworkAccessPolicies()
-            .createOrUpdateWithResponse(resourceGroupName, ascLocation, jitNetworkAccessPolicyName, this.innerModel(),
-                Context.NONE)
-            .getValue();
-        return this;
+        return this.apply(Context.NONE);
     }
 
     public JitNetworkAccessPolicy apply(Context context) {
@@ -164,11 +154,7 @@ public final class JitNetworkAccessPolicyImpl
     }
 
     public JitNetworkAccessPolicy refresh() {
-        this.innerObject = serviceManager.serviceClient()
-            .getJitNetworkAccessPolicies()
-            .getWithResponse(resourceGroupName, ascLocation, jitNetworkAccessPolicyName, Context.NONE)
-            .getValue();
-        return this;
+        return this.refresh(Context.NONE);
     }
 
     public JitNetworkAccessPolicy refresh(Context context) {

@@ -151,11 +151,7 @@ public final class ModelCapacitiesClientImpl implements ModelCapacitiesClient {
     @ServiceMethod(returns = ReturnType.SINGLE)
     private PagedResponse<ModelCapacityListResultValueItemInner> listSinglePage(String modelFormat, String modelName,
         String modelVersion) {
-        final String accept = "application/json";
-        Response<ModelCapacityListResult> res = service.listSync(this.client.getEndpoint(), this.client.getApiVersion(),
-            this.client.getSubscriptionId(), modelFormat, modelName, modelVersion, accept, Context.NONE);
-        return new PagedResponseBase<>(res.getRequest(), res.getStatusCode(), res.getHeaders(), res.getValue().value(),
-            res.getValue().nextLink(), null);
+        return listSinglePage(modelFormat, modelName, modelVersion, Context.NONE);
     }
 
     /**
@@ -180,38 +176,14 @@ public final class ModelCapacitiesClientImpl implements ModelCapacitiesClient {
             res.getValue().nextLink(), null);
     }
 
-    /**
-     * List ModelCapacities.
-     * 
-     * @param modelFormat The format of the Model.
-     * @param modelName The name of the Model.
-     * @param modelVersion The version of the Model.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the list of cognitive services accounts operation response as paginated response with
-     * {@link PagedIterable}.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.COLLECTION)
     public PagedIterable<ModelCapacityListResultValueItemInner> list(String modelFormat, String modelName,
         String modelVersion) {
-        return new PagedIterable<>(() -> listSinglePage(modelFormat, modelName, modelVersion),
-            nextLink -> listNextSinglePage(nextLink));
+        return list(modelFormat, modelName, modelVersion, Context.NONE);
     }
 
-    /**
-     * List ModelCapacities.
-     * 
-     * @param modelFormat The format of the Model.
-     * @param modelName The name of the Model.
-     * @param modelVersion The version of the Model.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the list of cognitive services accounts operation response as paginated response with
-     * {@link PagedIterable}.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.COLLECTION)
     public PagedIterable<ModelCapacityListResultValueItemInner> list(String modelFormat, String modelName,
         String modelVersion, Context context) {
@@ -249,11 +221,7 @@ public final class ModelCapacitiesClientImpl implements ModelCapacitiesClient {
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private PagedResponse<ModelCapacityListResultValueItemInner> listNextSinglePage(String nextLink) {
-        final String accept = "application/json";
-        Response<ModelCapacityListResult> res
-            = service.listNextSync(nextLink, this.client.getEndpoint(), accept, Context.NONE);
-        return new PagedResponseBase<>(res.getRequest(), res.getStatusCode(), res.getHeaders(), res.getValue().value(),
-            res.getValue().nextLink(), null);
+        return listNextSinglePage(nextLink, Context.NONE);
     }
 
     /**

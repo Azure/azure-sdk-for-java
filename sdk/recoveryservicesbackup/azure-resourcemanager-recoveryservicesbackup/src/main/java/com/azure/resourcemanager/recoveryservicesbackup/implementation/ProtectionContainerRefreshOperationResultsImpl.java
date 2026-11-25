@@ -30,7 +30,7 @@ public final class ProtectionContainerRefreshOperationResultsImpl
     }
 
     public void get(String vaultName, String resourceGroupName, String fabricName, String operationId) {
-        this.serviceClient().get(vaultName, resourceGroupName, fabricName, operationId);
+        this.getWithResponse(vaultName, resourceGroupName, fabricName, operationId, Context.NONE);
     }
 
     private ProtectionContainerRefreshOperationResultsClient serviceClient() {

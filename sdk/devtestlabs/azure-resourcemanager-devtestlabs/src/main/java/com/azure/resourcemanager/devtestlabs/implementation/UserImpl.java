@@ -105,10 +105,7 @@ public final class UserImpl implements User, User.Definition, User.Update {
     }
 
     public User create() {
-        this.innerObject = serviceManager.serviceClient()
-            .getUsers()
-            .createOrUpdate(resourceGroupName, labName, name, this.innerModel(), Context.NONE);
-        return this;
+        return this.create(Context.NONE);
     }
 
     public User create(Context context) {
@@ -130,11 +127,7 @@ public final class UserImpl implements User, User.Definition, User.Update {
     }
 
     public User apply() {
-        this.innerObject = serviceManager.serviceClient()
-            .getUsers()
-            .updateWithResponse(resourceGroupName, labName, name, updateUser, Context.NONE)
-            .getValue();
-        return this;
+        return this.apply(Context.NONE);
     }
 
     public User apply(Context context) {
@@ -160,12 +153,7 @@ public final class UserImpl implements User, User.Definition, User.Update {
     }
 
     public User refresh() {
-        String localExpand = null;
-        this.innerObject = serviceManager.serviceClient()
-            .getUsers()
-            .getWithResponse(resourceGroupName, labName, name, localExpand, Context.NONE)
-            .getValue();
-        return this;
+        return this.refresh(Context.NONE);
     }
 
     public User refresh(Context context) {

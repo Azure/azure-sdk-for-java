@@ -111,18 +111,7 @@ public final class FirewallRulesClientImpl implements FirewallRulesClient {
             @HeaderParam("Accept") String accept, Context context);
     }
 
-    /**
-     * Gets a single firewall rule in a specified redis cache.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param cacheName The name of the Redis cache.
-     * @param ruleName The name of the firewall rule.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return a single firewall rule in a specified redis cache along with {@link Response} on successful completion of
-     * {@link Mono}.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Response<RedisFirewallRuleInner>> getWithResponseAsync(String resourceGroupName, String cacheName,
         String ruleName) {
@@ -191,70 +180,27 @@ public final class FirewallRulesClientImpl implements FirewallRulesClient {
             resourceGroupName, cacheName, ruleName, accept, context);
     }
 
-    /**
-     * Gets a single firewall rule in a specified redis cache.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param cacheName The name of the Redis cache.
-     * @param ruleName The name of the firewall rule.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return a single firewall rule in a specified redis cache on successful completion of {@link Mono}.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<RedisFirewallRuleInner> getAsync(String resourceGroupName, String cacheName, String ruleName) {
         return getWithResponseAsync(resourceGroupName, cacheName, ruleName)
             .flatMap(res -> Mono.justOrEmpty(res.getValue()));
     }
 
-    /**
-     * Gets a single firewall rule in a specified redis cache.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param cacheName The name of the Redis cache.
-     * @param ruleName The name of the firewall rule.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return a single firewall rule in a specified redis cache along with {@link Response}.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Response<RedisFirewallRuleInner> getWithResponse(String resourceGroupName, String cacheName, String ruleName,
         Context context) {
         return getWithResponseAsync(resourceGroupName, cacheName, ruleName, context).block();
     }
 
-    /**
-     * Gets a single firewall rule in a specified redis cache.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param cacheName The name of the Redis cache.
-     * @param ruleName The name of the firewall rule.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return a single firewall rule in a specified redis cache.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public RedisFirewallRuleInner get(String resourceGroupName, String cacheName, String ruleName) {
         return getWithResponse(resourceGroupName, cacheName, ruleName, Context.NONE).getValue();
     }
 
-    /**
-     * Create or update a redis cache firewall rule.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param cacheName The name of the Redis cache.
-     * @param ruleName The name of the firewall rule.
-     * @param parameters Parameters supplied to the create or update redis firewall rule operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return a firewall rule on a redis cache has a name, and describes a contiguous range of IP addresses permitted
-     * to connect along with {@link Response} on successful completion of {@link Mono}.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Response<RedisFirewallRuleInner>> createOrUpdateWithResponseAsync(String resourceGroupName,
         String cacheName, String ruleName, RedisFirewallRuleInner parameters) {
@@ -338,19 +284,7 @@ public final class FirewallRulesClientImpl implements FirewallRulesClient {
             context);
     }
 
-    /**
-     * Create or update a redis cache firewall rule.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param cacheName The name of the Redis cache.
-     * @param ruleName The name of the firewall rule.
-     * @param parameters Parameters supplied to the create or update redis firewall rule operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return a firewall rule on a redis cache has a name, and describes a contiguous range of IP addresses permitted
-     * to connect on successful completion of {@link Mono}.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<RedisFirewallRuleInner> createOrUpdateAsync(String resourceGroupName, String cacheName, String ruleName,
         RedisFirewallRuleInner parameters) {
@@ -358,56 +292,21 @@ public final class FirewallRulesClientImpl implements FirewallRulesClient {
             .flatMap(res -> Mono.justOrEmpty(res.getValue()));
     }
 
-    /**
-     * Create or update a redis cache firewall rule.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param cacheName The name of the Redis cache.
-     * @param ruleName The name of the firewall rule.
-     * @param parameters Parameters supplied to the create or update redis firewall rule operation.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return a firewall rule on a redis cache has a name, and describes a contiguous range of IP addresses permitted
-     * to connect along with {@link Response}.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Response<RedisFirewallRuleInner> createOrUpdateWithResponse(String resourceGroupName, String cacheName,
         String ruleName, RedisFirewallRuleInner parameters, Context context) {
         return createOrUpdateWithResponseAsync(resourceGroupName, cacheName, ruleName, parameters, context).block();
     }
 
-    /**
-     * Create or update a redis cache firewall rule.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param cacheName The name of the Redis cache.
-     * @param ruleName The name of the firewall rule.
-     * @param parameters Parameters supplied to the create or update redis firewall rule operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return a firewall rule on a redis cache has a name, and describes a contiguous range of IP addresses permitted
-     * to connect.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public RedisFirewallRuleInner createOrUpdate(String resourceGroupName, String cacheName, String ruleName,
         RedisFirewallRuleInner parameters) {
         return createOrUpdateWithResponse(resourceGroupName, cacheName, ruleName, parameters, Context.NONE).getValue();
     }
 
-    /**
-     * Deletes a single firewall rule in a specified redis cache.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param cacheName The name of the Redis cache.
-     * @param ruleName The name of the firewall rule.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the {@link Response} on successful completion of {@link Mono}.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Response<Void>> deleteWithResponseAsync(String resourceGroupName, String cacheName, String ruleName) {
         if (this.client.getEndpoint() == null) {
@@ -472,50 +371,20 @@ public final class FirewallRulesClientImpl implements FirewallRulesClient {
             resourceGroupName, cacheName, ruleName, context);
     }
 
-    /**
-     * Deletes a single firewall rule in a specified redis cache.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param cacheName The name of the Redis cache.
-     * @param ruleName The name of the firewall rule.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return A {@link Mono} that completes when a successful response is received.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Void> deleteAsync(String resourceGroupName, String cacheName, String ruleName) {
         return deleteWithResponseAsync(resourceGroupName, cacheName, ruleName).flatMap(ignored -> Mono.empty());
     }
 
-    /**
-     * Deletes a single firewall rule in a specified redis cache.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param cacheName The name of the Redis cache.
-     * @param ruleName The name of the firewall rule.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the {@link Response}.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Response<Void> deleteWithResponse(String resourceGroupName, String cacheName, String ruleName,
         Context context) {
         return deleteWithResponseAsync(resourceGroupName, cacheName, ruleName, context).block();
     }
 
-    /**
-     * Deletes a single firewall rule in a specified redis cache.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param cacheName The name of the Redis cache.
-     * @param ruleName The name of the firewall rule.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public void delete(String resourceGroupName, String cacheName, String ruleName) {
         deleteWithResponse(resourceGroupName, cacheName, ruleName, Context.NONE);
@@ -598,16 +467,7 @@ public final class FirewallRulesClientImpl implements FirewallRulesClient {
                 res.getValue().value(), res.getValue().nextLink(), null));
     }
 
-    /**
-     * Gets all firewall rules in the specified redis cache.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param cacheName The name of the Redis cache.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return all firewall rules in the specified redis cache as paginated response with {@link PagedFlux}.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.COLLECTION)
     public PagedFlux<RedisFirewallRuleInner> listAsync(String resourceGroupName, String cacheName) {
         return new PagedFlux<>(() -> listSinglePageAsync(resourceGroupName, cacheName),
@@ -631,32 +491,13 @@ public final class FirewallRulesClientImpl implements FirewallRulesClient {
             nextLink -> listNextSinglePageAsync(nextLink, context));
     }
 
-    /**
-     * Gets all firewall rules in the specified redis cache.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param cacheName The name of the Redis cache.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return all firewall rules in the specified redis cache as paginated response with {@link PagedIterable}.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.COLLECTION)
     public PagedIterable<RedisFirewallRuleInner> list(String resourceGroupName, String cacheName) {
         return new PagedIterable<>(listAsync(resourceGroupName, cacheName));
     }
 
-    /**
-     * Gets all firewall rules in the specified redis cache.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param cacheName The name of the Redis cache.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return all firewall rules in the specified redis cache as paginated response with {@link PagedIterable}.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.COLLECTION)
     public PagedIterable<RedisFirewallRuleInner> list(String resourceGroupName, String cacheName, Context context) {
         return new PagedIterable<>(listAsync(resourceGroupName, cacheName, context));

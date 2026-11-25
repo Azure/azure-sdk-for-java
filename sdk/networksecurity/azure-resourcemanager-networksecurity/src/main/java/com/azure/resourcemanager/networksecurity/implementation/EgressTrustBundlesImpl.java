@@ -45,9 +45,7 @@ public final class EgressTrustBundlesImpl implements EgressTrustBundles {
     }
 
     public PagedIterable<EgressTrustBundle> listByParent(String resourceGroupName, String agentFabricName) {
-        PagedIterable<EgressTrustBundleInner> inner
-            = this.serviceClient().listByParent(resourceGroupName, agentFabricName);
-        return ResourceManagerUtils.mapPage(inner, inner1 -> new EgressTrustBundleImpl(inner1, this.manager()));
+        return this.listByParent(resourceGroupName, agentFabricName, Context.NONE);
     }
 
     public PagedIterable<EgressTrustBundle> listByParent(String resourceGroupName, String agentFabricName,

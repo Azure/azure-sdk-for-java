@@ -123,10 +123,8 @@ public final class AlertRuleOperationsClientImpl implements AlertRuleOperationsC
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Response<BinaryData> triggerRuleRunWithResponse(String resourceGroupName, String workspaceName,
         String ruleId, AnalyticsRuleRunTrigger analyticsRuleRunTriggerParameter) {
-        final String contentType = "application/json";
-        return service.triggerRuleRunSync(this.client.getEndpoint(), this.client.getApiVersion(),
-            this.client.getSubscriptionId(), resourceGroupName, workspaceName, ruleId, contentType,
-            analyticsRuleRunTriggerParameter, Context.NONE);
+        return triggerRuleRunWithResponse(resourceGroupName, workspaceName, ruleId, analyticsRuleRunTriggerParameter,
+            Context.NONE);
     }
 
     /**
@@ -172,39 +170,15 @@ public final class AlertRuleOperationsClientImpl implements AlertRuleOperationsC
             this.client.getContext());
     }
 
-    /**
-     * triggers analytics rule run.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param workspaceName The name of the monitor workspace.
-     * @param ruleId Alert rule ID.
-     * @param analyticsRuleRunTriggerParameter The content of the action request.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the {@link SyncPoller} for polling of long-running operation.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public SyncPoller<PollResult<Void>, Void> beginTriggerRuleRun(String resourceGroupName, String workspaceName,
         String ruleId, AnalyticsRuleRunTrigger analyticsRuleRunTriggerParameter) {
-        Response<BinaryData> response
-            = triggerRuleRunWithResponse(resourceGroupName, workspaceName, ruleId, analyticsRuleRunTriggerParameter);
-        return this.client.<Void, Void>getLroResult(response, Void.class, Void.class, Context.NONE);
+        return beginTriggerRuleRun(resourceGroupName, workspaceName, ruleId, analyticsRuleRunTriggerParameter,
+            Context.NONE);
     }
 
-    /**
-     * triggers analytics rule run.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param workspaceName The name of the monitor workspace.
-     * @param ruleId Alert rule ID.
-     * @param analyticsRuleRunTriggerParameter The content of the action request.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the {@link SyncPoller} for polling of long-running operation.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public SyncPoller<PollResult<Void>, Void> beginTriggerRuleRun(String resourceGroupName, String workspaceName,
         String ruleId, AnalyticsRuleRunTrigger analyticsRuleRunTriggerParameter, Context context) {
@@ -233,40 +207,18 @@ public final class AlertRuleOperationsClientImpl implements AlertRuleOperationsC
             .flatMap(this.client::getLroFinalResultOrError);
     }
 
-    /**
-     * triggers analytics rule run.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param workspaceName The name of the monitor workspace.
-     * @param ruleId Alert rule ID.
-     * @param analyticsRuleRunTriggerParameter The content of the action request.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public void triggerRuleRun(String resourceGroupName, String workspaceName, String ruleId,
         AnalyticsRuleRunTrigger analyticsRuleRunTriggerParameter) {
-        beginTriggerRuleRun(resourceGroupName, workspaceName, ruleId, analyticsRuleRunTriggerParameter)
-            .getFinalResult();
+        triggerRuleRun(resourceGroupName, workspaceName, ruleId, analyticsRuleRunTriggerParameter, Context.NONE);
     }
 
-    /**
-     * triggers analytics rule run.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param workspaceName The name of the monitor workspace.
-     * @param ruleId Alert rule ID.
-     * @param analyticsRuleRunTriggerParameter The content of the action request.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public void triggerRuleRun(String resourceGroupName, String workspaceName, String ruleId,
         AnalyticsRuleRunTrigger analyticsRuleRunTriggerParameter, Context context) {
-        beginTriggerRuleRun(resourceGroupName, workspaceName, ruleId, analyticsRuleRunTriggerParameter, context)
-            .getFinalResult();
+        this.client.getLroFinalResultOrError(
+            beginTriggerRuleRun(resourceGroupName, workspaceName, ruleId, analyticsRuleRunTriggerParameter, context));
     }
 }

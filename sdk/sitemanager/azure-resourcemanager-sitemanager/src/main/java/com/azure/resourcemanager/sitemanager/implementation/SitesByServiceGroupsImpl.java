@@ -29,8 +29,7 @@ public final class SitesByServiceGroupsImpl implements SitesByServiceGroups {
     }
 
     public PagedIterable<Site> listByServiceGroup(String servicegroupName) {
-        PagedIterable<SiteInner> inner = this.serviceClient().listByServiceGroup(servicegroupName);
-        return ResourceManagerUtils.mapPage(inner, inner1 -> new SiteImpl(inner1, this.manager()));
+        return this.listByServiceGroup(servicegroupName, Context.NONE);
     }
 
     public PagedIterable<Site> listByServiceGroup(String servicegroupName, Context context) {
@@ -54,12 +53,7 @@ public final class SitesByServiceGroupsImpl implements SitesByServiceGroups {
     }
 
     public Site createOrUpdate(String servicegroupName, String siteName, SiteInner resource) {
-        SiteInner inner = this.serviceClient().createOrUpdate(servicegroupName, siteName, resource);
-        if (inner != null) {
-            return new SiteImpl(inner, this.manager());
-        } else {
-            return null;
-        }
+        return this.createOrUpdate(servicegroupName, siteName, resource, Context.NONE);
     }
 
     public Site createOrUpdate(String servicegroupName, String siteName, SiteInner resource, Context context) {
@@ -93,7 +87,7 @@ public final class SitesByServiceGroupsImpl implements SitesByServiceGroups {
     }
 
     public void deleteByResourceGroup(String servicegroupName, String siteName) {
-        this.serviceClient().delete(servicegroupName, siteName);
+        this.deleteByResourceGroupWithResponse(servicegroupName, siteName, Context.NONE);
     }
 
     private SitesByServiceGroupsClient serviceClient() {

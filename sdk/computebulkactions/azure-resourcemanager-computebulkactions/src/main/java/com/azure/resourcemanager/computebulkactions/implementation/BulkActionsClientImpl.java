@@ -451,18 +451,7 @@ public final class BulkActionsClientImpl implements BulkActionsClient {
         return getWithResponseAsync(resourceGroupName, location, name).flatMap(res -> Mono.justOrEmpty(res.getValue()));
     }
 
-    /**
-     * Gets an instance of LaunchBulkInstancesOperations.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param location The location name.
-     * @param name The name of the LaunchBulkInstancesOperation.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return an instance of LaunchBulkInstancesOperations along with {@link Response}.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Response<LocationBasedLaunchBulkInstancesOperationInner> getWithResponse(String resourceGroupName,
         String location, String name, Context context) {
@@ -471,17 +460,7 @@ public final class BulkActionsClientImpl implements BulkActionsClient {
             resourceGroupName, location, name, accept, context);
     }
 
-    /**
-     * Gets an instance of LaunchBulkInstancesOperations.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param location The location name.
-     * @param name The name of the LaunchBulkInstancesOperation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return an instance of LaunchBulkInstancesOperations.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public LocationBasedLaunchBulkInstancesOperationInner get(String resourceGroupName, String location, String name) {
         return getWithResponse(resourceGroupName, location, name, Context.NONE).getValue();
@@ -522,17 +501,7 @@ public final class BulkActionsClientImpl implements BulkActionsClient {
         return getOperationStatusWithResponseAsync(location, id).flatMap(res -> Mono.justOrEmpty(res.getValue()));
     }
 
-    /**
-     * Get the status of a LaunchBulkInstancesOperation.
-     * 
-     * @param location The location name.
-     * @param id The async operation id.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the status of a LaunchBulkInstancesOperation along with {@link Response}.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Response<OperationStatusResultInner> getOperationStatusWithResponse(String location, String id,
         Context context) {
@@ -541,16 +510,7 @@ public final class BulkActionsClientImpl implements BulkActionsClient {
             this.client.getSubscriptionId(), location, id, accept, context);
     }
 
-    /**
-     * Get the status of a LaunchBulkInstancesOperation.
-     * 
-     * @param location The location name.
-     * @param id The async operation id.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the status of a LaunchBulkInstancesOperation.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public OperationStatusResultInner getOperationStatus(String location, String id) {
         return getOperationStatusWithResponse(location, id, Context.NONE).getValue();
@@ -595,11 +555,7 @@ public final class BulkActionsClientImpl implements BulkActionsClient {
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Response<BinaryData> createOrUpdateWithResponse(String resourceGroupName, String location, String name,
         LocationBasedLaunchBulkInstancesOperationInner resource) {
-        final String contentType = "application/json";
-        final String accept = "application/json";
-        return service.createOrUpdateSync(this.client.getEndpoint(), this.client.getApiVersion(),
-            this.client.getSubscriptionId(), resourceGroupName, location, name, contentType, accept, resource,
-            Context.NONE);
+        return createOrUpdateWithResponse(resourceGroupName, location, name, resource, Context.NONE);
     }
 
     /**
@@ -649,43 +605,16 @@ public final class BulkActionsClientImpl implements BulkActionsClient {
                 LocationBasedLaunchBulkInstancesOperationInner.class, this.client.getContext());
     }
 
-    /**
-     * Creates or updates LaunchBulkInstancesOperations.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param location The location name.
-     * @param name The name of the LaunchBulkInstancesOperation.
-     * @param resource Resource create parameters.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the {@link SyncPoller} for polling of location based type.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public
         SyncPoller<PollResult<LocationBasedLaunchBulkInstancesOperationInner>, LocationBasedLaunchBulkInstancesOperationInner>
         beginCreateOrUpdate(String resourceGroupName, String location, String name,
             LocationBasedLaunchBulkInstancesOperationInner resource) {
-        Response<BinaryData> response = createOrUpdateWithResponse(resourceGroupName, location, name, resource);
-        return this.client
-            .<LocationBasedLaunchBulkInstancesOperationInner, LocationBasedLaunchBulkInstancesOperationInner>getLroResult(
-                response, LocationBasedLaunchBulkInstancesOperationInner.class,
-                LocationBasedLaunchBulkInstancesOperationInner.class, Context.NONE);
+        return beginCreateOrUpdate(resourceGroupName, location, name, resource, Context.NONE);
     }
 
-    /**
-     * Creates or updates LaunchBulkInstancesOperations.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param location The location name.
-     * @param name The name of the LaunchBulkInstancesOperation.
-     * @param resource Resource create parameters.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the {@link SyncPoller} for polling of location based type.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public
         SyncPoller<PollResult<LocationBasedLaunchBulkInstancesOperationInner>, LocationBasedLaunchBulkInstancesOperationInner>
@@ -718,41 +647,19 @@ public final class BulkActionsClientImpl implements BulkActionsClient {
             .flatMap(this.client::getLroFinalResultOrError);
     }
 
-    /**
-     * Creates or updates LaunchBulkInstancesOperations.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param location The location name.
-     * @param name The name of the LaunchBulkInstancesOperation.
-     * @param resource Resource create parameters.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return location based type.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public LocationBasedLaunchBulkInstancesOperationInner createOrUpdate(String resourceGroupName, String location,
         String name, LocationBasedLaunchBulkInstancesOperationInner resource) {
-        return beginCreateOrUpdate(resourceGroupName, location, name, resource).getFinalResult();
+        return createOrUpdate(resourceGroupName, location, name, resource, Context.NONE);
     }
 
-    /**
-     * Creates or updates LaunchBulkInstancesOperations.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param location The location name.
-     * @param name The name of the LaunchBulkInstancesOperation.
-     * @param resource Resource create parameters.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return location based type.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public LocationBasedLaunchBulkInstancesOperationInner createOrUpdate(String resourceGroupName, String location,
         String name, LocationBasedLaunchBulkInstancesOperationInner resource, Context context) {
-        return beginCreateOrUpdate(resourceGroupName, location, name, resource, context).getFinalResult();
+        return this.client
+            .getLroFinalResultOrError(beginCreateOrUpdate(resourceGroupName, location, name, resource, context));
     }
 
     /**
@@ -791,8 +698,7 @@ public final class BulkActionsClientImpl implements BulkActionsClient {
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Response<BinaryData> deleteWithResponse(String resourceGroupName, String location, String name,
         Boolean deleteInstances) {
-        return service.deleteSync(this.client.getEndpoint(), this.client.getApiVersion(),
-            this.client.getSubscriptionId(), resourceGroupName, location, name, deleteInstances, Context.NONE);
+        return deleteWithResponse(resourceGroupName, location, name, deleteInstances, Context.NONE);
     }
 
     /**
@@ -872,41 +778,17 @@ public final class BulkActionsClientImpl implements BulkActionsClient {
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     private SyncPoller<PollResult<Void>, Void> beginDelete(String resourceGroupName, String location, String name,
         Boolean deleteInstances) {
-        Response<BinaryData> response = deleteWithResponse(resourceGroupName, location, name, deleteInstances);
-        return this.client.<Void, Void>getLroResult(response, Void.class, Void.class, Context.NONE);
+        return beginDelete(resourceGroupName, location, name, deleteInstances, Context.NONE);
     }
 
-    /**
-     * Deletes LaunchBulkInstancesOperations.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param location The location name.
-     * @param name The name of the LaunchBulkInstancesOperation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the {@link SyncPoller} for polling of long-running operation.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public SyncPoller<PollResult<Void>, Void> beginDelete(String resourceGroupName, String location, String name) {
         final Boolean deleteInstances = null;
-        Response<BinaryData> response = deleteWithResponse(resourceGroupName, location, name, deleteInstances);
-        return this.client.<Void, Void>getLroResult(response, Void.class, Void.class, Context.NONE);
+        return beginDelete(resourceGroupName, location, name, deleteInstances, Context.NONE);
     }
 
-    /**
-     * Deletes LaunchBulkInstancesOperations.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param location The location name.
-     * @param name The name of the LaunchBulkInstancesOperation.
-     * @param deleteInstances When true, deletes all virtual machines created by this BulkAction Operation.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the {@link SyncPoller} for polling of long-running operation.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public SyncPoller<PollResult<Void>, Void> beginDelete(String resourceGroupName, String location, String name,
         Boolean deleteInstances, Context context) {
@@ -950,38 +832,18 @@ public final class BulkActionsClientImpl implements BulkActionsClient {
             .flatMap(this.client::getLroFinalResultOrError);
     }
 
-    /**
-     * Deletes LaunchBulkInstancesOperations.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param location The location name.
-     * @param name The name of the LaunchBulkInstancesOperation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public void delete(String resourceGroupName, String location, String name) {
         final Boolean deleteInstances = null;
-        beginDelete(resourceGroupName, location, name, deleteInstances).getFinalResult();
+        delete(resourceGroupName, location, name, deleteInstances, Context.NONE);
     }
 
-    /**
-     * Deletes LaunchBulkInstancesOperations.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param location The location name.
-     * @param name The name of the LaunchBulkInstancesOperation.
-     * @param deleteInstances When true, deletes all virtual machines created by this BulkAction Operation.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public void delete(String resourceGroupName, String location, String name, Boolean deleteInstances,
         Context context) {
-        beginDelete(resourceGroupName, location, name, deleteInstances, context).getFinalResult();
+        this.client.getLroFinalResultOrError(beginDelete(resourceGroupName, location, name, deleteInstances, context));
     }
 
     /**
@@ -1017,8 +879,7 @@ public final class BulkActionsClientImpl implements BulkActionsClient {
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Response<BinaryData> cancelWithResponse(String resourceGroupName, String location, String name) {
-        return service.cancelSync(this.client.getEndpoint(), this.client.getApiVersion(),
-            this.client.getSubscriptionId(), resourceGroupName, location, name, Context.NONE);
+        return cancelWithResponse(resourceGroupName, location, name, Context.NONE);
     }
 
     /**
@@ -1059,35 +920,13 @@ public final class BulkActionsClientImpl implements BulkActionsClient {
             this.client.getContext());
     }
 
-    /**
-     * Cancels LaunchBulkInstancesOperation instances that have not yet launched.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param location The location name.
-     * @param name The name of the LaunchBulkInstancesOperation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the {@link SyncPoller} for polling of long-running operation.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public SyncPoller<PollResult<Void>, Void> beginCancel(String resourceGroupName, String location, String name) {
-        Response<BinaryData> response = cancelWithResponse(resourceGroupName, location, name);
-        return this.client.<Void, Void>getLroResult(response, Void.class, Void.class, Context.NONE);
+        return beginCancel(resourceGroupName, location, name, Context.NONE);
     }
 
-    /**
-     * Cancels LaunchBulkInstancesOperation instances that have not yet launched.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param location The location name.
-     * @param name The name of the LaunchBulkInstancesOperation.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the {@link SyncPoller} for polling of long-running operation.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public SyncPoller<PollResult<Void>, Void> beginCancel(String resourceGroupName, String location, String name,
         Context context) {
@@ -1112,35 +951,16 @@ public final class BulkActionsClientImpl implements BulkActionsClient {
             .flatMap(this.client::getLroFinalResultOrError);
     }
 
-    /**
-     * Cancels LaunchBulkInstancesOperation instances that have not yet launched.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param location The location name.
-     * @param name The name of the LaunchBulkInstancesOperation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public void cancel(String resourceGroupName, String location, String name) {
-        beginCancel(resourceGroupName, location, name).getFinalResult();
+        cancel(resourceGroupName, location, name, Context.NONE);
     }
 
-    /**
-     * Cancels LaunchBulkInstancesOperation instances that have not yet launched.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param location The location name.
-     * @param name The name of the LaunchBulkInstancesOperation.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public void cancel(String resourceGroupName, String location, String name, Context context) {
-        beginCancel(resourceGroupName, location, name, context).getFinalResult();
+        this.client.getLroFinalResultOrError(beginCancel(resourceGroupName, location, name, context));
     }
 
     /**
@@ -1197,12 +1017,7 @@ public final class BulkActionsClientImpl implements BulkActionsClient {
     @ServiceMethod(returns = ReturnType.SINGLE)
     private PagedResponse<LocationBasedLaunchBulkInstancesOperationInner>
         listByResourceGroupSinglePage(String resourceGroupName, String location) {
-        final String accept = "application/json";
-        Response<LaunchBulkInstancesOperationListResult> res
-            = service.listByResourceGroupSync(this.client.getEndpoint(), this.client.getApiVersion(),
-                this.client.getSubscriptionId(), resourceGroupName, location, accept, Context.NONE);
-        return new PagedResponseBase<>(res.getRequest(), res.getStatusCode(), res.getHeaders(), res.getValue().value(),
-            res.getValue().nextLink(), null);
+        return listByResourceGroupSinglePage(resourceGroupName, location, Context.NONE);
     }
 
     /**
@@ -1227,34 +1042,14 @@ public final class BulkActionsClientImpl implements BulkActionsClient {
             res.getValue().nextLink(), null);
     }
 
-    /**
-     * List LaunchBulkInstancesOperation resources by resource group.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param location The location name.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return list of LaunchBulkInstancesOperation resources as paginated response with {@link PagedIterable}.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.COLLECTION)
     public PagedIterable<LocationBasedLaunchBulkInstancesOperationInner> listByResourceGroup(String resourceGroupName,
         String location) {
-        return new PagedIterable<>(() -> listByResourceGroupSinglePage(resourceGroupName, location),
-            nextLink -> listByResourceGroupNextSinglePage(nextLink));
+        return listByResourceGroup(resourceGroupName, location, Context.NONE);
     }
 
-    /**
-     * List LaunchBulkInstancesOperation resources by resource group.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param location The location name.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return list of LaunchBulkInstancesOperation resources as paginated response with {@link PagedIterable}.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.COLLECTION)
     public PagedIterable<LocationBasedLaunchBulkInstancesOperationInner> listByResourceGroup(String resourceGroupName,
         String location, Context context) {
@@ -1312,11 +1107,7 @@ public final class BulkActionsClientImpl implements BulkActionsClient {
     @ServiceMethod(returns = ReturnType.SINGLE)
     private PagedResponse<LocationBasedLaunchBulkInstancesOperationInner>
         listBySubscriptionSinglePage(String location) {
-        final String accept = "application/json";
-        Response<LaunchBulkInstancesOperationListResult> res = service.listBySubscriptionSync(this.client.getEndpoint(),
-            this.client.getApiVersion(), this.client.getSubscriptionId(), location, accept, Context.NONE);
-        return new PagedResponseBase<>(res.getRequest(), res.getStatusCode(), res.getHeaders(), res.getValue().value(),
-            res.getValue().nextLink(), null);
+        return listBySubscriptionSinglePage(location, Context.NONE);
     }
 
     /**
@@ -1339,31 +1130,13 @@ public final class BulkActionsClientImpl implements BulkActionsClient {
             res.getValue().nextLink(), null);
     }
 
-    /**
-     * List LaunchBulkInstancesOperation resources by subscriptionId.
-     * 
-     * @param location The location name.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return list of LaunchBulkInstancesOperation resources as paginated response with {@link PagedIterable}.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.COLLECTION)
     public PagedIterable<LocationBasedLaunchBulkInstancesOperationInner> listBySubscription(String location) {
-        return new PagedIterable<>(() -> listBySubscriptionSinglePage(location),
-            nextLink -> listBySubscriptionNextSinglePage(nextLink));
+        return listBySubscription(location, Context.NONE);
     }
 
-    /**
-     * List LaunchBulkInstancesOperation resources by subscriptionId.
-     * 
-     * @param location The location name.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return list of LaunchBulkInstancesOperation resources as paginated response with {@link PagedIterable}.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.COLLECTION)
     public PagedIterable<LocationBasedLaunchBulkInstancesOperationInner> listBySubscription(String location,
         Context context) {
@@ -1458,12 +1231,7 @@ public final class BulkActionsClientImpl implements BulkActionsClient {
     @ServiceMethod(returns = ReturnType.SINGLE)
     private PagedResponse<VirtualMachineInner> listVirtualMachinesSinglePage(String resourceGroupName, String location,
         String name, String filter, String skiptoken) {
-        final String accept = "application/json";
-        Response<VirtualMachineListResult> res = service.listVirtualMachinesSync(this.client.getEndpoint(),
-            this.client.getApiVersion(), this.client.getSubscriptionId(), resourceGroupName, location, name, filter,
-            skiptoken, accept, Context.NONE);
-        return new PagedResponseBase<>(res.getRequest(), res.getStatusCode(), res.getHeaders(), res.getValue().value(),
-            res.getValue().nextLink(), null);
+        return listVirtualMachinesSinglePage(resourceGroupName, location, name, filter, skiptoken, Context.NONE);
     }
 
     /**
@@ -1492,42 +1260,16 @@ public final class BulkActionsClientImpl implements BulkActionsClient {
             res.getValue().nextLink(), null);
     }
 
-    /**
-     * List VirtualMachine resources of a LaunchBulkInstancesOperation.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param location The location name.
-     * @param name The name of the LaunchBulkInstancesOperation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the response of a virtual machine list operation as paginated response with {@link PagedIterable}.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.COLLECTION)
     public PagedIterable<VirtualMachineInner> listVirtualMachines(String resourceGroupName, String location,
         String name) {
         final String filter = null;
         final String skiptoken = null;
-        return new PagedIterable<>(
-            () -> listVirtualMachinesSinglePage(resourceGroupName, location, name, filter, skiptoken),
-            nextLink -> listVirtualMachinesNextSinglePage(nextLink));
+        return listVirtualMachines(resourceGroupName, location, name, filter, skiptoken, Context.NONE);
     }
 
-    /**
-     * List VirtualMachine resources of a LaunchBulkInstancesOperation.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param location The location name.
-     * @param name The name of the LaunchBulkInstancesOperation.
-     * @param filter Filter expression to filter the virtual machines.
-     * @param skiptoken Skip token for pagination. Uses the token from a previous response to fetch the next page of
-     * results.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the response of a virtual machine list operation as paginated response with {@link PagedIterable}.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.COLLECTION)
     public PagedIterable<VirtualMachineInner> listVirtualMachines(String resourceGroupName, String location,
         String name, String filter, String skiptoken, Context context) {
@@ -1578,18 +1320,7 @@ public final class BulkActionsClientImpl implements BulkActionsClient {
             .flatMap(res -> Mono.justOrEmpty(res.getValue()));
     }
 
-    /**
-     * VirtualMachinesExecuteDeallocate: Execute deallocate operation for a batch of virtual machines, this operation is
-     * triggered as soon as Computeschedule receives it.
-     * 
-     * @param location The location name.
-     * @param requestBody The request body.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the response from a deallocate request along with {@link Response}.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Response<DeallocateResourceOperationResponseInner> virtualMachinesExecuteDeallocateWithResponse(
         String location, ExecuteDeallocateRequest requestBody, Context context) {
@@ -1599,17 +1330,7 @@ public final class BulkActionsClientImpl implements BulkActionsClient {
             this.client.getSubscriptionId(), location, contentType, accept, requestBody, context);
     }
 
-    /**
-     * VirtualMachinesExecuteDeallocate: Execute deallocate operation for a batch of virtual machines, this operation is
-     * triggered as soon as Computeschedule receives it.
-     * 
-     * @param location The location name.
-     * @param requestBody The request body.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the response from a deallocate request.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public DeallocateResourceOperationResponseInner virtualMachinesExecuteDeallocate(String location,
         ExecuteDeallocateRequest requestBody) {
@@ -1658,18 +1379,7 @@ public final class BulkActionsClientImpl implements BulkActionsClient {
             .flatMap(res -> Mono.justOrEmpty(res.getValue()));
     }
 
-    /**
-     * VirtualMachinesExecuteHibernate: Execute hibernate operation for a batch of virtual machines, this operation is
-     * triggered as soon as Computeschedule receives it.
-     * 
-     * @param location The location name.
-     * @param requestBody The request body.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the response from a Hibernate request along with {@link Response}.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Response<HibernateResourceOperationResponseInner> virtualMachinesExecuteHibernateWithResponse(
         String location, ExecuteHibernateRequest requestBody, Context context) {
@@ -1679,17 +1389,7 @@ public final class BulkActionsClientImpl implements BulkActionsClient {
             this.client.getSubscriptionId(), location, contentType, accept, requestBody, context);
     }
 
-    /**
-     * VirtualMachinesExecuteHibernate: Execute hibernate operation for a batch of virtual machines, this operation is
-     * triggered as soon as Computeschedule receives it.
-     * 
-     * @param location The location name.
-     * @param requestBody The request body.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the response from a Hibernate request.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public HibernateResourceOperationResponseInner virtualMachinesExecuteHibernate(String location,
         ExecuteHibernateRequest requestBody) {
@@ -1737,18 +1437,7 @@ public final class BulkActionsClientImpl implements BulkActionsClient {
             .flatMap(res -> Mono.justOrEmpty(res.getValue()));
     }
 
-    /**
-     * VirtualMachinesExecuteStart: Execute start operation for a batch of virtual machines, this operation is triggered
-     * as soon as Computeschedule receives it.
-     * 
-     * @param location The location name.
-     * @param requestBody The request body.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the response from a start request along with {@link Response}.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Response<StartResourceOperationResponseInner> virtualMachinesExecuteStartWithResponse(String location,
         ExecuteStartRequest requestBody, Context context) {
@@ -1758,17 +1447,7 @@ public final class BulkActionsClientImpl implements BulkActionsClient {
             this.client.getSubscriptionId(), location, contentType, accept, requestBody, context);
     }
 
-    /**
-     * VirtualMachinesExecuteStart: Execute start operation for a batch of virtual machines, this operation is triggered
-     * as soon as Computeschedule receives it.
-     * 
-     * @param location The location name.
-     * @param requestBody The request body.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the response from a start request.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public StartResourceOperationResponseInner virtualMachinesExecuteStart(String location,
         ExecuteStartRequest requestBody) {
@@ -1816,18 +1495,7 @@ public final class BulkActionsClientImpl implements BulkActionsClient {
             .flatMap(res -> Mono.justOrEmpty(res.getValue()));
     }
 
-    /**
-     * VirtualMachinesExecuteCreate: Execute create operation for a batch of virtual machines, this operation is
-     * triggered as soon as Computeschedule receives it.
-     * 
-     * @param location The location name.
-     * @param requestBody The request body.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the response from a create request along with {@link Response}.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Response<CreateResourceOperationResponseInner> virtualMachinesExecuteCreateWithResponse(String location,
         ExecuteCreateRequest requestBody, Context context) {
@@ -1837,17 +1505,7 @@ public final class BulkActionsClientImpl implements BulkActionsClient {
             this.client.getSubscriptionId(), location, contentType, accept, requestBody, context);
     }
 
-    /**
-     * VirtualMachinesExecuteCreate: Execute create operation for a batch of virtual machines, this operation is
-     * triggered as soon as Computeschedule receives it.
-     * 
-     * @param location The location name.
-     * @param requestBody The request body.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the response from a create request.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public CreateResourceOperationResponseInner virtualMachinesExecuteCreate(String location,
         ExecuteCreateRequest requestBody) {
@@ -1895,18 +1553,7 @@ public final class BulkActionsClientImpl implements BulkActionsClient {
             .flatMap(res -> Mono.justOrEmpty(res.getValue()));
     }
 
-    /**
-     * VirtualMachinesExecuteDelete: Execute delete operation for a batch of virtual machines, this operation is
-     * triggered as soon as Computeschedule receives it.
-     * 
-     * @param location The location name.
-     * @param requestBody The request body.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the response from a delete request along with {@link Response}.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Response<DeleteResourceOperationResponseInner> virtualMachinesExecuteDeleteWithResponse(String location,
         ExecuteDeleteRequest requestBody, Context context) {
@@ -1916,17 +1563,7 @@ public final class BulkActionsClientImpl implements BulkActionsClient {
             this.client.getSubscriptionId(), location, contentType, accept, requestBody, context);
     }
 
-    /**
-     * VirtualMachinesExecuteDelete: Execute delete operation for a batch of virtual machines, this operation is
-     * triggered as soon as Computeschedule receives it.
-     * 
-     * @param location The location name.
-     * @param requestBody The request body.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the response from a delete request.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public DeleteResourceOperationResponseInner virtualMachinesExecuteDelete(String location,
         ExecuteDeleteRequest requestBody) {
@@ -1973,17 +1610,7 @@ public final class BulkActionsClientImpl implements BulkActionsClient {
             .flatMap(res -> Mono.justOrEmpty(res.getValue()));
     }
 
-    /**
-     * VirtualMachinesGetOperationStatus: Polling endpoint to read status of operations performed on virtual machines.
-     * 
-     * @param location The location name.
-     * @param requestBody The request body.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return this is the response from a get operations status request along with {@link Response}.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Response<GetOperationStatusResponseInner> virtualMachinesGetOperationStatusWithResponse(String location,
         GetOperationStatusRequest requestBody, Context context) {
@@ -1993,16 +1620,7 @@ public final class BulkActionsClientImpl implements BulkActionsClient {
             this.client.getSubscriptionId(), location, contentType, accept, requestBody, context);
     }
 
-    /**
-     * VirtualMachinesGetOperationStatus: Polling endpoint to read status of operations performed on virtual machines.
-     * 
-     * @param location The location name.
-     * @param requestBody The request body.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return this is the response from a get operations status request.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public GetOperationStatusResponseInner virtualMachinesGetOperationStatus(String location,
         GetOperationStatusRequest requestBody) {
@@ -2049,17 +1667,7 @@ public final class BulkActionsClientImpl implements BulkActionsClient {
             .flatMap(res -> Mono.justOrEmpty(res.getValue()));
     }
 
-    /**
-     * VirtualMachinesCancelOperations: Cancel a previously submitted (start/deallocate/hibernate) request.
-     * 
-     * @param location The location name.
-     * @param requestBody The request body.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return this is the response from a cancel operations request along with {@link Response}.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Response<CancelOperationsResponseInner> virtualMachinesCancelOperationsWithResponse(String location,
         CancelOperationsRequest requestBody, Context context) {
@@ -2069,16 +1677,7 @@ public final class BulkActionsClientImpl implements BulkActionsClient {
             this.client.getSubscriptionId(), location, contentType, accept, requestBody, context);
     }
 
-    /**
-     * VirtualMachinesCancelOperations: Cancel a previously submitted (start/deallocate/hibernate) request.
-     * 
-     * @param location The location name.
-     * @param requestBody The request body.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return this is the response from a cancel operations request.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public CancelOperationsResponseInner virtualMachinesCancelOperations(String location,
         CancelOperationsRequest requestBody) {
@@ -2120,11 +1719,7 @@ public final class BulkActionsClientImpl implements BulkActionsClient {
     @ServiceMethod(returns = ReturnType.SINGLE)
     private PagedResponse<LocationBasedLaunchBulkInstancesOperationInner>
         listByResourceGroupNextSinglePage(String nextLink) {
-        final String accept = "application/json";
-        Response<LaunchBulkInstancesOperationListResult> res
-            = service.listByResourceGroupNextSync(nextLink, this.client.getEndpoint(), accept, Context.NONE);
-        return new PagedResponseBase<>(res.getRequest(), res.getStatusCode(), res.getHeaders(), res.getValue().value(),
-            res.getValue().nextLink(), null);
+        return listByResourceGroupNextSinglePage(nextLink, Context.NONE);
     }
 
     /**
@@ -2182,11 +1777,7 @@ public final class BulkActionsClientImpl implements BulkActionsClient {
     @ServiceMethod(returns = ReturnType.SINGLE)
     private PagedResponse<LocationBasedLaunchBulkInstancesOperationInner>
         listBySubscriptionNextSinglePage(String nextLink) {
-        final String accept = "application/json";
-        Response<LaunchBulkInstancesOperationListResult> res
-            = service.listBySubscriptionNextSync(nextLink, this.client.getEndpoint(), accept, Context.NONE);
-        return new PagedResponseBase<>(res.getRequest(), res.getStatusCode(), res.getHeaders(), res.getValue().value(),
-            res.getValue().nextLink(), null);
+        return listBySubscriptionNextSinglePage(nextLink, Context.NONE);
     }
 
     /**
@@ -2241,11 +1832,7 @@ public final class BulkActionsClientImpl implements BulkActionsClient {
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private PagedResponse<VirtualMachineInner> listVirtualMachinesNextSinglePage(String nextLink) {
-        final String accept = "application/json";
-        Response<VirtualMachineListResult> res
-            = service.listVirtualMachinesNextSync(nextLink, this.client.getEndpoint(), accept, Context.NONE);
-        return new PagedResponseBase<>(res.getRequest(), res.getStatusCode(), res.getHeaders(), res.getValue().value(),
-            res.getValue().nextLink(), null);
+        return listVirtualMachinesNextSinglePage(nextLink, Context.NONE);
     }
 
     /**

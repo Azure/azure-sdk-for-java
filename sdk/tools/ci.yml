@@ -6,12 +6,16 @@ trigger:
       - release/*
   paths:
     include:
+      - sdk/tools/api-review-maven-plugin/
+      - sdk/tools/apiview-java-processor/
       - sdk/tools/azure-sdk-archetype/
       - sdk/tools/azure-sdk-build-tool/
       - sdk/tools/azure-openrewrite/
       - sdk/tools/linting-extensions/
     exclude:
       - sdk/tools/pom.xml
+      - sdk/tools/api-review-maven-plugin/pom.xml
+      - sdk/tools/apiview-java-processor/pom.xml
       - sdk/tools/azure-sdk-build-tool/pom.xml
       - sdk/tools/azure-sdk-archetype/pom.xml
       - sdk/tools/azure-openrewrite/pom.xml
@@ -26,12 +30,16 @@ pr:
       - release/*
   paths:
     include:
+      - sdk/tools/api-review-maven-plugin/
+      - sdk/tools/apiview-java-processor/
       - sdk/tools/azure-sdk-archetype/
       - sdk/tools/azure-sdk-build-tool/
       - sdk/tools/azure-openrewrite/
       - sdk/tools/linting-extensions/
     exclude:
       - sdk/tools/pom.xml
+      - sdk/tools/api-review-maven-plugin/pom.xml
+      - sdk/tools/apiview-java-processor/pom.xml
       - sdk/tools/azure-sdk-build-tool/pom.xml
       - sdk/tools/azure-sdk-archetype/pom.xml
       - sdk/tools/azure-openrewrite/pom.xml
@@ -60,6 +68,18 @@ extends:
   parameters:
     ServiceDirectory: tools
     Artifacts:
+      - name: api-review-maven-plugin
+        groupId: com.azure.tools
+        safeName: apireviewmavenplugin
+        releaseInBatch: false
+        skipPublishDocGithubIo: true
+        skipPublishDocMs: true
+      - name: apiview-java-processor
+        groupId: com.azure.tools
+        safeName: apiviewjavaprocessor
+        releaseInBatch: false
+        skipPublishDocGithubIo: true
+        skipPublishDocMs: true
       - name: azure-sdk-archetype
         groupId: com.azure.tools
         safeName: azuresdkarchetype

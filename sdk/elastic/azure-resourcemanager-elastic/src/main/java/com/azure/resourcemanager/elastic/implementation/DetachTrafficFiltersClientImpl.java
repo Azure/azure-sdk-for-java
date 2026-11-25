@@ -115,8 +115,7 @@ public final class DetachTrafficFiltersClientImpl implements DetachTrafficFilter
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Response<BinaryData> updateWithResponse(String resourceGroupName, String monitorName, String rulesetId) {
-        return service.updateSync(this.client.getEndpoint(), this.client.getApiVersion(),
-            this.client.getSubscriptionId(), resourceGroupName, monitorName, rulesetId, Context.NONE);
+        return updateWithResponse(resourceGroupName, monitorName, rulesetId, Context.NONE);
     }
 
     /**
@@ -193,41 +192,17 @@ public final class DetachTrafficFiltersClientImpl implements DetachTrafficFilter
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     private SyncPoller<PollResult<Void>, Void> beginUpdate(String resourceGroupName, String monitorName,
         String rulesetId) {
-        Response<BinaryData> response = updateWithResponse(resourceGroupName, monitorName, rulesetId);
-        return this.client.<Void, Void>getLroResult(response, Void.class, Void.class, Context.NONE);
+        return beginUpdate(resourceGroupName, monitorName, rulesetId, Context.NONE);
     }
 
-    /**
-     * Detach an existing traffic filter from your Elastic monitor resource, removing its network traffic control
-     * capabilities.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param monitorName Monitor resource name.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the {@link SyncPoller} for polling of long-running operation.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public SyncPoller<PollResult<Void>, Void> beginUpdate(String resourceGroupName, String monitorName) {
         final String rulesetId = null;
-        Response<BinaryData> response = updateWithResponse(resourceGroupName, monitorName, rulesetId);
-        return this.client.<Void, Void>getLroResult(response, Void.class, Void.class, Context.NONE);
+        return beginUpdate(resourceGroupName, monitorName, rulesetId, Context.NONE);
     }
 
-    /**
-     * Detach an existing traffic filter from your Elastic monitor resource, removing its network traffic control
-     * capabilities.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param monitorName Monitor resource name.
-     * @param rulesetId Ruleset Id of the filter.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the {@link SyncPoller} for polling of long-running operation.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public SyncPoller<PollResult<Void>, Void> beginUpdate(String resourceGroupName, String monitorName,
         String rulesetId, Context context) {
@@ -271,36 +246,16 @@ public final class DetachTrafficFiltersClientImpl implements DetachTrafficFilter
             .flatMap(this.client::getLroFinalResultOrError);
     }
 
-    /**
-     * Detach an existing traffic filter from your Elastic monitor resource, removing its network traffic control
-     * capabilities.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param monitorName Monitor resource name.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public void update(String resourceGroupName, String monitorName) {
         final String rulesetId = null;
-        beginUpdate(resourceGroupName, monitorName, rulesetId).getFinalResult();
+        update(resourceGroupName, monitorName, rulesetId, Context.NONE);
     }
 
-    /**
-     * Detach an existing traffic filter from your Elastic monitor resource, removing its network traffic control
-     * capabilities.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param monitorName Monitor resource name.
-     * @param rulesetId Ruleset Id of the filter.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public void update(String resourceGroupName, String monitorName, String rulesetId, Context context) {
-        beginUpdate(resourceGroupName, monitorName, rulesetId, context).getFinalResult();
+        this.client.getLroFinalResultOrError(beginUpdate(resourceGroupName, monitorName, rulesetId, context));
     }
 }

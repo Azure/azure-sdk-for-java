@@ -88,11 +88,7 @@ public final class StorageMoverImpl implements StorageMover, StorageMover.Defini
     }
 
     public StorageMover create() {
-        this.innerObject = serviceManager.serviceClient()
-            .getStorageMovers()
-            .createOrUpdateWithResponse(resourceGroupName, storageMoverName, this.innerModel(), Context.NONE)
-            .getValue();
-        return this;
+        return this.create(Context.NONE);
     }
 
     public StorageMover create(Context context) {
@@ -115,11 +111,7 @@ public final class StorageMoverImpl implements StorageMover, StorageMover.Defini
     }
 
     public StorageMover apply() {
-        this.innerObject = serviceManager.serviceClient()
-            .getStorageMovers()
-            .updateWithResponse(resourceGroupName, storageMoverName, updateStorageMover, Context.NONE)
-            .getValue();
-        return this;
+        return this.apply(Context.NONE);
     }
 
     public StorageMover apply(Context context) {
@@ -143,11 +135,7 @@ public final class StorageMoverImpl implements StorageMover, StorageMover.Defini
     }
 
     public StorageMover refresh() {
-        this.innerObject = serviceManager.serviceClient()
-            .getStorageMovers()
-            .getByResourceGroupWithResponse(resourceGroupName, storageMoverName, Context.NONE)
-            .getValue();
-        return this;
+        return this.refresh(Context.NONE);
     }
 
     public StorageMover refresh(Context context) {

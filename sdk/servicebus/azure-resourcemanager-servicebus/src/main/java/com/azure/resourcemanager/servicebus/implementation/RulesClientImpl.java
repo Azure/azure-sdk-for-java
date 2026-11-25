@@ -114,19 +114,7 @@ public final class RulesClientImpl implements RulesClient {
             @HeaderParam("Accept") String accept, Context context);
     }
 
-    /**
-     * Retrieves the description for the specified rule.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param namespaceName The namespace name.
-     * @param topicName The topic name.
-     * @param subscriptionName The subscription name.
-     * @param ruleName The rule name.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return description of Rule Resource along with {@link Response} on successful completion of {@link Mono}.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Response<RuleInner>> getWithResponseAsync(String resourceGroupName, String namespaceName,
         String topicName, String subscriptionName, String ruleName) {
@@ -211,19 +199,7 @@ public final class RulesClientImpl implements RulesClient {
             resourceGroupName, namespaceName, topicName, subscriptionName, ruleName, accept, context);
     }
 
-    /**
-     * Retrieves the description for the specified rule.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param namespaceName The namespace name.
-     * @param topicName The topic name.
-     * @param subscriptionName The subscription name.
-     * @param ruleName The rule name.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return description of Rule Resource on successful completion of {@link Mono}.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<RuleInner> getAsync(String resourceGroupName, String namespaceName, String topicName,
         String subscriptionName, String ruleName) {
@@ -231,20 +207,7 @@ public final class RulesClientImpl implements RulesClient {
             .flatMap(res -> Mono.justOrEmpty(res.getValue()));
     }
 
-    /**
-     * Retrieves the description for the specified rule.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param namespaceName The namespace name.
-     * @param topicName The topic name.
-     * @param subscriptionName The subscription name.
-     * @param ruleName The rule name.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return description of Rule Resource along with {@link Response}.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Response<RuleInner> getWithResponse(String resourceGroupName, String namespaceName, String topicName,
         String subscriptionName, String ruleName, Context context) {
@@ -252,19 +215,7 @@ public final class RulesClientImpl implements RulesClient {
             .block();
     }
 
-    /**
-     * Retrieves the description for the specified rule.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param namespaceName The namespace name.
-     * @param topicName The topic name.
-     * @param subscriptionName The subscription name.
-     * @param ruleName The rule name.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return description of Rule Resource.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public RuleInner get(String resourceGroupName, String namespaceName, String topicName, String subscriptionName,
         String ruleName) {
@@ -272,20 +223,7 @@ public final class RulesClientImpl implements RulesClient {
             .getValue();
     }
 
-    /**
-     * Creates a new rule and updates an existing rule.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param namespaceName The namespace name.
-     * @param topicName The topic name.
-     * @param subscriptionName The subscription name.
-     * @param ruleName The rule name.
-     * @param parameters Parameters supplied to create a rule.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return description of Rule Resource along with {@link Response} on successful completion of {@link Mono}.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Response<RuleInner>> createOrUpdateWithResponseAsync(String resourceGroupName, String namespaceName,
         String topicName, String subscriptionName, String ruleName, RuleInner parameters) {
@@ -384,20 +322,7 @@ public final class RulesClientImpl implements RulesClient {
             contentType, accept, parameters, context);
     }
 
-    /**
-     * Creates a new rule and updates an existing rule.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param namespaceName The namespace name.
-     * @param topicName The topic name.
-     * @param subscriptionName The subscription name.
-     * @param ruleName The rule name.
-     * @param parameters Parameters supplied to create a rule.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return description of Rule Resource on successful completion of {@link Mono}.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<RuleInner> createOrUpdateAsync(String resourceGroupName, String namespaceName, String topicName,
         String subscriptionName, String ruleName, RuleInner parameters) {
@@ -405,21 +330,7 @@ public final class RulesClientImpl implements RulesClient {
             parameters).flatMap(res -> Mono.justOrEmpty(res.getValue()));
     }
 
-    /**
-     * Creates a new rule and updates an existing rule.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param namespaceName The namespace name.
-     * @param topicName The topic name.
-     * @param subscriptionName The subscription name.
-     * @param ruleName The rule name.
-     * @param parameters Parameters supplied to create a rule.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return description of Rule Resource along with {@link Response}.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Response<RuleInner> createOrUpdateWithResponse(String resourceGroupName, String namespaceName,
         String topicName, String subscriptionName, String ruleName, RuleInner parameters, Context context) {
@@ -427,20 +338,7 @@ public final class RulesClientImpl implements RulesClient {
             parameters, context).block();
     }
 
-    /**
-     * Creates a new rule and updates an existing rule.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param namespaceName The namespace name.
-     * @param topicName The topic name.
-     * @param subscriptionName The subscription name.
-     * @param ruleName The rule name.
-     * @param parameters Parameters supplied to create a rule.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return description of Rule Resource.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public RuleInner createOrUpdate(String resourceGroupName, String namespaceName, String topicName,
         String subscriptionName, String ruleName, RuleInner parameters) {
@@ -448,19 +346,7 @@ public final class RulesClientImpl implements RulesClient {
             parameters, Context.NONE).getValue();
     }
 
-    /**
-     * Deletes an existing rule.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param namespaceName The namespace name.
-     * @param topicName The topic name.
-     * @param subscriptionName The subscription name.
-     * @param ruleName The rule name.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the {@link Response} on successful completion of {@link Mono}.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Response<Void>> deleteWithResponseAsync(String resourceGroupName, String namespaceName,
         String topicName, String subscriptionName, String ruleName) {
@@ -543,19 +429,7 @@ public final class RulesClientImpl implements RulesClient {
             resourceGroupName, namespaceName, topicName, subscriptionName, ruleName, context);
     }
 
-    /**
-     * Deletes an existing rule.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param namespaceName The namespace name.
-     * @param topicName The topic name.
-     * @param subscriptionName The subscription name.
-     * @param ruleName The rule name.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return A {@link Mono} that completes when a successful response is received.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Void> deleteAsync(String resourceGroupName, String namespaceName, String topicName,
         String subscriptionName, String ruleName) {
@@ -563,20 +437,7 @@ public final class RulesClientImpl implements RulesClient {
             .flatMap(ignored -> Mono.empty());
     }
 
-    /**
-     * Deletes an existing rule.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param namespaceName The namespace name.
-     * @param topicName The topic name.
-     * @param subscriptionName The subscription name.
-     * @param ruleName The rule name.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the {@link Response}.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Response<Void> deleteWithResponse(String resourceGroupName, String namespaceName, String topicName,
         String subscriptionName, String ruleName, Context context) {
@@ -584,18 +445,7 @@ public final class RulesClientImpl implements RulesClient {
             .block();
     }
 
-    /**
-     * Deletes an existing rule.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param namespaceName The namespace name.
-     * @param topicName The topic name.
-     * @param subscriptionName The subscription name.
-     * @param ruleName The rule name.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public void delete(String resourceGroupName, String namespaceName, String topicName, String subscriptionName,
         String ruleName) {
@@ -707,22 +557,7 @@ public final class RulesClientImpl implements RulesClient {
                 res.getValue().value(), res.getValue().nextLink(), null));
     }
 
-    /**
-     * List all the rules within given topic-subscription.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param namespaceName The namespace name.
-     * @param topicName The topic name.
-     * @param subscriptionName The subscription name.
-     * @param skip Skip is only used if a previous operation returned a partial result. If a previous response contains
-     * a nextLink element, the value of the nextLink element will include a skip parameter that specifies a starting
-     * point to use for subsequent calls.
-     * @param top May be used to limit the number of results to the most recent N usageDetails.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the response of a Rule list operation as paginated response with {@link PagedFlux}.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.COLLECTION)
     public PagedFlux<RuleInner> listBySubscriptionsAsync(String resourceGroupName, String namespaceName,
         String topicName, String subscriptionName, Integer skip, Integer top) {
@@ -730,18 +565,7 @@ public final class RulesClientImpl implements RulesClient {
             subscriptionName, skip, top), nextLink -> listBySubscriptionsNextSinglePageAsync(nextLink));
     }
 
-    /**
-     * List all the rules within given topic-subscription.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param namespaceName The namespace name.
-     * @param topicName The topic name.
-     * @param subscriptionName The subscription name.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the response of a Rule list operation as paginated response with {@link PagedFlux}.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.COLLECTION)
     public PagedFlux<RuleInner> listBySubscriptionsAsync(String resourceGroupName, String namespaceName,
         String topicName, String subscriptionName) {
@@ -776,18 +600,7 @@ public final class RulesClientImpl implements RulesClient {
             nextLink -> listBySubscriptionsNextSinglePageAsync(nextLink, context));
     }
 
-    /**
-     * List all the rules within given topic-subscription.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param namespaceName The namespace name.
-     * @param topicName The topic name.
-     * @param subscriptionName The subscription name.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the response of a Rule list operation as paginated response with {@link PagedIterable}.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.COLLECTION)
     public PagedIterable<RuleInner> listBySubscriptions(String resourceGroupName, String namespaceName,
         String topicName, String subscriptionName) {
@@ -797,23 +610,7 @@ public final class RulesClientImpl implements RulesClient {
             listBySubscriptionsAsync(resourceGroupName, namespaceName, topicName, subscriptionName, skip, top));
     }
 
-    /**
-     * List all the rules within given topic-subscription.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param namespaceName The namespace name.
-     * @param topicName The topic name.
-     * @param subscriptionName The subscription name.
-     * @param skip Skip is only used if a previous operation returned a partial result. If a previous response contains
-     * a nextLink element, the value of the nextLink element will include a skip parameter that specifies a starting
-     * point to use for subsequent calls.
-     * @param top May be used to limit the number of results to the most recent N usageDetails.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the response of a Rule list operation as paginated response with {@link PagedIterable}.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.COLLECTION)
     public PagedIterable<RuleInner> listBySubscriptions(String resourceGroupName, String namespaceName,
         String topicName, String subscriptionName, Integer skip, Integer top, Context context) {

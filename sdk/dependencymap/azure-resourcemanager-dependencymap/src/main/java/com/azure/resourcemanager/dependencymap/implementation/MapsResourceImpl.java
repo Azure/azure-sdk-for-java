@@ -89,10 +89,7 @@ public final class MapsResourceImpl implements MapsResource, MapsResource.Defini
     }
 
     public MapsResource create() {
-        this.innerObject = serviceManager.serviceClient()
-            .getMaps()
-            .createOrUpdate(resourceGroupName, mapName, this.innerModel(), Context.NONE);
-        return this;
+        return this.create(Context.NONE);
     }
 
     public MapsResource create(Context context) {
@@ -114,10 +111,7 @@ public final class MapsResourceImpl implements MapsResource, MapsResource.Defini
     }
 
     public MapsResource apply() {
-        this.innerObject = serviceManager.serviceClient()
-            .getMaps()
-            .update(resourceGroupName, mapName, updateProperties, Context.NONE);
-        return this;
+        return this.apply(Context.NONE);
     }
 
     public MapsResource apply(Context context) {
@@ -139,11 +133,7 @@ public final class MapsResourceImpl implements MapsResource, MapsResource.Defini
     }
 
     public MapsResource refresh() {
-        this.innerObject = serviceManager.serviceClient()
-            .getMaps()
-            .getByResourceGroupWithResponse(resourceGroupName, mapName, Context.NONE)
-            .getValue();
-        return this;
+        return this.refresh(Context.NONE);
     }
 
     public MapsResource refresh(Context context) {

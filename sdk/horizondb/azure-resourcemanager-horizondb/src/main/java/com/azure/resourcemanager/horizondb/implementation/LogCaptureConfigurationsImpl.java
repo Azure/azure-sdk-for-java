@@ -49,13 +49,7 @@ public final class LogCaptureConfigurationsImpl implements LogCaptureConfigurati
 
     public LogCaptureConfiguration update(String resourceGroupName, String clusterName,
         String logCaptureConfigurationName, LogCaptureConfigurationForPatchUpdate properties) {
-        LogCaptureConfigurationInner inner
-            = this.serviceClient().update(resourceGroupName, clusterName, logCaptureConfigurationName, properties);
-        if (inner != null) {
-            return new LogCaptureConfigurationImpl(inner, this.manager());
-        } else {
-            return null;
-        }
+        return this.update(resourceGroupName, clusterName, logCaptureConfigurationName, properties, Context.NONE);
     }
 
     public LogCaptureConfiguration update(String resourceGroupName, String clusterName,
@@ -70,8 +64,7 @@ public final class LogCaptureConfigurationsImpl implements LogCaptureConfigurati
     }
 
     public PagedIterable<LogCaptureConfiguration> list(String resourceGroupName, String clusterName) {
-        PagedIterable<LogCaptureConfigurationInner> inner = this.serviceClient().list(resourceGroupName, clusterName);
-        return ResourceManagerUtils.mapPage(inner, inner1 -> new LogCaptureConfigurationImpl(inner1, this.manager()));
+        return this.list(resourceGroupName, clusterName, Context.NONE);
     }
 
     public PagedIterable<LogCaptureConfiguration> list(String resourceGroupName, String clusterName, Context context) {

@@ -147,17 +147,7 @@ public final class DnsPrivateZonesClientImpl implements DnsPrivateZonesClient {
         return getWithResponseAsync(location, dnsprivatezonename).flatMap(res -> Mono.justOrEmpty(res.getValue()));
     }
 
-    /**
-     * Get a DnsPrivateZone.
-     * 
-     * @param location The name of the Azure region.
-     * @param dnsprivatezonename DnsPrivateZone name.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return a DnsPrivateZone along with {@link Response}.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Response<DnsPrivateZoneInner> getWithResponse(String location, String dnsprivatezonename, Context context) {
         final String accept = "application/json";
@@ -165,16 +155,7 @@ public final class DnsPrivateZonesClientImpl implements DnsPrivateZonesClient {
             location, dnsprivatezonename, accept, context);
     }
 
-    /**
-     * Get a DnsPrivateZone.
-     * 
-     * @param location The name of the Azure region.
-     * @param dnsprivatezonename DnsPrivateZone name.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return a DnsPrivateZone.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public DnsPrivateZoneInner get(String location, String dnsprivatezonename) {
         return getWithResponse(location, dnsprivatezonename, Context.NONE).getValue();
@@ -227,11 +208,7 @@ public final class DnsPrivateZonesClientImpl implements DnsPrivateZonesClient {
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private PagedResponse<DnsPrivateZoneInner> listByLocationSinglePage(String location) {
-        final String accept = "application/json";
-        Response<DnsPrivateZoneListResult> res = service.listByLocationSync(this.client.getEndpoint(),
-            this.client.getApiVersion(), this.client.getSubscriptionId(), location, accept, Context.NONE);
-        return new PagedResponseBase<>(res.getRequest(), res.getStatusCode(), res.getHeaders(), res.getValue().value(),
-            res.getValue().nextLink(), null);
+        return listByLocationSinglePage(location, Context.NONE);
     }
 
     /**
@@ -253,31 +230,13 @@ public final class DnsPrivateZonesClientImpl implements DnsPrivateZonesClient {
             res.getValue().nextLink(), null);
     }
 
-    /**
-     * List DnsPrivateZone resources by SubscriptionLocationResource.
-     * 
-     * @param location The name of the Azure region.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the response of a DnsPrivateZone list operation as paginated response with {@link PagedIterable}.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.COLLECTION)
     public PagedIterable<DnsPrivateZoneInner> listByLocation(String location) {
-        return new PagedIterable<>(() -> listByLocationSinglePage(location),
-            nextLink -> listByLocationNextSinglePage(nextLink));
+        return listByLocation(location, Context.NONE);
     }
 
-    /**
-     * List DnsPrivateZone resources by SubscriptionLocationResource.
-     * 
-     * @param location The name of the Azure region.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the response of a DnsPrivateZone list operation as paginated response with {@link PagedIterable}.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.COLLECTION)
     public PagedIterable<DnsPrivateZoneInner> listByLocation(String location, Context context) {
         return new PagedIterable<>(() -> listByLocationSinglePage(location, context),
@@ -315,11 +274,7 @@ public final class DnsPrivateZonesClientImpl implements DnsPrivateZonesClient {
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private PagedResponse<DnsPrivateZoneInner> listByLocationNextSinglePage(String nextLink) {
-        final String accept = "application/json";
-        Response<DnsPrivateZoneListResult> res
-            = service.listByLocationNextSync(nextLink, this.client.getEndpoint(), accept, Context.NONE);
-        return new PagedResponseBase<>(res.getRequest(), res.getStatusCode(), res.getHeaders(), res.getValue().value(),
-            res.getValue().nextLink(), null);
+        return listByLocationNextSinglePage(nextLink, Context.NONE);
     }
 
     /**

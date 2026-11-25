@@ -60,10 +60,7 @@ public final class SiteReferenceImpl implements SiteReference, SiteReference.Def
     }
 
     public SiteReference create() {
-        this.innerObject = serviceManager.serviceClient()
-            .getSiteReferences()
-            .createOrUpdate(resourceGroupName, contextName, siteReferenceName, this.innerModel(), Context.NONE);
-        return this;
+        return this.create(Context.NONE);
     }
 
     public SiteReference create(Context context) {
@@ -85,10 +82,7 @@ public final class SiteReferenceImpl implements SiteReference, SiteReference.Def
     }
 
     public SiteReference apply() {
-        this.innerObject = serviceManager.serviceClient()
-            .getSiteReferences()
-            .update(resourceGroupName, contextName, siteReferenceName, this.innerModel(), Context.NONE);
-        return this;
+        return this.apply(Context.NONE);
     }
 
     public SiteReference apply(Context context) {
@@ -114,11 +108,7 @@ public final class SiteReferenceImpl implements SiteReference, SiteReference.Def
     }
 
     public SiteReference refresh() {
-        this.innerObject = serviceManager.serviceClient()
-            .getSiteReferences()
-            .getWithResponse(resourceGroupName, contextName, siteReferenceName, Context.NONE)
-            .getValue();
-        return this;
+        return this.refresh(Context.NONE);
     }
 
     public SiteReference refresh(Context context) {

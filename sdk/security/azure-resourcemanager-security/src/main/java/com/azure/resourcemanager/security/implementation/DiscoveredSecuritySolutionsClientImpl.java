@@ -210,37 +210,14 @@ public final class DiscoveredSecuritySolutionsClientImpl implements DiscoveredSe
             .flatMap(res -> Mono.justOrEmpty(res.getValue()));
     }
 
-    /**
-     * Gets a specific discovered Security Solution.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param ascLocation The location where ASC stores the data of the subscription. can be retrieved from Get
-     * locations.
-     * @param discoveredSecuritySolutionName Name of a discovered security solution.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return a specific discovered Security Solution along with {@link Response}.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Response<DiscoveredSecuritySolutionInner> getWithResponse(String resourceGroupName, String ascLocation,
         String discoveredSecuritySolutionName, Context context) {
         return getWithResponseAsync(resourceGroupName, ascLocation, discoveredSecuritySolutionName, context).block();
     }
 
-    /**
-     * Gets a specific discovered Security Solution.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param ascLocation The location where ASC stores the data of the subscription. can be retrieved from Get
-     * locations.
-     * @param discoveredSecuritySolutionName Name of a discovered security solution.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return a specific discovered Security Solution.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public DiscoveredSecuritySolutionInner get(String resourceGroupName, String ascLocation,
         String discoveredSecuritySolutionName) {
@@ -352,34 +329,13 @@ public final class DiscoveredSecuritySolutionsClientImpl implements DiscoveredSe
             nextLink -> listByHomeRegionNextSinglePageAsync(nextLink, context));
     }
 
-    /**
-     * Gets a list of discovered Security Solutions for the subscription and location.
-     * 
-     * @param ascLocation The location where ASC stores the data of the subscription. can be retrieved from Get
-     * locations.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return a list of discovered Security Solutions for the subscription and location as paginated response with
-     * {@link PagedIterable}.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.COLLECTION)
     public PagedIterable<DiscoveredSecuritySolutionInner> listByHomeRegion(String ascLocation) {
         return new PagedIterable<>(listByHomeRegionAsync(ascLocation));
     }
 
-    /**
-     * Gets a list of discovered Security Solutions for the subscription and location.
-     * 
-     * @param ascLocation The location where ASC stores the data of the subscription. can be retrieved from Get
-     * locations.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return a list of discovered Security Solutions for the subscription and location as paginated response with
-     * {@link PagedIterable}.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.COLLECTION)
     public PagedIterable<DiscoveredSecuritySolutionInner> listByHomeRegion(String ascLocation, Context context) {
         return new PagedIterable<>(listByHomeRegionAsync(ascLocation, context));
@@ -470,29 +426,13 @@ public final class DiscoveredSecuritySolutionsClientImpl implements DiscoveredSe
             nextLink -> listNextSinglePageAsync(nextLink, context));
     }
 
-    /**
-     * Gets a list of discovered Security Solutions for the subscription.
-     * 
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return a list of discovered Security Solutions for the subscription as paginated response with
-     * {@link PagedIterable}.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.COLLECTION)
     public PagedIterable<DiscoveredSecuritySolutionInner> list() {
         return new PagedIterable<>(listAsync());
     }
 
-    /**
-     * Gets a list of discovered Security Solutions for the subscription.
-     * 
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return a list of discovered Security Solutions for the subscription as paginated response with
-     * {@link PagedIterable}.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.COLLECTION)
     public PagedIterable<DiscoveredSecuritySolutionInner> list(Context context) {
         return new PagedIterable<>(listAsync(context));

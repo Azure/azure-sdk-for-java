@@ -175,26 +175,7 @@ public final class EgressTrustBundlesClientImpl implements EgressTrustBundlesCli
             .flatMap(res -> Mono.justOrEmpty(res.getValue()));
     }
 
-    /**
-     * Gets the egress TLS-inspection trust bundle for the fabric.
-     * 
-     * The bundle changes rarely, so callers are expected to cache it for the advertised
-     * validity period rather than reading it per workload. To decide whether a cached copy is
-     * still current, compare `bundleVersion`: it is derived from the anchor set, so it changes
-     * exactly when the anchors change and is stable otherwise. Every read returns the full
-     * bundle together with refreshed cache metadata.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param agentFabricName The name of the AgentFabric.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the egress TLS-inspection trust bundle for the fabric.
-     * 
-     * The bundle changes rarely, so callers are expected to cache it for the advertised
-     * validity period rather than reading it per workload along with {@link Response}.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Response<EgressTrustBundleInner> getWithResponse(String resourceGroupName, String agentFabricName,
         Context context) {
@@ -204,25 +185,7 @@ public final class EgressTrustBundlesClientImpl implements EgressTrustBundlesCli
             resourceGroupName, agentFabricName, accept, context);
     }
 
-    /**
-     * Gets the egress TLS-inspection trust bundle for the fabric.
-     * 
-     * The bundle changes rarely, so callers are expected to cache it for the advertised
-     * validity period rather than reading it per workload. To decide whether a cached copy is
-     * still current, compare `bundleVersion`: it is derived from the anchor set, so it changes
-     * exactly when the anchors change and is stable otherwise. Every read returns the full
-     * bundle together with refreshed cache metadata.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param agentFabricName The name of the AgentFabric.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the egress TLS-inspection trust bundle for the fabric.
-     * 
-     * The bundle changes rarely, so callers are expected to cache it for the advertised
-     * validity period rather than reading it per workload.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public EgressTrustBundleInner get(String resourceGroupName, String agentFabricName) {
         return getWithResponse(resourceGroupName, agentFabricName, Context.NONE).getValue();
@@ -287,12 +250,7 @@ public final class EgressTrustBundlesClientImpl implements EgressTrustBundlesCli
     @ServiceMethod(returns = ReturnType.SINGLE)
     private PagedResponse<EgressTrustBundleInner> listByParentSinglePage(String resourceGroupName,
         String agentFabricName) {
-        final String apiVersion = "2026-11-03-preview";
-        final String accept = "application/json";
-        Response<EgressTrustBundleListResult> res = service.listByParentSync(this.client.getEndpoint(), apiVersion,
-            this.client.getSubscriptionId(), resourceGroupName, agentFabricName, accept, Context.NONE);
-        return new PagedResponseBase<>(res.getRequest(), res.getStatusCode(), res.getHeaders(), res.getValue().value(),
-            res.getValue().nextLink(), null);
+        return listByParentSinglePage(resourceGroupName, agentFabricName, Context.NONE);
     }
 
     /**
@@ -319,37 +277,13 @@ public final class EgressTrustBundlesClientImpl implements EgressTrustBundlesCli
             res.getValue().nextLink(), null);
     }
 
-    /**
-     * Lists the egress TLS-inspection trust bundles for the fabric. The bundle is a singleton,
-     * so this returns the single `default` bundle. It exists because Azure Policy cannot
-     * populate compliance data for a resource type that has no collection GET.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param agentFabricName The name of the AgentFabric.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the response of a EgressTrustBundle list operation as paginated response with {@link PagedIterable}.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.COLLECTION)
     public PagedIterable<EgressTrustBundleInner> listByParent(String resourceGroupName, String agentFabricName) {
-        return new PagedIterable<>(() -> listByParentSinglePage(resourceGroupName, agentFabricName),
-            nextLink -> listByParentNextSinglePage(nextLink));
+        return listByParent(resourceGroupName, agentFabricName, Context.NONE);
     }
 
-    /**
-     * Lists the egress TLS-inspection trust bundles for the fabric. The bundle is a singleton,
-     * so this returns the single `default` bundle. It exists because Azure Policy cannot
-     * populate compliance data for a resource type that has no collection GET.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param agentFabricName The name of the AgentFabric.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the response of a EgressTrustBundle list operation as paginated response with {@link PagedIterable}.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.COLLECTION)
     public PagedIterable<EgressTrustBundleInner> listByParent(String resourceGroupName, String agentFabricName,
         Context context) {
@@ -388,11 +322,7 @@ public final class EgressTrustBundlesClientImpl implements EgressTrustBundlesCli
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private PagedResponse<EgressTrustBundleInner> listByParentNextSinglePage(String nextLink) {
-        final String accept = "application/json";
-        Response<EgressTrustBundleListResult> res
-            = service.listByParentNextSync(nextLink, this.client.getEndpoint(), accept, Context.NONE);
-        return new PagedResponseBase<>(res.getRequest(), res.getStatusCode(), res.getHeaders(), res.getValue().value(),
-            res.getValue().nextLink(), null);
+        return listByParentNextSinglePage(nextLink, Context.NONE);
     }
 
     /**

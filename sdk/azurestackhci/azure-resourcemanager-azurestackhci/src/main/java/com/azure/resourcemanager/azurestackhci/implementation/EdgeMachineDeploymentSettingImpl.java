@@ -61,10 +61,7 @@ public final class EdgeMachineDeploymentSettingImpl implements EdgeMachineDeploy
     }
 
     public EdgeMachineDeploymentSetting create() {
-        this.innerObject = serviceManager.serviceClient()
-            .getEdgeMachineDeploymentSettings()
-            .createOrUpdate(resourceGroupName, edgeMachineName, deploymentSettingName, this.innerModel(), Context.NONE);
-        return this;
+        return this.create(Context.NONE);
     }
 
     public EdgeMachineDeploymentSetting create(Context context) {
@@ -86,10 +83,7 @@ public final class EdgeMachineDeploymentSettingImpl implements EdgeMachineDeploy
     }
 
     public EdgeMachineDeploymentSetting apply() {
-        this.innerObject = serviceManager.serviceClient()
-            .getEdgeMachineDeploymentSettings()
-            .createOrUpdate(resourceGroupName, edgeMachineName, deploymentSettingName, this.innerModel(), Context.NONE);
-        return this;
+        return this.apply(Context.NONE);
     }
 
     public EdgeMachineDeploymentSetting apply(Context context) {
@@ -115,11 +109,7 @@ public final class EdgeMachineDeploymentSettingImpl implements EdgeMachineDeploy
     }
 
     public EdgeMachineDeploymentSetting refresh() {
-        this.innerObject = serviceManager.serviceClient()
-            .getEdgeMachineDeploymentSettings()
-            .getWithResponse(resourceGroupName, edgeMachineName, deploymentSettingName, Context.NONE)
-            .getValue();
-        return this;
+        return this.refresh(Context.NONE);
     }
 
     public EdgeMachineDeploymentSetting refresh(Context context) {

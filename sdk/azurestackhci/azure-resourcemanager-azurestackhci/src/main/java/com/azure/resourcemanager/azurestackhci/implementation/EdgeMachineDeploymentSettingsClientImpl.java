@@ -212,18 +212,7 @@ public final class EdgeMachineDeploymentSettingsClientImpl implements EdgeMachin
             .flatMap(res -> Mono.justOrEmpty(res.getValue()));
     }
 
-    /**
-     * Get an Edge Machine Deployment Setting.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param edgeMachineName Name of Device.
-     * @param deploymentSettingName Name of Edge Machine Deployment Setting.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return an Edge Machine Deployment Setting along with {@link Response}.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Response<EdgeMachineDeploymentSettingInner> getWithResponse(String resourceGroupName, String edgeMachineName,
         String deploymentSettingName, Context context) {
@@ -232,17 +221,7 @@ public final class EdgeMachineDeploymentSettingsClientImpl implements EdgeMachin
             resourceGroupName, edgeMachineName, deploymentSettingName, accept, context);
     }
 
-    /**
-     * Get an Edge Machine Deployment Setting.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param edgeMachineName Name of Device.
-     * @param deploymentSettingName Name of Edge Machine Deployment Setting.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return an Edge Machine Deployment Setting.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public EdgeMachineDeploymentSettingInner get(String resourceGroupName, String edgeMachineName,
         String deploymentSettingName) {
@@ -289,11 +268,8 @@ public final class EdgeMachineDeploymentSettingsClientImpl implements EdgeMachin
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Response<BinaryData> createOrUpdateWithResponse(String resourceGroupName, String edgeMachineName,
         String deploymentSettingName, EdgeMachineDeploymentSettingInner resource) {
-        final String contentType = "application/json";
-        final String accept = "application/json";
-        return service.createOrUpdateSync(this.client.getEndpoint(), this.client.getApiVersion(),
-            this.client.getSubscriptionId(), resourceGroupName, edgeMachineName, deploymentSettingName, contentType,
-            accept, resource, Context.NONE);
+        return createOrUpdateWithResponse(resourceGroupName, edgeMachineName, deploymentSettingName, resource,
+            Context.NONE);
     }
 
     /**
@@ -342,41 +318,15 @@ public final class EdgeMachineDeploymentSettingsClientImpl implements EdgeMachin
             EdgeMachineDeploymentSettingInner.class, this.client.getContext());
     }
 
-    /**
-     * Create or update an Edge Machine Deployment Setting.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param edgeMachineName Name of Device.
-     * @param deploymentSettingName Name of Edge Machine Deployment Setting.
-     * @param resource Resource create parameters.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the {@link SyncPoller} for polling of deployment setting resource for an Edge Machine.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public SyncPoller<PollResult<EdgeMachineDeploymentSettingInner>, EdgeMachineDeploymentSettingInner>
         beginCreateOrUpdate(String resourceGroupName, String edgeMachineName, String deploymentSettingName,
             EdgeMachineDeploymentSettingInner resource) {
-        Response<BinaryData> response
-            = createOrUpdateWithResponse(resourceGroupName, edgeMachineName, deploymentSettingName, resource);
-        return this.client.<EdgeMachineDeploymentSettingInner, EdgeMachineDeploymentSettingInner>getLroResult(response,
-            EdgeMachineDeploymentSettingInner.class, EdgeMachineDeploymentSettingInner.class, Context.NONE);
+        return beginCreateOrUpdate(resourceGroupName, edgeMachineName, deploymentSettingName, resource, Context.NONE);
     }
 
-    /**
-     * Create or update an Edge Machine Deployment Setting.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param edgeMachineName Name of Device.
-     * @param deploymentSettingName Name of Edge Machine Deployment Setting.
-     * @param resource Resource create parameters.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the {@link SyncPoller} for polling of deployment setting resource for an Edge Machine.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public SyncPoller<PollResult<EdgeMachineDeploymentSettingInner>, EdgeMachineDeploymentSettingInner>
         beginCreateOrUpdate(String resourceGroupName, String edgeMachineName, String deploymentSettingName,
@@ -406,43 +356,19 @@ public final class EdgeMachineDeploymentSettingsClientImpl implements EdgeMachin
             .flatMap(this.client::getLroFinalResultOrError);
     }
 
-    /**
-     * Create or update an Edge Machine Deployment Setting.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param edgeMachineName Name of Device.
-     * @param deploymentSettingName Name of Edge Machine Deployment Setting.
-     * @param resource Resource create parameters.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return deployment setting resource for an Edge Machine.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public EdgeMachineDeploymentSettingInner createOrUpdate(String resourceGroupName, String edgeMachineName,
         String deploymentSettingName, EdgeMachineDeploymentSettingInner resource) {
-        return beginCreateOrUpdate(resourceGroupName, edgeMachineName, deploymentSettingName, resource)
-            .getFinalResult();
+        return createOrUpdate(resourceGroupName, edgeMachineName, deploymentSettingName, resource, Context.NONE);
     }
 
-    /**
-     * Create or update an Edge Machine Deployment Setting.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param edgeMachineName Name of Device.
-     * @param deploymentSettingName Name of Edge Machine Deployment Setting.
-     * @param resource Resource create parameters.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return deployment setting resource for an Edge Machine.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public EdgeMachineDeploymentSettingInner createOrUpdate(String resourceGroupName, String edgeMachineName,
         String deploymentSettingName, EdgeMachineDeploymentSettingInner resource, Context context) {
-        return beginCreateOrUpdate(resourceGroupName, edgeMachineName, deploymentSettingName, resource, context)
-            .getFinalResult();
+        return this.client.getLroFinalResultOrError(
+            beginCreateOrUpdate(resourceGroupName, edgeMachineName, deploymentSettingName, resource, context));
     }
 
     /**
@@ -479,8 +405,7 @@ public final class EdgeMachineDeploymentSettingsClientImpl implements EdgeMachin
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Response<BinaryData> deleteWithResponse(String resourceGroupName, String edgeMachineName,
         String deploymentSettingName) {
-        return service.deleteSync(this.client.getEndpoint(), this.client.getApiVersion(),
-            this.client.getSubscriptionId(), resourceGroupName, edgeMachineName, deploymentSettingName, Context.NONE);
+        return deleteWithResponse(resourceGroupName, edgeMachineName, deploymentSettingName, Context.NONE);
     }
 
     /**
@@ -522,36 +447,14 @@ public final class EdgeMachineDeploymentSettingsClientImpl implements EdgeMachin
             this.client.getContext());
     }
 
-    /**
-     * Delete an Edge Machine Deployment Setting.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param edgeMachineName Name of Device.
-     * @param deploymentSettingName Name of Edge Machine Deployment Setting.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the {@link SyncPoller} for polling of long-running operation.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public SyncPoller<PollResult<Void>, Void> beginDelete(String resourceGroupName, String edgeMachineName,
         String deploymentSettingName) {
-        Response<BinaryData> response = deleteWithResponse(resourceGroupName, edgeMachineName, deploymentSettingName);
-        return this.client.<Void, Void>getLroResult(response, Void.class, Void.class, Context.NONE);
+        return beginDelete(resourceGroupName, edgeMachineName, deploymentSettingName, Context.NONE);
     }
 
-    /**
-     * Delete an Edge Machine Deployment Setting.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param edgeMachineName Name of Device.
-     * @param deploymentSettingName Name of Edge Machine Deployment Setting.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the {@link SyncPoller} for polling of long-running operation.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public SyncPoller<PollResult<Void>, Void> beginDelete(String resourceGroupName, String edgeMachineName,
         String deploymentSettingName, Context context) {
@@ -577,36 +480,18 @@ public final class EdgeMachineDeploymentSettingsClientImpl implements EdgeMachin
             .flatMap(this.client::getLroFinalResultOrError);
     }
 
-    /**
-     * Delete an Edge Machine Deployment Setting.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param edgeMachineName Name of Device.
-     * @param deploymentSettingName Name of Edge Machine Deployment Setting.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public void delete(String resourceGroupName, String edgeMachineName, String deploymentSettingName) {
-        beginDelete(resourceGroupName, edgeMachineName, deploymentSettingName).getFinalResult();
+        delete(resourceGroupName, edgeMachineName, deploymentSettingName, Context.NONE);
     }
 
-    /**
-     * Delete an Edge Machine Deployment Setting.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param edgeMachineName Name of Device.
-     * @param deploymentSettingName Name of Edge Machine Deployment Setting.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public void delete(String resourceGroupName, String edgeMachineName, String deploymentSettingName,
         Context context) {
-        beginDelete(resourceGroupName, edgeMachineName, deploymentSettingName, context).getFinalResult();
+        this.client
+            .getLroFinalResultOrError(beginDelete(resourceGroupName, edgeMachineName, deploymentSettingName, context));
     }
 
     /**
@@ -663,12 +548,7 @@ public final class EdgeMachineDeploymentSettingsClientImpl implements EdgeMachin
     @ServiceMethod(returns = ReturnType.SINGLE)
     private PagedResponse<EdgeMachineDeploymentSettingInner> listByEdgeMachineSinglePage(String resourceGroupName,
         String edgeMachineName) {
-        final String accept = "application/json";
-        Response<EdgeMachineDeploymentSettingListResult> res
-            = service.listByEdgeMachineSync(this.client.getEndpoint(), this.client.getApiVersion(),
-                this.client.getSubscriptionId(), resourceGroupName, edgeMachineName, accept, Context.NONE);
-        return new PagedResponseBase<>(res.getRequest(), res.getStatusCode(), res.getHeaders(), res.getValue().value(),
-            res.getValue().nextLink(), null);
+        return listByEdgeMachineSinglePage(resourceGroupName, edgeMachineName, Context.NONE);
     }
 
     /**
@@ -693,36 +573,14 @@ public final class EdgeMachineDeploymentSettingsClientImpl implements EdgeMachin
             res.getValue().nextLink(), null);
     }
 
-    /**
-     * List Edge Machine Deployment Setting resources by Edge Machine.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param edgeMachineName Name of Device.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the response of a EdgeMachineDeploymentSetting list operation as paginated response with
-     * {@link PagedIterable}.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.COLLECTION)
     public PagedIterable<EdgeMachineDeploymentSettingInner> listByEdgeMachine(String resourceGroupName,
         String edgeMachineName) {
-        return new PagedIterable<>(() -> listByEdgeMachineSinglePage(resourceGroupName, edgeMachineName),
-            nextLink -> listByEdgeMachineNextSinglePage(nextLink));
+        return listByEdgeMachine(resourceGroupName, edgeMachineName, Context.NONE);
     }
 
-    /**
-     * List Edge Machine Deployment Setting resources by Edge Machine.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param edgeMachineName Name of Device.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the response of a EdgeMachineDeploymentSetting list operation as paginated response with
-     * {@link PagedIterable}.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.COLLECTION)
     public PagedIterable<EdgeMachineDeploymentSettingInner> listByEdgeMachine(String resourceGroupName,
         String edgeMachineName, Context context) {
@@ -762,11 +620,7 @@ public final class EdgeMachineDeploymentSettingsClientImpl implements EdgeMachin
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private PagedResponse<EdgeMachineDeploymentSettingInner> listByEdgeMachineNextSinglePage(String nextLink) {
-        final String accept = "application/json";
-        Response<EdgeMachineDeploymentSettingListResult> res
-            = service.listByEdgeMachineNextSync(nextLink, this.client.getEndpoint(), accept, Context.NONE);
-        return new PagedResponseBase<>(res.getRequest(), res.getStatusCode(), res.getHeaders(), res.getValue().value(),
-            res.getValue().nextLink(), null);
+        return listByEdgeMachineNextSinglePage(nextLink, Context.NONE);
     }
 
     /**

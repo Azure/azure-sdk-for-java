@@ -95,10 +95,7 @@ public final class NetworkAnchorImpl implements NetworkAnchor, NetworkAnchor.Def
     }
 
     public NetworkAnchor create() {
-        this.innerObject = serviceManager.serviceClient()
-            .getNetworkAnchors()
-            .createOrUpdate(resourceGroupName, networkAnchorName, this.innerModel(), Context.NONE);
-        return this;
+        return this.create(Context.NONE);
     }
 
     public NetworkAnchor create(Context context) {
@@ -120,10 +117,7 @@ public final class NetworkAnchorImpl implements NetworkAnchor, NetworkAnchor.Def
     }
 
     public NetworkAnchor apply() {
-        this.innerObject = serviceManager.serviceClient()
-            .getNetworkAnchors()
-            .update(resourceGroupName, networkAnchorName, updateProperties, Context.NONE);
-        return this;
+        return this.apply(Context.NONE);
     }
 
     public NetworkAnchor apply(Context context) {
@@ -146,11 +140,7 @@ public final class NetworkAnchorImpl implements NetworkAnchor, NetworkAnchor.Def
     }
 
     public NetworkAnchor refresh() {
-        this.innerObject = serviceManager.serviceClient()
-            .getNetworkAnchors()
-            .getByResourceGroupWithResponse(resourceGroupName, networkAnchorName, Context.NONE)
-            .getValue();
-        return this;
+        return this.refresh(Context.NONE);
     }
 
     public NetworkAnchor refresh(Context context) {

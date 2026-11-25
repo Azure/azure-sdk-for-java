@@ -162,17 +162,7 @@ public final class UsagesClientImpl implements UsagesClient {
                 res.getValue().value(), res.getValue().nextLink(), null));
     }
 
-    /**
-     * Gets all instance pool usage metrics.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param instancePoolName The name of the instance pool to be retrieved.
-     * @param expandChildren Optional request parameter to include managed instance usages within the instance pool.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return all instance pool usage metrics as paginated response with {@link PagedFlux}.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.COLLECTION)
     public PagedFlux<UsageInner> listByInstancePoolAsync(String resourceGroupName, String instancePoolName,
         Boolean expandChildren) {
@@ -181,16 +171,7 @@ public final class UsagesClientImpl implements UsagesClient {
             nextLink -> listByInstancePoolNextSinglePageAsync(nextLink));
     }
 
-    /**
-     * Gets all instance pool usage metrics.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param instancePoolName The name of the instance pool to be retrieved.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return all instance pool usage metrics as paginated response with {@link PagedFlux}.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.COLLECTION)
     public PagedFlux<UsageInner> listByInstancePoolAsync(String resourceGroupName, String instancePoolName) {
         final Boolean expandChildren = null;
@@ -219,34 +200,14 @@ public final class UsagesClientImpl implements UsagesClient {
             nextLink -> listByInstancePoolNextSinglePageAsync(nextLink, context));
     }
 
-    /**
-     * Gets all instance pool usage metrics.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param instancePoolName The name of the instance pool to be retrieved.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return all instance pool usage metrics as paginated response with {@link PagedIterable}.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.COLLECTION)
     public PagedIterable<UsageInner> listByInstancePool(String resourceGroupName, String instancePoolName) {
         final Boolean expandChildren = null;
         return new PagedIterable<>(listByInstancePoolAsync(resourceGroupName, instancePoolName, expandChildren));
     }
 
-    /**
-     * Gets all instance pool usage metrics.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param instancePoolName The name of the instance pool to be retrieved.
-     * @param expandChildren Optional request parameter to include managed instance usages within the instance pool.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return all instance pool usage metrics as paginated response with {@link PagedIterable}.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.COLLECTION)
     public PagedIterable<UsageInner> listByInstancePool(String resourceGroupName, String instancePoolName,
         Boolean expandChildren, Context context) {

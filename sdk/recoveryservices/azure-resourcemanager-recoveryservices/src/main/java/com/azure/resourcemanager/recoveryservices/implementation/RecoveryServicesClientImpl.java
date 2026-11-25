@@ -145,21 +145,7 @@ public final class RecoveryServicesClientImpl implements RecoveryServicesClient 
             .flatMap(res -> Mono.justOrEmpty(res.getValue()));
     }
 
-    /**
-     * API to check for resource name availability.
-     * A name is available if no other resource exists that has the same SubscriptionId, Resource Name and Type
-     * or if one or more such resources exist, each of these must be GC'd and their time of deletion be more than 24
-     * Hours Ago.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param location The name of the Azure region.
-     * @param input Contains information about Resource type and Resource name.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return response for check name availability API along with {@link Response}.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Response<CheckNameAvailabilityResultInner> checkNameAvailabilityWithResponse(String resourceGroupName,
         String location, CheckNameAvailabilityParameters input, Context context) {
@@ -169,20 +155,7 @@ public final class RecoveryServicesClientImpl implements RecoveryServicesClient 
             this.client.getSubscriptionId(), resourceGroupName, location, contentType, accept, input, context);
     }
 
-    /**
-     * API to check for resource name availability.
-     * A name is available if no other resource exists that has the same SubscriptionId, Resource Name and Type
-     * or if one or more such resources exist, each of these must be GC'd and their time of deletion be more than 24
-     * Hours Ago.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param location The name of the Azure region.
-     * @param input Contains information about Resource type and Resource name.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return response for check name availability API.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public CheckNameAvailabilityResultInner checkNameAvailability(String resourceGroupName, String location,
         CheckNameAvailabilityParameters input) {
@@ -226,17 +199,7 @@ public final class RecoveryServicesClientImpl implements RecoveryServicesClient 
         return capabilitiesWithResponseAsync(location, input).flatMap(res -> Mono.justOrEmpty(res.getValue()));
     }
 
-    /**
-     * API to get details about capabilities provided by Microsoft.RecoveryServices RP.
-     * 
-     * @param location The location of the resource.
-     * @param input The request body.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return capabilities response for Microsoft.RecoveryServices along with {@link Response}.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Response<CapabilitiesResponseInner> capabilitiesWithResponse(String location, ResourceCapabilities input,
         Context context) {
@@ -246,16 +209,7 @@ public final class RecoveryServicesClientImpl implements RecoveryServicesClient 
             this.client.getSubscriptionId(), location, contentType, accept, input, context);
     }
 
-    /**
-     * API to get details about capabilities provided by Microsoft.RecoveryServices RP.
-     * 
-     * @param location The location of the resource.
-     * @param input The request body.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return capabilities response for Microsoft.RecoveryServices.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public CapabilitiesResponseInner capabilities(String location, ResourceCapabilities input) {
         return capabilitiesWithResponse(location, input, Context.NONE).getValue();

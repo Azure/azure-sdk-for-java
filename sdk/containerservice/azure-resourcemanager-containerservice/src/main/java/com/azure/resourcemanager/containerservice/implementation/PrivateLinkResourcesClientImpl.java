@@ -67,21 +67,7 @@ public final class PrivateLinkResourcesClientImpl implements PrivateLinkResource
             @HeaderParam("Accept") String accept, Context context);
     }
 
-    /**
-     * Gets a list of private link resources in the specified managed cluster.
-     * 
-     * To learn more about private clusters, see: https://docs.microsoft.com/azure/aks/private-clusters.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param resourceName The name of the managed cluster resource.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return a list of private link resources in the specified managed cluster.
-     * 
-     * To learn more about private clusters, see: https://docs.microsoft.com/azure/aks/private-clusters along with
-     * {@link Response} on successful completion of {@link Mono}.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Response<PrivateLinkResourcesListResultInner>> listWithResponseAsync(String resourceGroupName,
         String resourceName) {
@@ -147,62 +133,20 @@ public final class PrivateLinkResourcesClientImpl implements PrivateLinkResource
             resourceGroupName, resourceName, accept, context);
     }
 
-    /**
-     * Gets a list of private link resources in the specified managed cluster.
-     * 
-     * To learn more about private clusters, see: https://docs.microsoft.com/azure/aks/private-clusters.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param resourceName The name of the managed cluster resource.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return a list of private link resources in the specified managed cluster.
-     * 
-     * To learn more about private clusters, see: https://docs.microsoft.com/azure/aks/private-clusters on successful
-     * completion of {@link Mono}.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<PrivateLinkResourcesListResultInner> listAsync(String resourceGroupName, String resourceName) {
         return listWithResponseAsync(resourceGroupName, resourceName).flatMap(res -> Mono.justOrEmpty(res.getValue()));
     }
 
-    /**
-     * Gets a list of private link resources in the specified managed cluster.
-     * 
-     * To learn more about private clusters, see: https://docs.microsoft.com/azure/aks/private-clusters.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param resourceName The name of the managed cluster resource.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return a list of private link resources in the specified managed cluster.
-     * 
-     * To learn more about private clusters, see: https://docs.microsoft.com/azure/aks/private-clusters along with
-     * {@link Response}.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Response<PrivateLinkResourcesListResultInner> listWithResponse(String resourceGroupName, String resourceName,
         Context context) {
         return listWithResponseAsync(resourceGroupName, resourceName, context).block();
     }
 
-    /**
-     * Gets a list of private link resources in the specified managed cluster.
-     * 
-     * To learn more about private clusters, see: https://docs.microsoft.com/azure/aks/private-clusters.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param resourceName The name of the managed cluster resource.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return a list of private link resources in the specified managed cluster.
-     * 
-     * To learn more about private clusters, see: https://docs.microsoft.com/azure/aks/private-clusters.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public PrivateLinkResourcesListResultInner list(String resourceGroupName, String resourceName) {
         return listWithResponse(resourceGroupName, resourceName, Context.NONE).getValue();

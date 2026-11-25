@@ -60,10 +60,7 @@ public final class ClusterJobImpl implements ClusterJob, ClusterJob.Definition, 
     }
 
     public ClusterJob create() {
-        this.innerObject = serviceManager.serviceClient()
-            .getClusterJobs()
-            .createOrUpdate(resourceGroupName, clusterName, jobsName, this.innerModel(), Context.NONE);
-        return this;
+        return this.create(Context.NONE);
     }
 
     public ClusterJob create(Context context) {
@@ -84,10 +81,7 @@ public final class ClusterJobImpl implements ClusterJob, ClusterJob.Definition, 
     }
 
     public ClusterJob apply() {
-        this.innerObject = serviceManager.serviceClient()
-            .getClusterJobs()
-            .createOrUpdate(resourceGroupName, clusterName, jobsName, this.innerModel(), Context.NONE);
-        return this;
+        return this.apply(Context.NONE);
     }
 
     public ClusterJob apply(Context context) {
@@ -113,11 +107,7 @@ public final class ClusterJobImpl implements ClusterJob, ClusterJob.Definition, 
     }
 
     public ClusterJob refresh() {
-        this.innerObject = serviceManager.serviceClient()
-            .getClusterJobs()
-            .getWithResponse(resourceGroupName, clusterName, jobsName, Context.NONE)
-            .getValue();
-        return this;
+        return this.refresh(Context.NONE);
     }
 
     public ClusterJob refresh(Context context) {

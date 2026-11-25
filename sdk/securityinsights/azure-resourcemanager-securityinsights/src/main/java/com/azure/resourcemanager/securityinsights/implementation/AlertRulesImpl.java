@@ -68,12 +68,11 @@ public final class AlertRulesImpl implements AlertRules {
     }
 
     public void delete(String resourceGroupName, String workspaceName, String ruleId) {
-        this.serviceClient().delete(resourceGroupName, workspaceName, ruleId);
+        this.deleteWithResponse(resourceGroupName, workspaceName, ruleId, Context.NONE);
     }
 
     public PagedIterable<AlertRule> list(String resourceGroupName, String workspaceName) {
-        PagedIterable<AlertRuleInner> inner = this.serviceClient().list(resourceGroupName, workspaceName);
-        return ResourceManagerUtils.mapPage(inner, inner1 -> new AlertRuleImpl(inner1, this.manager()));
+        return this.list(resourceGroupName, workspaceName, Context.NONE);
     }
 
     public PagedIterable<AlertRule> list(String resourceGroupName, String workspaceName, Context context) {

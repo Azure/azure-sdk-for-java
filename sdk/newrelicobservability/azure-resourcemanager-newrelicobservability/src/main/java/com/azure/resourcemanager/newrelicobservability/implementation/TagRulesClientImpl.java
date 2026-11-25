@@ -224,19 +224,7 @@ public final class TagRulesClientImpl implements TagRulesClient {
             .flatMap(res -> Mono.justOrEmpty(res.getValue()));
     }
 
-    /**
-     * Retrieves the details of the tag rules for a specific New Relic monitor resource, providing insight into its
-     * setup and status.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param monitorName Name of the Monitors resource.
-     * @param ruleSetName Name of the TagRule.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return a tag rule belonging to NewRelic account along with {@link Response}.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Response<TagRuleInner> getWithResponse(String resourceGroupName, String monitorName, String ruleSetName,
         Context context) {
@@ -245,18 +233,7 @@ public final class TagRulesClientImpl implements TagRulesClient {
             resourceGroupName, monitorName, ruleSetName, accept, context);
     }
 
-    /**
-     * Retrieves the details of the tag rules for a specific New Relic monitor resource, providing insight into its
-     * setup and status.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param monitorName Name of the Monitors resource.
-     * @param ruleSetName Name of the TagRule.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return a tag rule belonging to NewRelic account.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public TagRuleInner get(String resourceGroupName, String monitorName, String ruleSetName) {
         return getWithResponse(resourceGroupName, monitorName, ruleSetName, Context.NONE).getValue();
@@ -304,11 +281,7 @@ public final class TagRulesClientImpl implements TagRulesClient {
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Response<BinaryData> createOrUpdateWithResponse(String resourceGroupName, String monitorName,
         String ruleSetName, TagRuleInner resource) {
-        final String contentType = "application/json";
-        final String accept = "application/json";
-        return service.createOrUpdateSync(this.client.getEndpoint(), this.client.getApiVersion(),
-            this.client.getSubscriptionId(), resourceGroupName, monitorName, ruleSetName, contentType, accept, resource,
-            Context.NONE);
+        return createOrUpdateWithResponse(resourceGroupName, monitorName, ruleSetName, resource, Context.NONE);
     }
 
     /**
@@ -357,42 +330,14 @@ public final class TagRulesClientImpl implements TagRulesClient {
             TagRuleInner.class, TagRuleInner.class, this.client.getContext());
     }
 
-    /**
-     * Creates a new set of tag rules for a specific New Relic monitor resource, determining which Azure resources are
-     * monitored based on their tags.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param monitorName Name of the Monitors resource.
-     * @param ruleSetName Name of the TagRule.
-     * @param resource Resource create parameters.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the {@link SyncPoller} for polling of a tag rule belonging to NewRelic account.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public SyncPoller<PollResult<TagRuleInner>, TagRuleInner> beginCreateOrUpdate(String resourceGroupName,
         String monitorName, String ruleSetName, TagRuleInner resource) {
-        Response<BinaryData> response
-            = createOrUpdateWithResponse(resourceGroupName, monitorName, ruleSetName, resource);
-        return this.client.<TagRuleInner, TagRuleInner>getLroResult(response, TagRuleInner.class, TagRuleInner.class,
-            Context.NONE);
+        return beginCreateOrUpdate(resourceGroupName, monitorName, ruleSetName, resource, Context.NONE);
     }
 
-    /**
-     * Creates a new set of tag rules for a specific New Relic monitor resource, determining which Azure resources are
-     * monitored based on their tags.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param monitorName Name of the Monitors resource.
-     * @param ruleSetName Name of the TagRule.
-     * @param resource Resource create parameters.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the {@link SyncPoller} for polling of a tag rule belonging to NewRelic account.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public SyncPoller<PollResult<TagRuleInner>, TagRuleInner> beginCreateOrUpdate(String resourceGroupName,
         String monitorName, String ruleSetName, TagRuleInner resource, Context context) {
@@ -422,43 +367,19 @@ public final class TagRulesClientImpl implements TagRulesClient {
             .flatMap(this.client::getLroFinalResultOrError);
     }
 
-    /**
-     * Creates a new set of tag rules for a specific New Relic monitor resource, determining which Azure resources are
-     * monitored based on their tags.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param monitorName Name of the Monitors resource.
-     * @param ruleSetName Name of the TagRule.
-     * @param resource Resource create parameters.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return a tag rule belonging to NewRelic account.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public TagRuleInner createOrUpdate(String resourceGroupName, String monitorName, String ruleSetName,
         TagRuleInner resource) {
-        return beginCreateOrUpdate(resourceGroupName, monitorName, ruleSetName, resource).getFinalResult();
+        return createOrUpdate(resourceGroupName, monitorName, ruleSetName, resource, Context.NONE);
     }
 
-    /**
-     * Creates a new set of tag rules for a specific New Relic monitor resource, determining which Azure resources are
-     * monitored based on their tags.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param monitorName Name of the Monitors resource.
-     * @param ruleSetName Name of the TagRule.
-     * @param resource Resource create parameters.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return a tag rule belonging to NewRelic account.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public TagRuleInner createOrUpdate(String resourceGroupName, String monitorName, String ruleSetName,
         TagRuleInner resource, Context context) {
-        return beginCreateOrUpdate(resourceGroupName, monitorName, ruleSetName, resource, context).getFinalResult();
+        return this.client.getLroFinalResultOrError(
+            beginCreateOrUpdate(resourceGroupName, monitorName, ruleSetName, resource, context));
     }
 
     /**
@@ -507,20 +428,7 @@ public final class TagRulesClientImpl implements TagRulesClient {
             .flatMap(res -> Mono.justOrEmpty(res.getValue()));
     }
 
-    /**
-     * Updates the tag rules for a specific New Relic monitor resource, allowing you to modify the rules that control
-     * which Azure resources are monitored.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param monitorName Name of the Monitors resource.
-     * @param ruleSetName Name of the TagRule.
-     * @param properties The resource properties to be updated.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return a tag rule belonging to NewRelic account along with {@link Response}.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Response<TagRuleInner> updateWithResponse(String resourceGroupName, String monitorName, String ruleSetName,
         TagRuleUpdateInner properties, Context context) {
@@ -531,19 +439,7 @@ public final class TagRulesClientImpl implements TagRulesClient {
             properties, context);
     }
 
-    /**
-     * Updates the tag rules for a specific New Relic monitor resource, allowing you to modify the rules that control
-     * which Azure resources are monitored.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param monitorName Name of the Monitors resource.
-     * @param ruleSetName Name of the TagRule.
-     * @param properties The resource properties to be updated.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return a tag rule belonging to NewRelic account.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public TagRuleInner update(String resourceGroupName, String monitorName, String ruleSetName,
         TagRuleUpdateInner properties) {
@@ -585,8 +481,7 @@ public final class TagRulesClientImpl implements TagRulesClient {
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Response<BinaryData> deleteWithResponse(String resourceGroupName, String monitorName, String ruleSetName) {
-        return service.deleteSync(this.client.getEndpoint(), this.client.getApiVersion(),
-            this.client.getSubscriptionId(), resourceGroupName, monitorName, ruleSetName, Context.NONE);
+        return deleteWithResponse(resourceGroupName, monitorName, ruleSetName, Context.NONE);
     }
 
     /**
@@ -629,38 +524,14 @@ public final class TagRulesClientImpl implements TagRulesClient {
             this.client.getContext());
     }
 
-    /**
-     * Deletes a tag rule set for a given New Relic monitor resource, removing fine-grained control over observability
-     * based on resource tags.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param monitorName Name of the Monitors resource.
-     * @param ruleSetName Name of the TagRule.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the {@link SyncPoller} for polling of long-running operation.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public SyncPoller<PollResult<Void>, Void> beginDelete(String resourceGroupName, String monitorName,
         String ruleSetName) {
-        Response<BinaryData> response = deleteWithResponse(resourceGroupName, monitorName, ruleSetName);
-        return this.client.<Void, Void>getLroResult(response, Void.class, Void.class, Context.NONE);
+        return beginDelete(resourceGroupName, monitorName, ruleSetName, Context.NONE);
     }
 
-    /**
-     * Deletes a tag rule set for a given New Relic monitor resource, removing fine-grained control over observability
-     * based on resource tags.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param monitorName Name of the Monitors resource.
-     * @param ruleSetName Name of the TagRule.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the {@link SyncPoller} for polling of long-running operation.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public SyncPoller<PollResult<Void>, Void> beginDelete(String resourceGroupName, String monitorName,
         String ruleSetName, Context context) {
@@ -686,37 +557,16 @@ public final class TagRulesClientImpl implements TagRulesClient {
             .flatMap(this.client::getLroFinalResultOrError);
     }
 
-    /**
-     * Deletes a tag rule set for a given New Relic monitor resource, removing fine-grained control over observability
-     * based on resource tags.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param monitorName Name of the Monitors resource.
-     * @param ruleSetName Name of the TagRule.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public void delete(String resourceGroupName, String monitorName, String ruleSetName) {
-        beginDelete(resourceGroupName, monitorName, ruleSetName).getFinalResult();
+        delete(resourceGroupName, monitorName, ruleSetName, Context.NONE);
     }
 
-    /**
-     * Deletes a tag rule set for a given New Relic monitor resource, removing fine-grained control over observability
-     * based on resource tags.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param monitorName Name of the Monitors resource.
-     * @param ruleSetName Name of the TagRule.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public void delete(String resourceGroupName, String monitorName, String ruleSetName, Context context) {
-        beginDelete(resourceGroupName, monitorName, ruleSetName, context).getFinalResult();
+        this.client.getLroFinalResultOrError(beginDelete(resourceGroupName, monitorName, ruleSetName, context));
     }
 
     /**
@@ -775,12 +625,7 @@ public final class TagRulesClientImpl implements TagRulesClient {
     @ServiceMethod(returns = ReturnType.SINGLE)
     private PagedResponse<TagRuleInner> listByNewRelicMonitorResourceSinglePage(String resourceGroupName,
         String monitorName) {
-        final String accept = "application/json";
-        Response<TagRuleListResult> res
-            = service.listByNewRelicMonitorResourceSync(this.client.getEndpoint(), this.client.getApiVersion(),
-                this.client.getSubscriptionId(), resourceGroupName, monitorName, accept, Context.NONE);
-        return new PagedResponseBase<>(res.getRequest(), res.getStatusCode(), res.getHeaders(), res.getValue().value(),
-            res.getValue().nextLink(), null);
+        return listByNewRelicMonitorResourceSinglePage(resourceGroupName, monitorName, Context.NONE);
     }
 
     /**
@@ -806,35 +651,13 @@ public final class TagRulesClientImpl implements TagRulesClient {
             res.getValue().nextLink(), null);
     }
 
-    /**
-     * Lists all tag rules associated with a specific New Relic monitor resource, helping you manage and audit the rules
-     * that control resource monitoring.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param monitorName Name of the Monitors resource.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the response of a TagRule list operation as paginated response with {@link PagedIterable}.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.COLLECTION)
     public PagedIterable<TagRuleInner> listByNewRelicMonitorResource(String resourceGroupName, String monitorName) {
-        return new PagedIterable<>(() -> listByNewRelicMonitorResourceSinglePage(resourceGroupName, monitorName),
-            nextLink -> listByNewRelicMonitorResourceNextSinglePage(nextLink));
+        return listByNewRelicMonitorResource(resourceGroupName, monitorName, Context.NONE);
     }
 
-    /**
-     * Lists all tag rules associated with a specific New Relic monitor resource, helping you manage and audit the rules
-     * that control resource monitoring.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param monitorName Name of the Monitors resource.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the response of a TagRule list operation as paginated response with {@link PagedIterable}.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.COLLECTION)
     public PagedIterable<TagRuleInner> listByNewRelicMonitorResource(String resourceGroupName, String monitorName,
         Context context) {
@@ -874,11 +697,7 @@ public final class TagRulesClientImpl implements TagRulesClient {
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private PagedResponse<TagRuleInner> listByNewRelicMonitorResourceNextSinglePage(String nextLink) {
-        final String accept = "application/json";
-        Response<TagRuleListResult> res
-            = service.listByNewRelicMonitorResourceNextSync(nextLink, this.client.getEndpoint(), accept, Context.NONE);
-        return new PagedResponseBase<>(res.getRequest(), res.getStatusCode(), res.getHeaders(), res.getValue().value(),
-            res.getValue().nextLink(), null);
+        return listByNewRelicMonitorResourceNextSinglePage(nextLink, Context.NONE);
     }
 
     /**

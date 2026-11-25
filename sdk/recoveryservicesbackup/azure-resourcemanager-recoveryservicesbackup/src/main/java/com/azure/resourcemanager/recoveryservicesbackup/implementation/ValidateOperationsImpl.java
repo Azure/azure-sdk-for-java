@@ -24,7 +24,7 @@ public final class ValidateOperationsImpl implements ValidateOperations {
     }
 
     public void trigger(String vaultName, String resourceGroupName, ValidateOperationRequestResource parameters) {
-        this.serviceClient().trigger(vaultName, resourceGroupName, parameters);
+        this.trigger(vaultName, resourceGroupName, parameters, Context.NONE);
     }
 
     public void trigger(String vaultName, String resourceGroupName, ValidateOperationRequestResource parameters,

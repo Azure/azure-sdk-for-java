@@ -26,8 +26,7 @@ public final class ResourceDetailsImpl implements ResourceDetails {
     }
 
     public PagedIterable<ResourceDetailsObject> listByPool(String resourceGroupName, String poolName) {
-        PagedIterable<ResourceDetailsObjectInner> inner = this.serviceClient().listByPool(resourceGroupName, poolName);
-        return ResourceManagerUtils.mapPage(inner, inner1 -> new ResourceDetailsObjectImpl(inner1, this.manager()));
+        return this.listByPool(resourceGroupName, poolName, Context.NONE);
     }
 
     public PagedIterable<ResourceDetailsObject> listByPool(String resourceGroupName, String poolName, Context context) {

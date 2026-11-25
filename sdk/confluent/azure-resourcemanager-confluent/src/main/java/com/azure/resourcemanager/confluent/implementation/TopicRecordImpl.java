@@ -22,6 +22,21 @@ public final class TopicRecordImpl implements TopicRecord, TopicRecord.Definitio
     TopicRecordImpl(TopicRecordInner innerObject, com.azure.resourcemanager.confluent.ConfluentManager serviceManager) {
         this.innerObject = innerObject;
         this.serviceManager = serviceManager;
+        this.resourceGroupName = ResourceManagerUtils.getValueFromIdByParameterName(innerObject.id(),
+            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Confluent/organizations/{organizationName}/environments/{environmentId}/clusters/{clusterId}/topics/{topicName}",
+            "resourceGroupName");
+        this.organizationName = ResourceManagerUtils.getValueFromIdByParameterName(innerObject.id(),
+            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Confluent/organizations/{organizationName}/environments/{environmentId}/clusters/{clusterId}/topics/{topicName}",
+            "organizationName");
+        this.environmentId = ResourceManagerUtils.getValueFromIdByParameterName(innerObject.id(),
+            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Confluent/organizations/{organizationName}/environments/{environmentId}/clusters/{clusterId}/topics/{topicName}",
+            "environmentId");
+        this.clusterId = ResourceManagerUtils.getValueFromIdByParameterName(innerObject.id(),
+            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Confluent/organizations/{organizationName}/environments/{environmentId}/clusters/{clusterId}/topics/{topicName}",
+            "clusterId");
+        this.topicName = ResourceManagerUtils.getValueFromIdByParameterName(innerObject.id(),
+            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Confluent/organizations/{organizationName}/environments/{environmentId}/clusters/{clusterId}/topics/{topicName}",
+            "topicName");
     }
 
     public String id() {
@@ -109,12 +124,7 @@ public final class TopicRecordImpl implements TopicRecord, TopicRecord.Definitio
     }
 
     public TopicRecord create() {
-        this.innerObject = serviceManager.serviceClient()
-            .getTopics()
-            .createWithResponse(resourceGroupName, organizationName, environmentId, clusterId, topicName,
-                this.innerModel(), Context.NONE)
-            .getValue();
-        return this;
+        return this.create(Context.NONE);
     }
 
     public TopicRecord create(Context context) {
@@ -133,11 +143,7 @@ public final class TopicRecordImpl implements TopicRecord, TopicRecord.Definitio
     }
 
     public TopicRecord refresh() {
-        this.innerObject = serviceManager.serviceClient()
-            .getTopics()
-            .getWithResponse(resourceGroupName, organizationName, environmentId, clusterId, topicName, Context.NONE)
-            .getValue();
-        return this;
+        return this.refresh(Context.NONE);
     }
 
     public TopicRecord refresh(Context context) {

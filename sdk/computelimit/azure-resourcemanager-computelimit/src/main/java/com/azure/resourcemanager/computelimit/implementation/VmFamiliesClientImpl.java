@@ -149,17 +149,7 @@ public final class VmFamiliesClientImpl implements VmFamiliesClient {
         return getWithResponseAsync(location, vmFamilyName).flatMap(res -> Mono.justOrEmpty(res.getValue()));
     }
 
-    /**
-     * Gets the properties of a VM family.
-     * 
-     * @param location The name of the Azure region.
-     * @param vmFamilyName The name of the VmFamily.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the properties of a VM family along with {@link Response}.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Response<VmFamilyInner> getWithResponse(String location, String vmFamilyName, Context context) {
         final String accept = "application/json";
@@ -167,16 +157,7 @@ public final class VmFamiliesClientImpl implements VmFamiliesClient {
             location, vmFamilyName, accept, context);
     }
 
-    /**
-     * Gets the properties of a VM family.
-     * 
-     * @param location The name of the Azure region.
-     * @param vmFamilyName The name of the VmFamily.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the properties of a VM family.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public VmFamilyInner get(String location, String vmFamilyName) {
         return getWithResponse(location, vmFamilyName, Context.NONE).getValue();
@@ -252,11 +233,7 @@ public final class VmFamiliesClientImpl implements VmFamiliesClient {
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private PagedResponse<VmFamilyInner> listBySubscriptionLocationResourceSinglePage(String location, String filter) {
-        final String accept = "application/json";
-        Response<VmFamilyListResult> res = service.listBySubscriptionLocationResourceSync(this.client.getEndpoint(),
-            this.client.getApiVersion(), this.client.getSubscriptionId(), location, filter, accept, Context.NONE);
-        return new PagedResponseBase<>(res.getRequest(), res.getStatusCode(), res.getHeaders(), res.getValue().value(),
-            res.getValue().nextLink(), null);
+        return listBySubscriptionLocationResourceSinglePage(location, filter, Context.NONE);
     }
 
     /**
@@ -281,34 +258,14 @@ public final class VmFamiliesClientImpl implements VmFamiliesClient {
             res.getValue().nextLink(), null);
     }
 
-    /**
-     * Lists all VM families for the subscription at the specified location.
-     * 
-     * @param location The name of the Azure region.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the response of a VmFamily list operation as paginated response with {@link PagedIterable}.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.COLLECTION)
     public PagedIterable<VmFamilyInner> listBySubscriptionLocationResource(String location) {
         final String filter = null;
-        return new PagedIterable<>(() -> listBySubscriptionLocationResourceSinglePage(location, filter),
-            nextLink -> listBySubscriptionLocationResourceNextSinglePage(nextLink));
+        return listBySubscriptionLocationResource(location, filter, Context.NONE);
     }
 
-    /**
-     * Lists all VM families for the subscription at the specified location.
-     * 
-     * @param location The name of the Azure region.
-     * @param filter The filter to apply to the list operation. Filter can be applied to the 'category' property.
-     * Example: $filter=category eq 'generalPurposeCategory'.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the response of a VmFamily list operation as paginated response with {@link PagedIterable}.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.COLLECTION)
     public PagedIterable<VmFamilyInner> listBySubscriptionLocationResource(String location, String filter,
         Context context) {
@@ -348,11 +305,7 @@ public final class VmFamiliesClientImpl implements VmFamiliesClient {
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private PagedResponse<VmFamilyInner> listBySubscriptionLocationResourceNextSinglePage(String nextLink) {
-        final String accept = "application/json";
-        Response<VmFamilyListResult> res = service.listBySubscriptionLocationResourceNextSync(nextLink,
-            this.client.getEndpoint(), accept, Context.NONE);
-        return new PagedResponseBase<>(res.getRequest(), res.getStatusCode(), res.getHeaders(), res.getValue().value(),
-            res.getValue().nextLink(), null);
+        return listBySubscriptionLocationResourceNextSinglePage(nextLink, Context.NONE);
     }
 
     /**

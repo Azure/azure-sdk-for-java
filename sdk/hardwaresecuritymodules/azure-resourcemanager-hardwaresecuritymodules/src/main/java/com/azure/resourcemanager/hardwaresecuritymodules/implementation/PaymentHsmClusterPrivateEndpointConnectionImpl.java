@@ -20,6 +20,15 @@ public final class PaymentHsmClusterPrivateEndpointConnectionImpl
         com.azure.resourcemanager.hardwaresecuritymodules.HardwareSecurityModulesManager serviceManager) {
         this.innerObject = innerObject;
         this.serviceManager = serviceManager;
+        this.resourceGroupName = ResourceManagerUtils.getValueFromIdByParameterName(innerObject.id(),
+            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.HardwareSecurityModules/paymentHsmClusters/{paymentHsmClusterName}/privateEndpointConnections/{peConnectionName}",
+            "resourceGroupName");
+        this.paymentHsmClusterName = ResourceManagerUtils.getValueFromIdByParameterName(innerObject.id(),
+            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.HardwareSecurityModules/paymentHsmClusters/{paymentHsmClusterName}/privateEndpointConnections/{peConnectionName}",
+            "paymentHsmClusterName");
+        this.peConnectionName = ResourceManagerUtils.getValueFromIdByParameterName(innerObject.id(),
+            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.HardwareSecurityModules/paymentHsmClusters/{paymentHsmClusterName}/privateEndpointConnections/{peConnectionName}",
+            "peConnectionName");
     }
 
     public String id() {
@@ -68,12 +77,7 @@ public final class PaymentHsmClusterPrivateEndpointConnectionImpl
     }
 
     public PaymentHsmClusterPrivateEndpointConnection create() {
-        this.innerObject = serviceManager.serviceClient()
-            .getPaymentHsmClusterPrivateEndpointConnections()
-            .createWithResponse(resourceGroupName, paymentHsmClusterName, peConnectionName, this.innerModel(),
-                Context.NONE)
-            .getValue();
-        return this;
+        return this.create(Context.NONE);
     }
 
     public PaymentHsmClusterPrivateEndpointConnection create(Context context) {
@@ -92,11 +96,7 @@ public final class PaymentHsmClusterPrivateEndpointConnectionImpl
     }
 
     public PaymentHsmClusterPrivateEndpointConnection refresh() {
-        this.innerObject = serviceManager.serviceClient()
-            .getPaymentHsmClusterPrivateEndpointConnections()
-            .getWithResponse(resourceGroupName, paymentHsmClusterName, peConnectionName, Context.NONE)
-            .getValue();
-        return this;
+        return this.refresh(Context.NONE);
     }
 
     public PaymentHsmClusterPrivateEndpointConnection refresh(Context context) {
