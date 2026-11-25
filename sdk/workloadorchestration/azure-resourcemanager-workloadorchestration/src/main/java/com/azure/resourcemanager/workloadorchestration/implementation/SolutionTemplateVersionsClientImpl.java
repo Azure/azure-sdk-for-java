@@ -220,18 +220,7 @@ public final class SolutionTemplateVersionsClientImpl implements SolutionTemplat
             .flatMap(res -> Mono.justOrEmpty(res.getValue()));
     }
 
-    /**
-     * Get a Solution Template Version Resource.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param solutionTemplateName The name of the SolutionTemplate.
-     * @param solutionTemplateVersionName The name of the SolutionTemplateVersion.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return a Solution Template Version Resource along with {@link Response}.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Response<SolutionTemplateVersionInner> getWithResponse(String resourceGroupName, String solutionTemplateName,
         String solutionTemplateVersionName, Context context) {
@@ -240,17 +229,7 @@ public final class SolutionTemplateVersionsClientImpl implements SolutionTemplat
             resourceGroupName, solutionTemplateName, solutionTemplateVersionName, accept, context);
     }
 
-    /**
-     * Get a Solution Template Version Resource.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param solutionTemplateName The name of the SolutionTemplate.
-     * @param solutionTemplateVersionName The name of the SolutionTemplateVersion.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return a Solution Template Version Resource.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public SolutionTemplateVersionInner get(String resourceGroupName, String solutionTemplateName,
         String solutionTemplateVersionName) {
@@ -312,12 +291,7 @@ public final class SolutionTemplateVersionsClientImpl implements SolutionTemplat
     @ServiceMethod(returns = ReturnType.SINGLE)
     private PagedResponse<SolutionTemplateVersionInner> listBySolutionTemplateSinglePage(String resourceGroupName,
         String solutionTemplateName) {
-        final String accept = "application/json";
-        Response<SolutionTemplateVersionListResult> res
-            = service.listBySolutionTemplateSync(this.client.getEndpoint(), this.client.getApiVersion(),
-                this.client.getSubscriptionId(), resourceGroupName, solutionTemplateName, accept, Context.NONE);
-        return new PagedResponseBase<>(res.getRequest(), res.getStatusCode(), res.getHeaders(), res.getValue().value(),
-            res.getValue().nextLink(), null);
+        return listBySolutionTemplateSinglePage(resourceGroupName, solutionTemplateName, Context.NONE);
     }
 
     /**
@@ -342,36 +316,14 @@ public final class SolutionTemplateVersionsClientImpl implements SolutionTemplat
             res.getValue().nextLink(), null);
     }
 
-    /**
-     * List Solution Template Version Resources.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param solutionTemplateName The name of the SolutionTemplate.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the response of a SolutionTemplateVersion list operation as paginated response with
-     * {@link PagedIterable}.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.COLLECTION)
     public PagedIterable<SolutionTemplateVersionInner> listBySolutionTemplate(String resourceGroupName,
         String solutionTemplateName) {
-        return new PagedIterable<>(() -> listBySolutionTemplateSinglePage(resourceGroupName, solutionTemplateName),
-            nextLink -> listBySolutionTemplateNextSinglePage(nextLink));
+        return listBySolutionTemplate(resourceGroupName, solutionTemplateName, Context.NONE);
     }
 
-    /**
-     * List Solution Template Version Resources.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param solutionTemplateName The name of the SolutionTemplate.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the response of a SolutionTemplateVersion list operation as paginated response with
-     * {@link PagedIterable}.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.COLLECTION)
     public PagedIterable<SolutionTemplateVersionInner> listBySolutionTemplate(String resourceGroupName,
         String solutionTemplateName, Context context) {
@@ -418,10 +370,8 @@ public final class SolutionTemplateVersionsClientImpl implements SolutionTemplat
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Response<BinaryData> bulkDeploySolutionWithResponse(String resourceGroupName, String solutionTemplateName,
         String solutionTemplateVersionName, BulkDeploySolutionParameter body) {
-        final String contentType = "application/json";
-        return service.bulkDeploySolutionSync(this.client.getEndpoint(), this.client.getApiVersion(),
-            this.client.getSubscriptionId(), resourceGroupName, solutionTemplateName, solutionTemplateVersionName,
-            contentType, body, Context.NONE);
+        return bulkDeploySolutionWithResponse(resourceGroupName, solutionTemplateName, solutionTemplateVersionName,
+            body, Context.NONE);
     }
 
     /**
@@ -467,39 +417,15 @@ public final class SolutionTemplateVersionsClientImpl implements SolutionTemplat
             this.client.getContext());
     }
 
-    /**
-     * Post request for bulk deploy.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param solutionTemplateName The name of the SolutionTemplate.
-     * @param solutionTemplateVersionName The name of the SolutionTemplateVersion.
-     * @param body The content of the action request.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the {@link SyncPoller} for polling of long-running operation.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public SyncPoller<PollResult<Void>, Void> beginBulkDeploySolution(String resourceGroupName,
         String solutionTemplateName, String solutionTemplateVersionName, BulkDeploySolutionParameter body) {
-        Response<BinaryData> response = bulkDeploySolutionWithResponse(resourceGroupName, solutionTemplateName,
-            solutionTemplateVersionName, body);
-        return this.client.<Void, Void>getLroResult(response, Void.class, Void.class, Context.NONE);
+        return beginBulkDeploySolution(resourceGroupName, solutionTemplateName, solutionTemplateVersionName, body,
+            Context.NONE);
     }
 
-    /**
-     * Post request for bulk deploy.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param solutionTemplateName The name of the SolutionTemplate.
-     * @param solutionTemplateVersionName The name of the SolutionTemplateVersion.
-     * @param body The content of the action request.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the {@link SyncPoller} for polling of long-running operation.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public SyncPoller<PollResult<Void>, Void> beginBulkDeploySolution(String resourceGroupName,
         String solutionTemplateName, String solutionTemplateVersionName, BulkDeploySolutionParameter body,
@@ -529,41 +455,19 @@ public final class SolutionTemplateVersionsClientImpl implements SolutionTemplat
             .flatMap(this.client::getLroFinalResultOrError);
     }
 
-    /**
-     * Post request for bulk deploy.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param solutionTemplateName The name of the SolutionTemplate.
-     * @param solutionTemplateVersionName The name of the SolutionTemplateVersion.
-     * @param body The content of the action request.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public void bulkDeploySolution(String resourceGroupName, String solutionTemplateName,
         String solutionTemplateVersionName, BulkDeploySolutionParameter body) {
-        beginBulkDeploySolution(resourceGroupName, solutionTemplateName, solutionTemplateVersionName, body)
-            .getFinalResult();
+        bulkDeploySolution(resourceGroupName, solutionTemplateName, solutionTemplateVersionName, body, Context.NONE);
     }
 
-    /**
-     * Post request for bulk deploy.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param solutionTemplateName The name of the SolutionTemplate.
-     * @param solutionTemplateVersionName The name of the SolutionTemplateVersion.
-     * @param body The content of the action request.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public void bulkDeploySolution(String resourceGroupName, String solutionTemplateName,
         String solutionTemplateVersionName, BulkDeploySolutionParameter body, Context context) {
-        beginBulkDeploySolution(resourceGroupName, solutionTemplateName, solutionTemplateVersionName, body, context)
-            .getFinalResult();
+        this.client.getLroFinalResultOrError(beginBulkDeploySolution(resourceGroupName, solutionTemplateName,
+            solutionTemplateVersionName, body, context));
     }
 
     /**
@@ -604,10 +508,8 @@ public final class SolutionTemplateVersionsClientImpl implements SolutionTemplat
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Response<BinaryData> bulkPublishSolutionWithResponse(String resourceGroupName, String solutionTemplateName,
         String solutionTemplateVersionName, BulkPublishSolutionParameter body) {
-        final String contentType = "application/json";
-        return service.bulkPublishSolutionSync(this.client.getEndpoint(), this.client.getApiVersion(),
-            this.client.getSubscriptionId(), resourceGroupName, solutionTemplateName, solutionTemplateVersionName,
-            contentType, body, Context.NONE);
+        return bulkPublishSolutionWithResponse(resourceGroupName, solutionTemplateName, solutionTemplateVersionName,
+            body, Context.NONE);
     }
 
     /**
@@ -653,39 +555,15 @@ public final class SolutionTemplateVersionsClientImpl implements SolutionTemplat
             this.client.getContext());
     }
 
-    /**
-     * Post request for bulk publish.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param solutionTemplateName The name of the SolutionTemplate.
-     * @param solutionTemplateVersionName The name of the SolutionTemplateVersion.
-     * @param body The content of the action request.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the {@link SyncPoller} for polling of long-running operation.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public SyncPoller<PollResult<Void>, Void> beginBulkPublishSolution(String resourceGroupName,
         String solutionTemplateName, String solutionTemplateVersionName, BulkPublishSolutionParameter body) {
-        Response<BinaryData> response = bulkPublishSolutionWithResponse(resourceGroupName, solutionTemplateName,
-            solutionTemplateVersionName, body);
-        return this.client.<Void, Void>getLroResult(response, Void.class, Void.class, Context.NONE);
+        return beginBulkPublishSolution(resourceGroupName, solutionTemplateName, solutionTemplateVersionName, body,
+            Context.NONE);
     }
 
-    /**
-     * Post request for bulk publish.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param solutionTemplateName The name of the SolutionTemplate.
-     * @param solutionTemplateVersionName The name of the SolutionTemplateVersion.
-     * @param body The content of the action request.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the {@link SyncPoller} for polling of long-running operation.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public SyncPoller<PollResult<Void>, Void> beginBulkPublishSolution(String resourceGroupName,
         String solutionTemplateName, String solutionTemplateVersionName, BulkPublishSolutionParameter body,
@@ -715,41 +593,19 @@ public final class SolutionTemplateVersionsClientImpl implements SolutionTemplat
             .flatMap(this.client::getLroFinalResultOrError);
     }
 
-    /**
-     * Post request for bulk publish.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param solutionTemplateName The name of the SolutionTemplate.
-     * @param solutionTemplateVersionName The name of the SolutionTemplateVersion.
-     * @param body The content of the action request.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public void bulkPublishSolution(String resourceGroupName, String solutionTemplateName,
         String solutionTemplateVersionName, BulkPublishSolutionParameter body) {
-        beginBulkPublishSolution(resourceGroupName, solutionTemplateName, solutionTemplateVersionName, body)
-            .getFinalResult();
+        bulkPublishSolution(resourceGroupName, solutionTemplateName, solutionTemplateVersionName, body, Context.NONE);
     }
 
-    /**
-     * Post request for bulk publish.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param solutionTemplateName The name of the SolutionTemplate.
-     * @param solutionTemplateVersionName The name of the SolutionTemplateVersion.
-     * @param body The content of the action request.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public void bulkPublishSolution(String resourceGroupName, String solutionTemplateName,
         String solutionTemplateVersionName, BulkPublishSolutionParameter body, Context context) {
-        beginBulkPublishSolution(resourceGroupName, solutionTemplateName, solutionTemplateVersionName, body, context)
-            .getFinalResult();
+        this.client.getLroFinalResultOrError(beginBulkPublishSolution(resourceGroupName, solutionTemplateName,
+            solutionTemplateVersionName, body, context));
     }
 
     /**
@@ -785,11 +641,7 @@ public final class SolutionTemplateVersionsClientImpl implements SolutionTemplat
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private PagedResponse<SolutionTemplateVersionInner> listBySolutionTemplateNextSinglePage(String nextLink) {
-        final String accept = "application/json";
-        Response<SolutionTemplateVersionListResult> res
-            = service.listBySolutionTemplateNextSync(nextLink, this.client.getEndpoint(), accept, Context.NONE);
-        return new PagedResponseBase<>(res.getRequest(), res.getStatusCode(), res.getHeaders(), res.getValue().value(),
-            res.getValue().nextLink(), null);
+        return listBySolutionTemplateNextSinglePage(nextLink, Context.NONE);
     }
 
     /**

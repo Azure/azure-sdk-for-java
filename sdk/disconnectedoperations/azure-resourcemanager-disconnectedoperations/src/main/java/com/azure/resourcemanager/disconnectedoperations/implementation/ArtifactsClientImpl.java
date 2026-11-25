@@ -194,12 +194,7 @@ public final class ArtifactsClientImpl implements ArtifactsClient {
     @ServiceMethod(returns = ReturnType.SINGLE)
     private PagedResponse<ArtifactInner> listByParentSinglePage(String resourceGroupName, String name,
         String imageName) {
-        final String accept = "application/json";
-        Response<ArtifactListResult> res
-            = service.listByParentSync(this.client.getEndpoint(), this.client.getApiVersion(),
-                this.client.getSubscriptionId(), resourceGroupName, name, imageName, accept, Context.NONE);
-        return new PagedResponseBase<>(res.getRequest(), res.getStatusCode(), res.getHeaders(), res.getValue().value(),
-            res.getValue().nextLink(), null);
+        return listByParentSinglePage(resourceGroupName, name, imageName, Context.NONE);
     }
 
     /**
@@ -225,35 +220,13 @@ public final class ArtifactsClientImpl implements ArtifactsClient {
             res.getValue().nextLink(), null);
     }
 
-    /**
-     * List by parent.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param name Name of the resource.
-     * @param imageName The name of the Image.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the response of a Artifact list operation as paginated response with {@link PagedIterable}.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.COLLECTION)
     public PagedIterable<ArtifactInner> listByParent(String resourceGroupName, String name, String imageName) {
-        return new PagedIterable<>(() -> listByParentSinglePage(resourceGroupName, name, imageName),
-            nextLink -> listByParentNextSinglePage(nextLink));
+        return listByParent(resourceGroupName, name, imageName, Context.NONE);
     }
 
-    /**
-     * List by parent.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param name Name of the resource.
-     * @param imageName The name of the Image.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the response of a Artifact list operation as paginated response with {@link PagedIterable}.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.COLLECTION)
     public PagedIterable<ArtifactInner> listByParent(String resourceGroupName, String name, String imageName,
         Context context) {
@@ -301,19 +274,7 @@ public final class ArtifactsClientImpl implements ArtifactsClient {
             .flatMap(res -> Mono.justOrEmpty(res.getValue()));
     }
 
-    /**
-     * Get the resource.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param name Name of the resource.
-     * @param imageName The name of the Image.
-     * @param artifactName The name of the Artifact.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the resource along with {@link Response}.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Response<ArtifactInner> getWithResponse(String resourceGroupName, String name, String imageName,
         String artifactName, Context context) {
@@ -322,18 +283,7 @@ public final class ArtifactsClientImpl implements ArtifactsClient {
             resourceGroupName, name, imageName, artifactName, accept, context);
     }
 
-    /**
-     * Get the resource.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param name Name of the resource.
-     * @param imageName The name of the Image.
-     * @param artifactName The name of the Artifact.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the resource.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public ArtifactInner get(String resourceGroupName, String name, String imageName, String artifactName) {
         return getWithResponse(resourceGroupName, name, imageName, artifactName, Context.NONE).getValue();
@@ -380,19 +330,7 @@ public final class ArtifactsClientImpl implements ArtifactsClient {
             .flatMap(res -> Mono.justOrEmpty(res.getValue()));
     }
 
-    /**
-     * Get artifact download link.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param name Name of the resource.
-     * @param imageName The name of the Image.
-     * @param artifactName The name of the Artifact.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return artifact download link along with {@link Response}.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Response<ArtifactDownloadResultInner> listDownloadUriWithResponse(String resourceGroupName, String name,
         String imageName, String artifactName, Context context) {
@@ -401,18 +339,7 @@ public final class ArtifactsClientImpl implements ArtifactsClient {
             this.client.getSubscriptionId(), resourceGroupName, name, imageName, artifactName, accept, context);
     }
 
-    /**
-     * Get artifact download link.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param name Name of the resource.
-     * @param imageName The name of the Image.
-     * @param artifactName The name of the Artifact.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return artifact download link.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public ArtifactDownloadResultInner listDownloadUri(String resourceGroupName, String name, String imageName,
         String artifactName) {
@@ -450,11 +377,7 @@ public final class ArtifactsClientImpl implements ArtifactsClient {
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private PagedResponse<ArtifactInner> listByParentNextSinglePage(String nextLink) {
-        final String accept = "application/json";
-        Response<ArtifactListResult> res
-            = service.listByParentNextSync(nextLink, this.client.getEndpoint(), accept, Context.NONE);
-        return new PagedResponseBase<>(res.getRequest(), res.getStatusCode(), res.getHeaders(), res.getValue().value(),
-            res.getValue().nextLink(), null);
+        return listByParentNextSinglePage(nextLink, Context.NONE);
     }
 
     /**

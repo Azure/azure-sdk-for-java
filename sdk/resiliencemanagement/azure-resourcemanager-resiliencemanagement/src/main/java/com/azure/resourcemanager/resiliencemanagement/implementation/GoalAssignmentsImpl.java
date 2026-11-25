@@ -47,7 +47,7 @@ public final class GoalAssignmentsImpl implements GoalAssignments {
     }
 
     public void createOrUpdate(String serviceGroupName, String goalAssignmentName, GoalAssignmentInner resource) {
-        this.serviceClient().createOrUpdate(serviceGroupName, goalAssignmentName, resource);
+        this.createOrUpdate(serviceGroupName, goalAssignmentName, resource, Context.NONE);
     }
 
     public void createOrUpdate(String serviceGroupName, String goalAssignmentName, GoalAssignmentInner resource,
@@ -56,7 +56,7 @@ public final class GoalAssignmentsImpl implements GoalAssignments {
     }
 
     public void update(String serviceGroupName, String goalAssignmentName, GoalAssignmentInner properties) {
-        this.serviceClient().update(serviceGroupName, goalAssignmentName, properties);
+        this.update(serviceGroupName, goalAssignmentName, properties, Context.NONE);
     }
 
     public void update(String serviceGroupName, String goalAssignmentName, GoalAssignmentInner properties,
@@ -66,7 +66,7 @@ public final class GoalAssignmentsImpl implements GoalAssignments {
 
     public void updateGoalResources(String serviceGroupName, String goalAssignmentName,
         UpdateGoalResourceRequest body) {
-        this.serviceClient().updateGoalResources(serviceGroupName, goalAssignmentName, body);
+        this.updateGoalResources(serviceGroupName, goalAssignmentName, body, Context.NONE);
     }
 
     public void updateGoalResources(String serviceGroupName, String goalAssignmentName, UpdateGoalResourceRequest body,
@@ -75,7 +75,7 @@ public final class GoalAssignmentsImpl implements GoalAssignments {
     }
 
     public void refreshGoalResources(String serviceGroupName, String goalAssignmentName) {
-        this.serviceClient().refreshGoalResources(serviceGroupName, goalAssignmentName);
+        this.refreshGoalResources(serviceGroupName, goalAssignmentName, Context.NONE);
     }
 
     public void refreshGoalResources(String serviceGroupName, String goalAssignmentName, Context context) {
@@ -83,7 +83,7 @@ public final class GoalAssignmentsImpl implements GoalAssignments {
     }
 
     public void deleteByResourceGroup(String serviceGroupName, String goalAssignmentName) {
-        this.serviceClient().delete(serviceGroupName, goalAssignmentName);
+        this.delete(serviceGroupName, goalAssignmentName, Context.NONE);
     }
 
     public void delete(String serviceGroupName, String goalAssignmentName, Context context) {
@@ -91,7 +91,7 @@ public final class GoalAssignmentsImpl implements GoalAssignments {
     }
 
     public void recommendCapacity(String serviceGroupName, String goalAssignmentName, RecommendCapacityRequest body) {
-        this.serviceClient().recommendCapacity(serviceGroupName, goalAssignmentName, body);
+        this.recommendCapacity(serviceGroupName, goalAssignmentName, body, Context.NONE);
     }
 
     public void recommendCapacity(String serviceGroupName, String goalAssignmentName, RecommendCapacityRequest body,

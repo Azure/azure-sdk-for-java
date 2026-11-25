@@ -84,6 +84,8 @@ public class KnowledgeRetrievalReasoningEffort implements JsonSerializable<Knowl
                     return KnowledgeRetrievalLowReasoningEffort.fromJson(readerToUse.reset());
                 } else if ("medium".equals(discriminatorValue)) {
                     return KnowledgeRetrievalMediumReasoningEffort.fromJson(readerToUse.reset());
+                } else if ("auto".equals(discriminatorValue)) {
+                    return KnowledgeRetrievalAutoReasoningEffort.fromJson(readerToUse.reset());
                 } else {
                     return fromJsonKnownDiscriminator(readerToUse.reset());
                 }

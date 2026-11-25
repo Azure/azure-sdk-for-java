@@ -74,11 +74,7 @@ public final class CustomAIModelImpl implements CustomAIModel, CustomAIModel.Def
     }
 
     public CustomAIModel create() {
-        this.innerObject = serviceManager.serviceClient()
-            .getCustomAIModels()
-            .createOrUpdate(resourceGroupName, aiManagerName, customAIModelName, this.innerModel(), createIfMatch,
-                createIfNoneMatch, Context.NONE);
-        return this;
+        return this.create(Context.NONE);
     }
 
     public CustomAIModel create(Context context) {
@@ -105,11 +101,7 @@ public final class CustomAIModelImpl implements CustomAIModel, CustomAIModel.Def
     }
 
     public CustomAIModel apply() {
-        this.innerObject = serviceManager.serviceClient()
-            .getCustomAIModels()
-            .createOrUpdate(resourceGroupName, aiManagerName, customAIModelName, this.innerModel(), updateIfMatch,
-                updateIfNoneMatch, Context.NONE);
-        return this;
+        return this.apply(Context.NONE);
     }
 
     public CustomAIModel apply(Context context) {
@@ -136,11 +128,7 @@ public final class CustomAIModelImpl implements CustomAIModel, CustomAIModel.Def
     }
 
     public CustomAIModel refresh() {
-        this.innerObject = serviceManager.serviceClient()
-            .getCustomAIModels()
-            .getWithResponse(resourceGroupName, aiManagerName, customAIModelName, Context.NONE)
-            .getValue();
-        return this;
+        return this.refresh(Context.NONE);
     }
 
     public CustomAIModel refresh(Context context) {

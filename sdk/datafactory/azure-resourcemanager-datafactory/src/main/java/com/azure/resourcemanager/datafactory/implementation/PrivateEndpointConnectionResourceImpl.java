@@ -75,12 +75,7 @@ public final class PrivateEndpointConnectionResourceImpl implements PrivateEndpo
     }
 
     public PrivateEndpointConnectionResource create() {
-        this.innerObject = serviceManager.serviceClient()
-            .getPrivateEndpointConnectionOperations()
-            .createOrUpdateWithResponse(resourceGroupName, factoryName, privateEndpointConnectionName, createResource,
-                createIfMatch, Context.NONE)
-            .getValue();
-        return this;
+        return this.create(Context.NONE);
     }
 
     public PrivateEndpointConnectionResource create(Context context) {
@@ -107,12 +102,7 @@ public final class PrivateEndpointConnectionResourceImpl implements PrivateEndpo
     }
 
     public PrivateEndpointConnectionResource apply() {
-        this.innerObject = serviceManager.serviceClient()
-            .getPrivateEndpointConnectionOperations()
-            .createOrUpdateWithResponse(resourceGroupName, factoryName, privateEndpointConnectionName, updateResource,
-                updateIfMatch, Context.NONE)
-            .getValue();
-        return this;
+        return this.apply(Context.NONE);
     }
 
     public PrivateEndpointConnectionResource apply(Context context) {
@@ -140,13 +130,7 @@ public final class PrivateEndpointConnectionResourceImpl implements PrivateEndpo
     }
 
     public PrivateEndpointConnectionResource refresh() {
-        String localIfNoneMatch = null;
-        this.innerObject = serviceManager.serviceClient()
-            .getPrivateEndpointConnectionOperations()
-            .getWithResponse(resourceGroupName, factoryName, privateEndpointConnectionName, localIfNoneMatch,
-                Context.NONE)
-            .getValue();
-        return this;
+        return this.refresh(Context.NONE);
     }
 
     public PrivateEndpointConnectionResource refresh(Context context) {

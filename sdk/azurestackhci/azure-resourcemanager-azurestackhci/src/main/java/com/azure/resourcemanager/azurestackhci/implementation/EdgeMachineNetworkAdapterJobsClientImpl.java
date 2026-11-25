@@ -218,19 +218,7 @@ public final class EdgeMachineNetworkAdapterJobsClientImpl implements EdgeMachin
             .flatMap(res -> Mono.justOrEmpty(res.getValue()));
     }
 
-    /**
-     * Get a specific network adapter job.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param edgeMachineName Name of Device.
-     * @param networkAdapterName The name of the EdgeMachineNetworkAdapter.
-     * @param jobName The name of the EdgeMachineNetworkAdapterJob.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return a specific network adapter job along with {@link Response}.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Response<EdgeMachineNetworkAdapterJobInner> getWithResponse(String resourceGroupName, String edgeMachineName,
         String networkAdapterName, String jobName, Context context) {
@@ -239,18 +227,7 @@ public final class EdgeMachineNetworkAdapterJobsClientImpl implements EdgeMachin
             resourceGroupName, edgeMachineName, networkAdapterName, jobName, accept, context);
     }
 
-    /**
-     * Get a specific network adapter job.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param edgeMachineName Name of Device.
-     * @param networkAdapterName The name of the EdgeMachineNetworkAdapter.
-     * @param jobName The name of the EdgeMachineNetworkAdapterJob.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return a specific network adapter job.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public EdgeMachineNetworkAdapterJobInner get(String resourceGroupName, String edgeMachineName,
         String networkAdapterName, String jobName) {
@@ -314,12 +291,7 @@ public final class EdgeMachineNetworkAdapterJobsClientImpl implements EdgeMachin
     @ServiceMethod(returns = ReturnType.SINGLE)
     private PagedResponse<EdgeMachineNetworkAdapterJobInner> listSinglePage(String resourceGroupName,
         String edgeMachineName, String networkAdapterName) {
-        final String accept = "application/json";
-        Response<EdgeMachineNetworkAdapterJobListResult> res
-            = service.listSync(this.client.getEndpoint(), this.client.getApiVersion(), this.client.getSubscriptionId(),
-                resourceGroupName, edgeMachineName, networkAdapterName, accept, Context.NONE);
-        return new PagedResponseBase<>(res.getRequest(), res.getStatusCode(), res.getHeaders(), res.getValue().value(),
-            res.getValue().nextLink(), null);
+        return listSinglePage(resourceGroupName, edgeMachineName, networkAdapterName, Context.NONE);
     }
 
     /**
@@ -345,38 +317,14 @@ public final class EdgeMachineNetworkAdapterJobsClientImpl implements EdgeMachin
             res.getValue().nextLink(), null);
     }
 
-    /**
-     * List all jobs for a network adapter.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param edgeMachineName Name of Device.
-     * @param networkAdapterName The name of the EdgeMachineNetworkAdapter.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the response of a EdgeMachineNetworkAdapterJob list operation as paginated response with
-     * {@link PagedIterable}.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.COLLECTION)
     public PagedIterable<EdgeMachineNetworkAdapterJobInner> list(String resourceGroupName, String edgeMachineName,
         String networkAdapterName) {
-        return new PagedIterable<>(() -> listSinglePage(resourceGroupName, edgeMachineName, networkAdapterName),
-            nextLink -> listNextSinglePage(nextLink));
+        return list(resourceGroupName, edgeMachineName, networkAdapterName, Context.NONE);
     }
 
-    /**
-     * List all jobs for a network adapter.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param edgeMachineName Name of Device.
-     * @param networkAdapterName The name of the EdgeMachineNetworkAdapter.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the response of a EdgeMachineNetworkAdapterJob list operation as paginated response with
-     * {@link PagedIterable}.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.COLLECTION)
     public PagedIterable<EdgeMachineNetworkAdapterJobInner> list(String resourceGroupName, String edgeMachineName,
         String networkAdapterName, Context context) {
@@ -427,11 +375,8 @@ public final class EdgeMachineNetworkAdapterJobsClientImpl implements EdgeMachin
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Response<BinaryData> createOrUpdateWithResponse(String resourceGroupName, String edgeMachineName,
         String networkAdapterName, String jobName, EdgeMachineNetworkAdapterJobInner resource) {
-        final String contentType = "application/json";
-        final String accept = "application/json";
-        return service.createOrUpdateSync(this.client.getEndpoint(), this.client.getApiVersion(),
-            this.client.getSubscriptionId(), resourceGroupName, edgeMachineName, networkAdapterName, jobName,
-            contentType, accept, resource, Context.NONE);
+        return createOrUpdateWithResponse(resourceGroupName, edgeMachineName, networkAdapterName, jobName, resource,
+            Context.NONE);
     }
 
     /**
@@ -482,43 +427,16 @@ public final class EdgeMachineNetworkAdapterJobsClientImpl implements EdgeMachin
             EdgeMachineNetworkAdapterJobInner.class, this.client.getContext());
     }
 
-    /**
-     * Create or update a network adapter job.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param edgeMachineName Name of Device.
-     * @param networkAdapterName The name of the EdgeMachineNetworkAdapter.
-     * @param jobName The name of the EdgeMachineNetworkAdapterJob.
-     * @param resource Resource create parameters.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the {@link SyncPoller} for polling of job for an Edge Machine Network Adapter.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public SyncPoller<PollResult<EdgeMachineNetworkAdapterJobInner>, EdgeMachineNetworkAdapterJobInner>
         beginCreateOrUpdate(String resourceGroupName, String edgeMachineName, String networkAdapterName, String jobName,
             EdgeMachineNetworkAdapterJobInner resource) {
-        Response<BinaryData> response
-            = createOrUpdateWithResponse(resourceGroupName, edgeMachineName, networkAdapterName, jobName, resource);
-        return this.client.<EdgeMachineNetworkAdapterJobInner, EdgeMachineNetworkAdapterJobInner>getLroResult(response,
-            EdgeMachineNetworkAdapterJobInner.class, EdgeMachineNetworkAdapterJobInner.class, Context.NONE);
+        return beginCreateOrUpdate(resourceGroupName, edgeMachineName, networkAdapterName, jobName, resource,
+            Context.NONE);
     }
 
-    /**
-     * Create or update a network adapter job.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param edgeMachineName Name of Device.
-     * @param networkAdapterName The name of the EdgeMachineNetworkAdapter.
-     * @param jobName The name of the EdgeMachineNetworkAdapterJob.
-     * @param resource Resource create parameters.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the {@link SyncPoller} for polling of job for an Edge Machine Network Adapter.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public SyncPoller<PollResult<EdgeMachineNetworkAdapterJobInner>, EdgeMachineNetworkAdapterJobInner>
         beginCreateOrUpdate(String resourceGroupName, String edgeMachineName, String networkAdapterName, String jobName,
@@ -550,45 +468,19 @@ public final class EdgeMachineNetworkAdapterJobsClientImpl implements EdgeMachin
             .flatMap(this.client::getLroFinalResultOrError);
     }
 
-    /**
-     * Create or update a network adapter job.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param edgeMachineName Name of Device.
-     * @param networkAdapterName The name of the EdgeMachineNetworkAdapter.
-     * @param jobName The name of the EdgeMachineNetworkAdapterJob.
-     * @param resource Resource create parameters.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return job for an Edge Machine Network Adapter.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public EdgeMachineNetworkAdapterJobInner createOrUpdate(String resourceGroupName, String edgeMachineName,
         String networkAdapterName, String jobName, EdgeMachineNetworkAdapterJobInner resource) {
-        return beginCreateOrUpdate(resourceGroupName, edgeMachineName, networkAdapterName, jobName, resource)
-            .getFinalResult();
+        return createOrUpdate(resourceGroupName, edgeMachineName, networkAdapterName, jobName, resource, Context.NONE);
     }
 
-    /**
-     * Create or update a network adapter job.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param edgeMachineName Name of Device.
-     * @param networkAdapterName The name of the EdgeMachineNetworkAdapter.
-     * @param jobName The name of the EdgeMachineNetworkAdapterJob.
-     * @param resource Resource create parameters.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return job for an Edge Machine Network Adapter.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public EdgeMachineNetworkAdapterJobInner createOrUpdate(String resourceGroupName, String edgeMachineName,
         String networkAdapterName, String jobName, EdgeMachineNetworkAdapterJobInner resource, Context context) {
-        return beginCreateOrUpdate(resourceGroupName, edgeMachineName, networkAdapterName, jobName, resource, context)
-            .getFinalResult();
+        return this.client.getLroFinalResultOrError(
+            beginCreateOrUpdate(resourceGroupName, edgeMachineName, networkAdapterName, jobName, resource, context));
     }
 
     /**
@@ -626,9 +518,7 @@ public final class EdgeMachineNetworkAdapterJobsClientImpl implements EdgeMachin
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Response<BinaryData> deleteWithResponse(String resourceGroupName, String edgeMachineName,
         String networkAdapterName, String jobName) {
-        return service.deleteSync(this.client.getEndpoint(), this.client.getApiVersion(),
-            this.client.getSubscriptionId(), resourceGroupName, edgeMachineName, networkAdapterName, jobName,
-            Context.NONE);
+        return deleteWithResponse(resourceGroupName, edgeMachineName, networkAdapterName, jobName, Context.NONE);
     }
 
     /**
@@ -672,39 +562,14 @@ public final class EdgeMachineNetworkAdapterJobsClientImpl implements EdgeMachin
             this.client.getContext());
     }
 
-    /**
-     * Delete a network adapter job.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param edgeMachineName Name of Device.
-     * @param networkAdapterName The name of the EdgeMachineNetworkAdapter.
-     * @param jobName The name of the EdgeMachineNetworkAdapterJob.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the {@link SyncPoller} for polling of long-running operation.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public SyncPoller<PollResult<Void>, Void> beginDelete(String resourceGroupName, String edgeMachineName,
         String networkAdapterName, String jobName) {
-        Response<BinaryData> response
-            = deleteWithResponse(resourceGroupName, edgeMachineName, networkAdapterName, jobName);
-        return this.client.<Void, Void>getLroResult(response, Void.class, Void.class, Context.NONE);
+        return beginDelete(resourceGroupName, edgeMachineName, networkAdapterName, jobName, Context.NONE);
     }
 
-    /**
-     * Delete a network adapter job.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param edgeMachineName Name of Device.
-     * @param networkAdapterName The name of the EdgeMachineNetworkAdapter.
-     * @param jobName The name of the EdgeMachineNetworkAdapterJob.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the {@link SyncPoller} for polling of long-running operation.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public SyncPoller<PollResult<Void>, Void> beginDelete(String resourceGroupName, String edgeMachineName,
         String networkAdapterName, String jobName, Context context) {
@@ -732,38 +597,18 @@ public final class EdgeMachineNetworkAdapterJobsClientImpl implements EdgeMachin
             .flatMap(this.client::getLroFinalResultOrError);
     }
 
-    /**
-     * Delete a network adapter job.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param edgeMachineName Name of Device.
-     * @param networkAdapterName The name of the EdgeMachineNetworkAdapter.
-     * @param jobName The name of the EdgeMachineNetworkAdapterJob.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public void delete(String resourceGroupName, String edgeMachineName, String networkAdapterName, String jobName) {
-        beginDelete(resourceGroupName, edgeMachineName, networkAdapterName, jobName).getFinalResult();
+        delete(resourceGroupName, edgeMachineName, networkAdapterName, jobName, Context.NONE);
     }
 
-    /**
-     * Delete a network adapter job.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param edgeMachineName Name of Device.
-     * @param networkAdapterName The name of the EdgeMachineNetworkAdapter.
-     * @param jobName The name of the EdgeMachineNetworkAdapterJob.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public void delete(String resourceGroupName, String edgeMachineName, String networkAdapterName, String jobName,
         Context context) {
-        beginDelete(resourceGroupName, edgeMachineName, networkAdapterName, jobName, context).getFinalResult();
+        this.client.getLroFinalResultOrError(
+            beginDelete(resourceGroupName, edgeMachineName, networkAdapterName, jobName, context));
     }
 
     /**
@@ -796,11 +641,7 @@ public final class EdgeMachineNetworkAdapterJobsClientImpl implements EdgeMachin
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private PagedResponse<EdgeMachineNetworkAdapterJobInner> listNextSinglePage(String nextLink) {
-        final String accept = "application/json";
-        Response<EdgeMachineNetworkAdapterJobListResult> res
-            = service.listNextSync(nextLink, this.client.getEndpoint(), accept, Context.NONE);
-        return new PagedResponseBase<>(res.getRequest(), res.getStatusCode(), res.getHeaders(), res.getValue().value(),
-            res.getValue().nextLink(), null);
+        return listNextSinglePage(nextLink, Context.NONE);
     }
 
     /**

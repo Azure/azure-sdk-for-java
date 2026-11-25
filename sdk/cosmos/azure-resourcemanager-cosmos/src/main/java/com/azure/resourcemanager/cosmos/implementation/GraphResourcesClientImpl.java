@@ -118,18 +118,7 @@ public final class GraphResourcesClientImpl implements GraphResourcesClient {
             @HeaderParam("Accept") String accept, Context context);
     }
 
-    /**
-     * Gets the Graph resource under an existing Azure Cosmos DB database account with the provided name.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param accountName Cosmos DB database account name.
-     * @param graphName Cosmos DB graph resource name.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the Graph resource under an existing Azure Cosmos DB database account with the provided name along with
-     * {@link Response} on successful completion of {@link Mono}.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Response<GraphResourceGetResultsInner>> getGraphWithResponseAsync(String resourceGroupName,
         String accountName, String graphName) {
@@ -198,18 +187,7 @@ public final class GraphResourcesClientImpl implements GraphResourcesClient {
             resourceGroupName, accountName, graphName, accept, context);
     }
 
-    /**
-     * Gets the Graph resource under an existing Azure Cosmos DB database account with the provided name.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param accountName Cosmos DB database account name.
-     * @param graphName Cosmos DB graph resource name.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the Graph resource under an existing Azure Cosmos DB database account with the provided name on
-     * successful completion of {@link Mono}.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<GraphResourceGetResultsInner> getGraphAsync(String resourceGroupName, String accountName,
         String graphName) {
@@ -217,53 +195,20 @@ public final class GraphResourcesClientImpl implements GraphResourcesClient {
             .flatMap(res -> Mono.justOrEmpty(res.getValue()));
     }
 
-    /**
-     * Gets the Graph resource under an existing Azure Cosmos DB database account with the provided name.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param accountName Cosmos DB database account name.
-     * @param graphName Cosmos DB graph resource name.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the Graph resource under an existing Azure Cosmos DB database account with the provided name along with
-     * {@link Response}.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Response<GraphResourceGetResultsInner> getGraphWithResponse(String resourceGroupName, String accountName,
         String graphName, Context context) {
         return getGraphWithResponseAsync(resourceGroupName, accountName, graphName, context).block();
     }
 
-    /**
-     * Gets the Graph resource under an existing Azure Cosmos DB database account with the provided name.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param accountName Cosmos DB database account name.
-     * @param graphName Cosmos DB graph resource name.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the Graph resource under an existing Azure Cosmos DB database account with the provided name.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public GraphResourceGetResultsInner getGraph(String resourceGroupName, String accountName, String graphName) {
         return getGraphWithResponse(resourceGroupName, accountName, graphName, Context.NONE).getValue();
     }
 
-    /**
-     * Create or update an Azure Cosmos DB Graph.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param accountName Cosmos DB database account name.
-     * @param graphName Cosmos DB graph resource name.
-     * @param createUpdateGraphParameters The parameters to provide for the current graph.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return an Azure Cosmos DB Graph resource along with {@link Response} on successful completion of {@link Mono}.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Response<Flux<ByteBuffer>>> createUpdateGraphWithResponseAsync(String resourceGroupName,
         String accountName, String graphName, GraphResourceCreateUpdateParameters createUpdateGraphParameters) {
@@ -349,18 +294,7 @@ public final class GraphResourcesClientImpl implements GraphResourcesClient {
             createUpdateGraphParameters, context);
     }
 
-    /**
-     * Create or update an Azure Cosmos DB Graph.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param accountName Cosmos DB database account name.
-     * @param graphName Cosmos DB graph resource name.
-     * @param createUpdateGraphParameters The parameters to provide for the current graph.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the {@link PollerFlux} for polling of an Azure Cosmos DB Graph resource.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public PollerFlux<PollResult<GraphResourceGetResultsInner>, GraphResourceGetResultsInner>
         beginCreateUpdateGraphAsync(String resourceGroupName, String accountName, String graphName,
@@ -397,18 +331,7 @@ public final class GraphResourcesClientImpl implements GraphResourcesClient {
             context);
     }
 
-    /**
-     * Create or update an Azure Cosmos DB Graph.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param accountName Cosmos DB database account name.
-     * @param graphName Cosmos DB graph resource name.
-     * @param createUpdateGraphParameters The parameters to provide for the current graph.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the {@link SyncPoller} for polling of an Azure Cosmos DB Graph resource.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public SyncPoller<PollResult<GraphResourceGetResultsInner>, GraphResourceGetResultsInner> beginCreateUpdateGraph(
         String resourceGroupName, String accountName, String graphName,
@@ -417,19 +340,7 @@ public final class GraphResourcesClientImpl implements GraphResourcesClient {
             .getSyncPoller();
     }
 
-    /**
-     * Create or update an Azure Cosmos DB Graph.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param accountName Cosmos DB database account name.
-     * @param graphName Cosmos DB graph resource name.
-     * @param createUpdateGraphParameters The parameters to provide for the current graph.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the {@link SyncPoller} for polling of an Azure Cosmos DB Graph resource.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public SyncPoller<PollResult<GraphResourceGetResultsInner>, GraphResourceGetResultsInner> beginCreateUpdateGraph(
         String resourceGroupName, String accountName, String graphName,
@@ -440,18 +351,7 @@ public final class GraphResourcesClientImpl implements GraphResourcesClient {
             .getSyncPoller();
     }
 
-    /**
-     * Create or update an Azure Cosmos DB Graph.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param accountName Cosmos DB database account name.
-     * @param graphName Cosmos DB graph resource name.
-     * @param createUpdateGraphParameters The parameters to provide for the current graph.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return an Azure Cosmos DB Graph resource on successful completion of {@link Mono}.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<GraphResourceGetResultsInner> createUpdateGraphAsync(String resourceGroupName, String accountName,
         String graphName, GraphResourceCreateUpdateParameters createUpdateGraphParameters) {
@@ -480,37 +380,14 @@ public final class GraphResourcesClientImpl implements GraphResourcesClient {
             context).last().flatMap(this.client::getLroFinalResultOrError);
     }
 
-    /**
-     * Create or update an Azure Cosmos DB Graph.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param accountName Cosmos DB database account name.
-     * @param graphName Cosmos DB graph resource name.
-     * @param createUpdateGraphParameters The parameters to provide for the current graph.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return an Azure Cosmos DB Graph resource.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public GraphResourceGetResultsInner createUpdateGraph(String resourceGroupName, String accountName,
         String graphName, GraphResourceCreateUpdateParameters createUpdateGraphParameters) {
         return createUpdateGraphAsync(resourceGroupName, accountName, graphName, createUpdateGraphParameters).block();
     }
 
-    /**
-     * Create or update an Azure Cosmos DB Graph.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param accountName Cosmos DB database account name.
-     * @param graphName Cosmos DB graph resource name.
-     * @param createUpdateGraphParameters The parameters to provide for the current graph.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return an Azure Cosmos DB Graph resource.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public GraphResourceGetResultsInner createUpdateGraph(String resourceGroupName, String accountName,
         String graphName, GraphResourceCreateUpdateParameters createUpdateGraphParameters, Context context) {
@@ -518,17 +395,7 @@ public final class GraphResourcesClientImpl implements GraphResourcesClient {
             .block();
     }
 
-    /**
-     * Deletes an existing Azure Cosmos DB Graph Resource.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param accountName Cosmos DB database account name.
-     * @param graphName Cosmos DB graph resource name.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the {@link Response} on successful completion of {@link Mono}.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Response<Flux<ByteBuffer>>> deleteGraphResourceWithResponseAsync(String resourceGroupName,
         String accountName, String graphName) {
@@ -594,17 +461,7 @@ public final class GraphResourcesClientImpl implements GraphResourcesClient {
             this.client.getSubscriptionId(), resourceGroupName, accountName, graphName, context);
     }
 
-    /**
-     * Deletes an existing Azure Cosmos DB Graph Resource.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param accountName Cosmos DB database account name.
-     * @param graphName Cosmos DB graph resource name.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the {@link PollerFlux} for polling of long-running operation.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public PollerFlux<PollResult<Void>, Void> beginDeleteGraphResourceAsync(String resourceGroupName,
         String accountName, String graphName) {
@@ -636,52 +493,21 @@ public final class GraphResourcesClientImpl implements GraphResourcesClient {
             context);
     }
 
-    /**
-     * Deletes an existing Azure Cosmos DB Graph Resource.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param accountName Cosmos DB database account name.
-     * @param graphName Cosmos DB graph resource name.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the {@link SyncPoller} for polling of long-running operation.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public SyncPoller<PollResult<Void>, Void> beginDeleteGraphResource(String resourceGroupName, String accountName,
         String graphName) {
         return this.beginDeleteGraphResourceAsync(resourceGroupName, accountName, graphName).getSyncPoller();
     }
 
-    /**
-     * Deletes an existing Azure Cosmos DB Graph Resource.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param accountName Cosmos DB database account name.
-     * @param graphName Cosmos DB graph resource name.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the {@link SyncPoller} for polling of long-running operation.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public SyncPoller<PollResult<Void>, Void> beginDeleteGraphResource(String resourceGroupName, String accountName,
         String graphName, Context context) {
         return this.beginDeleteGraphResourceAsync(resourceGroupName, accountName, graphName, context).getSyncPoller();
     }
 
-    /**
-     * Deletes an existing Azure Cosmos DB Graph Resource.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param accountName Cosmos DB database account name.
-     * @param graphName Cosmos DB graph resource name.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return A {@link Mono} that completes when a successful response is received.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Void> deleteGraphResourceAsync(String resourceGroupName, String accountName, String graphName) {
         return beginDeleteGraphResourceAsync(resourceGroupName, accountName, graphName).last()
@@ -707,32 +533,13 @@ public final class GraphResourcesClientImpl implements GraphResourcesClient {
             .flatMap(this.client::getLroFinalResultOrError);
     }
 
-    /**
-     * Deletes an existing Azure Cosmos DB Graph Resource.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param accountName Cosmos DB database account name.
-     * @param graphName Cosmos DB graph resource name.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public void deleteGraphResource(String resourceGroupName, String accountName, String graphName) {
         deleteGraphResourceAsync(resourceGroupName, accountName, graphName).block();
     }
 
-    /**
-     * Deletes an existing Azure Cosmos DB Graph Resource.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param accountName Cosmos DB database account name.
-     * @param graphName Cosmos DB graph resource name.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public void deleteGraphResource(String resourceGroupName, String accountName, String graphName, Context context) {
         deleteGraphResourceAsync(resourceGroupName, accountName, graphName, context).block();
@@ -815,17 +622,7 @@ public final class GraphResourcesClientImpl implements GraphResourcesClient {
                 res.getValue().value(), res.getValue().nextLink(), null));
     }
 
-    /**
-     * Lists the graphs under an existing Azure Cosmos DB database account.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param accountName Cosmos DB database account name.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the List operation response, that contains the Graph resource and their properties as paginated response
-     * with {@link PagedFlux}.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.COLLECTION)
     public PagedFlux<GraphResourceGetResultsInner> listGraphsAsync(String resourceGroupName, String accountName) {
         return new PagedFlux<>(() -> listGraphsSinglePageAsync(resourceGroupName, accountName),
@@ -851,34 +648,13 @@ public final class GraphResourcesClientImpl implements GraphResourcesClient {
             nextLink -> listGraphsNextSinglePageAsync(nextLink, context));
     }
 
-    /**
-     * Lists the graphs under an existing Azure Cosmos DB database account.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param accountName Cosmos DB database account name.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the List operation response, that contains the Graph resource and their properties as paginated response
-     * with {@link PagedIterable}.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.COLLECTION)
     public PagedIterable<GraphResourceGetResultsInner> listGraphs(String resourceGroupName, String accountName) {
         return new PagedIterable<>(listGraphsAsync(resourceGroupName, accountName));
     }
 
-    /**
-     * Lists the graphs under an existing Azure Cosmos DB database account.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param accountName Cosmos DB database account name.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the List operation response, that contains the Graph resource and their properties as paginated response
-     * with {@link PagedIterable}.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.COLLECTION)
     public PagedIterable<GraphResourceGetResultsInner> listGraphs(String resourceGroupName, String accountName,
         Context context) {

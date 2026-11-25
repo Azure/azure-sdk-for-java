@@ -236,18 +236,7 @@ public final class CollectorPoliciesClientImpl implements CollectorPoliciesClien
             .flatMap(res -> Mono.justOrEmpty(res.getValue()));
     }
 
-    /**
-     * Gets the collector policy in a specified Traffic Collector.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param azureTrafficCollectorName Azure Traffic Collector name.
-     * @param collectorPolicyName Collector Policy Name.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the collector policy in a specified Traffic Collector along with {@link Response}.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Response<CollectorPolicyInner> getWithResponse(String resourceGroupName, String azureTrafficCollectorName,
         String collectorPolicyName, Context context) {
@@ -256,17 +245,7 @@ public final class CollectorPoliciesClientImpl implements CollectorPoliciesClien
             resourceGroupName, azureTrafficCollectorName, collectorPolicyName, accept, context);
     }
 
-    /**
-     * Gets the collector policy in a specified Traffic Collector.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param azureTrafficCollectorName Azure Traffic Collector name.
-     * @param collectorPolicyName Collector Policy Name.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the collector policy in a specified Traffic Collector.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public CollectorPolicyInner get(String resourceGroupName, String azureTrafficCollectorName,
         String collectorPolicyName) {
@@ -313,11 +292,8 @@ public final class CollectorPoliciesClientImpl implements CollectorPoliciesClien
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Response<BinaryData> createOrUpdateWithResponse(String resourceGroupName, String azureTrafficCollectorName,
         String collectorPolicyName, CollectorPolicyInner parameters) {
-        final String contentType = "application/json";
-        final String accept = "application/json";
-        return service.createOrUpdateSync(this.client.getEndpoint(), this.client.getApiVersion(),
-            this.client.getSubscriptionId(), resourceGroupName, azureTrafficCollectorName, collectorPolicyName,
-            contentType, accept, parameters, Context.NONE);
+        return createOrUpdateWithResponse(resourceGroupName, azureTrafficCollectorName, collectorPolicyName, parameters,
+            Context.NONE);
     }
 
     /**
@@ -365,41 +341,16 @@ public final class CollectorPoliciesClientImpl implements CollectorPoliciesClien
             CollectorPolicyInner.class, CollectorPolicyInner.class, this.client.getContext());
     }
 
-    /**
-     * Creates or updates a Collector Policy resource.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param azureTrafficCollectorName Azure Traffic Collector name.
-     * @param collectorPolicyName Collector Policy Name.
-     * @param parameters The parameters to provide for the created Collector Policy.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the {@link SyncPoller} for polling of collector policy resource.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public SyncPoller<PollResult<CollectorPolicyInner>, CollectorPolicyInner> beginCreateOrUpdate(
         String resourceGroupName, String azureTrafficCollectorName, String collectorPolicyName,
         CollectorPolicyInner parameters) {
-        Response<BinaryData> response
-            = createOrUpdateWithResponse(resourceGroupName, azureTrafficCollectorName, collectorPolicyName, parameters);
-        return this.client.<CollectorPolicyInner, CollectorPolicyInner>getLroResult(response,
-            CollectorPolicyInner.class, CollectorPolicyInner.class, Context.NONE);
+        return beginCreateOrUpdate(resourceGroupName, azureTrafficCollectorName, collectorPolicyName, parameters,
+            Context.NONE);
     }
 
-    /**
-     * Creates or updates a Collector Policy resource.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param azureTrafficCollectorName Azure Traffic Collector name.
-     * @param collectorPolicyName Collector Policy Name.
-     * @param parameters The parameters to provide for the created Collector Policy.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the {@link SyncPoller} for polling of collector policy resource.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public SyncPoller<PollResult<CollectorPolicyInner>, CollectorPolicyInner> beginCreateOrUpdate(
         String resourceGroupName, String azureTrafficCollectorName, String collectorPolicyName,
@@ -430,43 +381,20 @@ public final class CollectorPoliciesClientImpl implements CollectorPoliciesClien
             .flatMap(this.client::getLroFinalResultOrError);
     }
 
-    /**
-     * Creates or updates a Collector Policy resource.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param azureTrafficCollectorName Azure Traffic Collector name.
-     * @param collectorPolicyName Collector Policy Name.
-     * @param parameters The parameters to provide for the created Collector Policy.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return collector policy resource.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public CollectorPolicyInner createOrUpdate(String resourceGroupName, String azureTrafficCollectorName,
         String collectorPolicyName, CollectorPolicyInner parameters) {
-        return beginCreateOrUpdate(resourceGroupName, azureTrafficCollectorName, collectorPolicyName, parameters)
-            .getFinalResult();
+        return createOrUpdate(resourceGroupName, azureTrafficCollectorName, collectorPolicyName, parameters,
+            Context.NONE);
     }
 
-    /**
-     * Creates or updates a Collector Policy resource.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param azureTrafficCollectorName Azure Traffic Collector name.
-     * @param collectorPolicyName Collector Policy Name.
-     * @param parameters The parameters to provide for the created Collector Policy.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return collector policy resource.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public CollectorPolicyInner createOrUpdate(String resourceGroupName, String azureTrafficCollectorName,
         String collectorPolicyName, CollectorPolicyInner parameters, Context context) {
-        return beginCreateOrUpdate(resourceGroupName, azureTrafficCollectorName, collectorPolicyName, parameters,
-            context).getFinalResult();
+        return this.client.getLroFinalResultOrError(beginCreateOrUpdate(resourceGroupName, azureTrafficCollectorName,
+            collectorPolicyName, parameters, context));
     }
 
     /**
@@ -512,19 +440,7 @@ public final class CollectorPoliciesClientImpl implements CollectorPoliciesClien
             parameters).flatMap(res -> Mono.justOrEmpty(res.getValue()));
     }
 
-    /**
-     * Updates the specified Collector Policy tags.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param azureTrafficCollectorName Azure Traffic Collector name.
-     * @param collectorPolicyName Collector Policy Name.
-     * @param parameters The resource properties to be updated.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return collector policy resource along with {@link Response}.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Response<CollectorPolicyInner> updateTagsWithResponse(String resourceGroupName,
         String azureTrafficCollectorName, String collectorPolicyName, TagsObject parameters, Context context) {
@@ -535,18 +451,7 @@ public final class CollectorPoliciesClientImpl implements CollectorPoliciesClien
             contentType, accept, parameters, context);
     }
 
-    /**
-     * Updates the specified Collector Policy tags.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param azureTrafficCollectorName Azure Traffic Collector name.
-     * @param collectorPolicyName Collector Policy Name.
-     * @param parameters The resource properties to be updated.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return collector policy resource.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public CollectorPolicyInner updateTags(String resourceGroupName, String azureTrafficCollectorName,
         String collectorPolicyName, TagsObject parameters) {
@@ -589,9 +494,7 @@ public final class CollectorPoliciesClientImpl implements CollectorPoliciesClien
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Response<BinaryData> deleteWithResponse(String resourceGroupName, String azureTrafficCollectorName,
         String collectorPolicyName) {
-        return service.deleteSync(this.client.getEndpoint(), this.client.getApiVersion(),
-            this.client.getSubscriptionId(), resourceGroupName, azureTrafficCollectorName, collectorPolicyName,
-            Context.NONE);
+        return deleteWithResponse(resourceGroupName, azureTrafficCollectorName, collectorPolicyName, Context.NONE);
     }
 
     /**
@@ -634,37 +537,14 @@ public final class CollectorPoliciesClientImpl implements CollectorPoliciesClien
             this.client.getContext());
     }
 
-    /**
-     * Deletes a specified Collector Policy resource.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param azureTrafficCollectorName Azure Traffic Collector name.
-     * @param collectorPolicyName Collector Policy Name.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the {@link SyncPoller} for polling of long-running operation.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public SyncPoller<PollResult<Void>, Void> beginDelete(String resourceGroupName, String azureTrafficCollectorName,
         String collectorPolicyName) {
-        Response<BinaryData> response
-            = deleteWithResponse(resourceGroupName, azureTrafficCollectorName, collectorPolicyName);
-        return this.client.<Void, Void>getLroResult(response, Void.class, Void.class, Context.NONE);
+        return beginDelete(resourceGroupName, azureTrafficCollectorName, collectorPolicyName, Context.NONE);
     }
 
-    /**
-     * Deletes a specified Collector Policy resource.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param azureTrafficCollectorName Azure Traffic Collector name.
-     * @param collectorPolicyName Collector Policy Name.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the {@link SyncPoller} for polling of long-running operation.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public SyncPoller<PollResult<Void>, Void> beginDelete(String resourceGroupName, String azureTrafficCollectorName,
         String collectorPolicyName, Context context) {
@@ -691,36 +571,18 @@ public final class CollectorPoliciesClientImpl implements CollectorPoliciesClien
             .flatMap(this.client::getLroFinalResultOrError);
     }
 
-    /**
-     * Deletes a specified Collector Policy resource.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param azureTrafficCollectorName Azure Traffic Collector name.
-     * @param collectorPolicyName Collector Policy Name.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public void delete(String resourceGroupName, String azureTrafficCollectorName, String collectorPolicyName) {
-        beginDelete(resourceGroupName, azureTrafficCollectorName, collectorPolicyName).getFinalResult();
+        delete(resourceGroupName, azureTrafficCollectorName, collectorPolicyName, Context.NONE);
     }
 
-    /**
-     * Deletes a specified Collector Policy resource.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param azureTrafficCollectorName Azure Traffic Collector name.
-     * @param collectorPolicyName Collector Policy Name.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public void delete(String resourceGroupName, String azureTrafficCollectorName, String collectorPolicyName,
         Context context) {
-        beginDelete(resourceGroupName, azureTrafficCollectorName, collectorPolicyName, context).getFinalResult();
+        this.client.getLroFinalResultOrError(
+            beginDelete(resourceGroupName, azureTrafficCollectorName, collectorPolicyName, context));
     }
 
     /**
@@ -775,12 +637,7 @@ public final class CollectorPoliciesClientImpl implements CollectorPoliciesClien
     @ServiceMethod(returns = ReturnType.SINGLE)
     private PagedResponse<CollectorPolicyInner> listSinglePage(String resourceGroupName,
         String azureTrafficCollectorName) {
-        final String accept = "application/json";
-        Response<CollectorPolicyListResult> res
-            = service.listSync(this.client.getEndpoint(), this.client.getApiVersion(), this.client.getSubscriptionId(),
-                resourceGroupName, azureTrafficCollectorName, accept, Context.NONE);
-        return new PagedResponseBase<>(res.getRequest(), res.getStatusCode(), res.getHeaders(), res.getValue().value(),
-            res.getValue().nextLink(), null);
+        return listSinglePage(resourceGroupName, azureTrafficCollectorName, Context.NONE);
     }
 
     /**
@@ -805,33 +662,13 @@ public final class CollectorPoliciesClientImpl implements CollectorPoliciesClien
             res.getValue().nextLink(), null);
     }
 
-    /**
-     * Return list of Collector policies in a Azure Traffic Collector.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param azureTrafficCollectorName Azure Traffic Collector name.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the response of a CollectorPolicy list operation as paginated response with {@link PagedIterable}.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.COLLECTION)
     public PagedIterable<CollectorPolicyInner> list(String resourceGroupName, String azureTrafficCollectorName) {
-        return new PagedIterable<>(() -> listSinglePage(resourceGroupName, azureTrafficCollectorName),
-            nextLink -> listNextSinglePage(nextLink));
+        return list(resourceGroupName, azureTrafficCollectorName, Context.NONE);
     }
 
-    /**
-     * Return list of Collector policies in a Azure Traffic Collector.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param azureTrafficCollectorName Azure Traffic Collector name.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the response of a CollectorPolicy list operation as paginated response with {@link PagedIterable}.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.COLLECTION)
     public PagedIterable<CollectorPolicyInner> list(String resourceGroupName, String azureTrafficCollectorName,
         Context context) {
@@ -869,11 +706,7 @@ public final class CollectorPoliciesClientImpl implements CollectorPoliciesClien
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private PagedResponse<CollectorPolicyInner> listNextSinglePage(String nextLink) {
-        final String accept = "application/json";
-        Response<CollectorPolicyListResult> res
-            = service.listNextSync(nextLink, this.client.getEndpoint(), accept, Context.NONE);
-        return new PagedResponseBase<>(res.getRequest(), res.getStatusCode(), res.getHeaders(), res.getValue().value(),
-            res.getValue().nextLink(), null);
+        return listNextSinglePage(nextLink, Context.NONE);
     }
 
     /**

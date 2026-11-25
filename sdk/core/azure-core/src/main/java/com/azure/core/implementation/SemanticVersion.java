@@ -77,9 +77,9 @@ public final class SemanticVersion implements Comparable<SemanticVersion> {
         }
 
         try {
-            int major = Integer.parseInt(version.substring(0, majorDotIdx));
-            int minor = Integer.parseInt(version.substring(majorDotIdx + 1, minorDotIdx));
-            int patch = Integer.parseInt(version.substring(minorDotIdx + 1, patchEndIdx));
+            int major = IntegerParser.parse(version, 0, majorDotIdx);
+            int minor = IntegerParser.parse(version, majorDotIdx + 1, minorDotIdx);
+            int patch = IntegerParser.parse(version, minorDotIdx + 1, patchEndIdx);
 
             String prerelease = (patchEndIdx == extEndIdx) ? "" : version.substring(patchEndIdx + 1, extEndIdx);
             return new SemanticVersion(major, minor, patch, prerelease, version);

@@ -4,9 +4,7 @@
 package com.azure.search.documents;
 
 import com.azure.core.credential.AzureKeyCredential;
-import com.azure.core.http.rest.RequestOptions;
 import com.azure.search.documents.indexes.SearchIndexClient;
-import com.azure.search.documents.indexes.SearchIndexAsyncClient;
 import com.azure.search.documents.indexes.SearchIndexClientBuilder;
 import com.azure.search.documents.indexes.SearchIndexerClient;
 import com.azure.search.documents.indexes.SearchIndexerClientBuilder;
@@ -15,27 +13,17 @@ import com.azure.search.documents.indexes.models.AzureBlobKnowledgeSourceParamet
 import com.azure.search.documents.indexes.models.AzureOpenAIModelName;
 import com.azure.search.documents.indexes.models.AzureOpenAIVectorizerParameters;
 import com.azure.search.documents.indexes.models.CreatedResources;
-import com.azure.search.documents.indexes.models.ContentColumnMapping;
-import com.azure.search.documents.indexes.models.EmbeddingColumnMapping;
-import com.azure.search.documents.indexes.models.IndexedSqlKnowledgeSource;
-import com.azure.search.documents.indexes.models.IndexedSqlKnowledgeSourceParameters;
-import com.azure.search.documents.indexes.models.IndexedSharePointKnowledgeSource;
-import com.azure.search.documents.indexes.models.IndexedSharePointKnowledgeSourceParameters;
-import com.azure.search.documents.indexes.models.IndexedSharePointContainerName;
-import com.azure.search.documents.indexes.models.KnowledgeSource;
-import com.azure.search.documents.indexes.models.KnowledgeSourceIngestionPermissionOption;
 import com.azure.search.documents.indexes.models.KnowledgeSourceContentExtractionMode;
 import com.azure.search.documents.indexes.models.LexicalAnalyzerName;
 import com.azure.search.documents.indexes.models.SearchField;
 import com.azure.search.documents.indexes.models.SearchFieldDataType;
 import com.azure.search.documents.indexes.models.SearchIndex;
 import com.azure.search.documents.indexes.models.SearchIndexKnowledgeSource;
+import com.azure.search.documents.indexes.models.SearchIndexKnowledgeSourceFieldValueBoost;
+import com.azure.search.documents.indexes.models.SearchIndexKnowledgeSourceFilterHint;
 import com.azure.search.documents.indexes.models.SearchIndexKnowledgeSourceParameters;
+import com.azure.search.documents.indexes.models.SearchIndexKnowledgeSourceQueryHints;
 import com.azure.search.documents.indexes.models.SearchIndexerStatus;
-import com.azure.search.documents.indexes.models.WebKnowledgeSource;
-import com.azure.search.documents.indexes.models.WebKnowledgeSourceParameters;
-import com.azure.search.documents.indexes.models.WebKnowledgeSourceDomains;
-import com.azure.search.documents.indexes.models.WebKnowledgeSourceDomain;
 import com.azure.search.documents.knowledgebases.models.AiServices;
 import com.azure.search.documents.knowledgebases.models.KnowledgeSourceAzureOpenAIVectorizer;
 import com.azure.search.documents.knowledgebases.models.KnowledgeSourceIngestionParameters;
@@ -48,7 +36,7 @@ import java.util.List;
 import java.util.UUID;
 
 /**
- * Demonstrates GA knowledge source configuration and generated-resource inspection.
+ * Demonstrates preview Knowledge Source configuration and generated-resource inspection.
  *
  * <p>The supported-language Blob folder should contain English content; the fallback folder should contain content in
  * a language without a dedicated Microsoft analyzer.</p>
@@ -59,11 +47,6 @@ import java.util.UUID;
  * {@code SEARCH_AI_SERVICES_ENDPOINT}, {@code SEARCH_AI_SERVICES_API_KEY}, {@code SEARCH_OPENAI_ENDPOINT},
  * {@code SEARCH_OPENAI_API_KEY}, {@code SEARCH_OPENAI_EMBEDDING_DEPLOYMENT_NAME}, and
  * {@code SEARCH_OPENAI_EMBEDDING_MODEL_NAME} before running this sample.</p>
- * <p>Alternatively, pass {@code sql}, {@code sharepoint}, or {@code web} to run just that source's CRUD flow.
- * SQL additionally requires {@code SEARCH_SQL_CONNECTION_STRING} and {@code SEARCH_SQL_TABLE}. The table must have
- * Title, Content, and LastModified columns. SharePoint requires {@code SEARCH_SHAREPOINT_CONNECTION_STRING},
- * a configured connector application, and permissions to read the site. SQL and SharePoint use the embedding
- * configuration above. The web example restricts retrieval to learn.microsoft.com.</p>
  */
 public class KnowledgeSourceCrudExample {
     public static void main(String[] args) {
@@ -74,14 +57,9 @@ public class KnowledgeSourceCrudExample {
         SearchIndexerClient searchIndexerClient
             = new SearchIndexerClientBuilder().credential(credential).endpoint(endpoint).buildClient();
 
-        if (args.length > 0) {
-            runSourceExample(searchIndexClient, args[0]);
-            return;
-        }
-
         String suffix = UUID.randomUUID().toString().replace("-", "").substring(0, 12);
-        String indexName = "knowledge-source-index-" + suffix;
-        String searchIndexSourceName = "search-index-source-" + suffix;
+        String indexName = "query-hints-index-" + suffix;
+        String searchIndexSourceName = "query-hints-" + suffix;
         String privateBlobSourceName = "private-blob-" + suffix;
         String fallbackBlobSourceName = "fallback-blob-" + suffix;
         List<String> createdSources = new ArrayList<>();
@@ -93,14 +71,11 @@ public class KnowledgeSourceCrudExample {
                     new SearchField("Category", SearchFieldDataType.STRING).setSearchable(true).setFilterable(true))));
             indexCreated = true;
 
-            SearchIndexKnowledgeSource searchIndexSource = new SearchIndexKnowledgeSource(searchIndexSourceName,
-                new SearchIndexKnowledgeSourceParameters(indexName).setBaseFilter("Category eq 'Luxury'"));
-            SearchIndexKnowledgeSource createdSearchIndexSource = (SearchIndexKnowledgeSource) searchIndexClient
-                .createKnowledgeSource(searchIndexSource);
+            SearchIndexKnowledgeSource queryHintSource = createQueryHintSource(searchIndexSourceName, indexName);
+            SearchIndexKnowledgeSource createdQueryHintSource = (SearchIndexKnowledgeSource) searchIndexClient
+                .createKnowledgeSource(queryHintSource);
             createdSources.add(searchIndexSourceName);
-            if (!"Category eq 'Luxury'".equals(createdSearchIndexSource.getSearchIndexParameters().getBaseFilter())) {
-                throw new IllegalStateException("The base filter wasn't persisted on the knowledge source.");
-            }
+            verifyQueryHints(createdQueryHintSource);
 
             AzureBlobKnowledgeSource privateBlobSource = createBlobSource(privateBlobSourceName,
                 System.getenv("SEARCH_SUPPORTED_LANGUAGE_FOLDER_PATH"), KnowledgeSourceNetworkAccessMode.PRIVATE);
@@ -118,9 +93,9 @@ public class KnowledgeSourceCrudExample {
             inspectGeneratedResources(searchIndexClient, searchIndexerClient, createdFallbackBlobSource,
                 KnowledgeSourceNetworkAccessMode.PUBLIC, "snippet_default", LexicalAnalyzerName.STANDARD_LUCENE);
 
-            createdSearchIndexSource.setDescription("Search-index source with a persisted base filter.");
-            searchIndexClient.createOrUpdateKnowledgeSource(createdSearchIndexSource);
-            searchIndexClient.listKnowledgeSources(new RequestOptions().addQueryParam("pageSize", "1"))
+            createdQueryHintSource.setDescription("Search-index source with persisted query hints.");
+            searchIndexClient.createOrUpdateKnowledgeSource(createdQueryHintSource);
+            searchIndexClient.listKnowledgeSources()
                 .stream()
                 .filter(source -> createdSources.contains(source.getName()))
                 .forEach(source -> System.out.println("Created " + source.getKind() + " source " + source.getName()));
@@ -133,78 +108,27 @@ public class KnowledgeSourceCrudExample {
         }
     }
 
-    private static void runSourceExample(SearchIndexClient client, String kind) {
-        String name = "sample-" + kind + "-" + UUID.randomUUID().toString().replace("-", "").substring(0, 12);
-        KnowledgeSource source;
-        switch (kind) {
-            case "sql":
-                source = sqlSource(name, System.getenv("SEARCH_SQL_CONNECTION_STRING"),
-                    System.getenv("SEARCH_SQL_TABLE"), embeddingIngestion());
-                break;
-            case "sharepoint":
-                source = sharePointSource(name, System.getenv("SEARCH_SHAREPOINT_CONNECTION_STRING"),
-                    embeddingIngestion().setIngestionPermissionOptions(KnowledgeSourceIngestionPermissionOption.USER_IDS,
-                        KnowledgeSourceIngestionPermissionOption.GROUP_IDS));
-                break;
-            case "web":
-                source = webSource(name);
-                break;
-            default:
-                throw new IllegalArgumentException("Expected sql, sharepoint, web, or no arguments for the Blob flow.");
+    private static SearchIndexKnowledgeSource createQueryHintSource(String name, String indexName) {
+        SearchIndexKnowledgeSourceFilterHint filterHint
+            = new SearchIndexKnowledgeSourceFilterHint("Category", Collections.singletonList("Luxury"))
+                .setFilterInstructions("Use Category when the user requests a specific hotel category.");
+        SearchIndexKnowledgeSourceFieldValueBoost boost
+            = new SearchIndexKnowledgeSourceFieldValueBoost("Category", 2.0)
+                .setFieldValues(Collections.singletonList("Luxury"))
+                .setBoostInstructions("Prefer luxury hotels when luxury amenities are requested.");
+        SearchIndexKnowledgeSourceQueryHints queryHints = new SearchIndexKnowledgeSourceQueryHints()
+            .setFilters(Collections.singletonList(filterHint))
+            .setBoosts(Collections.singletonList(boost));
+        return new SearchIndexKnowledgeSource(name,
+            new SearchIndexKnowledgeSourceParameters(indexName).setQueryHints(queryHints));
+    }
+
+    private static void verifyQueryHints(SearchIndexKnowledgeSource source) {
+        SearchIndexKnowledgeSourceQueryHints queryHints = source.getSearchIndexParameters().getQueryHints();
+        if (queryHints == null || queryHints.getFilters() == null || queryHints.getFilters().size() != 1
+            || queryHints.getBoosts() == null || queryHints.getBoosts().size() != 1) {
+            throw new IllegalStateException("The query hints weren't persisted on the knowledge source.");
         }
-        client.createKnowledgeSource(source);
-        try {
-            KnowledgeSource persisted = client.getKnowledgeSource(name);
-            SearchIndexAsyncClient asyncClient = new SearchIndexClientBuilder()
-                .endpoint(System.getenv("SEARCH_ENDPOINT"))
-                .credential(new AzureKeyCredential(System.getenv("SEARCH_API_KEY"))).buildAsyncClient();
-            asyncClient.createOrUpdateKnowledgeSourceWithResponse(
-                persisted.setDescription("Updated " + kind + " knowledge source"), new RequestOptions())
-                .doOnNext(response -> System.out.println("Updated source: " + response.getValue().getName()))
-                .block();
-            System.out.println("Synchronization: " + client.getKnowledgeSourceStatus(name).getSynchronizationStatus());
-        } finally {
-            client.deleteKnowledgeSource(name);
-        }
-    }
-
-    private static KnowledgeSourceIngestionParameters embeddingIngestion() {
-        return new KnowledgeSourceIngestionParameters()
-            .setContentExtractionMode(KnowledgeSourceContentExtractionMode.MINIMAL)
-            .setEmbeddingModel(new KnowledgeSourceAzureOpenAIVectorizer().setAzureOpenAIParameters(
-                new AzureOpenAIVectorizerParameters().setResourceUrl(System.getenv("SEARCH_OPENAI_ENDPOINT"))
-                    .setApiKey(System.getenv("SEARCH_OPENAI_API_KEY"))
-                    .setDeploymentName(System.getenv("SEARCH_OPENAI_EMBEDDING_DEPLOYMENT_NAME"))
-                    .setModelName(AzureOpenAIModelName.fromString(System.getenv("SEARCH_OPENAI_EMBEDDING_MODEL_NAME")))));
-    }
-
-    static IndexedSqlKnowledgeSource sqlSource(String name, String connectionString, String table,
-        KnowledgeSourceIngestionParameters ingestion) {
-        return new IndexedSqlKnowledgeSource(name, new IndexedSqlKnowledgeSourceParameters(connectionString, table)
-            .setHighWaterMarkColumnName("LastModified")
-            .setContentColumns(Arrays.asList(
-                new ContentColumnMapping("title", "Title", "Edm.String"),
-                new ContentColumnMapping("content", "Content", "Edm.String")))
-            .setEmbeddingColumns(Collections.singletonList(new EmbeddingColumnMapping("contentVector", "Content")))
-            .setIngestionParameters(ingestion));
-    }
-
-    static IndexedSharePointKnowledgeSource sharePointSource(String name, String connectionString,
-        KnowledgeSourceIngestionParameters ingestion) {
-        return new IndexedSharePointKnowledgeSource(name,
-            new IndexedSharePointKnowledgeSourceParameters(connectionString, IndexedSharePointContainerName.DEFAULT_SITE_LIBRARY)
-                .setIngestionParameters(ingestion));
-    }
-
-    static WebKnowledgeSource webSource(String name) {
-        return new WebKnowledgeSource(name).setWebParameters(new WebKnowledgeSourceParameters()
-            .setDomains(new WebKnowledgeSourceDomains()
-                .setAllowedDomains(Collections.singletonList(new WebKnowledgeSourceDomain("learn.microsoft.com")
-                    .setIncludeSubpages(true))))
-            .setLanguage("en")
-            .setMarket("en-US")
-            .setCount(5)
-            .setFreshness("Month"));
     }
 
     private static AzureBlobKnowledgeSource createBlobSource(String name, String folderPath,

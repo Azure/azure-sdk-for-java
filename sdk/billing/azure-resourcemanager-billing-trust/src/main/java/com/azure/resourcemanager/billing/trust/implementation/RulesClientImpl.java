@@ -192,19 +192,7 @@ public final class RulesClientImpl implements RulesClient {
         return getWithResponseAsync(resourceUri, ruleName).flatMap(res -> Mono.justOrEmpty(res.getValue()));
     }
 
-    /**
-     * Get a Rule.
-     * 
-     * @param resourceUri The fully qualified Azure Resource manager identifier of the resource.
-     * @param ruleName The name of the rule. Rules are created by the service when the parent assessment is created —
-     * the available rule names are determined by the assessment template. Names start with an alphanumeric character
-     * and may contain letters, digits, underscores, and hyphens.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return a Rule along with {@link Response}.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Response<RuleInner> getWithResponse(String resourceUri, String ruleName, Context context) {
         final String accept = "application/json";
@@ -212,18 +200,7 @@ public final class RulesClientImpl implements RulesClient {
             context);
     }
 
-    /**
-     * Get a Rule.
-     * 
-     * @param resourceUri The fully qualified Azure Resource manager identifier of the resource.
-     * @param ruleName The name of the rule. Rules are created by the service when the parent assessment is created —
-     * the available rule names are determined by the assessment template. Names start with an alphanumeric character
-     * and may contain letters, digits, underscores, and hyphens.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return a Rule.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public RuleInner get(String resourceUri, String ruleName) {
         return getWithResponse(resourceUri, ruleName, Context.NONE).getValue();
@@ -275,11 +252,7 @@ public final class RulesClientImpl implements RulesClient {
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private PagedResponse<RuleInner> listSinglePage(String resourceUri) {
-        final String accept = "application/json";
-        Response<RuleListResult> res = service.listSync(this.client.getEndpoint(), this.client.getApiVersion(),
-            resourceUri, accept, Context.NONE);
-        return new PagedResponseBase<>(res.getRequest(), res.getStatusCode(), res.getHeaders(), res.getValue().value(),
-            res.getValue().nextLink(), null);
+        return listSinglePage(resourceUri, Context.NONE);
     }
 
     /**
@@ -301,30 +274,13 @@ public final class RulesClientImpl implements RulesClient {
             res.getValue().nextLink(), null);
     }
 
-    /**
-     * List Rule resources by Assessment.
-     * 
-     * @param resourceUri The fully qualified Azure Resource manager identifier of the resource.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the response of a Rule list operation as paginated response with {@link PagedIterable}.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.COLLECTION)
     public PagedIterable<RuleInner> list(String resourceUri) {
-        return new PagedIterable<>(() -> listSinglePage(resourceUri), nextLink -> listNextSinglePage(nextLink));
+        return list(resourceUri, Context.NONE);
     }
 
-    /**
-     * List Rule resources by Assessment.
-     * 
-     * @param resourceUri The fully qualified Azure Resource manager identifier of the resource.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the response of a Rule list operation as paginated response with {@link PagedIterable}.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.COLLECTION)
     public PagedIterable<RuleInner> list(String resourceUri, Context context) {
         return new PagedIterable<>(() -> listSinglePage(resourceUri, context),
@@ -392,29 +348,7 @@ public final class RulesClientImpl implements RulesClient {
             .flatMap(res -> Mono.justOrEmpty(res.getValue()));
     }
 
-    /**
-     * Create or update a Rule. **This operation is required for RPaaS tracked-resource
-     * cache population and MUST remain in the public spec.** Rules are created by the
-     * service when the parent assessment is created; they are not directly creatable
-     * by end users. All customer PUT calls are rejected at runtime with
-     * `OperationNotAllowed` via the RPaaS ResourceCreationValidate extension.
-     * Use PATCH to modify rule fields that the customer is authorized to change.
-     * Peer RPs with the same topology (extension singleton parent + proxy child)
-     * declare an identical public PUT for the same RPaaS cache-population reason:
-     * Microsoft.ScVmm/virtualMachineInstances/guestAgents,
-     * Microsoft.ConnectedVMwarevSphere/virtualMachineInstances/guestAgents.
-     * 
-     * @param resourceUri The fully qualified Azure Resource manager identifier of the resource.
-     * @param ruleName The name of the rule. Rules are created by the service when the parent assessment is created —
-     * the available rule names are determined by the assessment template. Names start with an alphanumeric character
-     * and may contain letters, digits, underscores, and hyphens.
-     * @param resource Resource create parameters.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return a rule within an assessment along with {@link Response}.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Response<RuleInner> createOrUpdateWithResponse(String resourceUri, String ruleName, RuleInner resource,
         Context context) {
@@ -424,28 +358,7 @@ public final class RulesClientImpl implements RulesClient {
             contentType, accept, resource, context);
     }
 
-    /**
-     * Create or update a Rule. **This operation is required for RPaaS tracked-resource
-     * cache population and MUST remain in the public spec.** Rules are created by the
-     * service when the parent assessment is created; they are not directly creatable
-     * by end users. All customer PUT calls are rejected at runtime with
-     * `OperationNotAllowed` via the RPaaS ResourceCreationValidate extension.
-     * Use PATCH to modify rule fields that the customer is authorized to change.
-     * Peer RPs with the same topology (extension singleton parent + proxy child)
-     * declare an identical public PUT for the same RPaaS cache-population reason:
-     * Microsoft.ScVmm/virtualMachineInstances/guestAgents,
-     * Microsoft.ConnectedVMwarevSphere/virtualMachineInstances/guestAgents.
-     * 
-     * @param resourceUri The fully qualified Azure Resource manager identifier of the resource.
-     * @param ruleName The name of the rule. Rules are created by the service when the parent assessment is created —
-     * the available rule names are determined by the assessment template. Names start with an alphanumeric character
-     * and may contain letters, digits, underscores, and hyphens.
-     * @param resource Resource create parameters.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return a rule within an assessment.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public RuleInner createOrUpdate(String resourceUri, String ruleName, RuleInner resource) {
         return createOrUpdateWithResponse(resourceUri, ruleName, resource, Context.NONE).getValue();
@@ -502,24 +415,7 @@ public final class RulesClientImpl implements RulesClient {
             .flatMap(res -> Mono.justOrEmpty(res.getValue()));
     }
 
-    /**
-     * Update a Rule. The PATCH body is discriminated by `kind` and must match the existing rule's kind. For
-     * `eduQualification` rules, only `supplementalDocuments` is patchable, and only when `evaluationState ==
-     * actionRequired`. For `businessVerification` rules, the patchable fields are `supplementalDocuments` and
-     * `externalId`, and only when `evaluationState` is `pending` or `actionRequired`. All other field/state
-     * combinations are rejected with 400 InvalidParameterValue or 409 RuleNotActionable.
-     * 
-     * @param resourceUri The fully qualified Azure Resource manager identifier of the resource.
-     * @param ruleName The name of the rule. Rules are created by the service when the parent assessment is created —
-     * the available rule names are determined by the assessment template. Names start with an alphanumeric character
-     * and may contain letters, digits, underscores, and hyphens.
-     * @param properties The resource properties to be updated.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return a rule within an assessment along with {@link Response}.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Response<RuleInner> updateWithResponse(String resourceUri, String ruleName, RulePatchProperties properties,
         Context context) {
@@ -529,23 +425,7 @@ public final class RulesClientImpl implements RulesClient {
             contentType, accept, properties, context);
     }
 
-    /**
-     * Update a Rule. The PATCH body is discriminated by `kind` and must match the existing rule's kind. For
-     * `eduQualification` rules, only `supplementalDocuments` is patchable, and only when `evaluationState ==
-     * actionRequired`. For `businessVerification` rules, the patchable fields are `supplementalDocuments` and
-     * `externalId`, and only when `evaluationState` is `pending` or `actionRequired`. All other field/state
-     * combinations are rejected with 400 InvalidParameterValue or 409 RuleNotActionable.
-     * 
-     * @param resourceUri The fully qualified Azure Resource manager identifier of the resource.
-     * @param ruleName The name of the rule. Rules are created by the service when the parent assessment is created —
-     * the available rule names are determined by the assessment template. Names start with an alphanumeric character
-     * and may contain letters, digits, underscores, and hyphens.
-     * @param properties The resource properties to be updated.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return a rule within an assessment.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public RuleInner update(String resourceUri, String ruleName, RulePatchProperties properties) {
         return updateWithResponse(resourceUri, ruleName, properties, Context.NONE).getValue();
@@ -581,10 +461,7 @@ public final class RulesClientImpl implements RulesClient {
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private PagedResponse<RuleInner> listNextSinglePage(String nextLink) {
-        final String accept = "application/json";
-        Response<RuleListResult> res = service.listNextSync(nextLink, this.client.getEndpoint(), accept, Context.NONE);
-        return new PagedResponseBase<>(res.getRequest(), res.getStatusCode(), res.getHeaders(), res.getValue().value(),
-            res.getValue().nextLink(), null);
+        return listNextSinglePage(nextLink, Context.NONE);
     }
 
     /**

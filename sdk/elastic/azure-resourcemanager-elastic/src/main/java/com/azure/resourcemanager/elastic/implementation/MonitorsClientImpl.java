@@ -253,18 +253,7 @@ public final class MonitorsClientImpl implements MonitorsClient {
             .flatMap(res -> Mono.justOrEmpty(res.getValue()));
     }
 
-    /**
-     * Get detailed properties of a specific Elastic monitor resource, helping you manage observability and performance.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param monitorName Monitor resource name.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return detailed properties of a specific Elastic monitor resource, helping you manage observability and
-     * performance along with {@link Response}.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Response<ElasticMonitorResourceInner> getByResourceGroupWithResponse(String resourceGroupName,
         String monitorName, Context context) {
@@ -273,17 +262,7 @@ public final class MonitorsClientImpl implements MonitorsClient {
             this.client.getSubscriptionId(), resourceGroupName, monitorName, accept, context);
     }
 
-    /**
-     * Get detailed properties of a specific Elastic monitor resource, helping you manage observability and performance.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param monitorName Monitor resource name.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return detailed properties of a specific Elastic monitor resource, helping you manage observability and
-     * performance.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public ElasticMonitorResourceInner getByResourceGroup(String resourceGroupName, String monitorName) {
         return getByResourceGroupWithResponse(resourceGroupName, monitorName, Context.NONE).getValue();
@@ -326,9 +305,7 @@ public final class MonitorsClientImpl implements MonitorsClient {
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Response<BinaryData> createWithResponse(String resourceGroupName, String monitorName,
         ElasticMonitorResourceInner body) {
-        final String accept = "application/json";
-        return service.createSync(this.client.getEndpoint(), this.client.getApiVersion(),
-            this.client.getSubscriptionId(), resourceGroupName, monitorName, accept, body, Context.NONE);
+        return createWithResponse(resourceGroupName, monitorName, body, Context.NONE);
     }
 
     /**
@@ -409,44 +386,18 @@ public final class MonitorsClientImpl implements MonitorsClient {
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     private SyncPoller<PollResult<ElasticMonitorResourceInner>, ElasticMonitorResourceInner>
         beginCreate(String resourceGroupName, String monitorName, ElasticMonitorResourceInner body) {
-        Response<BinaryData> response = createWithResponse(resourceGroupName, monitorName, body);
-        return this.client.<ElasticMonitorResourceInner, ElasticMonitorResourceInner>getLroResult(response,
-            ElasticMonitorResourceInner.class, ElasticMonitorResourceInner.class, Context.NONE);
+        return beginCreate(resourceGroupName, monitorName, body, Context.NONE);
     }
 
-    /**
-     * Create a new Elastic monitor resource in your Azure subscription, enabling observability and monitoring of your
-     * Azure resources through Elastic.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param monitorName Monitor resource name.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the {@link SyncPoller} for polling of monitor resource.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public SyncPoller<PollResult<ElasticMonitorResourceInner>, ElasticMonitorResourceInner>
         beginCreate(String resourceGroupName, String monitorName) {
         final ElasticMonitorResourceInner body = null;
-        Response<BinaryData> response = createWithResponse(resourceGroupName, monitorName, body);
-        return this.client.<ElasticMonitorResourceInner, ElasticMonitorResourceInner>getLroResult(response,
-            ElasticMonitorResourceInner.class, ElasticMonitorResourceInner.class, Context.NONE);
+        return beginCreate(resourceGroupName, monitorName, body, Context.NONE);
     }
 
-    /**
-     * Create a new Elastic monitor resource in your Azure subscription, enabling observability and monitoring of your
-     * Azure resources through Elastic.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param monitorName Monitor resource name.
-     * @param body Elastic monitor resource model.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the {@link SyncPoller} for polling of monitor resource.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public SyncPoller<PollResult<ElasticMonitorResourceInner>, ElasticMonitorResourceInner>
         beginCreate(String resourceGroupName, String monitorName, ElasticMonitorResourceInner body, Context context) {
@@ -492,40 +443,18 @@ public final class MonitorsClientImpl implements MonitorsClient {
             .flatMap(this.client::getLroFinalResultOrError);
     }
 
-    /**
-     * Create a new Elastic monitor resource in your Azure subscription, enabling observability and monitoring of your
-     * Azure resources through Elastic.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param monitorName Monitor resource name.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return monitor resource.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public ElasticMonitorResourceInner create(String resourceGroupName, String monitorName) {
         final ElasticMonitorResourceInner body = null;
-        return beginCreate(resourceGroupName, monitorName, body).getFinalResult();
+        return create(resourceGroupName, monitorName, body, Context.NONE);
     }
 
-    /**
-     * Create a new Elastic monitor resource in your Azure subscription, enabling observability and monitoring of your
-     * Azure resources through Elastic.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param monitorName Monitor resource name.
-     * @param body Elastic monitor resource model.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return monitor resource.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public ElasticMonitorResourceInner create(String resourceGroupName, String monitorName,
         ElasticMonitorResourceInner body, Context context) {
-        return beginCreate(resourceGroupName, monitorName, body, context).getFinalResult();
+        return this.client.getLroFinalResultOrError(beginCreate(resourceGroupName, monitorName, body, context));
     }
 
     /**
@@ -565,9 +494,7 @@ public final class MonitorsClientImpl implements MonitorsClient {
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Response<BinaryData> updateWithResponse(String resourceGroupName, String monitorName,
         ElasticMonitorResourceUpdateParameters body) {
-        final String accept = "application/json";
-        return service.updateSync(this.client.getEndpoint(), this.client.getApiVersion(),
-            this.client.getSubscriptionId(), resourceGroupName, monitorName, accept, body, Context.NONE);
+        return updateWithResponse(resourceGroupName, monitorName, body, Context.NONE);
     }
 
     /**
@@ -648,44 +575,18 @@ public final class MonitorsClientImpl implements MonitorsClient {
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     private SyncPoller<PollResult<ElasticMonitorResourceInner>, ElasticMonitorResourceInner>
         beginUpdate(String resourceGroupName, String monitorName, ElasticMonitorResourceUpdateParameters body) {
-        Response<BinaryData> response = updateWithResponse(resourceGroupName, monitorName, body);
-        return this.client.<ElasticMonitorResourceInner, ElasticMonitorResourceInner>getLroResult(response,
-            ElasticMonitorResourceInner.class, ElasticMonitorResourceInner.class, Context.NONE);
+        return beginUpdate(resourceGroupName, monitorName, body, Context.NONE);
     }
 
-    /**
-     * Update an existing Elastic monitor resource in your Azure subscription, ensuring optimal observability and
-     * performance.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param monitorName Monitor resource name.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the {@link SyncPoller} for polling of monitor resource.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public SyncPoller<PollResult<ElasticMonitorResourceInner>, ElasticMonitorResourceInner>
         beginUpdate(String resourceGroupName, String monitorName) {
         final ElasticMonitorResourceUpdateParameters body = null;
-        Response<BinaryData> response = updateWithResponse(resourceGroupName, monitorName, body);
-        return this.client.<ElasticMonitorResourceInner, ElasticMonitorResourceInner>getLroResult(response,
-            ElasticMonitorResourceInner.class, ElasticMonitorResourceInner.class, Context.NONE);
+        return beginUpdate(resourceGroupName, monitorName, body, Context.NONE);
     }
 
-    /**
-     * Update an existing Elastic monitor resource in your Azure subscription, ensuring optimal observability and
-     * performance.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param monitorName Monitor resource name.
-     * @param body Elastic resource model update parameters.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the {@link SyncPoller} for polling of monitor resource.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public SyncPoller<PollResult<ElasticMonitorResourceInner>, ElasticMonitorResourceInner> beginUpdate(
         String resourceGroupName, String monitorName, ElasticMonitorResourceUpdateParameters body, Context context) {
@@ -731,40 +632,18 @@ public final class MonitorsClientImpl implements MonitorsClient {
             .flatMap(this.client::getLroFinalResultOrError);
     }
 
-    /**
-     * Update an existing Elastic monitor resource in your Azure subscription, ensuring optimal observability and
-     * performance.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param monitorName Monitor resource name.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return monitor resource.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public ElasticMonitorResourceInner update(String resourceGroupName, String monitorName) {
         final ElasticMonitorResourceUpdateParameters body = null;
-        return beginUpdate(resourceGroupName, monitorName, body).getFinalResult();
+        return update(resourceGroupName, monitorName, body, Context.NONE);
     }
 
-    /**
-     * Update an existing Elastic monitor resource in your Azure subscription, ensuring optimal observability and
-     * performance.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param monitorName Monitor resource name.
-     * @param body Elastic resource model update parameters.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return monitor resource.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public ElasticMonitorResourceInner update(String resourceGroupName, String monitorName,
         ElasticMonitorResourceUpdateParameters body, Context context) {
-        return beginUpdate(resourceGroupName, monitorName, body, context).getFinalResult();
+        return this.client.getLroFinalResultOrError(beginUpdate(resourceGroupName, monitorName, body, context));
     }
 
     /**
@@ -806,8 +685,7 @@ public final class MonitorsClientImpl implements MonitorsClient {
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Response<BinaryData> deleteWithResponse(String resourceGroupName, String monitorName, Boolean softDelete) {
-        return service.deleteSync(this.client.getEndpoint(), this.client.getApiVersion(),
-            this.client.getSubscriptionId(), resourceGroupName, monitorName, softDelete, Context.NONE);
+        return deleteWithResponse(resourceGroupName, monitorName, softDelete, Context.NONE);
     }
 
     /**
@@ -890,43 +768,17 @@ public final class MonitorsClientImpl implements MonitorsClient {
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     private SyncPoller<PollResult<Void>, Void> beginDelete(String resourceGroupName, String monitorName,
         Boolean softDelete) {
-        Response<BinaryData> response = deleteWithResponse(resourceGroupName, monitorName, softDelete);
-        return this.client.<Void, Void>getLroResult(response, Void.class, Void.class, Context.NONE);
+        return beginDelete(resourceGroupName, monitorName, softDelete, Context.NONE);
     }
 
-    /**
-     * Delete an existing Elastic monitor resource from your Azure subscription, removing its observability and
-     * monitoring capabilities.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param monitorName Monitor resource name.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the {@link SyncPoller} for polling of long-running operation.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public SyncPoller<PollResult<Void>, Void> beginDelete(String resourceGroupName, String monitorName) {
         final Boolean softDelete = null;
-        Response<BinaryData> response = deleteWithResponse(resourceGroupName, monitorName, softDelete);
-        return this.client.<Void, Void>getLroResult(response, Void.class, Void.class, Context.NONE);
+        return beginDelete(resourceGroupName, monitorName, softDelete, Context.NONE);
     }
 
-    /**
-     * Delete an existing Elastic monitor resource from your Azure subscription, removing its observability and
-     * monitoring capabilities.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param monitorName Monitor resource name.
-     * @param softDelete Indicates whether to perform a soft delete. When set to true, the Azure resource (Liftr
-     * integration) only is deleted and not the Partner Cloud resource. When set to false (default), the resource is
-     * permanently deleted from both Azure and the Partner Cloud.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the {@link SyncPoller} for polling of long-running operation.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public SyncPoller<PollResult<Void>, Void> beginDelete(String resourceGroupName, String monitorName,
         Boolean softDelete, Context context) {
@@ -972,39 +824,17 @@ public final class MonitorsClientImpl implements MonitorsClient {
             .flatMap(this.client::getLroFinalResultOrError);
     }
 
-    /**
-     * Delete an existing Elastic monitor resource from your Azure subscription, removing its observability and
-     * monitoring capabilities.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param monitorName Monitor resource name.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public void delete(String resourceGroupName, String monitorName) {
         final Boolean softDelete = null;
-        beginDelete(resourceGroupName, monitorName, softDelete).getFinalResult();
+        delete(resourceGroupName, monitorName, softDelete, Context.NONE);
     }
 
-    /**
-     * Delete an existing Elastic monitor resource from your Azure subscription, removing its observability and
-     * monitoring capabilities.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param monitorName Monitor resource name.
-     * @param softDelete Indicates whether to perform a soft delete. When set to true, the Azure resource (Liftr
-     * integration) only is deleted and not the Partner Cloud resource. When set to false (default), the resource is
-     * permanently deleted from both Azure and the Partner Cloud.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public void delete(String resourceGroupName, String monitorName, Boolean softDelete, Context context) {
-        beginDelete(resourceGroupName, monitorName, softDelete, context).getFinalResult();
+        this.client.getLroFinalResultOrError(beginDelete(resourceGroupName, monitorName, softDelete, context));
     }
 
     /**
@@ -1057,11 +887,7 @@ public final class MonitorsClientImpl implements MonitorsClient {
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private PagedResponse<ElasticMonitorResourceInner> listByResourceGroupSinglePage(String resourceGroupName) {
-        final String accept = "application/json";
-        Response<ElasticMonitorResourceListResponse> res = service.listByResourceGroupSync(this.client.getEndpoint(),
-            this.client.getApiVersion(), this.client.getSubscriptionId(), resourceGroupName, accept, Context.NONE);
-        return new PagedResponseBase<>(res.getRequest(), res.getStatusCode(), res.getHeaders(), res.getValue().value(),
-            res.getValue().nextLink(), null);
+        return listByResourceGroupSinglePage(resourceGroupName, Context.NONE);
     }
 
     /**
@@ -1085,33 +911,13 @@ public final class MonitorsClientImpl implements MonitorsClient {
             res.getValue().nextLink(), null);
     }
 
-    /**
-     * List all Elastic monitor resources within a specified resource group of the subscription, helping you audit and
-     * manage your monitoring setup.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return response of a list operation as paginated response with {@link PagedIterable}.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.COLLECTION)
     public PagedIterable<ElasticMonitorResourceInner> listByResourceGroup(String resourceGroupName) {
-        return new PagedIterable<>(() -> listByResourceGroupSinglePage(resourceGroupName),
-            nextLink -> listByResourceGroupNextSinglePage(nextLink));
+        return listByResourceGroup(resourceGroupName, Context.NONE);
     }
 
-    /**
-     * List all Elastic monitor resources within a specified resource group of the subscription, helping you audit and
-     * manage your monitoring setup.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return response of a list operation as paginated response with {@link PagedIterable}.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.COLLECTION)
     public PagedIterable<ElasticMonitorResourceInner> listByResourceGroup(String resourceGroupName, Context context) {
         return new PagedIterable<>(() -> listByResourceGroupSinglePage(resourceGroupName, context),
@@ -1160,11 +966,7 @@ public final class MonitorsClientImpl implements MonitorsClient {
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private PagedResponse<ElasticMonitorResourceInner> listSinglePage() {
-        final String accept = "application/json";
-        Response<ElasticMonitorResourceListResponse> res = service.listSync(this.client.getEndpoint(),
-            this.client.getApiVersion(), this.client.getSubscriptionId(), accept, Context.NONE);
-        return new PagedResponseBase<>(res.getRequest(), res.getStatusCode(), res.getHeaders(), res.getValue().value(),
-            res.getValue().nextLink(), null);
+        return listSinglePage(Context.NONE);
     }
 
     /**
@@ -1186,29 +988,13 @@ public final class MonitorsClientImpl implements MonitorsClient {
             res.getValue().nextLink(), null);
     }
 
-    /**
-     * List all Elastic monitor resources within a specified subscription, helping you audit and manage your monitoring
-     * setup.
-     * 
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return response of a list operation as paginated response with {@link PagedIterable}.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.COLLECTION)
     public PagedIterable<ElasticMonitorResourceInner> list() {
-        return new PagedIterable<>(() -> listSinglePage(), nextLink -> listNextSinglePage(nextLink));
+        return list(Context.NONE);
     }
 
-    /**
-     * List all Elastic monitor resources within a specified subscription, helping you audit and manage your monitoring
-     * setup.
-     * 
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return response of a list operation as paginated response with {@link PagedIterable}.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.COLLECTION)
     public PagedIterable<ElasticMonitorResourceInner> list(Context context) {
         return new PagedIterable<>(() -> listSinglePage(context), nextLink -> listNextSinglePage(nextLink, context));
@@ -1245,11 +1031,7 @@ public final class MonitorsClientImpl implements MonitorsClient {
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private PagedResponse<ElasticMonitorResourceInner> listByResourceGroupNextSinglePage(String nextLink) {
-        final String accept = "application/json";
-        Response<ElasticMonitorResourceListResponse> res
-            = service.listByResourceGroupNextSync(nextLink, this.client.getEndpoint(), accept, Context.NONE);
-        return new PagedResponseBase<>(res.getRequest(), res.getStatusCode(), res.getHeaders(), res.getValue().value(),
-            res.getValue().nextLink(), null);
+        return listByResourceGroupNextSinglePage(nextLink, Context.NONE);
     }
 
     /**
@@ -1301,11 +1083,7 @@ public final class MonitorsClientImpl implements MonitorsClient {
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private PagedResponse<ElasticMonitorResourceInner> listNextSinglePage(String nextLink) {
-        final String accept = "application/json";
-        Response<ElasticMonitorResourceListResponse> res
-            = service.listNextSync(nextLink, this.client.getEndpoint(), accept, Context.NONE);
-        return new PagedResponseBase<>(res.getRequest(), res.getStatusCode(), res.getHeaders(), res.getValue().value(),
-            res.getValue().nextLink(), null);
+        return listNextSinglePage(nextLink, Context.NONE);
     }
 
     /**

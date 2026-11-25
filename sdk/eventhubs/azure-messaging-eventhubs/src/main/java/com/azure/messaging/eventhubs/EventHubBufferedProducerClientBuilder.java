@@ -74,8 +74,8 @@ import static com.azure.messaging.eventhubs.EventHubBufferedProducerAsyncClient.
  * {@link EventHubBufferedProducerAsyncClient}.  The {@code fullyQualifiedNamespace} is the Event Hubs Namespace's host
  * name. It is listed under the "Essentials" panel after navigating to the Event Hubs Namespace via Azure Portal. The
  * credential used is {@code DefaultAzureCredential} because it combines commonly used credentials in deployment and
- * development and chooses the credential to used based on its running environment.  The producer is set to publish
- * events every 60 seconds with a buffer size of 1500 events for each partition.</p>
+ * development and chooses the credential to used based on its running environment. The producer waits up to 60
+ * seconds to build each batch and buffers up to 1500 events for each partition.</p>
  *
  * <!-- src_embed com.azure.messaging.eventhubs.eventhubbufferedproducerasyncclient.construct -->
  * <pre>
@@ -104,8 +104,8 @@ import static com.azure.messaging.eventhubs.EventHubBufferedProducerAsyncClient.
  * {@link EventHubBufferedProducerClient}.  The {@code fullyQualifiedNamespace} is the Event Hubs Namespace's host
  * name. It is listed under the "Essentials" panel after navigating to the Event Hubs Namespace via Azure Portal. The
  * credential used is {@code DefaultAzureCredential} because it combines commonly used credentials in deployment and
- * development and chooses the credential to used based on its running environment.  The producer is set to publish
- * events every 60 seconds with a buffer size of 1500 events for each partition.</p>
+ * development and chooses the credential to used based on its running environment. The producer waits up to 60
+ * seconds to build each batch and buffers up to 1500 events for each partition.</p>
  *
  * <!-- src_embed com.azure.messaging.eventhubs.eventhubbufferedproducerclient.construct -->
  * <pre>
@@ -475,10 +475,14 @@ public final class EventHubBufferedProducerClientBuilder
     }
 
     /**
-     * The amount of time to wait for a batch to be built with events in the buffer before publishing a partially full
-     * batch.
+     * The maximum time to build a partially full batch, starting when its first event is added. Later events in the
+     * same batch do not restart this wait. After publication or an explicit flush, the next batch starts its own wait
+     * with its first event.
      *
-     * @param maxWaitTime The amount of time to wait.
+     * <p>Events can wait in the buffer before they enter a batch. Scheduling delays, queued sends, and retries can
+     * delay publication and service acknowledgement beyond this interval.</p>
+     *
+     * @param maxWaitTime The maximum time to build a partially full batch.
      *
      * @return The updated {@link EventHubBufferedProducerClientBuilder} object.
      */

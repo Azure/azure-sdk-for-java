@@ -125,15 +125,7 @@ public final class ResourceProvidersClientImpl implements ResourceProvidersClien
         return getCustomDomainVerificationIdWithResponseAsync().flatMap(res -> Mono.justOrEmpty(res.getValue()));
     }
 
-    /**
-     * Get the verification id of a subscription used for verifying custom domains.
-     * 
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws DefaultErrorResponseErrorException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the verification id of a subscription used for verifying custom domains along with {@link Response}.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Response<String> getCustomDomainVerificationIdWithResponse(Context context) {
         final String accept = "application/json";
@@ -141,13 +133,7 @@ public final class ResourceProvidersClientImpl implements ResourceProvidersClien
             this.client.getSubscriptionId(), accept, context);
     }
 
-    /**
-     * Get the verification id of a subscription used for verifying custom domains.
-     * 
-     * @throws DefaultErrorResponseErrorException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the verification id of a subscription used for verifying custom domains.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public String getCustomDomainVerificationId() {
         return getCustomDomainVerificationIdWithResponse(Context.NONE).getValue();
@@ -192,18 +178,7 @@ public final class ResourceProvidersClientImpl implements ResourceProvidersClien
             .flatMap(res -> Mono.justOrEmpty(res.getValue()));
     }
 
-    /**
-     * Get details of a single job execution.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param jobName Job Name.
-     * @param jobExecutionName Job execution name.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws DefaultErrorResponseErrorException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return details of a single job execution along with {@link Response}.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Response<JobExecutionInner> jobExecutionWithResponse(String resourceGroupName, String jobName,
         String jobExecutionName, Context context) {
@@ -212,17 +187,7 @@ public final class ResourceProvidersClientImpl implements ResourceProvidersClien
             this.client.getSubscriptionId(), resourceGroupName, jobName, jobExecutionName, accept, context);
     }
 
-    /**
-     * Get details of a single job execution.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param jobName Job Name.
-     * @param jobExecutionName Job execution name.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws DefaultErrorResponseErrorException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return details of a single job execution.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public JobExecutionInner jobExecution(String resourceGroupName, String jobName, String jobExecutionName) {
         return jobExecutionWithResponse(resourceGroupName, jobName, jobExecutionName, Context.NONE).getValue();

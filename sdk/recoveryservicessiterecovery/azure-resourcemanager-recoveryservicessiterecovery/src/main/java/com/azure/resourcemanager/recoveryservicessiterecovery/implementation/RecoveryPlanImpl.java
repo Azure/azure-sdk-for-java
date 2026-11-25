@@ -85,10 +85,7 @@ public final class RecoveryPlanImpl implements RecoveryPlan, RecoveryPlan.Defini
     }
 
     public RecoveryPlan create() {
-        this.innerObject = serviceManager.serviceClient()
-            .getReplicationRecoveryPlans()
-            .create(resourceGroupName, resourceName, recoveryPlanName, createInput, Context.NONE);
-        return this;
+        return this.create(Context.NONE);
     }
 
     public RecoveryPlan create(Context context) {
@@ -111,10 +108,7 @@ public final class RecoveryPlanImpl implements RecoveryPlan, RecoveryPlan.Defini
     }
 
     public RecoveryPlan apply() {
-        this.innerObject = serviceManager.serviceClient()
-            .getReplicationRecoveryPlans()
-            .update(resourceGroupName, resourceName, recoveryPlanName, updateInput, Context.NONE);
-        return this;
+        return this.apply(Context.NONE);
     }
 
     public RecoveryPlan apply(Context context) {
@@ -140,11 +134,7 @@ public final class RecoveryPlanImpl implements RecoveryPlan, RecoveryPlan.Defini
     }
 
     public RecoveryPlan refresh() {
-        this.innerObject = serviceManager.serviceClient()
-            .getReplicationRecoveryPlans()
-            .getWithResponse(resourceGroupName, resourceName, recoveryPlanName, Context.NONE)
-            .getValue();
-        return this;
+        return this.refresh(Context.NONE);
     }
 
     public RecoveryPlan refresh(Context context) {

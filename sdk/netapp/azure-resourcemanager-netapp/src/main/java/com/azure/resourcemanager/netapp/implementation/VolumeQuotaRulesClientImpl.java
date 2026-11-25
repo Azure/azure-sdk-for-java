@@ -266,20 +266,7 @@ public final class VolumeQuotaRulesClientImpl implements VolumeQuotaRulesClient 
             .flatMap(res -> Mono.justOrEmpty(res.getValue()));
     }
 
-    /**
-     * Get details of the specified quota rule.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param accountName The name of the NetApp account.
-     * @param poolName The name of the capacity pool.
-     * @param volumeName The name of the volume.
-     * @param volumeQuotaRuleName The name of volume quota rule.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return details of the specified quota rule along with {@link Response}.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Response<VolumeQuotaRuleInner> getWithResponse(String resourceGroupName, String accountName, String poolName,
         String volumeName, String volumeQuotaRuleName, Context context) {
@@ -318,19 +305,7 @@ public final class VolumeQuotaRulesClientImpl implements VolumeQuotaRulesClient 
             resourceGroupName, accountName, poolName, volumeName, volumeQuotaRuleName, accept, context);
     }
 
-    /**
-     * Get details of the specified quota rule.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param accountName The name of the NetApp account.
-     * @param poolName The name of the capacity pool.
-     * @param volumeName The name of the volume.
-     * @param volumeQuotaRuleName The name of volume quota rule.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return details of the specified quota rule.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public VolumeQuotaRuleInner get(String resourceGroupName, String accountName, String poolName, String volumeName,
         String volumeQuotaRuleName) {
@@ -411,46 +386,8 @@ public final class VolumeQuotaRulesClientImpl implements VolumeQuotaRulesClient 
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Response<BinaryData> createWithResponse(String resourceGroupName, String accountName, String poolName,
         String volumeName, String volumeQuotaRuleName, VolumeQuotaRuleInner body) {
-        if (this.client.getEndpoint() == null) {
-            throw LOGGER.atError()
-                .log(new IllegalArgumentException(
-                    "Parameter this.client.getEndpoint() is required and cannot be null."));
-        }
-        if (this.client.getSubscriptionId() == null) {
-            throw LOGGER.atError()
-                .log(new IllegalArgumentException(
-                    "Parameter this.client.getSubscriptionId() is required and cannot be null."));
-        }
-        if (resourceGroupName == null) {
-            throw LOGGER.atError()
-                .log(new IllegalArgumentException("Parameter resourceGroupName is required and cannot be null."));
-        }
-        if (accountName == null) {
-            throw LOGGER.atError()
-                .log(new IllegalArgumentException("Parameter accountName is required and cannot be null."));
-        }
-        if (poolName == null) {
-            throw LOGGER.atError()
-                .log(new IllegalArgumentException("Parameter poolName is required and cannot be null."));
-        }
-        if (volumeName == null) {
-            throw LOGGER.atError()
-                .log(new IllegalArgumentException("Parameter volumeName is required and cannot be null."));
-        }
-        if (volumeQuotaRuleName == null) {
-            throw LOGGER.atError()
-                .log(new IllegalArgumentException("Parameter volumeQuotaRuleName is required and cannot be null."));
-        }
-        if (body == null) {
-            throw LOGGER.atError().log(new IllegalArgumentException("Parameter body is required and cannot be null."));
-        } else {
-            body.validate();
-        }
-        final String contentType = "application/json";
-        final String accept = "application/json";
-        return service.createSync(this.client.getEndpoint(), this.client.getApiVersion(),
-            this.client.getSubscriptionId(), resourceGroupName, accountName, poolName, volumeName, volumeQuotaRuleName,
-            contentType, accept, body, Context.NONE);
+        return createWithResponse(resourceGroupName, accountName, poolName, volumeName, volumeQuotaRuleName, body,
+            Context.NONE);
     }
 
     /**
@@ -537,44 +474,15 @@ public final class VolumeQuotaRulesClientImpl implements VolumeQuotaRulesClient 
             VolumeQuotaRuleInner.class, VolumeQuotaRuleInner.class, this.client.getContext());
     }
 
-    /**
-     * Create the specified quota rule within the given volume.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param accountName The name of the NetApp account.
-     * @param poolName The name of the capacity pool.
-     * @param volumeName The name of the volume.
-     * @param volumeQuotaRuleName The name of volume quota rule.
-     * @param body Quota rule object supplied in the body of the operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the {@link SyncPoller} for polling of quota Rule of a Volume.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public SyncPoller<PollResult<VolumeQuotaRuleInner>, VolumeQuotaRuleInner> beginCreate(String resourceGroupName,
         String accountName, String poolName, String volumeName, String volumeQuotaRuleName, VolumeQuotaRuleInner body) {
-        Response<BinaryData> response
-            = createWithResponse(resourceGroupName, accountName, poolName, volumeName, volumeQuotaRuleName, body);
-        return this.client.<VolumeQuotaRuleInner, VolumeQuotaRuleInner>getLroResult(response,
-            VolumeQuotaRuleInner.class, VolumeQuotaRuleInner.class, Context.NONE);
+        return beginCreate(resourceGroupName, accountName, poolName, volumeName, volumeQuotaRuleName, body,
+            Context.NONE);
     }
 
-    /**
-     * Create the specified quota rule within the given volume.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param accountName The name of the NetApp account.
-     * @param poolName The name of the capacity pool.
-     * @param volumeName The name of the volume.
-     * @param volumeQuotaRuleName The name of volume quota rule.
-     * @param body Quota rule object supplied in the body of the operation.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the {@link SyncPoller} for polling of quota Rule of a Volume.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public SyncPoller<PollResult<VolumeQuotaRuleInner>, VolumeQuotaRuleInner> beginCreate(String resourceGroupName,
         String accountName, String poolName, String volumeName, String volumeQuotaRuleName, VolumeQuotaRuleInner body,
@@ -606,47 +514,19 @@ public final class VolumeQuotaRulesClientImpl implements VolumeQuotaRulesClient 
             .flatMap(this.client::getLroFinalResultOrError);
     }
 
-    /**
-     * Create the specified quota rule within the given volume.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param accountName The name of the NetApp account.
-     * @param poolName The name of the capacity pool.
-     * @param volumeName The name of the volume.
-     * @param volumeQuotaRuleName The name of volume quota rule.
-     * @param body Quota rule object supplied in the body of the operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return quota Rule of a Volume.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public VolumeQuotaRuleInner create(String resourceGroupName, String accountName, String poolName, String volumeName,
         String volumeQuotaRuleName, VolumeQuotaRuleInner body) {
-        return beginCreate(resourceGroupName, accountName, poolName, volumeName, volumeQuotaRuleName, body)
-            .getFinalResult();
+        return create(resourceGroupName, accountName, poolName, volumeName, volumeQuotaRuleName, body, Context.NONE);
     }
 
-    /**
-     * Create the specified quota rule within the given volume.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param accountName The name of the NetApp account.
-     * @param poolName The name of the capacity pool.
-     * @param volumeName The name of the volume.
-     * @param volumeQuotaRuleName The name of volume quota rule.
-     * @param body Quota rule object supplied in the body of the operation.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return quota Rule of a Volume.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public VolumeQuotaRuleInner create(String resourceGroupName, String accountName, String poolName, String volumeName,
         String volumeQuotaRuleName, VolumeQuotaRuleInner body, Context context) {
-        return beginCreate(resourceGroupName, accountName, poolName, volumeName, volumeQuotaRuleName, body, context)
-            .getFinalResult();
+        return this.client.getLroFinalResultOrError(
+            beginCreate(resourceGroupName, accountName, poolName, volumeName, volumeQuotaRuleName, body, context));
     }
 
     /**
@@ -722,46 +602,8 @@ public final class VolumeQuotaRulesClientImpl implements VolumeQuotaRulesClient 
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Response<BinaryData> updateWithResponse(String resourceGroupName, String accountName, String poolName,
         String volumeName, String volumeQuotaRuleName, VolumeQuotaRulePatch body) {
-        if (this.client.getEndpoint() == null) {
-            throw LOGGER.atError()
-                .log(new IllegalArgumentException(
-                    "Parameter this.client.getEndpoint() is required and cannot be null."));
-        }
-        if (this.client.getSubscriptionId() == null) {
-            throw LOGGER.atError()
-                .log(new IllegalArgumentException(
-                    "Parameter this.client.getSubscriptionId() is required and cannot be null."));
-        }
-        if (resourceGroupName == null) {
-            throw LOGGER.atError()
-                .log(new IllegalArgumentException("Parameter resourceGroupName is required and cannot be null."));
-        }
-        if (accountName == null) {
-            throw LOGGER.atError()
-                .log(new IllegalArgumentException("Parameter accountName is required and cannot be null."));
-        }
-        if (poolName == null) {
-            throw LOGGER.atError()
-                .log(new IllegalArgumentException("Parameter poolName is required and cannot be null."));
-        }
-        if (volumeName == null) {
-            throw LOGGER.atError()
-                .log(new IllegalArgumentException("Parameter volumeName is required and cannot be null."));
-        }
-        if (volumeQuotaRuleName == null) {
-            throw LOGGER.atError()
-                .log(new IllegalArgumentException("Parameter volumeQuotaRuleName is required and cannot be null."));
-        }
-        if (body == null) {
-            throw LOGGER.atError().log(new IllegalArgumentException("Parameter body is required and cannot be null."));
-        } else {
-            body.validate();
-        }
-        final String contentType = "application/json";
-        final String accept = "application/json";
-        return service.updateSync(this.client.getEndpoint(), this.client.getApiVersion(),
-            this.client.getSubscriptionId(), resourceGroupName, accountName, poolName, volumeName, volumeQuotaRuleName,
-            contentType, accept, body, Context.NONE);
+        return updateWithResponse(resourceGroupName, accountName, poolName, volumeName, volumeQuotaRuleName, body,
+            Context.NONE);
     }
 
     /**
@@ -848,44 +690,15 @@ public final class VolumeQuotaRulesClientImpl implements VolumeQuotaRulesClient 
             VolumeQuotaRuleInner.class, VolumeQuotaRuleInner.class, this.client.getContext());
     }
 
-    /**
-     * Patch a quota rule.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param accountName The name of the NetApp account.
-     * @param poolName The name of the capacity pool.
-     * @param volumeName The name of the volume.
-     * @param volumeQuotaRuleName The name of volume quota rule.
-     * @param body Quota rule object supplied in the body of the operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the {@link SyncPoller} for polling of quota Rule of a Volume.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public SyncPoller<PollResult<VolumeQuotaRuleInner>, VolumeQuotaRuleInner> beginUpdate(String resourceGroupName,
         String accountName, String poolName, String volumeName, String volumeQuotaRuleName, VolumeQuotaRulePatch body) {
-        Response<BinaryData> response
-            = updateWithResponse(resourceGroupName, accountName, poolName, volumeName, volumeQuotaRuleName, body);
-        return this.client.<VolumeQuotaRuleInner, VolumeQuotaRuleInner>getLroResult(response,
-            VolumeQuotaRuleInner.class, VolumeQuotaRuleInner.class, Context.NONE);
+        return beginUpdate(resourceGroupName, accountName, poolName, volumeName, volumeQuotaRuleName, body,
+            Context.NONE);
     }
 
-    /**
-     * Patch a quota rule.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param accountName The name of the NetApp account.
-     * @param poolName The name of the capacity pool.
-     * @param volumeName The name of the volume.
-     * @param volumeQuotaRuleName The name of volume quota rule.
-     * @param body Quota rule object supplied in the body of the operation.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the {@link SyncPoller} for polling of quota Rule of a Volume.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public SyncPoller<PollResult<VolumeQuotaRuleInner>, VolumeQuotaRuleInner> beginUpdate(String resourceGroupName,
         String accountName, String poolName, String volumeName, String volumeQuotaRuleName, VolumeQuotaRulePatch body,
@@ -917,47 +730,19 @@ public final class VolumeQuotaRulesClientImpl implements VolumeQuotaRulesClient 
             .flatMap(this.client::getLroFinalResultOrError);
     }
 
-    /**
-     * Patch a quota rule.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param accountName The name of the NetApp account.
-     * @param poolName The name of the capacity pool.
-     * @param volumeName The name of the volume.
-     * @param volumeQuotaRuleName The name of volume quota rule.
-     * @param body Quota rule object supplied in the body of the operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return quota Rule of a Volume.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public VolumeQuotaRuleInner update(String resourceGroupName, String accountName, String poolName, String volumeName,
         String volumeQuotaRuleName, VolumeQuotaRulePatch body) {
-        return beginUpdate(resourceGroupName, accountName, poolName, volumeName, volumeQuotaRuleName, body)
-            .getFinalResult();
+        return update(resourceGroupName, accountName, poolName, volumeName, volumeQuotaRuleName, body, Context.NONE);
     }
 
-    /**
-     * Patch a quota rule.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param accountName The name of the NetApp account.
-     * @param poolName The name of the capacity pool.
-     * @param volumeName The name of the volume.
-     * @param volumeQuotaRuleName The name of volume quota rule.
-     * @param body Quota rule object supplied in the body of the operation.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return quota Rule of a Volume.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public VolumeQuotaRuleInner update(String resourceGroupName, String accountName, String poolName, String volumeName,
         String volumeQuotaRuleName, VolumeQuotaRulePatch body, Context context) {
-        return beginUpdate(resourceGroupName, accountName, poolName, volumeName, volumeQuotaRuleName, body, context)
-            .getFinalResult();
+        return this.client.getLroFinalResultOrError(
+            beginUpdate(resourceGroupName, accountName, poolName, volumeName, volumeQuotaRuleName, body, context));
     }
 
     /**
@@ -1024,38 +809,7 @@ public final class VolumeQuotaRulesClientImpl implements VolumeQuotaRulesClient 
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Response<BinaryData> deleteWithResponse(String resourceGroupName, String accountName, String poolName,
         String volumeName, String volumeQuotaRuleName) {
-        if (this.client.getEndpoint() == null) {
-            throw LOGGER.atError()
-                .log(new IllegalArgumentException(
-                    "Parameter this.client.getEndpoint() is required and cannot be null."));
-        }
-        if (this.client.getSubscriptionId() == null) {
-            throw LOGGER.atError()
-                .log(new IllegalArgumentException(
-                    "Parameter this.client.getSubscriptionId() is required and cannot be null."));
-        }
-        if (resourceGroupName == null) {
-            throw LOGGER.atError()
-                .log(new IllegalArgumentException("Parameter resourceGroupName is required and cannot be null."));
-        }
-        if (accountName == null) {
-            throw LOGGER.atError()
-                .log(new IllegalArgumentException("Parameter accountName is required and cannot be null."));
-        }
-        if (poolName == null) {
-            throw LOGGER.atError()
-                .log(new IllegalArgumentException("Parameter poolName is required and cannot be null."));
-        }
-        if (volumeName == null) {
-            throw LOGGER.atError()
-                .log(new IllegalArgumentException("Parameter volumeName is required and cannot be null."));
-        }
-        if (volumeQuotaRuleName == null) {
-            throw LOGGER.atError()
-                .log(new IllegalArgumentException("Parameter volumeQuotaRuleName is required and cannot be null."));
-        }
-        return service.deleteSync(this.client.getEndpoint(), this.client.getApiVersion(),
-            this.client.getSubscriptionId(), resourceGroupName, accountName, poolName, volumeName, volumeQuotaRuleName,
+        return deleteWithResponse(resourceGroupName, accountName, poolName, volumeName, volumeQuotaRuleName,
             Context.NONE);
     }
 
@@ -1133,41 +887,14 @@ public final class VolumeQuotaRulesClientImpl implements VolumeQuotaRulesClient 
             this.client.getContext());
     }
 
-    /**
-     * Delete quota rule.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param accountName The name of the NetApp account.
-     * @param poolName The name of the capacity pool.
-     * @param volumeName The name of the volume.
-     * @param volumeQuotaRuleName The name of volume quota rule.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the {@link SyncPoller} for polling of long-running operation.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public SyncPoller<PollResult<Void>, Void> beginDelete(String resourceGroupName, String accountName, String poolName,
         String volumeName, String volumeQuotaRuleName) {
-        Response<BinaryData> response
-            = deleteWithResponse(resourceGroupName, accountName, poolName, volumeName, volumeQuotaRuleName);
-        return this.client.<Void, Void>getLroResult(response, Void.class, Void.class, Context.NONE);
+        return beginDelete(resourceGroupName, accountName, poolName, volumeName, volumeQuotaRuleName, Context.NONE);
     }
 
-    /**
-     * Delete quota rule.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param accountName The name of the NetApp account.
-     * @param poolName The name of the capacity pool.
-     * @param volumeName The name of the volume.
-     * @param volumeQuotaRuleName The name of volume quota rule.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the {@link SyncPoller} for polling of long-running operation.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public SyncPoller<PollResult<Void>, Void> beginDelete(String resourceGroupName, String accountName, String poolName,
         String volumeName, String volumeQuotaRuleName, Context context) {
@@ -1196,42 +923,19 @@ public final class VolumeQuotaRulesClientImpl implements VolumeQuotaRulesClient 
             .flatMap(this.client::getLroFinalResultOrError);
     }
 
-    /**
-     * Delete quota rule.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param accountName The name of the NetApp account.
-     * @param poolName The name of the capacity pool.
-     * @param volumeName The name of the volume.
-     * @param volumeQuotaRuleName The name of volume quota rule.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public void delete(String resourceGroupName, String accountName, String poolName, String volumeName,
         String volumeQuotaRuleName) {
-        beginDelete(resourceGroupName, accountName, poolName, volumeName, volumeQuotaRuleName).getFinalResult();
+        delete(resourceGroupName, accountName, poolName, volumeName, volumeQuotaRuleName, Context.NONE);
     }
 
-    /**
-     * Delete quota rule.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param accountName The name of the NetApp account.
-     * @param poolName The name of the capacity pool.
-     * @param volumeName The name of the volume.
-     * @param volumeQuotaRuleName The name of volume quota rule.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public void delete(String resourceGroupName, String accountName, String poolName, String volumeName,
         String volumeQuotaRuleName, Context context) {
-        beginDelete(resourceGroupName, accountName, poolName, volumeName, volumeQuotaRuleName, context)
-            .getFinalResult();
+        this.client.getLroFinalResultOrError(
+            beginDelete(resourceGroupName, accountName, poolName, volumeName, volumeQuotaRuleName, context));
     }
 
     /**
@@ -1313,38 +1017,7 @@ public final class VolumeQuotaRulesClientImpl implements VolumeQuotaRulesClient 
     @ServiceMethod(returns = ReturnType.SINGLE)
     private PagedResponse<VolumeQuotaRuleInner> listByVolumeSinglePage(String resourceGroupName, String accountName,
         String poolName, String volumeName) {
-        if (this.client.getEndpoint() == null) {
-            throw LOGGER.atError()
-                .log(new IllegalArgumentException(
-                    "Parameter this.client.getEndpoint() is required and cannot be null."));
-        }
-        if (this.client.getSubscriptionId() == null) {
-            throw LOGGER.atError()
-                .log(new IllegalArgumentException(
-                    "Parameter this.client.getSubscriptionId() is required and cannot be null."));
-        }
-        if (resourceGroupName == null) {
-            throw LOGGER.atError()
-                .log(new IllegalArgumentException("Parameter resourceGroupName is required and cannot be null."));
-        }
-        if (accountName == null) {
-            throw LOGGER.atError()
-                .log(new IllegalArgumentException("Parameter accountName is required and cannot be null."));
-        }
-        if (poolName == null) {
-            throw LOGGER.atError()
-                .log(new IllegalArgumentException("Parameter poolName is required and cannot be null."));
-        }
-        if (volumeName == null) {
-            throw LOGGER.atError()
-                .log(new IllegalArgumentException("Parameter volumeName is required and cannot be null."));
-        }
-        final String accept = "application/json";
-        Response<VolumeQuotaRulesList> res = service.listByVolumeSync(this.client.getEndpoint(),
-            this.client.getApiVersion(), this.client.getSubscriptionId(), resourceGroupName, accountName, poolName,
-            volumeName, accept, Context.NONE);
-        return new PagedResponseBase<>(res.getRequest(), res.getStatusCode(), res.getHeaders(), res.getValue().value(),
-            res.getValue().nextLink(), null);
+        return listByVolumeSinglePage(resourceGroupName, accountName, poolName, volumeName, Context.NONE);
     }
 
     /**
@@ -1397,38 +1070,14 @@ public final class VolumeQuotaRulesClientImpl implements VolumeQuotaRulesClient 
             res.getValue().nextLink(), null);
     }
 
-    /**
-     * List all quota rules associated with the volume.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param accountName The name of the NetApp account.
-     * @param poolName The name of the capacity pool.
-     * @param volumeName The name of the volume.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return list of Volume Quota Rules as paginated response with {@link PagedIterable}.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.COLLECTION)
     public PagedIterable<VolumeQuotaRuleInner> listByVolume(String resourceGroupName, String accountName,
         String poolName, String volumeName) {
-        return new PagedIterable<>(() -> listByVolumeSinglePage(resourceGroupName, accountName, poolName, volumeName),
-            nextLink -> listByVolumeNextSinglePage(nextLink));
+        return listByVolume(resourceGroupName, accountName, poolName, volumeName, Context.NONE);
     }
 
-    /**
-     * List all quota rules associated with the volume.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param accountName The name of the NetApp account.
-     * @param poolName The name of the capacity pool.
-     * @param volumeName The name of the volume.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return list of Volume Quota Rules as paginated response with {@link PagedIterable}.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.COLLECTION)
     public PagedIterable<VolumeQuotaRuleInner> listByVolume(String resourceGroupName, String accountName,
         String poolName, String volumeName, Context context) {
@@ -1474,20 +1123,7 @@ public final class VolumeQuotaRulesClientImpl implements VolumeQuotaRulesClient 
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private PagedResponse<VolumeQuotaRuleInner> listByVolumeNextSinglePage(String nextLink) {
-        if (nextLink == null) {
-            throw LOGGER.atError()
-                .log(new IllegalArgumentException("Parameter nextLink is required and cannot be null."));
-        }
-        if (this.client.getEndpoint() == null) {
-            throw LOGGER.atError()
-                .log(new IllegalArgumentException(
-                    "Parameter this.client.getEndpoint() is required and cannot be null."));
-        }
-        final String accept = "application/json";
-        Response<VolumeQuotaRulesList> res
-            = service.listByVolumeNextSync(nextLink, this.client.getEndpoint(), accept, Context.NONE);
-        return new PagedResponseBase<>(res.getRequest(), res.getStatusCode(), res.getHeaders(), res.getValue().value(),
-            res.getValue().nextLink(), null);
+        return listByVolumeNextSinglePage(nextLink, Context.NONE);
     }
 
     /**

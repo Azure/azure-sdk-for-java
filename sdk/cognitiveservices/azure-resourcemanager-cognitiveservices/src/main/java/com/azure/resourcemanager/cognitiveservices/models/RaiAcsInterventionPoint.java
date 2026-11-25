@@ -10,6 +10,7 @@ import com.azure.json.JsonSerializable;
 import com.azure.json.JsonToken;
 import com.azure.json.JsonWriter;
 import java.io.IOException;
+import java.util.Map;
 
 /**
  * Binds one logical policy to an Agent Control Specification intervention point.
@@ -32,9 +33,9 @@ public final class RaiAcsInterventionPoint implements JsonSerializable<RaiAcsInt
     private RaiAcsPolicyBinding policy;
 
     /*
-     * Standard Agent Control Specification annotation bindings are disabled; when present, this object must be empty.
+     * Optional annotator bindings keyed by declaration name. Results are available to Rego as input.annotations.<name>.
      */
-    private RaiAcsEmptyObject annotations;
+    private Map<String, RaiAcsAnnotationBinding> annotations;
 
     /**
      * Creates an instance of RaiAcsInterventionPoint class.
@@ -103,23 +104,23 @@ public final class RaiAcsInterventionPoint implements JsonSerializable<RaiAcsInt
     }
 
     /**
-     * Get the annotations property: Standard Agent Control Specification annotation bindings are disabled; when
-     * present, this object must be empty.
+     * Get the annotations property: Optional annotator bindings keyed by declaration name. Results are available to
+     * Rego as input.annotations.&lt;name&gt;.
      * 
      * @return the annotations value.
      */
-    public RaiAcsEmptyObject annotations() {
+    public Map<String, RaiAcsAnnotationBinding> annotations() {
         return this.annotations;
     }
 
     /**
-     * Set the annotations property: Standard Agent Control Specification annotation bindings are disabled; when
-     * present, this object must be empty.
+     * Set the annotations property: Optional annotator bindings keyed by declaration name. Results are available to
+     * Rego as input.annotations.&lt;name&gt;.
      * 
      * @param annotations the annotations value to set.
      * @return the RaiAcsInterventionPoint object itself.
      */
-    public RaiAcsInterventionPoint withAnnotations(RaiAcsEmptyObject annotations) {
+    public RaiAcsInterventionPoint withAnnotations(Map<String, RaiAcsAnnotationBinding> annotations) {
         this.annotations = annotations;
         return this;
     }
@@ -134,7 +135,7 @@ public final class RaiAcsInterventionPoint implements JsonSerializable<RaiAcsInt
         jsonWriter.writeStringField("policy_target_kind",
             this.policyTargetKind == null ? null : this.policyTargetKind.toString());
         jsonWriter.writeJsonField("policy", this.policy);
-        jsonWriter.writeJsonField("annotations", this.annotations);
+        jsonWriter.writeMapField("annotations", this.annotations, (writer, element) -> writer.writeJson(element));
         return jsonWriter.writeEndObject();
     }
 
@@ -163,7 +164,9 @@ public final class RaiAcsInterventionPoint implements JsonSerializable<RaiAcsInt
                 } else if ("policy".equals(fieldName)) {
                     deserializedRaiAcsInterventionPoint.policy = RaiAcsPolicyBinding.fromJson(reader);
                 } else if ("annotations".equals(fieldName)) {
-                    deserializedRaiAcsInterventionPoint.annotations = RaiAcsEmptyObject.fromJson(reader);
+                    Map<String, RaiAcsAnnotationBinding> annotations
+                        = reader.readMap(reader1 -> RaiAcsAnnotationBinding.fromJson(reader1));
+                    deserializedRaiAcsInterventionPoint.annotations = annotations;
                 } else {
                     reader.skipChildren();
                 }

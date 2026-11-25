@@ -35,8 +35,7 @@ public final class CloudVmClustersImpl implements CloudVmClusters {
     }
 
     public PagedIterable<CloudVmCluster> list() {
-        PagedIterable<CloudVmClusterInner> inner = this.serviceClient().list();
-        return ResourceManagerUtils.mapPage(inner, inner1 -> new CloudVmClusterImpl(inner1, this.manager()));
+        return this.list(Context.NONE);
     }
 
     public PagedIterable<CloudVmCluster> list(Context context) {
@@ -62,7 +61,7 @@ public final class CloudVmClustersImpl implements CloudVmClusters {
     }
 
     public void deleteByResourceGroup(String resourceGroupName, String cloudvmclustername) {
-        this.serviceClient().delete(resourceGroupName, cloudvmclustername);
+        this.delete(resourceGroupName, cloudvmclustername, Context.NONE);
     }
 
     public void delete(String resourceGroupName, String cloudvmclustername, Context context) {
@@ -70,8 +69,7 @@ public final class CloudVmClustersImpl implements CloudVmClusters {
     }
 
     public PagedIterable<CloudVmCluster> listByResourceGroup(String resourceGroupName) {
-        PagedIterable<CloudVmClusterInner> inner = this.serviceClient().listByResourceGroup(resourceGroupName);
-        return ResourceManagerUtils.mapPage(inner, inner1 -> new CloudVmClusterImpl(inner1, this.manager()));
+        return this.listByResourceGroup(resourceGroupName, Context.NONE);
     }
 
     public PagedIterable<CloudVmCluster> listByResourceGroup(String resourceGroupName, Context context) {
@@ -80,12 +78,7 @@ public final class CloudVmClustersImpl implements CloudVmClusters {
     }
 
     public CloudVmCluster addVms(String resourceGroupName, String cloudvmclustername, AddRemoveDbNode body) {
-        CloudVmClusterInner inner = this.serviceClient().addVms(resourceGroupName, cloudvmclustername, body);
-        if (inner != null) {
-            return new CloudVmClusterImpl(inner, this.manager());
-        } else {
-            return null;
-        }
+        return this.addVms(resourceGroupName, cloudvmclustername, body, Context.NONE);
     }
 
     public CloudVmCluster addVms(String resourceGroupName, String cloudvmclustername, AddRemoveDbNode body,
@@ -99,12 +92,7 @@ public final class CloudVmClustersImpl implements CloudVmClusters {
     }
 
     public CloudVmCluster removeVms(String resourceGroupName, String cloudvmclustername, AddRemoveDbNode body) {
-        CloudVmClusterInner inner = this.serviceClient().removeVms(resourceGroupName, cloudvmclustername, body);
-        if (inner != null) {
-            return new CloudVmClusterImpl(inner, this.manager());
-        } else {
-            return null;
-        }
+        return this.removeVms(resourceGroupName, cloudvmclustername, body, Context.NONE);
     }
 
     public CloudVmCluster removeVms(String resourceGroupName, String cloudvmclustername, AddRemoveDbNode body,
@@ -143,74 +131,30 @@ public final class CloudVmClustersImpl implements CloudVmClusters {
     }
 
     public CloudVmCluster getById(String id) {
-        String resourceGroupName = ResourceManagerUtils.getValueFromIdByParameterName(id,
-            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Oracle.Database/cloudVmClusters/{cloudvmclustername}",
-            "resourceGroupName");
-        if (resourceGroupName == null) {
-            throw LOGGER.logExceptionAsError(new IllegalArgumentException(
-                String.format("The resource ID '%s' is not valid. Missing path segment 'resourceGroups'.", id)));
-        }
-        String cloudvmclustername = ResourceManagerUtils.getValueFromIdByParameterName(id,
-            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Oracle.Database/cloudVmClusters/{cloudvmclustername}",
-            "cloudvmclustername");
-        if (cloudvmclustername == null) {
-            throw LOGGER.logExceptionAsError(new IllegalArgumentException(
-                String.format("The resource ID '%s' is not valid. Missing path segment 'cloudVmClusters'.", id)));
-        }
-        return this.getByResourceGroupWithResponse(resourceGroupName, cloudvmclustername, Context.NONE).getValue();
+        return this.getByIdWithResponse(id, Context.NONE).getValue();
     }
 
     public Response<CloudVmCluster> getByIdWithResponse(String id, Context context) {
-        String resourceGroupName = ResourceManagerUtils.getValueFromIdByParameterName(id,
+        String resourceGroupName = ResourceManagerUtils.getRequiredValueFromIdByParameterName(id,
             "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Oracle.Database/cloudVmClusters/{cloudvmclustername}",
-            "resourceGroupName");
-        if (resourceGroupName == null) {
-            throw LOGGER.logExceptionAsError(new IllegalArgumentException(
-                String.format("The resource ID '%s' is not valid. Missing path segment 'resourceGroups'.", id)));
-        }
-        String cloudvmclustername = ResourceManagerUtils.getValueFromIdByParameterName(id,
+            "resourceGroupName", "resourceGroups", LOGGER);
+        String cloudvmclustername = ResourceManagerUtils.getRequiredValueFromIdByParameterName(id,
             "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Oracle.Database/cloudVmClusters/{cloudvmclustername}",
-            "cloudvmclustername");
-        if (cloudvmclustername == null) {
-            throw LOGGER.logExceptionAsError(new IllegalArgumentException(
-                String.format("The resource ID '%s' is not valid. Missing path segment 'cloudVmClusters'.", id)));
-        }
+            "cloudvmclustername", "cloudVmClusters", LOGGER);
         return this.getByResourceGroupWithResponse(resourceGroupName, cloudvmclustername, context);
     }
 
     public void deleteById(String id) {
-        String resourceGroupName = ResourceManagerUtils.getValueFromIdByParameterName(id,
-            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Oracle.Database/cloudVmClusters/{cloudvmclustername}",
-            "resourceGroupName");
-        if (resourceGroupName == null) {
-            throw LOGGER.logExceptionAsError(new IllegalArgumentException(
-                String.format("The resource ID '%s' is not valid. Missing path segment 'resourceGroups'.", id)));
-        }
-        String cloudvmclustername = ResourceManagerUtils.getValueFromIdByParameterName(id,
-            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Oracle.Database/cloudVmClusters/{cloudvmclustername}",
-            "cloudvmclustername");
-        if (cloudvmclustername == null) {
-            throw LOGGER.logExceptionAsError(new IllegalArgumentException(
-                String.format("The resource ID '%s' is not valid. Missing path segment 'cloudVmClusters'.", id)));
-        }
-        this.delete(resourceGroupName, cloudvmclustername, Context.NONE);
+        this.deleteByIdWithResponse(id, Context.NONE);
     }
 
     public void deleteByIdWithResponse(String id, Context context) {
-        String resourceGroupName = ResourceManagerUtils.getValueFromIdByParameterName(id,
+        String resourceGroupName = ResourceManagerUtils.getRequiredValueFromIdByParameterName(id,
             "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Oracle.Database/cloudVmClusters/{cloudvmclustername}",
-            "resourceGroupName");
-        if (resourceGroupName == null) {
-            throw LOGGER.logExceptionAsError(new IllegalArgumentException(
-                String.format("The resource ID '%s' is not valid. Missing path segment 'resourceGroups'.", id)));
-        }
-        String cloudvmclustername = ResourceManagerUtils.getValueFromIdByParameterName(id,
+            "resourceGroupName", "resourceGroups", LOGGER);
+        String cloudvmclustername = ResourceManagerUtils.getRequiredValueFromIdByParameterName(id,
             "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Oracle.Database/cloudVmClusters/{cloudvmclustername}",
-            "cloudvmclustername");
-        if (cloudvmclustername == null) {
-            throw LOGGER.logExceptionAsError(new IllegalArgumentException(
-                String.format("The resource ID '%s' is not valid. Missing path segment 'cloudVmClusters'.", id)));
-        }
+            "cloudvmclustername", "cloudVmClusters", LOGGER);
         this.delete(resourceGroupName, cloudvmclustername, context);
     }
 

@@ -94,12 +94,7 @@ public final class ProviderActionsImpl implements ProviderActions {
     }
 
     public OnboardResponse onboard(OnboardRequest body) {
-        OnboardResponseInner inner = this.serviceClient().onboard(body);
-        if (inner != null) {
-            return new OnboardResponseImpl(inner, this.manager());
-        } else {
-            return null;
-        }
+        return this.onboard(body, Context.NONE);
     }
 
     public OnboardResponse onboard(OnboardRequest body, Context context) {
@@ -112,12 +107,7 @@ public final class ProviderActionsImpl implements ProviderActions {
     }
 
     public TriggerEvaluationResponse triggerEvaluation(TriggerEvaluationRequest body) {
-        TriggerEvaluationResponseInner inner = this.serviceClient().triggerEvaluation(body);
-        if (inner != null) {
-            return new TriggerEvaluationResponseImpl(inner, this.manager());
-        } else {
-            return null;
-        }
+        return this.triggerEvaluation(body, Context.NONE);
     }
 
     public TriggerEvaluationResponse triggerEvaluation(TriggerEvaluationRequest body, Context context) {

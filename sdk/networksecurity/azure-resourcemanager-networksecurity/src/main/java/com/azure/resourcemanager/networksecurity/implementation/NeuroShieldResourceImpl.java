@@ -95,12 +95,7 @@ public final class NeuroShieldResourceImpl
     }
 
     public NeuroShieldResource create() {
-        this.innerObject = serviceManager.serviceClient()
-            .getNeuroShields()
-            .createOrUpdateWithResponse(resourceGroupName, neuroShieldName, this.innerModel(), createIfMatch,
-                Context.NONE)
-            .getValue();
-        return this;
+        return this.create(Context.NONE);
     }
 
     public NeuroShieldResource create(Context context) {
@@ -126,11 +121,7 @@ public final class NeuroShieldResourceImpl
     }
 
     public NeuroShieldResource apply() {
-        this.innerObject = serviceManager.serviceClient()
-            .getNeuroShields()
-            .updateWithResponse(resourceGroupName, neuroShieldName, updateProperties, updateIfMatch, Context.NONE)
-            .getValue();
-        return this;
+        return this.apply(Context.NONE);
     }
 
     public NeuroShieldResource apply(Context context) {
@@ -154,11 +145,7 @@ public final class NeuroShieldResourceImpl
     }
 
     public NeuroShieldResource refresh() {
-        this.innerObject = serviceManager.serviceClient()
-            .getNeuroShields()
-            .getByResourceGroupWithResponse(resourceGroupName, neuroShieldName, Context.NONE)
-            .getValue();
-        return this;
+        return this.refresh(Context.NONE);
     }
 
     public NeuroShieldResource refresh(Context context) {

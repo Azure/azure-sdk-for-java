@@ -98,18 +98,7 @@ public final class ThroughputPoolAccountsClientImpl implements ThroughputPoolAcc
             @PathParam("throughputPoolAccountName") String throughputPoolAccountName, Context context);
     }
 
-    /**
-     * Retrieves the properties of an existing Azure Cosmos DB Throughput Pool.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param throughputPoolName Cosmos DB Throughput Pool name.
-     * @param throughputPoolAccountName Cosmos DB global database account in a Throughput Pool.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return an Azure Cosmos DB Throughputpool Account along with {@link Response} on successful completion of
-     * {@link Mono}.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Response<ThroughputPoolAccountResourceInner>> getWithResponseAsync(String resourceGroupName,
         String throughputPoolName, String throughputPoolAccountName) {
@@ -183,17 +172,7 @@ public final class ThroughputPoolAccountsClientImpl implements ThroughputPoolAcc
             resourceGroupName, throughputPoolName, throughputPoolAccountName, accept, context);
     }
 
-    /**
-     * Retrieves the properties of an existing Azure Cosmos DB Throughput Pool.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param throughputPoolName Cosmos DB Throughput Pool name.
-     * @param throughputPoolAccountName Cosmos DB global database account in a Throughput Pool.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return an Azure Cosmos DB Throughputpool Account on successful completion of {@link Mono}.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<ThroughputPoolAccountResourceInner> getAsync(String resourceGroupName, String throughputPoolName,
         String throughputPoolAccountName) {
@@ -201,35 +180,14 @@ public final class ThroughputPoolAccountsClientImpl implements ThroughputPoolAcc
             .flatMap(res -> Mono.justOrEmpty(res.getValue()));
     }
 
-    /**
-     * Retrieves the properties of an existing Azure Cosmos DB Throughput Pool.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param throughputPoolName Cosmos DB Throughput Pool name.
-     * @param throughputPoolAccountName Cosmos DB global database account in a Throughput Pool.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return an Azure Cosmos DB Throughputpool Account along with {@link Response}.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Response<ThroughputPoolAccountResourceInner> getWithResponse(String resourceGroupName,
         String throughputPoolName, String throughputPoolAccountName, Context context) {
         return getWithResponseAsync(resourceGroupName, throughputPoolName, throughputPoolAccountName, context).block();
     }
 
-    /**
-     * Retrieves the properties of an existing Azure Cosmos DB Throughput Pool.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param throughputPoolName Cosmos DB Throughput Pool name.
-     * @param throughputPoolAccountName Cosmos DB global database account in a Throughput Pool.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return an Azure Cosmos DB Throughputpool Account.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public ThroughputPoolAccountResourceInner get(String resourceGroupName, String throughputPoolName,
         String throughputPoolAccountName) {
@@ -237,20 +195,7 @@ public final class ThroughputPoolAccountsClientImpl implements ThroughputPoolAcc
             .getValue();
     }
 
-    /**
-     * Creates or updates an Azure Cosmos DB ThroughputPool account. The "Update" method is preferred when performing
-     * updates on an account.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param throughputPoolName Cosmos DB Throughput Pool name.
-     * @param throughputPoolAccountName Cosmos DB global database account in a Throughput Pool.
-     * @param body The parameters to provide for the current ThroughputPoolAccount.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return an Azure Cosmos DB Throughputpool Account along with {@link Response} on successful completion of
-     * {@link Mono}.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Response<Flux<ByteBuffer>>> createWithResponseAsync(String resourceGroupName, String throughputPoolName,
         String throughputPoolAccountName, ThroughputPoolAccountResourceInner body) {
@@ -339,19 +284,7 @@ public final class ThroughputPoolAccountsClientImpl implements ThroughputPoolAcc
             resourceGroupName, throughputPoolName, throughputPoolAccountName, contentType, accept, body, context);
     }
 
-    /**
-     * Creates or updates an Azure Cosmos DB ThroughputPool account. The "Update" method is preferred when performing
-     * updates on an account.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param throughputPoolName Cosmos DB Throughput Pool name.
-     * @param throughputPoolAccountName Cosmos DB global database account in a Throughput Pool.
-     * @param body The parameters to provide for the current ThroughputPoolAccount.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the {@link PollerFlux} for polling of an Azure Cosmos DB Throughputpool Account.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public PollerFlux<PollResult<ThroughputPoolAccountResourceInner>, ThroughputPoolAccountResourceInner>
         beginCreateAsync(String resourceGroupName, String throughputPoolName, String throughputPoolAccountName,
@@ -389,19 +322,7 @@ public final class ThroughputPoolAccountsClientImpl implements ThroughputPoolAcc
             ThroughputPoolAccountResourceInner.class, context);
     }
 
-    /**
-     * Creates or updates an Azure Cosmos DB ThroughputPool account. The "Update" method is preferred when performing
-     * updates on an account.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param throughputPoolName Cosmos DB Throughput Pool name.
-     * @param throughputPoolAccountName Cosmos DB global database account in a Throughput Pool.
-     * @param body The parameters to provide for the current ThroughputPoolAccount.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the {@link SyncPoller} for polling of an Azure Cosmos DB Throughputpool Account.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public SyncPoller<PollResult<ThroughputPoolAccountResourceInner>, ThroughputPoolAccountResourceInner> beginCreate(
         String resourceGroupName, String throughputPoolName, String throughputPoolAccountName,
@@ -410,20 +331,7 @@ public final class ThroughputPoolAccountsClientImpl implements ThroughputPoolAcc
             .getSyncPoller();
     }
 
-    /**
-     * Creates or updates an Azure Cosmos DB ThroughputPool account. The "Update" method is preferred when performing
-     * updates on an account.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param throughputPoolName Cosmos DB Throughput Pool name.
-     * @param throughputPoolAccountName Cosmos DB global database account in a Throughput Pool.
-     * @param body The parameters to provide for the current ThroughputPoolAccount.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the {@link SyncPoller} for polling of an Azure Cosmos DB Throughputpool Account.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public SyncPoller<PollResult<ThroughputPoolAccountResourceInner>, ThroughputPoolAccountResourceInner> beginCreate(
         String resourceGroupName, String throughputPoolName, String throughputPoolAccountName,
@@ -432,19 +340,7 @@ public final class ThroughputPoolAccountsClientImpl implements ThroughputPoolAcc
             .getSyncPoller();
     }
 
-    /**
-     * Creates or updates an Azure Cosmos DB ThroughputPool account. The "Update" method is preferred when performing
-     * updates on an account.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param throughputPoolName Cosmos DB Throughput Pool name.
-     * @param throughputPoolAccountName Cosmos DB global database account in a Throughput Pool.
-     * @param body The parameters to provide for the current ThroughputPoolAccount.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return an Azure Cosmos DB Throughputpool Account on successful completion of {@link Mono}.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<ThroughputPoolAccountResourceInner> createAsync(String resourceGroupName, String throughputPoolName,
         String throughputPoolAccountName, ThroughputPoolAccountResourceInner body) {
@@ -473,56 +369,21 @@ public final class ThroughputPoolAccountsClientImpl implements ThroughputPoolAcc
             .flatMap(this.client::getLroFinalResultOrError);
     }
 
-    /**
-     * Creates or updates an Azure Cosmos DB ThroughputPool account. The "Update" method is preferred when performing
-     * updates on an account.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param throughputPoolName Cosmos DB Throughput Pool name.
-     * @param throughputPoolAccountName Cosmos DB global database account in a Throughput Pool.
-     * @param body The parameters to provide for the current ThroughputPoolAccount.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return an Azure Cosmos DB Throughputpool Account.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public ThroughputPoolAccountResourceInner create(String resourceGroupName, String throughputPoolName,
         String throughputPoolAccountName, ThroughputPoolAccountResourceInner body) {
         return createAsync(resourceGroupName, throughputPoolName, throughputPoolAccountName, body).block();
     }
 
-    /**
-     * Creates or updates an Azure Cosmos DB ThroughputPool account. The "Update" method is preferred when performing
-     * updates on an account.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param throughputPoolName Cosmos DB Throughput Pool name.
-     * @param throughputPoolAccountName Cosmos DB global database account in a Throughput Pool.
-     * @param body The parameters to provide for the current ThroughputPoolAccount.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return an Azure Cosmos DB Throughputpool Account.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public ThroughputPoolAccountResourceInner create(String resourceGroupName, String throughputPoolName,
         String throughputPoolAccountName, ThroughputPoolAccountResourceInner body, Context context) {
         return createAsync(resourceGroupName, throughputPoolName, throughputPoolAccountName, body, context).block();
     }
 
-    /**
-     * Removes an existing Azure Cosmos DB database account from a throughput pool.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param throughputPoolName Cosmos DB Throughput Pool name.
-     * @param throughputPoolAccountName Cosmos DB global database account in a Throughput Pool.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the {@link Response} on successful completion of {@link Mono}.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Response<Flux<ByteBuffer>>> deleteWithResponseAsync(String resourceGroupName, String throughputPoolName,
         String throughputPoolAccountName) {
@@ -591,17 +452,7 @@ public final class ThroughputPoolAccountsClientImpl implements ThroughputPoolAcc
             resourceGroupName, throughputPoolName, throughputPoolAccountName, context);
     }
 
-    /**
-     * Removes an existing Azure Cosmos DB database account from a throughput pool.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param throughputPoolName Cosmos DB Throughput Pool name.
-     * @param throughputPoolAccountName Cosmos DB global database account in a Throughput Pool.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the {@link PollerFlux} for polling of long-running operation.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public PollerFlux<PollResult<Void>, Void> beginDeleteAsync(String resourceGroupName, String throughputPoolName,
         String throughputPoolAccountName) {
@@ -633,35 +484,14 @@ public final class ThroughputPoolAccountsClientImpl implements ThroughputPoolAcc
             context);
     }
 
-    /**
-     * Removes an existing Azure Cosmos DB database account from a throughput pool.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param throughputPoolName Cosmos DB Throughput Pool name.
-     * @param throughputPoolAccountName Cosmos DB global database account in a Throughput Pool.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the {@link SyncPoller} for polling of long-running operation.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public SyncPoller<PollResult<Void>, Void> beginDelete(String resourceGroupName, String throughputPoolName,
         String throughputPoolAccountName) {
         return this.beginDeleteAsync(resourceGroupName, throughputPoolName, throughputPoolAccountName).getSyncPoller();
     }
 
-    /**
-     * Removes an existing Azure Cosmos DB database account from a throughput pool.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param throughputPoolName Cosmos DB Throughput Pool name.
-     * @param throughputPoolAccountName Cosmos DB global database account in a Throughput Pool.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the {@link SyncPoller} for polling of long-running operation.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public SyncPoller<PollResult<Void>, Void> beginDelete(String resourceGroupName, String throughputPoolName,
         String throughputPoolAccountName, Context context) {
@@ -669,17 +499,7 @@ public final class ThroughputPoolAccountsClientImpl implements ThroughputPoolAcc
             .getSyncPoller();
     }
 
-    /**
-     * Removes an existing Azure Cosmos DB database account from a throughput pool.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param throughputPoolName Cosmos DB Throughput Pool name.
-     * @param throughputPoolAccountName Cosmos DB global database account in a Throughput Pool.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return A {@link Mono} that completes when a successful response is received.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Void> deleteAsync(String resourceGroupName, String throughputPoolName,
         String throughputPoolAccountName) {
@@ -706,32 +526,13 @@ public final class ThroughputPoolAccountsClientImpl implements ThroughputPoolAcc
             .flatMap(this.client::getLroFinalResultOrError);
     }
 
-    /**
-     * Removes an existing Azure Cosmos DB database account from a throughput pool.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param throughputPoolName Cosmos DB Throughput Pool name.
-     * @param throughputPoolAccountName Cosmos DB global database account in a Throughput Pool.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public void delete(String resourceGroupName, String throughputPoolName, String throughputPoolAccountName) {
         deleteAsync(resourceGroupName, throughputPoolName, throughputPoolAccountName).block();
     }
 
-    /**
-     * Removes an existing Azure Cosmos DB database account from a throughput pool.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param throughputPoolName Cosmos DB Throughput Pool name.
-     * @param throughputPoolAccountName Cosmos DB global database account in a Throughput Pool.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public void delete(String resourceGroupName, String throughputPoolName, String throughputPoolAccountName,
         Context context) {

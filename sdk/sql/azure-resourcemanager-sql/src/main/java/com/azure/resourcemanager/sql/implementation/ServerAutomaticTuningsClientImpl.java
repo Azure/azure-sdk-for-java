@@ -78,16 +78,7 @@ public final class ServerAutomaticTuningsClientImpl implements ServerAutomaticTu
             @BodyParam("application/json") ServerAutomaticTuningInner parameters, Context context);
     }
 
-    /**
-     * Retrieves server automatic tuning options.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param serverName The name of the server.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return server-level Automatic Tuning along with {@link Response} on successful completion of {@link Mono}.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Response<ServerAutomaticTuningInner>> getWithResponseAsync(String resourceGroupName,
         String serverName) {
@@ -148,64 +139,26 @@ public final class ServerAutomaticTuningsClientImpl implements ServerAutomaticTu
             resourceGroupName, serverName, accept, context);
     }
 
-    /**
-     * Retrieves server automatic tuning options.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param serverName The name of the server.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return server-level Automatic Tuning on successful completion of {@link Mono}.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<ServerAutomaticTuningInner> getAsync(String resourceGroupName, String serverName) {
         return getWithResponseAsync(resourceGroupName, serverName).flatMap(res -> Mono.justOrEmpty(res.getValue()));
     }
 
-    /**
-     * Retrieves server automatic tuning options.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param serverName The name of the server.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return server-level Automatic Tuning along with {@link Response}.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Response<ServerAutomaticTuningInner> getWithResponse(String resourceGroupName, String serverName,
         Context context) {
         return getWithResponseAsync(resourceGroupName, serverName, context).block();
     }
 
-    /**
-     * Retrieves server automatic tuning options.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param serverName The name of the server.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return server-level Automatic Tuning.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public ServerAutomaticTuningInner get(String resourceGroupName, String serverName) {
         return getWithResponse(resourceGroupName, serverName, Context.NONE).getValue();
     }
 
-    /**
-     * Update automatic tuning options on server.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param serverName The name of the server.
-     * @param parameters The requested automatic tuning resource state.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return server-level Automatic Tuning along with {@link Response} on successful completion of {@link Mono}.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Response<ServerAutomaticTuningInner>> updateWithResponseAsync(String resourceGroupName,
         String serverName, ServerAutomaticTuningInner parameters) {
@@ -278,17 +231,7 @@ public final class ServerAutomaticTuningsClientImpl implements ServerAutomaticTu
             resourceGroupName, serverName, contentType, accept, parameters, context);
     }
 
-    /**
-     * Update automatic tuning options on server.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param serverName The name of the server.
-     * @param parameters The requested automatic tuning resource state.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return server-level Automatic Tuning on successful completion of {@link Mono}.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<ServerAutomaticTuningInner> updateAsync(String resourceGroupName, String serverName,
         ServerAutomaticTuningInner parameters) {
@@ -296,35 +239,14 @@ public final class ServerAutomaticTuningsClientImpl implements ServerAutomaticTu
             .flatMap(res -> Mono.justOrEmpty(res.getValue()));
     }
 
-    /**
-     * Update automatic tuning options on server.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param serverName The name of the server.
-     * @param parameters The requested automatic tuning resource state.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return server-level Automatic Tuning along with {@link Response}.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Response<ServerAutomaticTuningInner> updateWithResponse(String resourceGroupName, String serverName,
         ServerAutomaticTuningInner parameters, Context context) {
         return updateWithResponseAsync(resourceGroupName, serverName, parameters, context).block();
     }
 
-    /**
-     * Update automatic tuning options on server.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param serverName The name of the server.
-     * @param parameters The requested automatic tuning resource state.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return server-level Automatic Tuning.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public ServerAutomaticTuningInner update(String resourceGroupName, String serverName,
         ServerAutomaticTuningInner parameters) {

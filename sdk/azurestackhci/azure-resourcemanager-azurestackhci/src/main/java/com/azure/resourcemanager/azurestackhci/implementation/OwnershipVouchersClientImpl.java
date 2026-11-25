@@ -118,18 +118,7 @@ public final class OwnershipVouchersClientImpl implements OwnershipVouchersClien
             .flatMap(res -> Mono.justOrEmpty(res.getValue()));
     }
 
-    /**
-     * Validates ownership vouchers.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param location The name of the Azure region.
-     * @param validationRequest Ownership vouchers to be validated.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return validate Ownership Voucher Response along with {@link Response}.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Response<ValidateOwnershipVouchersResponseInner> validateWithResponse(String resourceGroupName,
         String location, ValidateOwnershipVouchersRequest validationRequest, Context context) {
@@ -140,17 +129,7 @@ public final class OwnershipVouchersClientImpl implements OwnershipVouchersClien
             context);
     }
 
-    /**
-     * Validates ownership vouchers.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param location The name of the Azure region.
-     * @param validationRequest Ownership vouchers to be validated.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return validate Ownership Voucher Response.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public ValidateOwnershipVouchersResponseInner validate(String resourceGroupName, String location,
         ValidateOwnershipVouchersRequest validationRequest) {

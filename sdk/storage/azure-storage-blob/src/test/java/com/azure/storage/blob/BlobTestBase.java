@@ -45,6 +45,7 @@ import com.azure.identity.EnvironmentCredentialBuilder;
 import com.azure.json.JsonSerializable;
 import com.azure.json.JsonWriter;
 import com.azure.storage.blob.implementation.util.BlobLayoutRange;
+import com.azure.storage.blob.implementation.util.ModelHelper;
 import com.azure.storage.blob.models.BlobContainerItem;
 import com.azure.storage.blob.models.BlobErrorCode;
 import com.azure.storage.blob.models.BlobProperties;
@@ -76,7 +77,9 @@ import com.azure.xml.XmlWriter;
 import org.junit.jupiter.params.provider.Arguments;
 import reactor.core.publisher.Flux;
 import reactor.core.publisher.Mono;
+import reactor.core.scheduler.Schedulers;
 import reactor.test.StepVerifier;
+import reactor.util.retry.Retry;
 
 import javax.xml.stream.XMLStreamException;
 import java.io.ByteArrayOutputStream;
@@ -147,6 +150,13 @@ public class BlobTestBase extends TestProxyTestBase {
         = HttpHeaderName.fromString("x-ms-encryption-key-sha256");
     protected static final HttpHeaderName X_MS_BLOB_CONTENT_LENGTH
         = HttpHeaderName.fromString("x-ms-blob-content-length");
+
+    // After a container is deleted, the service answers a create of the same name with 409 ContainerBeingDeleted for at
+    // least 30 seconds (30 to 60 measured, depending on the account's container soft delete setting). Live tests wait
+    // out the minimum, then retry slowly, so each test sends only a few requests.
+    private static final Duration CONTAINER_DELETE_MIN_WAIT = Duration.ofSeconds(30);
+    private static final Duration CONTAINER_DELETE_RETRY_INTERVAL = Duration.ofSeconds(10);
+    private static final Duration CONTAINER_DELETE_TIMEOUT = Duration.ofMinutes(2);
 
     protected static final HttpHeaderName X_MS_COPY_ID = HttpHeaderName.fromString("x-ms-copy-id");
 
@@ -1000,6 +1010,39 @@ public class BlobTestBase extends TestProxyTestBase {
         StepVerifier.create(response)
             .assertNext(r -> assertEquals(expectedStatusCode, r.getStatusCode()))
             .verifyComplete();
+    }
+
+    /**
+     * Creates a container whose name was just deleted, once the service has finished the delete. Waits
+     * {@link #CONTAINER_DELETE_MIN_WAIT} without sending anything, then retries every
+     * {@link #CONTAINER_DELETE_RETRY_INTERVAL} while the service answers 409 ContainerBeingDeleted, up to
+     * {@link #CONTAINER_DELETE_TIMEOUT}. For {@code @LiveOnly} tests: it really waits.
+     *
+     * @param create Creates the container when subscribed to.
+     * @param <T> The result of the create.
+     * @return A {@link Mono} of the first create that the service does not refuse as ContainerBeingDeleted.
+     */
+    protected static <T> Mono<T> createAfterContainerDeleteCompletes(Mono<T> create) {
+        long maxRetries = CONTAINER_DELETE_TIMEOUT.minus(CONTAINER_DELETE_MIN_WAIT).toMillis()
+            / CONTAINER_DELETE_RETRY_INTERVAL.toMillis();
+
+        return Mono.delay(CONTAINER_DELETE_MIN_WAIT)
+            .then(create.retryWhen(Retry.fixedDelay(maxRetries, CONTAINER_DELETE_RETRY_INTERVAL)
+                .filter(t -> ModelHelper.isConflictWithErrorCode(t, BlobErrorCode.CONTAINER_BEING_DELETED))
+                .onRetryExhaustedThrow((spec, signal) -> signal.failure())));
+    }
+
+    /**
+     * Synchronous form of {@link #createAfterContainerDeleteCompletes(Mono)}. The create runs on
+     * {@link Schedulers#boundedElastic()} because synchronous clients block, which Reactor's timer threads forbid.
+     *
+     * @param create Creates the container; may throw {@link BlobStorageException}.
+     * @param <T> The result of the create.
+     * @return The result of the first create that the service does not refuse as ContainerBeingDeleted.
+     */
+    protected static <T> T createAfterContainerDeleteCompletes(Supplier<T> create) {
+        return createAfterContainerDeleteCompletes(Mono.fromSupplier(create).subscribeOn(Schedulers.boundedElastic()))
+            .block();
     }
 
     protected static Stream<Arguments> allConditionsSupplier() {

@@ -207,18 +207,7 @@ public final class AdapterDeploymentsClientImpl implements AdapterDeploymentsCli
             .flatMap(res -> Mono.justOrEmpty(res.getValue()));
     }
 
-    /**
-     * Gets an adapter deployment by name.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param accountName The name of Cognitive Services account.
-     * @param adapterDeploymentName The account-unique adapter deployment name and inference identity.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return an adapter deployment by name.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public AdapterDeploymentsGetResponse getWithResponse(String resourceGroupName, String accountName,
         String adapterDeploymentName, Context context) {
@@ -227,17 +216,7 @@ public final class AdapterDeploymentsClientImpl implements AdapterDeploymentsCli
             resourceGroupName, accountName, adapterDeploymentName, accept, context);
     }
 
-    /**
-     * Gets an adapter deployment by name.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param accountName The name of Cognitive Services account.
-     * @param adapterDeploymentName The account-unique adapter deployment name and inference identity.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return an adapter deployment by name.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public AdapterDeploymentInner get(String resourceGroupName, String accountName, String adapterDeploymentName) {
         return getWithResponse(resourceGroupName, accountName, adapterDeploymentName, Context.NONE).getValue();
@@ -305,11 +284,8 @@ public final class AdapterDeploymentsClientImpl implements AdapterDeploymentsCli
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Response<BinaryData> createOrUpdateWithResponse(String resourceGroupName, String accountName,
         String adapterDeploymentName, AdapterDeploymentInner resource, String ifMatch, String ifNoneMatch) {
-        final String contentType = "application/json";
-        final String accept = "application/json";
-        return service.createOrUpdateSync(this.client.getEndpoint(), this.client.getApiVersion(),
-            this.client.getSubscriptionId(), resourceGroupName, accountName, adapterDeploymentName, ifMatch,
-            ifNoneMatch, contentType, accept, resource, Context.NONE);
+        return createOrUpdateWithResponse(resourceGroupName, accountName, adapterDeploymentName, resource, ifMatch,
+            ifNoneMatch, Context.NONE);
     }
 
     /**
@@ -441,68 +417,21 @@ public final class AdapterDeploymentsClientImpl implements AdapterDeploymentsCli
     private SyncPoller<PollResult<AdapterDeploymentInner>, AdapterDeploymentInner> beginCreateOrUpdate(
         String resourceGroupName, String accountName, String adapterDeploymentName, AdapterDeploymentInner resource,
         String ifMatch, String ifNoneMatch) {
-        Response<BinaryData> response = createOrUpdateWithResponse(resourceGroupName, accountName,
-            adapterDeploymentName, resource, ifMatch, ifNoneMatch);
-        return this.client.<AdapterDeploymentInner, AdapterDeploymentInner>getLroResult(response,
-            AdapterDeploymentInner.class, AdapterDeploymentInner.class, Context.NONE);
+        return beginCreateOrUpdate(resourceGroupName, accountName, adapterDeploymentName, resource, ifMatch,
+            ifNoneMatch, Context.NONE);
     }
 
-    /**
-     * Creates an adapter deployment or re-targets it to another compatible
-     * managed compute deployment. The source model ID is immutable.
-     * Returns 201 for a new adapter or 200 for an existing adapter, including retries.
-     * Either response may require polling while provisioning is in progress.
-     * After polling completes, retrieve the final resource from the original resource URL.
-     * Omit conditional headers to allow either creation or update.
-     * To create only when absent, send If-None-Match: *.
-     * To update only a matching version, send If-Match with the ETag returned by GET.
-     * Conditional requests, including retries, return 412 if the precondition is not met.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param accountName The name of Cognitive Services account.
-     * @param adapterDeploymentName The account-unique adapter deployment name and inference identity.
-     * @param resource The complete adapter deployment resource to create or re-target.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the {@link SyncPoller} for polling of an independently managed LoRA adapter attached to a managed compute
-     * deployment.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public SyncPoller<PollResult<AdapterDeploymentInner>, AdapterDeploymentInner> beginCreateOrUpdate(
         String resourceGroupName, String accountName, String adapterDeploymentName, AdapterDeploymentInner resource) {
         final String ifMatch = null;
         final String ifNoneMatch = null;
-        Response<BinaryData> response = createOrUpdateWithResponse(resourceGroupName, accountName,
-            adapterDeploymentName, resource, ifMatch, ifNoneMatch);
-        return this.client.<AdapterDeploymentInner, AdapterDeploymentInner>getLroResult(response,
-            AdapterDeploymentInner.class, AdapterDeploymentInner.class, Context.NONE);
+        return beginCreateOrUpdate(resourceGroupName, accountName, adapterDeploymentName, resource, ifMatch,
+            ifNoneMatch, Context.NONE);
     }
 
-    /**
-     * Creates an adapter deployment or re-targets it to another compatible
-     * managed compute deployment. The source model ID is immutable.
-     * Returns 201 for a new adapter or 200 for an existing adapter, including retries.
-     * Either response may require polling while provisioning is in progress.
-     * After polling completes, retrieve the final resource from the original resource URL.
-     * Omit conditional headers to allow either creation or update.
-     * To create only when absent, send If-None-Match: *.
-     * To update only a matching version, send If-Match with the ETag returned by GET.
-     * Conditional requests, including retries, return 412 if the precondition is not met.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param accountName The name of Cognitive Services account.
-     * @param adapterDeploymentName The account-unique adapter deployment name and inference identity.
-     * @param resource The complete adapter deployment resource to create or re-target.
-     * @param ifMatch Proceed only when the current adapter deployment ETag matches this value.
-     * @param ifNoneMatch Proceed only when no current adapter deployment ETag matches this value.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the {@link SyncPoller} for polling of an independently managed LoRA adapter attached to a managed compute
-     * deployment.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public SyncPoller<PollResult<AdapterDeploymentInner>, AdapterDeploymentInner> beginCreateOrUpdate(
         String resourceGroupName, String accountName, String adapterDeploymentName, AdapterDeploymentInner resource,
@@ -573,64 +502,23 @@ public final class AdapterDeploymentsClientImpl implements AdapterDeploymentsCli
             ifNoneMatch).last().flatMap(this.client::getLroFinalResultOrError);
     }
 
-    /**
-     * Creates an adapter deployment or re-targets it to another compatible
-     * managed compute deployment. The source model ID is immutable.
-     * Returns 201 for a new adapter or 200 for an existing adapter, including retries.
-     * Either response may require polling while provisioning is in progress.
-     * After polling completes, retrieve the final resource from the original resource URL.
-     * Omit conditional headers to allow either creation or update.
-     * To create only when absent, send If-None-Match: *.
-     * To update only a matching version, send If-Match with the ETag returned by GET.
-     * Conditional requests, including retries, return 412 if the precondition is not met.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param accountName The name of Cognitive Services account.
-     * @param adapterDeploymentName The account-unique adapter deployment name and inference identity.
-     * @param resource The complete adapter deployment resource to create or re-target.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return an independently managed LoRA adapter attached to a managed compute deployment.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public AdapterDeploymentInner createOrUpdate(String resourceGroupName, String accountName,
         String adapterDeploymentName, AdapterDeploymentInner resource) {
         final String ifMatch = null;
         final String ifNoneMatch = null;
-        return beginCreateOrUpdate(resourceGroupName, accountName, adapterDeploymentName, resource, ifMatch,
-            ifNoneMatch).getFinalResult();
+        return createOrUpdate(resourceGroupName, accountName, adapterDeploymentName, resource, ifMatch, ifNoneMatch,
+            Context.NONE);
     }
 
-    /**
-     * Creates an adapter deployment or re-targets it to another compatible
-     * managed compute deployment. The source model ID is immutable.
-     * Returns 201 for a new adapter or 200 for an existing adapter, including retries.
-     * Either response may require polling while provisioning is in progress.
-     * After polling completes, retrieve the final resource from the original resource URL.
-     * Omit conditional headers to allow either creation or update.
-     * To create only when absent, send If-None-Match: *.
-     * To update only a matching version, send If-Match with the ETag returned by GET.
-     * Conditional requests, including retries, return 412 if the precondition is not met.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param accountName The name of Cognitive Services account.
-     * @param adapterDeploymentName The account-unique adapter deployment name and inference identity.
-     * @param resource The complete adapter deployment resource to create or re-target.
-     * @param ifMatch Proceed only when the current adapter deployment ETag matches this value.
-     * @param ifNoneMatch Proceed only when no current adapter deployment ETag matches this value.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return an independently managed LoRA adapter attached to a managed compute deployment.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public AdapterDeploymentInner createOrUpdate(String resourceGroupName, String accountName,
         String adapterDeploymentName, AdapterDeploymentInner resource, String ifMatch, String ifNoneMatch,
         Context context) {
-        return beginCreateOrUpdate(resourceGroupName, accountName, adapterDeploymentName, resource, ifMatch,
-            ifNoneMatch, context).getFinalResult();
+        return this.client.getLroFinalResultOrError(beginCreateOrUpdate(resourceGroupName, accountName,
+            adapterDeploymentName, resource, ifMatch, ifNoneMatch, context));
     }
 
     /**
@@ -684,12 +572,7 @@ public final class AdapterDeploymentsClientImpl implements AdapterDeploymentsCli
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private PagedResponse<AdapterDeploymentInner> listSinglePage(String resourceGroupName, String accountName) {
-        final String accept = "application/json";
-        Response<AdapterDeploymentListResult> res
-            = service.listSync(this.client.getEndpoint(), this.client.getApiVersion(), this.client.getSubscriptionId(),
-                resourceGroupName, accountName, accept, Context.NONE);
-        return new PagedResponseBase<>(res.getRequest(), res.getStatusCode(), res.getHeaders(), res.getValue().value(),
-            res.getValue().nextLink(), null);
+        return listSinglePage(resourceGroupName, accountName, Context.NONE);
     }
 
     /**
@@ -714,33 +597,13 @@ public final class AdapterDeploymentsClientImpl implements AdapterDeploymentsCli
             res.getValue().nextLink(), null);
     }
 
-    /**
-     * Lists adapter deployments associated with the Cognitive Services account.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param accountName The name of Cognitive Services account.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return a paginated collection of adapter deployments as paginated response with {@link PagedIterable}.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.COLLECTION)
     public PagedIterable<AdapterDeploymentInner> list(String resourceGroupName, String accountName) {
-        return new PagedIterable<>(() -> listSinglePage(resourceGroupName, accountName),
-            nextLink -> listNextSinglePage(nextLink));
+        return list(resourceGroupName, accountName, Context.NONE);
     }
 
-    /**
-     * Lists adapter deployments associated with the Cognitive Services account.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param accountName The name of Cognitive Services account.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return a paginated collection of adapter deployments as paginated response with {@link PagedIterable}.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.COLLECTION)
     public PagedIterable<AdapterDeploymentInner> list(String resourceGroupName, String accountName, Context context) {
         return new PagedIterable<>(() -> listSinglePage(resourceGroupName, accountName, context),
@@ -782,9 +645,7 @@ public final class AdapterDeploymentsClientImpl implements AdapterDeploymentsCli
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Response<BinaryData> deleteWithResponse(String resourceGroupName, String accountName,
         String adapterDeploymentName, String ifMatch) {
-        return service.deleteSync(this.client.getEndpoint(), this.client.getApiVersion(),
-            this.client.getSubscriptionId(), resourceGroupName, accountName, adapterDeploymentName, ifMatch,
-            Context.NONE);
+        return deleteWithResponse(resourceGroupName, accountName, adapterDeploymentName, ifMatch, Context.NONE);
     }
 
     /**
@@ -864,44 +725,18 @@ public final class AdapterDeploymentsClientImpl implements AdapterDeploymentsCli
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     private SyncPoller<PollResult<Void>, Void> beginDelete(String resourceGroupName, String accountName,
         String adapterDeploymentName, String ifMatch) {
-        Response<BinaryData> response
-            = deleteWithResponse(resourceGroupName, accountName, adapterDeploymentName, ifMatch);
-        return this.client.<Void, Void>getLroResult(response, Void.class, Void.class, Context.NONE);
+        return beginDelete(resourceGroupName, accountName, adapterDeploymentName, ifMatch, Context.NONE);
     }
 
-    /**
-     * Drains requests and deletes an adapter deployment and its serving snapshot.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param accountName The name of Cognitive Services account.
-     * @param adapterDeploymentName The account-unique adapter deployment name and inference identity.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the {@link SyncPoller} for polling of long-running operation.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public SyncPoller<PollResult<Void>, Void> beginDelete(String resourceGroupName, String accountName,
         String adapterDeploymentName) {
         final String ifMatch = null;
-        Response<BinaryData> response
-            = deleteWithResponse(resourceGroupName, accountName, adapterDeploymentName, ifMatch);
-        return this.client.<Void, Void>getLroResult(response, Void.class, Void.class, Context.NONE);
+        return beginDelete(resourceGroupName, accountName, adapterDeploymentName, ifMatch, Context.NONE);
     }
 
-    /**
-     * Drains requests and deletes an adapter deployment and its serving snapshot.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param accountName The name of Cognitive Services account.
-     * @param adapterDeploymentName The account-unique adapter deployment name and inference identity.
-     * @param ifMatch Proceed only when the current adapter deployment ETag matches this value.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the {@link SyncPoller} for polling of long-running operation.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public SyncPoller<PollResult<Void>, Void> beginDelete(String resourceGroupName, String accountName,
         String adapterDeploymentName, String ifMatch, Context context) {
@@ -947,38 +782,19 @@ public final class AdapterDeploymentsClientImpl implements AdapterDeploymentsCli
             .flatMap(this.client::getLroFinalResultOrError);
     }
 
-    /**
-     * Drains requests and deletes an adapter deployment and its serving snapshot.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param accountName The name of Cognitive Services account.
-     * @param adapterDeploymentName The account-unique adapter deployment name and inference identity.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public void delete(String resourceGroupName, String accountName, String adapterDeploymentName) {
         final String ifMatch = null;
-        beginDelete(resourceGroupName, accountName, adapterDeploymentName, ifMatch).getFinalResult();
+        delete(resourceGroupName, accountName, adapterDeploymentName, ifMatch, Context.NONE);
     }
 
-    /**
-     * Drains requests and deletes an adapter deployment and its serving snapshot.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param accountName The name of Cognitive Services account.
-     * @param adapterDeploymentName The account-unique adapter deployment name and inference identity.
-     * @param ifMatch Proceed only when the current adapter deployment ETag matches this value.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public void delete(String resourceGroupName, String accountName, String adapterDeploymentName, String ifMatch,
         Context context) {
-        beginDelete(resourceGroupName, accountName, adapterDeploymentName, ifMatch, context).getFinalResult();
+        this.client.getLroFinalResultOrError(
+            beginDelete(resourceGroupName, accountName, adapterDeploymentName, ifMatch, context));
     }
 
     /**
@@ -1011,11 +827,7 @@ public final class AdapterDeploymentsClientImpl implements AdapterDeploymentsCli
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private PagedResponse<AdapterDeploymentInner> listNextSinglePage(String nextLink) {
-        final String accept = "application/json";
-        Response<AdapterDeploymentListResult> res
-            = service.listNextSync(nextLink, this.client.getEndpoint(), accept, Context.NONE);
-        return new PagedResponseBase<>(res.getRequest(), res.getStatusCode(), res.getHeaders(), res.getValue().value(),
-            res.getValue().nextLink(), null);
+        return listNextSinglePage(nextLink, Context.NONE);
     }
 
     /**

@@ -238,20 +238,7 @@ public final class ExpansionJobsClientImpl implements ExpansionJobsClient {
             .flatMap(res -> Mono.justOrEmpty(res.getValue()));
     }
 
-    /**
-     * Returns an expansion job.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param amlFilesystemName Name for the AML file system. Allows alphanumerics, underscores, and hyphens. Start and
-     * end with alphanumeric.
-     * @param expansionJobName Name for the expansion job. Allows alphanumerics, underscores, and hyphens. Start and end
-     * with alphanumeric.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return an expansion job instance along with {@link Response}.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Response<ExpansionJobInner> getWithResponse(String resourceGroupName, String amlFilesystemName,
         String expansionJobName, Context context) {
@@ -260,19 +247,7 @@ public final class ExpansionJobsClientImpl implements ExpansionJobsClient {
             resourceGroupName, amlFilesystemName, expansionJobName, accept, context);
     }
 
-    /**
-     * Returns an expansion job.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param amlFilesystemName Name for the AML file system. Allows alphanumerics, underscores, and hyphens. Start and
-     * end with alphanumeric.
-     * @param expansionJobName Name for the expansion job. Allows alphanumerics, underscores, and hyphens. Start and end
-     * with alphanumeric.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return an expansion job instance.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public ExpansionJobInner get(String resourceGroupName, String amlFilesystemName, String expansionJobName) {
         return getWithResponse(resourceGroupName, amlFilesystemName, expansionJobName, Context.NONE).getValue();
@@ -323,11 +298,8 @@ public final class ExpansionJobsClientImpl implements ExpansionJobsClient {
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Response<BinaryData> createOrUpdateWithResponse(String resourceGroupName, String amlFilesystemName,
         String expansionJobName, ExpansionJobInner expansionJob) {
-        final String contentType = "application/json";
-        final String accept = "application/json";
-        return service.createOrUpdateSync(this.client.getEndpoint(), this.client.getApiVersion(),
-            this.client.getSubscriptionId(), resourceGroupName, amlFilesystemName, expansionJobName, contentType,
-            accept, expansionJob, Context.NONE);
+        return createOrUpdateWithResponse(resourceGroupName, amlFilesystemName, expansionJobName, expansionJob,
+            Context.NONE);
     }
 
     /**
@@ -380,46 +352,14 @@ public final class ExpansionJobsClientImpl implements ExpansionJobsClient {
             ExpansionJobInner.class, ExpansionJobInner.class, this.client.getContext());
     }
 
-    /**
-     * Create or update an expansion job.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param amlFilesystemName Name for the AML file system. Allows alphanumerics, underscores, and hyphens. Start and
-     * end with alphanumeric.
-     * @param expansionJobName Name for the expansion job. Allows alphanumerics, underscores, and hyphens. Start and end
-     * with alphanumeric.
-     * @param expansionJob Object containing the user-selectable properties of the expansion job. If read-only
-     * properties are included, they must match the existing values of those properties.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the {@link SyncPoller} for polling of an expansion job instance.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public SyncPoller<PollResult<ExpansionJobInner>, ExpansionJobInner> beginCreateOrUpdate(String resourceGroupName,
         String amlFilesystemName, String expansionJobName, ExpansionJobInner expansionJob) {
-        Response<BinaryData> response
-            = createOrUpdateWithResponse(resourceGroupName, amlFilesystemName, expansionJobName, expansionJob);
-        return this.client.<ExpansionJobInner, ExpansionJobInner>getLroResult(response, ExpansionJobInner.class,
-            ExpansionJobInner.class, Context.NONE);
+        return beginCreateOrUpdate(resourceGroupName, amlFilesystemName, expansionJobName, expansionJob, Context.NONE);
     }
 
-    /**
-     * Create or update an expansion job.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param amlFilesystemName Name for the AML file system. Allows alphanumerics, underscores, and hyphens. Start and
-     * end with alphanumeric.
-     * @param expansionJobName Name for the expansion job. Allows alphanumerics, underscores, and hyphens. Start and end
-     * with alphanumeric.
-     * @param expansionJob Object containing the user-selectable properties of the expansion job. If read-only
-     * properties are included, they must match the existing values of those properties.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the {@link SyncPoller} for polling of an expansion job instance.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public SyncPoller<PollResult<ExpansionJobInner>, ExpansionJobInner> beginCreateOrUpdate(String resourceGroupName,
         String amlFilesystemName, String expansionJobName, ExpansionJobInner expansionJob, Context context) {
@@ -451,49 +391,19 @@ public final class ExpansionJobsClientImpl implements ExpansionJobsClient {
             .flatMap(this.client::getLroFinalResultOrError);
     }
 
-    /**
-     * Create or update an expansion job.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param amlFilesystemName Name for the AML file system. Allows alphanumerics, underscores, and hyphens. Start and
-     * end with alphanumeric.
-     * @param expansionJobName Name for the expansion job. Allows alphanumerics, underscores, and hyphens. Start and end
-     * with alphanumeric.
-     * @param expansionJob Object containing the user-selectable properties of the expansion job. If read-only
-     * properties are included, they must match the existing values of those properties.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return an expansion job instance.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public ExpansionJobInner createOrUpdate(String resourceGroupName, String amlFilesystemName, String expansionJobName,
         ExpansionJobInner expansionJob) {
-        return beginCreateOrUpdate(resourceGroupName, amlFilesystemName, expansionJobName, expansionJob)
-            .getFinalResult();
+        return createOrUpdate(resourceGroupName, amlFilesystemName, expansionJobName, expansionJob, Context.NONE);
     }
 
-    /**
-     * Create or update an expansion job.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param amlFilesystemName Name for the AML file system. Allows alphanumerics, underscores, and hyphens. Start and
-     * end with alphanumeric.
-     * @param expansionJobName Name for the expansion job. Allows alphanumerics, underscores, and hyphens. Start and end
-     * with alphanumeric.
-     * @param expansionJob Object containing the user-selectable properties of the expansion job. If read-only
-     * properties are included, they must match the existing values of those properties.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return an expansion job instance.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public ExpansionJobInner createOrUpdate(String resourceGroupName, String amlFilesystemName, String expansionJobName,
         ExpansionJobInner expansionJob, Context context) {
-        return beginCreateOrUpdate(resourceGroupName, amlFilesystemName, expansionJobName, expansionJob, context)
-            .getFinalResult();
+        return this.client.getLroFinalResultOrError(
+            beginCreateOrUpdate(resourceGroupName, amlFilesystemName, expansionJobName, expansionJob, context));
     }
 
     /**
@@ -541,11 +451,7 @@ public final class ExpansionJobsClientImpl implements ExpansionJobsClient {
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Response<BinaryData> updateWithResponse(String resourceGroupName, String amlFilesystemName,
         String expansionJobName, ExpansionJobUpdate expansionJob) {
-        final String contentType = "application/json";
-        final String accept = "application/json";
-        return service.updateSync(this.client.getEndpoint(), this.client.getApiVersion(),
-            this.client.getSubscriptionId(), resourceGroupName, amlFilesystemName, expansionJobName, contentType,
-            accept, expansionJob, Context.NONE);
+        return updateWithResponse(resourceGroupName, amlFilesystemName, expansionJobName, expansionJob, Context.NONE);
     }
 
     /**
@@ -598,46 +504,14 @@ public final class ExpansionJobsClientImpl implements ExpansionJobsClient {
             ExpansionJobInner.class, ExpansionJobInner.class, this.client.getContext());
     }
 
-    /**
-     * Update an expansion job instance.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param amlFilesystemName Name for the AML file system. Allows alphanumerics, underscores, and hyphens. Start and
-     * end with alphanumeric.
-     * @param expansionJobName Name for the expansion job. Allows alphanumerics, underscores, and hyphens. Start and end
-     * with alphanumeric.
-     * @param expansionJob Object containing the user-selectable properties of the expansion job. If read-only
-     * properties are included, they must match the existing values of those properties.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the {@link SyncPoller} for polling of an expansion job instance.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public SyncPoller<PollResult<ExpansionJobInner>, ExpansionJobInner> beginUpdate(String resourceGroupName,
         String amlFilesystemName, String expansionJobName, ExpansionJobUpdate expansionJob) {
-        Response<BinaryData> response
-            = updateWithResponse(resourceGroupName, amlFilesystemName, expansionJobName, expansionJob);
-        return this.client.<ExpansionJobInner, ExpansionJobInner>getLroResult(response, ExpansionJobInner.class,
-            ExpansionJobInner.class, Context.NONE);
+        return beginUpdate(resourceGroupName, amlFilesystemName, expansionJobName, expansionJob, Context.NONE);
     }
 
-    /**
-     * Update an expansion job instance.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param amlFilesystemName Name for the AML file system. Allows alphanumerics, underscores, and hyphens. Start and
-     * end with alphanumeric.
-     * @param expansionJobName Name for the expansion job. Allows alphanumerics, underscores, and hyphens. Start and end
-     * with alphanumeric.
-     * @param expansionJob Object containing the user-selectable properties of the expansion job. If read-only
-     * properties are included, they must match the existing values of those properties.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the {@link SyncPoller} for polling of an expansion job instance.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public SyncPoller<PollResult<ExpansionJobInner>, ExpansionJobInner> beginUpdate(String resourceGroupName,
         String amlFilesystemName, String expansionJobName, ExpansionJobUpdate expansionJob, Context context) {
@@ -669,48 +543,19 @@ public final class ExpansionJobsClientImpl implements ExpansionJobsClient {
             .flatMap(this.client::getLroFinalResultOrError);
     }
 
-    /**
-     * Update an expansion job instance.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param amlFilesystemName Name for the AML file system. Allows alphanumerics, underscores, and hyphens. Start and
-     * end with alphanumeric.
-     * @param expansionJobName Name for the expansion job. Allows alphanumerics, underscores, and hyphens. Start and end
-     * with alphanumeric.
-     * @param expansionJob Object containing the user-selectable properties of the expansion job. If read-only
-     * properties are included, they must match the existing values of those properties.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return an expansion job instance.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public ExpansionJobInner update(String resourceGroupName, String amlFilesystemName, String expansionJobName,
         ExpansionJobUpdate expansionJob) {
-        return beginUpdate(resourceGroupName, amlFilesystemName, expansionJobName, expansionJob).getFinalResult();
+        return update(resourceGroupName, amlFilesystemName, expansionJobName, expansionJob, Context.NONE);
     }
 
-    /**
-     * Update an expansion job instance.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param amlFilesystemName Name for the AML file system. Allows alphanumerics, underscores, and hyphens. Start and
-     * end with alphanumeric.
-     * @param expansionJobName Name for the expansion job. Allows alphanumerics, underscores, and hyphens. Start and end
-     * with alphanumeric.
-     * @param expansionJob Object containing the user-selectable properties of the expansion job. If read-only
-     * properties are included, they must match the existing values of those properties.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return an expansion job instance.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public ExpansionJobInner update(String resourceGroupName, String amlFilesystemName, String expansionJobName,
         ExpansionJobUpdate expansionJob, Context context) {
-        return beginUpdate(resourceGroupName, amlFilesystemName, expansionJobName, expansionJob, context)
-            .getFinalResult();
+        return this.client.getLroFinalResultOrError(
+            beginUpdate(resourceGroupName, amlFilesystemName, expansionJobName, expansionJob, context));
     }
 
     /**
@@ -751,8 +596,7 @@ public final class ExpansionJobsClientImpl implements ExpansionJobsClient {
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Response<BinaryData> deleteWithResponse(String resourceGroupName, String amlFilesystemName,
         String expansionJobName) {
-        return service.deleteSync(this.client.getEndpoint(), this.client.getApiVersion(),
-            this.client.getSubscriptionId(), resourceGroupName, amlFilesystemName, expansionJobName, Context.NONE);
+        return deleteWithResponse(resourceGroupName, amlFilesystemName, expansionJobName, Context.NONE);
     }
 
     /**
@@ -798,40 +642,14 @@ public final class ExpansionJobsClientImpl implements ExpansionJobsClient {
             this.client.getContext());
     }
 
-    /**
-     * Schedules an expansion job for deletion.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param amlFilesystemName Name for the AML file system. Allows alphanumerics, underscores, and hyphens. Start and
-     * end with alphanumeric.
-     * @param expansionJobName Name for the expansion job. Allows alphanumerics, underscores, and hyphens. Start and end
-     * with alphanumeric.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the {@link SyncPoller} for polling of long-running operation.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public SyncPoller<PollResult<Void>, Void> beginDelete(String resourceGroupName, String amlFilesystemName,
         String expansionJobName) {
-        Response<BinaryData> response = deleteWithResponse(resourceGroupName, amlFilesystemName, expansionJobName);
-        return this.client.<Void, Void>getLroResult(response, Void.class, Void.class, Context.NONE);
+        return beginDelete(resourceGroupName, amlFilesystemName, expansionJobName, Context.NONE);
     }
 
-    /**
-     * Schedules an expansion job for deletion.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param amlFilesystemName Name for the AML file system. Allows alphanumerics, underscores, and hyphens. Start and
-     * end with alphanumeric.
-     * @param expansionJobName Name for the expansion job. Allows alphanumerics, underscores, and hyphens. Start and end
-     * with alphanumeric.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the {@link SyncPoller} for polling of long-running operation.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public SyncPoller<PollResult<Void>, Void> beginDelete(String resourceGroupName, String amlFilesystemName,
         String expansionJobName, Context context) {
@@ -859,39 +677,17 @@ public final class ExpansionJobsClientImpl implements ExpansionJobsClient {
             .flatMap(this.client::getLroFinalResultOrError);
     }
 
-    /**
-     * Schedules an expansion job for deletion.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param amlFilesystemName Name for the AML file system. Allows alphanumerics, underscores, and hyphens. Start and
-     * end with alphanumeric.
-     * @param expansionJobName Name for the expansion job. Allows alphanumerics, underscores, and hyphens. Start and end
-     * with alphanumeric.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public void delete(String resourceGroupName, String amlFilesystemName, String expansionJobName) {
-        beginDelete(resourceGroupName, amlFilesystemName, expansionJobName).getFinalResult();
+        delete(resourceGroupName, amlFilesystemName, expansionJobName, Context.NONE);
     }
 
-    /**
-     * Schedules an expansion job for deletion.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param amlFilesystemName Name for the AML file system. Allows alphanumerics, underscores, and hyphens. Start and
-     * end with alphanumeric.
-     * @param expansionJobName Name for the expansion job. Allows alphanumerics, underscores, and hyphens. Start and end
-     * with alphanumeric.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public void delete(String resourceGroupName, String amlFilesystemName, String expansionJobName, Context context) {
-        beginDelete(resourceGroupName, amlFilesystemName, expansionJobName, context).getFinalResult();
+        this.client
+            .getLroFinalResultOrError(beginDelete(resourceGroupName, amlFilesystemName, expansionJobName, context));
     }
 
     /**
@@ -949,12 +745,7 @@ public final class ExpansionJobsClientImpl implements ExpansionJobsClient {
     @ServiceMethod(returns = ReturnType.SINGLE)
     private PagedResponse<ExpansionJobInner> listByAmlFilesystemSinglePage(String resourceGroupName,
         String amlFilesystemName) {
-        final String accept = "application/json";
-        Response<ExpansionJobsListResult> res
-            = service.listByAmlFilesystemSync(this.client.getEndpoint(), this.client.getApiVersion(),
-                this.client.getSubscriptionId(), resourceGroupName, amlFilesystemName, accept, Context.NONE);
-        return new PagedResponseBase<>(res.getRequest(), res.getStatusCode(), res.getHeaders(), res.getValue().value(),
-            res.getValue().nextLink(), null);
+        return listByAmlFilesystemSinglePage(resourceGroupName, amlFilesystemName, Context.NONE);
     }
 
     /**
@@ -980,35 +771,13 @@ public final class ExpansionJobsClientImpl implements ExpansionJobsClient {
             res.getValue().nextLink(), null);
     }
 
-    /**
-     * Returns all the expansion jobs the user has access to under an AML File System.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param amlFilesystemName Name for the AML file system. Allows alphanumerics, underscores, and hyphens. Start and
-     * end with alphanumeric.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return result of the request to list expansion jobs as paginated response with {@link PagedIterable}.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.COLLECTION)
     public PagedIterable<ExpansionJobInner> listByAmlFilesystem(String resourceGroupName, String amlFilesystemName) {
-        return new PagedIterable<>(() -> listByAmlFilesystemSinglePage(resourceGroupName, amlFilesystemName),
-            nextLink -> listByAmlFilesystemNextSinglePage(nextLink));
+        return listByAmlFilesystem(resourceGroupName, amlFilesystemName, Context.NONE);
     }
 
-    /**
-     * Returns all the expansion jobs the user has access to under an AML File System.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param amlFilesystemName Name for the AML file system. Allows alphanumerics, underscores, and hyphens. Start and
-     * end with alphanumeric.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return result of the request to list expansion jobs as paginated response with {@link PagedIterable}.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.COLLECTION)
     public PagedIterable<ExpansionJobInner> listByAmlFilesystem(String resourceGroupName, String amlFilesystemName,
         Context context) {
@@ -1048,11 +817,7 @@ public final class ExpansionJobsClientImpl implements ExpansionJobsClient {
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private PagedResponse<ExpansionJobInner> listByAmlFilesystemNextSinglePage(String nextLink) {
-        final String accept = "application/json";
-        Response<ExpansionJobsListResult> res
-            = service.listByAmlFilesystemNextSync(nextLink, this.client.getEndpoint(), accept, Context.NONE);
-        return new PagedResponseBase<>(res.getRequest(), res.getStatusCode(), res.getHeaders(), res.getValue().value(),
-            res.getValue().nextLink(), null);
+        return listByAmlFilesystemNextSinglePage(nextLink, Context.NONE);
     }
 
     /**

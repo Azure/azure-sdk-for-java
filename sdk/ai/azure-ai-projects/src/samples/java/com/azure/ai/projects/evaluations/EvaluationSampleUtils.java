@@ -4,8 +4,12 @@
 package com.azure.ai.projects.evaluations;
 
 import com.azure.ai.projects.EvaluationsHelper;
+import com.azure.ai.projects.EvaluationRulesAsyncClient;
+import com.azure.ai.projects.EvaluationRulesClient;
 import com.azure.ai.projects.models.EvaluatorVersion;
+import com.azure.ai.projects.models.ScheduleProvisioningStatus;
 import com.azure.ai.projects.models.TestingCriterionAzureAIEvaluator;
+import com.azure.core.exception.ResourceModifiedException;
 import com.azure.core.util.BinaryData;
 import com.azure.core.util.Configuration;
 import com.azure.core.util.polling.LongRunningOperationStatus;
@@ -27,7 +31,9 @@ import com.openai.models.evals.runs.outputitems.OutputItemListParams;
 import com.openai.models.evals.runs.outputitems.OutputItemListResponse;
 import com.openai.services.async.EvalServiceAsync;
 import com.openai.services.blocking.EvalService;
+import reactor.core.publisher.Flux;
 import reactor.core.publisher.Mono;
+import reactor.util.retry.Retry;
 
 import java.time.Duration;
 import java.util.Arrays;
@@ -49,6 +55,53 @@ final class EvaluationSampleUtils {
     static String requiredSetting(String name) {
         return Objects.requireNonNull(Configuration.getGlobalConfiguration().get(name),
             "Set the " + name + " environment variable before running this sample.");
+    }
+
+    static void deleteRule(EvaluationRulesClient rules, String id) {
+        for (int attempt = 0; attempt < 12; attempt++) {
+            ScheduleProvisioningStatus status = rules.getEvaluationRule(id).getProvisioningStatus();
+            if (ScheduleProvisioningStatus.SUCCEEDED.equals(status)
+                || ScheduleProvisioningStatus.FAILED.equals(status)) {
+                break;
+            }
+            if (attempt == 11) {
+                throw new IllegalStateException("Evaluation rule " + id + " did not finish provisioning.");
+            }
+            try {
+                Thread.sleep(Duration.ofSeconds(2).toMillis());
+            } catch (InterruptedException interrupted) {
+                Thread.currentThread().interrupt();
+                throw new IllegalStateException("Interrupted while waiting for evaluation rule " + id, interrupted);
+            }
+        }
+        for (int attempt = 0; attempt < 12; attempt++) {
+            try {
+                rules.deleteEvaluationRule(id);
+                return;
+            } catch (ResourceModifiedException e) {
+                if (attempt == 11) {
+                    throw e;
+                }
+                try {
+                    Thread.sleep(Duration.ofSeconds(2).toMillis());
+                } catch (InterruptedException interrupted) {
+                    Thread.currentThread().interrupt();
+                    throw new IllegalStateException("Interrupted while deleting evaluation rule " + id, interrupted);
+                }
+            }
+        }
+    }
+
+    static Mono<Void> deleteRule(EvaluationRulesAsyncClient rules, String id) {
+        return Flux.interval(Duration.ZERO, Duration.ofSeconds(2))
+            .concatMap(ignored -> rules.getEvaluationRule(id))
+            .filter(rule -> ScheduleProvisioningStatus.SUCCEEDED.equals(rule.getProvisioningStatus())
+                || ScheduleProvisioningStatus.FAILED.equals(rule.getProvisioningStatus()))
+            .next()
+            .timeout(Duration.ofSeconds(30))
+            .then(rules.deleteEvaluationRule(id)
+                .retryWhen(Retry.fixedDelay(11, Duration.ofSeconds(2))
+                    .filter(ResourceModifiedException.class::isInstance)));
     }
 
     static EvalCreateParams.DataSourceConfig.Custom dataSourceConfig() {

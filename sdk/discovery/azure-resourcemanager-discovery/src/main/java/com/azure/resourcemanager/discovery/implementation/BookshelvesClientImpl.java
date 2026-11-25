@@ -247,17 +247,7 @@ public final class BookshelvesClientImpl implements BookshelvesClient {
             .flatMap(res -> Mono.justOrEmpty(res.getValue()));
     }
 
-    /**
-     * Get a Bookshelf.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param bookshelfName The name of the Bookshelf.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return a Bookshelf along with {@link Response}.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Response<BookshelfInner> getByResourceGroupWithResponse(String resourceGroupName, String bookshelfName,
         Context context) {
@@ -266,16 +256,7 @@ public final class BookshelvesClientImpl implements BookshelvesClient {
             this.client.getSubscriptionId(), resourceGroupName, bookshelfName, accept, context);
     }
 
-    /**
-     * Get a Bookshelf.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param bookshelfName The name of the Bookshelf.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return a Bookshelf.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public BookshelfInner getByResourceGroup(String resourceGroupName, String bookshelfName) {
         return getByResourceGroupWithResponse(resourceGroupName, bookshelfName, Context.NONE).getValue();
@@ -318,11 +299,7 @@ public final class BookshelvesClientImpl implements BookshelvesClient {
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Response<BinaryData> createOrUpdateWithResponse(String resourceGroupName, String bookshelfName,
         BookshelfInner resource) {
-        final String contentType = "application/json";
-        final String accept = "application/json";
-        return service.createOrUpdateSync(this.client.getEndpoint(), this.client.getApiVersion(),
-            this.client.getSubscriptionId(), resourceGroupName, bookshelfName, contentType, accept, resource,
-            Context.NONE);
+        return createOrUpdateWithResponse(resourceGroupName, bookshelfName, resource, Context.NONE);
     }
 
     /**
@@ -366,37 +343,14 @@ public final class BookshelvesClientImpl implements BookshelvesClient {
             BookshelfInner.class, BookshelfInner.class, this.client.getContext());
     }
 
-    /**
-     * Create a Bookshelf.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param bookshelfName The name of the Bookshelf.
-     * @param resource Resource create parameters.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the {@link SyncPoller} for polling of bookshelf tracked resource.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public SyncPoller<PollResult<BookshelfInner>, BookshelfInner> beginCreateOrUpdate(String resourceGroupName,
         String bookshelfName, BookshelfInner resource) {
-        Response<BinaryData> response = createOrUpdateWithResponse(resourceGroupName, bookshelfName, resource);
-        return this.client.<BookshelfInner, BookshelfInner>getLroResult(response, BookshelfInner.class,
-            BookshelfInner.class, Context.NONE);
+        return beginCreateOrUpdate(resourceGroupName, bookshelfName, resource, Context.NONE);
     }
 
-    /**
-     * Create a Bookshelf.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param bookshelfName The name of the Bookshelf.
-     * @param resource Resource create parameters.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the {@link SyncPoller} for polling of bookshelf tracked resource.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public SyncPoller<PollResult<BookshelfInner>, BookshelfInner> beginCreateOrUpdate(String resourceGroupName,
         String bookshelfName, BookshelfInner resource, Context context) {
@@ -423,38 +377,18 @@ public final class BookshelvesClientImpl implements BookshelvesClient {
             .flatMap(this.client::getLroFinalResultOrError);
     }
 
-    /**
-     * Create a Bookshelf.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param bookshelfName The name of the Bookshelf.
-     * @param resource Resource create parameters.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return bookshelf tracked resource.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public BookshelfInner createOrUpdate(String resourceGroupName, String bookshelfName, BookshelfInner resource) {
-        return beginCreateOrUpdate(resourceGroupName, bookshelfName, resource).getFinalResult();
+        return createOrUpdate(resourceGroupName, bookshelfName, resource, Context.NONE);
     }
 
-    /**
-     * Create a Bookshelf.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param bookshelfName The name of the Bookshelf.
-     * @param resource Resource create parameters.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return bookshelf tracked resource.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public BookshelfInner createOrUpdate(String resourceGroupName, String bookshelfName, BookshelfInner resource,
         Context context) {
-        return beginCreateOrUpdate(resourceGroupName, bookshelfName, resource, context).getFinalResult();
+        return this.client
+            .getLroFinalResultOrError(beginCreateOrUpdate(resourceGroupName, bookshelfName, resource, context));
     }
 
     /**
@@ -494,11 +428,7 @@ public final class BookshelvesClientImpl implements BookshelvesClient {
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Response<BinaryData> updateWithResponse(String resourceGroupName, String bookshelfName,
         BookshelfInner properties) {
-        final String contentType = "application/json";
-        final String accept = "application/json";
-        return service.updateSync(this.client.getEndpoint(), this.client.getApiVersion(),
-            this.client.getSubscriptionId(), resourceGroupName, bookshelfName, contentType, accept, properties,
-            Context.NONE);
+        return updateWithResponse(resourceGroupName, bookshelfName, properties, Context.NONE);
     }
 
     /**
@@ -542,37 +472,14 @@ public final class BookshelvesClientImpl implements BookshelvesClient {
             BookshelfInner.class, BookshelfInner.class, this.client.getContext());
     }
 
-    /**
-     * Update a Bookshelf.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param bookshelfName The name of the Bookshelf.
-     * @param properties The resource properties to be updated.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the {@link SyncPoller} for polling of bookshelf tracked resource.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public SyncPoller<PollResult<BookshelfInner>, BookshelfInner> beginUpdate(String resourceGroupName,
         String bookshelfName, BookshelfInner properties) {
-        Response<BinaryData> response = updateWithResponse(resourceGroupName, bookshelfName, properties);
-        return this.client.<BookshelfInner, BookshelfInner>getLroResult(response, BookshelfInner.class,
-            BookshelfInner.class, Context.NONE);
+        return beginUpdate(resourceGroupName, bookshelfName, properties, Context.NONE);
     }
 
-    /**
-     * Update a Bookshelf.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param bookshelfName The name of the Bookshelf.
-     * @param properties The resource properties to be updated.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the {@link SyncPoller} for polling of bookshelf tracked resource.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public SyncPoller<PollResult<BookshelfInner>, BookshelfInner> beginUpdate(String resourceGroupName,
         String bookshelfName, BookshelfInner properties, Context context) {
@@ -599,38 +506,17 @@ public final class BookshelvesClientImpl implements BookshelvesClient {
             .flatMap(this.client::getLroFinalResultOrError);
     }
 
-    /**
-     * Update a Bookshelf.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param bookshelfName The name of the Bookshelf.
-     * @param properties The resource properties to be updated.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return bookshelf tracked resource.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public BookshelfInner update(String resourceGroupName, String bookshelfName, BookshelfInner properties) {
-        return beginUpdate(resourceGroupName, bookshelfName, properties).getFinalResult();
+        return update(resourceGroupName, bookshelfName, properties, Context.NONE);
     }
 
-    /**
-     * Update a Bookshelf.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param bookshelfName The name of the Bookshelf.
-     * @param properties The resource properties to be updated.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return bookshelf tracked resource.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public BookshelfInner update(String resourceGroupName, String bookshelfName, BookshelfInner properties,
         Context context) {
-        return beginUpdate(resourceGroupName, bookshelfName, properties, context).getFinalResult();
+        return this.client.getLroFinalResultOrError(beginUpdate(resourceGroupName, bookshelfName, properties, context));
     }
 
     /**
@@ -663,8 +549,7 @@ public final class BookshelvesClientImpl implements BookshelvesClient {
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Response<BinaryData> deleteWithResponse(String resourceGroupName, String bookshelfName) {
-        return service.deleteSync(this.client.getEndpoint(), this.client.getApiVersion(),
-            this.client.getSubscriptionId(), resourceGroupName, bookshelfName, Context.NONE);
+        return deleteWithResponse(resourceGroupName, bookshelfName, Context.NONE);
     }
 
     /**
@@ -701,33 +586,13 @@ public final class BookshelvesClientImpl implements BookshelvesClient {
             this.client.getContext());
     }
 
-    /**
-     * Delete a Bookshelf.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param bookshelfName The name of the Bookshelf.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the {@link SyncPoller} for polling of long-running operation.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public SyncPoller<PollResult<Void>, Void> beginDelete(String resourceGroupName, String bookshelfName) {
-        Response<BinaryData> response = deleteWithResponse(resourceGroupName, bookshelfName);
-        return this.client.<Void, Void>getLroResult(response, Void.class, Void.class, Context.NONE);
+        return beginDelete(resourceGroupName, bookshelfName, Context.NONE);
     }
 
-    /**
-     * Delete a Bookshelf.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param bookshelfName The name of the Bookshelf.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the {@link SyncPoller} for polling of long-running operation.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public SyncPoller<PollResult<Void>, Void> beginDelete(String resourceGroupName, String bookshelfName,
         Context context) {
@@ -750,33 +615,16 @@ public final class BookshelvesClientImpl implements BookshelvesClient {
         return beginDeleteAsync(resourceGroupName, bookshelfName).last().flatMap(this.client::getLroFinalResultOrError);
     }
 
-    /**
-     * Delete a Bookshelf.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param bookshelfName The name of the Bookshelf.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public void delete(String resourceGroupName, String bookshelfName) {
-        beginDelete(resourceGroupName, bookshelfName).getFinalResult();
+        delete(resourceGroupName, bookshelfName, Context.NONE);
     }
 
-    /**
-     * Delete a Bookshelf.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param bookshelfName The name of the Bookshelf.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public void delete(String resourceGroupName, String bookshelfName, Context context) {
-        beginDelete(resourceGroupName, bookshelfName, context).getFinalResult();
+        this.client.getLroFinalResultOrError(beginDelete(resourceGroupName, bookshelfName, context));
     }
 
     /**
@@ -826,11 +674,7 @@ public final class BookshelvesClientImpl implements BookshelvesClient {
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private PagedResponse<BookshelfInner> listByResourceGroupSinglePage(String resourceGroupName) {
-        final String accept = "application/json";
-        Response<BookshelfListResult> res = service.listByResourceGroupSync(this.client.getEndpoint(),
-            this.client.getApiVersion(), this.client.getSubscriptionId(), resourceGroupName, accept, Context.NONE);
-        return new PagedResponseBase<>(res.getRequest(), res.getStatusCode(), res.getHeaders(), res.getValue().value(),
-            res.getValue().nextLink(), null);
+        return listByResourceGroupSinglePage(resourceGroupName, Context.NONE);
     }
 
     /**
@@ -852,31 +696,13 @@ public final class BookshelvesClientImpl implements BookshelvesClient {
             res.getValue().nextLink(), null);
     }
 
-    /**
-     * List Bookshelf resources by resource group.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the response of a Bookshelf list operation as paginated response with {@link PagedIterable}.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.COLLECTION)
     public PagedIterable<BookshelfInner> listByResourceGroup(String resourceGroupName) {
-        return new PagedIterable<>(() -> listByResourceGroupSinglePage(resourceGroupName),
-            nextLink -> listByResourceGroupNextSinglePage(nextLink));
+        return listByResourceGroup(resourceGroupName, Context.NONE);
     }
 
-    /**
-     * List Bookshelf resources by resource group.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the response of a Bookshelf list operation as paginated response with {@link PagedIterable}.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.COLLECTION)
     public PagedIterable<BookshelfInner> listByResourceGroup(String resourceGroupName, Context context) {
         return new PagedIterable<>(() -> listByResourceGroupSinglePage(resourceGroupName, context),
@@ -924,11 +750,7 @@ public final class BookshelvesClientImpl implements BookshelvesClient {
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private PagedResponse<BookshelfInner> listSinglePage() {
-        final String accept = "application/json";
-        Response<BookshelfListResult> res = service.listSync(this.client.getEndpoint(), this.client.getApiVersion(),
-            this.client.getSubscriptionId(), accept, Context.NONE);
-        return new PagedResponseBase<>(res.getRequest(), res.getStatusCode(), res.getHeaders(), res.getValue().value(),
-            res.getValue().nextLink(), null);
+        return listSinglePage(Context.NONE);
     }
 
     /**
@@ -949,27 +771,13 @@ public final class BookshelvesClientImpl implements BookshelvesClient {
             res.getValue().nextLink(), null);
     }
 
-    /**
-     * List Bookshelf resources by subscription ID.
-     * 
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the response of a Bookshelf list operation as paginated response with {@link PagedIterable}.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.COLLECTION)
     public PagedIterable<BookshelfInner> list() {
-        return new PagedIterable<>(() -> listSinglePage(), nextLink -> listBySubscriptionNextSinglePage(nextLink));
+        return list(Context.NONE);
     }
 
-    /**
-     * List Bookshelf resources by subscription ID.
-     * 
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the response of a Bookshelf list operation as paginated response with {@link PagedIterable}.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.COLLECTION)
     public PagedIterable<BookshelfInner> list(Context context) {
         return new PagedIterable<>(() -> listSinglePage(context),
@@ -1008,11 +816,7 @@ public final class BookshelvesClientImpl implements BookshelvesClient {
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private PagedResponse<BookshelfInner> listByResourceGroupNextSinglePage(String nextLink) {
-        final String accept = "application/json";
-        Response<BookshelfListResult> res
-            = service.listByResourceGroupNextSync(nextLink, this.client.getEndpoint(), accept, Context.NONE);
-        return new PagedResponseBase<>(res.getRequest(), res.getStatusCode(), res.getHeaders(), res.getValue().value(),
-            res.getValue().nextLink(), null);
+        return listByResourceGroupNextSinglePage(nextLink, Context.NONE);
     }
 
     /**
@@ -1066,11 +870,7 @@ public final class BookshelvesClientImpl implements BookshelvesClient {
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private PagedResponse<BookshelfInner> listBySubscriptionNextSinglePage(String nextLink) {
-        final String accept = "application/json";
-        Response<BookshelfListResult> res
-            = service.listBySubscriptionNextSync(nextLink, this.client.getEndpoint(), accept, Context.NONE);
-        return new PagedResponseBase<>(res.getRequest(), res.getStatusCode(), res.getHeaders(), res.getValue().value(),
-            res.getValue().nextLink(), null);
+        return listBySubscriptionNextSinglePage(nextLink, Context.NONE);
     }
 
     /**

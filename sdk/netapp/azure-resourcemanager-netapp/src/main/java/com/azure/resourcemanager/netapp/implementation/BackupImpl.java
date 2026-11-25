@@ -119,10 +119,7 @@ public final class BackupImpl implements Backup, Backup.Definition, Backup.Updat
     }
 
     public Backup create() {
-        this.innerObject = serviceManager.serviceClient()
-            .getBackups()
-            .create(resourceGroupName, accountName, backupVaultName, backupName, this.innerModel(), Context.NONE);
-        return this;
+        return this.create(Context.NONE);
     }
 
     public Backup create(Context context) {
@@ -144,10 +141,7 @@ public final class BackupImpl implements Backup, Backup.Definition, Backup.Updat
     }
 
     public Backup apply() {
-        this.innerObject = serviceManager.serviceClient()
-            .getBackups()
-            .update(resourceGroupName, accountName, backupVaultName, backupName, updateBody, Context.NONE);
-        return this;
+        return this.apply(Context.NONE);
     }
 
     public Backup apply(Context context) {
@@ -175,11 +169,7 @@ public final class BackupImpl implements Backup, Backup.Definition, Backup.Updat
     }
 
     public Backup refresh() {
-        this.innerObject = serviceManager.serviceClient()
-            .getBackups()
-            .getWithResponse(resourceGroupName, accountName, backupVaultName, backupName, Context.NONE)
-            .getValue();
-        return this;
+        return this.refresh(Context.NONE);
     }
 
     public Backup refresh(Context context) {

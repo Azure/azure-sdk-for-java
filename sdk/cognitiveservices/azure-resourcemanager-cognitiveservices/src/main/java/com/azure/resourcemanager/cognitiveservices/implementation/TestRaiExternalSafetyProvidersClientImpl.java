@@ -125,20 +125,7 @@ public final class TestRaiExternalSafetyProvidersClientImpl implements TestRaiEx
             .flatMap(res -> Mono.justOrEmpty(res.getValue()));
     }
 
-    /**
-     * Test the rai safety provider associated with the subscription.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param accountName The name of Cognitive Services account.
-     * @param safetyProviderName The name of the Rai External Safety Provider associated with the Cognitive Services
-     * Account.
-     * @param safetyProvider Properties describing the rai external safety provider.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return cognitive Services Rai External Safety provider Schema along with {@link Response}.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Response<RaiExternalSafetyProviderSchemaInner> createOrUpdateWithResponse(String resourceGroupName,
         String accountName, String safetyProviderName, RaiExternalSafetyProviderSchemaInner safetyProvider,
@@ -150,19 +137,7 @@ public final class TestRaiExternalSafetyProvidersClientImpl implements TestRaiEx
             safetyProvider, context);
     }
 
-    /**
-     * Test the rai safety provider associated with the subscription.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param accountName The name of Cognitive Services account.
-     * @param safetyProviderName The name of the Rai External Safety Provider associated with the Cognitive Services
-     * Account.
-     * @param safetyProvider Properties describing the rai external safety provider.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return cognitive Services Rai External Safety provider Schema.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public RaiExternalSafetyProviderSchemaInner createOrUpdate(String resourceGroupName, String accountName,
         String safetyProviderName, RaiExternalSafetyProviderSchemaInner safetyProvider) {

@@ -154,18 +154,7 @@ public final class EntityQueryTemplatesClientImpl implements EntityQueryTemplate
             .flatMap(res -> Mono.justOrEmpty(res.getValue()));
     }
 
-    /**
-     * Gets an entity query.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param workspaceName The name of the workspace.
-     * @param entityQueryTemplateId entity query template ID.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return an entity query along with {@link Response}.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Response<EntityQueryTemplateInner> getWithResponse(String resourceGroupName, String workspaceName,
         String entityQueryTemplateId, Context context) {
@@ -174,17 +163,7 @@ public final class EntityQueryTemplatesClientImpl implements EntityQueryTemplate
             resourceGroupName, workspaceName, entityQueryTemplateId, accept, context);
     }
 
-    /**
-     * Gets an entity query.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param workspaceName The name of the workspace.
-     * @param entityQueryTemplateId entity query template ID.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return an entity query.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public EntityQueryTemplateInner get(String resourceGroupName, String workspaceName, String entityQueryTemplateId) {
         return getWithResponse(resourceGroupName, workspaceName, entityQueryTemplateId, Context.NONE).getValue();
@@ -262,11 +241,7 @@ public final class EntityQueryTemplatesClientImpl implements EntityQueryTemplate
     @ServiceMethod(returns = ReturnType.SINGLE)
     private PagedResponse<EntityQueryTemplateInner> listSinglePage(String resourceGroupName, String workspaceName,
         EntityQueryTemplateKind kind) {
-        final String accept = "application/json";
-        Response<EntityQueryTemplateList> res = service.listSync(this.client.getEndpoint(), this.client.getApiVersion(),
-            this.client.getSubscriptionId(), resourceGroupName, workspaceName, kind, accept, Context.NONE);
-        return new PagedResponseBase<>(res.getRequest(), res.getStatusCode(), res.getHeaders(), res.getValue().value(),
-            res.getValue().nextLink(), null);
+        return listSinglePage(resourceGroupName, workspaceName, kind, Context.NONE);
     }
 
     /**
@@ -291,35 +266,14 @@ public final class EntityQueryTemplatesClientImpl implements EntityQueryTemplate
             res.getValue().nextLink(), null);
     }
 
-    /**
-     * Gets all entity query templates.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param workspaceName The name of the workspace.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return all entity query templates as paginated response with {@link PagedIterable}.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.COLLECTION)
     public PagedIterable<EntityQueryTemplateInner> list(String resourceGroupName, String workspaceName) {
         final EntityQueryTemplateKind kind = null;
-        return new PagedIterable<>(() -> listSinglePage(resourceGroupName, workspaceName, kind),
-            nextLink -> listNextSinglePage(nextLink));
+        return list(resourceGroupName, workspaceName, kind, Context.NONE);
     }
 
-    /**
-     * Gets all entity query templates.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param workspaceName The name of the workspace.
-     * @param kind The entity template query kind we want to fetch.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return all entity query templates as paginated response with {@link PagedIterable}.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.COLLECTION)
     public PagedIterable<EntityQueryTemplateInner> list(String resourceGroupName, String workspaceName,
         EntityQueryTemplateKind kind, Context context) {
@@ -356,11 +310,7 @@ public final class EntityQueryTemplatesClientImpl implements EntityQueryTemplate
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private PagedResponse<EntityQueryTemplateInner> listNextSinglePage(String nextLink) {
-        final String accept = "application/json";
-        Response<EntityQueryTemplateList> res
-            = service.listNextSync(nextLink, this.client.getEndpoint(), accept, Context.NONE);
-        return new PagedResponseBase<>(res.getRequest(), res.getStatusCode(), res.getHeaders(), res.getValue().value(),
-            res.getValue().nextLink(), null);
+        return listNextSinglePage(nextLink, Context.NONE);
     }
 
     /**

@@ -206,19 +206,7 @@ public final class PrivateEndpointConnectionsClientImpl implements PrivateEndpoi
             .flatMap(res -> Mono.justOrEmpty(res.getValue()));
     }
 
-    /**
-     * Gets the private endpoint connection details for an online experimentation workspace resource.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param workspaceName The name of the OnlineExperimentationWorkspace.
-     * @param privateEndpointConnectionName The name of the PrivateEndpointConnection.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the private endpoint connection details for an online experimentation workspace resource along with
-     * {@link Response}.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Response<PrivateEndpointConnectionInner> getWithResponse(String resourceGroupName, String workspaceName,
         String privateEndpointConnectionName, Context context) {
@@ -227,17 +215,7 @@ public final class PrivateEndpointConnectionsClientImpl implements PrivateEndpoi
             resourceGroupName, workspaceName, privateEndpointConnectionName, accept, context);
     }
 
-    /**
-     * Gets the private endpoint connection details for an online experimentation workspace resource.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param workspaceName The name of the OnlineExperimentationWorkspace.
-     * @param privateEndpointConnectionName The name of the PrivateEndpointConnection.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the private endpoint connection details for an online experimentation workspace resource.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public PrivateEndpointConnectionInner get(String resourceGroupName, String workspaceName,
         String privateEndpointConnectionName) {
@@ -292,21 +270,7 @@ public final class PrivateEndpointConnectionsClientImpl implements PrivateEndpoi
             .flatMap(res -> Mono.justOrEmpty(res.getValue()));
     }
 
-    /**
-     * Updates private endpoint connection status (Approval/Rejected) for an online experimentation workspace resource.
-     * This gets invoked by resource admin.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param workspaceName The name of the OnlineExperimentationWorkspace.
-     * @param privateEndpointConnectionName The name of the PrivateEndpointConnection.
-     * @param resource Resource create parameters.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return private endpoint connection resource for an online experimentation workspace resource along with
-     * {@link Response}.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Response<PrivateEndpointConnectionInner> updateWithResponse(String resourceGroupName, String workspaceName,
         String privateEndpointConnectionName, PrivateEndpointConnectionInner resource, Context context) {
@@ -317,19 +281,7 @@ public final class PrivateEndpointConnectionsClientImpl implements PrivateEndpoi
             contentType, accept, resource, context);
     }
 
-    /**
-     * Updates private endpoint connection status (Approval/Rejected) for an online experimentation workspace resource.
-     * This gets invoked by resource admin.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param workspaceName The name of the OnlineExperimentationWorkspace.
-     * @param privateEndpointConnectionName The name of the PrivateEndpointConnection.
-     * @param resource Resource create parameters.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return private endpoint connection resource for an online experimentation workspace resource.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public PrivateEndpointConnectionInner update(String resourceGroupName, String workspaceName,
         String privateEndpointConnectionName, PrivateEndpointConnectionInner resource) {
@@ -370,9 +322,7 @@ public final class PrivateEndpointConnectionsClientImpl implements PrivateEndpoi
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Response<BinaryData> deleteWithResponse(String resourceGroupName, String workspaceName,
         String privateEndpointConnectionName) {
-        return service.deleteSync(this.client.getEndpoint(), this.client.getApiVersion(),
-            this.client.getSubscriptionId(), resourceGroupName, workspaceName, privateEndpointConnectionName,
-            Context.NONE);
+        return deleteWithResponse(resourceGroupName, workspaceName, privateEndpointConnectionName, Context.NONE);
     }
 
     /**
@@ -414,37 +364,14 @@ public final class PrivateEndpointConnectionsClientImpl implements PrivateEndpoi
             this.client.getContext());
     }
 
-    /**
-     * Deletes private endpoint connection for an online experimentation workspace resource.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param workspaceName The name of the OnlineExperimentationWorkspace.
-     * @param privateEndpointConnectionName The name of the PrivateEndpointConnection.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the {@link SyncPoller} for polling of long-running operation.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public SyncPoller<PollResult<Void>, Void> beginDelete(String resourceGroupName, String workspaceName,
         String privateEndpointConnectionName) {
-        Response<BinaryData> response
-            = deleteWithResponse(resourceGroupName, workspaceName, privateEndpointConnectionName);
-        return this.client.<Void, Void>getLroResult(response, Void.class, Void.class, Context.NONE);
+        return beginDelete(resourceGroupName, workspaceName, privateEndpointConnectionName, Context.NONE);
     }
 
-    /**
-     * Deletes private endpoint connection for an online experimentation workspace resource.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param workspaceName The name of the OnlineExperimentationWorkspace.
-     * @param privateEndpointConnectionName The name of the PrivateEndpointConnection.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the {@link SyncPoller} for polling of long-running operation.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public SyncPoller<PollResult<Void>, Void> beginDelete(String resourceGroupName, String workspaceName,
         String privateEndpointConnectionName, Context context) {
@@ -471,36 +398,18 @@ public final class PrivateEndpointConnectionsClientImpl implements PrivateEndpoi
             .flatMap(this.client::getLroFinalResultOrError);
     }
 
-    /**
-     * Deletes private endpoint connection for an online experimentation workspace resource.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param workspaceName The name of the OnlineExperimentationWorkspace.
-     * @param privateEndpointConnectionName The name of the PrivateEndpointConnection.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public void delete(String resourceGroupName, String workspaceName, String privateEndpointConnectionName) {
-        beginDelete(resourceGroupName, workspaceName, privateEndpointConnectionName).getFinalResult();
+        delete(resourceGroupName, workspaceName, privateEndpointConnectionName, Context.NONE);
     }
 
-    /**
-     * Deletes private endpoint connection for an online experimentation workspace resource.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param workspaceName The name of the OnlineExperimentationWorkspace.
-     * @param privateEndpointConnectionName The name of the PrivateEndpointConnection.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public void delete(String resourceGroupName, String workspaceName, String privateEndpointConnectionName,
         Context context) {
-        beginDelete(resourceGroupName, workspaceName, privateEndpointConnectionName, context).getFinalResult();
+        this.client.getLroFinalResultOrError(
+            beginDelete(resourceGroupName, workspaceName, privateEndpointConnectionName, context));
     }
 
     /**
@@ -557,12 +466,7 @@ public final class PrivateEndpointConnectionsClientImpl implements PrivateEndpoi
     @ServiceMethod(returns = ReturnType.SINGLE)
     private PagedResponse<PrivateEndpointConnectionInner> listSinglePage(String resourceGroupName,
         String workspaceName) {
-        final String accept = "application/json";
-        Response<PrivateEndpointConnectionListResult> res
-            = service.listSync(this.client.getEndpoint(), this.client.getApiVersion(), this.client.getSubscriptionId(),
-                resourceGroupName, workspaceName, accept, Context.NONE);
-        return new PagedResponseBase<>(res.getRequest(), res.getStatusCode(), res.getHeaders(), res.getValue().value(),
-            res.getValue().nextLink(), null);
+        return listSinglePage(resourceGroupName, workspaceName, Context.NONE);
     }
 
     /**
@@ -588,35 +492,13 @@ public final class PrivateEndpointConnectionsClientImpl implements PrivateEndpoi
             res.getValue().nextLink(), null);
     }
 
-    /**
-     * Gets all the private endpoint connections configured on an online experimentation workspace resource.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param workspaceName The name of the OnlineExperimentationWorkspace.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return all the private endpoint connections configured on an online experimentation workspace resource as
-     * paginated response with {@link PagedIterable}.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.COLLECTION)
     public PagedIterable<PrivateEndpointConnectionInner> list(String resourceGroupName, String workspaceName) {
-        return new PagedIterable<>(() -> listSinglePage(resourceGroupName, workspaceName),
-            nextLink -> listNextSinglePage(nextLink));
+        return list(resourceGroupName, workspaceName, Context.NONE);
     }
 
-    /**
-     * Gets all the private endpoint connections configured on an online experimentation workspace resource.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param workspaceName The name of the OnlineExperimentationWorkspace.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return all the private endpoint connections configured on an online experimentation workspace resource as
-     * paginated response with {@link PagedIterable}.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.COLLECTION)
     public PagedIterable<PrivateEndpointConnectionInner> list(String resourceGroupName, String workspaceName,
         Context context) {
@@ -655,11 +537,7 @@ public final class PrivateEndpointConnectionsClientImpl implements PrivateEndpoi
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private PagedResponse<PrivateEndpointConnectionInner> listNextSinglePage(String nextLink) {
-        final String accept = "application/json";
-        Response<PrivateEndpointConnectionListResult> res
-            = service.listNextSync(nextLink, this.client.getEndpoint(), accept, Context.NONE);
-        return new PagedResponseBase<>(res.getRequest(), res.getStatusCode(), res.getHeaders(), res.getValue().value(),
-            res.getValue().nextLink(), null);
+        return listNextSinglePage(nextLink, Context.NONE);
     }
 
     /**

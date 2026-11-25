@@ -46,13 +46,7 @@ public final class PasswordAuthenticationsImpl implements PasswordAuthentication
 
     public PasswordAuthentication createOrReplace(String resourceGroupName, String clusterName,
         PasswordAuthenticationInner resource) {
-        PasswordAuthenticationInner inner
-            = this.serviceClient().createOrReplace(resourceGroupName, clusterName, resource);
-        if (inner != null) {
-            return new PasswordAuthenticationImpl(inner, this.manager());
-        } else {
-            return null;
-        }
+        return this.createOrReplace(resourceGroupName, clusterName, resource, Context.NONE);
     }
 
     public PasswordAuthentication createOrReplace(String resourceGroupName, String clusterName,
@@ -68,12 +62,7 @@ public final class PasswordAuthenticationsImpl implements PasswordAuthentication
 
     public PasswordAuthentication update(String resourceGroupName, String clusterName,
         PasswordAuthenticationForPatchUpdate properties) {
-        PasswordAuthenticationInner inner = this.serviceClient().update(resourceGroupName, clusterName, properties);
-        if (inner != null) {
-            return new PasswordAuthenticationImpl(inner, this.manager());
-        } else {
-            return null;
-        }
+        return this.update(resourceGroupName, clusterName, properties, Context.NONE);
     }
 
     public PasswordAuthentication update(String resourceGroupName, String clusterName,

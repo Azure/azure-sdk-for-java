@@ -196,21 +196,7 @@ public final class QuotasClientImpl implements QuotasClient {
         return getWithResponseAsync(resourceName, scope).flatMap(res -> Mono.justOrEmpty(res.getValue()));
     }
 
-    /**
-     * Get the quota limit of a resource. The response can be used to determine the remaining quota to calculate a new
-     * quota limit that can be submitted with a PUT request.
-     * 
-     * @param resourceName Resource name for a given resource provider. For example:
-     * - SKU name for Microsoft.Compute
-     * - SKU or TotalLowPriorityCores for Microsoft.MachineLearningServices
-     * For Microsoft.Network PublicIPAddresses.
-     * @param scope The fully qualified Azure Resource manager identifier of the resource.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the quota limit of a resource.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public QuotasGetResponse getWithResponse(String resourceName, String scope, Context context) {
         final String accept = "application/json";
@@ -218,20 +204,7 @@ public final class QuotasClientImpl implements QuotasClient {
             context);
     }
 
-    /**
-     * Get the quota limit of a resource. The response can be used to determine the remaining quota to calculate a new
-     * quota limit that can be submitted with a PUT request.
-     * 
-     * @param resourceName Resource name for a given resource provider. For example:
-     * - SKU name for Microsoft.Compute
-     * - SKU or TotalLowPriorityCores for Microsoft.MachineLearningServices
-     * For Microsoft.Network PublicIPAddresses.
-     * @param scope The fully qualified Azure Resource manager identifier of the resource.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the quota limit of a resource.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public CurrentQuotaLimitBaseInner get(String resourceName, String scope) {
         return getWithResponse(resourceName, scope, Context.NONE).getValue();
@@ -291,10 +264,7 @@ public final class QuotasClientImpl implements QuotasClient {
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Response<BinaryData> createOrUpdateWithResponse(String resourceName, String scope,
         CurrentQuotaLimitBaseInner createQuotaRequest) {
-        final String contentType = "application/json";
-        final String accept = "application/json";
-        return service.createOrUpdateSync(this.client.getEndpoint(), this.client.getApiVersion(), scope, resourceName,
-            contentType, accept, createQuotaRequest, Context.NONE);
+        return createOrUpdateWithResponse(resourceName, scope, createQuotaRequest, Context.NONE);
     }
 
     /**
@@ -357,55 +327,14 @@ public final class QuotasClientImpl implements QuotasClient {
             this.client.getContext());
     }
 
-    /**
-     * Create or update the quota limit for the specified resource with the requested value. To update the quota, follow
-     * these steps:
-     * 1. Use the GET operation for quotas and usages to determine how much quota remains for the specific resource and
-     * to calculate the new quota limit. These steps are detailed in [this
-     * example](https://techcommunity.microsoft.com/t5/azure-governance-and-management/using-the-new-quota-rest-api/ba-p/2183670).
-     * 2. Use this PUT operation to update the quota limit. Please check the URI in location header for the detailed
-     * status of the request.
-     * 
-     * @param resourceName Resource name for a given resource provider. For example:
-     * - SKU name for Microsoft.Compute
-     * - SKU or TotalLowPriorityCores for Microsoft.MachineLearningServices
-     * For Microsoft.Network PublicIPAddresses.
-     * @param scope The fully qualified Azure Resource manager identifier of the resource.
-     * @param createQuotaRequest Quota request payload.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the {@link SyncPoller} for polling of quota limit.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public SyncPoller<PollResult<CurrentQuotaLimitBaseInner>, CurrentQuotaLimitBaseInner>
         beginCreateOrUpdate(String resourceName, String scope, CurrentQuotaLimitBaseInner createQuotaRequest) {
-        Response<BinaryData> response = createOrUpdateWithResponse(resourceName, scope, createQuotaRequest);
-        return this.client.<CurrentQuotaLimitBaseInner, CurrentQuotaLimitBaseInner>getLroResult(response,
-            CurrentQuotaLimitBaseInner.class, CurrentQuotaLimitBaseInner.class, Context.NONE);
+        return beginCreateOrUpdate(resourceName, scope, createQuotaRequest, Context.NONE);
     }
 
-    /**
-     * Create or update the quota limit for the specified resource with the requested value. To update the quota, follow
-     * these steps:
-     * 1. Use the GET operation for quotas and usages to determine how much quota remains for the specific resource and
-     * to calculate the new quota limit. These steps are detailed in [this
-     * example](https://techcommunity.microsoft.com/t5/azure-governance-and-management/using-the-new-quota-rest-api/ba-p/2183670).
-     * 2. Use this PUT operation to update the quota limit. Please check the URI in location header for the detailed
-     * status of the request.
-     * 
-     * @param resourceName Resource name for a given resource provider. For example:
-     * - SKU name for Microsoft.Compute
-     * - SKU or TotalLowPriorityCores for Microsoft.MachineLearningServices
-     * For Microsoft.Network PublicIPAddresses.
-     * @param scope The fully qualified Azure Resource manager identifier of the resource.
-     * @param createQuotaRequest Quota request payload.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the {@link SyncPoller} for polling of quota limit.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public SyncPoller<PollResult<CurrentQuotaLimitBaseInner>, CurrentQuotaLimitBaseInner> beginCreateOrUpdate(
         String resourceName, String scope, CurrentQuotaLimitBaseInner createQuotaRequest, Context context) {
@@ -441,57 +370,19 @@ public final class QuotasClientImpl implements QuotasClient {
             .flatMap(this.client::getLroFinalResultOrError);
     }
 
-    /**
-     * Create or update the quota limit for the specified resource with the requested value. To update the quota, follow
-     * these steps:
-     * 1. Use the GET operation for quotas and usages to determine how much quota remains for the specific resource and
-     * to calculate the new quota limit. These steps are detailed in [this
-     * example](https://techcommunity.microsoft.com/t5/azure-governance-and-management/using-the-new-quota-rest-api/ba-p/2183670).
-     * 2. Use this PUT operation to update the quota limit. Please check the URI in location header for the detailed
-     * status of the request.
-     * 
-     * @param resourceName Resource name for a given resource provider. For example:
-     * - SKU name for Microsoft.Compute
-     * - SKU or TotalLowPriorityCores for Microsoft.MachineLearningServices
-     * For Microsoft.Network PublicIPAddresses.
-     * @param scope The fully qualified Azure Resource manager identifier of the resource.
-     * @param createQuotaRequest Quota request payload.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return quota limit.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public CurrentQuotaLimitBaseInner createOrUpdate(String resourceName, String scope,
         CurrentQuotaLimitBaseInner createQuotaRequest) {
-        return beginCreateOrUpdate(resourceName, scope, createQuotaRequest).getFinalResult();
+        return createOrUpdate(resourceName, scope, createQuotaRequest, Context.NONE);
     }
 
-    /**
-     * Create or update the quota limit for the specified resource with the requested value. To update the quota, follow
-     * these steps:
-     * 1. Use the GET operation for quotas and usages to determine how much quota remains for the specific resource and
-     * to calculate the new quota limit. These steps are detailed in [this
-     * example](https://techcommunity.microsoft.com/t5/azure-governance-and-management/using-the-new-quota-rest-api/ba-p/2183670).
-     * 2. Use this PUT operation to update the quota limit. Please check the URI in location header for the detailed
-     * status of the request.
-     * 
-     * @param resourceName Resource name for a given resource provider. For example:
-     * - SKU name for Microsoft.Compute
-     * - SKU or TotalLowPriorityCores for Microsoft.MachineLearningServices
-     * For Microsoft.Network PublicIPAddresses.
-     * @param scope The fully qualified Azure Resource manager identifier of the resource.
-     * @param createQuotaRequest Quota request payload.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return quota limit.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public CurrentQuotaLimitBaseInner createOrUpdate(String resourceName, String scope,
         CurrentQuotaLimitBaseInner createQuotaRequest, Context context) {
-        return beginCreateOrUpdate(resourceName, scope, createQuotaRequest, context).getFinalResult();
+        return this.client
+            .getLroFinalResultOrError(beginCreateOrUpdate(resourceName, scope, createQuotaRequest, context));
     }
 
     /**
@@ -546,10 +437,7 @@ public final class QuotasClientImpl implements QuotasClient {
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Response<BinaryData> updateWithResponse(String resourceName, String scope,
         CurrentQuotaLimitBaseInner createQuotaRequest) {
-        final String contentType = "application/json";
-        final String accept = "application/json";
-        return service.updateSync(this.client.getEndpoint(), this.client.getApiVersion(), scope, resourceName,
-            contentType, accept, createQuotaRequest, Context.NONE);
+        return updateWithResponse(resourceName, scope, createQuotaRequest, Context.NONE);
     }
 
     /**
@@ -609,53 +497,14 @@ public final class QuotasClientImpl implements QuotasClient {
             this.client.getContext());
     }
 
-    /**
-     * Update the quota limit for a specific resource to the specified value:
-     * 1. Use the Usages-GET and Quota-GET operations to determine the remaining quota for the specific resource and to
-     * calculate the new quota limit. These steps are detailed in [this
-     * example](https://techcommunity.microsoft.com/t5/azure-governance-and-management/using-the-new-quota-rest-api/ba-p/2183670).
-     * 2. Use this PUT operation to update the quota limit. Please check the URI in location header for the detailed
-     * status of the request.
-     * 
-     * @param resourceName Resource name for a given resource provider. For example:
-     * - SKU name for Microsoft.Compute
-     * - SKU or TotalLowPriorityCores for Microsoft.MachineLearningServices
-     * For Microsoft.Network PublicIPAddresses.
-     * @param scope The fully qualified Azure Resource manager identifier of the resource.
-     * @param createQuotaRequest Quota requests payload.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the {@link SyncPoller} for polling of quota limit.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public SyncPoller<PollResult<CurrentQuotaLimitBaseInner>, CurrentQuotaLimitBaseInner>
         beginUpdate(String resourceName, String scope, CurrentQuotaLimitBaseInner createQuotaRequest) {
-        Response<BinaryData> response = updateWithResponse(resourceName, scope, createQuotaRequest);
-        return this.client.<CurrentQuotaLimitBaseInner, CurrentQuotaLimitBaseInner>getLroResult(response,
-            CurrentQuotaLimitBaseInner.class, CurrentQuotaLimitBaseInner.class, Context.NONE);
+        return beginUpdate(resourceName, scope, createQuotaRequest, Context.NONE);
     }
 
-    /**
-     * Update the quota limit for a specific resource to the specified value:
-     * 1. Use the Usages-GET and Quota-GET operations to determine the remaining quota for the specific resource and to
-     * calculate the new quota limit. These steps are detailed in [this
-     * example](https://techcommunity.microsoft.com/t5/azure-governance-and-management/using-the-new-quota-rest-api/ba-p/2183670).
-     * 2. Use this PUT operation to update the quota limit. Please check the URI in location header for the detailed
-     * status of the request.
-     * 
-     * @param resourceName Resource name for a given resource provider. For example:
-     * - SKU name for Microsoft.Compute
-     * - SKU or TotalLowPriorityCores for Microsoft.MachineLearningServices
-     * For Microsoft.Network PublicIPAddresses.
-     * @param scope The fully qualified Azure Resource manager identifier of the resource.
-     * @param createQuotaRequest Quota requests payload.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the {@link SyncPoller} for polling of quota limit.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public SyncPoller<PollResult<CurrentQuotaLimitBaseInner>, CurrentQuotaLimitBaseInner>
         beginUpdate(String resourceName, String scope, CurrentQuotaLimitBaseInner createQuotaRequest, Context context) {
@@ -690,55 +539,18 @@ public final class QuotasClientImpl implements QuotasClient {
             .flatMap(this.client::getLroFinalResultOrError);
     }
 
-    /**
-     * Update the quota limit for a specific resource to the specified value:
-     * 1. Use the Usages-GET and Quota-GET operations to determine the remaining quota for the specific resource and to
-     * calculate the new quota limit. These steps are detailed in [this
-     * example](https://techcommunity.microsoft.com/t5/azure-governance-and-management/using-the-new-quota-rest-api/ba-p/2183670).
-     * 2. Use this PUT operation to update the quota limit. Please check the URI in location header for the detailed
-     * status of the request.
-     * 
-     * @param resourceName Resource name for a given resource provider. For example:
-     * - SKU name for Microsoft.Compute
-     * - SKU or TotalLowPriorityCores for Microsoft.MachineLearningServices
-     * For Microsoft.Network PublicIPAddresses.
-     * @param scope The fully qualified Azure Resource manager identifier of the resource.
-     * @param createQuotaRequest Quota requests payload.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return quota limit.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public CurrentQuotaLimitBaseInner update(String resourceName, String scope,
         CurrentQuotaLimitBaseInner createQuotaRequest) {
-        return beginUpdate(resourceName, scope, createQuotaRequest).getFinalResult();
+        return update(resourceName, scope, createQuotaRequest, Context.NONE);
     }
 
-    /**
-     * Update the quota limit for a specific resource to the specified value:
-     * 1. Use the Usages-GET and Quota-GET operations to determine the remaining quota for the specific resource and to
-     * calculate the new quota limit. These steps are detailed in [this
-     * example](https://techcommunity.microsoft.com/t5/azure-governance-and-management/using-the-new-quota-rest-api/ba-p/2183670).
-     * 2. Use this PUT operation to update the quota limit. Please check the URI in location header for the detailed
-     * status of the request.
-     * 
-     * @param resourceName Resource name for a given resource provider. For example:
-     * - SKU name for Microsoft.Compute
-     * - SKU or TotalLowPriorityCores for Microsoft.MachineLearningServices
-     * For Microsoft.Network PublicIPAddresses.
-     * @param scope The fully qualified Azure Resource manager identifier of the resource.
-     * @param createQuotaRequest Quota requests payload.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return quota limit.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public CurrentQuotaLimitBaseInner update(String resourceName, String scope,
         CurrentQuotaLimitBaseInner createQuotaRequest, Context context) {
-        return beginUpdate(resourceName, scope, createQuotaRequest, context).getFinalResult();
+        return this.client.getLroFinalResultOrError(beginUpdate(resourceName, scope, createQuotaRequest, context));
     }
 
     /**
@@ -791,11 +603,7 @@ public final class QuotasClientImpl implements QuotasClient {
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private PagedResponse<CurrentQuotaLimitBaseInner> listSinglePage(String scope) {
-        final String accept = "application/json";
-        Response<QuotaLimits> res
-            = service.listSync(this.client.getEndpoint(), this.client.getApiVersion(), scope, accept, Context.NONE);
-        return new PagedResponseBase<>(res.getRequest(), res.getStatusCode(), res.getHeaders(), res.getValue().value(),
-            res.getValue().nextLink(), null);
+        return listSinglePage(scope, Context.NONE);
     }
 
     /**
@@ -818,34 +626,13 @@ public final class QuotasClientImpl implements QuotasClient {
             res.getValue().nextLink(), null);
     }
 
-    /**
-     * Get a list of current quota limits of all resources for the specified scope. The response from this GET operation
-     * can be leveraged to submit requests to update a quota.
-     * 
-     * @param scope The fully qualified Azure Resource manager identifier of the resource.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return a list of current quota limits of all resources for the specified scope as paginated response with
-     * {@link PagedIterable}.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.COLLECTION)
     public PagedIterable<CurrentQuotaLimitBaseInner> list(String scope) {
-        return new PagedIterable<>(() -> listSinglePage(scope), nextLink -> listNextSinglePage(nextLink));
+        return list(scope, Context.NONE);
     }
 
-    /**
-     * Get a list of current quota limits of all resources for the specified scope. The response from this GET operation
-     * can be leveraged to submit requests to update a quota.
-     * 
-     * @param scope The fully qualified Azure Resource manager identifier of the resource.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return a list of current quota limits of all resources for the specified scope as paginated response with
-     * {@link PagedIterable}.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.COLLECTION)
     public PagedIterable<CurrentQuotaLimitBaseInner> list(String scope, Context context) {
         return new PagedIterable<>(() -> listSinglePage(scope, context),
@@ -882,10 +669,7 @@ public final class QuotasClientImpl implements QuotasClient {
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private PagedResponse<CurrentQuotaLimitBaseInner> listNextSinglePage(String nextLink) {
-        final String accept = "application/json";
-        Response<QuotaLimits> res = service.listNextSync(nextLink, this.client.getEndpoint(), accept, Context.NONE);
-        return new PagedResponseBase<>(res.getRequest(), res.getStatusCode(), res.getHeaders(), res.getValue().value(),
-            res.getValue().nextLink(), null);
+        return listNextSinglePage(nextLink, Context.NONE);
     }
 
     /**

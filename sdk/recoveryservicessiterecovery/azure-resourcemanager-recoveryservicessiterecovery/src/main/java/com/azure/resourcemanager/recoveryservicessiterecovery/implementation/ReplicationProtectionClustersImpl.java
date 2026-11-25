@@ -54,9 +54,8 @@ public final class ReplicationProtectionClustersImpl implements ReplicationProte
 
     public void purge(String resourceGroupName, String resourceName, String fabricName, String protectionContainerName,
         String replicationProtectionClusterName) {
-        this.serviceClient()
-            .purge(resourceGroupName, resourceName, fabricName, protectionContainerName,
-                replicationProtectionClusterName);
+        this.purge(resourceGroupName, resourceName, fabricName, protectionContainerName,
+            replicationProtectionClusterName, Context.NONE);
     }
 
     public void purge(String resourceGroupName, String resourceName, String fabricName, String protectionContainerName,
@@ -69,14 +68,8 @@ public final class ReplicationProtectionClustersImpl implements ReplicationProte
     public ReplicationProtectionCluster applyRecoveryPoint(String resourceGroupName, String resourceName,
         String fabricName, String protectionContainerName, String replicationProtectionClusterName,
         ApplyClusterRecoveryPointInput applyClusterRecoveryPointInput) {
-        ReplicationProtectionClusterInner inner = this.serviceClient()
-            .applyRecoveryPoint(resourceGroupName, resourceName, fabricName, protectionContainerName,
-                replicationProtectionClusterName, applyClusterRecoveryPointInput);
-        if (inner != null) {
-            return new ReplicationProtectionClusterImpl(inner, this.manager());
-        } else {
-            return null;
-        }
+        return this.applyRecoveryPoint(resourceGroupName, resourceName, fabricName, protectionContainerName,
+            replicationProtectionClusterName, applyClusterRecoveryPointInput, Context.NONE);
     }
 
     public ReplicationProtectionCluster applyRecoveryPoint(String resourceGroupName, String resourceName,
@@ -94,14 +87,8 @@ public final class ReplicationProtectionClustersImpl implements ReplicationProte
 
     public ReplicationProtectionCluster failoverCommit(String resourceGroupName, String resourceName, String fabricName,
         String protectionContainerName, String replicationProtectionClusterName) {
-        ReplicationProtectionClusterInner inner = this.serviceClient()
-            .failoverCommit(resourceGroupName, resourceName, fabricName, protectionContainerName,
-                replicationProtectionClusterName);
-        if (inner != null) {
-            return new ReplicationProtectionClusterImpl(inner, this.manager());
-        } else {
-            return null;
-        }
+        return this.failoverCommit(resourceGroupName, resourceName, fabricName, protectionContainerName,
+            replicationProtectionClusterName, Context.NONE);
     }
 
     public ReplicationProtectionCluster failoverCommit(String resourceGroupName, String resourceName, String fabricName,
@@ -118,14 +105,8 @@ public final class ReplicationProtectionClustersImpl implements ReplicationProte
 
     public ReplicationProtectionCluster repairReplication(String resourceGroupName, String resourceName,
         String fabricName, String protectionContainerName, String replicationProtectionClusterName) {
-        ReplicationProtectionClusterInner inner = this.serviceClient()
-            .repairReplication(resourceGroupName, resourceName, fabricName, protectionContainerName,
-                replicationProtectionClusterName);
-        if (inner != null) {
-            return new ReplicationProtectionClusterImpl(inner, this.manager());
-        } else {
-            return null;
-        }
+        return this.repairReplication(resourceGroupName, resourceName, fabricName, protectionContainerName,
+            replicationProtectionClusterName, Context.NONE);
     }
 
     public ReplicationProtectionCluster repairReplication(String resourceGroupName, String resourceName,
@@ -143,14 +124,8 @@ public final class ReplicationProtectionClustersImpl implements ReplicationProte
     public ReplicationProtectionCluster testFailover(String resourceGroupName, String resourceName, String fabricName,
         String protectionContainerName, String replicationProtectionClusterName,
         ClusterTestFailoverInput failoverInput) {
-        ReplicationProtectionClusterInner inner = this.serviceClient()
-            .testFailover(resourceGroupName, resourceName, fabricName, protectionContainerName,
-                replicationProtectionClusterName, failoverInput);
-        if (inner != null) {
-            return new ReplicationProtectionClusterImpl(inner, this.manager());
-        } else {
-            return null;
-        }
+        return this.testFailover(resourceGroupName, resourceName, fabricName, protectionContainerName,
+            replicationProtectionClusterName, failoverInput, Context.NONE);
     }
 
     public ReplicationProtectionCluster testFailover(String resourceGroupName, String resourceName, String fabricName,
@@ -169,14 +144,8 @@ public final class ReplicationProtectionClustersImpl implements ReplicationProte
     public ReplicationProtectionCluster testFailoverCleanup(String resourceGroupName, String resourceName,
         String fabricName, String protectionContainerName, String replicationProtectionClusterName,
         ClusterTestFailoverCleanupInput cleanupInput) {
-        ReplicationProtectionClusterInner inner = this.serviceClient()
-            .testFailoverCleanup(resourceGroupName, resourceName, fabricName, protectionContainerName,
-                replicationProtectionClusterName, cleanupInput);
-        if (inner != null) {
-            return new ReplicationProtectionClusterImpl(inner, this.manager());
-        } else {
-            return null;
-        }
+        return this.testFailoverCleanup(resourceGroupName, resourceName, fabricName, protectionContainerName,
+            replicationProtectionClusterName, cleanupInput, Context.NONE);
     }
 
     public ReplicationProtectionCluster testFailoverCleanup(String resourceGroupName, String resourceName,
@@ -195,14 +164,8 @@ public final class ReplicationProtectionClustersImpl implements ReplicationProte
     public ReplicationProtectionCluster unplannedFailover(String resourceGroupName, String resourceName,
         String fabricName, String protectionContainerName, String replicationProtectionClusterName,
         ClusterUnplannedFailoverInput failoverInput) {
-        ReplicationProtectionClusterInner inner = this.serviceClient()
-            .unplannedFailover(resourceGroupName, resourceName, fabricName, protectionContainerName,
-                replicationProtectionClusterName, failoverInput);
-        if (inner != null) {
-            return new ReplicationProtectionClusterImpl(inner, this.manager());
-        } else {
-            return null;
-        }
+        return this.unplannedFailover(resourceGroupName, resourceName, fabricName, protectionContainerName,
+            replicationProtectionClusterName, failoverInput, Context.NONE);
     }
 
     public ReplicationProtectionCluster unplannedFailover(String resourceGroupName, String resourceName,
@@ -242,11 +205,8 @@ public final class ReplicationProtectionClustersImpl implements ReplicationProte
 
     public PagedIterable<ReplicationProtectionCluster> listByReplicationProtectionContainers(String resourceGroupName,
         String resourceName, String fabricName, String protectionContainerName) {
-        PagedIterable<ReplicationProtectionClusterInner> inner = this.serviceClient()
-            .listByReplicationProtectionContainers(resourceGroupName, resourceName, fabricName,
-                protectionContainerName);
-        return ResourceManagerUtils.mapPage(inner,
-            inner1 -> new ReplicationProtectionClusterImpl(inner1, this.manager()));
+        return this.listByReplicationProtectionContainers(resourceGroupName, resourceName, fabricName,
+            protectionContainerName, Context.NONE);
     }
 
     public PagedIterable<ReplicationProtectionCluster> listByReplicationProtectionContainers(String resourceGroupName,
@@ -274,83 +234,25 @@ public final class ReplicationProtectionClustersImpl implements ReplicationProte
     }
 
     public ReplicationProtectionCluster getById(String id) {
-        String resourceGroupName = ResourceManagerUtils.getValueFromIdByParameterName(id,
-            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.RecoveryServices/vaults/{resourceName}/replicationFabrics/{fabricName}/replicationProtectionContainers/{protectionContainerName}/replicationProtectionClusters/{replicationProtectionClusterName}",
-            "resourceGroupName");
-        if (resourceGroupName == null) {
-            throw LOGGER.logExceptionAsError(new IllegalArgumentException(
-                String.format("The resource ID '%s' is not valid. Missing path segment 'resourceGroups'.", id)));
-        }
-        String resourceName = ResourceManagerUtils.getValueFromIdByParameterName(id,
-            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.RecoveryServices/vaults/{resourceName}/replicationFabrics/{fabricName}/replicationProtectionContainers/{protectionContainerName}/replicationProtectionClusters/{replicationProtectionClusterName}",
-            "resourceName");
-        if (resourceName == null) {
-            throw LOGGER.logExceptionAsError(new IllegalArgumentException(
-                String.format("The resource ID '%s' is not valid. Missing path segment 'vaults'.", id)));
-        }
-        String fabricName = ResourceManagerUtils.getValueFromIdByParameterName(id,
-            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.RecoveryServices/vaults/{resourceName}/replicationFabrics/{fabricName}/replicationProtectionContainers/{protectionContainerName}/replicationProtectionClusters/{replicationProtectionClusterName}",
-            "fabricName");
-        if (fabricName == null) {
-            throw LOGGER.logExceptionAsError(new IllegalArgumentException(
-                String.format("The resource ID '%s' is not valid. Missing path segment 'replicationFabrics'.", id)));
-        }
-        String protectionContainerName = ResourceManagerUtils.getValueFromIdByParameterName(id,
-            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.RecoveryServices/vaults/{resourceName}/replicationFabrics/{fabricName}/replicationProtectionContainers/{protectionContainerName}/replicationProtectionClusters/{replicationProtectionClusterName}",
-            "protectionContainerName");
-        if (protectionContainerName == null) {
-            throw LOGGER.logExceptionAsError(new IllegalArgumentException(String.format(
-                "The resource ID '%s' is not valid. Missing path segment 'replicationProtectionContainers'.", id)));
-        }
-        String replicationProtectionClusterName = ResourceManagerUtils.getValueFromIdByParameterName(id,
-            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.RecoveryServices/vaults/{resourceName}/replicationFabrics/{fabricName}/replicationProtectionContainers/{protectionContainerName}/replicationProtectionClusters/{replicationProtectionClusterName}",
-            "replicationProtectionClusterName");
-        if (replicationProtectionClusterName == null) {
-            throw LOGGER.logExceptionAsError(new IllegalArgumentException(String.format(
-                "The resource ID '%s' is not valid. Missing path segment 'replicationProtectionClusters'.", id)));
-        }
-        return this
-            .getWithResponse(resourceGroupName, resourceName, fabricName, protectionContainerName,
-                replicationProtectionClusterName, Context.NONE)
-            .getValue();
+        return this.getByIdWithResponse(id, Context.NONE).getValue();
     }
 
     public Response<ReplicationProtectionCluster> getByIdWithResponse(String id, Context context) {
-        String resourceGroupName = ResourceManagerUtils.getValueFromIdByParameterName(id,
+        String resourceGroupName = ResourceManagerUtils.getRequiredValueFromIdByParameterName(id,
             "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.RecoveryServices/vaults/{resourceName}/replicationFabrics/{fabricName}/replicationProtectionContainers/{protectionContainerName}/replicationProtectionClusters/{replicationProtectionClusterName}",
-            "resourceGroupName");
-        if (resourceGroupName == null) {
-            throw LOGGER.logExceptionAsError(new IllegalArgumentException(
-                String.format("The resource ID '%s' is not valid. Missing path segment 'resourceGroups'.", id)));
-        }
-        String resourceName = ResourceManagerUtils.getValueFromIdByParameterName(id,
+            "resourceGroupName", "resourceGroups", LOGGER);
+        String resourceName = ResourceManagerUtils.getRequiredValueFromIdByParameterName(id,
             "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.RecoveryServices/vaults/{resourceName}/replicationFabrics/{fabricName}/replicationProtectionContainers/{protectionContainerName}/replicationProtectionClusters/{replicationProtectionClusterName}",
-            "resourceName");
-        if (resourceName == null) {
-            throw LOGGER.logExceptionAsError(new IllegalArgumentException(
-                String.format("The resource ID '%s' is not valid. Missing path segment 'vaults'.", id)));
-        }
-        String fabricName = ResourceManagerUtils.getValueFromIdByParameterName(id,
+            "resourceName", "vaults", LOGGER);
+        String fabricName = ResourceManagerUtils.getRequiredValueFromIdByParameterName(id,
             "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.RecoveryServices/vaults/{resourceName}/replicationFabrics/{fabricName}/replicationProtectionContainers/{protectionContainerName}/replicationProtectionClusters/{replicationProtectionClusterName}",
-            "fabricName");
-        if (fabricName == null) {
-            throw LOGGER.logExceptionAsError(new IllegalArgumentException(
-                String.format("The resource ID '%s' is not valid. Missing path segment 'replicationFabrics'.", id)));
-        }
-        String protectionContainerName = ResourceManagerUtils.getValueFromIdByParameterName(id,
+            "fabricName", "replicationFabrics", LOGGER);
+        String protectionContainerName = ResourceManagerUtils.getRequiredValueFromIdByParameterName(id,
             "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.RecoveryServices/vaults/{resourceName}/replicationFabrics/{fabricName}/replicationProtectionContainers/{protectionContainerName}/replicationProtectionClusters/{replicationProtectionClusterName}",
-            "protectionContainerName");
-        if (protectionContainerName == null) {
-            throw LOGGER.logExceptionAsError(new IllegalArgumentException(String.format(
-                "The resource ID '%s' is not valid. Missing path segment 'replicationProtectionContainers'.", id)));
-        }
-        String replicationProtectionClusterName = ResourceManagerUtils.getValueFromIdByParameterName(id,
+            "protectionContainerName", "replicationProtectionContainers", LOGGER);
+        String replicationProtectionClusterName = ResourceManagerUtils.getRequiredValueFromIdByParameterName(id,
             "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.RecoveryServices/vaults/{resourceName}/replicationFabrics/{fabricName}/replicationProtectionContainers/{protectionContainerName}/replicationProtectionClusters/{replicationProtectionClusterName}",
-            "replicationProtectionClusterName");
-        if (replicationProtectionClusterName == null) {
-            throw LOGGER.logExceptionAsError(new IllegalArgumentException(String.format(
-                "The resource ID '%s' is not valid. Missing path segment 'replicationProtectionClusters'.", id)));
-        }
+            "replicationProtectionClusterName", "replicationProtectionClusters", LOGGER);
         return this.getWithResponse(resourceGroupName, resourceName, fabricName, protectionContainerName,
             replicationProtectionClusterName, context);
     }

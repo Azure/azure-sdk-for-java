@@ -45,8 +45,7 @@ public final class EdgeMachineDisksImpl implements EdgeMachineDisks {
     }
 
     public PagedIterable<EdgeMachineDisk> list(String resourceGroupName, String edgeMachineName) {
-        PagedIterable<EdgeMachineDiskInner> inner = this.serviceClient().list(resourceGroupName, edgeMachineName);
-        return ResourceManagerUtils.mapPage(inner, inner1 -> new EdgeMachineDiskImpl(inner1, this.manager()));
+        return this.list(resourceGroupName, edgeMachineName, Context.NONE);
     }
 
     public PagedIterable<EdgeMachineDisk> list(String resourceGroupName, String edgeMachineName, Context context) {
@@ -56,7 +55,7 @@ public final class EdgeMachineDisksImpl implements EdgeMachineDisks {
     }
 
     public void delete(String resourceGroupName, String edgeMachineName, String diskName) {
-        this.serviceClient().delete(resourceGroupName, edgeMachineName, diskName);
+        this.delete(resourceGroupName, edgeMachineName, diskName, Context.NONE);
     }
 
     public void delete(String resourceGroupName, String edgeMachineName, String diskName, Context context) {
@@ -64,102 +63,36 @@ public final class EdgeMachineDisksImpl implements EdgeMachineDisks {
     }
 
     public EdgeMachineDisk getById(String id) {
-        String resourceGroupName = ResourceManagerUtils.getValueFromIdByParameterName(id,
-            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.AzureStackHCI/edgeMachines/{edgeMachineName}/disks/{diskName}",
-            "resourceGroupName");
-        if (resourceGroupName == null) {
-            throw LOGGER.logExceptionAsError(new IllegalArgumentException(
-                String.format("The resource ID '%s' is not valid. Missing path segment 'resourceGroups'.", id)));
-        }
-        String edgeMachineName = ResourceManagerUtils.getValueFromIdByParameterName(id,
-            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.AzureStackHCI/edgeMachines/{edgeMachineName}/disks/{diskName}",
-            "edgeMachineName");
-        if (edgeMachineName == null) {
-            throw LOGGER.logExceptionAsError(new IllegalArgumentException(
-                String.format("The resource ID '%s' is not valid. Missing path segment 'edgeMachines'.", id)));
-        }
-        String diskName = ResourceManagerUtils.getValueFromIdByParameterName(id,
-            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.AzureStackHCI/edgeMachines/{edgeMachineName}/disks/{diskName}",
-            "diskName");
-        if (diskName == null) {
-            throw LOGGER.logExceptionAsError(new IllegalArgumentException(
-                String.format("The resource ID '%s' is not valid. Missing path segment 'disks'.", id)));
-        }
-        return this.getWithResponse(resourceGroupName, edgeMachineName, diskName, Context.NONE).getValue();
+        return this.getByIdWithResponse(id, Context.NONE).getValue();
     }
 
     public Response<EdgeMachineDisk> getByIdWithResponse(String id, Context context) {
-        String resourceGroupName = ResourceManagerUtils.getValueFromIdByParameterName(id,
+        String resourceGroupName = ResourceManagerUtils.getRequiredValueFromIdByParameterName(id,
             "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.AzureStackHCI/edgeMachines/{edgeMachineName}/disks/{diskName}",
-            "resourceGroupName");
-        if (resourceGroupName == null) {
-            throw LOGGER.logExceptionAsError(new IllegalArgumentException(
-                String.format("The resource ID '%s' is not valid. Missing path segment 'resourceGroups'.", id)));
-        }
-        String edgeMachineName = ResourceManagerUtils.getValueFromIdByParameterName(id,
+            "resourceGroupName", "resourceGroups", LOGGER);
+        String edgeMachineName = ResourceManagerUtils.getRequiredValueFromIdByParameterName(id,
             "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.AzureStackHCI/edgeMachines/{edgeMachineName}/disks/{diskName}",
-            "edgeMachineName");
-        if (edgeMachineName == null) {
-            throw LOGGER.logExceptionAsError(new IllegalArgumentException(
-                String.format("The resource ID '%s' is not valid. Missing path segment 'edgeMachines'.", id)));
-        }
-        String diskName = ResourceManagerUtils.getValueFromIdByParameterName(id,
+            "edgeMachineName", "edgeMachines", LOGGER);
+        String diskName = ResourceManagerUtils.getRequiredValueFromIdByParameterName(id,
             "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.AzureStackHCI/edgeMachines/{edgeMachineName}/disks/{diskName}",
-            "diskName");
-        if (diskName == null) {
-            throw LOGGER.logExceptionAsError(new IllegalArgumentException(
-                String.format("The resource ID '%s' is not valid. Missing path segment 'disks'.", id)));
-        }
+            "diskName", "disks", LOGGER);
         return this.getWithResponse(resourceGroupName, edgeMachineName, diskName, context);
     }
 
     public void deleteById(String id) {
-        String resourceGroupName = ResourceManagerUtils.getValueFromIdByParameterName(id,
-            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.AzureStackHCI/edgeMachines/{edgeMachineName}/disks/{diskName}",
-            "resourceGroupName");
-        if (resourceGroupName == null) {
-            throw LOGGER.logExceptionAsError(new IllegalArgumentException(
-                String.format("The resource ID '%s' is not valid. Missing path segment 'resourceGroups'.", id)));
-        }
-        String edgeMachineName = ResourceManagerUtils.getValueFromIdByParameterName(id,
-            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.AzureStackHCI/edgeMachines/{edgeMachineName}/disks/{diskName}",
-            "edgeMachineName");
-        if (edgeMachineName == null) {
-            throw LOGGER.logExceptionAsError(new IllegalArgumentException(
-                String.format("The resource ID '%s' is not valid. Missing path segment 'edgeMachines'.", id)));
-        }
-        String diskName = ResourceManagerUtils.getValueFromIdByParameterName(id,
-            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.AzureStackHCI/edgeMachines/{edgeMachineName}/disks/{diskName}",
-            "diskName");
-        if (diskName == null) {
-            throw LOGGER.logExceptionAsError(new IllegalArgumentException(
-                String.format("The resource ID '%s' is not valid. Missing path segment 'disks'.", id)));
-        }
-        this.delete(resourceGroupName, edgeMachineName, diskName, Context.NONE);
+        this.deleteByIdWithResponse(id, Context.NONE);
     }
 
     public void deleteByIdWithResponse(String id, Context context) {
-        String resourceGroupName = ResourceManagerUtils.getValueFromIdByParameterName(id,
+        String resourceGroupName = ResourceManagerUtils.getRequiredValueFromIdByParameterName(id,
             "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.AzureStackHCI/edgeMachines/{edgeMachineName}/disks/{diskName}",
-            "resourceGroupName");
-        if (resourceGroupName == null) {
-            throw LOGGER.logExceptionAsError(new IllegalArgumentException(
-                String.format("The resource ID '%s' is not valid. Missing path segment 'resourceGroups'.", id)));
-        }
-        String edgeMachineName = ResourceManagerUtils.getValueFromIdByParameterName(id,
+            "resourceGroupName", "resourceGroups", LOGGER);
+        String edgeMachineName = ResourceManagerUtils.getRequiredValueFromIdByParameterName(id,
             "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.AzureStackHCI/edgeMachines/{edgeMachineName}/disks/{diskName}",
-            "edgeMachineName");
-        if (edgeMachineName == null) {
-            throw LOGGER.logExceptionAsError(new IllegalArgumentException(
-                String.format("The resource ID '%s' is not valid. Missing path segment 'edgeMachines'.", id)));
-        }
-        String diskName = ResourceManagerUtils.getValueFromIdByParameterName(id,
+            "edgeMachineName", "edgeMachines", LOGGER);
+        String diskName = ResourceManagerUtils.getRequiredValueFromIdByParameterName(id,
             "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.AzureStackHCI/edgeMachines/{edgeMachineName}/disks/{diskName}",
-            "diskName");
-        if (diskName == null) {
-            throw LOGGER.logExceptionAsError(new IllegalArgumentException(
-                String.format("The resource ID '%s' is not valid. Missing path segment 'disks'.", id)));
-        }
+            "diskName", "disks", LOGGER);
         this.delete(resourceGroupName, edgeMachineName, diskName, context);
     }
 

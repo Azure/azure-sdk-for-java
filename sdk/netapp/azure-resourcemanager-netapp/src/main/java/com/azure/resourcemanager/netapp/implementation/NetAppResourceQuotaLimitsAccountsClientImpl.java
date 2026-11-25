@@ -172,18 +172,7 @@ public final class NetAppResourceQuotaLimitsAccountsClientImpl implements NetApp
             .flatMap(res -> Mono.justOrEmpty(res.getValue()));
     }
 
-    /**
-     * Get the default, current and usages account quota limit.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param accountName The name of the NetApp account.
-     * @param quotaLimitName The name of the Quota Limit.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the default, current and usages account quota limit along with {@link Response}.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Response<SubscriptionQuotaItemInner> getWithResponse(String resourceGroupName, String accountName,
         String quotaLimitName, Context context) {
@@ -214,17 +203,7 @@ public final class NetAppResourceQuotaLimitsAccountsClientImpl implements NetApp
             resourceGroupName, accountName, quotaLimitName, accept, context);
     }
 
-    /**
-     * Get the default, current and usages account quota limit.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param accountName The name of the NetApp account.
-     * @param quotaLimitName The name of the Quota Limit.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the default, current and usages account quota limit.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public SubscriptionQuotaItemInner get(String resourceGroupName, String accountName, String quotaLimitName) {
         return getWithResponse(resourceGroupName, accountName, quotaLimitName, Context.NONE).getValue();
@@ -297,29 +276,7 @@ public final class NetAppResourceQuotaLimitsAccountsClientImpl implements NetApp
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private PagedResponse<SubscriptionQuotaItemInner> listSinglePage(String resourceGroupName, String accountName) {
-        if (this.client.getEndpoint() == null) {
-            throw LOGGER.atError()
-                .log(new IllegalArgumentException(
-                    "Parameter this.client.getEndpoint() is required and cannot be null."));
-        }
-        if (this.client.getSubscriptionId() == null) {
-            throw LOGGER.atError()
-                .log(new IllegalArgumentException(
-                    "Parameter this.client.getSubscriptionId() is required and cannot be null."));
-        }
-        if (resourceGroupName == null) {
-            throw LOGGER.atError()
-                .log(new IllegalArgumentException("Parameter resourceGroupName is required and cannot be null."));
-        }
-        if (accountName == null) {
-            throw LOGGER.atError()
-                .log(new IllegalArgumentException("Parameter accountName is required and cannot be null."));
-        }
-        final String accept = "application/json";
-        Response<QuotaItemList> res = service.listSync(this.client.getEndpoint(), this.client.getApiVersion(),
-            this.client.getSubscriptionId(), resourceGroupName, accountName, accept, Context.NONE);
-        return new PagedResponseBase<>(res.getRequest(), res.getStatusCode(), res.getHeaders(), res.getValue().value(),
-            res.getValue().nextLink(), null);
+        return listSinglePage(resourceGroupName, accountName, Context.NONE);
     }
 
     /**
@@ -361,35 +318,13 @@ public final class NetAppResourceQuotaLimitsAccountsClientImpl implements NetApp
             res.getValue().nextLink(), null);
     }
 
-    /**
-     * Gets a list of quota limits for all quotas that are under account. Currently PoolsPerAccount is the only one.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param accountName The name of the NetApp account.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return a list of quota limits for all quotas that are under account as paginated response with
-     * {@link PagedIterable}.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.COLLECTION)
     public PagedIterable<SubscriptionQuotaItemInner> list(String resourceGroupName, String accountName) {
-        return new PagedIterable<>(() -> listSinglePage(resourceGroupName, accountName),
-            nextLink -> listNextSinglePage(nextLink));
+        return list(resourceGroupName, accountName, Context.NONE);
     }
 
-    /**
-     * Gets a list of quota limits for all quotas that are under account. Currently PoolsPerAccount is the only one.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param accountName The name of the NetApp account.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return a list of quota limits for all quotas that are under account as paginated response with
-     * {@link PagedIterable}.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.COLLECTION)
     public PagedIterable<SubscriptionQuotaItemInner> list(String resourceGroupName, String accountName,
         Context context) {
@@ -434,19 +369,7 @@ public final class NetAppResourceQuotaLimitsAccountsClientImpl implements NetApp
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private PagedResponse<SubscriptionQuotaItemInner> listNextSinglePage(String nextLink) {
-        if (nextLink == null) {
-            throw LOGGER.atError()
-                .log(new IllegalArgumentException("Parameter nextLink is required and cannot be null."));
-        }
-        if (this.client.getEndpoint() == null) {
-            throw LOGGER.atError()
-                .log(new IllegalArgumentException(
-                    "Parameter this.client.getEndpoint() is required and cannot be null."));
-        }
-        final String accept = "application/json";
-        Response<QuotaItemList> res = service.listNextSync(nextLink, this.client.getEndpoint(), accept, Context.NONE);
-        return new PagedResponseBase<>(res.getRequest(), res.getStatusCode(), res.getHeaders(), res.getValue().value(),
-            res.getValue().nextLink(), null);
+        return listNextSinglePage(nextLink, Context.NONE);
     }
 
     /**

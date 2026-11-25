@@ -84,7 +84,7 @@ public final class SchedulesImpl implements Schedules {
     }
 
     public void delete(String resourceGroupName, String labName, String name) {
-        this.serviceClient().delete(resourceGroupName, labName, name);
+        this.deleteWithResponse(resourceGroupName, labName, name, Context.NONE);
     }
 
     public PagedIterable<Schedule> list(String resourceGroupName, String labName) {
@@ -100,7 +100,7 @@ public final class SchedulesImpl implements Schedules {
     }
 
     public void execute(String resourceGroupName, String labName, String name) {
-        this.serviceClient().execute(resourceGroupName, labName, name);
+        this.execute(resourceGroupName, labName, name, Context.NONE);
     }
 
     public void execute(String resourceGroupName, String labName, String name, Context context) {
@@ -108,8 +108,7 @@ public final class SchedulesImpl implements Schedules {
     }
 
     public PagedIterable<Schedule> listApplicable(String resourceGroupName, String labName, String name) {
-        PagedIterable<ScheduleInner> inner = this.serviceClient().listApplicable(resourceGroupName, labName, name);
-        return ResourceManagerUtils.mapPage(inner, inner1 -> new ScheduleImpl(inner1, this.manager()));
+        return this.listApplicable(resourceGroupName, labName, name, Context.NONE);
     }
 
     public PagedIterable<Schedule> listApplicable(String resourceGroupName, String labName, String name,

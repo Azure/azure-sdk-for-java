@@ -151,18 +151,7 @@ public final class NotebookWorkspacesClientImpl implements NotebookWorkspacesCli
             @HeaderParam("Accept") String accept, Context context);
     }
 
-    /**
-     * Gets the notebook workspace for a Cosmos DB account.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param accountName Cosmos DB database account name.
-     * @param notebookWorkspaceName The name of the notebook workspace resource.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the notebook workspace for a Cosmos DB account along with {@link Response} on successful completion of
-     * {@link Mono}.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Response<NotebookWorkspaceInner>> getWithResponseAsync(String resourceGroupName, String accountName,
         NotebookWorkspaceName notebookWorkspaceName) {
@@ -232,17 +221,7 @@ public final class NotebookWorkspacesClientImpl implements NotebookWorkspacesCli
             resourceGroupName, accountName, notebookWorkspaceName, accept, context);
     }
 
-    /**
-     * Gets the notebook workspace for a Cosmos DB account.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param accountName Cosmos DB database account name.
-     * @param notebookWorkspaceName The name of the notebook workspace resource.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the notebook workspace for a Cosmos DB account on successful completion of {@link Mono}.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<NotebookWorkspaceInner> getAsync(String resourceGroupName, String accountName,
         NotebookWorkspaceName notebookWorkspaceName) {
@@ -250,53 +229,21 @@ public final class NotebookWorkspacesClientImpl implements NotebookWorkspacesCli
             .flatMap(res -> Mono.justOrEmpty(res.getValue()));
     }
 
-    /**
-     * Gets the notebook workspace for a Cosmos DB account.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param accountName Cosmos DB database account name.
-     * @param notebookWorkspaceName The name of the notebook workspace resource.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the notebook workspace for a Cosmos DB account along with {@link Response}.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Response<NotebookWorkspaceInner> getWithResponse(String resourceGroupName, String accountName,
         NotebookWorkspaceName notebookWorkspaceName, Context context) {
         return getWithResponseAsync(resourceGroupName, accountName, notebookWorkspaceName, context).block();
     }
 
-    /**
-     * Gets the notebook workspace for a Cosmos DB account.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param accountName Cosmos DB database account name.
-     * @param notebookWorkspaceName The name of the notebook workspace resource.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the notebook workspace for a Cosmos DB account.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public NotebookWorkspaceInner get(String resourceGroupName, String accountName,
         NotebookWorkspaceName notebookWorkspaceName) {
         return getWithResponse(resourceGroupName, accountName, notebookWorkspaceName, Context.NONE).getValue();
     }
 
-    /**
-     * Creates the notebook workspace for a Cosmos DB account.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param accountName Cosmos DB database account name.
-     * @param notebookWorkspaceName The name of the notebook workspace resource.
-     * @param notebookCreateUpdateParameters The notebook workspace to create for the current database account.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return a notebook workspace resource along with {@link Response} on successful completion of {@link Mono}.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Response<Flux<ByteBuffer>>> createOrUpdateWithResponseAsync(String resourceGroupName,
         String accountName, NotebookWorkspaceName notebookWorkspaceName,
@@ -385,18 +332,7 @@ public final class NotebookWorkspacesClientImpl implements NotebookWorkspacesCli
             notebookCreateUpdateParameters, context);
     }
 
-    /**
-     * Creates the notebook workspace for a Cosmos DB account.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param accountName Cosmos DB database account name.
-     * @param notebookWorkspaceName The name of the notebook workspace resource.
-     * @param notebookCreateUpdateParameters The notebook workspace to create for the current database account.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the {@link PollerFlux} for polling of a notebook workspace resource.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public PollerFlux<PollResult<NotebookWorkspaceInner>, NotebookWorkspaceInner> beginCreateOrUpdateAsync(
         String resourceGroupName, String accountName, NotebookWorkspaceName notebookWorkspaceName,
@@ -432,18 +368,7 @@ public final class NotebookWorkspacesClientImpl implements NotebookWorkspacesCli
             this.client.getHttpPipeline(), NotebookWorkspaceInner.class, NotebookWorkspaceInner.class, context);
     }
 
-    /**
-     * Creates the notebook workspace for a Cosmos DB account.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param accountName Cosmos DB database account name.
-     * @param notebookWorkspaceName The name of the notebook workspace resource.
-     * @param notebookCreateUpdateParameters The notebook workspace to create for the current database account.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the {@link SyncPoller} for polling of a notebook workspace resource.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public SyncPoller<PollResult<NotebookWorkspaceInner>, NotebookWorkspaceInner> beginCreateOrUpdate(
         String resourceGroupName, String accountName, NotebookWorkspaceName notebookWorkspaceName,
@@ -454,19 +379,7 @@ public final class NotebookWorkspacesClientImpl implements NotebookWorkspacesCli
             .getSyncPoller();
     }
 
-    /**
-     * Creates the notebook workspace for a Cosmos DB account.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param accountName Cosmos DB database account name.
-     * @param notebookWorkspaceName The name of the notebook workspace resource.
-     * @param notebookCreateUpdateParameters The notebook workspace to create for the current database account.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the {@link SyncPoller} for polling of a notebook workspace resource.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public SyncPoller<PollResult<NotebookWorkspaceInner>, NotebookWorkspaceInner> beginCreateOrUpdate(
         String resourceGroupName, String accountName, NotebookWorkspaceName notebookWorkspaceName,
@@ -477,18 +390,7 @@ public final class NotebookWorkspacesClientImpl implements NotebookWorkspacesCli
             .getSyncPoller();
     }
 
-    /**
-     * Creates the notebook workspace for a Cosmos DB account.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param accountName Cosmos DB database account name.
-     * @param notebookWorkspaceName The name of the notebook workspace resource.
-     * @param notebookCreateUpdateParameters The notebook workspace to create for the current database account.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return a notebook workspace resource on successful completion of {@link Mono}.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<NotebookWorkspaceInner> createOrUpdateAsync(String resourceGroupName, String accountName,
         NotebookWorkspaceName notebookWorkspaceName,
@@ -518,18 +420,7 @@ public final class NotebookWorkspacesClientImpl implements NotebookWorkspacesCli
             notebookCreateUpdateParameters, context).last().flatMap(this.client::getLroFinalResultOrError);
     }
 
-    /**
-     * Creates the notebook workspace for a Cosmos DB account.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param accountName Cosmos DB database account name.
-     * @param notebookWorkspaceName The name of the notebook workspace resource.
-     * @param notebookCreateUpdateParameters The notebook workspace to create for the current database account.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return a notebook workspace resource.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public NotebookWorkspaceInner createOrUpdate(String resourceGroupName, String accountName,
         NotebookWorkspaceName notebookWorkspaceName,
@@ -538,19 +429,7 @@ public final class NotebookWorkspacesClientImpl implements NotebookWorkspacesCli
             notebookCreateUpdateParameters).block();
     }
 
-    /**
-     * Creates the notebook workspace for a Cosmos DB account.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param accountName Cosmos DB database account name.
-     * @param notebookWorkspaceName The name of the notebook workspace resource.
-     * @param notebookCreateUpdateParameters The notebook workspace to create for the current database account.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return a notebook workspace resource.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public NotebookWorkspaceInner createOrUpdate(String resourceGroupName, String accountName,
         NotebookWorkspaceName notebookWorkspaceName,
@@ -559,17 +438,7 @@ public final class NotebookWorkspacesClientImpl implements NotebookWorkspacesCli
             notebookCreateUpdateParameters, context).block();
     }
 
-    /**
-     * Deletes the notebook workspace for a Cosmos DB account.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param accountName Cosmos DB database account name.
-     * @param notebookWorkspaceName The name of the notebook workspace resource.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the {@link Response} on successful completion of {@link Mono}.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Response<Flux<ByteBuffer>>> deleteWithResponseAsync(String resourceGroupName, String accountName,
         NotebookWorkspaceName notebookWorkspaceName) {
@@ -637,17 +506,7 @@ public final class NotebookWorkspacesClientImpl implements NotebookWorkspacesCli
             resourceGroupName, accountName, notebookWorkspaceName, context);
     }
 
-    /**
-     * Deletes the notebook workspace for a Cosmos DB account.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param accountName Cosmos DB database account name.
-     * @param notebookWorkspaceName The name of the notebook workspace resource.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the {@link PollerFlux} for polling of long-running operation.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public PollerFlux<PollResult<Void>, Void> beginDeleteAsync(String resourceGroupName, String accountName,
         NotebookWorkspaceName notebookWorkspaceName) {
@@ -679,52 +538,21 @@ public final class NotebookWorkspacesClientImpl implements NotebookWorkspacesCli
             context);
     }
 
-    /**
-     * Deletes the notebook workspace for a Cosmos DB account.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param accountName Cosmos DB database account name.
-     * @param notebookWorkspaceName The name of the notebook workspace resource.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the {@link SyncPoller} for polling of long-running operation.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public SyncPoller<PollResult<Void>, Void> beginDelete(String resourceGroupName, String accountName,
         NotebookWorkspaceName notebookWorkspaceName) {
         return this.beginDeleteAsync(resourceGroupName, accountName, notebookWorkspaceName).getSyncPoller();
     }
 
-    /**
-     * Deletes the notebook workspace for a Cosmos DB account.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param accountName Cosmos DB database account name.
-     * @param notebookWorkspaceName The name of the notebook workspace resource.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the {@link SyncPoller} for polling of long-running operation.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public SyncPoller<PollResult<Void>, Void> beginDelete(String resourceGroupName, String accountName,
         NotebookWorkspaceName notebookWorkspaceName, Context context) {
         return this.beginDeleteAsync(resourceGroupName, accountName, notebookWorkspaceName, context).getSyncPoller();
     }
 
-    /**
-     * Deletes the notebook workspace for a Cosmos DB account.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param accountName Cosmos DB database account name.
-     * @param notebookWorkspaceName The name of the notebook workspace resource.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return A {@link Mono} that completes when a successful response is received.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Void> deleteAsync(String resourceGroupName, String accountName,
         NotebookWorkspaceName notebookWorkspaceName) {
@@ -751,32 +579,13 @@ public final class NotebookWorkspacesClientImpl implements NotebookWorkspacesCli
             .flatMap(this.client::getLroFinalResultOrError);
     }
 
-    /**
-     * Deletes the notebook workspace for a Cosmos DB account.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param accountName Cosmos DB database account name.
-     * @param notebookWorkspaceName The name of the notebook workspace resource.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public void delete(String resourceGroupName, String accountName, NotebookWorkspaceName notebookWorkspaceName) {
         deleteAsync(resourceGroupName, accountName, notebookWorkspaceName).block();
     }
 
-    /**
-     * Deletes the notebook workspace for a Cosmos DB account.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param accountName Cosmos DB database account name.
-     * @param notebookWorkspaceName The name of the notebook workspace resource.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public void delete(String resourceGroupName, String accountName, NotebookWorkspaceName notebookWorkspaceName,
         Context context) {
@@ -861,17 +670,7 @@ public final class NotebookWorkspacesClientImpl implements NotebookWorkspacesCli
                 res.getValue().value(), res.getValue().nextLink(), null));
     }
 
-    /**
-     * Gets the notebook workspace resources of an existing Cosmos DB account.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param accountName Cosmos DB database account name.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the notebook workspace resources of an existing Cosmos DB account as paginated response with
-     * {@link PagedFlux}.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.COLLECTION)
     public PagedFlux<NotebookWorkspaceInner> listByDatabaseAccountAsync(String resourceGroupName, String accountName) {
         return new PagedFlux<>(() -> listByDatabaseAccountSinglePageAsync(resourceGroupName, accountName),
@@ -897,52 +696,20 @@ public final class NotebookWorkspacesClientImpl implements NotebookWorkspacesCli
             nextLink -> listByDatabaseAccountNextSinglePageAsync(nextLink, context));
     }
 
-    /**
-     * Gets the notebook workspace resources of an existing Cosmos DB account.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param accountName Cosmos DB database account name.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the notebook workspace resources of an existing Cosmos DB account as paginated response with
-     * {@link PagedIterable}.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.COLLECTION)
     public PagedIterable<NotebookWorkspaceInner> listByDatabaseAccount(String resourceGroupName, String accountName) {
         return new PagedIterable<>(listByDatabaseAccountAsync(resourceGroupName, accountName));
     }
 
-    /**
-     * Gets the notebook workspace resources of an existing Cosmos DB account.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param accountName Cosmos DB database account name.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the notebook workspace resources of an existing Cosmos DB account as paginated response with
-     * {@link PagedIterable}.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.COLLECTION)
     public PagedIterable<NotebookWorkspaceInner> listByDatabaseAccount(String resourceGroupName, String accountName,
         Context context) {
         return new PagedIterable<>(listByDatabaseAccountAsync(resourceGroupName, accountName, context));
     }
 
-    /**
-     * Retrieves the connection info for the notebook workspace.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param accountName Cosmos DB database account name.
-     * @param notebookWorkspaceName The name of the notebook workspace resource.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the connection info for the given notebook workspace along with {@link Response} on successful completion
-     * of {@link Mono}.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Response<NotebookWorkspaceConnectionInfoResultInner>> listConnectionInfoWithResponseAsync(
         String resourceGroupName, String accountName, NotebookWorkspaceName notebookWorkspaceName) {
@@ -1014,17 +781,7 @@ public final class NotebookWorkspacesClientImpl implements NotebookWorkspacesCli
             this.client.getSubscriptionId(), resourceGroupName, accountName, notebookWorkspaceName, accept, context);
     }
 
-    /**
-     * Retrieves the connection info for the notebook workspace.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param accountName Cosmos DB database account name.
-     * @param notebookWorkspaceName The name of the notebook workspace resource.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the connection info for the given notebook workspace on successful completion of {@link Mono}.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<NotebookWorkspaceConnectionInfoResultInner> listConnectionInfoAsync(String resourceGroupName,
         String accountName, NotebookWorkspaceName notebookWorkspaceName) {
@@ -1032,18 +789,7 @@ public final class NotebookWorkspacesClientImpl implements NotebookWorkspacesCli
             .flatMap(res -> Mono.justOrEmpty(res.getValue()));
     }
 
-    /**
-     * Retrieves the connection info for the notebook workspace.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param accountName Cosmos DB database account name.
-     * @param notebookWorkspaceName The name of the notebook workspace resource.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the connection info for the given notebook workspace along with {@link Response}.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Response<NotebookWorkspaceConnectionInfoResultInner> listConnectionInfoWithResponse(String resourceGroupName,
         String accountName, NotebookWorkspaceName notebookWorkspaceName, Context context) {
@@ -1051,17 +797,7 @@ public final class NotebookWorkspacesClientImpl implements NotebookWorkspacesCli
             .block();
     }
 
-    /**
-     * Retrieves the connection info for the notebook workspace.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param accountName Cosmos DB database account name.
-     * @param notebookWorkspaceName The name of the notebook workspace resource.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the connection info for the given notebook workspace.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public NotebookWorkspaceConnectionInfoResultInner listConnectionInfo(String resourceGroupName, String accountName,
         NotebookWorkspaceName notebookWorkspaceName) {
@@ -1069,17 +805,7 @@ public final class NotebookWorkspacesClientImpl implements NotebookWorkspacesCli
             .getValue();
     }
 
-    /**
-     * Regenerates the auth token for the notebook workspace.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param accountName Cosmos DB database account name.
-     * @param notebookWorkspaceName The name of the notebook workspace resource.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the {@link Response} on successful completion of {@link Mono}.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Response<Flux<ByteBuffer>>> regenerateAuthTokenWithResponseAsync(String resourceGroupName,
         String accountName, NotebookWorkspaceName notebookWorkspaceName) {
@@ -1147,17 +873,7 @@ public final class NotebookWorkspacesClientImpl implements NotebookWorkspacesCli
             this.client.getSubscriptionId(), resourceGroupName, accountName, notebookWorkspaceName, context);
     }
 
-    /**
-     * Regenerates the auth token for the notebook workspace.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param accountName Cosmos DB database account name.
-     * @param notebookWorkspaceName The name of the notebook workspace resource.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the {@link PollerFlux} for polling of long-running operation.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public PollerFlux<PollResult<Void>, Void> beginRegenerateAuthTokenAsync(String resourceGroupName,
         String accountName, NotebookWorkspaceName notebookWorkspaceName) {
@@ -1189,17 +905,7 @@ public final class NotebookWorkspacesClientImpl implements NotebookWorkspacesCli
             context);
     }
 
-    /**
-     * Regenerates the auth token for the notebook workspace.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param accountName Cosmos DB database account name.
-     * @param notebookWorkspaceName The name of the notebook workspace resource.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the {@link SyncPoller} for polling of long-running operation.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public SyncPoller<PollResult<Void>, Void> beginRegenerateAuthToken(String resourceGroupName, String accountName,
         NotebookWorkspaceName notebookWorkspaceName) {
@@ -1207,18 +913,7 @@ public final class NotebookWorkspacesClientImpl implements NotebookWorkspacesCli
             .getSyncPoller();
     }
 
-    /**
-     * Regenerates the auth token for the notebook workspace.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param accountName Cosmos DB database account name.
-     * @param notebookWorkspaceName The name of the notebook workspace resource.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the {@link SyncPoller} for polling of long-running operation.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public SyncPoller<PollResult<Void>, Void> beginRegenerateAuthToken(String resourceGroupName, String accountName,
         NotebookWorkspaceName notebookWorkspaceName, Context context) {
@@ -1226,17 +921,7 @@ public final class NotebookWorkspacesClientImpl implements NotebookWorkspacesCli
             .getSyncPoller();
     }
 
-    /**
-     * Regenerates the auth token for the notebook workspace.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param accountName Cosmos DB database account name.
-     * @param notebookWorkspaceName The name of the notebook workspace resource.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return A {@link Mono} that completes when a successful response is received.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Void> regenerateAuthTokenAsync(String resourceGroupName, String accountName,
         NotebookWorkspaceName notebookWorkspaceName) {
@@ -1263,50 +948,21 @@ public final class NotebookWorkspacesClientImpl implements NotebookWorkspacesCli
             .flatMap(this.client::getLroFinalResultOrError);
     }
 
-    /**
-     * Regenerates the auth token for the notebook workspace.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param accountName Cosmos DB database account name.
-     * @param notebookWorkspaceName The name of the notebook workspace resource.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public void regenerateAuthToken(String resourceGroupName, String accountName,
         NotebookWorkspaceName notebookWorkspaceName) {
         regenerateAuthTokenAsync(resourceGroupName, accountName, notebookWorkspaceName).block();
     }
 
-    /**
-     * Regenerates the auth token for the notebook workspace.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param accountName Cosmos DB database account name.
-     * @param notebookWorkspaceName The name of the notebook workspace resource.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public void regenerateAuthToken(String resourceGroupName, String accountName,
         NotebookWorkspaceName notebookWorkspaceName, Context context) {
         regenerateAuthTokenAsync(resourceGroupName, accountName, notebookWorkspaceName, context).block();
     }
 
-    /**
-     * Starts the notebook workspace.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param accountName Cosmos DB database account name.
-     * @param notebookWorkspaceName The name of the notebook workspace resource.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the {@link Response} on successful completion of {@link Mono}.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Response<Flux<ByteBuffer>>> startWithResponseAsync(String resourceGroupName, String accountName,
         NotebookWorkspaceName notebookWorkspaceName) {
@@ -1374,17 +1030,7 @@ public final class NotebookWorkspacesClientImpl implements NotebookWorkspacesCli
             resourceGroupName, accountName, notebookWorkspaceName, context);
     }
 
-    /**
-     * Starts the notebook workspace.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param accountName Cosmos DB database account name.
-     * @param notebookWorkspaceName The name of the notebook workspace resource.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the {@link PollerFlux} for polling of long-running operation.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public PollerFlux<PollResult<Void>, Void> beginStartAsync(String resourceGroupName, String accountName,
         NotebookWorkspaceName notebookWorkspaceName) {
@@ -1416,52 +1062,21 @@ public final class NotebookWorkspacesClientImpl implements NotebookWorkspacesCli
             context);
     }
 
-    /**
-     * Starts the notebook workspace.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param accountName Cosmos DB database account name.
-     * @param notebookWorkspaceName The name of the notebook workspace resource.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the {@link SyncPoller} for polling of long-running operation.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public SyncPoller<PollResult<Void>, Void> beginStart(String resourceGroupName, String accountName,
         NotebookWorkspaceName notebookWorkspaceName) {
         return this.beginStartAsync(resourceGroupName, accountName, notebookWorkspaceName).getSyncPoller();
     }
 
-    /**
-     * Starts the notebook workspace.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param accountName Cosmos DB database account name.
-     * @param notebookWorkspaceName The name of the notebook workspace resource.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the {@link SyncPoller} for polling of long-running operation.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public SyncPoller<PollResult<Void>, Void> beginStart(String resourceGroupName, String accountName,
         NotebookWorkspaceName notebookWorkspaceName, Context context) {
         return this.beginStartAsync(resourceGroupName, accountName, notebookWorkspaceName, context).getSyncPoller();
     }
 
-    /**
-     * Starts the notebook workspace.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param accountName Cosmos DB database account name.
-     * @param notebookWorkspaceName The name of the notebook workspace resource.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return A {@link Mono} that completes when a successful response is received.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Void> startAsync(String resourceGroupName, String accountName,
         NotebookWorkspaceName notebookWorkspaceName) {
@@ -1488,32 +1103,13 @@ public final class NotebookWorkspacesClientImpl implements NotebookWorkspacesCli
             .flatMap(this.client::getLroFinalResultOrError);
     }
 
-    /**
-     * Starts the notebook workspace.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param accountName Cosmos DB database account name.
-     * @param notebookWorkspaceName The name of the notebook workspace resource.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public void start(String resourceGroupName, String accountName, NotebookWorkspaceName notebookWorkspaceName) {
         startAsync(resourceGroupName, accountName, notebookWorkspaceName).block();
     }
 
-    /**
-     * Starts the notebook workspace.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param accountName Cosmos DB database account name.
-     * @param notebookWorkspaceName The name of the notebook workspace resource.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public void start(String resourceGroupName, String accountName, NotebookWorkspaceName notebookWorkspaceName,
         Context context) {

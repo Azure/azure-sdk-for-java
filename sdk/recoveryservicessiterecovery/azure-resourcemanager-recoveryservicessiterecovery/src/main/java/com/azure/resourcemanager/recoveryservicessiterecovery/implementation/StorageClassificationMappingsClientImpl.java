@@ -298,24 +298,7 @@ public final class StorageClassificationMappingsClientImpl implements StorageCla
             storageClassificationMappingName).flatMap(res -> Mono.justOrEmpty(res.getValue()));
     }
 
-    /**
-     * Gets the details of a storage classification mapping.
-     * 
-     * Gets the details of the specified storage classification mapping.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param resourceName The name of the Vault.
-     * @param fabricName Fabric name.
-     * @param storageClassificationName Storage classification name.
-     * @param storageClassificationMappingName Storage classification mapping name.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the details of a storage classification mapping.
-     * 
-     * Gets the details of the specified storage classification mapping along with {@link Response}.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Response<StorageClassificationMappingInner> getWithResponse(String resourceGroupName, String resourceName,
         String fabricName, String storageClassificationName, String storageClassificationMappingName, Context context) {
@@ -357,23 +340,7 @@ public final class StorageClassificationMappingsClientImpl implements StorageCla
             accept, context);
     }
 
-    /**
-     * Gets the details of a storage classification mapping.
-     * 
-     * Gets the details of the specified storage classification mapping.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param resourceName The name of the Vault.
-     * @param fabricName Fabric name.
-     * @param storageClassificationName Storage classification name.
-     * @param storageClassificationMappingName Storage classification mapping name.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the details of a storage classification mapping.
-     * 
-     * Gets the details of the specified storage classification mapping.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public StorageClassificationMappingInner get(String resourceGroupName, String resourceName, String fabricName,
         String storageClassificationName, String storageClassificationMappingName) {
@@ -461,49 +428,8 @@ public final class StorageClassificationMappingsClientImpl implements StorageCla
     private Response<BinaryData> createWithResponse(String resourceGroupName, String resourceName, String fabricName,
         String storageClassificationName, String storageClassificationMappingName,
         StorageClassificationMappingInput pairingInput) {
-        if (this.client.getEndpoint() == null) {
-            throw LOGGER.atError()
-                .log(new IllegalArgumentException(
-                    "Parameter this.client.getEndpoint() is required and cannot be null."));
-        }
-        if (this.client.getSubscriptionId() == null) {
-            throw LOGGER.atError()
-                .log(new IllegalArgumentException(
-                    "Parameter this.client.getSubscriptionId() is required and cannot be null."));
-        }
-        if (resourceGroupName == null) {
-            throw LOGGER.atError()
-                .log(new IllegalArgumentException("Parameter resourceGroupName is required and cannot be null."));
-        }
-        if (resourceName == null) {
-            throw LOGGER.atError()
-                .log(new IllegalArgumentException("Parameter resourceName is required and cannot be null."));
-        }
-        if (fabricName == null) {
-            throw LOGGER.atError()
-                .log(new IllegalArgumentException("Parameter fabricName is required and cannot be null."));
-        }
-        if (storageClassificationName == null) {
-            throw LOGGER.atError()
-                .log(new IllegalArgumentException(
-                    "Parameter storageClassificationName is required and cannot be null."));
-        }
-        if (storageClassificationMappingName == null) {
-            throw LOGGER.atError()
-                .log(new IllegalArgumentException(
-                    "Parameter storageClassificationMappingName is required and cannot be null."));
-        }
-        if (pairingInput == null) {
-            throw LOGGER.atError()
-                .log(new IllegalArgumentException("Parameter pairingInput is required and cannot be null."));
-        } else {
-            pairingInput.validate();
-        }
-        final String contentType = "application/json";
-        final String accept = "application/json";
-        return service.createSync(this.client.getEndpoint(), this.client.getApiVersion(),
-            this.client.getSubscriptionId(), resourceGroupName, resourceName, fabricName, storageClassificationName,
-            storageClassificationMappingName, contentType, accept, pairingInput, Context.NONE);
+        return createWithResponse(resourceGroupName, resourceName, fabricName, storageClassificationName,
+            storageClassificationMappingName, pairingInput, Context.NONE);
     }
 
     /**
@@ -600,49 +526,16 @@ public final class StorageClassificationMappingsClientImpl implements StorageCla
             StorageClassificationMappingInner.class, this.client.getContext());
     }
 
-    /**
-     * Create storage classification mapping.
-     * 
-     * The operation to create a storage classification mapping.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param resourceName The name of the Vault.
-     * @param fabricName Fabric name.
-     * @param storageClassificationName Storage classification name.
-     * @param storageClassificationMappingName Storage classification mapping name.
-     * @param pairingInput Pairing input.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the {@link SyncPoller} for polling of storage mapping object.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public SyncPoller<PollResult<StorageClassificationMappingInner>, StorageClassificationMappingInner> beginCreate(
         String resourceGroupName, String resourceName, String fabricName, String storageClassificationName,
         String storageClassificationMappingName, StorageClassificationMappingInput pairingInput) {
-        Response<BinaryData> response = createWithResponse(resourceGroupName, resourceName, fabricName,
-            storageClassificationName, storageClassificationMappingName, pairingInput);
-        return this.client.<StorageClassificationMappingInner, StorageClassificationMappingInner>getLroResult(response,
-            StorageClassificationMappingInner.class, StorageClassificationMappingInner.class, Context.NONE);
+        return beginCreate(resourceGroupName, resourceName, fabricName, storageClassificationName,
+            storageClassificationMappingName, pairingInput, Context.NONE);
     }
 
-    /**
-     * Create storage classification mapping.
-     * 
-     * The operation to create a storage classification mapping.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param resourceName The name of the Vault.
-     * @param fabricName Fabric name.
-     * @param storageClassificationName Storage classification name.
-     * @param storageClassificationMappingName Storage classification mapping name.
-     * @param pairingInput Pairing input.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the {@link SyncPoller} for polling of storage mapping object.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public SyncPoller<PollResult<StorageClassificationMappingInner>, StorageClassificationMappingInner> beginCreate(
         String resourceGroupName, String resourceName, String fabricName, String storageClassificationName,
@@ -677,53 +570,22 @@ public final class StorageClassificationMappingsClientImpl implements StorageCla
             storageClassificationMappingName, pairingInput).last().flatMap(this.client::getLroFinalResultOrError);
     }
 
-    /**
-     * Create storage classification mapping.
-     * 
-     * The operation to create a storage classification mapping.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param resourceName The name of the Vault.
-     * @param fabricName Fabric name.
-     * @param storageClassificationName Storage classification name.
-     * @param storageClassificationMappingName Storage classification mapping name.
-     * @param pairingInput Pairing input.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return storage mapping object.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public StorageClassificationMappingInner create(String resourceGroupName, String resourceName, String fabricName,
         String storageClassificationName, String storageClassificationMappingName,
         StorageClassificationMappingInput pairingInput) {
-        return beginCreate(resourceGroupName, resourceName, fabricName, storageClassificationName,
-            storageClassificationMappingName, pairingInput).getFinalResult();
+        return create(resourceGroupName, resourceName, fabricName, storageClassificationName,
+            storageClassificationMappingName, pairingInput, Context.NONE);
     }
 
-    /**
-     * Create storage classification mapping.
-     * 
-     * The operation to create a storage classification mapping.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param resourceName The name of the Vault.
-     * @param fabricName Fabric name.
-     * @param storageClassificationName Storage classification name.
-     * @param storageClassificationMappingName Storage classification mapping name.
-     * @param pairingInput Pairing input.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return storage mapping object.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public StorageClassificationMappingInner create(String resourceGroupName, String resourceName, String fabricName,
         String storageClassificationName, String storageClassificationMappingName,
         StorageClassificationMappingInput pairingInput, Context context) {
-        return beginCreate(resourceGroupName, resourceName, fabricName, storageClassificationName,
-            storageClassificationMappingName, pairingInput, context).getFinalResult();
+        return this.client.getLroFinalResultOrError(beginCreate(resourceGroupName, resourceName, fabricName,
+            storageClassificationName, storageClassificationMappingName, pairingInput, context));
     }
 
     /**
@@ -795,40 +657,7 @@ public final class StorageClassificationMappingsClientImpl implements StorageCla
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Response<BinaryData> deleteWithResponse(String resourceGroupName, String resourceName, String fabricName,
         String storageClassificationName, String storageClassificationMappingName) {
-        if (this.client.getEndpoint() == null) {
-            throw LOGGER.atError()
-                .log(new IllegalArgumentException(
-                    "Parameter this.client.getEndpoint() is required and cannot be null."));
-        }
-        if (this.client.getSubscriptionId() == null) {
-            throw LOGGER.atError()
-                .log(new IllegalArgumentException(
-                    "Parameter this.client.getSubscriptionId() is required and cannot be null."));
-        }
-        if (resourceGroupName == null) {
-            throw LOGGER.atError()
-                .log(new IllegalArgumentException("Parameter resourceGroupName is required and cannot be null."));
-        }
-        if (resourceName == null) {
-            throw LOGGER.atError()
-                .log(new IllegalArgumentException("Parameter resourceName is required and cannot be null."));
-        }
-        if (fabricName == null) {
-            throw LOGGER.atError()
-                .log(new IllegalArgumentException("Parameter fabricName is required and cannot be null."));
-        }
-        if (storageClassificationName == null) {
-            throw LOGGER.atError()
-                .log(new IllegalArgumentException(
-                    "Parameter storageClassificationName is required and cannot be null."));
-        }
-        if (storageClassificationMappingName == null) {
-            throw LOGGER.atError()
-                .log(new IllegalArgumentException(
-                    "Parameter storageClassificationMappingName is required and cannot be null."));
-        }
-        return service.deleteSync(this.client.getEndpoint(), this.client.getApiVersion(),
-            this.client.getSubscriptionId(), resourceGroupName, resourceName, fabricName, storageClassificationName,
+        return deleteWithResponse(resourceGroupName, resourceName, fabricName, storageClassificationName,
             storageClassificationMappingName, Context.NONE);
     }
 
@@ -912,45 +741,15 @@ public final class StorageClassificationMappingsClientImpl implements StorageCla
             this.client.getContext());
     }
 
-    /**
-     * Delete a storage classification mapping.
-     * 
-     * The operation to delete a storage classification mapping.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param resourceName The name of the Vault.
-     * @param fabricName Fabric name.
-     * @param storageClassificationName Storage classification name.
-     * @param storageClassificationMappingName Storage classification mapping name.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the {@link SyncPoller} for polling of long-running operation.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public SyncPoller<PollResult<Void>, Void> beginDelete(String resourceGroupName, String resourceName,
         String fabricName, String storageClassificationName, String storageClassificationMappingName) {
-        Response<BinaryData> response = deleteWithResponse(resourceGroupName, resourceName, fabricName,
-            storageClassificationName, storageClassificationMappingName);
-        return this.client.<Void, Void>getLroResult(response, Void.class, Void.class, Context.NONE);
+        return beginDelete(resourceGroupName, resourceName, fabricName, storageClassificationName,
+            storageClassificationMappingName, Context.NONE);
     }
 
-    /**
-     * Delete a storage classification mapping.
-     * 
-     * The operation to delete a storage classification mapping.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param resourceName The name of the Vault.
-     * @param fabricName Fabric name.
-     * @param storageClassificationName Storage classification name.
-     * @param storageClassificationMappingName Storage classification mapping name.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the {@link SyncPoller} for polling of long-running operation.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public SyncPoller<PollResult<Void>, Void> beginDelete(String resourceGroupName, String resourceName,
         String fabricName, String storageClassificationName, String storageClassificationMappingName, Context context) {
@@ -981,47 +780,20 @@ public final class StorageClassificationMappingsClientImpl implements StorageCla
             storageClassificationMappingName).last().flatMap(this.client::getLroFinalResultOrError);
     }
 
-    /**
-     * Delete a storage classification mapping.
-     * 
-     * The operation to delete a storage classification mapping.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param resourceName The name of the Vault.
-     * @param fabricName Fabric name.
-     * @param storageClassificationName Storage classification name.
-     * @param storageClassificationMappingName Storage classification mapping name.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public void delete(String resourceGroupName, String resourceName, String fabricName,
         String storageClassificationName, String storageClassificationMappingName) {
-        beginDelete(resourceGroupName, resourceName, fabricName, storageClassificationName,
-            storageClassificationMappingName).getFinalResult();
+        delete(resourceGroupName, resourceName, fabricName, storageClassificationName, storageClassificationMappingName,
+            Context.NONE);
     }
 
-    /**
-     * Delete a storage classification mapping.
-     * 
-     * The operation to delete a storage classification mapping.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param resourceName The name of the Vault.
-     * @param fabricName Fabric name.
-     * @param storageClassificationName Storage classification name.
-     * @param storageClassificationMappingName Storage classification mapping name.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public void delete(String resourceGroupName, String resourceName, String fabricName,
         String storageClassificationName, String storageClassificationMappingName, Context context) {
-        beginDelete(resourceGroupName, resourceName, fabricName, storageClassificationName,
-            storageClassificationMappingName, context).getFinalResult();
+        this.client.getLroFinalResultOrError(beginDelete(resourceGroupName, resourceName, fabricName,
+            storageClassificationName, storageClassificationMappingName, context));
     }
 
     /**
@@ -1121,39 +893,8 @@ public final class StorageClassificationMappingsClientImpl implements StorageCla
     @ServiceMethod(returns = ReturnType.SINGLE)
     private PagedResponse<StorageClassificationMappingInner> listByReplicationStorageClassificationsSinglePage(
         String resourceGroupName, String resourceName, String fabricName, String storageClassificationName) {
-        if (this.client.getEndpoint() == null) {
-            throw LOGGER.atError()
-                .log(new IllegalArgumentException(
-                    "Parameter this.client.getEndpoint() is required and cannot be null."));
-        }
-        if (this.client.getSubscriptionId() == null) {
-            throw LOGGER.atError()
-                .log(new IllegalArgumentException(
-                    "Parameter this.client.getSubscriptionId() is required and cannot be null."));
-        }
-        if (resourceGroupName == null) {
-            throw LOGGER.atError()
-                .log(new IllegalArgumentException("Parameter resourceGroupName is required and cannot be null."));
-        }
-        if (resourceName == null) {
-            throw LOGGER.atError()
-                .log(new IllegalArgumentException("Parameter resourceName is required and cannot be null."));
-        }
-        if (fabricName == null) {
-            throw LOGGER.atError()
-                .log(new IllegalArgumentException("Parameter fabricName is required and cannot be null."));
-        }
-        if (storageClassificationName == null) {
-            throw LOGGER.atError()
-                .log(new IllegalArgumentException(
-                    "Parameter storageClassificationName is required and cannot be null."));
-        }
-        final String accept = "application/json";
-        Response<StorageClassificationMappingCollection> res = service.listByReplicationStorageClassificationsSync(
-            this.client.getEndpoint(), this.client.getApiVersion(), this.client.getSubscriptionId(), resourceGroupName,
-            resourceName, fabricName, storageClassificationName, accept, Context.NONE);
-        return new PagedResponseBase<>(res.getRequest(), res.getStatusCode(), res.getHeaders(), res.getValue().value(),
-            res.getValue().nextLink(), null);
+        return listByReplicationStorageClassificationsSinglePage(resourceGroupName, resourceName, fabricName,
+            storageClassificationName, Context.NONE);
     }
 
     /**
@@ -1212,48 +953,15 @@ public final class StorageClassificationMappingsClientImpl implements StorageCla
             res.getValue().nextLink(), null);
     }
 
-    /**
-     * Gets the list of storage classification mappings objects under a storage.
-     * 
-     * Lists the storage classification mappings for the fabric.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param resourceName The name of the Vault.
-     * @param fabricName Fabric name.
-     * @param storageClassificationName Storage classification name.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the list of storage classification mappings objects under a storage.
-     * 
-     * Lists the storage classification mappings for the fabric as paginated response with {@link PagedIterable}.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.COLLECTION)
     public PagedIterable<StorageClassificationMappingInner> listByReplicationStorageClassifications(
         String resourceGroupName, String resourceName, String fabricName, String storageClassificationName) {
-        return new PagedIterable<>(
-            () -> listByReplicationStorageClassificationsSinglePage(resourceGroupName, resourceName, fabricName,
-                storageClassificationName),
-            nextLink -> listByReplicationStorageClassificationsNextSinglePage(nextLink));
+        return listByReplicationStorageClassifications(resourceGroupName, resourceName, fabricName,
+            storageClassificationName, Context.NONE);
     }
 
-    /**
-     * Gets the list of storage classification mappings objects under a storage.
-     * 
-     * Lists the storage classification mappings for the fabric.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param resourceName The name of the Vault.
-     * @param fabricName Fabric name.
-     * @param storageClassificationName Storage classification name.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the list of storage classification mappings objects under a storage.
-     * 
-     * Lists the storage classification mappings for the fabric as paginated response with {@link PagedIterable}.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.COLLECTION)
     public PagedIterable<StorageClassificationMappingInner> listByReplicationStorageClassifications(
         String resourceGroupName, String resourceName, String fabricName, String storageClassificationName,
@@ -1343,30 +1051,7 @@ public final class StorageClassificationMappingsClientImpl implements StorageCla
     @ServiceMethod(returns = ReturnType.SINGLE)
     private PagedResponse<StorageClassificationMappingInner> listSinglePage(String resourceGroupName,
         String resourceName) {
-        if (this.client.getEndpoint() == null) {
-            throw LOGGER.atError()
-                .log(new IllegalArgumentException(
-                    "Parameter this.client.getEndpoint() is required and cannot be null."));
-        }
-        if (this.client.getSubscriptionId() == null) {
-            throw LOGGER.atError()
-                .log(new IllegalArgumentException(
-                    "Parameter this.client.getSubscriptionId() is required and cannot be null."));
-        }
-        if (resourceGroupName == null) {
-            throw LOGGER.atError()
-                .log(new IllegalArgumentException("Parameter resourceGroupName is required and cannot be null."));
-        }
-        if (resourceName == null) {
-            throw LOGGER.atError()
-                .log(new IllegalArgumentException("Parameter resourceName is required and cannot be null."));
-        }
-        final String accept = "application/json";
-        Response<StorageClassificationMappingCollection> res
-            = service.listSync(this.client.getEndpoint(), this.client.getApiVersion(), this.client.getSubscriptionId(),
-                resourceGroupName, resourceName, accept, Context.NONE);
-        return new PagedResponseBase<>(res.getRequest(), res.getStatusCode(), res.getHeaders(), res.getValue().value(),
-            res.getValue().nextLink(), null);
+        return listSinglePage(resourceGroupName, resourceName, Context.NONE);
     }
 
     /**
@@ -1413,41 +1098,13 @@ public final class StorageClassificationMappingsClientImpl implements StorageCla
             res.getValue().nextLink(), null);
     }
 
-    /**
-     * Gets the list of storage classification mappings objects under a vault.
-     * 
-     * Lists the storage classification mappings in the vault.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param resourceName The name of the recovery services vault.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the list of storage classification mappings objects under a vault.
-     * 
-     * Lists the storage classification mappings in the vault as paginated response with {@link PagedIterable}.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.COLLECTION)
     public PagedIterable<StorageClassificationMappingInner> list(String resourceGroupName, String resourceName) {
-        return new PagedIterable<>(() -> listSinglePage(resourceGroupName, resourceName),
-            nextLink -> listNextSinglePage(nextLink));
+        return list(resourceGroupName, resourceName, Context.NONE);
     }
 
-    /**
-     * Gets the list of storage classification mappings objects under a vault.
-     * 
-     * Lists the storage classification mappings in the vault.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param resourceName The name of the recovery services vault.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the list of storage classification mappings objects under a vault.
-     * 
-     * Lists the storage classification mappings in the vault as paginated response with {@link PagedIterable}.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.COLLECTION)
     public PagedIterable<StorageClassificationMappingInner> list(String resourceGroupName, String resourceName,
         Context context) {
@@ -1504,20 +1161,7 @@ public final class StorageClassificationMappingsClientImpl implements StorageCla
     @ServiceMethod(returns = ReturnType.SINGLE)
     private PagedResponse<StorageClassificationMappingInner>
         listByReplicationStorageClassificationsNextSinglePage(String nextLink) {
-        if (nextLink == null) {
-            throw LOGGER.atError()
-                .log(new IllegalArgumentException("Parameter nextLink is required and cannot be null."));
-        }
-        if (this.client.getEndpoint() == null) {
-            throw LOGGER.atError()
-                .log(new IllegalArgumentException(
-                    "Parameter this.client.getEndpoint() is required and cannot be null."));
-        }
-        final String accept = "application/json";
-        Response<StorageClassificationMappingCollection> res = service
-            .listByReplicationStorageClassificationsNextSync(nextLink, this.client.getEndpoint(), accept, Context.NONE);
-        return new PagedResponseBase<>(res.getRequest(), res.getStatusCode(), res.getHeaders(), res.getValue().value(),
-            res.getValue().nextLink(), null);
+        return listByReplicationStorageClassificationsNextSinglePage(nextLink, Context.NONE);
     }
 
     /**
@@ -1598,20 +1242,7 @@ public final class StorageClassificationMappingsClientImpl implements StorageCla
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private PagedResponse<StorageClassificationMappingInner> listNextSinglePage(String nextLink) {
-        if (nextLink == null) {
-            throw LOGGER.atError()
-                .log(new IllegalArgumentException("Parameter nextLink is required and cannot be null."));
-        }
-        if (this.client.getEndpoint() == null) {
-            throw LOGGER.atError()
-                .log(new IllegalArgumentException(
-                    "Parameter this.client.getEndpoint() is required and cannot be null."));
-        }
-        final String accept = "application/json";
-        Response<StorageClassificationMappingCollection> res
-            = service.listNextSync(nextLink, this.client.getEndpoint(), accept, Context.NONE);
-        return new PagedResponseBase<>(res.getRequest(), res.getStatusCode(), res.getHeaders(), res.getValue().value(),
-            res.getValue().nextLink(), null);
+        return listNextSinglePage(nextLink, Context.NONE);
     }
 
     /**

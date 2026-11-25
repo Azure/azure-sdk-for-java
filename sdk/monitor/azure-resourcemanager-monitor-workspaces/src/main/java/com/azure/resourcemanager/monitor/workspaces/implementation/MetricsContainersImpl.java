@@ -48,9 +48,7 @@ public final class MetricsContainersImpl implements MetricsContainers {
 
     public PagedIterable<MetricsContainerResource> listByAzureMonitorWorkspace(String resourceGroupName,
         String azureMonitorWorkspaceName) {
-        PagedIterable<MetricsContainerResourceInner> inner
-            = this.serviceClient().listByAzureMonitorWorkspace(resourceGroupName, azureMonitorWorkspaceName);
-        return ResourceManagerUtils.mapPage(inner, inner1 -> new MetricsContainerResourceImpl(inner1, this.manager()));
+        return this.listByAzureMonitorWorkspace(resourceGroupName, azureMonitorWorkspaceName, Context.NONE);
     }
 
     public PagedIterable<MetricsContainerResource> listByAzureMonitorWorkspace(String resourceGroupName,
@@ -61,53 +59,19 @@ public final class MetricsContainersImpl implements MetricsContainers {
     }
 
     public MetricsContainerResource getById(String id) {
-        String resourceGroupName = ResourceManagerUtils.getValueFromIdByParameterName(id,
-            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Monitor/accounts/{azureMonitorWorkspaceName}/metricsContainers/{metricsContainerName}",
-            "resourceGroupName");
-        if (resourceGroupName == null) {
-            throw LOGGER.logExceptionAsError(new IllegalArgumentException(
-                String.format("The resource ID '%s' is not valid. Missing path segment 'resourceGroups'.", id)));
-        }
-        String azureMonitorWorkspaceName = ResourceManagerUtils.getValueFromIdByParameterName(id,
-            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Monitor/accounts/{azureMonitorWorkspaceName}/metricsContainers/{metricsContainerName}",
-            "azureMonitorWorkspaceName");
-        if (azureMonitorWorkspaceName == null) {
-            throw LOGGER.logExceptionAsError(new IllegalArgumentException(
-                String.format("The resource ID '%s' is not valid. Missing path segment 'accounts'.", id)));
-        }
-        String metricsContainerName = ResourceManagerUtils.getValueFromIdByParameterName(id,
-            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Monitor/accounts/{azureMonitorWorkspaceName}/metricsContainers/{metricsContainerName}",
-            "metricsContainerName");
-        if (metricsContainerName == null) {
-            throw LOGGER.logExceptionAsError(new IllegalArgumentException(
-                String.format("The resource ID '%s' is not valid. Missing path segment 'metricsContainers'.", id)));
-        }
-        return this.getWithResponse(resourceGroupName, azureMonitorWorkspaceName, metricsContainerName, Context.NONE)
-            .getValue();
+        return this.getByIdWithResponse(id, Context.NONE).getValue();
     }
 
     public Response<MetricsContainerResource> getByIdWithResponse(String id, Context context) {
-        String resourceGroupName = ResourceManagerUtils.getValueFromIdByParameterName(id,
+        String resourceGroupName = ResourceManagerUtils.getRequiredValueFromIdByParameterName(id,
             "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Monitor/accounts/{azureMonitorWorkspaceName}/metricsContainers/{metricsContainerName}",
-            "resourceGroupName");
-        if (resourceGroupName == null) {
-            throw LOGGER.logExceptionAsError(new IllegalArgumentException(
-                String.format("The resource ID '%s' is not valid. Missing path segment 'resourceGroups'.", id)));
-        }
-        String azureMonitorWorkspaceName = ResourceManagerUtils.getValueFromIdByParameterName(id,
+            "resourceGroupName", "resourceGroups", LOGGER);
+        String azureMonitorWorkspaceName = ResourceManagerUtils.getRequiredValueFromIdByParameterName(id,
             "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Monitor/accounts/{azureMonitorWorkspaceName}/metricsContainers/{metricsContainerName}",
-            "azureMonitorWorkspaceName");
-        if (azureMonitorWorkspaceName == null) {
-            throw LOGGER.logExceptionAsError(new IllegalArgumentException(
-                String.format("The resource ID '%s' is not valid. Missing path segment 'accounts'.", id)));
-        }
-        String metricsContainerName = ResourceManagerUtils.getValueFromIdByParameterName(id,
+            "azureMonitorWorkspaceName", "accounts", LOGGER);
+        String metricsContainerName = ResourceManagerUtils.getRequiredValueFromIdByParameterName(id,
             "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Monitor/accounts/{azureMonitorWorkspaceName}/metricsContainers/{metricsContainerName}",
-            "metricsContainerName");
-        if (metricsContainerName == null) {
-            throw LOGGER.logExceptionAsError(new IllegalArgumentException(
-                String.format("The resource ID '%s' is not valid. Missing path segment 'metricsContainers'.", id)));
-        }
+            "metricsContainerName", "metricsContainers", LOGGER);
         return this.getWithResponse(resourceGroupName, azureMonitorWorkspaceName, metricsContainerName, context);
     }
 

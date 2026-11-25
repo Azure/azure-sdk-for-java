@@ -82,18 +82,7 @@ public final class DatabaseEncryptionProtectorsClientImpl implements DatabaseEnc
             @PathParam("encryptionProtectorName") EncryptionProtectorName encryptionProtectorName, Context context);
     }
 
-    /**
-     * Revalidates an existing encryption protector for a particular database.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param serverName The name of the server.
-     * @param databaseName The name of the database.
-     * @param encryptionProtectorName The name of the encryption protector to be updated.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the {@link Response} on successful completion of {@link Mono}.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Response<Flux<ByteBuffer>>> revalidateWithResponseAsync(String resourceGroupName, String serverName,
         String databaseName, EncryptionProtectorName encryptionProtectorName) {
@@ -170,18 +159,7 @@ public final class DatabaseEncryptionProtectorsClientImpl implements DatabaseEnc
             context);
     }
 
-    /**
-     * Revalidates an existing encryption protector for a particular database.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param serverName The name of the server.
-     * @param databaseName The name of the database.
-     * @param encryptionProtectorName The name of the encryption protector to be updated.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the {@link PollerFlux} for polling of long-running operation.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public PollerFlux<PollResult<Void>, Void> beginRevalidateAsync(String resourceGroupName, String serverName,
         String databaseName, EncryptionProtectorName encryptionProtectorName) {
@@ -214,18 +192,7 @@ public final class DatabaseEncryptionProtectorsClientImpl implements DatabaseEnc
             context);
     }
 
-    /**
-     * Revalidates an existing encryption protector for a particular database.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param serverName The name of the server.
-     * @param databaseName The name of the database.
-     * @param encryptionProtectorName The name of the encryption protector to be updated.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the {@link SyncPoller} for polling of long-running operation.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public SyncPoller<PollResult<Void>, Void> beginRevalidate(String resourceGroupName, String serverName,
         String databaseName, EncryptionProtectorName encryptionProtectorName) {
@@ -233,19 +200,7 @@ public final class DatabaseEncryptionProtectorsClientImpl implements DatabaseEnc
             .getSyncPoller();
     }
 
-    /**
-     * Revalidates an existing encryption protector for a particular database.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param serverName The name of the server.
-     * @param databaseName The name of the database.
-     * @param encryptionProtectorName The name of the encryption protector to be updated.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the {@link SyncPoller} for polling of long-running operation.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public SyncPoller<PollResult<Void>, Void> beginRevalidate(String resourceGroupName, String serverName,
         String databaseName, EncryptionProtectorName encryptionProtectorName, Context context) {
@@ -253,18 +208,7 @@ public final class DatabaseEncryptionProtectorsClientImpl implements DatabaseEnc
             .getSyncPoller();
     }
 
-    /**
-     * Revalidates an existing encryption protector for a particular database.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param serverName The name of the server.
-     * @param databaseName The name of the database.
-     * @param encryptionProtectorName The name of the encryption protector to be updated.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return A {@link Mono} that completes when a successful response is received.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Void> revalidateAsync(String resourceGroupName, String serverName, String databaseName,
         EncryptionProtectorName encryptionProtectorName) {
@@ -293,53 +237,21 @@ public final class DatabaseEncryptionProtectorsClientImpl implements DatabaseEnc
             .flatMap(this.client::getLroFinalResultOrError);
     }
 
-    /**
-     * Revalidates an existing encryption protector for a particular database.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param serverName The name of the server.
-     * @param databaseName The name of the database.
-     * @param encryptionProtectorName The name of the encryption protector to be updated.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public void revalidate(String resourceGroupName, String serverName, String databaseName,
         EncryptionProtectorName encryptionProtectorName) {
         revalidateAsync(resourceGroupName, serverName, databaseName, encryptionProtectorName).block();
     }
 
-    /**
-     * Revalidates an existing encryption protector for a particular database.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param serverName The name of the server.
-     * @param databaseName The name of the database.
-     * @param encryptionProtectorName The name of the encryption protector to be updated.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public void revalidate(String resourceGroupName, String serverName, String databaseName,
         EncryptionProtectorName encryptionProtectorName, Context context) {
         revalidateAsync(resourceGroupName, serverName, databaseName, encryptionProtectorName, context).block();
     }
 
-    /**
-     * Reverts an existing encryption protector for a particular database.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param serverName The name of the server.
-     * @param databaseName The name of the database.
-     * @param encryptionProtectorName The name of the encryption protector to be updated.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the {@link Response} on successful completion of {@link Mono}.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Response<Flux<ByteBuffer>>> revertWithResponseAsync(String resourceGroupName, String serverName,
         String databaseName, EncryptionProtectorName encryptionProtectorName) {
@@ -415,18 +327,7 @@ public final class DatabaseEncryptionProtectorsClientImpl implements DatabaseEnc
             resourceGroupName, serverName, databaseName, encryptionProtectorName, context);
     }
 
-    /**
-     * Reverts an existing encryption protector for a particular database.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param serverName The name of the server.
-     * @param databaseName The name of the database.
-     * @param encryptionProtectorName The name of the encryption protector to be updated.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the {@link PollerFlux} for polling of long-running operation.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public PollerFlux<PollResult<Void>, Void> beginRevertAsync(String resourceGroupName, String serverName,
         String databaseName, EncryptionProtectorName encryptionProtectorName) {
@@ -459,18 +360,7 @@ public final class DatabaseEncryptionProtectorsClientImpl implements DatabaseEnc
             context);
     }
 
-    /**
-     * Reverts an existing encryption protector for a particular database.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param serverName The name of the server.
-     * @param databaseName The name of the database.
-     * @param encryptionProtectorName The name of the encryption protector to be updated.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the {@link SyncPoller} for polling of long-running operation.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public SyncPoller<PollResult<Void>, Void> beginRevert(String resourceGroupName, String serverName,
         String databaseName, EncryptionProtectorName encryptionProtectorName) {
@@ -478,19 +368,7 @@ public final class DatabaseEncryptionProtectorsClientImpl implements DatabaseEnc
             .getSyncPoller();
     }
 
-    /**
-     * Reverts an existing encryption protector for a particular database.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param serverName The name of the server.
-     * @param databaseName The name of the database.
-     * @param encryptionProtectorName The name of the encryption protector to be updated.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the {@link SyncPoller} for polling of long-running operation.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public SyncPoller<PollResult<Void>, Void> beginRevert(String resourceGroupName, String serverName,
         String databaseName, EncryptionProtectorName encryptionProtectorName, Context context) {
@@ -498,18 +376,7 @@ public final class DatabaseEncryptionProtectorsClientImpl implements DatabaseEnc
             .getSyncPoller();
     }
 
-    /**
-     * Reverts an existing encryption protector for a particular database.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param serverName The name of the server.
-     * @param databaseName The name of the database.
-     * @param encryptionProtectorName The name of the encryption protector to be updated.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return A {@link Mono} that completes when a successful response is received.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Void> revertAsync(String resourceGroupName, String serverName, String databaseName,
         EncryptionProtectorName encryptionProtectorName) {
@@ -537,35 +404,14 @@ public final class DatabaseEncryptionProtectorsClientImpl implements DatabaseEnc
             .flatMap(this.client::getLroFinalResultOrError);
     }
 
-    /**
-     * Reverts an existing encryption protector for a particular database.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param serverName The name of the server.
-     * @param databaseName The name of the database.
-     * @param encryptionProtectorName The name of the encryption protector to be updated.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public void revert(String resourceGroupName, String serverName, String databaseName,
         EncryptionProtectorName encryptionProtectorName) {
         revertAsync(resourceGroupName, serverName, databaseName, encryptionProtectorName).block();
     }
 
-    /**
-     * Reverts an existing encryption protector for a particular database.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param serverName The name of the server.
-     * @param databaseName The name of the database.
-     * @param encryptionProtectorName The name of the encryption protector to be updated.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public void revert(String resourceGroupName, String serverName, String databaseName,
         EncryptionProtectorName encryptionProtectorName, Context context) {

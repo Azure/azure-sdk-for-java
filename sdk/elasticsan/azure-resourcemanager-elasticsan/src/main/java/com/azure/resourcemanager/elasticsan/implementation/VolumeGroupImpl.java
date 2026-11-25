@@ -130,10 +130,7 @@ public final class VolumeGroupImpl implements VolumeGroup, VolumeGroup.Definitio
     }
 
     public VolumeGroup create() {
-        this.innerObject = serviceManager.serviceClient()
-            .getVolumeGroups()
-            .create(resourceGroupName, elasticSanName, volumeGroupName, this.innerModel(), Context.NONE);
-        return this;
+        return this.create(Context.NONE);
     }
 
     public VolumeGroup create(Context context) {
@@ -155,10 +152,7 @@ public final class VolumeGroupImpl implements VolumeGroup, VolumeGroup.Definitio
     }
 
     public VolumeGroup apply() {
-        this.innerObject = serviceManager.serviceClient()
-            .getVolumeGroups()
-            .update(resourceGroupName, elasticSanName, volumeGroupName, updateParameters, Context.NONE);
-        return this;
+        return this.apply(Context.NONE);
     }
 
     public VolumeGroup apply(Context context) {
@@ -184,11 +178,7 @@ public final class VolumeGroupImpl implements VolumeGroup, VolumeGroup.Definitio
     }
 
     public VolumeGroup refresh() {
-        this.innerObject = serviceManager.serviceClient()
-            .getVolumeGroups()
-            .getWithResponse(resourceGroupName, elasticSanName, volumeGroupName, Context.NONE)
-            .getValue();
-        return this;
+        return this.refresh(Context.NONE);
     }
 
     public VolumeGroup refresh(Context context) {

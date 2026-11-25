@@ -115,18 +115,7 @@ public final class TriggeredAnalyticsRuleRunOperationsClientImpl implements Trig
             .flatMap(res -> Mono.justOrEmpty(res.getValue()));
     }
 
-    /**
-     * Gets the triggered analytics rule run.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param workspaceName The name of the workspace.
-     * @param ruleRunId the triggered rule id.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the triggered analytics rule run along with {@link Response}.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Response<TriggeredAnalyticsRuleRunInner> getWithResponse(String resourceGroupName, String workspaceName,
         String ruleRunId, Context context) {
@@ -135,17 +124,7 @@ public final class TriggeredAnalyticsRuleRunOperationsClientImpl implements Trig
             resourceGroupName, workspaceName, ruleRunId, accept, context);
     }
 
-    /**
-     * Gets the triggered analytics rule run.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param workspaceName The name of the workspace.
-     * @param ruleRunId the triggered rule id.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the triggered analytics rule run.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public TriggeredAnalyticsRuleRunInner get(String resourceGroupName, String workspaceName, String ruleRunId) {
         return getWithResponse(resourceGroupName, workspaceName, ruleRunId, Context.NONE).getValue();

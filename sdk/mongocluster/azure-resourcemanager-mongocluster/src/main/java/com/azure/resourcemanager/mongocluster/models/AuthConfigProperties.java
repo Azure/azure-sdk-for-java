@@ -13,7 +13,7 @@ import java.io.IOException;
 import java.util.List;
 
 /**
- * The authentication configuration for the Mongo cluster.
+ * The authentication configuration for the DocumentDB cluster.
  */
 @Fluent
 public final class AuthConfigProperties implements JsonSerializable<AuthConfigProperties> {

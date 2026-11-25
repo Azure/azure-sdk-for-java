@@ -172,16 +172,7 @@ public final class MetricDefinitionsClientImpl implements MetricDefinitionsClien
                 res.getValue().value(), res.getValue().nextLink(), null));
     }
 
-    /**
-     * Lists the metric definitions for the subscription.
-     * 
-     * @param region The region where the metrics you want reside.
-     * @param metricnamespace Metric namespace where the metrics you want reside.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return represents collection of metric definitions as paginated response with {@link PagedFlux}.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.COLLECTION)
     public PagedFlux<SubscriptionScopeMetricDefinitionInner> listAtSubscriptionScopeAsync(String region,
         String metricnamespace) {
@@ -189,15 +180,7 @@ public final class MetricDefinitionsClientImpl implements MetricDefinitionsClien
             nextLink -> listAtSubscriptionScopeNextSinglePageAsync(nextLink));
     }
 
-    /**
-     * Lists the metric definitions for the subscription.
-     * 
-     * @param region The region where the metrics you want reside.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return represents collection of metric definitions as paginated response with {@link PagedFlux}.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.COLLECTION)
     public PagedFlux<SubscriptionScopeMetricDefinitionInner> listAtSubscriptionScopeAsync(String region) {
         final String metricnamespace = null;
@@ -223,32 +206,14 @@ public final class MetricDefinitionsClientImpl implements MetricDefinitionsClien
             nextLink -> listAtSubscriptionScopeNextSinglePageAsync(nextLink, context));
     }
 
-    /**
-     * Lists the metric definitions for the subscription.
-     * 
-     * @param region The region where the metrics you want reside.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return represents collection of metric definitions as paginated response with {@link PagedIterable}.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.COLLECTION)
     public PagedIterable<SubscriptionScopeMetricDefinitionInner> listAtSubscriptionScope(String region) {
         final String metricnamespace = null;
         return new PagedIterable<>(listAtSubscriptionScopeAsync(region, metricnamespace));
     }
 
-    /**
-     * Lists the metric definitions for the subscription.
-     * 
-     * @param region The region where the metrics you want reside.
-     * @param metricnamespace Metric namespace where the metrics you want reside.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return represents collection of metric definitions as paginated response with {@link PagedIterable}.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.COLLECTION)
     public PagedIterable<SubscriptionScopeMetricDefinitionInner> listAtSubscriptionScope(String region,
         String metricnamespace, Context context) {
@@ -315,31 +280,14 @@ public final class MetricDefinitionsClientImpl implements MetricDefinitionsClien
                 res.getValue().value(), res.getValue().nextLink(), null));
     }
 
-    /**
-     * Lists the metric definitions for the resource.
-     * 
-     * @param resourceUri The fully qualified Azure Resource manager identifier of the resource.
-     * @param metricnamespace Metric namespace where the metrics you want reside.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return represents collection of metric definitions as paginated response with {@link PagedFlux}.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.COLLECTION)
     public PagedFlux<MetricDefinitionInner> listAsync(String resourceUri, String metricnamespace) {
         return new PagedFlux<>(() -> listSinglePageAsync(resourceUri, metricnamespace),
             nextLink -> listNextSinglePageAsync(nextLink));
     }
 
-    /**
-     * Lists the metric definitions for the resource.
-     * 
-     * @param resourceUri The fully qualified Azure Resource manager identifier of the resource.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return represents collection of metric definitions as paginated response with {@link PagedFlux}.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.COLLECTION)
     public PagedFlux<MetricDefinitionInner> listAsync(String resourceUri) {
         final String metricnamespace = null;
@@ -364,32 +312,14 @@ public final class MetricDefinitionsClientImpl implements MetricDefinitionsClien
             nextLink -> listNextSinglePageAsync(nextLink, context));
     }
 
-    /**
-     * Lists the metric definitions for the resource.
-     * 
-     * @param resourceUri The fully qualified Azure Resource manager identifier of the resource.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return represents collection of metric definitions as paginated response with {@link PagedIterable}.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.COLLECTION)
     public PagedIterable<MetricDefinitionInner> list(String resourceUri) {
         final String metricnamespace = null;
         return new PagedIterable<>(listAsync(resourceUri, metricnamespace));
     }
 
-    /**
-     * Lists the metric definitions for the resource.
-     * 
-     * @param resourceUri The fully qualified Azure Resource manager identifier of the resource.
-     * @param metricnamespace Metric namespace where the metrics you want reside.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return represents collection of metric definitions as paginated response with {@link PagedIterable}.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.COLLECTION)
     public PagedIterable<MetricDefinitionInner> list(String resourceUri, String metricnamespace, Context context) {
         return new PagedIterable<>(listAsync(resourceUri, metricnamespace, context));

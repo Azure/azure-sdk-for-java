@@ -13,13 +13,13 @@ public final class QuotaReportTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
         QuotaReport model = BinaryData.fromString(
-            "{\"quotaType\":\"IndividualGroupQuota\",\"quotaTarget\":\"ood\",\"quotaLimitUsedInKiBs\":5126292373343503366,\"quotaLimitTotalInKiBs\":7999873703887931578,\"percentageUsed\":51.56212,\"isDerivedQuota\":false}")
+            "{\"quotaType\":\"IndividualUserQuota\",\"quotaTarget\":\"sg\",\"quotaLimitUsedInKiBs\":3202643871738398151,\"quotaLimitTotalInKiBs\":8512849963231264455,\"percentageUsed\":34.755836,\"isDerivedQuota\":true}")
             .toObject(QuotaReport.class);
-        Assertions.assertEquals(QuotaType.INDIVIDUAL_GROUP_QUOTA, model.quotaType());
-        Assertions.assertEquals("ood", model.quotaTarget());
-        Assertions.assertEquals(5126292373343503366L, model.quotaLimitUsedInKiBs());
-        Assertions.assertEquals(7999873703887931578L, model.quotaLimitTotalInKiBs());
-        Assertions.assertEquals(51.56212F, model.percentageUsed());
-        Assertions.assertFalse(model.isDerivedQuota());
+        Assertions.assertEquals(QuotaType.INDIVIDUAL_USER_QUOTA, model.quotaType());
+        Assertions.assertEquals("sg", model.quotaTarget());
+        Assertions.assertEquals(3202643871738398151L, model.quotaLimitUsedInKiBs());
+        Assertions.assertEquals(8512849963231264455L, model.quotaLimitTotalInKiBs());
+        Assertions.assertEquals(34.755836F, model.percentageUsed());
+        Assertions.assertTrue(model.isDerivedQuota());
     }
 }

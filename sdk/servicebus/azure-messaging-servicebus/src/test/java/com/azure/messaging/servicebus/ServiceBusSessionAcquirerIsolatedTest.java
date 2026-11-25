@@ -19,18 +19,29 @@ import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.parallel.Execution;
 import org.junit.jupiter.api.parallel.ExecutionMode;
 import org.junit.jupiter.api.parallel.Isolated;
+import org.junit.jupiter.params.ParameterizedTest;
+import org.junit.jupiter.params.provider.ValueSource;
 import org.mockito.Mockito;
 import org.mockito.MockitoAnnotations;
 import org.mockito.invocation.InvocationOnMock;
 import org.mockito.stubbing.Answer;
+import reactor.core.Disposable;
+import reactor.core.publisher.Hooks;
 import reactor.core.publisher.Mono;
+import reactor.core.scheduler.Schedulers;
 import reactor.test.StepVerifier;
+import reactor.test.publisher.PublisherProbe;
 import reactor.test.scheduler.VirtualTimeScheduler;
 
 import java.io.IOException;
 import java.time.Duration;
 import java.util.ArrayDeque;
 import java.util.Deque;
+import java.util.Queue;
+import java.util.concurrent.ConcurrentLinkedQueue;
+import java.util.concurrent.CountDownLatch;
+import java.util.concurrent.TimeUnit;
+import java.util.concurrent.atomic.AtomicBoolean;
 import java.util.concurrent.TimeoutException;
 import java.util.function.Supplier;
 
@@ -111,12 +122,14 @@ public class ServiceBusSessionAcquirerIsolatedTest {
 
     @Test
     @Execution(ExecutionMode.SAME_THREAD)
-    public void shouldClientSideTimeoutAndDisposeLinkWhenAcquireHangsIfRetryDisabled() {
+    public void shouldClientSideTimeoutAndCloseLinkWhenAcquireHangsIfRetryDisabled() {
         // A receive link whose getSessionProperties() never emits simulates a hung acquire where the
         // broker accepts the link but never sends its detach. Without a client-side guard this would
         // block the caller for the full operation timeout (issue #49093).
         final ServiceBusReceiveLink hungLink = mock(ServiceBusReceiveLink.class);
         when(hungLink.getSessionProperties()).thenReturn(Mono.never());
+        final PublisherProbe<Void> close = PublisherProbe.empty();
+        when(hungLink.closeAsync()).thenReturn(close.mono());
         final Deque<Mono<ServiceBusReceiveLink>> sessionLinks = new ArrayDeque<>(1);
         sessionLinks.add(Mono.just(hungLink));
         final OnCreateSessionLink onCreateSessionLink = new OnCreateSessionLink(sessionLinks);
@@ -131,8 +144,120 @@ public class ServiceBusSessionAcquirerIsolatedTest {
             });
         }
         Assertions.assertEquals(0, onCreateSessionLink.pending());
-        // The half-open link must be disposed when the client-side guard cancels the acquire.
-        Mockito.verify(hungLink).dispose();
+        close.assertWasSubscribed();
+        Mockito.verify(hungLink, Mockito.never()).dispose();
+    }
+
+    @ParameterizedTest
+    @ValueSource(booleans = { true, false })
+    public void shouldCloseLinkWithoutBlockingOnTimeout(boolean timeoutRetryDisabled) throws Exception {
+        final ServiceBusReceiveLink link = createHungReceiveLink();
+        final CountDownLatch closed = new CountDownLatch(1);
+        final AtomicBoolean nonBlockingThread = new AtomicBoolean();
+        when(link.closeAsync()).thenReturn(Mono.defer(() -> {
+            nonBlockingThread.set(Schedulers.isInNonBlockingThread());
+            closed.countDown();
+            return Mono.never();
+        }));
+        final RuntimeException terminalError = new RuntimeException("stop retries");
+        final Deque<Mono<ServiceBusReceiveLink>> links = new ArrayDeque<>();
+        links.add(Mono.just(link));
+        links.add(Mono.error(terminalError));
+        final ConnectionCacheWrapper wrapper = createMockConnectionWrapper(new OnCreateSessionLink(links));
+        when(wrapper.getRetryOptions()).thenReturn(new AmqpRetryOptions().setDelay(Duration.ofMillis(10)));
+        final ServiceBusSessionAcquirer acquirer = new ServiceBusSessionAcquirer(LOGGER, IDENTIFIER, ENTITY_PATH,
+            ENTITY_TYPE, RECEIVE_MODE, Duration.ofMillis(100), timeoutRetryDisabled, wrapper);
+        final Queue<Throwable> droppedErrors = new ConcurrentLinkedQueue<>();
+        Hooks.onErrorDropped(droppedErrors::add);
+        try {
+            StepVerifier.create(acquirer.acquire())
+                .expectErrorMatches(
+                    error -> timeoutRetryDisabled ? error instanceof TimeoutException : error == terminalError)
+                .verify(Duration.ofSeconds(5));
+            Assertions.assertTrue(closed.await(5, TimeUnit.SECONDS));
+            Assertions.assertTrue(nonBlockingThread.get());
+            Assertions.assertTrue(droppedErrors.isEmpty(), droppedErrors.toString());
+            Mockito.verify(link).closeAsync();
+            Mockito.verify(link, Mockito.never()).dispose();
+        } finally {
+            Hooks.resetOnErrorDropped();
+        }
+    }
+
+    @ParameterizedTest
+    @ValueSource(booleans = { true, false })
+    public void shouldCloseLinkOnCallerCancellation(boolean timeoutRetryDisabled) throws Exception {
+        final ServiceBusReceiveLink link = createHungReceiveLink();
+        final PublisherProbe<Void> close = PublisherProbe.of(Mono.never());
+        when(link.closeAsync()).thenReturn(close.mono());
+        final Deque<Mono<ServiceBusReceiveLink>> links = new ArrayDeque<>();
+        links.add(Mono.just(link));
+        final ServiceBusSessionAcquirer acquirer
+            = createSessionAcquirer(createMockConnectionWrapper(new OnCreateSessionLink(links)), timeoutRetryDisabled);
+
+        final Disposable acquisition = acquirer.acquire("session-id").subscribe();
+        final CountDownLatch cancelled = new CountDownLatch(1);
+        Schedulers.parallel().schedule(() -> {
+            acquisition.dispose();
+            cancelled.countDown();
+        });
+        Assertions.assertTrue(cancelled.await(5, TimeUnit.SECONDS));
+
+        close.assertWasSubscribed();
+        close.assertWasNotCancelled();
+        Mockito.verify(link).closeAsync();
+        Mockito.verify(link, Mockito.never()).dispose();
+    }
+
+    @Test
+    public void shouldHandleCloseErrorWithoutDroppingItOnCancellation() {
+        final ServiceBusReceiveLink link = mock(ServiceBusReceiveLink.class);
+        when(link.getSessionProperties()).thenReturn(Mono.never());
+        final PublisherProbe<Void> close = PublisherProbe.of(Mono.error(new IOException("close failed")));
+        when(link.closeAsync()).thenReturn(close.mono());
+        final Deque<Mono<ServiceBusReceiveLink>> links = new ArrayDeque<>();
+        links.add(Mono.just(link));
+        final ServiceBusSessionAcquirer acquirer
+            = createSessionAcquirer(createMockConnectionWrapper(new OnCreateSessionLink(links)), true);
+        final Queue<Throwable> droppedErrors = new ConcurrentLinkedQueue<>();
+        Hooks.onErrorDropped(droppedErrors::add);
+        try {
+            acquirer.acquire().subscribe().dispose();
+            close.assertWasSubscribed();
+            Assertions.assertTrue(droppedErrors.isEmpty(), droppedErrors.toString());
+        } finally {
+            Hooks.resetOnErrorDropped();
+        }
+    }
+
+    @ParameterizedTest
+    @ValueSource(booleans = { true, false })
+    public void shouldTransferLinkOwnershipOnSuccess(boolean timeoutRetryDisabled) {
+        final ServiceBusReceiveLink link = mock(ServiceBusReceiveLink.class);
+        final ServiceBusReceiveLink.SessionProperties properties = mock(ServiceBusReceiveLink.SessionProperties.class);
+        when(link.getSessionProperties()).thenReturn(Mono.just(properties));
+        final Deque<Mono<ServiceBusReceiveLink>> links = new ArrayDeque<>();
+        links.add(Mono.just(link));
+        final ServiceBusSessionAcquirer acquirer
+            = createSessionAcquirer(createMockConnectionWrapper(new OnCreateSessionLink(links)), timeoutRetryDisabled);
+
+        StepVerifier.create(acquirer.acquire())
+            .assertNext(session -> Assertions.assertSame(link, session.getLink()))
+            .verifyComplete();
+
+        Mockito.verify(link, Mockito.never()).closeAsync();
+        Mockito.verify(link, Mockito.never()).dispose();
+    }
+
+    private ServiceBusReceiveLink createHungReceiveLink() {
+        final ServiceBusReceiveLink link = mock(ServiceBusReceiveLink.class);
+        when(link.getSessionProperties()).thenReturn(Mono.never());
+        // Match ReactorReceiver.dispose(): synchronous close blocks on the asynchronous close operation.
+        Mockito.doAnswer(invocation -> {
+            link.closeAsync().block(Duration.ofMillis(100));
+            return null;
+        }).when(link).dispose();
+        return link;
     }
 
     @Test

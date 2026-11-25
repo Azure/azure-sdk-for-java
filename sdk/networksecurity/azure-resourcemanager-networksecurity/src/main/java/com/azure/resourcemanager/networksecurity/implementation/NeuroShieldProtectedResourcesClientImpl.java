@@ -219,11 +219,11 @@ public final class NeuroShieldProtectedResourcesClientImpl implements NeuroShiel
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<NeuroShieldProtectedResourcesGetResponse> getWithResponseAsync(String resourceGroupName,
         String neuroShieldName, String protectedResourceName) {
+        final String apiVersion = "2026-10-01-preview";
         final String accept = "application/json";
         return FluxUtil
-            .withContext(context -> service.get(this.client.getEndpoint(), this.client.getApiVersion(),
-                this.client.getSubscriptionId(), resourceGroupName, neuroShieldName, protectedResourceName, accept,
-                context))
+            .withContext(context -> service.get(this.client.getEndpoint(), apiVersion, this.client.getSubscriptionId(),
+                resourceGroupName, neuroShieldName, protectedResourceName, accept, context))
             .contextWrite(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext()).readOnly()));
     }
 
@@ -249,45 +249,17 @@ public final class NeuroShieldProtectedResourcesClientImpl implements NeuroShiel
             .flatMap(res -> Mono.justOrEmpty(res.getValue()));
     }
 
-    /**
-     * Get a protected resource
-     * 
-     * Gets a protected resource under a NeuroShield resource.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param neuroShieldName The name of the NeuroShield resource.
-     * @param protectedResourceName The name of the protected resource.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return a protected resource
-     * 
-     * Gets a protected resource under a NeuroShield resource.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public NeuroShieldProtectedResourcesGetResponse getWithResponse(String resourceGroupName, String neuroShieldName,
         String protectedResourceName, Context context) {
+        final String apiVersion = "2026-10-01-preview";
         final String accept = "application/json";
-        return service.getSync(this.client.getEndpoint(), this.client.getApiVersion(), this.client.getSubscriptionId(),
+        return service.getSync(this.client.getEndpoint(), apiVersion, this.client.getSubscriptionId(),
             resourceGroupName, neuroShieldName, protectedResourceName, accept, context);
     }
 
-    /**
-     * Get a protected resource
-     * 
-     * Gets a protected resource under a NeuroShield resource.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param neuroShieldName The name of the NeuroShield resource.
-     * @param protectedResourceName The name of the protected resource.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return a protected resource
-     * 
-     * Gets a protected resource under a NeuroShield resource.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public NeuroShieldProtectedResourceInner get(String resourceGroupName, String neuroShieldName,
         String protectedResourceName) {
@@ -314,10 +286,11 @@ public final class NeuroShieldProtectedResourcesClientImpl implements NeuroShiel
     private Mono<Response<Flux<ByteBuffer>>> createOrUpdateWithResponseAsync(String resourceGroupName,
         String neuroShieldName, String protectedResourceName, NeuroShieldProtectedResourceInner resource,
         String ifMatch) {
+        final String apiVersion = "2026-10-01-preview";
         final String contentType = "application/json";
         final String accept = "application/json";
         return FluxUtil
-            .withContext(context -> service.createOrUpdate(this.client.getEndpoint(), this.client.getApiVersion(),
+            .withContext(context -> service.createOrUpdate(this.client.getEndpoint(), apiVersion,
                 this.client.getSubscriptionId(), resourceGroupName, neuroShieldName, protectedResourceName, ifMatch,
                 contentType, accept, resource, context))
             .contextWrite(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext()).readOnly()));
@@ -342,11 +315,8 @@ public final class NeuroShieldProtectedResourcesClientImpl implements NeuroShiel
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Response<BinaryData> createOrUpdateWithResponse(String resourceGroupName, String neuroShieldName,
         String protectedResourceName, NeuroShieldProtectedResourceInner resource, String ifMatch) {
-        final String contentType = "application/json";
-        final String accept = "application/json";
-        return service.createOrUpdateSync(this.client.getEndpoint(), this.client.getApiVersion(),
-            this.client.getSubscriptionId(), resourceGroupName, neuroShieldName, protectedResourceName, ifMatch,
-            contentType, accept, resource, Context.NONE);
+        return createOrUpdateWithResponse(resourceGroupName, neuroShieldName, protectedResourceName, resource, ifMatch,
+            Context.NONE);
     }
 
     /**
@@ -369,11 +339,11 @@ public final class NeuroShieldProtectedResourcesClientImpl implements NeuroShiel
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Response<BinaryData> createOrUpdateWithResponse(String resourceGroupName, String neuroShieldName,
         String protectedResourceName, NeuroShieldProtectedResourceInner resource, String ifMatch, Context context) {
+        final String apiVersion = "2026-10-01-preview";
         final String contentType = "application/json";
         final String accept = "application/json";
-        return service.createOrUpdateSync(this.client.getEndpoint(), this.client.getApiVersion(),
-            this.client.getSubscriptionId(), resourceGroupName, neuroShieldName, protectedResourceName, ifMatch,
-            contentType, accept, resource, context);
+        return service.createOrUpdateSync(this.client.getEndpoint(), apiVersion, this.client.getSubscriptionId(),
+            resourceGroupName, neuroShieldName, protectedResourceName, ifMatch, contentType, accept, resource, context);
     }
 
     /**
@@ -450,55 +420,21 @@ public final class NeuroShieldProtectedResourcesClientImpl implements NeuroShiel
     private SyncPoller<PollResult<NeuroShieldProtectedResourceInner>, NeuroShieldProtectedResourceInner>
         beginCreateOrUpdate(String resourceGroupName, String neuroShieldName, String protectedResourceName,
             NeuroShieldProtectedResourceInner resource, String ifMatch) {
-        Response<BinaryData> response
-            = createOrUpdateWithResponse(resourceGroupName, neuroShieldName, protectedResourceName, resource, ifMatch);
-        return this.client.<NeuroShieldProtectedResourceInner, NeuroShieldProtectedResourceInner>getLroResult(response,
-            NeuroShieldProtectedResourceInner.class, NeuroShieldProtectedResourceInner.class, Context.NONE);
+        return beginCreateOrUpdate(resourceGroupName, neuroShieldName, protectedResourceName, resource, ifMatch,
+            Context.NONE);
     }
 
-    /**
-     * Create or update a protected resource
-     * 
-     * Creates or updates a protected resource under a NeuroShield resource.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param neuroShieldName The name of the NeuroShield resource.
-     * @param protectedResourceName The name of the protected resource.
-     * @param resource The create or update request body for a protected resource.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the {@link SyncPoller} for polling of azure Resource Manager proxy child resource representing a
-     * protected resource.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public SyncPoller<PollResult<NeuroShieldProtectedResourceInner>, NeuroShieldProtectedResourceInner>
         beginCreateOrUpdate(String resourceGroupName, String neuroShieldName, String protectedResourceName,
             NeuroShieldProtectedResourceInner resource) {
         final String ifMatch = null;
-        Response<BinaryData> response
-            = createOrUpdateWithResponse(resourceGroupName, neuroShieldName, protectedResourceName, resource, ifMatch);
-        return this.client.<NeuroShieldProtectedResourceInner, NeuroShieldProtectedResourceInner>getLroResult(response,
-            NeuroShieldProtectedResourceInner.class, NeuroShieldProtectedResourceInner.class, Context.NONE);
+        return beginCreateOrUpdate(resourceGroupName, neuroShieldName, protectedResourceName, resource, ifMatch,
+            Context.NONE);
     }
 
-    /**
-     * Create or update a protected resource
-     * 
-     * Creates or updates a protected resource under a NeuroShield resource.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param neuroShieldName The name of the NeuroShield resource.
-     * @param protectedResourceName The name of the protected resource.
-     * @param resource The create or update request body for a protected resource.
-     * @param ifMatch The entity tag that makes the request conditional.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the {@link SyncPoller} for polling of azure Resource Manager proxy child resource representing a
-     * protected resource.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public SyncPoller<PollResult<NeuroShieldProtectedResourceInner>, NeuroShieldProtectedResourceInner>
         beginCreateOrUpdate(String resourceGroupName, String neuroShieldName, String protectedResourceName,
@@ -558,49 +494,21 @@ public final class NeuroShieldProtectedResourcesClientImpl implements NeuroShiel
             .flatMap(this.client::getLroFinalResultOrError);
     }
 
-    /**
-     * Create or update a protected resource
-     * 
-     * Creates or updates a protected resource under a NeuroShield resource.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param neuroShieldName The name of the NeuroShield resource.
-     * @param protectedResourceName The name of the protected resource.
-     * @param resource The create or update request body for a protected resource.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return azure Resource Manager proxy child resource representing a protected resource.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public NeuroShieldProtectedResourceInner createOrUpdate(String resourceGroupName, String neuroShieldName,
         String protectedResourceName, NeuroShieldProtectedResourceInner resource) {
         final String ifMatch = null;
-        return beginCreateOrUpdate(resourceGroupName, neuroShieldName, protectedResourceName, resource, ifMatch)
-            .getFinalResult();
+        return createOrUpdate(resourceGroupName, neuroShieldName, protectedResourceName, resource, ifMatch,
+            Context.NONE);
     }
 
-    /**
-     * Create or update a protected resource
-     * 
-     * Creates or updates a protected resource under a NeuroShield resource.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param neuroShieldName The name of the NeuroShield resource.
-     * @param protectedResourceName The name of the protected resource.
-     * @param resource The create or update request body for a protected resource.
-     * @param ifMatch The entity tag that makes the request conditional.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return azure Resource Manager proxy child resource representing a protected resource.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public NeuroShieldProtectedResourceInner createOrUpdate(String resourceGroupName, String neuroShieldName,
         String protectedResourceName, NeuroShieldProtectedResourceInner resource, String ifMatch, Context context) {
-        return beginCreateOrUpdate(resourceGroupName, neuroShieldName, protectedResourceName, resource, ifMatch,
-            context).getFinalResult();
+        return this.client.getLroFinalResultOrError(
+            beginCreateOrUpdate(resourceGroupName, neuroShieldName, protectedResourceName, resource, ifMatch, context));
     }
 
     /**
@@ -620,10 +528,11 @@ public final class NeuroShieldProtectedResourcesClientImpl implements NeuroShiel
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<Response<Flux<ByteBuffer>>> deleteWithResponseAsync(String resourceGroupName, String neuroShieldName,
         String protectedResourceName, String ifMatch) {
+        final String apiVersion = "2026-10-01-preview";
         return FluxUtil
-            .withContext(context -> service.delete(this.client.getEndpoint(), this.client.getApiVersion(),
-                this.client.getSubscriptionId(), resourceGroupName, neuroShieldName, protectedResourceName, ifMatch,
-                context))
+            .withContext(
+                context -> service.delete(this.client.getEndpoint(), apiVersion, this.client.getSubscriptionId(),
+                    resourceGroupName, neuroShieldName, protectedResourceName, ifMatch, context))
             .contextWrite(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext()).readOnly()));
     }
 
@@ -644,9 +553,7 @@ public final class NeuroShieldProtectedResourcesClientImpl implements NeuroShiel
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Response<BinaryData> deleteWithResponse(String resourceGroupName, String neuroShieldName,
         String protectedResourceName, String ifMatch) {
-        return service.deleteSync(this.client.getEndpoint(), this.client.getApiVersion(),
-            this.client.getSubscriptionId(), resourceGroupName, neuroShieldName, protectedResourceName, ifMatch,
-            Context.NONE);
+        return deleteWithResponse(resourceGroupName, neuroShieldName, protectedResourceName, ifMatch, Context.NONE);
     }
 
     /**
@@ -667,9 +574,9 @@ public final class NeuroShieldProtectedResourcesClientImpl implements NeuroShiel
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Response<BinaryData> deleteWithResponse(String resourceGroupName, String neuroShieldName,
         String protectedResourceName, String ifMatch, Context context) {
-        return service.deleteSync(this.client.getEndpoint(), this.client.getApiVersion(),
-            this.client.getSubscriptionId(), resourceGroupName, neuroShieldName, protectedResourceName, ifMatch,
-            context);
+        final String apiVersion = "2026-10-01-preview";
+        return service.deleteSync(this.client.getEndpoint(), apiVersion, this.client.getSubscriptionId(),
+            resourceGroupName, neuroShieldName, protectedResourceName, ifMatch, context);
     }
 
     /**
@@ -735,48 +642,18 @@ public final class NeuroShieldProtectedResourcesClientImpl implements NeuroShiel
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     private SyncPoller<PollResult<Void>, Void> beginDelete(String resourceGroupName, String neuroShieldName,
         String protectedResourceName, String ifMatch) {
-        Response<BinaryData> response
-            = deleteWithResponse(resourceGroupName, neuroShieldName, protectedResourceName, ifMatch);
-        return this.client.<Void, Void>getLroResult(response, Void.class, Void.class, Context.NONE);
+        return beginDelete(resourceGroupName, neuroShieldName, protectedResourceName, ifMatch, Context.NONE);
     }
 
-    /**
-     * Delete a protected resource
-     * 
-     * Deletes a protected resource under a NeuroShield resource.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param neuroShieldName The name of the NeuroShield resource.
-     * @param protectedResourceName The name of the protected resource.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the {@link SyncPoller} for polling of long-running operation.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public SyncPoller<PollResult<Void>, Void> beginDelete(String resourceGroupName, String neuroShieldName,
         String protectedResourceName) {
         final String ifMatch = null;
-        Response<BinaryData> response
-            = deleteWithResponse(resourceGroupName, neuroShieldName, protectedResourceName, ifMatch);
-        return this.client.<Void, Void>getLroResult(response, Void.class, Void.class, Context.NONE);
+        return beginDelete(resourceGroupName, neuroShieldName, protectedResourceName, ifMatch, Context.NONE);
     }
 
-    /**
-     * Delete a protected resource
-     * 
-     * Deletes a protected resource under a NeuroShield resource.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param neuroShieldName The name of the NeuroShield resource.
-     * @param protectedResourceName The name of the protected resource.
-     * @param ifMatch The entity tag that makes the request conditional.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the {@link SyncPoller} for polling of long-running operation.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public SyncPoller<PollResult<Void>, Void> beginDelete(String resourceGroupName, String neuroShieldName,
         String protectedResourceName, String ifMatch, Context context) {
@@ -826,42 +703,19 @@ public final class NeuroShieldProtectedResourcesClientImpl implements NeuroShiel
             .flatMap(this.client::getLroFinalResultOrError);
     }
 
-    /**
-     * Delete a protected resource
-     * 
-     * Deletes a protected resource under a NeuroShield resource.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param neuroShieldName The name of the NeuroShield resource.
-     * @param protectedResourceName The name of the protected resource.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public void delete(String resourceGroupName, String neuroShieldName, String protectedResourceName) {
         final String ifMatch = null;
-        beginDelete(resourceGroupName, neuroShieldName, protectedResourceName, ifMatch).getFinalResult();
+        delete(resourceGroupName, neuroShieldName, protectedResourceName, ifMatch, Context.NONE);
     }
 
-    /**
-     * Delete a protected resource
-     * 
-     * Deletes a protected resource under a NeuroShield resource.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param neuroShieldName The name of the NeuroShield resource.
-     * @param protectedResourceName The name of the protected resource.
-     * @param ifMatch The entity tag that makes the request conditional.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public void delete(String resourceGroupName, String neuroShieldName, String protectedResourceName, String ifMatch,
         Context context) {
-        beginDelete(resourceGroupName, neuroShieldName, protectedResourceName, ifMatch, context).getFinalResult();
+        this.client.getLroFinalResultOrError(
+            beginDelete(resourceGroupName, neuroShieldName, protectedResourceName, ifMatch, context));
     }
 
     /**
@@ -882,10 +736,11 @@ public final class NeuroShieldProtectedResourcesClientImpl implements NeuroShiel
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<PagedResponse<NeuroShieldProtectedResourceInner>> listSinglePageAsync(String resourceGroupName,
         String neuroShieldName, Integer top, String skipToken) {
+        final String apiVersion = "2026-10-01-preview";
         final String accept = "application/json";
         return FluxUtil
-            .withContext(context -> service.list(this.client.getEndpoint(), this.client.getApiVersion(),
-                this.client.getSubscriptionId(), resourceGroupName, neuroShieldName, top, skipToken, accept, context))
+            .withContext(context -> service.list(this.client.getEndpoint(), apiVersion, this.client.getSubscriptionId(),
+                resourceGroupName, neuroShieldName, top, skipToken, accept, context))
             .<PagedResponse<NeuroShieldProtectedResourceInner>>map(res -> new PagedResponseBase<>(res.getRequest(),
                 res.getStatusCode(), res.getHeaders(), res.getValue().value(), res.getValue().nextLink(), null))
             .contextWrite(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext()).readOnly()));
@@ -951,12 +806,7 @@ public final class NeuroShieldProtectedResourcesClientImpl implements NeuroShiel
     @ServiceMethod(returns = ReturnType.SINGLE)
     private PagedResponse<NeuroShieldProtectedResourceInner> listSinglePage(String resourceGroupName,
         String neuroShieldName, Integer top, String skipToken) {
-        final String accept = "application/json";
-        Response<NeuroShieldProtectedResourceListResult> res
-            = service.listSync(this.client.getEndpoint(), this.client.getApiVersion(), this.client.getSubscriptionId(),
-                resourceGroupName, neuroShieldName, top, skipToken, accept, Context.NONE);
-        return new PagedResponseBase<>(res.getRequest(), res.getStatusCode(), res.getHeaders(), res.getValue().value(),
-            res.getValue().nextLink(), null);
+        return listSinglePage(resourceGroupName, neuroShieldName, top, skipToken, Context.NONE);
     }
 
     /**
@@ -977,51 +827,23 @@ public final class NeuroShieldProtectedResourcesClientImpl implements NeuroShiel
     @ServiceMethod(returns = ReturnType.SINGLE)
     private PagedResponse<NeuroShieldProtectedResourceInner> listSinglePage(String resourceGroupName,
         String neuroShieldName, Integer top, String skipToken, Context context) {
+        final String apiVersion = "2026-10-01-preview";
         final String accept = "application/json";
-        Response<NeuroShieldProtectedResourceListResult> res
-            = service.listSync(this.client.getEndpoint(), this.client.getApiVersion(), this.client.getSubscriptionId(),
-                resourceGroupName, neuroShieldName, top, skipToken, accept, context);
+        Response<NeuroShieldProtectedResourceListResult> res = service.listSync(this.client.getEndpoint(), apiVersion,
+            this.client.getSubscriptionId(), resourceGroupName, neuroShieldName, top, skipToken, accept, context);
         return new PagedResponseBase<>(res.getRequest(), res.getStatusCode(), res.getHeaders(), res.getValue().value(),
             res.getValue().nextLink(), null);
     }
 
-    /**
-     * List protected resources
-     * 
-     * Lists all protected resources under a NeuroShield resource.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param neuroShieldName The name of the NeuroShield resource.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the response of a NeuroShieldProtectedResource list operation as paginated response with
-     * {@link PagedIterable}.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.COLLECTION)
     public PagedIterable<NeuroShieldProtectedResourceInner> list(String resourceGroupName, String neuroShieldName) {
         final Integer top = null;
         final String skipToken = null;
-        return new PagedIterable<>(() -> listSinglePage(resourceGroupName, neuroShieldName, top, skipToken),
-            nextLink -> listNextSinglePage(nextLink));
+        return list(resourceGroupName, neuroShieldName, top, skipToken, Context.NONE);
     }
 
-    /**
-     * List protected resources
-     * 
-     * Lists all protected resources under a NeuroShield resource.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param neuroShieldName The name of the NeuroShield resource.
-     * @param top The maximum number of items to return.
-     * @param skipToken The continuation token used to retrieve the next page.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the response of a NeuroShieldProtectedResource list operation as paginated response with
-     * {@link PagedIterable}.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.COLLECTION)
     public PagedIterable<NeuroShieldProtectedResourceInner> list(String resourceGroupName, String neuroShieldName,
         Integer top, String skipToken, Context context) {
@@ -1046,11 +868,12 @@ public final class NeuroShieldProtectedResourcesClientImpl implements NeuroShiel
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<Response<NeuroShieldInventoryUploadRequestResultInner>> triggerInventoryUploadWithResponseAsync(
         String resourceGroupName, String neuroShieldName, String protectedResourceName) {
+        final String apiVersion = "2026-10-01-preview";
         final String accept = "application/json";
         return FluxUtil
-            .withContext(context -> service.triggerInventoryUpload(this.client.getEndpoint(),
-                this.client.getApiVersion(), this.client.getSubscriptionId(), resourceGroupName, neuroShieldName,
-                protectedResourceName, accept, context))
+            .withContext(context -> service.triggerInventoryUpload(this.client.getEndpoint(), apiVersion,
+                this.client.getSubscriptionId(), resourceGroupName, neuroShieldName, protectedResourceName, accept,
+                context))
             .contextWrite(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext()).readOnly()));
     }
 
@@ -1074,42 +897,18 @@ public final class NeuroShieldProtectedResourcesClientImpl implements NeuroShiel
             .flatMap(res -> Mono.justOrEmpty(res.getValue()));
     }
 
-    /**
-     * Trigger an inventory upload
-     * 
-     * Requests a fresh inventory upload from the Neuron agents associated with a protected resource.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param neuroShieldName The name of the NeuroShield resource.
-     * @param protectedResourceName The name of the protected resource.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the result of requesting a fresh inventory upload along with {@link Response}.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Response<NeuroShieldInventoryUploadRequestResultInner> triggerInventoryUploadWithResponse(
         String resourceGroupName, String neuroShieldName, String protectedResourceName, Context context) {
+        final String apiVersion = "2026-10-01-preview";
         final String accept = "application/json";
-        return service.triggerInventoryUploadSync(this.client.getEndpoint(), this.client.getApiVersion(),
+        return service.triggerInventoryUploadSync(this.client.getEndpoint(), apiVersion,
             this.client.getSubscriptionId(), resourceGroupName, neuroShieldName, protectedResourceName, accept,
             context);
     }
 
-    /**
-     * Trigger an inventory upload
-     * 
-     * Requests a fresh inventory upload from the Neuron agents associated with a protected resource.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param neuroShieldName The name of the NeuroShield resource.
-     * @param protectedResourceName The name of the protected resource.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the result of requesting a fresh inventory upload.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public NeuroShieldInventoryUploadRequestResultInner triggerInventoryUpload(String resourceGroupName,
         String neuroShieldName, String protectedResourceName) {
@@ -1151,11 +950,7 @@ public final class NeuroShieldProtectedResourcesClientImpl implements NeuroShiel
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private PagedResponse<NeuroShieldProtectedResourceInner> listNextSinglePage(String nextLink) {
-        final String accept = "application/json";
-        Response<NeuroShieldProtectedResourceListResult> res
-            = service.listNextSync(nextLink, this.client.getEndpoint(), accept, Context.NONE);
-        return new PagedResponseBase<>(res.getRequest(), res.getStatusCode(), res.getHeaders(), res.getValue().value(),
-            res.getValue().nextLink(), null);
+        return listNextSinglePage(nextLink, Context.NONE);
     }
 
     /**

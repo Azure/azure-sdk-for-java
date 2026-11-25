@@ -222,18 +222,7 @@ public final class RuntimeBindingsClientImpl implements RuntimeBindingsClient {
             .flatMap(res -> Mono.justOrEmpty(res.getValue()));
     }
 
-    /**
-     * Gets a runtime binding.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param spaceName The name of the WorkloadSpace.
-     * @param bindingName The name of the RuntimeBinding.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return a runtime binding along with {@link Response}.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Response<RuntimeBindingInner> getWithResponse(String resourceGroupName, String spaceName, String bindingName,
         Context context) {
@@ -242,17 +231,7 @@ public final class RuntimeBindingsClientImpl implements RuntimeBindingsClient {
             resourceGroupName, spaceName, bindingName, accept, context);
     }
 
-    /**
-     * Gets a runtime binding.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param spaceName The name of the WorkloadSpace.
-     * @param bindingName The name of the RuntimeBinding.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return a runtime binding.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public RuntimeBindingInner get(String resourceGroupName, String spaceName, String bindingName) {
         return getWithResponse(resourceGroupName, spaceName, bindingName, Context.NONE).getValue();
@@ -298,11 +277,7 @@ public final class RuntimeBindingsClientImpl implements RuntimeBindingsClient {
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Response<BinaryData> createOrUpdateWithResponse(String resourceGroupName, String spaceName,
         String bindingName, RuntimeBindingInner resource) {
-        final String contentType = "application/json";
-        final String accept = "application/json";
-        return service.createOrUpdateSync(this.client.getEndpoint(), this.client.getApiVersion(),
-            this.client.getSubscriptionId(), resourceGroupName, spaceName, bindingName, contentType, accept, resource,
-            Context.NONE);
+        return createOrUpdateWithResponse(resourceGroupName, spaceName, bindingName, resource, Context.NONE);
     }
 
     /**
@@ -349,39 +324,14 @@ public final class RuntimeBindingsClientImpl implements RuntimeBindingsClient {
             RuntimeBindingInner.class, RuntimeBindingInner.class, this.client.getContext());
     }
 
-    /**
-     * Creates or replaces a runtime binding.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param spaceName The name of the WorkloadSpace.
-     * @param bindingName The name of the RuntimeBinding.
-     * @param resource Resource create parameters.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the {@link SyncPoller} for polling of a runtime participant in a workload space.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public SyncPoller<PollResult<RuntimeBindingInner>, RuntimeBindingInner> beginCreateOrUpdate(
         String resourceGroupName, String spaceName, String bindingName, RuntimeBindingInner resource) {
-        Response<BinaryData> response = createOrUpdateWithResponse(resourceGroupName, spaceName, bindingName, resource);
-        return this.client.<RuntimeBindingInner, RuntimeBindingInner>getLroResult(response, RuntimeBindingInner.class,
-            RuntimeBindingInner.class, Context.NONE);
+        return beginCreateOrUpdate(resourceGroupName, spaceName, bindingName, resource, Context.NONE);
     }
 
-    /**
-     * Creates or replaces a runtime binding.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param spaceName The name of the WorkloadSpace.
-     * @param bindingName The name of the RuntimeBinding.
-     * @param resource Resource create parameters.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the {@link SyncPoller} for polling of a runtime participant in a workload space.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public SyncPoller<PollResult<RuntimeBindingInner>, RuntimeBindingInner> beginCreateOrUpdate(
         String resourceGroupName, String spaceName, String bindingName, RuntimeBindingInner resource, Context context) {
@@ -410,41 +360,19 @@ public final class RuntimeBindingsClientImpl implements RuntimeBindingsClient {
             .flatMap(this.client::getLroFinalResultOrError);
     }
 
-    /**
-     * Creates or replaces a runtime binding.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param spaceName The name of the WorkloadSpace.
-     * @param bindingName The name of the RuntimeBinding.
-     * @param resource Resource create parameters.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return a runtime participant in a workload space.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public RuntimeBindingInner createOrUpdate(String resourceGroupName, String spaceName, String bindingName,
         RuntimeBindingInner resource) {
-        return beginCreateOrUpdate(resourceGroupName, spaceName, bindingName, resource).getFinalResult();
+        return createOrUpdate(resourceGroupName, spaceName, bindingName, resource, Context.NONE);
     }
 
-    /**
-     * Creates or replaces a runtime binding.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param spaceName The name of the WorkloadSpace.
-     * @param bindingName The name of the RuntimeBinding.
-     * @param resource Resource create parameters.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return a runtime participant in a workload space.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public RuntimeBindingInner createOrUpdate(String resourceGroupName, String spaceName, String bindingName,
         RuntimeBindingInner resource, Context context) {
-        return beginCreateOrUpdate(resourceGroupName, spaceName, bindingName, resource, context).getFinalResult();
+        return this.client.getLroFinalResultOrError(
+            beginCreateOrUpdate(resourceGroupName, spaceName, bindingName, resource, context));
     }
 
     /**
@@ -487,11 +415,7 @@ public final class RuntimeBindingsClientImpl implements RuntimeBindingsClient {
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Response<BinaryData> updateWithResponse(String resourceGroupName, String spaceName, String bindingName,
         RuntimeBindingUpdate properties) {
-        final String contentType = "application/json";
-        final String accept = "application/json";
-        return service.updateSync(this.client.getEndpoint(), this.client.getApiVersion(),
-            this.client.getSubscriptionId(), resourceGroupName, spaceName, bindingName, contentType, accept, properties,
-            Context.NONE);
+        return updateWithResponse(resourceGroupName, spaceName, bindingName, properties, Context.NONE);
     }
 
     /**
@@ -538,39 +462,14 @@ public final class RuntimeBindingsClientImpl implements RuntimeBindingsClient {
             RuntimeBindingInner.class, RuntimeBindingInner.class, this.client.getContext());
     }
 
-    /**
-     * Updates mutable runtime binding properties.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param spaceName The name of the WorkloadSpace.
-     * @param bindingName The name of the RuntimeBinding.
-     * @param properties The resource properties to be updated.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the {@link SyncPoller} for polling of a runtime participant in a workload space.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public SyncPoller<PollResult<RuntimeBindingInner>, RuntimeBindingInner> beginUpdate(String resourceGroupName,
         String spaceName, String bindingName, RuntimeBindingUpdate properties) {
-        Response<BinaryData> response = updateWithResponse(resourceGroupName, spaceName, bindingName, properties);
-        return this.client.<RuntimeBindingInner, RuntimeBindingInner>getLroResult(response, RuntimeBindingInner.class,
-            RuntimeBindingInner.class, Context.NONE);
+        return beginUpdate(resourceGroupName, spaceName, bindingName, properties, Context.NONE);
     }
 
-    /**
-     * Updates mutable runtime binding properties.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param spaceName The name of the WorkloadSpace.
-     * @param bindingName The name of the RuntimeBinding.
-     * @param properties The resource properties to be updated.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the {@link SyncPoller} for polling of a runtime participant in a workload space.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public SyncPoller<PollResult<RuntimeBindingInner>, RuntimeBindingInner> beginUpdate(String resourceGroupName,
         String spaceName, String bindingName, RuntimeBindingUpdate properties, Context context) {
@@ -599,41 +498,19 @@ public final class RuntimeBindingsClientImpl implements RuntimeBindingsClient {
             .flatMap(this.client::getLroFinalResultOrError);
     }
 
-    /**
-     * Updates mutable runtime binding properties.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param spaceName The name of the WorkloadSpace.
-     * @param bindingName The name of the RuntimeBinding.
-     * @param properties The resource properties to be updated.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return a runtime participant in a workload space.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public RuntimeBindingInner update(String resourceGroupName, String spaceName, String bindingName,
         RuntimeBindingUpdate properties) {
-        return beginUpdate(resourceGroupName, spaceName, bindingName, properties).getFinalResult();
+        return update(resourceGroupName, spaceName, bindingName, properties, Context.NONE);
     }
 
-    /**
-     * Updates mutable runtime binding properties.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param spaceName The name of the WorkloadSpace.
-     * @param bindingName The name of the RuntimeBinding.
-     * @param properties The resource properties to be updated.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return a runtime participant in a workload space.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public RuntimeBindingInner update(String resourceGroupName, String spaceName, String bindingName,
         RuntimeBindingUpdate properties, Context context) {
-        return beginUpdate(resourceGroupName, spaceName, bindingName, properties, context).getFinalResult();
+        return this.client
+            .getLroFinalResultOrError(beginUpdate(resourceGroupName, spaceName, bindingName, properties, context));
     }
 
     /**
@@ -669,8 +546,7 @@ public final class RuntimeBindingsClientImpl implements RuntimeBindingsClient {
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Response<BinaryData> deleteWithResponse(String resourceGroupName, String spaceName, String bindingName) {
-        return service.deleteSync(this.client.getEndpoint(), this.client.getApiVersion(),
-            this.client.getSubscriptionId(), resourceGroupName, spaceName, bindingName, Context.NONE);
+        return deleteWithResponse(resourceGroupName, spaceName, bindingName, Context.NONE);
     }
 
     /**
@@ -711,36 +587,14 @@ public final class RuntimeBindingsClientImpl implements RuntimeBindingsClient {
             this.client.getContext());
     }
 
-    /**
-     * Deletes a runtime binding without deleting customer-owned referenced resources.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param spaceName The name of the WorkloadSpace.
-     * @param bindingName The name of the RuntimeBinding.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the {@link SyncPoller} for polling of long-running operation.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public SyncPoller<PollResult<Void>, Void> beginDelete(String resourceGroupName, String spaceName,
         String bindingName) {
-        Response<BinaryData> response = deleteWithResponse(resourceGroupName, spaceName, bindingName);
-        return this.client.<Void, Void>getLroResult(response, Void.class, Void.class, Context.NONE);
+        return beginDelete(resourceGroupName, spaceName, bindingName, Context.NONE);
     }
 
-    /**
-     * Deletes a runtime binding without deleting customer-owned referenced resources.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param spaceName The name of the WorkloadSpace.
-     * @param bindingName The name of the RuntimeBinding.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the {@link SyncPoller} for polling of long-running operation.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public SyncPoller<PollResult<Void>, Void> beginDelete(String resourceGroupName, String spaceName,
         String bindingName, Context context) {
@@ -765,35 +619,16 @@ public final class RuntimeBindingsClientImpl implements RuntimeBindingsClient {
             .flatMap(this.client::getLroFinalResultOrError);
     }
 
-    /**
-     * Deletes a runtime binding without deleting customer-owned referenced resources.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param spaceName The name of the WorkloadSpace.
-     * @param bindingName The name of the RuntimeBinding.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public void delete(String resourceGroupName, String spaceName, String bindingName) {
-        beginDelete(resourceGroupName, spaceName, bindingName).getFinalResult();
+        delete(resourceGroupName, spaceName, bindingName, Context.NONE);
     }
 
-    /**
-     * Deletes a runtime binding without deleting customer-owned referenced resources.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param spaceName The name of the WorkloadSpace.
-     * @param bindingName The name of the RuntimeBinding.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public void delete(String resourceGroupName, String spaceName, String bindingName, Context context) {
-        beginDelete(resourceGroupName, spaceName, bindingName, context).getFinalResult();
+        this.client.getLroFinalResultOrError(beginDelete(resourceGroupName, spaceName, bindingName, context));
     }
 
     /**
@@ -848,12 +683,7 @@ public final class RuntimeBindingsClientImpl implements RuntimeBindingsClient {
     @ServiceMethod(returns = ReturnType.SINGLE)
     private PagedResponse<RuntimeBindingInner> listByWorkloadSpaceSinglePage(String resourceGroupName,
         String spaceName) {
-        final String accept = "application/json";
-        Response<RuntimeBindingListResult> res
-            = service.listByWorkloadSpaceSync(this.client.getEndpoint(), this.client.getApiVersion(),
-                this.client.getSubscriptionId(), resourceGroupName, spaceName, accept, Context.NONE);
-        return new PagedResponseBase<>(res.getRequest(), res.getStatusCode(), res.getHeaders(), res.getValue().value(),
-            res.getValue().nextLink(), null);
+        return listByWorkloadSpaceSinglePage(resourceGroupName, spaceName, Context.NONE);
     }
 
     /**
@@ -878,33 +708,13 @@ public final class RuntimeBindingsClientImpl implements RuntimeBindingsClient {
             res.getValue().nextLink(), null);
     }
 
-    /**
-     * Lists runtime bindings in a workload space.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param spaceName The name of the WorkloadSpace.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the response of a RuntimeBinding list operation as paginated response with {@link PagedIterable}.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.COLLECTION)
     public PagedIterable<RuntimeBindingInner> listByWorkloadSpace(String resourceGroupName, String spaceName) {
-        return new PagedIterable<>(() -> listByWorkloadSpaceSinglePage(resourceGroupName, spaceName),
-            nextLink -> listByWorkloadSpaceNextSinglePage(nextLink));
+        return listByWorkloadSpace(resourceGroupName, spaceName, Context.NONE);
     }
 
-    /**
-     * Lists runtime bindings in a workload space.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param spaceName The name of the WorkloadSpace.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the response of a RuntimeBinding list operation as paginated response with {@link PagedIterable}.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.COLLECTION)
     public PagedIterable<RuntimeBindingInner> listByWorkloadSpace(String resourceGroupName, String spaceName,
         Context context) {
@@ -944,11 +754,7 @@ public final class RuntimeBindingsClientImpl implements RuntimeBindingsClient {
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private PagedResponse<RuntimeBindingInner> listByWorkloadSpaceNextSinglePage(String nextLink) {
-        final String accept = "application/json";
-        Response<RuntimeBindingListResult> res
-            = service.listByWorkloadSpaceNextSync(nextLink, this.client.getEndpoint(), accept, Context.NONE);
-        return new PagedResponseBase<>(res.getRequest(), res.getStatusCode(), res.getHeaders(), res.getValue().value(),
-            res.getValue().nextLink(), null);
+        return listByWorkloadSpaceNextSinglePage(nextLink, Context.NONE);
     }
 
     /**

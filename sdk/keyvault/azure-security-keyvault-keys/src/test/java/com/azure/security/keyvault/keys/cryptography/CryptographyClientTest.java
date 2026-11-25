@@ -230,7 +230,7 @@ public class CryptographyClientTest extends CryptographyClientTestBase {
         String keyName = testResourceNamer.randomName("secureWrapKey", 25);
         CreateRsaKeyOptions createRsaKeyOptions = new CreateRsaKeyOptions(keyName).setKeySize(2048)
             .setHardwareProtected(true)
-            .setKeyOperations(KeyOperation.SECURE_WRAP_KEY, KeyOperation.SECURE_UNWRAP_KEY)
+            .setKeyOperations(KeyOperation.fromString("secureWrapKey"), KeyOperation.fromString("secureUnwrapKey"))
             .setReleasePolicy(new KeyReleasePolicy(BinaryData.fromString(releasePolicyContents)));
 
         KeyVaultKey wrappingKey = client.createRsaKey(createRsaKeyOptions);

@@ -88,11 +88,7 @@ public final class NetworkMappingImpl implements NetworkMapping, NetworkMapping.
     }
 
     public NetworkMapping create() {
-        this.innerObject = serviceManager.serviceClient()
-            .getReplicationNetworkMappings()
-            .create(resourceGroupName, resourceName, fabricName, networkName, networkMappingName, createInput,
-                Context.NONE);
-        return this;
+        return this.create(Context.NONE);
     }
 
     public NetworkMapping create(Context context) {
@@ -115,11 +111,7 @@ public final class NetworkMappingImpl implements NetworkMapping, NetworkMapping.
     }
 
     public NetworkMapping apply() {
-        this.innerObject = serviceManager.serviceClient()
-            .getReplicationNetworkMappings()
-            .update(resourceGroupName, resourceName, fabricName, networkName, networkMappingName, updateInput,
-                Context.NONE);
-        return this;
+        return this.apply(Context.NONE);
     }
 
     public NetworkMapping apply(Context context) {
@@ -151,11 +143,7 @@ public final class NetworkMappingImpl implements NetworkMapping, NetworkMapping.
     }
 
     public NetworkMapping refresh() {
-        this.innerObject = serviceManager.serviceClient()
-            .getReplicationNetworkMappings()
-            .getWithResponse(resourceGroupName, resourceName, fabricName, networkName, networkMappingName, Context.NONE)
-            .getValue();
-        return this;
+        return this.refresh(Context.NONE);
     }
 
     public NetworkMapping refresh(Context context) {

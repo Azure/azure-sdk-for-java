@@ -142,19 +142,7 @@ public final class ContentPackageOperationsClientImpl implements ContentPackageO
             .flatMap(res -> Mono.justOrEmpty(res.getValue()));
     }
 
-    /**
-     * Install a package to the workspace.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param workspaceName The name of the monitor workspace.
-     * @param packageId package Id.
-     * @param packageInstallationProperties Package installation properties.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return represents a Package in Azure Security Insights along with {@link Response}.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Response<PackageModelInner> installWithResponse(String resourceGroupName, String workspaceName,
         String packageId, PackageModelInner packageInstallationProperties, Context context) {
@@ -165,18 +153,7 @@ public final class ContentPackageOperationsClientImpl implements ContentPackageO
             packageInstallationProperties, context);
     }
 
-    /**
-     * Install a package to the workspace.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param workspaceName The name of the monitor workspace.
-     * @param packageId package Id.
-     * @param packageInstallationProperties Package installation properties.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return represents a Package in Azure Security Insights.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public PackageModelInner install(String resourceGroupName, String workspaceName, String packageId,
         PackageModelInner packageInstallationProperties) {
@@ -220,18 +197,7 @@ public final class ContentPackageOperationsClientImpl implements ContentPackageO
         return uninstallWithResponseAsync(resourceGroupName, workspaceName, packageId).flatMap(ignored -> Mono.empty());
     }
 
-    /**
-     * Uninstall a package from the workspace.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param workspaceName The name of the monitor workspace.
-     * @param packageId package Id.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the {@link Response}.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Response<Void> uninstallWithResponse(String resourceGroupName, String workspaceName, String packageId,
         Context context) {
@@ -239,16 +205,7 @@ public final class ContentPackageOperationsClientImpl implements ContentPackageO
             this.client.getSubscriptionId(), resourceGroupName, workspaceName, packageId, context);
     }
 
-    /**
-     * Uninstall a package from the workspace.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param workspaceName The name of the monitor workspace.
-     * @param packageId package Id.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public void uninstall(String resourceGroupName, String workspaceName, String packageId) {
         uninstallWithResponse(resourceGroupName, workspaceName, packageId, Context.NONE);

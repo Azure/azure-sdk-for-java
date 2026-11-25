@@ -132,10 +132,7 @@ public final class StorageSyncServiceImpl
     }
 
     public StorageSyncService create() {
-        this.innerObject = serviceManager.serviceClient()
-            .getStorageSyncServices()
-            .create(resourceGroupName, storageSyncServiceName, createParameters, Context.NONE);
-        return this;
+        return this.create(Context.NONE);
     }
 
     public StorageSyncService create(Context context) {
@@ -157,10 +154,7 @@ public final class StorageSyncServiceImpl
     }
 
     public StorageSyncService apply() {
-        this.innerObject = serviceManager.serviceClient()
-            .getStorageSyncServices()
-            .update(resourceGroupName, storageSyncServiceName, updateParameters, Context.NONE);
-        return this;
+        return this.apply(Context.NONE);
     }
 
     public StorageSyncService apply(Context context) {
@@ -183,11 +177,7 @@ public final class StorageSyncServiceImpl
     }
 
     public StorageSyncService refresh() {
-        this.innerObject = serviceManager.serviceClient()
-            .getStorageSyncServices()
-            .getByResourceGroupWithResponse(resourceGroupName, storageSyncServiceName, Context.NONE)
-            .getValue();
-        return this;
+        return this.refresh(Context.NONE);
     }
 
     public StorageSyncService refresh(Context context) {

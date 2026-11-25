@@ -84,10 +84,7 @@ public final class ProjectImpl implements Project, Project.Definition, Project.U
     }
 
     public Project create() {
-        this.innerObject = serviceManager.serviceClient()
-            .getProjects()
-            .createOrUpdate(resourceGroupName, workspaceName, projectName, this.innerModel(), Context.NONE);
-        return this;
+        return this.create(Context.NONE);
     }
 
     public Project create(Context context) {
@@ -108,10 +105,7 @@ public final class ProjectImpl implements Project, Project.Definition, Project.U
     }
 
     public Project apply() {
-        this.innerObject = serviceManager.serviceClient()
-            .getProjects()
-            .update(resourceGroupName, workspaceName, projectName, this.innerModel(), Context.NONE);
-        return this;
+        return this.apply(Context.NONE);
     }
 
     public Project apply(Context context) {
@@ -136,11 +130,7 @@ public final class ProjectImpl implements Project, Project.Definition, Project.U
     }
 
     public Project refresh() {
-        this.innerObject = serviceManager.serviceClient()
-            .getProjects()
-            .getWithResponse(resourceGroupName, workspaceName, projectName, Context.NONE)
-            .getValue();
-        return this;
+        return this.refresh(Context.NONE);
     }
 
     public Project refresh(Context context) {

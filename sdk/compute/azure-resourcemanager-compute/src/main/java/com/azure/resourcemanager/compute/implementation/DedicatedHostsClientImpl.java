@@ -167,20 +167,7 @@ public final class DedicatedHostsClientImpl implements DedicatedHostsClient {
             @HeaderParam("Accept") String accept, Context context);
     }
 
-    /**
-     * Retrieves information about a dedicated host.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param hostGroupName The name of the dedicated host group.
-     * @param hostName The name of the dedicated host.
-     * @param expand The expand expression to apply on the operation. 'InstanceView' will retrieve the list of instance
-     * views of the dedicated host. 'UserData' is not supported for dedicated host.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ApiErrorException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return specifies information about the Dedicated host along with {@link Response} on successful completion of
-     * {@link Mono}.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Response<DedicatedHostInner>> getWithResponseAsync(String resourceGroupName, String hostGroupName,
         String hostName, InstanceViewTypes expand) {
@@ -253,17 +240,7 @@ public final class DedicatedHostsClientImpl implements DedicatedHostsClient {
             hostGroupName, hostName, expand, accept, context);
     }
 
-    /**
-     * Retrieves information about a dedicated host.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param hostGroupName The name of the dedicated host group.
-     * @param hostName The name of the dedicated host.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ApiErrorException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return specifies information about the Dedicated host on successful completion of {@link Mono}.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<DedicatedHostInner> getAsync(String resourceGroupName, String hostGroupName, String hostName) {
         final InstanceViewTypes expand = null;
@@ -271,56 +248,21 @@ public final class DedicatedHostsClientImpl implements DedicatedHostsClient {
             .flatMap(res -> Mono.justOrEmpty(res.getValue()));
     }
 
-    /**
-     * Retrieves information about a dedicated host.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param hostGroupName The name of the dedicated host group.
-     * @param hostName The name of the dedicated host.
-     * @param expand The expand expression to apply on the operation. 'InstanceView' will retrieve the list of instance
-     * views of the dedicated host. 'UserData' is not supported for dedicated host.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ApiErrorException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return specifies information about the Dedicated host along with {@link Response}.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Response<DedicatedHostInner> getWithResponse(String resourceGroupName, String hostGroupName, String hostName,
         InstanceViewTypes expand, Context context) {
         return getWithResponseAsync(resourceGroupName, hostGroupName, hostName, expand, context).block();
     }
 
-    /**
-     * Retrieves information about a dedicated host.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param hostGroupName The name of the dedicated host group.
-     * @param hostName The name of the dedicated host.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ApiErrorException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return specifies information about the Dedicated host.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public DedicatedHostInner get(String resourceGroupName, String hostGroupName, String hostName) {
         final InstanceViewTypes expand = null;
         return getWithResponse(resourceGroupName, hostGroupName, hostName, expand, Context.NONE).getValue();
     }
 
-    /**
-     * Create or update a dedicated host .
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param hostGroupName The name of the dedicated host group.
-     * @param hostName The name of the dedicated host.
-     * @param parameters Parameters supplied to the Create Dedicated Host.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ApiErrorException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return specifies information about the Dedicated host along with {@link Response} on successful completion of
-     * {@link Mono}.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Response<Flux<ByteBuffer>>> createOrUpdateWithResponseAsync(String resourceGroupName,
         String hostGroupName, String hostName, DedicatedHostInner parameters) {
@@ -405,18 +347,7 @@ public final class DedicatedHostsClientImpl implements DedicatedHostsClient {
             resourceGroupName, hostGroupName, hostName, contentType, accept, parameters, context);
     }
 
-    /**
-     * Create or update a dedicated host .
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param hostGroupName The name of the dedicated host group.
-     * @param hostName The name of the dedicated host.
-     * @param parameters Parameters supplied to the Create Dedicated Host.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ApiErrorException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the {@link PollerFlux} for polling of specifies information about the Dedicated host.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public PollerFlux<PollResult<DedicatedHostInner>, DedicatedHostInner> beginCreateOrUpdateAsync(
         String resourceGroupName, String hostGroupName, String hostName, DedicatedHostInner parameters) {
@@ -450,37 +381,14 @@ public final class DedicatedHostsClientImpl implements DedicatedHostsClient {
             DedicatedHostInner.class, DedicatedHostInner.class, context);
     }
 
-    /**
-     * Create or update a dedicated host .
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param hostGroupName The name of the dedicated host group.
-     * @param hostName The name of the dedicated host.
-     * @param parameters Parameters supplied to the Create Dedicated Host.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ApiErrorException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the {@link SyncPoller} for polling of specifies information about the Dedicated host.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public SyncPoller<PollResult<DedicatedHostInner>, DedicatedHostInner> beginCreateOrUpdate(String resourceGroupName,
         String hostGroupName, String hostName, DedicatedHostInner parameters) {
         return this.beginCreateOrUpdateAsync(resourceGroupName, hostGroupName, hostName, parameters).getSyncPoller();
     }
 
-    /**
-     * Create or update a dedicated host .
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param hostGroupName The name of the dedicated host group.
-     * @param hostName The name of the dedicated host.
-     * @param parameters Parameters supplied to the Create Dedicated Host.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ApiErrorException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the {@link SyncPoller} for polling of specifies information about the Dedicated host.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public SyncPoller<PollResult<DedicatedHostInner>, DedicatedHostInner> beginCreateOrUpdate(String resourceGroupName,
         String hostGroupName, String hostName, DedicatedHostInner parameters, Context context) {
@@ -488,18 +396,7 @@ public final class DedicatedHostsClientImpl implements DedicatedHostsClient {
             .getSyncPoller();
     }
 
-    /**
-     * Create or update a dedicated host .
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param hostGroupName The name of the dedicated host group.
-     * @param hostName The name of the dedicated host.
-     * @param parameters Parameters supplied to the Create Dedicated Host.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ApiErrorException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return specifies information about the Dedicated host on successful completion of {@link Mono}.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<DedicatedHostInner> createOrUpdateAsync(String resourceGroupName, String hostGroupName, String hostName,
         DedicatedHostInner parameters) {
@@ -527,56 +424,21 @@ public final class DedicatedHostsClientImpl implements DedicatedHostsClient {
             .flatMap(this.client::getLroFinalResultOrError);
     }
 
-    /**
-     * Create or update a dedicated host .
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param hostGroupName The name of the dedicated host group.
-     * @param hostName The name of the dedicated host.
-     * @param parameters Parameters supplied to the Create Dedicated Host.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ApiErrorException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return specifies information about the Dedicated host.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public DedicatedHostInner createOrUpdate(String resourceGroupName, String hostGroupName, String hostName,
         DedicatedHostInner parameters) {
         return createOrUpdateAsync(resourceGroupName, hostGroupName, hostName, parameters).block();
     }
 
-    /**
-     * Create or update a dedicated host .
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param hostGroupName The name of the dedicated host group.
-     * @param hostName The name of the dedicated host.
-     * @param parameters Parameters supplied to the Create Dedicated Host.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ApiErrorException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return specifies information about the Dedicated host.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public DedicatedHostInner createOrUpdate(String resourceGroupName, String hostGroupName, String hostName,
         DedicatedHostInner parameters, Context context) {
         return createOrUpdateAsync(resourceGroupName, hostGroupName, hostName, parameters, context).block();
     }
 
-    /**
-     * Update a dedicated host .
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param hostGroupName The name of the dedicated host group.
-     * @param hostName The name of the dedicated host.
-     * @param parameters Parameters supplied to the Update Dedicated Host operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ApiErrorException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return specifies information about the Dedicated host along with {@link Response} on successful completion of
-     * {@link Mono}.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Response<Flux<ByteBuffer>>> updateWithResponseAsync(String resourceGroupName, String hostGroupName,
         String hostName, DedicatedHostUpdate parameters) {
@@ -661,18 +523,7 @@ public final class DedicatedHostsClientImpl implements DedicatedHostsClient {
             hostGroupName, hostName, contentType, accept, parameters, context);
     }
 
-    /**
-     * Update a dedicated host .
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param hostGroupName The name of the dedicated host group.
-     * @param hostName The name of the dedicated host.
-     * @param parameters Parameters supplied to the Update Dedicated Host operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ApiErrorException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the {@link PollerFlux} for polling of specifies information about the Dedicated host.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public PollerFlux<PollResult<DedicatedHostInner>, DedicatedHostInner> beginUpdateAsync(String resourceGroupName,
         String hostGroupName, String hostName, DedicatedHostUpdate parameters) {
@@ -705,55 +556,21 @@ public final class DedicatedHostsClientImpl implements DedicatedHostsClient {
             DedicatedHostInner.class, DedicatedHostInner.class, context);
     }
 
-    /**
-     * Update a dedicated host .
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param hostGroupName The name of the dedicated host group.
-     * @param hostName The name of the dedicated host.
-     * @param parameters Parameters supplied to the Update Dedicated Host operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ApiErrorException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the {@link SyncPoller} for polling of specifies information about the Dedicated host.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public SyncPoller<PollResult<DedicatedHostInner>, DedicatedHostInner> beginUpdate(String resourceGroupName,
         String hostGroupName, String hostName, DedicatedHostUpdate parameters) {
         return this.beginUpdateAsync(resourceGroupName, hostGroupName, hostName, parameters).getSyncPoller();
     }
 
-    /**
-     * Update a dedicated host .
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param hostGroupName The name of the dedicated host group.
-     * @param hostName The name of the dedicated host.
-     * @param parameters Parameters supplied to the Update Dedicated Host operation.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ApiErrorException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the {@link SyncPoller} for polling of specifies information about the Dedicated host.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public SyncPoller<PollResult<DedicatedHostInner>, DedicatedHostInner> beginUpdate(String resourceGroupName,
         String hostGroupName, String hostName, DedicatedHostUpdate parameters, Context context) {
         return this.beginUpdateAsync(resourceGroupName, hostGroupName, hostName, parameters, context).getSyncPoller();
     }
 
-    /**
-     * Update a dedicated host .
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param hostGroupName The name of the dedicated host group.
-     * @param hostName The name of the dedicated host.
-     * @param parameters Parameters supplied to the Update Dedicated Host operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ApiErrorException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return specifies information about the Dedicated host on successful completion of {@link Mono}.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<DedicatedHostInner> updateAsync(String resourceGroupName, String hostGroupName, String hostName,
         DedicatedHostUpdate parameters) {
@@ -781,54 +598,21 @@ public final class DedicatedHostsClientImpl implements DedicatedHostsClient {
             .flatMap(this.client::getLroFinalResultOrError);
     }
 
-    /**
-     * Update a dedicated host .
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param hostGroupName The name of the dedicated host group.
-     * @param hostName The name of the dedicated host.
-     * @param parameters Parameters supplied to the Update Dedicated Host operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ApiErrorException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return specifies information about the Dedicated host.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public DedicatedHostInner update(String resourceGroupName, String hostGroupName, String hostName,
         DedicatedHostUpdate parameters) {
         return updateAsync(resourceGroupName, hostGroupName, hostName, parameters).block();
     }
 
-    /**
-     * Update a dedicated host .
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param hostGroupName The name of the dedicated host group.
-     * @param hostName The name of the dedicated host.
-     * @param parameters Parameters supplied to the Update Dedicated Host operation.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ApiErrorException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return specifies information about the Dedicated host.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public DedicatedHostInner update(String resourceGroupName, String hostGroupName, String hostName,
         DedicatedHostUpdate parameters, Context context) {
         return updateAsync(resourceGroupName, hostGroupName, hostName, parameters, context).block();
     }
 
-    /**
-     * Delete a dedicated host.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param hostGroupName The name of the dedicated host group.
-     * @param hostName The name of the dedicated host.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ApiErrorException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the {@link Response} on successful completion of {@link Mono}.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Response<Flux<ByteBuffer>>> deleteWithResponseAsync(String resourceGroupName, String hostGroupName,
         String hostName) {
@@ -896,17 +680,7 @@ public final class DedicatedHostsClientImpl implements DedicatedHostsClient {
             hostGroupName, hostName, context);
     }
 
-    /**
-     * Delete a dedicated host.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param hostGroupName The name of the dedicated host group.
-     * @param hostName The name of the dedicated host.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ApiErrorException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the {@link PollerFlux} for polling of long-running operation.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public PollerFlux<PollResult<Void>, Void> beginDeleteAsync(String resourceGroupName, String hostGroupName,
         String hostName) {
@@ -937,52 +711,21 @@ public final class DedicatedHostsClientImpl implements DedicatedHostsClient {
             context);
     }
 
-    /**
-     * Delete a dedicated host.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param hostGroupName The name of the dedicated host group.
-     * @param hostName The name of the dedicated host.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ApiErrorException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the {@link SyncPoller} for polling of long-running operation.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public SyncPoller<PollResult<Void>, Void> beginDelete(String resourceGroupName, String hostGroupName,
         String hostName) {
         return this.beginDeleteAsync(resourceGroupName, hostGroupName, hostName).getSyncPoller();
     }
 
-    /**
-     * Delete a dedicated host.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param hostGroupName The name of the dedicated host group.
-     * @param hostName The name of the dedicated host.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ApiErrorException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the {@link SyncPoller} for polling of long-running operation.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public SyncPoller<PollResult<Void>, Void> beginDelete(String resourceGroupName, String hostGroupName,
         String hostName, Context context) {
         return this.beginDeleteAsync(resourceGroupName, hostGroupName, hostName, context).getSyncPoller();
     }
 
-    /**
-     * Delete a dedicated host.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param hostGroupName The name of the dedicated host group.
-     * @param hostName The name of the dedicated host.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ApiErrorException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return A {@link Mono} that completes when a successful response is received.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Void> deleteAsync(String resourceGroupName, String hostGroupName, String hostName) {
         return beginDeleteAsync(resourceGroupName, hostGroupName, hostName).last()
@@ -1007,32 +750,13 @@ public final class DedicatedHostsClientImpl implements DedicatedHostsClient {
             .flatMap(this.client::getLroFinalResultOrError);
     }
 
-    /**
-     * Delete a dedicated host.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param hostGroupName The name of the dedicated host group.
-     * @param hostName The name of the dedicated host.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ApiErrorException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public void delete(String resourceGroupName, String hostGroupName, String hostName) {
         deleteAsync(resourceGroupName, hostGroupName, hostName).block();
     }
 
-    /**
-     * Delete a dedicated host.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param hostGroupName The name of the dedicated host group.
-     * @param hostName The name of the dedicated host.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ApiErrorException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public void delete(String resourceGroupName, String hostGroupName, String hostName, Context context) {
         deleteAsync(resourceGroupName, hostGroupName, hostName, context).block();
@@ -1119,17 +843,7 @@ public final class DedicatedHostsClientImpl implements DedicatedHostsClient {
                 res.getValue().value(), res.getValue().nextLink(), null));
     }
 
-    /**
-     * Lists all of the dedicated hosts in the specified dedicated host group. Use the nextLink property in the response
-     * to get the next page of dedicated hosts.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param hostGroupName The name of the dedicated host group.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ApiErrorException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the list dedicated host operation response as paginated response with {@link PagedFlux}.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.COLLECTION)
     public PagedFlux<DedicatedHostInner> listByHostGroupAsync(String resourceGroupName, String hostGroupName) {
         return new PagedFlux<>(() -> listByHostGroupSinglePageAsync(resourceGroupName, hostGroupName),
@@ -1155,34 +869,13 @@ public final class DedicatedHostsClientImpl implements DedicatedHostsClient {
             nextLink -> listByHostGroupNextSinglePageAsync(nextLink, context));
     }
 
-    /**
-     * Lists all of the dedicated hosts in the specified dedicated host group. Use the nextLink property in the response
-     * to get the next page of dedicated hosts.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param hostGroupName The name of the dedicated host group.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ApiErrorException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the list dedicated host operation response as paginated response with {@link PagedIterable}.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.COLLECTION)
     public PagedIterable<DedicatedHostInner> listByHostGroup(String resourceGroupName, String hostGroupName) {
         return new PagedIterable<>(listByHostGroupAsync(resourceGroupName, hostGroupName));
     }
 
-    /**
-     * Lists all of the dedicated hosts in the specified dedicated host group. Use the nextLink property in the response
-     * to get the next page of dedicated hosts.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param hostGroupName The name of the dedicated host group.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ApiErrorException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the list dedicated host operation response as paginated response with {@link PagedIterable}.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.COLLECTION)
     public PagedIterable<DedicatedHostInner> listByHostGroup(String resourceGroupName, String hostGroupName,
         Context context) {
@@ -1278,18 +971,7 @@ public final class DedicatedHostsClientImpl implements DedicatedHostsClient {
                 res.getValue().value(), res.getValue().nextLink(), null));
     }
 
-    /**
-     * Lists all available dedicated host sizes to which the specified dedicated host can be resized. NOTE: The
-     * dedicated host sizes provided can be used to only scale up the existing dedicated host.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param hostGroupName The name of the dedicated host group.
-     * @param hostName The name of the dedicated host.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ApiErrorException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the List Dedicated Host sizes operation response as paginated response with {@link PagedFlux}.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.COLLECTION)
     public PagedFlux<String> listAvailableSizesAsync(String resourceGroupName, String hostGroupName, String hostName) {
         return new PagedFlux<>(() -> listAvailableSizesSinglePageAsync(resourceGroupName, hostGroupName, hostName),
@@ -1317,56 +999,20 @@ public final class DedicatedHostsClientImpl implements DedicatedHostsClient {
             nextLink -> listAvailableSizesNextSinglePageAsync(nextLink, context));
     }
 
-    /**
-     * Lists all available dedicated host sizes to which the specified dedicated host can be resized. NOTE: The
-     * dedicated host sizes provided can be used to only scale up the existing dedicated host.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param hostGroupName The name of the dedicated host group.
-     * @param hostName The name of the dedicated host.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ApiErrorException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the List Dedicated Host sizes operation response as paginated response with {@link PagedIterable}.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.COLLECTION)
     public PagedIterable<String> listAvailableSizes(String resourceGroupName, String hostGroupName, String hostName) {
         return new PagedIterable<>(listAvailableSizesAsync(resourceGroupName, hostGroupName, hostName));
     }
 
-    /**
-     * Lists all available dedicated host sizes to which the specified dedicated host can be resized. NOTE: The
-     * dedicated host sizes provided can be used to only scale up the existing dedicated host.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param hostGroupName The name of the dedicated host group.
-     * @param hostName The name of the dedicated host.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ApiErrorException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the List Dedicated Host sizes operation response as paginated response with {@link PagedIterable}.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.COLLECTION)
     public PagedIterable<String> listAvailableSizes(String resourceGroupName, String hostGroupName, String hostName,
         Context context) {
         return new PagedIterable<>(listAvailableSizesAsync(resourceGroupName, hostGroupName, hostName, context));
     }
 
-    /**
-     * Redeploy the dedicated host. The operation will complete successfully once the dedicated host has migrated to a
-     * new node and is running. To determine the health of VMs deployed on the dedicated host after the redeploy check
-     * the Resource Health Center in the Azure Portal. Please refer to
-     * https://docs.microsoft.com/azure/service-health/resource-health-overview for more details.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param hostGroupName The name of the dedicated host group.
-     * @param hostName The name of the dedicated host.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ApiErrorException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the {@link Response} on successful completion of {@link Mono}.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Response<Flux<ByteBuffer>>> redeployWithResponseAsync(String resourceGroupName, String hostGroupName,
         String hostName) {
@@ -1437,20 +1083,7 @@ public final class DedicatedHostsClientImpl implements DedicatedHostsClient {
             resourceGroupName, hostGroupName, hostName, context);
     }
 
-    /**
-     * Redeploy the dedicated host. The operation will complete successfully once the dedicated host has migrated to a
-     * new node and is running. To determine the health of VMs deployed on the dedicated host after the redeploy check
-     * the Resource Health Center in the Azure Portal. Please refer to
-     * https://docs.microsoft.com/azure/service-health/resource-health-overview for more details.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param hostGroupName The name of the dedicated host group.
-     * @param hostName The name of the dedicated host.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ApiErrorException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the {@link PollerFlux} for polling of long-running operation.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public PollerFlux<PollResult<Void>, Void> beginRedeployAsync(String resourceGroupName, String hostGroupName,
         String hostName) {
@@ -1484,61 +1117,21 @@ public final class DedicatedHostsClientImpl implements DedicatedHostsClient {
             context);
     }
 
-    /**
-     * Redeploy the dedicated host. The operation will complete successfully once the dedicated host has migrated to a
-     * new node and is running. To determine the health of VMs deployed on the dedicated host after the redeploy check
-     * the Resource Health Center in the Azure Portal. Please refer to
-     * https://docs.microsoft.com/azure/service-health/resource-health-overview for more details.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param hostGroupName The name of the dedicated host group.
-     * @param hostName The name of the dedicated host.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ApiErrorException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the {@link SyncPoller} for polling of long-running operation.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public SyncPoller<PollResult<Void>, Void> beginRedeploy(String resourceGroupName, String hostGroupName,
         String hostName) {
         return this.beginRedeployAsync(resourceGroupName, hostGroupName, hostName).getSyncPoller();
     }
 
-    /**
-     * Redeploy the dedicated host. The operation will complete successfully once the dedicated host has migrated to a
-     * new node and is running. To determine the health of VMs deployed on the dedicated host after the redeploy check
-     * the Resource Health Center in the Azure Portal. Please refer to
-     * https://docs.microsoft.com/azure/service-health/resource-health-overview for more details.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param hostGroupName The name of the dedicated host group.
-     * @param hostName The name of the dedicated host.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ApiErrorException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the {@link SyncPoller} for polling of long-running operation.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public SyncPoller<PollResult<Void>, Void> beginRedeploy(String resourceGroupName, String hostGroupName,
         String hostName, Context context) {
         return this.beginRedeployAsync(resourceGroupName, hostGroupName, hostName, context).getSyncPoller();
     }
 
-    /**
-     * Redeploy the dedicated host. The operation will complete successfully once the dedicated host has migrated to a
-     * new node and is running. To determine the health of VMs deployed on the dedicated host after the redeploy check
-     * the Resource Health Center in the Azure Portal. Please refer to
-     * https://docs.microsoft.com/azure/service-health/resource-health-overview for more details.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param hostGroupName The name of the dedicated host group.
-     * @param hostName The name of the dedicated host.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ApiErrorException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return A {@link Mono} that completes when a successful response is received.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Void> redeployAsync(String resourceGroupName, String hostGroupName, String hostName) {
         return beginRedeployAsync(resourceGroupName, hostGroupName, hostName).last()
@@ -1566,57 +1159,19 @@ public final class DedicatedHostsClientImpl implements DedicatedHostsClient {
             .flatMap(this.client::getLroFinalResultOrError);
     }
 
-    /**
-     * Redeploy the dedicated host. The operation will complete successfully once the dedicated host has migrated to a
-     * new node and is running. To determine the health of VMs deployed on the dedicated host after the redeploy check
-     * the Resource Health Center in the Azure Portal. Please refer to
-     * https://docs.microsoft.com/azure/service-health/resource-health-overview for more details.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param hostGroupName The name of the dedicated host group.
-     * @param hostName The name of the dedicated host.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ApiErrorException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public void redeploy(String resourceGroupName, String hostGroupName, String hostName) {
         redeployAsync(resourceGroupName, hostGroupName, hostName).block();
     }
 
-    /**
-     * Redeploy the dedicated host. The operation will complete successfully once the dedicated host has migrated to a
-     * new node and is running. To determine the health of VMs deployed on the dedicated host after the redeploy check
-     * the Resource Health Center in the Azure Portal. Please refer to
-     * https://docs.microsoft.com/azure/service-health/resource-health-overview for more details.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param hostGroupName The name of the dedicated host group.
-     * @param hostName The name of the dedicated host.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ApiErrorException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public void redeploy(String resourceGroupName, String hostGroupName, String hostName, Context context) {
         redeployAsync(resourceGroupName, hostGroupName, hostName, context).block();
     }
 
-    /**
-     * Restart the dedicated host. The operation will complete successfully once the dedicated host has restarted and is
-     * running. To determine the health of VMs deployed on the dedicated host after the restart check the Resource
-     * Health Center in the Azure Portal. Please refer to
-     * https://docs.microsoft.com/azure/service-health/resource-health-overview for more details.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param hostGroupName The name of the dedicated host group.
-     * @param hostName The name of the dedicated host.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ApiErrorException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the {@link Response} on successful completion of {@link Mono}.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Response<Flux<ByteBuffer>>> restartWithResponseAsync(String resourceGroupName, String hostGroupName,
         String hostName) {
@@ -1687,20 +1242,7 @@ public final class DedicatedHostsClientImpl implements DedicatedHostsClient {
             resourceGroupName, hostGroupName, hostName, context);
     }
 
-    /**
-     * Restart the dedicated host. The operation will complete successfully once the dedicated host has restarted and is
-     * running. To determine the health of VMs deployed on the dedicated host after the restart check the Resource
-     * Health Center in the Azure Portal. Please refer to
-     * https://docs.microsoft.com/azure/service-health/resource-health-overview for more details.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param hostGroupName The name of the dedicated host group.
-     * @param hostName The name of the dedicated host.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ApiErrorException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the {@link PollerFlux} for polling of long-running operation.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public PollerFlux<PollResult<Void>, Void> beginRestartAsync(String resourceGroupName, String hostGroupName,
         String hostName) {
@@ -1734,61 +1276,21 @@ public final class DedicatedHostsClientImpl implements DedicatedHostsClient {
             context);
     }
 
-    /**
-     * Restart the dedicated host. The operation will complete successfully once the dedicated host has restarted and is
-     * running. To determine the health of VMs deployed on the dedicated host after the restart check the Resource
-     * Health Center in the Azure Portal. Please refer to
-     * https://docs.microsoft.com/azure/service-health/resource-health-overview for more details.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param hostGroupName The name of the dedicated host group.
-     * @param hostName The name of the dedicated host.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ApiErrorException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the {@link SyncPoller} for polling of long-running operation.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public SyncPoller<PollResult<Void>, Void> beginRestart(String resourceGroupName, String hostGroupName,
         String hostName) {
         return this.beginRestartAsync(resourceGroupName, hostGroupName, hostName).getSyncPoller();
     }
 
-    /**
-     * Restart the dedicated host. The operation will complete successfully once the dedicated host has restarted and is
-     * running. To determine the health of VMs deployed on the dedicated host after the restart check the Resource
-     * Health Center in the Azure Portal. Please refer to
-     * https://docs.microsoft.com/azure/service-health/resource-health-overview for more details.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param hostGroupName The name of the dedicated host group.
-     * @param hostName The name of the dedicated host.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ApiErrorException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the {@link SyncPoller} for polling of long-running operation.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public SyncPoller<PollResult<Void>, Void> beginRestart(String resourceGroupName, String hostGroupName,
         String hostName, Context context) {
         return this.beginRestartAsync(resourceGroupName, hostGroupName, hostName, context).getSyncPoller();
     }
 
-    /**
-     * Restart the dedicated host. The operation will complete successfully once the dedicated host has restarted and is
-     * running. To determine the health of VMs deployed on the dedicated host after the restart check the Resource
-     * Health Center in the Azure Portal. Please refer to
-     * https://docs.microsoft.com/azure/service-health/resource-health-overview for more details.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param hostGroupName The name of the dedicated host group.
-     * @param hostName The name of the dedicated host.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ApiErrorException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return A {@link Mono} that completes when a successful response is received.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Void> restartAsync(String resourceGroupName, String hostGroupName, String hostName) {
         return beginRestartAsync(resourceGroupName, hostGroupName, hostName).last()
@@ -1816,38 +1318,13 @@ public final class DedicatedHostsClientImpl implements DedicatedHostsClient {
             .flatMap(this.client::getLroFinalResultOrError);
     }
 
-    /**
-     * Restart the dedicated host. The operation will complete successfully once the dedicated host has restarted and is
-     * running. To determine the health of VMs deployed on the dedicated host after the restart check the Resource
-     * Health Center in the Azure Portal. Please refer to
-     * https://docs.microsoft.com/azure/service-health/resource-health-overview for more details.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param hostGroupName The name of the dedicated host group.
-     * @param hostName The name of the dedicated host.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ApiErrorException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public void restart(String resourceGroupName, String hostGroupName, String hostName) {
         restartAsync(resourceGroupName, hostGroupName, hostName).block();
     }
 
-    /**
-     * Restart the dedicated host. The operation will complete successfully once the dedicated host has restarted and is
-     * running. To determine the health of VMs deployed on the dedicated host after the restart check the Resource
-     * Health Center in the Azure Portal. Please refer to
-     * https://docs.microsoft.com/azure/service-health/resource-health-overview for more details.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param hostGroupName The name of the dedicated host group.
-     * @param hostName The name of the dedicated host.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ApiErrorException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public void restart(String resourceGroupName, String hostGroupName, String hostName, Context context) {
         restartAsync(resourceGroupName, hostGroupName, hostName, context).block();

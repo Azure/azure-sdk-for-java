@@ -110,10 +110,7 @@ public final class TableImpl implements Table, Table.Definition, Table.Update {
     }
 
     public Table create() {
-        this.innerObject = serviceManager.serviceClient()
-            .getTables()
-            .createOrUpdate(resourceGroupName, workspaceName, tableName, this.innerModel(), Context.NONE);
-        return this;
+        return this.create(Context.NONE);
     }
 
     public Table create(Context context) {
@@ -134,10 +131,7 @@ public final class TableImpl implements Table, Table.Definition, Table.Update {
     }
 
     public Table apply() {
-        this.innerObject = serviceManager.serviceClient()
-            .getTables()
-            .update(resourceGroupName, workspaceName, tableName, this.innerModel(), Context.NONE);
-        return this;
+        return this.apply(Context.NONE);
     }
 
     public Table apply(Context context) {
@@ -162,11 +156,7 @@ public final class TableImpl implements Table, Table.Definition, Table.Update {
     }
 
     public Table refresh() {
-        this.innerObject = serviceManager.serviceClient()
-            .getTables()
-            .getWithResponse(resourceGroupName, workspaceName, tableName, Context.NONE)
-            .getValue();
-        return this;
+        return this.refresh(Context.NONE);
     }
 
     public Table refresh(Context context) {

@@ -199,10 +199,7 @@ public final class AutoImportJobImpl implements AutoImportJob, AutoImportJob.Def
     }
 
     public AutoImportJob create() {
-        this.innerObject = serviceManager.serviceClient()
-            .getAutoImportJobs()
-            .createOrUpdate(resourceGroupName, amlFilesystemName, autoImportJobName, this.innerModel(), Context.NONE);
-        return this;
+        return this.create(Context.NONE);
     }
 
     public AutoImportJob create(Context context) {
@@ -224,10 +221,7 @@ public final class AutoImportJobImpl implements AutoImportJob, AutoImportJob.Def
     }
 
     public AutoImportJob apply() {
-        this.innerObject = serviceManager.serviceClient()
-            .getAutoImportJobs()
-            .update(resourceGroupName, amlFilesystemName, autoImportJobName, updateAutoImportJob, Context.NONE);
-        return this;
+        return this.apply(Context.NONE);
     }
 
     public AutoImportJob apply(Context context) {
@@ -253,11 +247,7 @@ public final class AutoImportJobImpl implements AutoImportJob, AutoImportJob.Def
     }
 
     public AutoImportJob refresh() {
-        this.innerObject = serviceManager.serviceClient()
-            .getAutoImportJobs()
-            .getWithResponse(resourceGroupName, amlFilesystemName, autoImportJobName, Context.NONE)
-            .getValue();
-        return this;
+        return this.refresh(Context.NONE);
     }
 
     public AutoImportJob refresh(Context context) {

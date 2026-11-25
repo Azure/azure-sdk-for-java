@@ -153,17 +153,7 @@ public final class AutonomousDatabaseNationalCharacterSetsClientImpl
         return getWithResponseAsync(location, adbsncharsetname).flatMap(res -> Mono.justOrEmpty(res.getValue()));
     }
 
-    /**
-     * Get a AutonomousDatabaseNationalCharacterSet.
-     * 
-     * @param location The name of the Azure region.
-     * @param adbsncharsetname AutonomousDatabaseNationalCharacterSets name.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return a AutonomousDatabaseNationalCharacterSet along with {@link Response}.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Response<AutonomousDatabaseNationalCharacterSetInner> getWithResponse(String location,
         String adbsncharsetname, Context context) {
@@ -172,16 +162,7 @@ public final class AutonomousDatabaseNationalCharacterSetsClientImpl
             location, adbsncharsetname, accept, context);
     }
 
-    /**
-     * Get a AutonomousDatabaseNationalCharacterSet.
-     * 
-     * @param location The name of the Azure region.
-     * @param adbsncharsetname AutonomousDatabaseNationalCharacterSets name.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return a AutonomousDatabaseNationalCharacterSet.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public AutonomousDatabaseNationalCharacterSetInner get(String location, String adbsncharsetname) {
         return getWithResponse(location, adbsncharsetname, Context.NONE).getValue();
@@ -237,12 +218,7 @@ public final class AutonomousDatabaseNationalCharacterSetsClientImpl
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private PagedResponse<AutonomousDatabaseNationalCharacterSetInner> listByLocationSinglePage(String location) {
-        final String accept = "application/json";
-        Response<AutonomousDatabaseNationalCharacterSetListResult> res
-            = service.listByLocationSync(this.client.getEndpoint(), this.client.getApiVersion(),
-                this.client.getSubscriptionId(), location, accept, Context.NONE);
-        return new PagedResponseBase<>(res.getRequest(), res.getStatusCode(), res.getHeaders(), res.getValue().value(),
-            res.getValue().nextLink(), null);
+        return listByLocationSinglePage(location, Context.NONE);
     }
 
     /**
@@ -266,33 +242,13 @@ public final class AutonomousDatabaseNationalCharacterSetsClientImpl
             res.getValue().nextLink(), null);
     }
 
-    /**
-     * List AutonomousDatabaseNationalCharacterSet resources by SubscriptionLocationResource.
-     * 
-     * @param location The name of the Azure region.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the response of a AutonomousDatabaseNationalCharacterSet list operation as paginated response with
-     * {@link PagedIterable}.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.COLLECTION)
     public PagedIterable<AutonomousDatabaseNationalCharacterSetInner> listByLocation(String location) {
-        return new PagedIterable<>(() -> listByLocationSinglePage(location),
-            nextLink -> listByLocationNextSinglePage(nextLink));
+        return listByLocation(location, Context.NONE);
     }
 
-    /**
-     * List AutonomousDatabaseNationalCharacterSet resources by SubscriptionLocationResource.
-     * 
-     * @param location The name of the Azure region.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the response of a AutonomousDatabaseNationalCharacterSet list operation as paginated response with
-     * {@link PagedIterable}.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.COLLECTION)
     public PagedIterable<AutonomousDatabaseNationalCharacterSetInner> listByLocation(String location, Context context) {
         return new PagedIterable<>(() -> listByLocationSinglePage(location, context),
@@ -332,11 +288,7 @@ public final class AutonomousDatabaseNationalCharacterSetsClientImpl
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private PagedResponse<AutonomousDatabaseNationalCharacterSetInner> listByLocationNextSinglePage(String nextLink) {
-        final String accept = "application/json";
-        Response<AutonomousDatabaseNationalCharacterSetListResult> res
-            = service.listByLocationNextSync(nextLink, this.client.getEndpoint(), accept, Context.NONE);
-        return new PagedResponseBase<>(res.getRequest(), res.getStatusCode(), res.getHeaders(), res.getValue().value(),
-            res.getValue().nextLink(), null);
+        return listByLocationNextSinglePage(nextLink, Context.NONE);
     }
 
     /**

@@ -212,41 +212,14 @@ public final class AllowedConnectionsClientImpl implements AllowedConnectionsCli
             .flatMap(res -> Mono.justOrEmpty(res.getValue()));
     }
 
-    /**
-     * Gets the list of all possible traffic between resources for the subscription and location, based on connection
-     * type.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param ascLocation The location where ASC stores the data of the subscription. can be retrieved from Get
-     * locations.
-     * @param connectionType The type of allowed connections (Internal, External).
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the list of all possible traffic between resources for the subscription and location, based on connection
-     * type along with {@link Response}.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Response<AllowedConnectionsResourceInner> getWithResponse(String resourceGroupName, String ascLocation,
         ConnectionType connectionType, Context context) {
         return getWithResponseAsync(resourceGroupName, ascLocation, connectionType, context).block();
     }
 
-    /**
-     * Gets the list of all possible traffic between resources for the subscription and location, based on connection
-     * type.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param ascLocation The location where ASC stores the data of the subscription. can be retrieved from Get
-     * locations.
-     * @param connectionType The type of allowed connections (Internal, External).
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the list of all possible traffic between resources for the subscription and location, based on connection
-     * type.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public AllowedConnectionsResourceInner get(String resourceGroupName, String ascLocation,
         ConnectionType connectionType) {
@@ -358,34 +331,13 @@ public final class AllowedConnectionsClientImpl implements AllowedConnectionsCli
             nextLink -> listByHomeRegionNextSinglePageAsync(nextLink, context));
     }
 
-    /**
-     * Gets the list of all possible traffic between resources for the subscription and location.
-     * 
-     * @param ascLocation The location where ASC stores the data of the subscription. can be retrieved from Get
-     * locations.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the list of all possible traffic between resources for the subscription and location as paginated
-     * response with {@link PagedIterable}.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.COLLECTION)
     public PagedIterable<AllowedConnectionsResourceInner> listByHomeRegion(String ascLocation) {
         return new PagedIterable<>(listByHomeRegionAsync(ascLocation));
     }
 
-    /**
-     * Gets the list of all possible traffic between resources for the subscription and location.
-     * 
-     * @param ascLocation The location where ASC stores the data of the subscription. can be retrieved from Get
-     * locations.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the list of all possible traffic between resources for the subscription and location as paginated
-     * response with {@link PagedIterable}.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.COLLECTION)
     public PagedIterable<AllowedConnectionsResourceInner> listByHomeRegion(String ascLocation, Context context) {
         return new PagedIterable<>(listByHomeRegionAsync(ascLocation, context));
@@ -476,29 +428,13 @@ public final class AllowedConnectionsClientImpl implements AllowedConnectionsCli
             nextLink -> listNextSinglePageAsync(nextLink, context));
     }
 
-    /**
-     * Gets the list of all possible traffic between resources for the subscription.
-     * 
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the list of all possible traffic between resources for the subscription as paginated response with
-     * {@link PagedIterable}.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.COLLECTION)
     public PagedIterable<AllowedConnectionsResourceInner> list() {
         return new PagedIterable<>(listAsync());
     }
 
-    /**
-     * Gets the list of all possible traffic between resources for the subscription.
-     * 
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the list of all possible traffic between resources for the subscription as paginated response with
-     * {@link PagedIterable}.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.COLLECTION)
     public PagedIterable<AllowedConnectionsResourceInner> list(Context context) {
         return new PagedIterable<>(listAsync(context));

@@ -162,11 +162,7 @@ public final class IoTSecuritySolutionModelImpl
     }
 
     public IoTSecuritySolutionModel create() {
-        this.innerObject = serviceManager.serviceClient()
-            .getIotSecuritySolutions()
-            .createOrUpdateWithResponse(resourceGroupName, solutionName, this.innerModel(), Context.NONE)
-            .getValue();
-        return this;
+        return this.create(Context.NONE);
     }
 
     public IoTSecuritySolutionModel create(Context context) {
@@ -189,11 +185,7 @@ public final class IoTSecuritySolutionModelImpl
     }
 
     public IoTSecuritySolutionModel apply() {
-        this.innerObject = serviceManager.serviceClient()
-            .getIotSecuritySolutions()
-            .updateWithResponse(resourceGroupName, solutionName, updateUpdateIotSecuritySolutionData, Context.NONE)
-            .getValue();
-        return this;
+        return this.apply(Context.NONE);
     }
 
     public IoTSecuritySolutionModel apply(Context context) {
@@ -217,11 +209,7 @@ public final class IoTSecuritySolutionModelImpl
     }
 
     public IoTSecuritySolutionModel refresh() {
-        this.innerObject = serviceManager.serviceClient()
-            .getIotSecuritySolutions()
-            .getByResourceGroupWithResponse(resourceGroupName, solutionName, Context.NONE)
-            .getValue();
-        return this;
+        return this.refresh(Context.NONE);
     }
 
     public IoTSecuritySolutionModel refresh(Context context) {

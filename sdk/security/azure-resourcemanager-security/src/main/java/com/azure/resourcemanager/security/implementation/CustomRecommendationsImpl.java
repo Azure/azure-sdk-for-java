@@ -64,70 +64,30 @@ public final class CustomRecommendationsImpl implements CustomRecommendations {
     }
 
     public CustomRecommendation getById(String id) {
-        String scope = ResourceManagerUtils.getValueFromIdByParameterName(id,
-            "/{scope}/providers/Microsoft.Security/customRecommendations/{customRecommendationName}", "scope");
-        if (scope == null) {
-            throw LOGGER.logExceptionAsError(new IllegalArgumentException(
-                String.format("The resource ID '%s' is not valid. Missing path segment 'scope'.", id)));
-        }
-        String customRecommendationName = ResourceManagerUtils.getValueFromIdByParameterName(id,
-            "/{scope}/providers/Microsoft.Security/customRecommendations/{customRecommendationName}",
-            "customRecommendationName");
-        if (customRecommendationName == null) {
-            throw LOGGER.logExceptionAsError(new IllegalArgumentException(
-                String.format("The resource ID '%s' is not valid. Missing path segment 'customRecommendations'.", id)));
-        }
-        return this.getWithResponse(scope, customRecommendationName, Context.NONE).getValue();
+        return this.getByIdWithResponse(id, Context.NONE).getValue();
     }
 
     public Response<CustomRecommendation> getByIdWithResponse(String id, Context context) {
-        String scope = ResourceManagerUtils.getValueFromIdByParameterName(id,
-            "/{scope}/providers/Microsoft.Security/customRecommendations/{customRecommendationName}", "scope");
-        if (scope == null) {
-            throw LOGGER.logExceptionAsError(new IllegalArgumentException(
-                String.format("The resource ID '%s' is not valid. Missing path segment 'scope'.", id)));
-        }
-        String customRecommendationName = ResourceManagerUtils.getValueFromIdByParameterName(id,
+        String scope = ResourceManagerUtils.getRequiredValueFromIdByParameterName(id,
+            "/{scope}/providers/Microsoft.Security/customRecommendations/{customRecommendationName}", "scope", "scope",
+            LOGGER);
+        String customRecommendationName = ResourceManagerUtils.getRequiredValueFromIdByParameterName(id,
             "/{scope}/providers/Microsoft.Security/customRecommendations/{customRecommendationName}",
-            "customRecommendationName");
-        if (customRecommendationName == null) {
-            throw LOGGER.logExceptionAsError(new IllegalArgumentException(
-                String.format("The resource ID '%s' is not valid. Missing path segment 'customRecommendations'.", id)));
-        }
+            "customRecommendationName", "customRecommendations", LOGGER);
         return this.getWithResponse(scope, customRecommendationName, context);
     }
 
     public void deleteById(String id) {
-        String scope = ResourceManagerUtils.getValueFromIdByParameterName(id,
-            "/{scope}/providers/Microsoft.Security/customRecommendations/{customRecommendationName}", "scope");
-        if (scope == null) {
-            throw LOGGER.logExceptionAsError(new IllegalArgumentException(
-                String.format("The resource ID '%s' is not valid. Missing path segment 'scope'.", id)));
-        }
-        String customRecommendationName = ResourceManagerUtils.getValueFromIdByParameterName(id,
-            "/{scope}/providers/Microsoft.Security/customRecommendations/{customRecommendationName}",
-            "customRecommendationName");
-        if (customRecommendationName == null) {
-            throw LOGGER.logExceptionAsError(new IllegalArgumentException(
-                String.format("The resource ID '%s' is not valid. Missing path segment 'customRecommendations'.", id)));
-        }
-        this.deleteByResourceGroupWithResponse(scope, customRecommendationName, Context.NONE);
+        this.deleteByIdWithResponse(id, Context.NONE);
     }
 
     public Response<Void> deleteByIdWithResponse(String id, Context context) {
-        String scope = ResourceManagerUtils.getValueFromIdByParameterName(id,
-            "/{scope}/providers/Microsoft.Security/customRecommendations/{customRecommendationName}", "scope");
-        if (scope == null) {
-            throw LOGGER.logExceptionAsError(new IllegalArgumentException(
-                String.format("The resource ID '%s' is not valid. Missing path segment 'scope'.", id)));
-        }
-        String customRecommendationName = ResourceManagerUtils.getValueFromIdByParameterName(id,
+        String scope = ResourceManagerUtils.getRequiredValueFromIdByParameterName(id,
+            "/{scope}/providers/Microsoft.Security/customRecommendations/{customRecommendationName}", "scope", "scope",
+            LOGGER);
+        String customRecommendationName = ResourceManagerUtils.getRequiredValueFromIdByParameterName(id,
             "/{scope}/providers/Microsoft.Security/customRecommendations/{customRecommendationName}",
-            "customRecommendationName");
-        if (customRecommendationName == null) {
-            throw LOGGER.logExceptionAsError(new IllegalArgumentException(
-                String.format("The resource ID '%s' is not valid. Missing path segment 'customRecommendations'.", id)));
-        }
+            "customRecommendationName", "customRecommendations", LOGGER);
         return this.deleteByResourceGroupWithResponse(scope, customRecommendationName, context);
     }
 

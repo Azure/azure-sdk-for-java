@@ -197,37 +197,14 @@ public final class IotSecuritySolutionsAnalyticsRecommendationsClientImpl
             .flatMap(res -> Mono.justOrEmpty(res.getValue()));
     }
 
-    /**
-     * Use this method to get the aggregated security analytics recommendation of yours IoT Security solution. This
-     * aggregation is performed by recommendation name.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param solutionName The name of the IoT Security solution.
-     * @param aggregatedRecommendationName Name of the recommendation aggregated for this query.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return ioT Security solution recommendation information along with {@link Response}.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Response<IoTSecurityAggregatedRecommendationInner> getWithResponse(String resourceGroupName,
         String solutionName, String aggregatedRecommendationName, Context context) {
         return getWithResponseAsync(resourceGroupName, solutionName, aggregatedRecommendationName, context).block();
     }
 
-    /**
-     * Use this method to get the aggregated security analytics recommendation of yours IoT Security solution. This
-     * aggregation is performed by recommendation name.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param solutionName The name of the IoT Security solution.
-     * @param aggregatedRecommendationName Name of the recommendation aggregated for this query.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return ioT Security solution recommendation information.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public IoTSecurityAggregatedRecommendationInner get(String resourceGroupName, String solutionName,
         String aggregatedRecommendationName) {
@@ -371,36 +348,14 @@ public final class IotSecuritySolutionsAnalyticsRecommendationsClientImpl
             nextLink -> listNextSinglePageAsync(nextLink, context));
     }
 
-    /**
-     * Use this method to get the list of aggregated security analytics recommendations of yours IoT Security solution.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param solutionName The name of the IoT Security solution.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return list of IoT Security solution aggregated recommendations as paginated response with
-     * {@link PagedIterable}.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.COLLECTION)
     public PagedIterable<IoTSecurityAggregatedRecommendationInner> list(String resourceGroupName, String solutionName) {
         final Integer top = null;
         return new PagedIterable<>(listAsync(resourceGroupName, solutionName, top));
     }
 
-    /**
-     * Use this method to get the list of aggregated security analytics recommendations of yours IoT Security solution.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param solutionName The name of the IoT Security solution.
-     * @param top Number of results to retrieve.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return list of IoT Security solution aggregated recommendations as paginated response with
-     * {@link PagedIterable}.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.COLLECTION)
     public PagedIterable<IoTSecurityAggregatedRecommendationInner> list(String resourceGroupName, String solutionName,
         Integer top, Context context) {

@@ -218,20 +218,7 @@ public final class PrivateEndpointConnectionsClientImpl implements PrivateEndpoi
             .flatMap(res -> Mono.justOrEmpty(res.getValue()));
     }
 
-    /**
-     * Gets the specified private endpoint connection associated with the storage sync service.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param storageSyncServiceName Name of Storage Sync Service resource.
-     * @param privateEndpointConnectionName The name of the private endpoint connection associated with the Azure
-     * resource.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws StorageSyncApiErrorException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the specified private endpoint connection associated with the storage sync service along with
-     * {@link Response}.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Response<PrivateEndpointConnectionInner> getWithResponse(String resourceGroupName,
         String storageSyncServiceName, String privateEndpointConnectionName, Context context) {
@@ -240,18 +227,7 @@ public final class PrivateEndpointConnectionsClientImpl implements PrivateEndpoi
             resourceGroupName, storageSyncServiceName, privateEndpointConnectionName, accept, context);
     }
 
-    /**
-     * Gets the specified private endpoint connection associated with the storage sync service.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param storageSyncServiceName Name of Storage Sync Service resource.
-     * @param privateEndpointConnectionName The name of the private endpoint connection associated with the Azure
-     * resource.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws StorageSyncApiErrorException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the specified private endpoint connection associated with the storage sync service.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public PrivateEndpointConnectionInner get(String resourceGroupName, String storageSyncServiceName,
         String privateEndpointConnectionName) {
@@ -302,11 +278,8 @@ public final class PrivateEndpointConnectionsClientImpl implements PrivateEndpoi
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Response<BinaryData> createWithResponse(String resourceGroupName, String storageSyncServiceName,
         String privateEndpointConnectionName, PrivateEndpointConnectionInner properties) {
-        final String contentType = "application/json";
-        final String accept = "application/json";
-        return service.createSync(this.client.getEndpoint(), this.client.getApiVersion(),
-            this.client.getSubscriptionId(), resourceGroupName, storageSyncServiceName, privateEndpointConnectionName,
-            contentType, accept, properties, Context.NONE);
+        return createWithResponse(resourceGroupName, storageSyncServiceName, privateEndpointConnectionName, properties,
+            Context.NONE);
     }
 
     /**
@@ -357,43 +330,16 @@ public final class PrivateEndpointConnectionsClientImpl implements PrivateEndpoi
             this.client.getContext());
     }
 
-    /**
-     * Update the state of specified private endpoint connection associated with the storage sync service.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param storageSyncServiceName Name of Storage Sync Service resource.
-     * @param privateEndpointConnectionName The name of the private endpoint connection associated with the Azure
-     * resource.
-     * @param properties The private endpoint connection properties.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws StorageSyncApiErrorException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the {@link SyncPoller} for polling of the private endpoint connection resource.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public SyncPoller<PollResult<PrivateEndpointConnectionInner>, PrivateEndpointConnectionInner> beginCreate(
         String resourceGroupName, String storageSyncServiceName, String privateEndpointConnectionName,
         PrivateEndpointConnectionInner properties) {
-        Response<BinaryData> response
-            = createWithResponse(resourceGroupName, storageSyncServiceName, privateEndpointConnectionName, properties);
-        return this.client.<PrivateEndpointConnectionInner, PrivateEndpointConnectionInner>getLroResult(response,
-            PrivateEndpointConnectionInner.class, PrivateEndpointConnectionInner.class, Context.NONE);
+        return beginCreate(resourceGroupName, storageSyncServiceName, privateEndpointConnectionName, properties,
+            Context.NONE);
     }
 
-    /**
-     * Update the state of specified private endpoint connection associated with the storage sync service.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param storageSyncServiceName Name of Storage Sync Service resource.
-     * @param privateEndpointConnectionName The name of the private endpoint connection associated with the Azure
-     * resource.
-     * @param properties The private endpoint connection properties.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws StorageSyncApiErrorException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the {@link SyncPoller} for polling of the private endpoint connection resource.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public SyncPoller<PollResult<PrivateEndpointConnectionInner>, PrivateEndpointConnectionInner> beginCreate(
         String resourceGroupName, String storageSyncServiceName, String privateEndpointConnectionName,
@@ -425,45 +371,20 @@ public final class PrivateEndpointConnectionsClientImpl implements PrivateEndpoi
             .flatMap(this.client::getLroFinalResultOrError);
     }
 
-    /**
-     * Update the state of specified private endpoint connection associated with the storage sync service.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param storageSyncServiceName Name of Storage Sync Service resource.
-     * @param privateEndpointConnectionName The name of the private endpoint connection associated with the Azure
-     * resource.
-     * @param properties The private endpoint connection properties.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws StorageSyncApiErrorException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the private endpoint connection resource.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public PrivateEndpointConnectionInner create(String resourceGroupName, String storageSyncServiceName,
         String privateEndpointConnectionName, PrivateEndpointConnectionInner properties) {
-        return beginCreate(resourceGroupName, storageSyncServiceName, privateEndpointConnectionName, properties)
-            .getFinalResult();
+        return create(resourceGroupName, storageSyncServiceName, privateEndpointConnectionName, properties,
+            Context.NONE);
     }
 
-    /**
-     * Update the state of specified private endpoint connection associated with the storage sync service.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param storageSyncServiceName Name of Storage Sync Service resource.
-     * @param privateEndpointConnectionName The name of the private endpoint connection associated with the Azure
-     * resource.
-     * @param properties The private endpoint connection properties.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws StorageSyncApiErrorException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the private endpoint connection resource.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public PrivateEndpointConnectionInner create(String resourceGroupName, String storageSyncServiceName,
         String privateEndpointConnectionName, PrivateEndpointConnectionInner properties, Context context) {
-        return beginCreate(resourceGroupName, storageSyncServiceName, privateEndpointConnectionName, properties,
-            context).getFinalResult();
+        return this.client.getLroFinalResultOrError(
+            beginCreate(resourceGroupName, storageSyncServiceName, privateEndpointConnectionName, properties, context));
     }
 
     /**
@@ -503,8 +424,7 @@ public final class PrivateEndpointConnectionsClientImpl implements PrivateEndpoi
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Response<BinaryData> deleteWithResponse(String resourceGroupName, String storageSyncServiceName,
         String privateEndpointConnectionName) {
-        return service.deleteSync(this.client.getEndpoint(), this.client.getApiVersion(),
-            this.client.getSubscriptionId(), resourceGroupName, storageSyncServiceName, privateEndpointConnectionName,
+        return deleteWithResponse(resourceGroupName, storageSyncServiceName, privateEndpointConnectionName,
             Context.NONE);
     }
 
@@ -550,39 +470,14 @@ public final class PrivateEndpointConnectionsClientImpl implements PrivateEndpoi
             this.client.getContext());
     }
 
-    /**
-     * Deletes the specified private endpoint connection associated with the storage sync service.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param storageSyncServiceName Name of Storage Sync Service resource.
-     * @param privateEndpointConnectionName The name of the private endpoint connection associated with the Azure
-     * resource.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws StorageSyncApiErrorException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the {@link SyncPoller} for polling of long-running operation.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public SyncPoller<PollResult<Void>, Void> beginDelete(String resourceGroupName, String storageSyncServiceName,
         String privateEndpointConnectionName) {
-        Response<BinaryData> response
-            = deleteWithResponse(resourceGroupName, storageSyncServiceName, privateEndpointConnectionName);
-        return this.client.<Void, Void>getLroResult(response, Void.class, Void.class, Context.NONE);
+        return beginDelete(resourceGroupName, storageSyncServiceName, privateEndpointConnectionName, Context.NONE);
     }
 
-    /**
-     * Deletes the specified private endpoint connection associated with the storage sync service.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param storageSyncServiceName Name of Storage Sync Service resource.
-     * @param privateEndpointConnectionName The name of the private endpoint connection associated with the Azure
-     * resource.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws StorageSyncApiErrorException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the {@link SyncPoller} for polling of long-running operation.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public SyncPoller<PollResult<Void>, Void> beginDelete(String resourceGroupName, String storageSyncServiceName,
         String privateEndpointConnectionName, Context context) {
@@ -610,38 +505,18 @@ public final class PrivateEndpointConnectionsClientImpl implements PrivateEndpoi
             .flatMap(this.client::getLroFinalResultOrError);
     }
 
-    /**
-     * Deletes the specified private endpoint connection associated with the storage sync service.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param storageSyncServiceName Name of Storage Sync Service resource.
-     * @param privateEndpointConnectionName The name of the private endpoint connection associated with the Azure
-     * resource.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws StorageSyncApiErrorException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public void delete(String resourceGroupName, String storageSyncServiceName, String privateEndpointConnectionName) {
-        beginDelete(resourceGroupName, storageSyncServiceName, privateEndpointConnectionName).getFinalResult();
+        delete(resourceGroupName, storageSyncServiceName, privateEndpointConnectionName, Context.NONE);
     }
 
-    /**
-     * Deletes the specified private endpoint connection associated with the storage sync service.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param storageSyncServiceName Name of Storage Sync Service resource.
-     * @param privateEndpointConnectionName The name of the private endpoint connection associated with the Azure
-     * resource.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws StorageSyncApiErrorException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public void delete(String resourceGroupName, String storageSyncServiceName, String privateEndpointConnectionName,
         Context context) {
-        beginDelete(resourceGroupName, storageSyncServiceName, privateEndpointConnectionName, context).getFinalResult();
+        this.client.getLroFinalResultOrError(
+            beginDelete(resourceGroupName, storageSyncServiceName, privateEndpointConnectionName, context));
     }
 
     /**
@@ -698,12 +573,7 @@ public final class PrivateEndpointConnectionsClientImpl implements PrivateEndpoi
     @ServiceMethod(returns = ReturnType.SINGLE)
     private PagedResponse<PrivateEndpointConnectionInner> listByStorageSyncServiceSinglePage(String resourceGroupName,
         String storageSyncServiceName) {
-        final String accept = "application/json";
-        Response<PrivateEndpointConnectionListResult> res
-            = service.listByStorageSyncServiceSync(this.client.getEndpoint(), this.client.getApiVersion(),
-                this.client.getSubscriptionId(), resourceGroupName, storageSyncServiceName, accept, Context.NONE);
-        return new PagedResponseBase<>(res.getRequest(), res.getStatusCode(), res.getHeaders(), res.getValue().value(),
-            res.getValue().nextLink(), null);
+        return listByStorageSyncServiceSinglePage(resourceGroupName, storageSyncServiceName, Context.NONE);
     }
 
     /**
@@ -728,34 +598,14 @@ public final class PrivateEndpointConnectionsClientImpl implements PrivateEndpoi
             res.getValue().nextLink(), null);
     }
 
-    /**
-     * Get a PrivateEndpointConnection List.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param storageSyncServiceName Name of Storage Sync Service resource.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws StorageSyncApiErrorException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return a PrivateEndpointConnection List as paginated response with {@link PagedIterable}.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.COLLECTION)
     public PagedIterable<PrivateEndpointConnectionInner> listByStorageSyncService(String resourceGroupName,
         String storageSyncServiceName) {
-        return new PagedIterable<>(() -> listByStorageSyncServiceSinglePage(resourceGroupName, storageSyncServiceName),
-            nextLink -> listByStorageSyncServiceNextSinglePage(nextLink));
+        return listByStorageSyncService(resourceGroupName, storageSyncServiceName, Context.NONE);
     }
 
-    /**
-     * Get a PrivateEndpointConnection List.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param storageSyncServiceName Name of Storage Sync Service resource.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws StorageSyncApiErrorException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return a PrivateEndpointConnection List as paginated response with {@link PagedIterable}.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.COLLECTION)
     public PagedIterable<PrivateEndpointConnectionInner> listByStorageSyncService(String resourceGroupName,
         String storageSyncServiceName, Context context) {
@@ -797,11 +647,7 @@ public final class PrivateEndpointConnectionsClientImpl implements PrivateEndpoi
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private PagedResponse<PrivateEndpointConnectionInner> listByStorageSyncServiceNextSinglePage(String nextLink) {
-        final String accept = "application/json";
-        Response<PrivateEndpointConnectionListResult> res
-            = service.listByStorageSyncServiceNextSync(nextLink, this.client.getEndpoint(), accept, Context.NONE);
-        return new PagedResponseBase<>(res.getRequest(), res.getStatusCode(), res.getHeaders(), res.getValue().value(),
-            res.getValue().nextLink(), null);
+        return listByStorageSyncServiceNextSinglePage(nextLink, Context.NONE);
     }
 
     /**

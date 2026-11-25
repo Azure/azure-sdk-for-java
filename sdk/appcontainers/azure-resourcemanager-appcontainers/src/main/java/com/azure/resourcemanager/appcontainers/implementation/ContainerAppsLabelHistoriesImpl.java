@@ -51,7 +51,7 @@ public final class ContainerAppsLabelHistoriesImpl implements ContainerAppsLabel
     }
 
     public void deleteLabelHistory(String resourceGroupName, String containerAppName, String labelName) {
-        this.serviceClient().deleteLabelHistory(resourceGroupName, containerAppName, labelName);
+        this.deleteLabelHistoryWithResponse(resourceGroupName, containerAppName, labelName, Context.NONE);
     }
 
     public PagedIterable<LabelHistory> listLabelHistory(String resourceGroupName, String containerAppName) {

@@ -89,10 +89,7 @@ public final class GalleryImageImpl implements GalleryImage, GalleryImage.Defini
     }
 
     public GalleryImage create() {
-        this.innerObject = serviceManager.serviceClient()
-            .getGalleryImages()
-            .createOrUpdate(resourceGroupName, galleryImageName, this.innerModel(), Context.NONE);
-        return this;
+        return this.create(Context.NONE);
     }
 
     public GalleryImage create(Context context) {
@@ -114,10 +111,7 @@ public final class GalleryImageImpl implements GalleryImage, GalleryImage.Defini
     }
 
     public GalleryImage apply() {
-        this.innerObject = serviceManager.serviceClient()
-            .getGalleryImages()
-            .update(resourceGroupName, galleryImageName, updateProperties, Context.NONE);
-        return this;
+        return this.apply(Context.NONE);
     }
 
     public GalleryImage apply(Context context) {
@@ -140,11 +134,7 @@ public final class GalleryImageImpl implements GalleryImage, GalleryImage.Defini
     }
 
     public GalleryImage refresh() {
-        this.innerObject = serviceManager.serviceClient()
-            .getGalleryImages()
-            .getByResourceGroupWithResponse(resourceGroupName, galleryImageName, Context.NONE)
-            .getValue();
-        return this;
+        return this.refresh(Context.NONE);
     }
 
     public GalleryImage refresh(Context context) {

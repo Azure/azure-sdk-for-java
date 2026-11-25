@@ -237,8 +237,7 @@ public final class ManagedPrivateEndpointsClientImpl implements ManagedPrivateEn
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Response<BinaryData> refreshWithResponse(String resourceGroupName, String workspaceName) {
-        return service.refreshSync(this.client.getEndpoint(), this.client.getApiVersion(),
-            this.client.getSubscriptionId(), resourceGroupName, workspaceName, Context.NONE);
+        return refreshWithResponse(resourceGroupName, workspaceName, Context.NONE);
     }
 
     /**
@@ -275,33 +274,13 @@ public final class ManagedPrivateEndpointsClientImpl implements ManagedPrivateEn
             this.client.getContext());
     }
 
-    /**
-     * Refresh and sync managed private endpoints of a grafana resource to latest state.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param workspaceName The workspace name of Azure Managed Grafana.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the {@link SyncPoller} for polling of long-running operation.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public SyncPoller<PollResult<Void>, Void> beginRefresh(String resourceGroupName, String workspaceName) {
-        Response<BinaryData> response = refreshWithResponse(resourceGroupName, workspaceName);
-        return this.client.<Void, Void>getLroResult(response, Void.class, Void.class, Context.NONE);
+        return beginRefresh(resourceGroupName, workspaceName, Context.NONE);
     }
 
-    /**
-     * Refresh and sync managed private endpoints of a grafana resource to latest state.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param workspaceName The workspace name of Azure Managed Grafana.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the {@link SyncPoller} for polling of long-running operation.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public SyncPoller<PollResult<Void>, Void> beginRefresh(String resourceGroupName, String workspaceName,
         Context context) {
@@ -325,33 +304,16 @@ public final class ManagedPrivateEndpointsClientImpl implements ManagedPrivateEn
             .flatMap(this.client::getLroFinalResultOrError);
     }
 
-    /**
-     * Refresh and sync managed private endpoints of a grafana resource to latest state.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param workspaceName The workspace name of Azure Managed Grafana.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public void refresh(String resourceGroupName, String workspaceName) {
-        beginRefresh(resourceGroupName, workspaceName).getFinalResult();
+        refresh(resourceGroupName, workspaceName, Context.NONE);
     }
 
-    /**
-     * Refresh and sync managed private endpoints of a grafana resource to latest state.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param workspaceName The workspace name of Azure Managed Grafana.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public void refresh(String resourceGroupName, String workspaceName, Context context) {
-        beginRefresh(resourceGroupName, workspaceName, context).getFinalResult();
+        this.client.getLroFinalResultOrError(beginRefresh(resourceGroupName, workspaceName, context));
     }
 
     /**
@@ -395,18 +357,7 @@ public final class ManagedPrivateEndpointsClientImpl implements ManagedPrivateEn
             .flatMap(res -> Mono.justOrEmpty(res.getValue()));
     }
 
-    /**
-     * Get a specific managed private endpoint of a grafana resource.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param workspaceName The workspace name of Azure Managed Grafana.
-     * @param managedPrivateEndpointName The managed private endpoint name of Azure Managed Grafana.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return a specific managed private endpoint of a grafana resource along with {@link Response}.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Response<ManagedPrivateEndpointModelInner> getWithResponse(String resourceGroupName, String workspaceName,
         String managedPrivateEndpointName, Context context) {
@@ -415,17 +366,7 @@ public final class ManagedPrivateEndpointsClientImpl implements ManagedPrivateEn
             resourceGroupName, workspaceName, managedPrivateEndpointName, accept, context);
     }
 
-    /**
-     * Get a specific managed private endpoint of a grafana resource.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param workspaceName The workspace name of Azure Managed Grafana.
-     * @param managedPrivateEndpointName The managed private endpoint name of Azure Managed Grafana.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return a specific managed private endpoint of a grafana resource.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public ManagedPrivateEndpointModelInner get(String resourceGroupName, String workspaceName,
         String managedPrivateEndpointName) {
@@ -472,11 +413,8 @@ public final class ManagedPrivateEndpointsClientImpl implements ManagedPrivateEn
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Response<BinaryData> createWithResponse(String resourceGroupName, String workspaceName,
         String managedPrivateEndpointName, ManagedPrivateEndpointModelInner requestBodyParameters) {
-        final String contentType = "application/json";
-        final String accept = "application/json";
-        return service.createSync(this.client.getEndpoint(), this.client.getApiVersion(),
-            this.client.getSubscriptionId(), resourceGroupName, workspaceName, managedPrivateEndpointName, contentType,
-            accept, requestBodyParameters, Context.NONE);
+        return createWithResponse(resourceGroupName, workspaceName, managedPrivateEndpointName, requestBodyParameters,
+            Context.NONE);
     }
 
     /**
@@ -525,41 +463,16 @@ public final class ManagedPrivateEndpointsClientImpl implements ManagedPrivateEn
             ManagedPrivateEndpointModelInner.class, this.client.getContext());
     }
 
-    /**
-     * Create or update a managed private endpoint for a grafana resource.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param workspaceName The workspace name of Azure Managed Grafana.
-     * @param managedPrivateEndpointName The managed private endpoint name of Azure Managed Grafana.
-     * @param requestBodyParameters The managed private endpoint to be created or updated.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the {@link SyncPoller} for polling of the managed private endpoint resource type.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public SyncPoller<PollResult<ManagedPrivateEndpointModelInner>, ManagedPrivateEndpointModelInner> beginCreate(
         String resourceGroupName, String workspaceName, String managedPrivateEndpointName,
         ManagedPrivateEndpointModelInner requestBodyParameters) {
-        Response<BinaryData> response
-            = createWithResponse(resourceGroupName, workspaceName, managedPrivateEndpointName, requestBodyParameters);
-        return this.client.<ManagedPrivateEndpointModelInner, ManagedPrivateEndpointModelInner>getLroResult(response,
-            ManagedPrivateEndpointModelInner.class, ManagedPrivateEndpointModelInner.class, Context.NONE);
+        return beginCreate(resourceGroupName, workspaceName, managedPrivateEndpointName, requestBodyParameters,
+            Context.NONE);
     }
 
-    /**
-     * Create or update a managed private endpoint for a grafana resource.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param workspaceName The workspace name of Azure Managed Grafana.
-     * @param managedPrivateEndpointName The managed private endpoint name of Azure Managed Grafana.
-     * @param requestBodyParameters The managed private endpoint to be created or updated.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the {@link SyncPoller} for polling of the managed private endpoint resource type.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public SyncPoller<PollResult<ManagedPrivateEndpointModelInner>, ManagedPrivateEndpointModelInner> beginCreate(
         String resourceGroupName, String workspaceName, String managedPrivateEndpointName,
@@ -590,43 +503,20 @@ public final class ManagedPrivateEndpointsClientImpl implements ManagedPrivateEn
             .flatMap(this.client::getLroFinalResultOrError);
     }
 
-    /**
-     * Create or update a managed private endpoint for a grafana resource.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param workspaceName The workspace name of Azure Managed Grafana.
-     * @param managedPrivateEndpointName The managed private endpoint name of Azure Managed Grafana.
-     * @param requestBodyParameters The managed private endpoint to be created or updated.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the managed private endpoint resource type.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public ManagedPrivateEndpointModelInner create(String resourceGroupName, String workspaceName,
         String managedPrivateEndpointName, ManagedPrivateEndpointModelInner requestBodyParameters) {
-        return beginCreate(resourceGroupName, workspaceName, managedPrivateEndpointName, requestBodyParameters)
-            .getFinalResult();
+        return create(resourceGroupName, workspaceName, managedPrivateEndpointName, requestBodyParameters,
+            Context.NONE);
     }
 
-    /**
-     * Create or update a managed private endpoint for a grafana resource.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param workspaceName The workspace name of Azure Managed Grafana.
-     * @param managedPrivateEndpointName The managed private endpoint name of Azure Managed Grafana.
-     * @param requestBodyParameters The managed private endpoint to be created or updated.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the managed private endpoint resource type.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public ManagedPrivateEndpointModelInner create(String resourceGroupName, String workspaceName,
         String managedPrivateEndpointName, ManagedPrivateEndpointModelInner requestBodyParameters, Context context) {
-        return beginCreate(resourceGroupName, workspaceName, managedPrivateEndpointName, requestBodyParameters, context)
-            .getFinalResult();
+        return this.client.getLroFinalResultOrError(
+            beginCreate(resourceGroupName, workspaceName, managedPrivateEndpointName, requestBodyParameters, context));
     }
 
     /**
@@ -669,11 +559,8 @@ public final class ManagedPrivateEndpointsClientImpl implements ManagedPrivateEn
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Response<BinaryData> updateWithResponse(String resourceGroupName, String workspaceName,
         String managedPrivateEndpointName, ManagedPrivateEndpointUpdateParameters requestBodyParameters) {
-        final String contentType = "application/json";
-        final String accept = "application/json";
-        return service.updateSync(this.client.getEndpoint(), this.client.getApiVersion(),
-            this.client.getSubscriptionId(), resourceGroupName, workspaceName, managedPrivateEndpointName, contentType,
-            accept, requestBodyParameters, Context.NONE);
+        return updateWithResponse(resourceGroupName, workspaceName, managedPrivateEndpointName, requestBodyParameters,
+            Context.NONE);
     }
 
     /**
@@ -723,41 +610,16 @@ public final class ManagedPrivateEndpointsClientImpl implements ManagedPrivateEn
             ManagedPrivateEndpointModelInner.class, this.client.getContext());
     }
 
-    /**
-     * Update a managed private endpoint for an existing grafana resource.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param workspaceName The workspace name of Azure Managed Grafana.
-     * @param managedPrivateEndpointName The managed private endpoint name of Azure Managed Grafana.
-     * @param requestBodyParameters Properties that can be updated to an existing managed private endpoint.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the {@link SyncPoller} for polling of the managed private endpoint resource type.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public SyncPoller<PollResult<ManagedPrivateEndpointModelInner>, ManagedPrivateEndpointModelInner> beginUpdate(
         String resourceGroupName, String workspaceName, String managedPrivateEndpointName,
         ManagedPrivateEndpointUpdateParameters requestBodyParameters) {
-        Response<BinaryData> response
-            = updateWithResponse(resourceGroupName, workspaceName, managedPrivateEndpointName, requestBodyParameters);
-        return this.client.<ManagedPrivateEndpointModelInner, ManagedPrivateEndpointModelInner>getLroResult(response,
-            ManagedPrivateEndpointModelInner.class, ManagedPrivateEndpointModelInner.class, Context.NONE);
+        return beginUpdate(resourceGroupName, workspaceName, managedPrivateEndpointName, requestBodyParameters,
+            Context.NONE);
     }
 
-    /**
-     * Update a managed private endpoint for an existing grafana resource.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param workspaceName The workspace name of Azure Managed Grafana.
-     * @param managedPrivateEndpointName The managed private endpoint name of Azure Managed Grafana.
-     * @param requestBodyParameters Properties that can be updated to an existing managed private endpoint.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the {@link SyncPoller} for polling of the managed private endpoint resource type.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public SyncPoller<PollResult<ManagedPrivateEndpointModelInner>, ManagedPrivateEndpointModelInner> beginUpdate(
         String resourceGroupName, String workspaceName, String managedPrivateEndpointName,
@@ -788,44 +650,21 @@ public final class ManagedPrivateEndpointsClientImpl implements ManagedPrivateEn
             .flatMap(this.client::getLroFinalResultOrError);
     }
 
-    /**
-     * Update a managed private endpoint for an existing grafana resource.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param workspaceName The workspace name of Azure Managed Grafana.
-     * @param managedPrivateEndpointName The managed private endpoint name of Azure Managed Grafana.
-     * @param requestBodyParameters Properties that can be updated to an existing managed private endpoint.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the managed private endpoint resource type.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public ManagedPrivateEndpointModelInner update(String resourceGroupName, String workspaceName,
         String managedPrivateEndpointName, ManagedPrivateEndpointUpdateParameters requestBodyParameters) {
-        return beginUpdate(resourceGroupName, workspaceName, managedPrivateEndpointName, requestBodyParameters)
-            .getFinalResult();
+        return update(resourceGroupName, workspaceName, managedPrivateEndpointName, requestBodyParameters,
+            Context.NONE);
     }
 
-    /**
-     * Update a managed private endpoint for an existing grafana resource.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param workspaceName The workspace name of Azure Managed Grafana.
-     * @param managedPrivateEndpointName The managed private endpoint name of Azure Managed Grafana.
-     * @param requestBodyParameters Properties that can be updated to an existing managed private endpoint.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the managed private endpoint resource type.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public ManagedPrivateEndpointModelInner update(String resourceGroupName, String workspaceName,
         String managedPrivateEndpointName, ManagedPrivateEndpointUpdateParameters requestBodyParameters,
         Context context) {
-        return beginUpdate(resourceGroupName, workspaceName, managedPrivateEndpointName, requestBodyParameters, context)
-            .getFinalResult();
+        return this.client.getLroFinalResultOrError(
+            beginUpdate(resourceGroupName, workspaceName, managedPrivateEndpointName, requestBodyParameters, context));
     }
 
     /**
@@ -862,9 +701,7 @@ public final class ManagedPrivateEndpointsClientImpl implements ManagedPrivateEn
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Response<BinaryData> deleteWithResponse(String resourceGroupName, String workspaceName,
         String managedPrivateEndpointName) {
-        return service.deleteSync(this.client.getEndpoint(), this.client.getApiVersion(),
-            this.client.getSubscriptionId(), resourceGroupName, workspaceName, managedPrivateEndpointName,
-            Context.NONE);
+        return deleteWithResponse(resourceGroupName, workspaceName, managedPrivateEndpointName, Context.NONE);
     }
 
     /**
@@ -906,37 +743,14 @@ public final class ManagedPrivateEndpointsClientImpl implements ManagedPrivateEn
             this.client.getContext());
     }
 
-    /**
-     * Delete a managed private endpoint for a grafana resource.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param workspaceName The workspace name of Azure Managed Grafana.
-     * @param managedPrivateEndpointName The managed private endpoint name of Azure Managed Grafana.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the {@link SyncPoller} for polling of long-running operation.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public SyncPoller<PollResult<Void>, Void> beginDelete(String resourceGroupName, String workspaceName,
         String managedPrivateEndpointName) {
-        Response<BinaryData> response
-            = deleteWithResponse(resourceGroupName, workspaceName, managedPrivateEndpointName);
-        return this.client.<Void, Void>getLroResult(response, Void.class, Void.class, Context.NONE);
+        return beginDelete(resourceGroupName, workspaceName, managedPrivateEndpointName, Context.NONE);
     }
 
-    /**
-     * Delete a managed private endpoint for a grafana resource.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param workspaceName The workspace name of Azure Managed Grafana.
-     * @param managedPrivateEndpointName The managed private endpoint name of Azure Managed Grafana.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the {@link SyncPoller} for polling of long-running operation.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public SyncPoller<PollResult<Void>, Void> beginDelete(String resourceGroupName, String workspaceName,
         String managedPrivateEndpointName, Context context) {
@@ -962,36 +776,18 @@ public final class ManagedPrivateEndpointsClientImpl implements ManagedPrivateEn
             .flatMap(this.client::getLroFinalResultOrError);
     }
 
-    /**
-     * Delete a managed private endpoint for a grafana resource.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param workspaceName The workspace name of Azure Managed Grafana.
-     * @param managedPrivateEndpointName The managed private endpoint name of Azure Managed Grafana.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public void delete(String resourceGroupName, String workspaceName, String managedPrivateEndpointName) {
-        beginDelete(resourceGroupName, workspaceName, managedPrivateEndpointName).getFinalResult();
+        delete(resourceGroupName, workspaceName, managedPrivateEndpointName, Context.NONE);
     }
 
-    /**
-     * Delete a managed private endpoint for a grafana resource.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param workspaceName The workspace name of Azure Managed Grafana.
-     * @param managedPrivateEndpointName The managed private endpoint name of Azure Managed Grafana.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public void delete(String resourceGroupName, String workspaceName, String managedPrivateEndpointName,
         Context context) {
-        beginDelete(resourceGroupName, workspaceName, managedPrivateEndpointName, context).getFinalResult();
+        this.client.getLroFinalResultOrError(
+            beginDelete(resourceGroupName, workspaceName, managedPrivateEndpointName, context));
     }
 
     /**
@@ -1046,12 +842,7 @@ public final class ManagedPrivateEndpointsClientImpl implements ManagedPrivateEn
     @ServiceMethod(returns = ReturnType.SINGLE)
     private PagedResponse<ManagedPrivateEndpointModelInner> listSinglePage(String resourceGroupName,
         String workspaceName) {
-        final String accept = "application/json";
-        Response<ManagedPrivateEndpointModelListResponse> res
-            = service.listSync(this.client.getEndpoint(), this.client.getApiVersion(), this.client.getSubscriptionId(),
-                resourceGroupName, workspaceName, accept, Context.NONE);
-        return new PagedResponseBase<>(res.getRequest(), res.getStatusCode(), res.getHeaders(), res.getValue().value(),
-            res.getValue().nextLink(), null);
+        return listSinglePage(resourceGroupName, workspaceName, Context.NONE);
     }
 
     /**
@@ -1076,35 +867,13 @@ public final class ManagedPrivateEndpointsClientImpl implements ManagedPrivateEn
             res.getValue().nextLink(), null);
     }
 
-    /**
-     * List all managed private endpoints of a grafana resource.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param workspaceName The workspace name of Azure Managed Grafana.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the list of managed private endpoints of a grafana resource as paginated response with
-     * {@link PagedIterable}.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.COLLECTION)
     public PagedIterable<ManagedPrivateEndpointModelInner> list(String resourceGroupName, String workspaceName) {
-        return new PagedIterable<>(() -> listSinglePage(resourceGroupName, workspaceName),
-            nextLink -> listNextSinglePage(nextLink));
+        return list(resourceGroupName, workspaceName, Context.NONE);
     }
 
-    /**
-     * List all managed private endpoints of a grafana resource.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param workspaceName The workspace name of Azure Managed Grafana.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the list of managed private endpoints of a grafana resource as paginated response with
-     * {@link PagedIterable}.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.COLLECTION)
     public PagedIterable<ManagedPrivateEndpointModelInner> list(String resourceGroupName, String workspaceName,
         Context context) {
@@ -1142,11 +911,7 @@ public final class ManagedPrivateEndpointsClientImpl implements ManagedPrivateEn
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private PagedResponse<ManagedPrivateEndpointModelInner> listNextSinglePage(String nextLink) {
-        final String accept = "application/json";
-        Response<ManagedPrivateEndpointModelListResponse> res
-            = service.listNextSync(nextLink, this.client.getEndpoint(), accept, Context.NONE);
-        return new PagedResponseBase<>(res.getRequest(), res.getStatusCode(), res.getHeaders(), res.getValue().value(),
-            res.getValue().nextLink(), null);
+        return listNextSinglePage(nextLink, Context.NONE);
     }
 
     /**

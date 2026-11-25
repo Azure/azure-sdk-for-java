@@ -406,11 +406,7 @@ public final class AutonomousDatabasesClientImpl implements AutonomousDatabasesC
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private PagedResponse<AutonomousDatabaseInner> listSinglePage() {
-        final String accept = "application/json";
-        Response<AutonomousDatabaseListResult> res = service.listSync(this.client.getEndpoint(),
-            this.client.getApiVersion(), this.client.getSubscriptionId(), accept, Context.NONE);
-        return new PagedResponseBase<>(res.getRequest(), res.getStatusCode(), res.getHeaders(), res.getValue().value(),
-            res.getValue().nextLink(), null);
+        return listSinglePage(Context.NONE);
     }
 
     /**
@@ -431,27 +427,13 @@ public final class AutonomousDatabasesClientImpl implements AutonomousDatabasesC
             res.getValue().nextLink(), null);
     }
 
-    /**
-     * List AutonomousDatabase resources by subscription ID.
-     * 
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the response of a AutonomousDatabase list operation as paginated response with {@link PagedIterable}.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.COLLECTION)
     public PagedIterable<AutonomousDatabaseInner> list() {
-        return new PagedIterable<>(() -> listSinglePage(), nextLink -> listBySubscriptionNextSinglePage(nextLink));
+        return list(Context.NONE);
     }
 
-    /**
-     * List AutonomousDatabase resources by subscription ID.
-     * 
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the response of a AutonomousDatabase list operation as paginated response with {@link PagedIterable}.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.COLLECTION)
     public PagedIterable<AutonomousDatabaseInner> list(Context context) {
         return new PagedIterable<>(() -> listSinglePage(context),
@@ -495,11 +477,7 @@ public final class AutonomousDatabasesClientImpl implements AutonomousDatabasesC
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Response<BinaryData> createOrUpdateWithResponse(String resourceGroupName, String autonomousdatabasename,
         AutonomousDatabaseInner resource) {
-        final String contentType = "application/json";
-        final String accept = "application/json";
-        return service.createOrUpdateSync(this.client.getEndpoint(), this.client.getApiVersion(),
-            this.client.getSubscriptionId(), resourceGroupName, autonomousdatabasename, contentType, accept, resource,
-            Context.NONE);
+        return createOrUpdateWithResponse(resourceGroupName, autonomousdatabasename, resource, Context.NONE);
     }
 
     /**
@@ -545,37 +523,14 @@ public final class AutonomousDatabasesClientImpl implements AutonomousDatabasesC
             this.client.getContext());
     }
 
-    /**
-     * Create a AutonomousDatabase.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param autonomousdatabasename The database name.
-     * @param resource Resource create parameters.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the {@link SyncPoller} for polling of autonomous Database resource model.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public SyncPoller<PollResult<AutonomousDatabaseInner>, AutonomousDatabaseInner>
         beginCreateOrUpdate(String resourceGroupName, String autonomousdatabasename, AutonomousDatabaseInner resource) {
-        Response<BinaryData> response = createOrUpdateWithResponse(resourceGroupName, autonomousdatabasename, resource);
-        return this.client.<AutonomousDatabaseInner, AutonomousDatabaseInner>getLroResult(response,
-            AutonomousDatabaseInner.class, AutonomousDatabaseInner.class, Context.NONE);
+        return beginCreateOrUpdate(resourceGroupName, autonomousdatabasename, resource, Context.NONE);
     }
 
-    /**
-     * Create a AutonomousDatabase.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param autonomousdatabasename The database name.
-     * @param resource Resource create parameters.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the {@link SyncPoller} for polling of autonomous Database resource model.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public SyncPoller<PollResult<AutonomousDatabaseInner>, AutonomousDatabaseInner> beginCreateOrUpdate(
         String resourceGroupName, String autonomousdatabasename, AutonomousDatabaseInner resource, Context context) {
@@ -603,39 +558,19 @@ public final class AutonomousDatabasesClientImpl implements AutonomousDatabasesC
             .flatMap(this.client::getLroFinalResultOrError);
     }
 
-    /**
-     * Create a AutonomousDatabase.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param autonomousdatabasename The database name.
-     * @param resource Resource create parameters.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return autonomous Database resource model.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public AutonomousDatabaseInner createOrUpdate(String resourceGroupName, String autonomousdatabasename,
         AutonomousDatabaseInner resource) {
-        return beginCreateOrUpdate(resourceGroupName, autonomousdatabasename, resource).getFinalResult();
+        return createOrUpdate(resourceGroupName, autonomousdatabasename, resource, Context.NONE);
     }
 
-    /**
-     * Create a AutonomousDatabase.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param autonomousdatabasename The database name.
-     * @param resource Resource create parameters.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return autonomous Database resource model.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public AutonomousDatabaseInner createOrUpdate(String resourceGroupName, String autonomousdatabasename,
         AutonomousDatabaseInner resource, Context context) {
-        return beginCreateOrUpdate(resourceGroupName, autonomousdatabasename, resource, context).getFinalResult();
+        return this.client.getLroFinalResultOrError(
+            beginCreateOrUpdate(resourceGroupName, autonomousdatabasename, resource, context));
     }
 
     /**
@@ -675,17 +610,7 @@ public final class AutonomousDatabasesClientImpl implements AutonomousDatabasesC
             .flatMap(res -> Mono.justOrEmpty(res.getValue()));
     }
 
-    /**
-     * Get a AutonomousDatabase.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param autonomousdatabasename The database name.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return a AutonomousDatabase along with {@link Response}.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Response<AutonomousDatabaseInner> getByResourceGroupWithResponse(String resourceGroupName,
         String autonomousdatabasename, Context context) {
@@ -694,16 +619,7 @@ public final class AutonomousDatabasesClientImpl implements AutonomousDatabasesC
             this.client.getSubscriptionId(), resourceGroupName, autonomousdatabasename, accept, context);
     }
 
-    /**
-     * Get a AutonomousDatabase.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param autonomousdatabasename The database name.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return a AutonomousDatabase.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public AutonomousDatabaseInner getByResourceGroup(String resourceGroupName, String autonomousdatabasename) {
         return getByResourceGroupWithResponse(resourceGroupName, autonomousdatabasename, Context.NONE).getValue();
@@ -740,8 +656,7 @@ public final class AutonomousDatabasesClientImpl implements AutonomousDatabasesC
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Response<BinaryData> deleteWithResponse(String resourceGroupName, String autonomousdatabasename) {
-        return service.deleteSync(this.client.getEndpoint(), this.client.getApiVersion(),
-            this.client.getSubscriptionId(), resourceGroupName, autonomousdatabasename, Context.NONE);
+        return deleteWithResponse(resourceGroupName, autonomousdatabasename, Context.NONE);
     }
 
     /**
@@ -780,33 +695,13 @@ public final class AutonomousDatabasesClientImpl implements AutonomousDatabasesC
             this.client.getContext());
     }
 
-    /**
-     * Delete a AutonomousDatabase.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param autonomousdatabasename The database name.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the {@link SyncPoller} for polling of long-running operation.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public SyncPoller<PollResult<Void>, Void> beginDelete(String resourceGroupName, String autonomousdatabasename) {
-        Response<BinaryData> response = deleteWithResponse(resourceGroupName, autonomousdatabasename);
-        return this.client.<Void, Void>getLroResult(response, Void.class, Void.class, Context.NONE);
+        return beginDelete(resourceGroupName, autonomousdatabasename, Context.NONE);
     }
 
-    /**
-     * Delete a AutonomousDatabase.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param autonomousdatabasename The database name.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the {@link SyncPoller} for polling of long-running operation.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public SyncPoller<PollResult<Void>, Void> beginDelete(String resourceGroupName, String autonomousdatabasename,
         Context context) {
@@ -830,33 +725,16 @@ public final class AutonomousDatabasesClientImpl implements AutonomousDatabasesC
             .flatMap(this.client::getLroFinalResultOrError);
     }
 
-    /**
-     * Delete a AutonomousDatabase.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param autonomousdatabasename The database name.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public void delete(String resourceGroupName, String autonomousdatabasename) {
-        beginDelete(resourceGroupName, autonomousdatabasename).getFinalResult();
+        delete(resourceGroupName, autonomousdatabasename, Context.NONE);
     }
 
-    /**
-     * Delete a AutonomousDatabase.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param autonomousdatabasename The database name.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public void delete(String resourceGroupName, String autonomousdatabasename, Context context) {
-        beginDelete(resourceGroupName, autonomousdatabasename, context).getFinalResult();
+        this.client.getLroFinalResultOrError(beginDelete(resourceGroupName, autonomousdatabasename, context));
     }
 
     /**
@@ -896,11 +774,7 @@ public final class AutonomousDatabasesClientImpl implements AutonomousDatabasesC
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Response<BinaryData> updateWithResponse(String resourceGroupName, String autonomousdatabasename,
         AutonomousDatabaseUpdate properties) {
-        final String contentType = "application/json";
-        final String accept = "application/json";
-        return service.updateSync(this.client.getEndpoint(), this.client.getApiVersion(),
-            this.client.getSubscriptionId(), resourceGroupName, autonomousdatabasename, contentType, accept, properties,
-            Context.NONE);
+        return updateWithResponse(resourceGroupName, autonomousdatabasename, properties, Context.NONE);
     }
 
     /**
@@ -946,37 +820,14 @@ public final class AutonomousDatabasesClientImpl implements AutonomousDatabasesC
             this.client.getContext());
     }
 
-    /**
-     * Update a AutonomousDatabase.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param autonomousdatabasename The database name.
-     * @param properties The resource properties to be updated.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the {@link SyncPoller} for polling of autonomous Database resource model.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public SyncPoller<PollResult<AutonomousDatabaseInner>, AutonomousDatabaseInner>
         beginUpdate(String resourceGroupName, String autonomousdatabasename, AutonomousDatabaseUpdate properties) {
-        Response<BinaryData> response = updateWithResponse(resourceGroupName, autonomousdatabasename, properties);
-        return this.client.<AutonomousDatabaseInner, AutonomousDatabaseInner>getLroResult(response,
-            AutonomousDatabaseInner.class, AutonomousDatabaseInner.class, Context.NONE);
+        return beginUpdate(resourceGroupName, autonomousdatabasename, properties, Context.NONE);
     }
 
-    /**
-     * Update a AutonomousDatabase.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param autonomousdatabasename The database name.
-     * @param properties The resource properties to be updated.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the {@link SyncPoller} for polling of autonomous Database resource model.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public SyncPoller<PollResult<AutonomousDatabaseInner>, AutonomousDatabaseInner> beginUpdate(
         String resourceGroupName, String autonomousdatabasename, AutonomousDatabaseUpdate properties, Context context) {
@@ -1004,39 +855,19 @@ public final class AutonomousDatabasesClientImpl implements AutonomousDatabasesC
             .flatMap(this.client::getLroFinalResultOrError);
     }
 
-    /**
-     * Update a AutonomousDatabase.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param autonomousdatabasename The database name.
-     * @param properties The resource properties to be updated.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return autonomous Database resource model.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public AutonomousDatabaseInner update(String resourceGroupName, String autonomousdatabasename,
         AutonomousDatabaseUpdate properties) {
-        return beginUpdate(resourceGroupName, autonomousdatabasename, properties).getFinalResult();
+        return update(resourceGroupName, autonomousdatabasename, properties, Context.NONE);
     }
 
-    /**
-     * Update a AutonomousDatabase.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param autonomousdatabasename The database name.
-     * @param properties The resource properties to be updated.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return autonomous Database resource model.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public AutonomousDatabaseInner update(String resourceGroupName, String autonomousdatabasename,
         AutonomousDatabaseUpdate properties, Context context) {
-        return beginUpdate(resourceGroupName, autonomousdatabasename, properties, context).getFinalResult();
+        return this.client
+            .getLroFinalResultOrError(beginUpdate(resourceGroupName, autonomousdatabasename, properties, context));
     }
 
     /**
@@ -1086,11 +917,7 @@ public final class AutonomousDatabasesClientImpl implements AutonomousDatabasesC
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private PagedResponse<AutonomousDatabaseInner> listByResourceGroupSinglePage(String resourceGroupName) {
-        final String accept = "application/json";
-        Response<AutonomousDatabaseListResult> res = service.listByResourceGroupSync(this.client.getEndpoint(),
-            this.client.getApiVersion(), this.client.getSubscriptionId(), resourceGroupName, accept, Context.NONE);
-        return new PagedResponseBase<>(res.getRequest(), res.getStatusCode(), res.getHeaders(), res.getValue().value(),
-            res.getValue().nextLink(), null);
+        return listByResourceGroupSinglePage(resourceGroupName, Context.NONE);
     }
 
     /**
@@ -1113,31 +940,13 @@ public final class AutonomousDatabasesClientImpl implements AutonomousDatabasesC
             res.getValue().nextLink(), null);
     }
 
-    /**
-     * List AutonomousDatabase resources by resource group.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the response of a AutonomousDatabase list operation as paginated response with {@link PagedIterable}.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.COLLECTION)
     public PagedIterable<AutonomousDatabaseInner> listByResourceGroup(String resourceGroupName) {
-        return new PagedIterable<>(() -> listByResourceGroupSinglePage(resourceGroupName),
-            nextLink -> listByResourceGroupNextSinglePage(nextLink));
+        return listByResourceGroup(resourceGroupName, Context.NONE);
     }
 
-    /**
-     * List AutonomousDatabase resources by resource group.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the response of a AutonomousDatabase list operation as paginated response with {@link PagedIterable}.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.COLLECTION)
     public PagedIterable<AutonomousDatabaseInner> listByResourceGroup(String resourceGroupName, Context context) {
         return new PagedIterable<>(() -> listByResourceGroupSinglePage(resourceGroupName, context),
@@ -1181,11 +990,7 @@ public final class AutonomousDatabasesClientImpl implements AutonomousDatabasesC
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Response<BinaryData> switchoverWithResponse(String resourceGroupName, String autonomousdatabasename,
         PeerDbDetails body) {
-        final String contentType = "application/json";
-        final String accept = "application/json";
-        return service.switchoverSync(this.client.getEndpoint(), this.client.getApiVersion(),
-            this.client.getSubscriptionId(), resourceGroupName, autonomousdatabasename, contentType, accept, body,
-            Context.NONE);
+        return switchoverWithResponse(resourceGroupName, autonomousdatabasename, body, Context.NONE);
     }
 
     /**
@@ -1231,37 +1036,14 @@ public final class AutonomousDatabasesClientImpl implements AutonomousDatabasesC
             this.client.getContext());
     }
 
-    /**
-     * Perform switchover action on Autonomous Database.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param autonomousdatabasename The database name.
-     * @param body The content of the action request.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the {@link SyncPoller} for polling of autonomous Database resource model.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public SyncPoller<PollResult<AutonomousDatabaseInner>, AutonomousDatabaseInner>
         beginSwitchover(String resourceGroupName, String autonomousdatabasename, PeerDbDetails body) {
-        Response<BinaryData> response = switchoverWithResponse(resourceGroupName, autonomousdatabasename, body);
-        return this.client.<AutonomousDatabaseInner, AutonomousDatabaseInner>getLroResult(response,
-            AutonomousDatabaseInner.class, AutonomousDatabaseInner.class, Context.NONE);
+        return beginSwitchover(resourceGroupName, autonomousdatabasename, body, Context.NONE);
     }
 
-    /**
-     * Perform switchover action on Autonomous Database.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param autonomousdatabasename The database name.
-     * @param body The content of the action request.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the {@link SyncPoller} for polling of autonomous Database resource model.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public SyncPoller<PollResult<AutonomousDatabaseInner>, AutonomousDatabaseInner>
         beginSwitchover(String resourceGroupName, String autonomousdatabasename, PeerDbDetails body, Context context) {
@@ -1289,39 +1071,19 @@ public final class AutonomousDatabasesClientImpl implements AutonomousDatabasesC
             .flatMap(this.client::getLroFinalResultOrError);
     }
 
-    /**
-     * Perform switchover action on Autonomous Database.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param autonomousdatabasename The database name.
-     * @param body The content of the action request.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return autonomous Database resource model.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public AutonomousDatabaseInner switchover(String resourceGroupName, String autonomousdatabasename,
         PeerDbDetails body) {
-        return beginSwitchover(resourceGroupName, autonomousdatabasename, body).getFinalResult();
+        return switchover(resourceGroupName, autonomousdatabasename, body, Context.NONE);
     }
 
-    /**
-     * Perform switchover action on Autonomous Database.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param autonomousdatabasename The database name.
-     * @param body The content of the action request.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return autonomous Database resource model.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public AutonomousDatabaseInner switchover(String resourceGroupName, String autonomousdatabasename,
         PeerDbDetails body, Context context) {
-        return beginSwitchover(resourceGroupName, autonomousdatabasename, body, context).getFinalResult();
+        return this.client
+            .getLroFinalResultOrError(beginSwitchover(resourceGroupName, autonomousdatabasename, body, context));
     }
 
     /**
@@ -1361,11 +1123,7 @@ public final class AutonomousDatabasesClientImpl implements AutonomousDatabasesC
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Response<BinaryData> failoverWithResponse(String resourceGroupName, String autonomousdatabasename,
         PeerDbDetails body) {
-        final String contentType = "application/json";
-        final String accept = "application/json";
-        return service.failoverSync(this.client.getEndpoint(), this.client.getApiVersion(),
-            this.client.getSubscriptionId(), resourceGroupName, autonomousdatabasename, contentType, accept, body,
-            Context.NONE);
+        return failoverWithResponse(resourceGroupName, autonomousdatabasename, body, Context.NONE);
     }
 
     /**
@@ -1411,37 +1169,14 @@ public final class AutonomousDatabasesClientImpl implements AutonomousDatabasesC
             this.client.getContext());
     }
 
-    /**
-     * Perform failover action on Autonomous Database.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param autonomousdatabasename The database name.
-     * @param body The content of the action request.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the {@link SyncPoller} for polling of autonomous Database resource model.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public SyncPoller<PollResult<AutonomousDatabaseInner>, AutonomousDatabaseInner>
         beginFailover(String resourceGroupName, String autonomousdatabasename, PeerDbDetails body) {
-        Response<BinaryData> response = failoverWithResponse(resourceGroupName, autonomousdatabasename, body);
-        return this.client.<AutonomousDatabaseInner, AutonomousDatabaseInner>getLroResult(response,
-            AutonomousDatabaseInner.class, AutonomousDatabaseInner.class, Context.NONE);
+        return beginFailover(resourceGroupName, autonomousdatabasename, body, Context.NONE);
     }
 
-    /**
-     * Perform failover action on Autonomous Database.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param autonomousdatabasename The database name.
-     * @param body The content of the action request.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the {@link SyncPoller} for polling of autonomous Database resource model.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public SyncPoller<PollResult<AutonomousDatabaseInner>, AutonomousDatabaseInner>
         beginFailover(String resourceGroupName, String autonomousdatabasename, PeerDbDetails body, Context context) {
@@ -1468,39 +1203,19 @@ public final class AutonomousDatabasesClientImpl implements AutonomousDatabasesC
             .flatMap(this.client::getLroFinalResultOrError);
     }
 
-    /**
-     * Perform failover action on Autonomous Database.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param autonomousdatabasename The database name.
-     * @param body The content of the action request.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return autonomous Database resource model.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public AutonomousDatabaseInner failover(String resourceGroupName, String autonomousdatabasename,
         PeerDbDetails body) {
-        return beginFailover(resourceGroupName, autonomousdatabasename, body).getFinalResult();
+        return failover(resourceGroupName, autonomousdatabasename, body, Context.NONE);
     }
 
-    /**
-     * Perform failover action on Autonomous Database.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param autonomousdatabasename The database name.
-     * @param body The content of the action request.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return autonomous Database resource model.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public AutonomousDatabaseInner failover(String resourceGroupName, String autonomousdatabasename, PeerDbDetails body,
         Context context) {
-        return beginFailover(resourceGroupName, autonomousdatabasename, body, context).getFinalResult();
+        return this.client
+            .getLroFinalResultOrError(beginFailover(resourceGroupName, autonomousdatabasename, body, context));
     }
 
     /**
@@ -1545,18 +1260,7 @@ public final class AutonomousDatabasesClientImpl implements AutonomousDatabasesC
             .flatMap(res -> Mono.justOrEmpty(res.getValue()));
     }
 
-    /**
-     * Generate wallet action on Autonomous Database.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param autonomousdatabasename The database name.
-     * @param body The content of the action request.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return autonomous Database Wallet File resource model along with {@link Response}.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Response<AutonomousDatabaseWalletFileInner> generateWalletWithResponse(String resourceGroupName,
         String autonomousdatabasename, GenerateAutonomousDatabaseWalletDetails body, Context context) {
@@ -1567,17 +1271,7 @@ public final class AutonomousDatabasesClientImpl implements AutonomousDatabasesC
             context);
     }
 
-    /**
-     * Generate wallet action on Autonomous Database.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param autonomousdatabasename The database name.
-     * @param body The content of the action request.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return autonomous Database Wallet File resource model.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public AutonomousDatabaseWalletFileInner generateWallet(String resourceGroupName, String autonomousdatabasename,
         GenerateAutonomousDatabaseWalletDetails body) {
@@ -1621,11 +1315,7 @@ public final class AutonomousDatabasesClientImpl implements AutonomousDatabasesC
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Response<BinaryData> restoreWithResponse(String resourceGroupName, String autonomousdatabasename,
         RestoreAutonomousDatabaseDetails body) {
-        final String contentType = "application/json";
-        final String accept = "application/json";
-        return service.restoreSync(this.client.getEndpoint(), this.client.getApiVersion(),
-            this.client.getSubscriptionId(), resourceGroupName, autonomousdatabasename, contentType, accept, body,
-            Context.NONE);
+        return restoreWithResponse(resourceGroupName, autonomousdatabasename, body, Context.NONE);
     }
 
     /**
@@ -1671,37 +1361,14 @@ public final class AutonomousDatabasesClientImpl implements AutonomousDatabasesC
             this.client.getContext());
     }
 
-    /**
-     * Restores an Autonomous Database based on the provided request parameters.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param autonomousdatabasename The database name.
-     * @param body The content of the action request.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the {@link SyncPoller} for polling of autonomous Database resource model.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public SyncPoller<PollResult<AutonomousDatabaseInner>, AutonomousDatabaseInner>
         beginRestore(String resourceGroupName, String autonomousdatabasename, RestoreAutonomousDatabaseDetails body) {
-        Response<BinaryData> response = restoreWithResponse(resourceGroupName, autonomousdatabasename, body);
-        return this.client.<AutonomousDatabaseInner, AutonomousDatabaseInner>getLroResult(response,
-            AutonomousDatabaseInner.class, AutonomousDatabaseInner.class, Context.NONE);
+        return beginRestore(resourceGroupName, autonomousdatabasename, body, Context.NONE);
     }
 
-    /**
-     * Restores an Autonomous Database based on the provided request parameters.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param autonomousdatabasename The database name.
-     * @param body The content of the action request.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the {@link SyncPoller} for polling of autonomous Database resource model.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public SyncPoller<PollResult<AutonomousDatabaseInner>, AutonomousDatabaseInner> beginRestore(
         String resourceGroupName, String autonomousdatabasename, RestoreAutonomousDatabaseDetails body,
@@ -1729,39 +1396,19 @@ public final class AutonomousDatabasesClientImpl implements AutonomousDatabasesC
             .flatMap(this.client::getLroFinalResultOrError);
     }
 
-    /**
-     * Restores an Autonomous Database based on the provided request parameters.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param autonomousdatabasename The database name.
-     * @param body The content of the action request.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return autonomous Database resource model.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public AutonomousDatabaseInner restore(String resourceGroupName, String autonomousdatabasename,
         RestoreAutonomousDatabaseDetails body) {
-        return beginRestore(resourceGroupName, autonomousdatabasename, body).getFinalResult();
+        return restore(resourceGroupName, autonomousdatabasename, body, Context.NONE);
     }
 
-    /**
-     * Restores an Autonomous Database based on the provided request parameters.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param autonomousdatabasename The database name.
-     * @param body The content of the action request.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return autonomous Database resource model.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public AutonomousDatabaseInner restore(String resourceGroupName, String autonomousdatabasename,
         RestoreAutonomousDatabaseDetails body, Context context) {
-        return beginRestore(resourceGroupName, autonomousdatabasename, body, context).getFinalResult();
+        return this.client
+            .getLroFinalResultOrError(beginRestore(resourceGroupName, autonomousdatabasename, body, context));
     }
 
     /**
@@ -1796,9 +1443,7 @@ public final class AutonomousDatabasesClientImpl implements AutonomousDatabasesC
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Response<BinaryData> shrinkWithResponse(String resourceGroupName, String autonomousdatabasename) {
-        final String accept = "application/json";
-        return service.shrinkSync(this.client.getEndpoint(), this.client.getApiVersion(),
-            this.client.getSubscriptionId(), resourceGroupName, autonomousdatabasename, accept, Context.NONE);
+        return shrinkWithResponse(resourceGroupName, autonomousdatabasename, Context.NONE);
     }
 
     /**
@@ -1839,35 +1484,14 @@ public final class AutonomousDatabasesClientImpl implements AutonomousDatabasesC
             this.client.getContext());
     }
 
-    /**
-     * This operation shrinks the current allocated storage down to the current actual used data storage.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param autonomousdatabasename The database name.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the {@link SyncPoller} for polling of autonomous Database resource model.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public SyncPoller<PollResult<AutonomousDatabaseInner>, AutonomousDatabaseInner>
         beginShrink(String resourceGroupName, String autonomousdatabasename) {
-        Response<BinaryData> response = shrinkWithResponse(resourceGroupName, autonomousdatabasename);
-        return this.client.<AutonomousDatabaseInner, AutonomousDatabaseInner>getLroResult(response,
-            AutonomousDatabaseInner.class, AutonomousDatabaseInner.class, Context.NONE);
+        return beginShrink(resourceGroupName, autonomousdatabasename, Context.NONE);
     }
 
-    /**
-     * This operation shrinks the current allocated storage down to the current actual used data storage.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param autonomousdatabasename The database name.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the {@link SyncPoller} for polling of autonomous Database resource model.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public SyncPoller<PollResult<AutonomousDatabaseInner>, AutonomousDatabaseInner>
         beginShrink(String resourceGroupName, String autonomousdatabasename, Context context) {
@@ -1892,35 +1516,16 @@ public final class AutonomousDatabasesClientImpl implements AutonomousDatabasesC
             .flatMap(this.client::getLroFinalResultOrError);
     }
 
-    /**
-     * This operation shrinks the current allocated storage down to the current actual used data storage.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param autonomousdatabasename The database name.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return autonomous Database resource model.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public AutonomousDatabaseInner shrink(String resourceGroupName, String autonomousdatabasename) {
-        return beginShrink(resourceGroupName, autonomousdatabasename).getFinalResult();
+        return shrink(resourceGroupName, autonomousdatabasename, Context.NONE);
     }
 
-    /**
-     * This operation shrinks the current allocated storage down to the current actual used data storage.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param autonomousdatabasename The database name.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return autonomous Database resource model.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public AutonomousDatabaseInner shrink(String resourceGroupName, String autonomousdatabasename, Context context) {
-        return beginShrink(resourceGroupName, autonomousdatabasename, context).getFinalResult();
+        return this.client.getLroFinalResultOrError(beginShrink(resourceGroupName, autonomousdatabasename, context));
     }
 
     /**
@@ -1960,10 +1565,7 @@ public final class AutonomousDatabasesClientImpl implements AutonomousDatabasesC
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Response<BinaryData> changeDisasterRecoveryConfigurationWithResponse(String resourceGroupName,
         String autonomousdatabasename, DisasterRecoveryConfigurationDetails body) {
-        final String contentType = "application/json";
-        final String accept = "application/json";
-        return service.changeDisasterRecoveryConfigurationSync(this.client.getEndpoint(), this.client.getApiVersion(),
-            this.client.getSubscriptionId(), resourceGroupName, autonomousdatabasename, contentType, accept, body,
+        return changeDisasterRecoveryConfigurationWithResponse(resourceGroupName, autonomousdatabasename, body,
             Context.NONE);
     }
 
@@ -2011,39 +1613,15 @@ public final class AutonomousDatabasesClientImpl implements AutonomousDatabasesC
             this.client.getContext());
     }
 
-    /**
-     * Perform ChangeDisasterRecoveryConfiguration action on Autonomous Database.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param autonomousdatabasename The database name.
-     * @param body The content of the action request.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the {@link SyncPoller} for polling of autonomous Database resource model.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public SyncPoller<PollResult<AutonomousDatabaseInner>, AutonomousDatabaseInner>
         beginChangeDisasterRecoveryConfiguration(String resourceGroupName, String autonomousdatabasename,
             DisasterRecoveryConfigurationDetails body) {
-        Response<BinaryData> response
-            = changeDisasterRecoveryConfigurationWithResponse(resourceGroupName, autonomousdatabasename, body);
-        return this.client.<AutonomousDatabaseInner, AutonomousDatabaseInner>getLroResult(response,
-            AutonomousDatabaseInner.class, AutonomousDatabaseInner.class, Context.NONE);
+        return beginChangeDisasterRecoveryConfiguration(resourceGroupName, autonomousdatabasename, body, Context.NONE);
     }
 
-    /**
-     * Perform ChangeDisasterRecoveryConfiguration action on Autonomous Database.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param autonomousdatabasename The database name.
-     * @param body The content of the action request.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the {@link SyncPoller} for polling of autonomous Database resource model.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public SyncPoller<PollResult<AutonomousDatabaseInner>, AutonomousDatabaseInner>
         beginChangeDisasterRecoveryConfiguration(String resourceGroupName, String autonomousdatabasename,
@@ -2072,41 +1650,19 @@ public final class AutonomousDatabasesClientImpl implements AutonomousDatabasesC
             .flatMap(this.client::getLroFinalResultOrError);
     }
 
-    /**
-     * Perform ChangeDisasterRecoveryConfiguration action on Autonomous Database.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param autonomousdatabasename The database name.
-     * @param body The content of the action request.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return autonomous Database resource model.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public AutonomousDatabaseInner changeDisasterRecoveryConfiguration(String resourceGroupName,
         String autonomousdatabasename, DisasterRecoveryConfigurationDetails body) {
-        return beginChangeDisasterRecoveryConfiguration(resourceGroupName, autonomousdatabasename, body)
-            .getFinalResult();
+        return changeDisasterRecoveryConfiguration(resourceGroupName, autonomousdatabasename, body, Context.NONE);
     }
 
-    /**
-     * Perform ChangeDisasterRecoveryConfiguration action on Autonomous Database.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param autonomousdatabasename The database name.
-     * @param body The content of the action request.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return autonomous Database resource model.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public AutonomousDatabaseInner changeDisasterRecoveryConfiguration(String resourceGroupName,
         String autonomousdatabasename, DisasterRecoveryConfigurationDetails body, Context context) {
-        return beginChangeDisasterRecoveryConfiguration(resourceGroupName, autonomousdatabasename, body, context)
-            .getFinalResult();
+        return this.client.getLroFinalResultOrError(
+            beginChangeDisasterRecoveryConfiguration(resourceGroupName, autonomousdatabasename, body, context));
     }
 
     /**
@@ -2146,11 +1702,7 @@ public final class AutonomousDatabasesClientImpl implements AutonomousDatabasesC
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Response<BinaryData> actionWithResponse(String resourceGroupName, String autonomousdatabasename,
         AutonomousDatabaseLifecycleAction body) {
-        final String contentType = "application/json";
-        final String accept = "application/json";
-        return service.actionSync(this.client.getEndpoint(), this.client.getApiVersion(),
-            this.client.getSubscriptionId(), resourceGroupName, autonomousdatabasename, contentType, accept, body,
-            Context.NONE);
+        return actionWithResponse(resourceGroupName, autonomousdatabasename, body, Context.NONE);
     }
 
     /**
@@ -2196,37 +1748,14 @@ public final class AutonomousDatabasesClientImpl implements AutonomousDatabasesC
             this.client.getContext());
     }
 
-    /**
-     * Perform Lifecycle Management Action on Autonomous Database.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param autonomousdatabasename The database name.
-     * @param body The content of the action request.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the {@link SyncPoller} for polling of autonomous Database resource model.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public SyncPoller<PollResult<AutonomousDatabaseInner>, AutonomousDatabaseInner>
         beginAction(String resourceGroupName, String autonomousdatabasename, AutonomousDatabaseLifecycleAction body) {
-        Response<BinaryData> response = actionWithResponse(resourceGroupName, autonomousdatabasename, body);
-        return this.client.<AutonomousDatabaseInner, AutonomousDatabaseInner>getLroResult(response,
-            AutonomousDatabaseInner.class, AutonomousDatabaseInner.class, Context.NONE);
+        return beginAction(resourceGroupName, autonomousdatabasename, body, Context.NONE);
     }
 
-    /**
-     * Perform Lifecycle Management Action on Autonomous Database.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param autonomousdatabasename The database name.
-     * @param body The content of the action request.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the {@link SyncPoller} for polling of autonomous Database resource model.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public SyncPoller<PollResult<AutonomousDatabaseInner>, AutonomousDatabaseInner> beginAction(
         String resourceGroupName, String autonomousdatabasename, AutonomousDatabaseLifecycleAction body,
@@ -2254,39 +1783,19 @@ public final class AutonomousDatabasesClientImpl implements AutonomousDatabasesC
             .flatMap(this.client::getLroFinalResultOrError);
     }
 
-    /**
-     * Perform Lifecycle Management Action on Autonomous Database.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param autonomousdatabasename The database name.
-     * @param body The content of the action request.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return autonomous Database resource model.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public AutonomousDatabaseInner action(String resourceGroupName, String autonomousdatabasename,
         AutonomousDatabaseLifecycleAction body) {
-        return beginAction(resourceGroupName, autonomousdatabasename, body).getFinalResult();
+        return action(resourceGroupName, autonomousdatabasename, body, Context.NONE);
     }
 
-    /**
-     * Perform Lifecycle Management Action on Autonomous Database.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param autonomousdatabasename The database name.
-     * @param body The content of the action request.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return autonomous Database resource model.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public AutonomousDatabaseInner action(String resourceGroupName, String autonomousdatabasename,
         AutonomousDatabaseLifecycleAction body, Context context) {
-        return beginAction(resourceGroupName, autonomousdatabasename, body, context).getFinalResult();
+        return this.client
+            .getLroFinalResultOrError(beginAction(resourceGroupName, autonomousdatabasename, body, context));
     }
 
     /**
@@ -2321,11 +1830,7 @@ public final class AutonomousDatabasesClientImpl implements AutonomousDatabasesC
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private PagedResponse<AutonomousDatabaseInner> listBySubscriptionNextSinglePage(String nextLink) {
-        final String accept = "application/json";
-        Response<AutonomousDatabaseListResult> res
-            = service.listBySubscriptionNextSync(nextLink, this.client.getEndpoint(), accept, Context.NONE);
-        return new PagedResponseBase<>(res.getRequest(), res.getStatusCode(), res.getHeaders(), res.getValue().value(),
-            res.getValue().nextLink(), null);
+        return listBySubscriptionNextSinglePage(nextLink, Context.NONE);
     }
 
     /**
@@ -2379,11 +1884,7 @@ public final class AutonomousDatabasesClientImpl implements AutonomousDatabasesC
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private PagedResponse<AutonomousDatabaseInner> listByResourceGroupNextSinglePage(String nextLink) {
-        final String accept = "application/json";
-        Response<AutonomousDatabaseListResult> res
-            = service.listByResourceGroupNextSync(nextLink, this.client.getEndpoint(), accept, Context.NONE);
-        return new PagedResponseBase<>(res.getRequest(), res.getStatusCode(), res.getHeaders(), res.getValue().value(),
-            res.getValue().nextLink(), null);
+        return listByResourceGroupNextSinglePage(nextLink, Context.NONE);
     }
 
     /**

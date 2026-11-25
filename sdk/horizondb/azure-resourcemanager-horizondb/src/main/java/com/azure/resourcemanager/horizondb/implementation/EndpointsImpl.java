@@ -45,8 +45,7 @@ public final class EndpointsImpl implements Endpoints {
     }
 
     public PagedIterable<Endpoint> list(String resourceGroupName, String clusterName) {
-        PagedIterable<EndpointInner> inner = this.serviceClient().list(resourceGroupName, clusterName);
-        return ResourceManagerUtils.mapPage(inner, inner1 -> new EndpointImpl(inner1, this.manager()));
+        return this.list(resourceGroupName, clusterName, Context.NONE);
     }
 
     public PagedIterable<Endpoint> list(String resourceGroupName, String clusterName, Context context) {

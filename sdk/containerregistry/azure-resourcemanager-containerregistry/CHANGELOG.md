@@ -1,6 +1,6 @@
 # Release History
 
-## 2.57.0-beta.2 (Unreleased)
+## 2.58.0-beta.1 (Unreleased)
 
 ### Features Added
 
@@ -9,6 +9,36 @@
 ### Bugs Fixed
 
 ### Other Changes
+
+## 2.57.0 (2026-11-20)
+
+- Package api-version 2026-11-01.
+
+### Features Added
+
+* `models.VirtualNetworkRule` was added
+
+* `models.RegionalEndpoints` was added
+
+* `models.EndpointProtocol` was added
+
+#### `models.RegistryUpdateParameters` was modified
+
+* `withEndpointProtocol(models.EndpointProtocol)` was added
+* `endpointProtocol()` was added
+* `withRegionalEndpoints(models.RegionalEndpoints)` was added
+* `regionalEndpoints()` was added
+
+#### `models.NetworkRuleSet` was modified
+
+* `withVirtualNetworkRules(java.util.List)` was added
+* `virtualNetworkRules()` was added
+
+### Other Changes
+
+#### `models.SyncProperties` was modified
+
+* `tokenId` is no longer required by client-side validation.
 
 ## 2.57.0-beta.1 (2026-11-09)
 

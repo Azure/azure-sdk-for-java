@@ -11,14 +11,14 @@ import org.junit.jupiter.api.Assertions;
 public final class CifsUserTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
-        CifsUser model = BinaryData.fromString("{\"username\":\"kqfqjbvl\"}").toObject(CifsUser.class);
-        Assertions.assertEquals("kqfqjbvl", model.username());
+        CifsUser model = BinaryData.fromString("{\"username\":\"nfdn\"}").toObject(CifsUser.class);
+        Assertions.assertEquals("nfdn", model.username());
     }
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
-        CifsUser model = new CifsUser().withUsername("kqfqjbvl");
+        CifsUser model = new CifsUser().withUsername("nfdn");
         model = BinaryData.fromObject(model).toObject(CifsUser.class);
-        Assertions.assertEquals("kqfqjbvl", model.username());
+        Assertions.assertEquals("nfdn", model.username());
     }
 }

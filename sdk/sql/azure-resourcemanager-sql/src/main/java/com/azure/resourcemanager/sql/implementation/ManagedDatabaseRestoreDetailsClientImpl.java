@@ -71,18 +71,7 @@ public final class ManagedDatabaseRestoreDetailsClientImpl implements ManagedDat
             @HeaderParam("Accept") String accept, Context context);
     }
 
-    /**
-     * Gets managed database restore details.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param managedInstanceName The name of the managed instance.
-     * @param databaseName The name of the database.
-     * @param restoreDetailsName The name of the restore details to retrieve.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return managed database restore details along with {@link Response} on successful completion of {@link Mono}.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Response<ManagedDatabaseRestoreDetailsResultInner>> getWithResponseAsync(String resourceGroupName,
         String managedInstanceName, String databaseName, RestoreDetailsName restoreDetailsName) {
@@ -162,18 +151,7 @@ public final class ManagedDatabaseRestoreDetailsClientImpl implements ManagedDat
             resourceGroupName, managedInstanceName, databaseName, restoreDetailsName, accept, context);
     }
 
-    /**
-     * Gets managed database restore details.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param managedInstanceName The name of the managed instance.
-     * @param databaseName The name of the database.
-     * @param restoreDetailsName The name of the restore details to retrieve.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return managed database restore details on successful completion of {@link Mono}.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<ManagedDatabaseRestoreDetailsResultInner> getAsync(String resourceGroupName, String managedInstanceName,
         String databaseName, RestoreDetailsName restoreDetailsName) {
@@ -181,19 +159,7 @@ public final class ManagedDatabaseRestoreDetailsClientImpl implements ManagedDat
             .flatMap(res -> Mono.justOrEmpty(res.getValue()));
     }
 
-    /**
-     * Gets managed database restore details.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param managedInstanceName The name of the managed instance.
-     * @param databaseName The name of the database.
-     * @param restoreDetailsName The name of the restore details to retrieve.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return managed database restore details along with {@link Response}.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Response<ManagedDatabaseRestoreDetailsResultInner> getWithResponse(String resourceGroupName,
         String managedInstanceName, String databaseName, RestoreDetailsName restoreDetailsName, Context context) {
@@ -201,18 +167,7 @@ public final class ManagedDatabaseRestoreDetailsClientImpl implements ManagedDat
             .block();
     }
 
-    /**
-     * Gets managed database restore details.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param managedInstanceName The name of the managed instance.
-     * @param databaseName The name of the database.
-     * @param restoreDetailsName The name of the restore details to retrieve.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return managed database restore details.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public ManagedDatabaseRestoreDetailsResultInner get(String resourceGroupName, String managedInstanceName,
         String databaseName, RestoreDetailsName restoreDetailsName) {

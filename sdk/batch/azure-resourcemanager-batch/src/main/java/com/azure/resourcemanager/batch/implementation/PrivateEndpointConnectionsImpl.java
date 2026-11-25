@@ -70,7 +70,7 @@ public final class PrivateEndpointConnectionsImpl implements PrivateEndpointConn
     }
 
     public void delete(String resourceGroupName, String accountName, String privateEndpointConnectionName) {
-        this.serviceClient().delete(resourceGroupName, accountName, privateEndpointConnectionName);
+        this.delete(resourceGroupName, accountName, privateEndpointConnectionName, Context.NONE);
     }
 
     public void delete(String resourceGroupName, String accountName, String privateEndpointConnectionName,

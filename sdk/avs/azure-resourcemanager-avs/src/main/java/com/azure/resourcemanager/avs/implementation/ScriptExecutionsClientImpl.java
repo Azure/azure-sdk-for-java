@@ -263,29 +263,7 @@ public final class ScriptExecutionsClientImpl implements ScriptExecutionsClient 
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private PagedResponse<ScriptExecutionInner> listSinglePage(String resourceGroupName, String privateCloudName) {
-        if (this.client.getEndpoint() == null) {
-            throw LOGGER.atError()
-                .log(new IllegalArgumentException(
-                    "Parameter this.client.getEndpoint() is required and cannot be null."));
-        }
-        if (this.client.getSubscriptionId() == null) {
-            throw LOGGER.atError()
-                .log(new IllegalArgumentException(
-                    "Parameter this.client.getSubscriptionId() is required and cannot be null."));
-        }
-        if (resourceGroupName == null) {
-            throw LOGGER.atError()
-                .log(new IllegalArgumentException("Parameter resourceGroupName is required and cannot be null."));
-        }
-        if (privateCloudName == null) {
-            throw LOGGER.atError()
-                .log(new IllegalArgumentException("Parameter privateCloudName is required and cannot be null."));
-        }
-        final String accept = "application/json";
-        Response<ScriptExecutionsList> res = service.listSync(this.client.getEndpoint(), this.client.getApiVersion(),
-            this.client.getSubscriptionId(), resourceGroupName, privateCloudName, accept, Context.NONE);
-        return new PagedResponseBase<>(res.getRequest(), res.getStatusCode(), res.getHeaders(), res.getValue().value(),
-            res.getValue().nextLink(), null);
+        return listSinglePage(resourceGroupName, privateCloudName, Context.NONE);
     }
 
     /**
@@ -327,33 +305,13 @@ public final class ScriptExecutionsClientImpl implements ScriptExecutionsClient 
             res.getValue().nextLink(), null);
     }
 
-    /**
-     * List ScriptExecution resources by PrivateCloud.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param privateCloudName Name of the private cloud.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the response of a ScriptExecution list operation as paginated response with {@link PagedIterable}.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.COLLECTION)
     public PagedIterable<ScriptExecutionInner> list(String resourceGroupName, String privateCloudName) {
-        return new PagedIterable<>(() -> listSinglePage(resourceGroupName, privateCloudName),
-            nextLink -> listNextSinglePage(nextLink));
+        return list(resourceGroupName, privateCloudName, Context.NONE);
     }
 
-    /**
-     * List ScriptExecution resources by PrivateCloud.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param privateCloudName Name of the private cloud.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the response of a ScriptExecution list operation as paginated response with {@link PagedIterable}.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.COLLECTION)
     public PagedIterable<ScriptExecutionInner> list(String resourceGroupName, String privateCloudName,
         Context context) {
@@ -419,18 +377,7 @@ public final class ScriptExecutionsClientImpl implements ScriptExecutionsClient 
             .flatMap(res -> Mono.justOrEmpty(res.getValue()));
     }
 
-    /**
-     * Get a ScriptExecution.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param privateCloudName Name of the private cloud.
-     * @param scriptExecutionName Name of the script cmdlet.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return a ScriptExecution along with {@link Response}.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Response<ScriptExecutionInner> getWithResponse(String resourceGroupName, String privateCloudName,
         String scriptExecutionName, Context context) {
@@ -461,17 +408,7 @@ public final class ScriptExecutionsClientImpl implements ScriptExecutionsClient 
             resourceGroupName, privateCloudName, scriptExecutionName, accept, context);
     }
 
-    /**
-     * Get a ScriptExecution.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param privateCloudName Name of the private cloud.
-     * @param scriptExecutionName Name of the script cmdlet.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return a ScriptExecution.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public ScriptExecutionInner get(String resourceGroupName, String privateCloudName, String scriptExecutionName) {
         return getWithResponse(resourceGroupName, privateCloudName, scriptExecutionName, Context.NONE).getValue();
@@ -543,39 +480,8 @@ public final class ScriptExecutionsClientImpl implements ScriptExecutionsClient 
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Response<BinaryData> createOrUpdateWithResponse(String resourceGroupName, String privateCloudName,
         String scriptExecutionName, ScriptExecutionInner scriptExecution) {
-        if (this.client.getEndpoint() == null) {
-            throw LOGGER.atError()
-                .log(new IllegalArgumentException(
-                    "Parameter this.client.getEndpoint() is required and cannot be null."));
-        }
-        if (this.client.getSubscriptionId() == null) {
-            throw LOGGER.atError()
-                .log(new IllegalArgumentException(
-                    "Parameter this.client.getSubscriptionId() is required and cannot be null."));
-        }
-        if (resourceGroupName == null) {
-            throw LOGGER.atError()
-                .log(new IllegalArgumentException("Parameter resourceGroupName is required and cannot be null."));
-        }
-        if (privateCloudName == null) {
-            throw LOGGER.atError()
-                .log(new IllegalArgumentException("Parameter privateCloudName is required and cannot be null."));
-        }
-        if (scriptExecutionName == null) {
-            throw LOGGER.atError()
-                .log(new IllegalArgumentException("Parameter scriptExecutionName is required and cannot be null."));
-        }
-        if (scriptExecution == null) {
-            throw LOGGER.atError()
-                .log(new IllegalArgumentException("Parameter scriptExecution is required and cannot be null."));
-        } else {
-            scriptExecution.validate();
-        }
-        final String contentType = "application/json";
-        final String accept = "application/json";
-        return service.createOrUpdateSync(this.client.getEndpoint(), this.client.getApiVersion(),
-            this.client.getSubscriptionId(), resourceGroupName, privateCloudName, scriptExecutionName, contentType,
-            accept, scriptExecution, Context.NONE);
+        return createOrUpdateWithResponse(resourceGroupName, privateCloudName, scriptExecutionName, scriptExecution,
+            Context.NONE);
     }
 
     /**
@@ -651,41 +557,16 @@ public final class ScriptExecutionsClientImpl implements ScriptExecutionsClient 
             ScriptExecutionInner.class, ScriptExecutionInner.class, this.client.getContext());
     }
 
-    /**
-     * Create a ScriptExecution.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param privateCloudName Name of the private cloud.
-     * @param scriptExecutionName Name of the script cmdlet.
-     * @param scriptExecution Resource create parameters.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the {@link SyncPoller} for polling of an instance of a script executed by a user - custom or AVS.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public SyncPoller<PollResult<ScriptExecutionInner>, ScriptExecutionInner> beginCreateOrUpdate(
         String resourceGroupName, String privateCloudName, String scriptExecutionName,
         ScriptExecutionInner scriptExecution) {
-        Response<BinaryData> response
-            = createOrUpdateWithResponse(resourceGroupName, privateCloudName, scriptExecutionName, scriptExecution);
-        return this.client.<ScriptExecutionInner, ScriptExecutionInner>getLroResult(response,
-            ScriptExecutionInner.class, ScriptExecutionInner.class, Context.NONE);
+        return beginCreateOrUpdate(resourceGroupName, privateCloudName, scriptExecutionName, scriptExecution,
+            Context.NONE);
     }
 
-    /**
-     * Create a ScriptExecution.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param privateCloudName Name of the private cloud.
-     * @param scriptExecutionName Name of the script cmdlet.
-     * @param scriptExecution Resource create parameters.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the {@link SyncPoller} for polling of an instance of a script executed by a user - custom or AVS.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public SyncPoller<PollResult<ScriptExecutionInner>, ScriptExecutionInner> beginCreateOrUpdate(
         String resourceGroupName, String privateCloudName, String scriptExecutionName,
@@ -716,43 +597,19 @@ public final class ScriptExecutionsClientImpl implements ScriptExecutionsClient 
             .flatMap(this.client::getLroFinalResultOrError);
     }
 
-    /**
-     * Create a ScriptExecution.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param privateCloudName Name of the private cloud.
-     * @param scriptExecutionName Name of the script cmdlet.
-     * @param scriptExecution Resource create parameters.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return an instance of a script executed by a user - custom or AVS.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public ScriptExecutionInner createOrUpdate(String resourceGroupName, String privateCloudName,
         String scriptExecutionName, ScriptExecutionInner scriptExecution) {
-        return beginCreateOrUpdate(resourceGroupName, privateCloudName, scriptExecutionName, scriptExecution)
-            .getFinalResult();
+        return createOrUpdate(resourceGroupName, privateCloudName, scriptExecutionName, scriptExecution, Context.NONE);
     }
 
-    /**
-     * Create a ScriptExecution.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param privateCloudName Name of the private cloud.
-     * @param scriptExecutionName Name of the script cmdlet.
-     * @param scriptExecution Resource create parameters.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return an instance of a script executed by a user - custom or AVS.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public ScriptExecutionInner createOrUpdate(String resourceGroupName, String privateCloudName,
         String scriptExecutionName, ScriptExecutionInner scriptExecution, Context context) {
-        return beginCreateOrUpdate(resourceGroupName, privateCloudName, scriptExecutionName, scriptExecution, context)
-            .getFinalResult();
+        return this.client.getLroFinalResultOrError(
+            beginCreateOrUpdate(resourceGroupName, privateCloudName, scriptExecutionName, scriptExecution, context));
     }
 
     /**
@@ -809,30 +666,7 @@ public final class ScriptExecutionsClientImpl implements ScriptExecutionsClient 
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Response<BinaryData> deleteWithResponse(String resourceGroupName, String privateCloudName,
         String scriptExecutionName) {
-        if (this.client.getEndpoint() == null) {
-            throw LOGGER.atError()
-                .log(new IllegalArgumentException(
-                    "Parameter this.client.getEndpoint() is required and cannot be null."));
-        }
-        if (this.client.getSubscriptionId() == null) {
-            throw LOGGER.atError()
-                .log(new IllegalArgumentException(
-                    "Parameter this.client.getSubscriptionId() is required and cannot be null."));
-        }
-        if (resourceGroupName == null) {
-            throw LOGGER.atError()
-                .log(new IllegalArgumentException("Parameter resourceGroupName is required and cannot be null."));
-        }
-        if (privateCloudName == null) {
-            throw LOGGER.atError()
-                .log(new IllegalArgumentException("Parameter privateCloudName is required and cannot be null."));
-        }
-        if (scriptExecutionName == null) {
-            throw LOGGER.atError()
-                .log(new IllegalArgumentException("Parameter scriptExecutionName is required and cannot be null."));
-        }
-        return service.deleteSync(this.client.getEndpoint(), this.client.getApiVersion(),
-            this.client.getSubscriptionId(), resourceGroupName, privateCloudName, scriptExecutionName, Context.NONE);
+        return deleteWithResponse(resourceGroupName, privateCloudName, scriptExecutionName, Context.NONE);
     }
 
     /**
@@ -896,36 +730,14 @@ public final class ScriptExecutionsClientImpl implements ScriptExecutionsClient 
             this.client.getContext());
     }
 
-    /**
-     * Delete a ScriptExecution.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param privateCloudName Name of the private cloud.
-     * @param scriptExecutionName Name of the script cmdlet.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the {@link SyncPoller} for polling of long-running operation.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public SyncPoller<PollResult<Void>, Void> beginDelete(String resourceGroupName, String privateCloudName,
         String scriptExecutionName) {
-        Response<BinaryData> response = deleteWithResponse(resourceGroupName, privateCloudName, scriptExecutionName);
-        return this.client.<Void, Void>getLroResult(response, Void.class, Void.class, Context.NONE);
+        return beginDelete(resourceGroupName, privateCloudName, scriptExecutionName, Context.NONE);
     }
 
-    /**
-     * Delete a ScriptExecution.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param privateCloudName Name of the private cloud.
-     * @param scriptExecutionName Name of the script cmdlet.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the {@link SyncPoller} for polling of long-running operation.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public SyncPoller<PollResult<Void>, Void> beginDelete(String resourceGroupName, String privateCloudName,
         String scriptExecutionName, Context context) {
@@ -951,35 +763,17 @@ public final class ScriptExecutionsClientImpl implements ScriptExecutionsClient 
             .flatMap(this.client::getLroFinalResultOrError);
     }
 
-    /**
-     * Delete a ScriptExecution.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param privateCloudName Name of the private cloud.
-     * @param scriptExecutionName Name of the script cmdlet.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public void delete(String resourceGroupName, String privateCloudName, String scriptExecutionName) {
-        beginDelete(resourceGroupName, privateCloudName, scriptExecutionName).getFinalResult();
+        delete(resourceGroupName, privateCloudName, scriptExecutionName, Context.NONE);
     }
 
-    /**
-     * Delete a ScriptExecution.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param privateCloudName Name of the private cloud.
-     * @param scriptExecutionName Name of the script cmdlet.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public void delete(String resourceGroupName, String privateCloudName, String scriptExecutionName, Context context) {
-        beginDelete(resourceGroupName, privateCloudName, scriptExecutionName, context).getFinalResult();
+        this.client
+            .getLroFinalResultOrError(beginDelete(resourceGroupName, privateCloudName, scriptExecutionName, context));
     }
 
     /**
@@ -1046,20 +840,7 @@ public final class ScriptExecutionsClientImpl implements ScriptExecutionsClient 
             scriptOutputStreamType).flatMap(res -> Mono.justOrEmpty(res.getValue()));
     }
 
-    /**
-     * Return the logs for a script execution resource.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param privateCloudName Name of the private cloud.
-     * @param scriptExecutionName Name of the script cmdlet.
-     * @param scriptOutputStreamType Name of the desired output stream to return. If not provided, will return all. An
-     * empty array will return nothing.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return an instance of a script executed by a user - custom or AVS along with {@link Response}.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Response<ScriptExecutionInner> getExecutionLogsWithResponse(String resourceGroupName,
         String privateCloudName, String scriptExecutionName, List<ScriptOutputStreamType> scriptOutputStreamType,
@@ -1092,17 +873,7 @@ public final class ScriptExecutionsClientImpl implements ScriptExecutionsClient 
             scriptOutputStreamType, context);
     }
 
-    /**
-     * Return the logs for a script execution resource.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param privateCloudName Name of the private cloud.
-     * @param scriptExecutionName Name of the script cmdlet.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return an instance of a script executed by a user - custom or AVS.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public ScriptExecutionInner getExecutionLogs(String resourceGroupName, String privateCloudName,
         String scriptExecutionName) {
@@ -1148,20 +919,7 @@ public final class ScriptExecutionsClientImpl implements ScriptExecutionsClient 
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private PagedResponse<ScriptExecutionInner> listNextSinglePage(String nextLink) {
-        if (nextLink == null) {
-            throw LOGGER.atError()
-                .log(new IllegalArgumentException("Parameter nextLink is required and cannot be null."));
-        }
-        if (this.client.getEndpoint() == null) {
-            throw LOGGER.atError()
-                .log(new IllegalArgumentException(
-                    "Parameter this.client.getEndpoint() is required and cannot be null."));
-        }
-        final String accept = "application/json";
-        Response<ScriptExecutionsList> res
-            = service.listNextSync(nextLink, this.client.getEndpoint(), accept, Context.NONE);
-        return new PagedResponseBase<>(res.getRequest(), res.getStatusCode(), res.getHeaders(), res.getValue().value(),
-            res.getValue().nextLink(), null);
+        return listNextSinglePage(nextLink, Context.NONE);
     }
 
     /**
