@@ -149,11 +149,7 @@ public final class ApplicationGroupImpl
     }
 
     public ApplicationGroup create() {
-        this.innerObject = serviceManager.serviceClient()
-            .getApplicationGroups()
-            .createOrUpdateWithResponse(resourceGroupName, applicationGroupName, this.innerModel(), Context.NONE)
-            .getValue();
-        return this;
+        return this.create(Context.NONE);
     }
 
     public ApplicationGroup create(Context context) {
@@ -177,11 +173,7 @@ public final class ApplicationGroupImpl
     }
 
     public ApplicationGroup apply() {
-        this.innerObject = serviceManager.serviceClient()
-            .getApplicationGroups()
-            .updateWithResponse(resourceGroupName, applicationGroupName, updateApplicationGroup, Context.NONE)
-            .getValue();
-        return this;
+        return this.apply(Context.NONE);
     }
 
     public ApplicationGroup apply(Context context) {
@@ -205,11 +197,7 @@ public final class ApplicationGroupImpl
     }
 
     public ApplicationGroup refresh() {
-        this.innerObject = serviceManager.serviceClient()
-            .getApplicationGroups()
-            .getByResourceGroupWithResponse(resourceGroupName, applicationGroupName, Context.NONE)
-            .getValue();
-        return this;
+        return this.refresh(Context.NONE);
     }
 
     public ApplicationGroup refresh(Context context) {

@@ -281,11 +281,7 @@ public final class HostPoolImpl implements HostPool, HostPool.Definition, HostPo
     }
 
     public HostPool create() {
-        this.innerObject = serviceManager.serviceClient()
-            .getHostPools()
-            .createOrUpdateWithResponse(resourceGroupName, hostPoolName, this.innerModel(), Context.NONE)
-            .getValue();
-        return this;
+        return this.create(Context.NONE);
     }
 
     public HostPool create(Context context) {
@@ -309,11 +305,7 @@ public final class HostPoolImpl implements HostPool, HostPool.Definition, HostPo
     }
 
     public HostPool apply() {
-        this.innerObject = serviceManager.serviceClient()
-            .getHostPools()
-            .updateWithResponse(resourceGroupName, hostPoolName, updateHostPool, Context.NONE)
-            .getValue();
-        return this;
+        return this.apply(Context.NONE);
     }
 
     public HostPool apply(Context context) {
@@ -337,11 +329,7 @@ public final class HostPoolImpl implements HostPool, HostPool.Definition, HostPo
     }
 
     public HostPool refresh() {
-        this.innerObject = serviceManager.serviceClient()
-            .getHostPools()
-            .getByResourceGroupWithResponse(resourceGroupName, hostPoolName, Context.NONE)
-            .getValue();
-        return this;
+        return this.refresh(Context.NONE);
     }
 
     public HostPool refresh(Context context) {

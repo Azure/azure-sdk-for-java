@@ -127,17 +127,7 @@ public final class AppAttachPackageInfoesClientImpl implements AppAttachPackageI
             .contextWrite(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext()).readOnly()));
     }
 
-    /**
-     * Gets information from a package given the path to the package.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param hostPoolName The name of the host pool within the specified resource group.
-     * @param importPackageInfoRequest Information to import app attach package.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return information from a package given the path to the package as paginated response with {@link PagedFlux}.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.COLLECTION)
     public PagedFlux<AppAttachPackageInner> importMethodAsync(String resourceGroupName, String hostPoolName,
         ImportPackageInfoRequest importPackageInfoRequest) {
@@ -160,12 +150,7 @@ public final class AppAttachPackageInfoesClientImpl implements AppAttachPackageI
     @ServiceMethod(returns = ReturnType.SINGLE)
     private PagedResponse<AppAttachPackageInner> importMethodSinglePage(String resourceGroupName, String hostPoolName,
         ImportPackageInfoRequest importPackageInfoRequest) {
-        final String accept = "application/json";
-        Response<AppAttachPackageList> res = service.importMethodSync(this.client.getEndpoint(),
-            this.client.getApiVersion(), this.client.getSubscriptionId(), resourceGroupName, hostPoolName, accept,
-            importPackageInfoRequest, Context.NONE);
-        return new PagedResponseBase<>(res.getRequest(), res.getStatusCode(), res.getHeaders(), res.getValue().value(),
-            res.getValue().nextLink(), null);
+        return importMethodSinglePage(resourceGroupName, hostPoolName, importPackageInfoRequest, Context.NONE);
     }
 
     /**
@@ -191,39 +176,14 @@ public final class AppAttachPackageInfoesClientImpl implements AppAttachPackageI
             res.getValue().nextLink(), null);
     }
 
-    /**
-     * Gets information from a package given the path to the package.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param hostPoolName The name of the host pool within the specified resource group.
-     * @param importPackageInfoRequest Information to import app attach package.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return information from a package given the path to the package as paginated response with
-     * {@link PagedIterable}.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.COLLECTION)
     public PagedIterable<AppAttachPackageInner> importMethod(String resourceGroupName, String hostPoolName,
         ImportPackageInfoRequest importPackageInfoRequest) {
-        return new PagedIterable<>(
-            () -> importMethodSinglePage(resourceGroupName, hostPoolName, importPackageInfoRequest),
-            nextLink -> importMethodNextSinglePage(nextLink));
+        return importMethod(resourceGroupName, hostPoolName, importPackageInfoRequest, Context.NONE);
     }
 
-    /**
-     * Gets information from a package given the path to the package.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param hostPoolName The name of the host pool within the specified resource group.
-     * @param importPackageInfoRequest Information to import app attach package.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return information from a package given the path to the package as paginated response with
-     * {@link PagedIterable}.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.COLLECTION)
     public PagedIterable<AppAttachPackageInner> importMethod(String resourceGroupName, String hostPoolName,
         ImportPackageInfoRequest importPackageInfoRequest, Context context) {
@@ -263,11 +223,7 @@ public final class AppAttachPackageInfoesClientImpl implements AppAttachPackageI
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private PagedResponse<AppAttachPackageInner> importMethodNextSinglePage(String nextLink) {
-        final String accept = "application/json";
-        Response<AppAttachPackageList> res
-            = service.importMethodNextSync(nextLink, this.client.getEndpoint(), accept, Context.NONE);
-        return new PagedResponseBase<>(res.getRequest(), res.getStatusCode(), res.getHeaders(), res.getValue().value(),
-            res.getValue().nextLink(), null);
+        return importMethodNextSinglePage(nextLink, Context.NONE);
     }
 
     /**

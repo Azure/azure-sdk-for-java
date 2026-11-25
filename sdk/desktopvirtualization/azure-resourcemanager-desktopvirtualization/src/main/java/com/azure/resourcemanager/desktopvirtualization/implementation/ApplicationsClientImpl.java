@@ -190,17 +190,7 @@ public final class ApplicationsClientImpl implements ApplicationsClient {
             @HostParam("endpoint") String endpoint, @HeaderParam("Accept") String accept, Context context);
     }
 
-    /**
-     * Get an application.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param applicationGroupName The name of the application group.
-     * @param applicationName The name of the application within the specified application group.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return an application along with {@link Response} on successful completion of {@link Mono}.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Response<ApplicationInner>> getWithResponseAsync(String resourceGroupName, String applicationGroupName,
         String applicationName) {
@@ -210,17 +200,7 @@ public final class ApplicationsClientImpl implements ApplicationsClient {
             .contextWrite(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext()).readOnly()));
     }
 
-    /**
-     * Get an application.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param applicationGroupName The name of the application group.
-     * @param applicationName The name of the application within the specified application group.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return an application on successful completion of {@link Mono}.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<ApplicationInner> getAsync(String resourceGroupName, String applicationGroupName,
         String applicationName) {
@@ -228,18 +208,7 @@ public final class ApplicationsClientImpl implements ApplicationsClient {
             .flatMap(res -> Mono.justOrEmpty(res.getValue()));
     }
 
-    /**
-     * Get an application.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param applicationGroupName The name of the application group.
-     * @param applicationName The name of the application within the specified application group.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return an application along with {@link Response}.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Response<ApplicationInner> getWithResponse(String resourceGroupName, String applicationGroupName,
         String applicationName, Context context) {
@@ -248,34 +217,13 @@ public final class ApplicationsClientImpl implements ApplicationsClient {
             resourceGroupName, applicationGroupName, applicationName, accept, context);
     }
 
-    /**
-     * Get an application.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param applicationGroupName The name of the application group.
-     * @param applicationName The name of the application within the specified application group.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return an application.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public ApplicationInner get(String resourceGroupName, String applicationGroupName, String applicationName) {
         return getWithResponse(resourceGroupName, applicationGroupName, applicationName, Context.NONE).getValue();
     }
 
-    /**
-     * Create or update an application.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param applicationGroupName The name of the application group.
-     * @param applicationName The name of the application within the specified application group.
-     * @param application Object containing Application definitions.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return schema for Application properties along with {@link Response} on successful completion of {@link Mono}.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Response<ApplicationInner>> createOrUpdateWithResponseAsync(String resourceGroupName,
         String applicationGroupName, String applicationName, ApplicationInner application) {
@@ -288,18 +236,7 @@ public final class ApplicationsClientImpl implements ApplicationsClient {
             .contextWrite(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext()).readOnly()));
     }
 
-    /**
-     * Create or update an application.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param applicationGroupName The name of the application group.
-     * @param applicationName The name of the application within the specified application group.
-     * @param application Object containing Application definitions.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return schema for Application properties on successful completion of {@link Mono}.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<ApplicationInner> createOrUpdateAsync(String resourceGroupName, String applicationGroupName,
         String applicationName, ApplicationInner application) {
@@ -307,19 +244,7 @@ public final class ApplicationsClientImpl implements ApplicationsClient {
             .flatMap(res -> Mono.justOrEmpty(res.getValue()));
     }
 
-    /**
-     * Create or update an application.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param applicationGroupName The name of the application group.
-     * @param applicationName The name of the application within the specified application group.
-     * @param application Object containing Application definitions.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return schema for Application properties along with {@link Response}.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Response<ApplicationInner> createOrUpdateWithResponse(String resourceGroupName, String applicationGroupName,
         String applicationName, ApplicationInner application, Context context) {
@@ -330,18 +255,7 @@ public final class ApplicationsClientImpl implements ApplicationsClient {
             accept, application, context);
     }
 
-    /**
-     * Create or update an application.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param applicationGroupName The name of the application group.
-     * @param applicationName The name of the application within the specified application group.
-     * @param application Object containing Application definitions.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return schema for Application properties.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public ApplicationInner createOrUpdate(String resourceGroupName, String applicationGroupName,
         String applicationName, ApplicationInner application) {
@@ -349,18 +263,7 @@ public final class ApplicationsClientImpl implements ApplicationsClient {
             Context.NONE).getValue();
     }
 
-    /**
-     * Update an application.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param applicationGroupName The name of the application group.
-     * @param applicationName The name of the application within the specified application group.
-     * @param application The resource properties to be updated.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return schema for Application properties along with {@link Response} on successful completion of {@link Mono}.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Response<ApplicationInner>> updateWithResponseAsync(String resourceGroupName,
         String applicationGroupName, String applicationName, ApplicationPatch application) {
@@ -372,17 +275,7 @@ public final class ApplicationsClientImpl implements ApplicationsClient {
             .contextWrite(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext()).readOnly()));
     }
 
-    /**
-     * Update an application.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param applicationGroupName The name of the application group.
-     * @param applicationName The name of the application within the specified application group.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return schema for Application properties on successful completion of {@link Mono}.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<ApplicationInner> updateAsync(String resourceGroupName, String applicationGroupName,
         String applicationName) {
@@ -391,19 +284,7 @@ public final class ApplicationsClientImpl implements ApplicationsClient {
             .flatMap(res -> Mono.justOrEmpty(res.getValue()));
     }
 
-    /**
-     * Update an application.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param applicationGroupName The name of the application group.
-     * @param applicationName The name of the application within the specified application group.
-     * @param application The resource properties to be updated.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return schema for Application properties along with {@link Response}.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Response<ApplicationInner> updateWithResponse(String resourceGroupName, String applicationGroupName,
         String applicationName, ApplicationPatch application, Context context) {
@@ -413,17 +294,7 @@ public final class ApplicationsClientImpl implements ApplicationsClient {
             application, context);
     }
 
-    /**
-     * Update an application.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param applicationGroupName The name of the application group.
-     * @param applicationName The name of the application within the specified application group.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return schema for Application properties.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public ApplicationInner update(String resourceGroupName, String applicationGroupName, String applicationName) {
         final ApplicationPatch application = null;
@@ -431,17 +302,7 @@ public final class ApplicationsClientImpl implements ApplicationsClient {
             .getValue();
     }
 
-    /**
-     * Remove an application.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param applicationGroupName The name of the application group.
-     * @param applicationName The name of the application within the specified application group.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the {@link Response} on successful completion of {@link Mono}.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Response<Void>> deleteWithResponseAsync(String resourceGroupName, String applicationGroupName,
         String applicationName) {
@@ -451,35 +312,14 @@ public final class ApplicationsClientImpl implements ApplicationsClient {
             .contextWrite(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext()).readOnly()));
     }
 
-    /**
-     * Remove an application.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param applicationGroupName The name of the application group.
-     * @param applicationName The name of the application within the specified application group.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return A {@link Mono} that completes when a successful response is received.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Void> deleteAsync(String resourceGroupName, String applicationGroupName, String applicationName) {
         return deleteWithResponseAsync(resourceGroupName, applicationGroupName, applicationName)
             .flatMap(ignored -> Mono.empty());
     }
 
-    /**
-     * Remove an application.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param applicationGroupName The name of the application group.
-     * @param applicationName The name of the application within the specified application group.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the {@link Response}.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Response<Void> deleteWithResponse(String resourceGroupName, String applicationGroupName,
         String applicationName, Context context) {
@@ -487,16 +327,7 @@ public final class ApplicationsClientImpl implements ApplicationsClient {
             this.client.getSubscriptionId(), resourceGroupName, applicationGroupName, applicationName, context);
     }
 
-    /**
-     * Remove an application.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param applicationGroupName The name of the application group.
-     * @param applicationName The name of the application within the specified application group.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public void delete(String resourceGroupName, String applicationGroupName, String applicationName) {
         deleteWithResponse(resourceGroupName, applicationGroupName, applicationName, Context.NONE);
@@ -529,19 +360,7 @@ public final class ApplicationsClientImpl implements ApplicationsClient {
             .contextWrite(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext()).readOnly()));
     }
 
-    /**
-     * List applications.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param applicationGroupName The name of the application group.
-     * @param pageSize Number of items per page.
-     * @param isDescending Indicates whether the collection is descending.
-     * @param initialSkip Initial number of items to skip.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return list of Application definitions as paginated response with {@link PagedFlux}.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.COLLECTION)
     public PagedFlux<ApplicationInner> listAsync(String resourceGroupName, String applicationGroupName,
         Integer pageSize, Boolean isDescending, Integer initialSkip) {
@@ -550,16 +369,7 @@ public final class ApplicationsClientImpl implements ApplicationsClient {
             nextLink -> listNextSinglePageAsync(nextLink));
     }
 
-    /**
-     * List applications.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param applicationGroupName The name of the application group.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return list of Application definitions as paginated response with {@link PagedFlux}.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.COLLECTION)
     public PagedFlux<ApplicationInner> listAsync(String resourceGroupName, String applicationGroupName) {
         final Integer pageSize = null;
@@ -586,12 +396,8 @@ public final class ApplicationsClientImpl implements ApplicationsClient {
     @ServiceMethod(returns = ReturnType.SINGLE)
     private PagedResponse<ApplicationInner> listSinglePage(String resourceGroupName, String applicationGroupName,
         Integer pageSize, Boolean isDescending, Integer initialSkip) {
-        final String accept = "application/json";
-        Response<ApplicationList> res
-            = service.listSync(this.client.getEndpoint(), this.client.getApiVersion(), this.client.getSubscriptionId(),
-                resourceGroupName, applicationGroupName, pageSize, isDescending, initialSkip, accept, Context.NONE);
-        return new PagedResponseBase<>(res.getRequest(), res.getStatusCode(), res.getHeaders(), res.getValue().value(),
-            res.getValue().nextLink(), null);
+        return listSinglePage(resourceGroupName, applicationGroupName, pageSize, isDescending, initialSkip,
+            Context.NONE);
     }
 
     /**
@@ -619,40 +425,16 @@ public final class ApplicationsClientImpl implements ApplicationsClient {
             res.getValue().nextLink(), null);
     }
 
-    /**
-     * List applications.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param applicationGroupName The name of the application group.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return list of Application definitions as paginated response with {@link PagedIterable}.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.COLLECTION)
     public PagedIterable<ApplicationInner> list(String resourceGroupName, String applicationGroupName) {
         final Integer pageSize = null;
         final Boolean isDescending = null;
         final Integer initialSkip = null;
-        return new PagedIterable<>(
-            () -> listSinglePage(resourceGroupName, applicationGroupName, pageSize, isDescending, initialSkip),
-            nextLink -> listNextSinglePage(nextLink));
+        return list(resourceGroupName, applicationGroupName, pageSize, isDescending, initialSkip, Context.NONE);
     }
 
-    /**
-     * List applications.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param applicationGroupName The name of the application group.
-     * @param pageSize Number of items per page.
-     * @param isDescending Indicates whether the collection is descending.
-     * @param initialSkip Initial number of items to skip.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return list of Application definitions as paginated response with {@link PagedIterable}.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.COLLECTION)
     public PagedIterable<ApplicationInner> list(String resourceGroupName, String applicationGroupName, Integer pageSize,
         Boolean isDescending, Integer initialSkip, Context context) {
@@ -691,10 +473,7 @@ public final class ApplicationsClientImpl implements ApplicationsClient {
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private PagedResponse<ApplicationInner> listNextSinglePage(String nextLink) {
-        final String accept = "application/json";
-        Response<ApplicationList> res = service.listNextSync(nextLink, this.client.getEndpoint(), accept, Context.NONE);
-        return new PagedResponseBase<>(res.getRequest(), res.getStatusCode(), res.getHeaders(), res.getValue().value(),
-            res.getValue().nextLink(), null);
+        return listNextSinglePage(nextLink, Context.NONE);
     }
 
     /**

@@ -28,9 +28,7 @@ public final class AppAttachPackageInfoesImpl implements AppAttachPackageInfoes 
 
     public PagedIterable<AppAttachPackage> importMethod(String resourceGroupName, String hostPoolName,
         ImportPackageInfoRequest importPackageInfoRequest) {
-        PagedIterable<AppAttachPackageInner> inner
-            = this.serviceClient().importMethod(resourceGroupName, hostPoolName, importPackageInfoRequest);
-        return ResourceManagerUtils.mapPage(inner, inner1 -> new AppAttachPackageImpl(inner1, this.manager()));
+        return this.importMethod(resourceGroupName, hostPoolName, importPackageInfoRequest, Context.NONE);
     }
 
     public PagedIterable<AppAttachPackage> importMethod(String resourceGroupName, String hostPoolName,

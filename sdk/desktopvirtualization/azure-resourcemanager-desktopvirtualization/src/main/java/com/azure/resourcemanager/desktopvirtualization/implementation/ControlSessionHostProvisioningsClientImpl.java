@@ -87,17 +87,7 @@ public final class ControlSessionHostProvisioningsClientImpl implements ControlS
             Context context);
     }
 
-    /**
-     * Control provisioning of a hostpool.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param hostPoolName The name of the host pool within the specified resource group.
-     * @param hostPoolProvisioningControlParameter The content of the action request.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the {@link Response} on successful completion of {@link Mono}.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Response<Flux<ByteBuffer>>> postWithResponseAsync(String resourceGroupName, String hostPoolName,
         HostPoolProvisioningControlParameter hostPoolProvisioningControlParameter) {
@@ -123,9 +113,7 @@ public final class ControlSessionHostProvisioningsClientImpl implements ControlS
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Response<BinaryData> postWithResponse(String resourceGroupName, String hostPoolName,
         HostPoolProvisioningControlParameter hostPoolProvisioningControlParameter) {
-        final String contentType = "application/json";
-        return service.postSync(this.client.getEndpoint(), this.client.getApiVersion(), this.client.getSubscriptionId(),
-            resourceGroupName, hostPoolName, contentType, hostPoolProvisioningControlParameter, Context.NONE);
+        return postWithResponse(resourceGroupName, hostPoolName, hostPoolProvisioningControlParameter, Context.NONE);
     }
 
     /**
@@ -148,17 +136,7 @@ public final class ControlSessionHostProvisioningsClientImpl implements ControlS
             resourceGroupName, hostPoolName, contentType, hostPoolProvisioningControlParameter, context);
     }
 
-    /**
-     * Control provisioning of a hostpool.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param hostPoolName The name of the host pool within the specified resource group.
-     * @param hostPoolProvisioningControlParameter The content of the action request.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the {@link PollerFlux} for polling of long-running operation.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public PollerFlux<PollResult<Void>, Void> beginPostAsync(String resourceGroupName, String hostPoolName,
         HostPoolProvisioningControlParameter hostPoolProvisioningControlParameter) {
@@ -168,37 +146,14 @@ public final class ControlSessionHostProvisioningsClientImpl implements ControlS
             this.client.getContext());
     }
 
-    /**
-     * Control provisioning of a hostpool.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param hostPoolName The name of the host pool within the specified resource group.
-     * @param hostPoolProvisioningControlParameter The content of the action request.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the {@link SyncPoller} for polling of long-running operation.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public SyncPoller<PollResult<Void>, Void> beginPost(String resourceGroupName, String hostPoolName,
         HostPoolProvisioningControlParameter hostPoolProvisioningControlParameter) {
-        Response<BinaryData> response
-            = postWithResponse(resourceGroupName, hostPoolName, hostPoolProvisioningControlParameter);
-        return this.client.<Void, Void>getLroResult(response, Void.class, Void.class, Context.NONE);
+        return beginPost(resourceGroupName, hostPoolName, hostPoolProvisioningControlParameter, Context.NONE);
     }
 
-    /**
-     * Control provisioning of a hostpool.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param hostPoolName The name of the host pool within the specified resource group.
-     * @param hostPoolProvisioningControlParameter The content of the action request.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the {@link SyncPoller} for polling of long-running operation.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public SyncPoller<PollResult<Void>, Void> beginPost(String resourceGroupName, String hostPoolName,
         HostPoolProvisioningControlParameter hostPoolProvisioningControlParameter, Context context) {
@@ -207,17 +162,7 @@ public final class ControlSessionHostProvisioningsClientImpl implements ControlS
         return this.client.<Void, Void>getLroResult(response, Void.class, Void.class, context);
     }
 
-    /**
-     * Control provisioning of a hostpool.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param hostPoolName The name of the host pool within the specified resource group.
-     * @param hostPoolProvisioningControlParameter The content of the action request.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return A {@link Mono} that completes when a successful response is received.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Void> postAsync(String resourceGroupName, String hostPoolName,
         HostPoolProvisioningControlParameter hostPoolProvisioningControlParameter) {
@@ -225,36 +170,18 @@ public final class ControlSessionHostProvisioningsClientImpl implements ControlS
             .flatMap(this.client::getLroFinalResultOrError);
     }
 
-    /**
-     * Control provisioning of a hostpool.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param hostPoolName The name of the host pool within the specified resource group.
-     * @param hostPoolProvisioningControlParameter The content of the action request.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public void post(String resourceGroupName, String hostPoolName,
         HostPoolProvisioningControlParameter hostPoolProvisioningControlParameter) {
-        beginPost(resourceGroupName, hostPoolName, hostPoolProvisioningControlParameter).getFinalResult();
+        post(resourceGroupName, hostPoolName, hostPoolProvisioningControlParameter, Context.NONE);
     }
 
-    /**
-     * Control provisioning of a hostpool.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param hostPoolName The name of the host pool within the specified resource group.
-     * @param hostPoolProvisioningControlParameter The content of the action request.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public void post(String resourceGroupName, String hostPoolName,
         HostPoolProvisioningControlParameter hostPoolProvisioningControlParameter, Context context) {
-        beginPost(resourceGroupName, hostPoolName, hostPoolProvisioningControlParameter, context).getFinalResult();
+        this.client.getLroFinalResultOrError(
+            beginPost(resourceGroupName, hostPoolName, hostPoolProvisioningControlParameter, context));
     }
 }

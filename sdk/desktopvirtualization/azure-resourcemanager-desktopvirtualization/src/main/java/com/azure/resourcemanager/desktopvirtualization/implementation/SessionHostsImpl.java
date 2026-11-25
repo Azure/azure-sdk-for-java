@@ -76,14 +76,13 @@ public final class SessionHostsImpl implements SessionHosts {
     }
 
     public void retryProvisioning(String resourceGroupName, String hostPoolName, String sessionHostName) {
-        this.serviceClient().retryProvisioning(resourceGroupName, hostPoolName, sessionHostName);
+        this.retryProvisioningWithResponse(resourceGroupName, hostPoolName, sessionHostName, Context.NONE);
     }
 
     public PagedIterable<RegistrationTokenMinimal> listSingleSessionHostRegistrationTokens(String resourceGroupName,
         String hostPoolName, String sessionHostName, ScopedRegistrationTokenProperties body) {
-        PagedIterable<RegistrationTokenMinimalInner> inner = this.serviceClient()
-            .listSingleSessionHostRegistrationTokens(resourceGroupName, hostPoolName, sessionHostName, body);
-        return ResourceManagerUtils.mapPage(inner, inner1 -> new RegistrationTokenMinimalImpl(inner1, this.manager()));
+        return this.listSingleSessionHostRegistrationTokens(resourceGroupName, hostPoolName, sessionHostName, body,
+            Context.NONE);
     }
 
     public PagedIterable<RegistrationTokenMinimal> listSingleSessionHostRegistrationTokens(String resourceGroupName,
@@ -94,103 +93,37 @@ public final class SessionHostsImpl implements SessionHosts {
     }
 
     public SessionHost getById(String id) {
-        String resourceGroupName = ResourceManagerUtils.getValueFromIdByParameterName(id,
-            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.DesktopVirtualization/hostPools/{hostPoolName}/sessionHosts/{sessionHostName}",
-            "resourceGroupName");
-        if (resourceGroupName == null) {
-            throw LOGGER.logExceptionAsError(new IllegalArgumentException(
-                String.format("The resource ID '%s' is not valid. Missing path segment 'resourceGroups'.", id)));
-        }
-        String hostPoolName = ResourceManagerUtils.getValueFromIdByParameterName(id,
-            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.DesktopVirtualization/hostPools/{hostPoolName}/sessionHosts/{sessionHostName}",
-            "hostPoolName");
-        if (hostPoolName == null) {
-            throw LOGGER.logExceptionAsError(new IllegalArgumentException(
-                String.format("The resource ID '%s' is not valid. Missing path segment 'hostPools'.", id)));
-        }
-        String sessionHostName = ResourceManagerUtils.getValueFromIdByParameterName(id,
-            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.DesktopVirtualization/hostPools/{hostPoolName}/sessionHosts/{sessionHostName}",
-            "sessionHostName");
-        if (sessionHostName == null) {
-            throw LOGGER.logExceptionAsError(new IllegalArgumentException(
-                String.format("The resource ID '%s' is not valid. Missing path segment 'sessionHosts'.", id)));
-        }
-        return this.getWithResponse(resourceGroupName, hostPoolName, sessionHostName, Context.NONE).getValue();
+        return this.getByIdWithResponse(id, Context.NONE).getValue();
     }
 
     public Response<SessionHost> getByIdWithResponse(String id, Context context) {
-        String resourceGroupName = ResourceManagerUtils.getValueFromIdByParameterName(id,
+        String resourceGroupName = ResourceManagerUtils.getRequiredValueFromIdByParameterName(id,
             "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.DesktopVirtualization/hostPools/{hostPoolName}/sessionHosts/{sessionHostName}",
-            "resourceGroupName");
-        if (resourceGroupName == null) {
-            throw LOGGER.logExceptionAsError(new IllegalArgumentException(
-                String.format("The resource ID '%s' is not valid. Missing path segment 'resourceGroups'.", id)));
-        }
-        String hostPoolName = ResourceManagerUtils.getValueFromIdByParameterName(id,
+            "resourceGroupName", "resourceGroups", LOGGER);
+        String hostPoolName = ResourceManagerUtils.getRequiredValueFromIdByParameterName(id,
             "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.DesktopVirtualization/hostPools/{hostPoolName}/sessionHosts/{sessionHostName}",
-            "hostPoolName");
-        if (hostPoolName == null) {
-            throw LOGGER.logExceptionAsError(new IllegalArgumentException(
-                String.format("The resource ID '%s' is not valid. Missing path segment 'hostPools'.", id)));
-        }
-        String sessionHostName = ResourceManagerUtils.getValueFromIdByParameterName(id,
+            "hostPoolName", "hostPools", LOGGER);
+        String sessionHostName = ResourceManagerUtils.getRequiredValueFromIdByParameterName(id,
             "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.DesktopVirtualization/hostPools/{hostPoolName}/sessionHosts/{sessionHostName}",
-            "sessionHostName");
-        if (sessionHostName == null) {
-            throw LOGGER.logExceptionAsError(new IllegalArgumentException(
-                String.format("The resource ID '%s' is not valid. Missing path segment 'sessionHosts'.", id)));
-        }
+            "sessionHostName", "sessionHosts", LOGGER);
         return this.getWithResponse(resourceGroupName, hostPoolName, sessionHostName, context);
     }
 
     public void deleteById(String id) {
-        String resourceGroupName = ResourceManagerUtils.getValueFromIdByParameterName(id,
-            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.DesktopVirtualization/hostPools/{hostPoolName}/sessionHosts/{sessionHostName}",
-            "resourceGroupName");
-        if (resourceGroupName == null) {
-            throw LOGGER.logExceptionAsError(new IllegalArgumentException(
-                String.format("The resource ID '%s' is not valid. Missing path segment 'resourceGroups'.", id)));
-        }
-        String hostPoolName = ResourceManagerUtils.getValueFromIdByParameterName(id,
-            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.DesktopVirtualization/hostPools/{hostPoolName}/sessionHosts/{sessionHostName}",
-            "hostPoolName");
-        if (hostPoolName == null) {
-            throw LOGGER.logExceptionAsError(new IllegalArgumentException(
-                String.format("The resource ID '%s' is not valid. Missing path segment 'hostPools'.", id)));
-        }
-        String sessionHostName = ResourceManagerUtils.getValueFromIdByParameterName(id,
-            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.DesktopVirtualization/hostPools/{hostPoolName}/sessionHosts/{sessionHostName}",
-            "sessionHostName");
-        if (sessionHostName == null) {
-            throw LOGGER.logExceptionAsError(new IllegalArgumentException(
-                String.format("The resource ID '%s' is not valid. Missing path segment 'sessionHosts'.", id)));
-        }
         Boolean localForce = null;
-        this.deleteWithResponse(resourceGroupName, hostPoolName, sessionHostName, localForce, Context.NONE);
+        this.deleteByIdWithResponse(id, localForce, Context.NONE);
     }
 
     public Response<Void> deleteByIdWithResponse(String id, Boolean force, Context context) {
-        String resourceGroupName = ResourceManagerUtils.getValueFromIdByParameterName(id,
+        String resourceGroupName = ResourceManagerUtils.getRequiredValueFromIdByParameterName(id,
             "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.DesktopVirtualization/hostPools/{hostPoolName}/sessionHosts/{sessionHostName}",
-            "resourceGroupName");
-        if (resourceGroupName == null) {
-            throw LOGGER.logExceptionAsError(new IllegalArgumentException(
-                String.format("The resource ID '%s' is not valid. Missing path segment 'resourceGroups'.", id)));
-        }
-        String hostPoolName = ResourceManagerUtils.getValueFromIdByParameterName(id,
+            "resourceGroupName", "resourceGroups", LOGGER);
+        String hostPoolName = ResourceManagerUtils.getRequiredValueFromIdByParameterName(id,
             "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.DesktopVirtualization/hostPools/{hostPoolName}/sessionHosts/{sessionHostName}",
-            "hostPoolName");
-        if (hostPoolName == null) {
-            throw LOGGER.logExceptionAsError(new IllegalArgumentException(
-                String.format("The resource ID '%s' is not valid. Missing path segment 'hostPools'.", id)));
-        }
-        String sessionHostName = ResourceManagerUtils.getValueFromIdByParameterName(id,
+            "hostPoolName", "hostPools", LOGGER);
+        String sessionHostName = ResourceManagerUtils.getRequiredValueFromIdByParameterName(id,
             "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.DesktopVirtualization/hostPools/{hostPoolName}/sessionHosts/{sessionHostName}",
-            "sessionHostName");
-        if (sessionHostName == null) {
-            throw LOGGER.logExceptionAsError(new IllegalArgumentException(
-                String.format("The resource ID '%s' is not valid. Missing path segment 'sessionHosts'.", id)));
-        }
+            "sessionHostName", "sessionHosts", LOGGER);
         return this.deleteWithResponse(resourceGroupName, hostPoolName, sessionHostName, force, context);
     }
 

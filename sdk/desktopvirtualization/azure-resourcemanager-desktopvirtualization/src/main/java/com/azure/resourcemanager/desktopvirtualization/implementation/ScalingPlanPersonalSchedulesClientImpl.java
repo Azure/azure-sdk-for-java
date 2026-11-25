@@ -192,17 +192,7 @@ public final class ScalingPlanPersonalSchedulesClientImpl implements ScalingPlan
             @HeaderParam("Accept") String accept, Context context);
     }
 
-    /**
-     * Get a ScalingPlanPersonalSchedule.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param scalingPlanName The name of the scaling plan.
-     * @param scalingPlanScheduleName The name of the ScalingPlanSchedule.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return a ScalingPlanPersonalSchedule along with {@link Response} on successful completion of {@link Mono}.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Response<ScalingPlanPersonalScheduleInner>> getWithResponseAsync(String resourceGroupName,
         String scalingPlanName, String scalingPlanScheduleName) {
@@ -214,17 +204,7 @@ public final class ScalingPlanPersonalSchedulesClientImpl implements ScalingPlan
             .contextWrite(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext()).readOnly()));
     }
 
-    /**
-     * Get a ScalingPlanPersonalSchedule.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param scalingPlanName The name of the scaling plan.
-     * @param scalingPlanScheduleName The name of the ScalingPlanSchedule.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return a ScalingPlanPersonalSchedule on successful completion of {@link Mono}.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<ScalingPlanPersonalScheduleInner> getAsync(String resourceGroupName, String scalingPlanName,
         String scalingPlanScheduleName) {
@@ -232,18 +212,7 @@ public final class ScalingPlanPersonalSchedulesClientImpl implements ScalingPlan
             .flatMap(res -> Mono.justOrEmpty(res.getValue()));
     }
 
-    /**
-     * Get a ScalingPlanPersonalSchedule.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param scalingPlanName The name of the scaling plan.
-     * @param scalingPlanScheduleName The name of the ScalingPlanSchedule.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return a ScalingPlanPersonalSchedule along with {@link Response}.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Response<ScalingPlanPersonalScheduleInner> getWithResponse(String resourceGroupName, String scalingPlanName,
         String scalingPlanScheduleName, Context context) {
@@ -252,36 +221,14 @@ public final class ScalingPlanPersonalSchedulesClientImpl implements ScalingPlan
             resourceGroupName, scalingPlanName, scalingPlanScheduleName, accept, context);
     }
 
-    /**
-     * Get a ScalingPlanPersonalSchedule.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param scalingPlanName The name of the scaling plan.
-     * @param scalingPlanScheduleName The name of the ScalingPlanSchedule.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return a ScalingPlanPersonalSchedule.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public ScalingPlanPersonalScheduleInner get(String resourceGroupName, String scalingPlanName,
         String scalingPlanScheduleName) {
         return getWithResponse(resourceGroupName, scalingPlanName, scalingPlanScheduleName, Context.NONE).getValue();
     }
 
-    /**
-     * Create or update a ScalingPlanPersonalSchedule.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param scalingPlanName The name of the scaling plan.
-     * @param scalingPlanScheduleName The name of the ScalingPlanSchedule.
-     * @param scalingPlanSchedule Object containing ScalingPlanPersonalSchedule definitions.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return represents a ScalingPlanPersonalSchedule definition along with {@link Response} on successful completion
-     * of {@link Mono}.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Response<ScalingPlanPersonalScheduleInner>> createWithResponseAsync(String resourceGroupName,
         String scalingPlanName, String scalingPlanScheduleName, ScalingPlanPersonalScheduleInner scalingPlanSchedule) {
@@ -294,18 +241,7 @@ public final class ScalingPlanPersonalSchedulesClientImpl implements ScalingPlan
             .contextWrite(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext()).readOnly()));
     }
 
-    /**
-     * Create or update a ScalingPlanPersonalSchedule.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param scalingPlanName The name of the scaling plan.
-     * @param scalingPlanScheduleName The name of the ScalingPlanSchedule.
-     * @param scalingPlanSchedule Object containing ScalingPlanPersonalSchedule definitions.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return represents a ScalingPlanPersonalSchedule definition on successful completion of {@link Mono}.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<ScalingPlanPersonalScheduleInner> createAsync(String resourceGroupName, String scalingPlanName,
         String scalingPlanScheduleName, ScalingPlanPersonalScheduleInner scalingPlanSchedule) {
@@ -313,19 +249,7 @@ public final class ScalingPlanPersonalSchedulesClientImpl implements ScalingPlan
             .flatMap(res -> Mono.justOrEmpty(res.getValue()));
     }
 
-    /**
-     * Create or update a ScalingPlanPersonalSchedule.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param scalingPlanName The name of the scaling plan.
-     * @param scalingPlanScheduleName The name of the ScalingPlanSchedule.
-     * @param scalingPlanSchedule Object containing ScalingPlanPersonalSchedule definitions.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return represents a ScalingPlanPersonalSchedule definition along with {@link Response}.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Response<ScalingPlanPersonalScheduleInner> createWithResponse(String resourceGroupName,
         String scalingPlanName, String scalingPlanScheduleName, ScalingPlanPersonalScheduleInner scalingPlanSchedule,
@@ -337,18 +261,7 @@ public final class ScalingPlanPersonalSchedulesClientImpl implements ScalingPlan
             accept, scalingPlanSchedule, context);
     }
 
-    /**
-     * Create or update a ScalingPlanPersonalSchedule.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param scalingPlanName The name of the scaling plan.
-     * @param scalingPlanScheduleName The name of the ScalingPlanSchedule.
-     * @param scalingPlanSchedule Object containing ScalingPlanPersonalSchedule definitions.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return represents a ScalingPlanPersonalSchedule definition.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public ScalingPlanPersonalScheduleInner create(String resourceGroupName, String scalingPlanName,
         String scalingPlanScheduleName, ScalingPlanPersonalScheduleInner scalingPlanSchedule) {
@@ -356,19 +269,7 @@ public final class ScalingPlanPersonalSchedulesClientImpl implements ScalingPlan
             Context.NONE).getValue();
     }
 
-    /**
-     * Update a ScalingPlanPersonalSchedule.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param scalingPlanName The name of the scaling plan.
-     * @param scalingPlanScheduleName The name of the ScalingPlanSchedule.
-     * @param scalingPlanSchedule The resource properties to be updated.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return represents a ScalingPlanPersonalSchedule definition along with {@link Response} on successful completion
-     * of {@link Mono}.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Response<ScalingPlanPersonalScheduleInner>> updateWithResponseAsync(String resourceGroupName,
         String scalingPlanName, String scalingPlanScheduleName, ScalingPlanPersonalSchedulePatch scalingPlanSchedule) {
@@ -380,17 +281,7 @@ public final class ScalingPlanPersonalSchedulesClientImpl implements ScalingPlan
             .contextWrite(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext()).readOnly()));
     }
 
-    /**
-     * Update a ScalingPlanPersonalSchedule.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param scalingPlanName The name of the scaling plan.
-     * @param scalingPlanScheduleName The name of the ScalingPlanSchedule.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return represents a ScalingPlanPersonalSchedule definition on successful completion of {@link Mono}.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<ScalingPlanPersonalScheduleInner> updateAsync(String resourceGroupName, String scalingPlanName,
         String scalingPlanScheduleName) {
@@ -399,19 +290,7 @@ public final class ScalingPlanPersonalSchedulesClientImpl implements ScalingPlan
             .flatMap(res -> Mono.justOrEmpty(res.getValue()));
     }
 
-    /**
-     * Update a ScalingPlanPersonalSchedule.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param scalingPlanName The name of the scaling plan.
-     * @param scalingPlanScheduleName The name of the ScalingPlanSchedule.
-     * @param scalingPlanSchedule The resource properties to be updated.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return represents a ScalingPlanPersonalSchedule definition along with {@link Response}.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Response<ScalingPlanPersonalScheduleInner> updateWithResponse(String resourceGroupName,
         String scalingPlanName, String scalingPlanScheduleName, ScalingPlanPersonalSchedulePatch scalingPlanSchedule,
@@ -422,17 +301,7 @@ public final class ScalingPlanPersonalSchedulesClientImpl implements ScalingPlan
             scalingPlanSchedule, context);
     }
 
-    /**
-     * Update a ScalingPlanPersonalSchedule.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param scalingPlanName The name of the scaling plan.
-     * @param scalingPlanScheduleName The name of the ScalingPlanSchedule.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return represents a ScalingPlanPersonalSchedule definition.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public ScalingPlanPersonalScheduleInner update(String resourceGroupName, String scalingPlanName,
         String scalingPlanScheduleName) {
@@ -441,17 +310,7 @@ public final class ScalingPlanPersonalSchedulesClientImpl implements ScalingPlan
             Context.NONE).getValue();
     }
 
-    /**
-     * Remove a ScalingPlanPersonalSchedule.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param scalingPlanName The name of the scaling plan.
-     * @param scalingPlanScheduleName The name of the ScalingPlanSchedule.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the {@link Response} on successful completion of {@link Mono}.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Response<Void>> deleteWithResponseAsync(String resourceGroupName, String scalingPlanName,
         String scalingPlanScheduleName) {
@@ -461,35 +320,14 @@ public final class ScalingPlanPersonalSchedulesClientImpl implements ScalingPlan
             .contextWrite(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext()).readOnly()));
     }
 
-    /**
-     * Remove a ScalingPlanPersonalSchedule.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param scalingPlanName The name of the scaling plan.
-     * @param scalingPlanScheduleName The name of the ScalingPlanSchedule.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return A {@link Mono} that completes when a successful response is received.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Void> deleteAsync(String resourceGroupName, String scalingPlanName, String scalingPlanScheduleName) {
         return deleteWithResponseAsync(resourceGroupName, scalingPlanName, scalingPlanScheduleName)
             .flatMap(ignored -> Mono.empty());
     }
 
-    /**
-     * Remove a ScalingPlanPersonalSchedule.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param scalingPlanName The name of the scaling plan.
-     * @param scalingPlanScheduleName The name of the ScalingPlanSchedule.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the {@link Response}.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Response<Void> deleteWithResponse(String resourceGroupName, String scalingPlanName,
         String scalingPlanScheduleName, Context context) {
@@ -497,16 +335,7 @@ public final class ScalingPlanPersonalSchedulesClientImpl implements ScalingPlan
             this.client.getSubscriptionId(), resourceGroupName, scalingPlanName, scalingPlanScheduleName, context);
     }
 
-    /**
-     * Remove a ScalingPlanPersonalSchedule.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param scalingPlanName The name of the scaling plan.
-     * @param scalingPlanScheduleName The name of the ScalingPlanSchedule.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public void delete(String resourceGroupName, String scalingPlanName, String scalingPlanScheduleName) {
         deleteWithResponse(resourceGroupName, scalingPlanName, scalingPlanScheduleName, Context.NONE);
@@ -539,19 +368,7 @@ public final class ScalingPlanPersonalSchedulesClientImpl implements ScalingPlan
             .contextWrite(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext()).readOnly()));
     }
 
-    /**
-     * List ScalingPlanPersonalSchedules.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param scalingPlanName The name of the scaling plan.
-     * @param pageSize Number of items per page.
-     * @param isDescending Indicates whether the collection is descending.
-     * @param initialSkip Initial number of items to skip.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return list of ScalingPlanPersonalSchedule definitions as paginated response with {@link PagedFlux}.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.COLLECTION)
     public PagedFlux<ScalingPlanPersonalScheduleInner> listAsync(String resourceGroupName, String scalingPlanName,
         Integer pageSize, Boolean isDescending, Integer initialSkip) {
@@ -560,16 +377,7 @@ public final class ScalingPlanPersonalSchedulesClientImpl implements ScalingPlan
             nextLink -> listNextSinglePageAsync(nextLink));
     }
 
-    /**
-     * List ScalingPlanPersonalSchedules.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param scalingPlanName The name of the scaling plan.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return list of ScalingPlanPersonalSchedule definitions as paginated response with {@link PagedFlux}.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.COLLECTION)
     public PagedFlux<ScalingPlanPersonalScheduleInner> listAsync(String resourceGroupName, String scalingPlanName) {
         final Integer pageSize = null;
@@ -596,12 +404,7 @@ public final class ScalingPlanPersonalSchedulesClientImpl implements ScalingPlan
     @ServiceMethod(returns = ReturnType.SINGLE)
     private PagedResponse<ScalingPlanPersonalScheduleInner> listSinglePage(String resourceGroupName,
         String scalingPlanName, Integer pageSize, Boolean isDescending, Integer initialSkip) {
-        final String accept = "application/json";
-        Response<ScalingPlanPersonalScheduleList> res
-            = service.listSync(this.client.getEndpoint(), this.client.getApiVersion(), this.client.getSubscriptionId(),
-                resourceGroupName, scalingPlanName, pageSize, isDescending, initialSkip, accept, Context.NONE);
-        return new PagedResponseBase<>(res.getRequest(), res.getStatusCode(), res.getHeaders(), res.getValue().value(),
-            res.getValue().nextLink(), null);
+        return listSinglePage(resourceGroupName, scalingPlanName, pageSize, isDescending, initialSkip, Context.NONE);
     }
 
     /**
@@ -629,40 +432,16 @@ public final class ScalingPlanPersonalSchedulesClientImpl implements ScalingPlan
             res.getValue().nextLink(), null);
     }
 
-    /**
-     * List ScalingPlanPersonalSchedules.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param scalingPlanName The name of the scaling plan.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return list of ScalingPlanPersonalSchedule definitions as paginated response with {@link PagedIterable}.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.COLLECTION)
     public PagedIterable<ScalingPlanPersonalScheduleInner> list(String resourceGroupName, String scalingPlanName) {
         final Integer pageSize = null;
         final Boolean isDescending = null;
         final Integer initialSkip = null;
-        return new PagedIterable<>(
-            () -> listSinglePage(resourceGroupName, scalingPlanName, pageSize, isDescending, initialSkip),
-            nextLink -> listNextSinglePage(nextLink));
+        return list(resourceGroupName, scalingPlanName, pageSize, isDescending, initialSkip, Context.NONE);
     }
 
-    /**
-     * List ScalingPlanPersonalSchedules.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param scalingPlanName The name of the scaling plan.
-     * @param pageSize Number of items per page.
-     * @param isDescending Indicates whether the collection is descending.
-     * @param initialSkip Initial number of items to skip.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return list of ScalingPlanPersonalSchedule definitions as paginated response with {@link PagedIterable}.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.COLLECTION)
     public PagedIterable<ScalingPlanPersonalScheduleInner> list(String resourceGroupName, String scalingPlanName,
         Integer pageSize, Boolean isDescending, Integer initialSkip, Context context) {
@@ -701,11 +480,7 @@ public final class ScalingPlanPersonalSchedulesClientImpl implements ScalingPlan
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private PagedResponse<ScalingPlanPersonalScheduleInner> listNextSinglePage(String nextLink) {
-        final String accept = "application/json";
-        Response<ScalingPlanPersonalScheduleList> res
-            = service.listNextSync(nextLink, this.client.getEndpoint(), accept, Context.NONE);
-        return new PagedResponseBase<>(res.getRequest(), res.getStatusCode(), res.getHeaders(), res.getValue().value(),
-            res.getValue().nextLink(), null);
+        return listNextSinglePage(nextLink, Context.NONE);
     }
 
     /**

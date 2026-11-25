@@ -78,17 +78,7 @@ public final class InitiateSessionHostUpdatesClientImpl implements InitiateSessi
             Context context);
     }
 
-    /**
-     * Initiates a hostpool update or schedule an update for the future.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param hostPoolName The name of the host pool within the specified resource group.
-     * @param updateSessionHostsRequestBody The resource properties to be updated.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the {@link Response} on successful completion of {@link Mono}.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Response<Void>> postWithResponseAsync(String resourceGroupName, String hostPoolName,
         UpdateSessionHostsRequestBody updateSessionHostsRequestBody) {
@@ -97,16 +87,7 @@ public final class InitiateSessionHostUpdatesClientImpl implements InitiateSessi
             .contextWrite(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext()).readOnly()));
     }
 
-    /**
-     * Initiates a hostpool update or schedule an update for the future.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param hostPoolName The name of the host pool within the specified resource group.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return A {@link Mono} that completes when a successful response is received.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Void> postAsync(String resourceGroupName, String hostPoolName) {
         final UpdateSessionHostsRequestBody updateSessionHostsRequestBody = null;
@@ -114,18 +95,7 @@ public final class InitiateSessionHostUpdatesClientImpl implements InitiateSessi
             .flatMap(ignored -> Mono.empty());
     }
 
-    /**
-     * Initiates a hostpool update or schedule an update for the future.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param hostPoolName The name of the host pool within the specified resource group.
-     * @param updateSessionHostsRequestBody The resource properties to be updated.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the {@link Response}.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Response<Void> postWithResponse(String resourceGroupName, String hostPoolName,
         UpdateSessionHostsRequestBody updateSessionHostsRequestBody, Context context) {
@@ -133,15 +103,7 @@ public final class InitiateSessionHostUpdatesClientImpl implements InitiateSessi
             resourceGroupName, hostPoolName, updateSessionHostsRequestBody, context);
     }
 
-    /**
-     * Initiates a hostpool update or schedule an update for the future.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param hostPoolName The name of the host pool within the specified resource group.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public void post(String resourceGroupName, String hostPoolName) {
         final UpdateSessionHostsRequestBody updateSessionHostsRequestBody = null;

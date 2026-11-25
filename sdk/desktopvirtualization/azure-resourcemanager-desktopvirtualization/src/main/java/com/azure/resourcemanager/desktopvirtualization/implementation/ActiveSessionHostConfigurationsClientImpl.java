@@ -115,16 +115,7 @@ public final class ActiveSessionHostConfigurationsClientImpl implements ActiveSe
             @HeaderParam("Accept") String accept, Context context);
     }
 
-    /**
-     * Get a ActiveSessionHostConfiguration.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param hostPoolName The name of the host pool within the specified resource group.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return a ActiveSessionHostConfiguration along with {@link Response} on successful completion of {@link Mono}.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Response<ActiveSessionHostConfigurationInner>> getWithResponseAsync(String resourceGroupName,
         String hostPoolName) {
@@ -135,32 +126,13 @@ public final class ActiveSessionHostConfigurationsClientImpl implements ActiveSe
             .contextWrite(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext()).readOnly()));
     }
 
-    /**
-     * Get a ActiveSessionHostConfiguration.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param hostPoolName The name of the host pool within the specified resource group.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return a ActiveSessionHostConfiguration on successful completion of {@link Mono}.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<ActiveSessionHostConfigurationInner> getAsync(String resourceGroupName, String hostPoolName) {
         return getWithResponseAsync(resourceGroupName, hostPoolName).flatMap(res -> Mono.justOrEmpty(res.getValue()));
     }
 
-    /**
-     * Get a ActiveSessionHostConfiguration.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param hostPoolName The name of the host pool within the specified resource group.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return a ActiveSessionHostConfiguration along with {@link Response}.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Response<ActiveSessionHostConfigurationInner> getWithResponse(String resourceGroupName, String hostPoolName,
         Context context) {
@@ -169,16 +141,7 @@ public final class ActiveSessionHostConfigurationsClientImpl implements ActiveSe
             resourceGroupName, hostPoolName, accept, context);
     }
 
-    /**
-     * Get a ActiveSessionHostConfiguration.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param hostPoolName The name of the host pool within the specified resource group.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return a ActiveSessionHostConfiguration.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public ActiveSessionHostConfigurationInner get(String resourceGroupName, String hostPoolName) {
         return getWithResponse(resourceGroupName, hostPoolName, Context.NONE).getValue();
@@ -207,16 +170,7 @@ public final class ActiveSessionHostConfigurationsClientImpl implements ActiveSe
             .contextWrite(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext()).readOnly()));
     }
 
-    /**
-     * Operation to list the ActiveSessionHostConfigurations associated with the HostPool.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param hostPoolName The name of the host pool within the specified resource group.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return list of ActiveSessionHostConfiguration definitions as paginated response with {@link PagedFlux}.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.COLLECTION)
     public PagedFlux<ActiveSessionHostConfigurationInner> listByHostPoolAsync(String resourceGroupName,
         String hostPoolName) {
@@ -237,12 +191,7 @@ public final class ActiveSessionHostConfigurationsClientImpl implements ActiveSe
     @ServiceMethod(returns = ReturnType.SINGLE)
     private PagedResponse<ActiveSessionHostConfigurationInner> listByHostPoolSinglePage(String resourceGroupName,
         String hostPoolName) {
-        final String accept = "application/json";
-        Response<ActiveSessionHostConfigurationList> res
-            = service.listByHostPoolSync(this.client.getEndpoint(), this.client.getApiVersion(),
-                this.client.getSubscriptionId(), resourceGroupName, hostPoolName, accept, Context.NONE);
-        return new PagedResponseBase<>(res.getRequest(), res.getStatusCode(), res.getHeaders(), res.getValue().value(),
-            res.getValue().nextLink(), null);
+        return listByHostPoolSinglePage(resourceGroupName, hostPoolName, Context.NONE);
     }
 
     /**
@@ -267,34 +216,14 @@ public final class ActiveSessionHostConfigurationsClientImpl implements ActiveSe
             res.getValue().nextLink(), null);
     }
 
-    /**
-     * Operation to list the ActiveSessionHostConfigurations associated with the HostPool.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param hostPoolName The name of the host pool within the specified resource group.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return list of ActiveSessionHostConfiguration definitions as paginated response with {@link PagedIterable}.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.COLLECTION)
     public PagedIterable<ActiveSessionHostConfigurationInner> listByHostPool(String resourceGroupName,
         String hostPoolName) {
-        return new PagedIterable<>(() -> listByHostPoolSinglePage(resourceGroupName, hostPoolName),
-            nextLink -> listByHostPoolNextSinglePage(nextLink));
+        return listByHostPool(resourceGroupName, hostPoolName, Context.NONE);
     }
 
-    /**
-     * Operation to list the ActiveSessionHostConfigurations associated with the HostPool.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param hostPoolName The name of the host pool within the specified resource group.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return list of ActiveSessionHostConfiguration definitions as paginated response with {@link PagedIterable}.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.COLLECTION)
     public PagedIterable<ActiveSessionHostConfigurationInner> listByHostPool(String resourceGroupName,
         String hostPoolName, Context context) {
@@ -334,11 +263,7 @@ public final class ActiveSessionHostConfigurationsClientImpl implements ActiveSe
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private PagedResponse<ActiveSessionHostConfigurationInner> listByHostPoolNextSinglePage(String nextLink) {
-        final String accept = "application/json";
-        Response<ActiveSessionHostConfigurationList> res
-            = service.listByHostPoolNextSync(nextLink, this.client.getEndpoint(), accept, Context.NONE);
-        return new PagedResponseBase<>(res.getRequest(), res.getStatusCode(), res.getHeaders(), res.getValue().value(),
-            res.getValue().nextLink(), null);
+        return listByHostPoolNextSinglePage(nextLink, Context.NONE);
     }
 
     /**

@@ -117,12 +117,7 @@ public final class MsixPackageImpl implements MsixPackage, MsixPackage.Definitio
     }
 
     public MsixPackage create() {
-        this.innerObject = serviceManager.serviceClient()
-            .getMsixPackages()
-            .createOrUpdateWithResponse(resourceGroupName, hostPoolName, msixPackageFullName, this.innerModel(),
-                Context.NONE)
-            .getValue();
-        return this;
+        return this.create(Context.NONE);
     }
 
     public MsixPackage create(Context context) {
@@ -147,11 +142,7 @@ public final class MsixPackageImpl implements MsixPackage, MsixPackage.Definitio
     }
 
     public MsixPackage apply() {
-        this.innerObject = serviceManager.serviceClient()
-            .getMsixPackages()
-            .updateWithResponse(resourceGroupName, hostPoolName, msixPackageFullName, updateMsixPackage, Context.NONE)
-            .getValue();
-        return this;
+        return this.apply(Context.NONE);
     }
 
     public MsixPackage apply(Context context) {
@@ -178,11 +169,7 @@ public final class MsixPackageImpl implements MsixPackage, MsixPackage.Definitio
     }
 
     public MsixPackage refresh() {
-        this.innerObject = serviceManager.serviceClient()
-            .getMsixPackages()
-            .getWithResponse(resourceGroupName, hostPoolName, msixPackageFullName, Context.NONE)
-            .getValue();
-        return this;
+        return this.refresh(Context.NONE);
     }
 
     public MsixPackage refresh(Context context) {

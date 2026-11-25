@@ -28,9 +28,7 @@ public final class MsixImagesImpl implements MsixImages {
 
     public PagedIterable<ExpandMsixImage> expand(String resourceGroupName, String hostPoolName,
         MsixImageUri msixImageURI) {
-        PagedIterable<ExpandMsixImageInner> inner
-            = this.serviceClient().expand(resourceGroupName, hostPoolName, msixImageURI);
-        return ResourceManagerUtils.mapPage(inner, inner1 -> new ExpandMsixImageImpl(inner1, this.manager()));
+        return this.expand(resourceGroupName, hostPoolName, msixImageURI, Context.NONE);
     }
 
     public PagedIterable<ExpandMsixImage> expand(String resourceGroupName, String hostPoolName,

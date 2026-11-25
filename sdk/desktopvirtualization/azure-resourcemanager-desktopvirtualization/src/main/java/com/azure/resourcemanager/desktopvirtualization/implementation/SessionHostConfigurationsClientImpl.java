@@ -163,16 +163,7 @@ public final class SessionHostConfigurationsClientImpl implements SessionHostCon
             @HeaderParam("Accept") String accept, Context context);
     }
 
-    /**
-     * Get a SessionHostConfiguration.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param hostPoolName The name of the host pool within the specified resource group.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return a SessionHostConfiguration along with {@link Response} on successful completion of {@link Mono}.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Response<SessionHostConfigurationInner>> getWithResponseAsync(String resourceGroupName,
         String hostPoolName) {
@@ -183,32 +174,13 @@ public final class SessionHostConfigurationsClientImpl implements SessionHostCon
             .contextWrite(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext()).readOnly()));
     }
 
-    /**
-     * Get a SessionHostConfiguration.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param hostPoolName The name of the host pool within the specified resource group.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return a SessionHostConfiguration on successful completion of {@link Mono}.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<SessionHostConfigurationInner> getAsync(String resourceGroupName, String hostPoolName) {
         return getWithResponseAsync(resourceGroupName, hostPoolName).flatMap(res -> Mono.justOrEmpty(res.getValue()));
     }
 
-    /**
-     * Get a SessionHostConfiguration.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param hostPoolName The name of the host pool within the specified resource group.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return a SessionHostConfiguration along with {@link Response}.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Response<SessionHostConfigurationInner> getWithResponse(String resourceGroupName, String hostPoolName,
         Context context) {
@@ -217,33 +189,13 @@ public final class SessionHostConfigurationsClientImpl implements SessionHostCon
             resourceGroupName, hostPoolName, accept, context);
     }
 
-    /**
-     * Get a SessionHostConfiguration.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param hostPoolName The name of the host pool within the specified resource group.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return a SessionHostConfiguration.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public SessionHostConfigurationInner get(String resourceGroupName, String hostPoolName) {
         return getWithResponse(resourceGroupName, hostPoolName, Context.NONE).getValue();
     }
 
-    /**
-     * Update a SessionHostConfiguration.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param hostPoolName The name of the host pool within the specified resource group.
-     * @param sessionHostConfiguration The resource properties to be updated.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return schema for SessionHostConfiguration properties along with {@link Response} on successful completion of
-     * {@link Mono}.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Response<Flux<ByteBuffer>>> updateWithResponseAsync(String resourceGroupName, String hostPoolName,
         SessionHostConfigurationPatch sessionHostConfiguration) {
@@ -269,10 +221,7 @@ public final class SessionHostConfigurationsClientImpl implements SessionHostCon
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Response<BinaryData> updateWithResponse(String resourceGroupName, String hostPoolName,
         SessionHostConfigurationPatch sessionHostConfiguration) {
-        final String accept = "application/json";
-        return service.updateSync(this.client.getEndpoint(), this.client.getApiVersion(),
-            this.client.getSubscriptionId(), resourceGroupName, hostPoolName, accept, sessionHostConfiguration,
-            Context.NONE);
+        return updateWithResponse(resourceGroupName, hostPoolName, sessionHostConfiguration, Context.NONE);
     }
 
     /**
@@ -296,17 +245,7 @@ public final class SessionHostConfigurationsClientImpl implements SessionHostCon
             context);
     }
 
-    /**
-     * Update a SessionHostConfiguration.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param hostPoolName The name of the host pool within the specified resource group.
-     * @param sessionHostConfiguration The resource properties to be updated.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the {@link PollerFlux} for polling of schema for SessionHostConfiguration properties.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public PollerFlux<PollResult<SessionHostConfigurationInner>, SessionHostConfigurationInner> beginUpdateAsync(
         String resourceGroupName, String hostPoolName, SessionHostConfigurationPatch sessionHostConfiguration) {
@@ -317,16 +256,7 @@ public final class SessionHostConfigurationsClientImpl implements SessionHostCon
             this.client.getContext());
     }
 
-    /**
-     * Update a SessionHostConfiguration.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param hostPoolName The name of the host pool within the specified resource group.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the {@link PollerFlux} for polling of schema for SessionHostConfiguration properties.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public PollerFlux<PollResult<SessionHostConfigurationInner>, SessionHostConfigurationInner>
         beginUpdateAsync(String resourceGroupName, String hostPoolName) {
@@ -352,42 +282,18 @@ public final class SessionHostConfigurationsClientImpl implements SessionHostCon
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     private SyncPoller<PollResult<SessionHostConfigurationInner>, SessionHostConfigurationInner> beginUpdate(
         String resourceGroupName, String hostPoolName, SessionHostConfigurationPatch sessionHostConfiguration) {
-        Response<BinaryData> response = updateWithResponse(resourceGroupName, hostPoolName, sessionHostConfiguration);
-        return this.client.<SessionHostConfigurationInner, SessionHostConfigurationInner>getLroResult(response,
-            SessionHostConfigurationInner.class, SessionHostConfigurationInner.class, Context.NONE);
+        return beginUpdate(resourceGroupName, hostPoolName, sessionHostConfiguration, Context.NONE);
     }
 
-    /**
-     * Update a SessionHostConfiguration.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param hostPoolName The name of the host pool within the specified resource group.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the {@link SyncPoller} for polling of schema for SessionHostConfiguration properties.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public SyncPoller<PollResult<SessionHostConfigurationInner>, SessionHostConfigurationInner>
         beginUpdate(String resourceGroupName, String hostPoolName) {
         final SessionHostConfigurationPatch sessionHostConfiguration = null;
-        Response<BinaryData> response = updateWithResponse(resourceGroupName, hostPoolName, sessionHostConfiguration);
-        return this.client.<SessionHostConfigurationInner, SessionHostConfigurationInner>getLroResult(response,
-            SessionHostConfigurationInner.class, SessionHostConfigurationInner.class, Context.NONE);
+        return beginUpdate(resourceGroupName, hostPoolName, sessionHostConfiguration, Context.NONE);
     }
 
-    /**
-     * Update a SessionHostConfiguration.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param hostPoolName The name of the host pool within the specified resource group.
-     * @param sessionHostConfiguration The resource properties to be updated.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the {@link SyncPoller} for polling of schema for SessionHostConfiguration properties.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public SyncPoller<PollResult<SessionHostConfigurationInner>, SessionHostConfigurationInner> beginUpdate(
         String resourceGroupName, String hostPoolName, SessionHostConfigurationPatch sessionHostConfiguration,
@@ -398,17 +304,7 @@ public final class SessionHostConfigurationsClientImpl implements SessionHostCon
             SessionHostConfigurationInner.class, SessionHostConfigurationInner.class, context);
     }
 
-    /**
-     * Update a SessionHostConfiguration.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param hostPoolName The name of the host pool within the specified resource group.
-     * @param sessionHostConfiguration The resource properties to be updated.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return schema for SessionHostConfiguration properties on successful completion of {@link Mono}.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<SessionHostConfigurationInner> updateAsync(String resourceGroupName, String hostPoolName,
         SessionHostConfigurationPatch sessionHostConfiguration) {
@@ -416,16 +312,7 @@ public final class SessionHostConfigurationsClientImpl implements SessionHostCon
             .flatMap(this.client::getLroFinalResultOrError);
     }
 
-    /**
-     * Update a SessionHostConfiguration.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param hostPoolName The name of the host pool within the specified resource group.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return schema for SessionHostConfiguration properties on successful completion of {@link Mono}.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<SessionHostConfigurationInner> updateAsync(String resourceGroupName, String hostPoolName) {
         final SessionHostConfigurationPatch sessionHostConfiguration = null;
@@ -433,52 +320,22 @@ public final class SessionHostConfigurationsClientImpl implements SessionHostCon
             .flatMap(this.client::getLroFinalResultOrError);
     }
 
-    /**
-     * Update a SessionHostConfiguration.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param hostPoolName The name of the host pool within the specified resource group.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return schema for SessionHostConfiguration properties.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public SessionHostConfigurationInner update(String resourceGroupName, String hostPoolName) {
         final SessionHostConfigurationPatch sessionHostConfiguration = null;
-        return beginUpdate(resourceGroupName, hostPoolName, sessionHostConfiguration).getFinalResult();
+        return update(resourceGroupName, hostPoolName, sessionHostConfiguration, Context.NONE);
     }
 
-    /**
-     * Update a SessionHostConfiguration.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param hostPoolName The name of the host pool within the specified resource group.
-     * @param sessionHostConfiguration The resource properties to be updated.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return schema for SessionHostConfiguration properties.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public SessionHostConfigurationInner update(String resourceGroupName, String hostPoolName,
         SessionHostConfigurationPatch sessionHostConfiguration, Context context) {
-        return beginUpdate(resourceGroupName, hostPoolName, sessionHostConfiguration, context).getFinalResult();
+        return this.client
+            .getLroFinalResultOrError(beginUpdate(resourceGroupName, hostPoolName, sessionHostConfiguration, context));
     }
 
-    /**
-     * Create or update a SessionHostConfiguration.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param hostPoolName The name of the host pool within the specified resource group.
-     * @param sessionHostConfiguration Resource create parameters.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return schema for SessionHostConfiguration properties along with {@link Response} on successful completion of
-     * {@link Mono}.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Response<Flux<ByteBuffer>>> createOrUpdateWithResponseAsync(String resourceGroupName,
         String hostPoolName, SessionHostConfigurationInner sessionHostConfiguration) {
@@ -505,11 +362,7 @@ public final class SessionHostConfigurationsClientImpl implements SessionHostCon
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Response<BinaryData> createOrUpdateWithResponse(String resourceGroupName, String hostPoolName,
         SessionHostConfigurationInner sessionHostConfiguration) {
-        final String contentType = "application/json";
-        final String accept = "application/json";
-        return service.createOrUpdateSync(this.client.getEndpoint(), this.client.getApiVersion(),
-            this.client.getSubscriptionId(), resourceGroupName, hostPoolName, contentType, accept,
-            sessionHostConfiguration, Context.NONE);
+        return createOrUpdateWithResponse(resourceGroupName, hostPoolName, sessionHostConfiguration, Context.NONE);
     }
 
     /**
@@ -534,17 +387,7 @@ public final class SessionHostConfigurationsClientImpl implements SessionHostCon
             sessionHostConfiguration, context);
     }
 
-    /**
-     * Create or update a SessionHostConfiguration.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param hostPoolName The name of the host pool within the specified resource group.
-     * @param sessionHostConfiguration Resource create parameters.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the {@link PollerFlux} for polling of schema for SessionHostConfiguration properties.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public PollerFlux<PollResult<SessionHostConfigurationInner>, SessionHostConfigurationInner>
         beginCreateOrUpdateAsync(String resourceGroupName, String hostPoolName,
@@ -556,38 +399,14 @@ public final class SessionHostConfigurationsClientImpl implements SessionHostCon
             this.client.getContext());
     }
 
-    /**
-     * Create or update a SessionHostConfiguration.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param hostPoolName The name of the host pool within the specified resource group.
-     * @param sessionHostConfiguration Resource create parameters.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the {@link SyncPoller} for polling of schema for SessionHostConfiguration properties.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public SyncPoller<PollResult<SessionHostConfigurationInner>, SessionHostConfigurationInner> beginCreateOrUpdate(
         String resourceGroupName, String hostPoolName, SessionHostConfigurationInner sessionHostConfiguration) {
-        Response<BinaryData> response
-            = createOrUpdateWithResponse(resourceGroupName, hostPoolName, sessionHostConfiguration);
-        return this.client.<SessionHostConfigurationInner, SessionHostConfigurationInner>getLroResult(response,
-            SessionHostConfigurationInner.class, SessionHostConfigurationInner.class, Context.NONE);
+        return beginCreateOrUpdate(resourceGroupName, hostPoolName, sessionHostConfiguration, Context.NONE);
     }
 
-    /**
-     * Create or update a SessionHostConfiguration.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param hostPoolName The name of the host pool within the specified resource group.
-     * @param sessionHostConfiguration Resource create parameters.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the {@link SyncPoller} for polling of schema for SessionHostConfiguration properties.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public SyncPoller<PollResult<SessionHostConfigurationInner>, SessionHostConfigurationInner> beginCreateOrUpdate(
         String resourceGroupName, String hostPoolName, SessionHostConfigurationInner sessionHostConfiguration,
@@ -598,17 +417,7 @@ public final class SessionHostConfigurationsClientImpl implements SessionHostCon
             SessionHostConfigurationInner.class, SessionHostConfigurationInner.class, context);
     }
 
-    /**
-     * Create or update a SessionHostConfiguration.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param hostPoolName The name of the host pool within the specified resource group.
-     * @param sessionHostConfiguration Resource create parameters.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return schema for SessionHostConfiguration properties on successful completion of {@link Mono}.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<SessionHostConfigurationInner> createOrUpdateAsync(String resourceGroupName, String hostPoolName,
         SessionHostConfigurationInner sessionHostConfiguration) {
@@ -616,39 +425,19 @@ public final class SessionHostConfigurationsClientImpl implements SessionHostCon
             .flatMap(this.client::getLroFinalResultOrError);
     }
 
-    /**
-     * Create or update a SessionHostConfiguration.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param hostPoolName The name of the host pool within the specified resource group.
-     * @param sessionHostConfiguration Resource create parameters.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return schema for SessionHostConfiguration properties.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public SessionHostConfigurationInner createOrUpdate(String resourceGroupName, String hostPoolName,
         SessionHostConfigurationInner sessionHostConfiguration) {
-        return beginCreateOrUpdate(resourceGroupName, hostPoolName, sessionHostConfiguration).getFinalResult();
+        return createOrUpdate(resourceGroupName, hostPoolName, sessionHostConfiguration, Context.NONE);
     }
 
-    /**
-     * Create or update a SessionHostConfiguration.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param hostPoolName The name of the host pool within the specified resource group.
-     * @param sessionHostConfiguration Resource create parameters.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return schema for SessionHostConfiguration properties.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public SessionHostConfigurationInner createOrUpdate(String resourceGroupName, String hostPoolName,
         SessionHostConfigurationInner sessionHostConfiguration, Context context) {
-        return beginCreateOrUpdate(resourceGroupName, hostPoolName, sessionHostConfiguration, context).getFinalResult();
+        return this.client.getLroFinalResultOrError(
+            beginCreateOrUpdate(resourceGroupName, hostPoolName, sessionHostConfiguration, context));
     }
 
     /**
@@ -674,16 +463,7 @@ public final class SessionHostConfigurationsClientImpl implements SessionHostCon
             .contextWrite(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext()).readOnly()));
     }
 
-    /**
-     * List SessionHostConfigurations.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param hostPoolName The name of the host pool within the specified resource group.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return list of SessionHostConfiguration definitions as paginated response with {@link PagedFlux}.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.COLLECTION)
     public PagedFlux<SessionHostConfigurationInner> listByHostPoolAsync(String resourceGroupName, String hostPoolName) {
         return new PagedFlux<>(() -> listByHostPoolSinglePageAsync(resourceGroupName, hostPoolName),
@@ -703,12 +483,7 @@ public final class SessionHostConfigurationsClientImpl implements SessionHostCon
     @ServiceMethod(returns = ReturnType.SINGLE)
     private PagedResponse<SessionHostConfigurationInner> listByHostPoolSinglePage(String resourceGroupName,
         String hostPoolName) {
-        final String accept = "application/json";
-        Response<SessionHostConfigurationList> res
-            = service.listByHostPoolSync(this.client.getEndpoint(), this.client.getApiVersion(),
-                this.client.getSubscriptionId(), resourceGroupName, hostPoolName, accept, Context.NONE);
-        return new PagedResponseBase<>(res.getRequest(), res.getStatusCode(), res.getHeaders(), res.getValue().value(),
-            res.getValue().nextLink(), null);
+        return listByHostPoolSinglePage(resourceGroupName, hostPoolName, Context.NONE);
     }
 
     /**
@@ -733,33 +508,13 @@ public final class SessionHostConfigurationsClientImpl implements SessionHostCon
             res.getValue().nextLink(), null);
     }
 
-    /**
-     * List SessionHostConfigurations.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param hostPoolName The name of the host pool within the specified resource group.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return list of SessionHostConfiguration definitions as paginated response with {@link PagedIterable}.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.COLLECTION)
     public PagedIterable<SessionHostConfigurationInner> listByHostPool(String resourceGroupName, String hostPoolName) {
-        return new PagedIterable<>(() -> listByHostPoolSinglePage(resourceGroupName, hostPoolName),
-            nextLink -> listByHostPoolNextSinglePage(nextLink));
+        return listByHostPool(resourceGroupName, hostPoolName, Context.NONE);
     }
 
-    /**
-     * List SessionHostConfigurations.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param hostPoolName The name of the host pool within the specified resource group.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return list of SessionHostConfiguration definitions as paginated response with {@link PagedIterable}.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.COLLECTION)
     public PagedIterable<SessionHostConfigurationInner> listByHostPool(String resourceGroupName, String hostPoolName,
         Context context) {
@@ -798,11 +553,7 @@ public final class SessionHostConfigurationsClientImpl implements SessionHostCon
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private PagedResponse<SessionHostConfigurationInner> listByHostPoolNextSinglePage(String nextLink) {
-        final String accept = "application/json";
-        Response<SessionHostConfigurationList> res
-            = service.listByHostPoolNextSync(nextLink, this.client.getEndpoint(), accept, Context.NONE);
-        return new PagedResponseBase<>(res.getRequest(), res.getStatusCode(), res.getHeaders(), res.getValue().value(),
-            res.getValue().nextLink(), null);
+        return listByHostPoolNextSinglePage(nextLink, Context.NONE);
     }
 
     /**

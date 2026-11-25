@@ -152,11 +152,7 @@ public final class ScalingPlanImpl implements ScalingPlan, ScalingPlan.Definitio
     }
 
     public ScalingPlan create() {
-        this.innerObject = serviceManager.serviceClient()
-            .getScalingPlans()
-            .createWithResponse(resourceGroupName, scalingPlanName, this.innerModel(), Context.NONE)
-            .getValue();
-        return this;
+        return this.create(Context.NONE);
     }
 
     public ScalingPlan create(Context context) {
@@ -180,11 +176,7 @@ public final class ScalingPlanImpl implements ScalingPlan, ScalingPlan.Definitio
     }
 
     public ScalingPlan apply() {
-        this.innerObject = serviceManager.serviceClient()
-            .getScalingPlans()
-            .updateWithResponse(resourceGroupName, scalingPlanName, updateScalingPlan, Context.NONE)
-            .getValue();
-        return this;
+        return this.apply(Context.NONE);
     }
 
     public ScalingPlan apply(Context context) {
@@ -208,11 +200,7 @@ public final class ScalingPlanImpl implements ScalingPlan, ScalingPlan.Definitio
     }
 
     public ScalingPlan refresh() {
-        this.innerObject = serviceManager.serviceClient()
-            .getScalingPlans()
-            .getByResourceGroupWithResponse(resourceGroupName, scalingPlanName, Context.NONE)
-            .getValue();
-        return this;
+        return this.refresh(Context.NONE);
     }
 
     public ScalingPlan refresh(Context context) {

@@ -74,7 +74,7 @@ public final class PrivateEndpointConnectionsImpl implements PrivateEndpointConn
     }
 
     public void deleteByHostPool(String resourceGroupName, String hostPoolName, String privateEndpointConnectionName) {
-        this.serviceClient().deleteByHostPool(resourceGroupName, hostPoolName, privateEndpointConnectionName);
+        this.deleteByHostPoolWithResponse(resourceGroupName, hostPoolName, privateEndpointConnectionName, Context.NONE);
     }
 
     public PagedIterable<PrivateEndpointConnectionWithSystemData> listByHostPool(String resourceGroupName,
@@ -141,15 +141,13 @@ public final class PrivateEndpointConnectionsImpl implements PrivateEndpointConn
 
     public void deleteByWorkspace(String resourceGroupName, String workspaceName,
         String privateEndpointConnectionName) {
-        this.serviceClient().deleteByWorkspace(resourceGroupName, workspaceName, privateEndpointConnectionName);
+        this.deleteByWorkspaceWithResponse(resourceGroupName, workspaceName, privateEndpointConnectionName,
+            Context.NONE);
     }
 
     public PagedIterable<PrivateEndpointConnectionWithSystemData> listByWorkspace(String resourceGroupName,
         String workspaceName) {
-        PagedIterable<PrivateEndpointConnectionWithSystemDataInner> inner
-            = this.serviceClient().listByWorkspace(resourceGroupName, workspaceName);
-        return ResourceManagerUtils.mapPage(inner,
-            inner1 -> new PrivateEndpointConnectionWithSystemDataImpl(inner1, this.manager()));
+        return this.listByWorkspace(resourceGroupName, workspaceName, Context.NONE);
     }
 
     public PagedIterable<PrivateEndpointConnectionWithSystemData> listByWorkspace(String resourceGroupName,

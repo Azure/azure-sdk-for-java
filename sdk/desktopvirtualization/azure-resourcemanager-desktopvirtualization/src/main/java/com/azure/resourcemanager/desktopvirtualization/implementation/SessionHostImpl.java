@@ -163,11 +163,7 @@ public final class SessionHostImpl implements SessionHost, SessionHost.Definitio
     }
 
     public SessionHost create() {
-        this.innerObject = serviceManager.serviceClient()
-            .getSessionHosts()
-            .createWithResponse(resourceGroupName, hostPoolName, sessionHostName, this.innerModel(), Context.NONE)
-            .getValue();
-        return this;
+        return this.create(Context.NONE);
     }
 
     public SessionHost create(Context context) {
@@ -192,12 +188,7 @@ public final class SessionHostImpl implements SessionHost, SessionHost.Definitio
     }
 
     public SessionHost apply() {
-        this.innerObject = serviceManager.serviceClient()
-            .getSessionHosts()
-            .updateWithResponse(resourceGroupName, hostPoolName, sessionHostName, updateForce, updateSessionHost,
-                Context.NONE)
-            .getValue();
-        return this;
+        return this.apply(Context.NONE);
     }
 
     public SessionHost apply(Context context) {
@@ -225,11 +216,7 @@ public final class SessionHostImpl implements SessionHost, SessionHost.Definitio
     }
 
     public SessionHost refresh() {
-        this.innerObject = serviceManager.serviceClient()
-            .getSessionHosts()
-            .getWithResponse(resourceGroupName, hostPoolName, sessionHostName, Context.NONE)
-            .getValue();
-        return this;
+        return this.refresh(Context.NONE);
     }
 
     public SessionHost refresh(Context context) {

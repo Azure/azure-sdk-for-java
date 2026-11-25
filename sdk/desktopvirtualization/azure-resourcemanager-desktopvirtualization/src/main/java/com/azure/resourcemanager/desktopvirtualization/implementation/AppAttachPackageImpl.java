@@ -86,11 +86,7 @@ public final class AppAttachPackageImpl
     }
 
     public AppAttachPackage create() {
-        this.innerObject = serviceManager.serviceClient()
-            .getAppAttachPackages()
-            .createOrUpdateWithResponse(resourceGroupName, appAttachPackageName, this.innerModel(), Context.NONE)
-            .getValue();
-        return this;
+        return this.create(Context.NONE);
     }
 
     public AppAttachPackage create(Context context) {
@@ -114,11 +110,7 @@ public final class AppAttachPackageImpl
     }
 
     public AppAttachPackage apply() {
-        this.innerObject = serviceManager.serviceClient()
-            .getAppAttachPackages()
-            .updateWithResponse(resourceGroupName, appAttachPackageName, updateAppAttachPackagePatch, Context.NONE)
-            .getValue();
-        return this;
+        return this.apply(Context.NONE);
     }
 
     public AppAttachPackage apply(Context context) {
@@ -142,11 +134,7 @@ public final class AppAttachPackageImpl
     }
 
     public AppAttachPackage refresh() {
-        this.innerObject = serviceManager.serviceClient()
-            .getAppAttachPackages()
-            .getByResourceGroupWithResponse(resourceGroupName, appAttachPackageName, Context.NONE)
-            .getValue();
-        return this;
+        return this.refresh(Context.NONE);
     }
 
     public AppAttachPackage refresh(Context context) {

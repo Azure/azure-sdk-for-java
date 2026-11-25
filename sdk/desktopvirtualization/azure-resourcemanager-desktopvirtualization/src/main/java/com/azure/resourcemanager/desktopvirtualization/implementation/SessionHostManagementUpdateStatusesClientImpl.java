@@ -77,16 +77,7 @@ public final class SessionHostManagementUpdateStatusesClientImpl implements Sess
             @HeaderParam("Accept") String accept, Context context);
     }
 
-    /**
-     * Get a SessionHostManagementUpdateStatus.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param hostPoolName The name of the host pool within the specified resource group.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return a SessionHostManagementUpdateStatus along with {@link Response} on successful completion of {@link Mono}.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Response<SessionHostManagementUpdateStatusInner>> getWithResponseAsync(String resourceGroupName,
         String hostPoolName) {
@@ -97,32 +88,13 @@ public final class SessionHostManagementUpdateStatusesClientImpl implements Sess
             .contextWrite(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext()).readOnly()));
     }
 
-    /**
-     * Get a SessionHostManagementUpdateStatus.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param hostPoolName The name of the host pool within the specified resource group.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return a SessionHostManagementUpdateStatus on successful completion of {@link Mono}.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<SessionHostManagementUpdateStatusInner> getAsync(String resourceGroupName, String hostPoolName) {
         return getWithResponseAsync(resourceGroupName, hostPoolName).flatMap(res -> Mono.justOrEmpty(res.getValue()));
     }
 
-    /**
-     * Get a SessionHostManagementUpdateStatus.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param hostPoolName The name of the host pool within the specified resource group.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return a SessionHostManagementUpdateStatus along with {@link Response}.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Response<SessionHostManagementUpdateStatusInner> getWithResponse(String resourceGroupName,
         String hostPoolName, Context context) {
@@ -131,16 +103,7 @@ public final class SessionHostManagementUpdateStatusesClientImpl implements Sess
             resourceGroupName, hostPoolName, accept, context);
     }
 
-    /**
-     * Get a SessionHostManagementUpdateStatus.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param hostPoolName The name of the host pool within the specified resource group.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return a SessionHostManagementUpdateStatus.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public SessionHostManagementUpdateStatusInner get(String resourceGroupName, String hostPoolName) {
         return getWithResponse(resourceGroupName, hostPoolName, Context.NONE).getValue();

@@ -263,18 +263,7 @@ public final class PrivateEndpointConnectionsClientImpl implements PrivateEndpoi
             @HeaderParam("Accept") String accept, Context context);
     }
 
-    /**
-     * Get a PrivateEndpointConnectionWithSystemData.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param hostPoolName The name of the host pool within the specified resource group.
-     * @param privateEndpointConnectionName The name parameter for private endpoint.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return a PrivateEndpointConnectionWithSystemData along with {@link Response} on successful completion of
-     * {@link Mono}.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Response<PrivateEndpointConnectionWithSystemDataInner>> getByHostPoolWithResponseAsync(
         String resourceGroupName, String hostPoolName, String privateEndpointConnectionName) {
@@ -286,17 +275,7 @@ public final class PrivateEndpointConnectionsClientImpl implements PrivateEndpoi
             .contextWrite(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext()).readOnly()));
     }
 
-    /**
-     * Get a PrivateEndpointConnectionWithSystemData.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param hostPoolName The name of the host pool within the specified resource group.
-     * @param privateEndpointConnectionName The name parameter for private endpoint.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return a PrivateEndpointConnectionWithSystemData on successful completion of {@link Mono}.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<PrivateEndpointConnectionWithSystemDataInner> getByHostPoolAsync(String resourceGroupName,
         String hostPoolName, String privateEndpointConnectionName) {
@@ -304,18 +283,7 @@ public final class PrivateEndpointConnectionsClientImpl implements PrivateEndpoi
             .flatMap(res -> Mono.justOrEmpty(res.getValue()));
     }
 
-    /**
-     * Get a PrivateEndpointConnectionWithSystemData.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param hostPoolName The name of the host pool within the specified resource group.
-     * @param privateEndpointConnectionName The name parameter for private endpoint.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return a PrivateEndpointConnectionWithSystemData along with {@link Response}.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Response<PrivateEndpointConnectionWithSystemDataInner> getByHostPoolWithResponse(String resourceGroupName,
         String hostPoolName, String privateEndpointConnectionName, Context context) {
@@ -325,17 +293,7 @@ public final class PrivateEndpointConnectionsClientImpl implements PrivateEndpoi
             context);
     }
 
-    /**
-     * Get a PrivateEndpointConnectionWithSystemData.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param hostPoolName The name of the host pool within the specified resource group.
-     * @param privateEndpointConnectionName The name parameter for private endpoint.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return a PrivateEndpointConnectionWithSystemData.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public PrivateEndpointConnectionWithSystemDataInner getByHostPool(String resourceGroupName, String hostPoolName,
         String privateEndpointConnectionName) {
@@ -343,19 +301,7 @@ public final class PrivateEndpointConnectionsClientImpl implements PrivateEndpoi
             .getValue();
     }
 
-    /**
-     * Approve or reject a private endpoint connection.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param hostPoolName The name of the host pool within the specified resource group.
-     * @param privateEndpointConnectionName The name parameter for private endpoint.
-     * @param connection Resource create parameters.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the Private Endpoint Connection resource along with {@link Response} on successful completion of
-     * {@link Mono}.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Response<PrivateEndpointConnectionWithSystemDataInner>> updateByHostPoolWithResponseAsync(
         String resourceGroupName, String hostPoolName, String privateEndpointConnectionName,
@@ -369,18 +315,7 @@ public final class PrivateEndpointConnectionsClientImpl implements PrivateEndpoi
             .contextWrite(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext()).readOnly()));
     }
 
-    /**
-     * Approve or reject a private endpoint connection.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param hostPoolName The name of the host pool within the specified resource group.
-     * @param privateEndpointConnectionName The name parameter for private endpoint.
-     * @param connection Resource create parameters.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the Private Endpoint Connection resource on successful completion of {@link Mono}.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<PrivateEndpointConnectionWithSystemDataInner> updateByHostPoolAsync(String resourceGroupName,
         String hostPoolName, String privateEndpointConnectionName,
@@ -389,19 +324,7 @@ public final class PrivateEndpointConnectionsClientImpl implements PrivateEndpoi
             connection).flatMap(res -> Mono.justOrEmpty(res.getValue()));
     }
 
-    /**
-     * Approve or reject a private endpoint connection.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param hostPoolName The name of the host pool within the specified resource group.
-     * @param privateEndpointConnectionName The name parameter for private endpoint.
-     * @param connection Resource create parameters.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the Private Endpoint Connection resource along with {@link Response}.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Response<PrivateEndpointConnectionWithSystemDataInner> updateByHostPoolWithResponse(String resourceGroupName,
         String hostPoolName, String privateEndpointConnectionName,
@@ -413,18 +336,7 @@ public final class PrivateEndpointConnectionsClientImpl implements PrivateEndpoi
             contentType, accept, connection, context);
     }
 
-    /**
-     * Approve or reject a private endpoint connection.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param hostPoolName The name of the host pool within the specified resource group.
-     * @param privateEndpointConnectionName The name parameter for private endpoint.
-     * @param connection Resource create parameters.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the Private Endpoint Connection resource.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public PrivateEndpointConnectionWithSystemDataInner updateByHostPool(String resourceGroupName, String hostPoolName,
         String privateEndpointConnectionName, PrivateEndpointConnectionWithSystemDataInner connection) {
@@ -432,17 +344,7 @@ public final class PrivateEndpointConnectionsClientImpl implements PrivateEndpoi
             Context.NONE).getValue();
     }
 
-    /**
-     * Delete a PrivateEndpointConnectionWithSystemData.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param hostPoolName The name of the host pool within the specified resource group.
-     * @param privateEndpointConnectionName The name parameter for private endpoint.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the {@link Response} on successful completion of {@link Mono}.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Response<Void>> deleteByHostPoolWithResponseAsync(String resourceGroupName, String hostPoolName,
         String privateEndpointConnectionName) {
@@ -453,17 +355,7 @@ public final class PrivateEndpointConnectionsClientImpl implements PrivateEndpoi
             .contextWrite(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext()).readOnly()));
     }
 
-    /**
-     * Delete a PrivateEndpointConnectionWithSystemData.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param hostPoolName The name of the host pool within the specified resource group.
-     * @param privateEndpointConnectionName The name parameter for private endpoint.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return A {@link Mono} that completes when a successful response is received.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Void> deleteByHostPoolAsync(String resourceGroupName, String hostPoolName,
         String privateEndpointConnectionName) {
@@ -471,18 +363,7 @@ public final class PrivateEndpointConnectionsClientImpl implements PrivateEndpoi
             .flatMap(ignored -> Mono.empty());
     }
 
-    /**
-     * Delete a PrivateEndpointConnectionWithSystemData.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param hostPoolName The name of the host pool within the specified resource group.
-     * @param privateEndpointConnectionName The name parameter for private endpoint.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the {@link Response}.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Response<Void> deleteByHostPoolWithResponse(String resourceGroupName, String hostPoolName,
         String privateEndpointConnectionName, Context context) {
@@ -490,16 +371,7 @@ public final class PrivateEndpointConnectionsClientImpl implements PrivateEndpoi
             this.client.getSubscriptionId(), resourceGroupName, hostPoolName, privateEndpointConnectionName, context);
     }
 
-    /**
-     * Delete a PrivateEndpointConnectionWithSystemData.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param hostPoolName The name of the host pool within the specified resource group.
-     * @param privateEndpointConnectionName The name parameter for private endpoint.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public void deleteByHostPool(String resourceGroupName, String hostPoolName, String privateEndpointConnectionName) {
         deleteByHostPoolWithResponse(resourceGroupName, hostPoolName, privateEndpointConnectionName, Context.NONE);
@@ -533,20 +405,7 @@ public final class PrivateEndpointConnectionsClientImpl implements PrivateEndpoi
             .contextWrite(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext()).readOnly()));
     }
 
-    /**
-     * List private endpoint connections associated with hostpool.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param hostPoolName The name of the host pool within the specified resource group.
-     * @param pageSize Number of items per page.
-     * @param isDescending Indicates whether the collection is descending.
-     * @param initialSkip Initial number of items to skip.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return list of private endpoint connection associated with the specified HostPool as paginated response with
-     * {@link PagedFlux}.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.COLLECTION)
     public PagedFlux<PrivateEndpointConnectionWithSystemDataInner> listByHostPoolAsync(String resourceGroupName,
         String hostPoolName, Integer pageSize, Boolean isDescending, Integer initialSkip) {
@@ -555,17 +414,7 @@ public final class PrivateEndpointConnectionsClientImpl implements PrivateEndpoi
             nextLink -> listByHostPoolNextSinglePageAsync(nextLink));
     }
 
-    /**
-     * List private endpoint connections associated with hostpool.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param hostPoolName The name of the host pool within the specified resource group.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return list of private endpoint connection associated with the specified HostPool as paginated response with
-     * {@link PagedFlux}.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.COLLECTION)
     public PagedFlux<PrivateEndpointConnectionWithSystemDataInner> listByHostPoolAsync(String resourceGroupName,
         String hostPoolName) {
@@ -594,12 +443,8 @@ public final class PrivateEndpointConnectionsClientImpl implements PrivateEndpoi
     @ServiceMethod(returns = ReturnType.SINGLE)
     private PagedResponse<PrivateEndpointConnectionWithSystemDataInner> listByHostPoolSinglePage(
         String resourceGroupName, String hostPoolName, Integer pageSize, Boolean isDescending, Integer initialSkip) {
-        final String accept = "application/json";
-        Response<PrivateEndpointConnectionListResultWithSystemData> res = service.listByHostPoolSync(
-            this.client.getEndpoint(), this.client.getApiVersion(), this.client.getSubscriptionId(), resourceGroupName,
-            hostPoolName, pageSize, isDescending, initialSkip, accept, Context.NONE);
-        return new PagedResponseBase<>(res.getRequest(), res.getStatusCode(), res.getHeaders(), res.getValue().value(),
-            res.getValue().nextLink(), null);
+        return listByHostPoolSinglePage(resourceGroupName, hostPoolName, pageSize, isDescending, initialSkip,
+            Context.NONE);
     }
 
     /**
@@ -629,43 +474,17 @@ public final class PrivateEndpointConnectionsClientImpl implements PrivateEndpoi
             res.getValue().nextLink(), null);
     }
 
-    /**
-     * List private endpoint connections associated with hostpool.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param hostPoolName The name of the host pool within the specified resource group.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return list of private endpoint connection associated with the specified HostPool as paginated response with
-     * {@link PagedIterable}.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.COLLECTION)
     public PagedIterable<PrivateEndpointConnectionWithSystemDataInner> listByHostPool(String resourceGroupName,
         String hostPoolName) {
         final Integer pageSize = null;
         final Boolean isDescending = null;
         final Integer initialSkip = null;
-        return new PagedIterable<>(
-            () -> listByHostPoolSinglePage(resourceGroupName, hostPoolName, pageSize, isDescending, initialSkip),
-            nextLink -> listByHostPoolNextSinglePage(nextLink));
+        return listByHostPool(resourceGroupName, hostPoolName, pageSize, isDescending, initialSkip, Context.NONE);
     }
 
-    /**
-     * List private endpoint connections associated with hostpool.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param hostPoolName The name of the host pool within the specified resource group.
-     * @param pageSize Number of items per page.
-     * @param isDescending Indicates whether the collection is descending.
-     * @param initialSkip Initial number of items to skip.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return list of private endpoint connection associated with the specified HostPool as paginated response with
-     * {@link PagedIterable}.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.COLLECTION)
     public PagedIterable<PrivateEndpointConnectionWithSystemDataInner> listByHostPool(String resourceGroupName,
         String hostPoolName, Integer pageSize, Boolean isDescending, Integer initialSkip, Context context) {
@@ -673,18 +492,7 @@ public final class PrivateEndpointConnectionsClientImpl implements PrivateEndpoi
             isDescending, initialSkip, context), nextLink -> listByHostPoolNextSinglePage(nextLink, context));
     }
 
-    /**
-     * Get a PrivateEndpointConnectionWithSystemData.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param workspaceName The name of the workspace.
-     * @param privateEndpointConnectionName The name parameter for private endpoint.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return a PrivateEndpointConnectionWithSystemData along with {@link Response} on successful completion of
-     * {@link Mono}.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Response<PrivateEndpointConnectionWithSystemDataInner>> getByWorkspaceWithResponseAsync(
         String resourceGroupName, String workspaceName, String privateEndpointConnectionName) {
@@ -696,17 +504,7 @@ public final class PrivateEndpointConnectionsClientImpl implements PrivateEndpoi
             .contextWrite(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext()).readOnly()));
     }
 
-    /**
-     * Get a PrivateEndpointConnectionWithSystemData.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param workspaceName The name of the workspace.
-     * @param privateEndpointConnectionName The name parameter for private endpoint.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return a PrivateEndpointConnectionWithSystemData on successful completion of {@link Mono}.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<PrivateEndpointConnectionWithSystemDataInner> getByWorkspaceAsync(String resourceGroupName,
         String workspaceName, String privateEndpointConnectionName) {
@@ -714,18 +512,7 @@ public final class PrivateEndpointConnectionsClientImpl implements PrivateEndpoi
             .flatMap(res -> Mono.justOrEmpty(res.getValue()));
     }
 
-    /**
-     * Get a PrivateEndpointConnectionWithSystemData.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param workspaceName The name of the workspace.
-     * @param privateEndpointConnectionName The name parameter for private endpoint.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return a PrivateEndpointConnectionWithSystemData along with {@link Response}.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Response<PrivateEndpointConnectionWithSystemDataInner> getByWorkspaceWithResponse(String resourceGroupName,
         String workspaceName, String privateEndpointConnectionName, Context context) {
@@ -735,17 +522,7 @@ public final class PrivateEndpointConnectionsClientImpl implements PrivateEndpoi
             context);
     }
 
-    /**
-     * Get a PrivateEndpointConnectionWithSystemData.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param workspaceName The name of the workspace.
-     * @param privateEndpointConnectionName The name parameter for private endpoint.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return a PrivateEndpointConnectionWithSystemData.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public PrivateEndpointConnectionWithSystemDataInner getByWorkspace(String resourceGroupName, String workspaceName,
         String privateEndpointConnectionName) {
@@ -753,19 +530,7 @@ public final class PrivateEndpointConnectionsClientImpl implements PrivateEndpoi
             .getValue();
     }
 
-    /**
-     * Approve or reject a private endpoint connection.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param workspaceName The name of the workspace.
-     * @param privateEndpointConnectionName The name parameter for private endpoint.
-     * @param connection Resource create parameters.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the Private Endpoint Connection resource along with {@link Response} on successful completion of
-     * {@link Mono}.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Response<PrivateEndpointConnectionWithSystemDataInner>> updateByWorkspaceWithResponseAsync(
         String resourceGroupName, String workspaceName, String privateEndpointConnectionName,
@@ -779,18 +544,7 @@ public final class PrivateEndpointConnectionsClientImpl implements PrivateEndpoi
             .contextWrite(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext()).readOnly()));
     }
 
-    /**
-     * Approve or reject a private endpoint connection.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param workspaceName The name of the workspace.
-     * @param privateEndpointConnectionName The name parameter for private endpoint.
-     * @param connection Resource create parameters.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the Private Endpoint Connection resource on successful completion of {@link Mono}.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<PrivateEndpointConnectionWithSystemDataInner> updateByWorkspaceAsync(String resourceGroupName,
         String workspaceName, String privateEndpointConnectionName,
@@ -799,19 +553,7 @@ public final class PrivateEndpointConnectionsClientImpl implements PrivateEndpoi
             connection).flatMap(res -> Mono.justOrEmpty(res.getValue()));
     }
 
-    /**
-     * Approve or reject a private endpoint connection.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param workspaceName The name of the workspace.
-     * @param privateEndpointConnectionName The name parameter for private endpoint.
-     * @param connection Resource create parameters.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the Private Endpoint Connection resource along with {@link Response}.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Response<PrivateEndpointConnectionWithSystemDataInner> updateByWorkspaceWithResponse(
         String resourceGroupName, String workspaceName, String privateEndpointConnectionName,
@@ -823,18 +565,7 @@ public final class PrivateEndpointConnectionsClientImpl implements PrivateEndpoi
             contentType, accept, connection, context);
     }
 
-    /**
-     * Approve or reject a private endpoint connection.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param workspaceName The name of the workspace.
-     * @param privateEndpointConnectionName The name parameter for private endpoint.
-     * @param connection Resource create parameters.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the Private Endpoint Connection resource.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public PrivateEndpointConnectionWithSystemDataInner updateByWorkspace(String resourceGroupName,
         String workspaceName, String privateEndpointConnectionName,
@@ -843,17 +574,7 @@ public final class PrivateEndpointConnectionsClientImpl implements PrivateEndpoi
             connection, Context.NONE).getValue();
     }
 
-    /**
-     * Delete a PrivateEndpointConnectionWithSystemData.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param workspaceName The name of the workspace.
-     * @param privateEndpointConnectionName The name parameter for private endpoint.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the {@link Response} on successful completion of {@link Mono}.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Response<Void>> deleteByWorkspaceWithResponseAsync(String resourceGroupName, String workspaceName,
         String privateEndpointConnectionName) {
@@ -864,17 +585,7 @@ public final class PrivateEndpointConnectionsClientImpl implements PrivateEndpoi
             .contextWrite(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext()).readOnly()));
     }
 
-    /**
-     * Delete a PrivateEndpointConnectionWithSystemData.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param workspaceName The name of the workspace.
-     * @param privateEndpointConnectionName The name parameter for private endpoint.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return A {@link Mono} that completes when a successful response is received.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Void> deleteByWorkspaceAsync(String resourceGroupName, String workspaceName,
         String privateEndpointConnectionName) {
@@ -882,18 +593,7 @@ public final class PrivateEndpointConnectionsClientImpl implements PrivateEndpoi
             .flatMap(ignored -> Mono.empty());
     }
 
-    /**
-     * Delete a PrivateEndpointConnectionWithSystemData.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param workspaceName The name of the workspace.
-     * @param privateEndpointConnectionName The name parameter for private endpoint.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the {@link Response}.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Response<Void> deleteByWorkspaceWithResponse(String resourceGroupName, String workspaceName,
         String privateEndpointConnectionName, Context context) {
@@ -901,16 +601,7 @@ public final class PrivateEndpointConnectionsClientImpl implements PrivateEndpoi
             this.client.getSubscriptionId(), resourceGroupName, workspaceName, privateEndpointConnectionName, context);
     }
 
-    /**
-     * Delete a PrivateEndpointConnectionWithSystemData.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param workspaceName The name of the workspace.
-     * @param privateEndpointConnectionName The name parameter for private endpoint.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public void deleteByWorkspace(String resourceGroupName, String workspaceName,
         String privateEndpointConnectionName) {
@@ -941,17 +632,7 @@ public final class PrivateEndpointConnectionsClientImpl implements PrivateEndpoi
             .contextWrite(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext()).readOnly()));
     }
 
-    /**
-     * List private endpoint connections associated with Workspace.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param workspaceName The name of the workspace.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return list of private endpoint connection associated with the specified HostPool as paginated response with
-     * {@link PagedFlux}.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.COLLECTION)
     public PagedFlux<PrivateEndpointConnectionWithSystemDataInner> listByWorkspaceAsync(String resourceGroupName,
         String workspaceName) {
@@ -973,12 +654,7 @@ public final class PrivateEndpointConnectionsClientImpl implements PrivateEndpoi
     @ServiceMethod(returns = ReturnType.SINGLE)
     private PagedResponse<PrivateEndpointConnectionWithSystemDataInner>
         listByWorkspaceSinglePage(String resourceGroupName, String workspaceName) {
-        final String accept = "application/json";
-        Response<PrivateEndpointConnectionListResultWithSystemData> res
-            = service.listByWorkspaceSync(this.client.getEndpoint(), this.client.getApiVersion(),
-                this.client.getSubscriptionId(), resourceGroupName, workspaceName, accept, Context.NONE);
-        return new PagedResponseBase<>(res.getRequest(), res.getStatusCode(), res.getHeaders(), res.getValue().value(),
-            res.getValue().nextLink(), null);
+        return listByWorkspaceSinglePage(resourceGroupName, workspaceName, Context.NONE);
     }
 
     /**
@@ -1004,36 +680,14 @@ public final class PrivateEndpointConnectionsClientImpl implements PrivateEndpoi
             res.getValue().nextLink(), null);
     }
 
-    /**
-     * List private endpoint connections associated with Workspace.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param workspaceName The name of the workspace.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return list of private endpoint connection associated with the specified HostPool as paginated response with
-     * {@link PagedIterable}.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.COLLECTION)
     public PagedIterable<PrivateEndpointConnectionWithSystemDataInner> listByWorkspace(String resourceGroupName,
         String workspaceName) {
-        return new PagedIterable<>(() -> listByWorkspaceSinglePage(resourceGroupName, workspaceName),
-            nextLink -> listByWorkspaceNextSinglePage(nextLink));
+        return listByWorkspace(resourceGroupName, workspaceName, Context.NONE);
     }
 
-    /**
-     * List private endpoint connections associated with Workspace.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param workspaceName The name of the workspace.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return list of private endpoint connection associated with the specified HostPool as paginated response with
-     * {@link PagedIterable}.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.COLLECTION)
     public PagedIterable<PrivateEndpointConnectionWithSystemDataInner> listByWorkspace(String resourceGroupName,
         String workspaceName, Context context) {
@@ -1075,11 +729,7 @@ public final class PrivateEndpointConnectionsClientImpl implements PrivateEndpoi
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private PagedResponse<PrivateEndpointConnectionWithSystemDataInner> listByHostPoolNextSinglePage(String nextLink) {
-        final String accept = "application/json";
-        Response<PrivateEndpointConnectionListResultWithSystemData> res
-            = service.listByHostPoolNextSync(nextLink, this.client.getEndpoint(), accept, Context.NONE);
-        return new PagedResponseBase<>(res.getRequest(), res.getStatusCode(), res.getHeaders(), res.getValue().value(),
-            res.getValue().nextLink(), null);
+        return listByHostPoolNextSinglePage(nextLink, Context.NONE);
     }
 
     /**
@@ -1137,11 +787,7 @@ public final class PrivateEndpointConnectionsClientImpl implements PrivateEndpoi
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private PagedResponse<PrivateEndpointConnectionWithSystemDataInner> listByWorkspaceNextSinglePage(String nextLink) {
-        final String accept = "application/json";
-        Response<PrivateEndpointConnectionListResultWithSystemData> res
-            = service.listByWorkspaceNextSync(nextLink, this.client.getEndpoint(), accept, Context.NONE);
-        return new PagedResponseBase<>(res.getRequest(), res.getStatusCode(), res.getHeaders(), res.getValue().value(),
-            res.getValue().nextLink(), null);
+        return listByWorkspaceNextSinglePage(nextLink, Context.NONE);
     }
 
     /**

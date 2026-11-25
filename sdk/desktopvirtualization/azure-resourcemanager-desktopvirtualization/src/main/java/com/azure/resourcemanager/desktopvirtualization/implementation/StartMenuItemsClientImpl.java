@@ -126,19 +126,7 @@ public final class StartMenuItemsClientImpl implements StartMenuItemsClient {
             .contextWrite(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext()).readOnly()));
     }
 
-    /**
-     * List start menu items in the given application group.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param applicationGroupName The name of the application group.
-     * @param pageSize Number of items per page.
-     * @param isDescending Indicates whether the collection is descending.
-     * @param initialSkip Initial number of items to skip.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return list of StartMenuItem definitions as paginated response with {@link PagedFlux}.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.COLLECTION)
     public PagedFlux<StartMenuItemInner> listAsync(String resourceGroupName, String applicationGroupName,
         Integer pageSize, Boolean isDescending, Integer initialSkip) {
@@ -147,16 +135,7 @@ public final class StartMenuItemsClientImpl implements StartMenuItemsClient {
             nextLink -> listNextSinglePageAsync(nextLink));
     }
 
-    /**
-     * List start menu items in the given application group.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param applicationGroupName The name of the application group.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return list of StartMenuItem definitions as paginated response with {@link PagedFlux}.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.COLLECTION)
     public PagedFlux<StartMenuItemInner> listAsync(String resourceGroupName, String applicationGroupName) {
         final Integer pageSize = null;
@@ -183,12 +162,8 @@ public final class StartMenuItemsClientImpl implements StartMenuItemsClient {
     @ServiceMethod(returns = ReturnType.SINGLE)
     private PagedResponse<StartMenuItemInner> listSinglePage(String resourceGroupName, String applicationGroupName,
         Integer pageSize, Boolean isDescending, Integer initialSkip) {
-        final String accept = "application/json";
-        Response<StartMenuItemList> res
-            = service.listSync(this.client.getEndpoint(), this.client.getApiVersion(), this.client.getSubscriptionId(),
-                resourceGroupName, applicationGroupName, pageSize, isDescending, initialSkip, accept, Context.NONE);
-        return new PagedResponseBase<>(res.getRequest(), res.getStatusCode(), res.getHeaders(), res.getValue().value(),
-            res.getValue().nextLink(), null);
+        return listSinglePage(resourceGroupName, applicationGroupName, pageSize, isDescending, initialSkip,
+            Context.NONE);
     }
 
     /**
@@ -216,40 +191,16 @@ public final class StartMenuItemsClientImpl implements StartMenuItemsClient {
             res.getValue().nextLink(), null);
     }
 
-    /**
-     * List start menu items in the given application group.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param applicationGroupName The name of the application group.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return list of StartMenuItem definitions as paginated response with {@link PagedIterable}.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.COLLECTION)
     public PagedIterable<StartMenuItemInner> list(String resourceGroupName, String applicationGroupName) {
         final Integer pageSize = null;
         final Boolean isDescending = null;
         final Integer initialSkip = null;
-        return new PagedIterable<>(
-            () -> listSinglePage(resourceGroupName, applicationGroupName, pageSize, isDescending, initialSkip),
-            nextLink -> listNextSinglePage(nextLink));
+        return list(resourceGroupName, applicationGroupName, pageSize, isDescending, initialSkip, Context.NONE);
     }
 
-    /**
-     * List start menu items in the given application group.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param applicationGroupName The name of the application group.
-     * @param pageSize Number of items per page.
-     * @param isDescending Indicates whether the collection is descending.
-     * @param initialSkip Initial number of items to skip.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return list of StartMenuItem definitions as paginated response with {@link PagedIterable}.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.COLLECTION)
     public PagedIterable<StartMenuItemInner> list(String resourceGroupName, String applicationGroupName,
         Integer pageSize, Boolean isDescending, Integer initialSkip, Context context) {
@@ -288,11 +239,7 @@ public final class StartMenuItemsClientImpl implements StartMenuItemsClient {
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private PagedResponse<StartMenuItemInner> listNextSinglePage(String nextLink) {
-        final String accept = "application/json";
-        Response<StartMenuItemList> res
-            = service.listNextSync(nextLink, this.client.getEndpoint(), accept, Context.NONE);
-        return new PagedResponseBase<>(res.getRequest(), res.getStatusCode(), res.getHeaders(), res.getValue().value(),
-            res.getValue().nextLink(), null);
+        return listNextSinglePage(nextLink, Context.NONE);
     }
 
     /**

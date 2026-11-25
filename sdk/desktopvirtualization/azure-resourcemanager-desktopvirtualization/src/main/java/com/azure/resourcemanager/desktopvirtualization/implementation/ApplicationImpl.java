@@ -121,12 +121,7 @@ public final class ApplicationImpl implements Application, Application.Definitio
     }
 
     public Application create() {
-        this.innerObject = serviceManager.serviceClient()
-            .getApplications()
-            .createOrUpdateWithResponse(resourceGroupName, applicationGroupName, applicationName, this.innerModel(),
-                Context.NONE)
-            .getValue();
-        return this;
+        return this.create(Context.NONE);
     }
 
     public Application create(Context context) {
@@ -151,12 +146,7 @@ public final class ApplicationImpl implements Application, Application.Definitio
     }
 
     public Application apply() {
-        this.innerObject = serviceManager.serviceClient()
-            .getApplications()
-            .updateWithResponse(resourceGroupName, applicationGroupName, applicationName, updateApplication,
-                Context.NONE)
-            .getValue();
-        return this;
+        return this.apply(Context.NONE);
     }
 
     public Application apply(Context context) {
@@ -183,11 +173,7 @@ public final class ApplicationImpl implements Application, Application.Definitio
     }
 
     public Application refresh() {
-        this.innerObject = serviceManager.serviceClient()
-            .getApplications()
-            .getWithResponse(resourceGroupName, applicationGroupName, applicationName, Context.NONE)
-            .getValue();
-        return this;
+        return this.refresh(Context.NONE);
     }
 
     public Application refresh(Context context) {

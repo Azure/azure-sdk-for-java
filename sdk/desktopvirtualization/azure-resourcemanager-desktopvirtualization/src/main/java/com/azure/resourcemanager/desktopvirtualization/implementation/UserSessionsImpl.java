@@ -90,7 +90,7 @@ public final class UserSessionsImpl implements UserSessions {
 
     public void disconnect(String resourceGroupName, String hostPoolName, String sessionHostName,
         String userSessionId) {
-        this.serviceClient().disconnect(resourceGroupName, hostPoolName, sessionHostName, userSessionId);
+        this.disconnectWithResponse(resourceGroupName, hostPoolName, sessionHostName, userSessionId, Context.NONE);
     }
 
     public Response<Void> sendMessageWithResponse(String resourceGroupName, String hostPoolName, String sessionHostName,

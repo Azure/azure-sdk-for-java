@@ -152,12 +152,7 @@ public final class ScalingPlanPooledScheduleImpl
     }
 
     public ScalingPlanPooledSchedule create() {
-        this.innerObject = serviceManager.serviceClient()
-            .getScalingPlanPooledSchedules()
-            .createWithResponse(resourceGroupName, scalingPlanName, scalingPlanScheduleName, this.innerModel(),
-                Context.NONE)
-            .getValue();
-        return this;
+        return this.create(Context.NONE);
     }
 
     public ScalingPlanPooledSchedule create(Context context) {
@@ -181,12 +176,7 @@ public final class ScalingPlanPooledScheduleImpl
     }
 
     public ScalingPlanPooledSchedule apply() {
-        this.innerObject = serviceManager.serviceClient()
-            .getScalingPlanPooledSchedules()
-            .updateWithResponse(resourceGroupName, scalingPlanName, scalingPlanScheduleName, updateScalingPlanSchedule,
-                Context.NONE)
-            .getValue();
-        return this;
+        return this.apply(Context.NONE);
     }
 
     public ScalingPlanPooledSchedule apply(Context context) {
@@ -214,11 +204,7 @@ public final class ScalingPlanPooledScheduleImpl
     }
 
     public ScalingPlanPooledSchedule refresh() {
-        this.innerObject = serviceManager.serviceClient()
-            .getScalingPlanPooledSchedules()
-            .getWithResponse(resourceGroupName, scalingPlanName, scalingPlanScheduleName, Context.NONE)
-            .getValue();
-        return this;
+        return this.refresh(Context.NONE);
     }
 
     public ScalingPlanPooledSchedule refresh(Context context) {

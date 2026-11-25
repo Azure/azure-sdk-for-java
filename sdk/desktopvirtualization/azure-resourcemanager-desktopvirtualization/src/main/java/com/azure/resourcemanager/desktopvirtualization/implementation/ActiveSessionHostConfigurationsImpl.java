@@ -45,10 +45,7 @@ public final class ActiveSessionHostConfigurationsImpl implements ActiveSessionH
     }
 
     public PagedIterable<ActiveSessionHostConfiguration> listByHostPool(String resourceGroupName, String hostPoolName) {
-        PagedIterable<ActiveSessionHostConfigurationInner> inner
-            = this.serviceClient().listByHostPool(resourceGroupName, hostPoolName);
-        return ResourceManagerUtils.mapPage(inner,
-            inner1 -> new ActiveSessionHostConfigurationImpl(inner1, this.manager()));
+        return this.listByHostPool(resourceGroupName, hostPoolName, Context.NONE);
     }
 
     public PagedIterable<ActiveSessionHostConfiguration> listByHostPool(String resourceGroupName, String hostPoolName,

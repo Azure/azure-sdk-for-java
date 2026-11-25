@@ -67,13 +67,7 @@ public final class SessionHostConfigurationsImpl implements SessionHostConfigura
 
     public SessionHostConfiguration createOrUpdate(String resourceGroupName, String hostPoolName,
         SessionHostConfigurationInner sessionHostConfiguration) {
-        SessionHostConfigurationInner inner
-            = this.serviceClient().createOrUpdate(resourceGroupName, hostPoolName, sessionHostConfiguration);
-        if (inner != null) {
-            return new SessionHostConfigurationImpl(inner, this.manager());
-        } else {
-            return null;
-        }
+        return this.createOrUpdate(resourceGroupName, hostPoolName, sessionHostConfiguration, Context.NONE);
     }
 
     public SessionHostConfiguration createOrUpdate(String resourceGroupName, String hostPoolName,
@@ -88,9 +82,7 @@ public final class SessionHostConfigurationsImpl implements SessionHostConfigura
     }
 
     public PagedIterable<SessionHostConfiguration> listByHostPool(String resourceGroupName, String hostPoolName) {
-        PagedIterable<SessionHostConfigurationInner> inner
-            = this.serviceClient().listByHostPool(resourceGroupName, hostPoolName);
-        return ResourceManagerUtils.mapPage(inner, inner1 -> new SessionHostConfigurationImpl(inner1, this.manager()));
+        return this.listByHostPool(resourceGroupName, hostPoolName, Context.NONE);
     }
 
     public PagedIterable<SessionHostConfiguration> listByHostPool(String resourceGroupName, String hostPoolName,

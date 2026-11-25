@@ -25,7 +25,7 @@ public final class ControlSessionHostProvisioningsImpl implements ControlSession
 
     public void post(String resourceGroupName, String hostPoolName,
         HostPoolProvisioningControlParameter hostPoolProvisioningControlParameter) {
-        this.serviceClient().post(resourceGroupName, hostPoolName, hostPoolProvisioningControlParameter);
+        this.post(resourceGroupName, hostPoolName, hostPoolProvisioningControlParameter, Context.NONE);
     }
 
     public void post(String resourceGroupName, String hostPoolName,

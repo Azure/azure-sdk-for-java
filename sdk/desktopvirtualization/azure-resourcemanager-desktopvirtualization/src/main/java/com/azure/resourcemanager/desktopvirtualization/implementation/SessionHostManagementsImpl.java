@@ -82,9 +82,7 @@ public final class SessionHostManagementsImpl implements SessionHostManagements 
     }
 
     public PagedIterable<SessionHostManagement> listByHostPool(String resourceGroupName, String hostPoolName) {
-        PagedIterable<SessionHostManagementInner> inner
-            = this.serviceClient().listByHostPool(resourceGroupName, hostPoolName);
-        return ResourceManagerUtils.mapPage(inner, inner1 -> new SessionHostManagementImpl(inner1, this.manager()));
+        return this.listByHostPool(resourceGroupName, hostPoolName, Context.NONE);
     }
 
     public PagedIterable<SessionHostManagement> listByHostPool(String resourceGroupName, String hostPoolName,

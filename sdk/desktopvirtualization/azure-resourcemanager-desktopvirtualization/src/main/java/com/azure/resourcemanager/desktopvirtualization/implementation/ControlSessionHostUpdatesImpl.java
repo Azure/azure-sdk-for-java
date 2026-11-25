@@ -25,7 +25,7 @@ public final class ControlSessionHostUpdatesImpl implements ControlSessionHostUp
 
     public void post(String resourceGroupName, String hostPoolName,
         HostPoolUpdateControlParameter hostPoolUpdateControlParameter) {
-        this.serviceClient().post(resourceGroupName, hostPoolName, hostPoolUpdateControlParameter);
+        this.post(resourceGroupName, hostPoolName, hostPoolUpdateControlParameter, Context.NONE);
     }
 
     public void post(String resourceGroupName, String hostPoolName,
