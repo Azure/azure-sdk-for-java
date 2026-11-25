@@ -12,18 +12,19 @@ import org.junit.jupiter.api.Assertions;
 public final class ImmutabilityConfigurationTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
-        ImmutabilityConfiguration model = BinaryData.fromString("{\"type\":\"TimeBased\",\"durationInDays\":530731867}")
-            .toObject(ImmutabilityConfiguration.class);
-        Assertions.assertEquals(ImmutabilityType.TIME_BASED, model.type());
-        Assertions.assertEquals(530731867, model.durationInDays());
+        ImmutabilityConfiguration model
+            = BinaryData.fromString("{\"type\":\"AsPerPolicy\",\"durationInDays\":491288629}")
+                .toObject(ImmutabilityConfiguration.class);
+        Assertions.assertEquals(ImmutabilityType.AS_PER_POLICY, model.type());
+        Assertions.assertEquals(491288629, model.durationInDays());
     }
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
         ImmutabilityConfiguration model
-            = new ImmutabilityConfiguration().withType(ImmutabilityType.TIME_BASED).withDurationInDays(530731867);
+            = new ImmutabilityConfiguration().withType(ImmutabilityType.AS_PER_POLICY).withDurationInDays(491288629);
         model = BinaryData.fromObject(model).toObject(ImmutabilityConfiguration.class);
-        Assertions.assertEquals(ImmutabilityType.TIME_BASED, model.type());
-        Assertions.assertEquals(530731867, model.durationInDays());
+        Assertions.assertEquals(ImmutabilityType.AS_PER_POLICY, model.type());
+        Assertions.assertEquals(491288629, model.durationInDays());
     }
 }

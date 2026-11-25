@@ -12,8 +12,8 @@ public final class AzureBackupRecoveryPointResourceListTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
         AzureBackupRecoveryPointResourceList model = BinaryData.fromString(
-            "{\"value\":[{\"properties\":{\"objectType\":\"AzureBackupRecoveryPoint\"},\"id\":\"qp\",\"name\":\"y\",\"type\":\"s\"}],\"nextLink\":\"on\"}")
+            "{\"value\":[{\"properties\":{\"objectType\":\"AzureBackupRecoveryPoint\"},\"id\":\"vyvdcs\",\"name\":\"tynnaamdectehfi\",\"type\":\"scjeypv\"},{\"properties\":{\"objectType\":\"AzureBackupRecoveryPoint\"},\"id\":\"rkgqhcjrefo\",\"name\":\"gm\",\"type\":\"qsl\"},{\"properties\":{\"objectType\":\"AzureBackupRecoveryPoint\"},\"id\":\"vxyqjpkcattpngjc\",\"name\":\"cczsq\",\"type\":\"jh\"},{\"properties\":{\"objectType\":\"AzureBackupRecoveryPoint\"},\"id\":\"ajvnysounqe\",\"name\":\"a\",\"type\":\"oaeupfhyhltrpmo\"}],\"nextLink\":\"mcmatuokthfuiu\"}")
             .toObject(AzureBackupRecoveryPointResourceList.class);
-        Assertions.assertEquals("on", model.nextLink());
+        Assertions.assertEquals("mcmatuokthfuiu", model.nextLink());
     }
 }

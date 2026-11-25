@@ -16,41 +16,37 @@ public final class BlobBackupRuleBasedAutoProtectionSettingsTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
         BlobBackupRuleBasedAutoProtectionSettings model = BinaryData.fromString(
-            "{\"objectType\":\"BlobBackupRuleBasedAutoProtectionSettings\",\"rules\":[{\"objectType\":\"lyxwjkcprbnwbx\",\"mode\":\"Exclude\",\"type\":\"Prefix\",\"pattern\":\"tbvpysszdnru\"},{\"objectType\":\"qguhmuo\",\"mode\":\"Exclude\",\"type\":\"Prefix\",\"pattern\":\"prwzwbnguitnwui\"},{\"objectType\":\"gazxuf\",\"mode\":\"Exclude\",\"type\":\"Prefix\",\"pattern\":\"ckyfih\"},{\"objectType\":\"fidfvzw\",\"mode\":\"Exclude\",\"type\":\"Prefix\",\"pattern\":\"htymw\"}],\"enabled\":false}")
+            "{\"objectType\":\"BlobBackupRuleBasedAutoProtectionSettings\",\"rules\":[{\"objectType\":\"ex\",\"mode\":\"Exclude\",\"type\":\"Prefix\",\"pattern\":\"xgcp\"},{\"objectType\":\"dg\",\"mode\":\"Exclude\",\"type\":\"Prefix\",\"pattern\":\"jrmvdjwzrlo\"},{\"objectType\":\"mcl\",\"mode\":\"Exclude\",\"type\":\"Prefix\",\"pattern\":\"j\"}],\"enabled\":true}")
             .toObject(BlobBackupRuleBasedAutoProtectionSettings.class);
-        Assertions.assertFalse(model.enabled());
-        Assertions.assertEquals("lyxwjkcprbnwbx", model.rules().get(0).objectType());
+        Assertions.assertTrue(model.enabled());
+        Assertions.assertEquals("ex", model.rules().get(0).objectType());
         Assertions.assertEquals(BlobBackupRuleMode.EXCLUDE, model.rules().get(0).mode());
         Assertions.assertEquals(BlobBackupPatternType.PREFIX, model.rules().get(0).type());
-        Assertions.assertEquals("tbvpysszdnru", model.rules().get(0).pattern());
+        Assertions.assertEquals("xgcp", model.rules().get(0).pattern());
     }
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
         BlobBackupRuleBasedAutoProtectionSettings model
-            = new BlobBackupRuleBasedAutoProtectionSettings().withEnabled(false)
+            = new BlobBackupRuleBasedAutoProtectionSettings().withEnabled(true)
                 .withRules(Arrays.asList(
-                    new BlobBackupAutoProtectionRule().withObjectType("lyxwjkcprbnwbx")
+                    new BlobBackupAutoProtectionRule().withObjectType("ex")
                         .withMode(BlobBackupRuleMode.EXCLUDE)
                         .withType(BlobBackupPatternType.PREFIX)
-                        .withPattern("tbvpysszdnru"),
-                    new BlobBackupAutoProtectionRule().withObjectType("qguhmuo")
+                        .withPattern("xgcp"),
+                    new BlobBackupAutoProtectionRule().withObjectType("dg")
                         .withMode(BlobBackupRuleMode.EXCLUDE)
                         .withType(BlobBackupPatternType.PREFIX)
-                        .withPattern("prwzwbnguitnwui"),
-                    new BlobBackupAutoProtectionRule().withObjectType("gazxuf")
+                        .withPattern("jrmvdjwzrlo"),
+                    new BlobBackupAutoProtectionRule().withObjectType("mcl")
                         .withMode(BlobBackupRuleMode.EXCLUDE)
                         .withType(BlobBackupPatternType.PREFIX)
-                        .withPattern("ckyfih"),
-                    new BlobBackupAutoProtectionRule().withObjectType("fidfvzw")
-                        .withMode(BlobBackupRuleMode.EXCLUDE)
-                        .withType(BlobBackupPatternType.PREFIX)
-                        .withPattern("htymw")));
+                        .withPattern("j")));
         model = BinaryData.fromObject(model).toObject(BlobBackupRuleBasedAutoProtectionSettings.class);
-        Assertions.assertFalse(model.enabled());
-        Assertions.assertEquals("lyxwjkcprbnwbx", model.rules().get(0).objectType());
+        Assertions.assertTrue(model.enabled());
+        Assertions.assertEquals("ex", model.rules().get(0).objectType());
         Assertions.assertEquals(BlobBackupRuleMode.EXCLUDE, model.rules().get(0).mode());
         Assertions.assertEquals(BlobBackupPatternType.PREFIX, model.rules().get(0).type());
-        Assertions.assertEquals("tbvpysszdnru", model.rules().get(0).pattern());
+        Assertions.assertEquals("xgcp", model.rules().get(0).pattern());
     }
 }

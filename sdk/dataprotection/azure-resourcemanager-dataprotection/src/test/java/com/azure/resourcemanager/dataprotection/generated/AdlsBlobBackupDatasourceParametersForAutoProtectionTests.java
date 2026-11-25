@@ -17,29 +17,29 @@ public final class AdlsBlobBackupDatasourceParametersForAutoProtectionTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
         AdlsBlobBackupDatasourceParametersForAutoProtection model = BinaryData.fromString(
-            "{\"objectType\":\"AdlsBlobBackupDatasourceParametersForAutoProtection\",\"autoProtectionSettings\":{\"objectType\":\"BlobBackupRuleBasedAutoProtectionSettings\",\"rules\":[{\"objectType\":\"rpymzidnsez\",\"mode\":\"Exclude\",\"type\":\"Prefix\",\"pattern\":\"bzsgfyccsne\"}],\"enabled\":true}}")
+            "{\"objectType\":\"AdlsBlobBackupDatasourceParametersForAutoProtection\",\"autoProtectionSettings\":{\"objectType\":\"BlobBackupRuleBasedAutoProtectionSettings\",\"rules\":[{\"objectType\":\"dj\",\"mode\":\"Exclude\",\"type\":\"Prefix\",\"pattern\":\"khbzhfepgzg\"}],\"enabled\":false}}")
             .toObject(AdlsBlobBackupDatasourceParametersForAutoProtection.class);
-        Assertions.assertTrue(model.autoProtectionSettings().enabled());
-        Assertions.assertEquals("rpymzidnsez", model.autoProtectionSettings().rules().get(0).objectType());
+        Assertions.assertFalse(model.autoProtectionSettings().enabled());
+        Assertions.assertEquals("dj", model.autoProtectionSettings().rules().get(0).objectType());
         Assertions.assertEquals(BlobBackupRuleMode.EXCLUDE, model.autoProtectionSettings().rules().get(0).mode());
         Assertions.assertEquals(BlobBackupPatternType.PREFIX, model.autoProtectionSettings().rules().get(0).type());
-        Assertions.assertEquals("bzsgfyccsne", model.autoProtectionSettings().rules().get(0).pattern());
+        Assertions.assertEquals("khbzhfepgzg", model.autoProtectionSettings().rules().get(0).pattern());
     }
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
         AdlsBlobBackupDatasourceParametersForAutoProtection model
             = new AdlsBlobBackupDatasourceParametersForAutoProtection()
-                .withAutoProtectionSettings(new BlobBackupRuleBasedAutoProtectionSettings().withEnabled(true)
-                    .withRules(Arrays.asList(new BlobBackupAutoProtectionRule().withObjectType("rpymzidnsez")
+                .withAutoProtectionSettings(new BlobBackupRuleBasedAutoProtectionSettings().withEnabled(false)
+                    .withRules(Arrays.asList(new BlobBackupAutoProtectionRule().withObjectType("dj")
                         .withMode(BlobBackupRuleMode.EXCLUDE)
                         .withType(BlobBackupPatternType.PREFIX)
-                        .withPattern("bzsgfyccsne"))));
+                        .withPattern("khbzhfepgzg"))));
         model = BinaryData.fromObject(model).toObject(AdlsBlobBackupDatasourceParametersForAutoProtection.class);
-        Assertions.assertTrue(model.autoProtectionSettings().enabled());
-        Assertions.assertEquals("rpymzidnsez", model.autoProtectionSettings().rules().get(0).objectType());
+        Assertions.assertFalse(model.autoProtectionSettings().enabled());
+        Assertions.assertEquals("dj", model.autoProtectionSettings().rules().get(0).objectType());
         Assertions.assertEquals(BlobBackupRuleMode.EXCLUDE, model.autoProtectionSettings().rules().get(0).mode());
         Assertions.assertEquals(BlobBackupPatternType.PREFIX, model.autoProtectionSettings().rules().get(0).type());
-        Assertions.assertEquals("bzsgfyccsne", model.autoProtectionSettings().rules().get(0).pattern());
+        Assertions.assertEquals("khbzhfepgzg", model.autoProtectionSettings().rules().get(0).pattern());
     }
 }

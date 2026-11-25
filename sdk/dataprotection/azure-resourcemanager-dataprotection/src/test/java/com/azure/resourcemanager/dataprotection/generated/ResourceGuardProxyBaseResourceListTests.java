@@ -12,15 +12,15 @@ public final class ResourceGuardProxyBaseResourceListTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
         ResourceGuardProxyBaseResourceList model = BinaryData.fromString(
-            "{\"value\":[{\"properties\":{\"resourceGuardResourceId\":\"kmnwqjnobaiyhddv\",\"resourceGuardOperationDetails\":[{\"vaultCriticalOperation\":\"gfnmntfpmvmemfnc\",\"defaultResourceRequest\":\"wvvb\"},{\"vaultCriticalOperation\":\"xlllchp\",\"defaultResourceRequest\":\"bzevwrd\"},{\"vaultCriticalOperation\":\"fukuvsjcswsmystu\",\"defaultResourceRequest\":\"qypfcv\"}],\"lastUpdatedTime\":\"rchpqbmfpjbabwid\",\"description\":\"xsspuunnoxyhk\"},\"id\":\"qddrihpfhoqcaae\",\"name\":\"dao\",\"type\":\"djvlpj\"}],\"nextLink\":\"kzbrmsgeivsiy\"}")
+            "{\"value\":[{\"properties\":{\"resourceGuardResourceId\":\"nfyhx\",\"resourceGuardOperationDetails\":[{\"vaultCriticalOperation\":\"jzicwifsjt\",\"defaultResourceRequest\":\"zfbishcbkhaj\"},{\"vaultCriticalOperation\":\"yeamdphagalpb\",\"defaultResourceRequest\":\"wgipwhono\"}],\"lastUpdatedTime\":\"gshwankixz\",\"description\":\"njeputtmrywn\"},\"id\":\"oqftiyqzrnkcq\",\"name\":\"yx\",\"type\":\"whzlsicohoq\"}],\"nextLink\":\"wvl\"}")
             .toObject(ResourceGuardProxyBaseResourceList.class);
-        Assertions.assertEquals("kzbrmsgeivsiy", model.nextLink());
-        Assertions.assertEquals("kmnwqjnobaiyhddv", model.value().get(0).properties().resourceGuardResourceId());
-        Assertions.assertEquals("gfnmntfpmvmemfnc",
+        Assertions.assertEquals("wvl", model.nextLink());
+        Assertions.assertEquals("nfyhx", model.value().get(0).properties().resourceGuardResourceId());
+        Assertions.assertEquals("jzicwifsjt",
             model.value().get(0).properties().resourceGuardOperationDetails().get(0).vaultCriticalOperation());
-        Assertions.assertEquals("wvvb",
+        Assertions.assertEquals("zfbishcbkhaj",
             model.value().get(0).properties().resourceGuardOperationDetails().get(0).defaultResourceRequest());
-        Assertions.assertEquals("rchpqbmfpjbabwid", model.value().get(0).properties().lastUpdatedTime());
-        Assertions.assertEquals("xsspuunnoxyhk", model.value().get(0).properties().description());
+        Assertions.assertEquals("gshwankixz", model.value().get(0).properties().lastUpdatedTime());
+        Assertions.assertEquals("njeputtmrywn", model.value().get(0).properties().description());
     }
 }

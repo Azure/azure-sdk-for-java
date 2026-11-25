@@ -12,9 +12,9 @@ public final class BaseBackupPolicyResourceListTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
         BaseBackupPolicyResourceList model = BinaryData.fromString(
-            "{\"value\":[{\"properties\":{\"objectType\":\"BaseBackupPolicy\",\"datasourceTypes\":[\"dnwzxltjcvnhltiu\"]},\"id\":\"xnavvwxq\",\"name\":\"byqunyow\",\"type\":\"wlmdjrkv\"},{\"properties\":{\"objectType\":\"BaseBackupPolicy\",\"datasourceTypes\":[\"vfvpdbodaciz\",\"j\",\"lhkrribdeibqipqk\"]},\"id\":\"vxndz\",\"name\":\"mkrefajpjorwkq\",\"type\":\"yhgbijtjivfx\"},{\"properties\":{\"objectType\":\"BaseBackupPolicy\",\"datasourceTypes\":[\"ab\",\"bsystawfsdjpvk\",\"p\"]},\"id\":\"xbkzbzkdvncj\",\"name\":\"budurgkakmo\",\"type\":\"zhjjklffhmouwq\"}],\"nextLink\":\"zrfze\"}")
+            "{\"value\":[{\"properties\":{\"objectType\":\"BaseBackupPolicy\",\"datasourceTypes\":[\"ase\"]},\"id\":\"heoflokeyyienjbd\",\"name\":\"wtgrhpdjpj\",\"type\":\"masxazjpqyegu\"},{\"properties\":{\"objectType\":\"BaseBackupPolicy\",\"datasourceTypes\":[\"b\"]},\"id\":\"hejjz\",\"name\":\"v\",\"type\":\"udgwdslfho\"},{\"properties\":{\"objectType\":\"BaseBackupPolicy\",\"datasourceTypes\":[\"cynpwlbjnp\"]},\"id\":\"cftadeh\",\"name\":\"nltyfsoppusuesnz\",\"type\":\"dejbavo\"},{\"properties\":{\"objectType\":\"BaseBackupPolicy\",\"datasourceTypes\":[\"dmoh\",\"tbqvudw\",\"dndnvow\"]},\"id\":\"jjugwdkcglhslaz\",\"name\":\"dyggdtjixhbku\",\"type\":\"fqweykhmene\"}],\"nextLink\":\"yexfwh\"}")
             .toObject(BaseBackupPolicyResourceList.class);
-        Assertions.assertEquals("zrfze", model.nextLink());
-        Assertions.assertEquals("dnwzxltjcvnhltiu", model.value().get(0).properties().datasourceTypes().get(0));
+        Assertions.assertEquals("yexfwh", model.nextLink());
+        Assertions.assertEquals("ase", model.value().get(0).properties().datasourceTypes().get(0));
     }
 }

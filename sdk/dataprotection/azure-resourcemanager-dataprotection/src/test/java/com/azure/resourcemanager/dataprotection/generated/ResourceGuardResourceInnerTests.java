@@ -16,26 +16,25 @@ public final class ResourceGuardResourceInnerTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
         ResourceGuardResourceInner model = BinaryData.fromString(
-            "{\"properties\":{\"provisioningState\":\"Succeeded\",\"allowAutoApprovals\":false,\"resourceGuardOperations\":[{\"vaultCriticalOperation\":\"fb\",\"requestResourceType\":\"kcvqvpke\"},{\"vaultCriticalOperation\":\"cvdrhvoodsot\",\"requestResourceType\":\"bzdopcj\"},{\"vaultCriticalOperation\":\"nhdldwmgxcx\",\"requestResourceType\":\"lpmutwuoegrpkhj\"},{\"vaultCriticalOperation\":\"iyq\",\"requestResourceType\":\"uicpd\"}],\"vaultCriticalOperationExclusionList\":[\"zzlvmbmpaxmodfv\",\"efyw\",\"bpfvm\",\"yhrfouyftaakcpw\"],\"description\":\"zvqtmnubexkp\"},\"eTag\":\"smond\",\"location\":\"quxvypomgkop\",\"tags\":{\"qgxy\":\"ojvpa\",\"xozap\":\"mocmbqfqvmk\",\"dd\":\"helxprglya\",\"rjxgciqib\":\"kcbcue\"},\"id\":\"hos\",\"name\":\"sdqrhzoymibmrq\",\"type\":\"ibahwflus\"}")
+            "{\"properties\":{\"provisioningState\":\"Updating\",\"allowAutoApprovals\":false,\"resourceGuardOperations\":[{\"vaultCriticalOperation\":\"nw\",\"requestResourceType\":\"wzsyyceuzs\"},{\"vaultCriticalOperation\":\"bjudpfrxtrthzv\",\"requestResourceType\":\"tdwkqbrq\"}],\"vaultCriticalOperationExclusionList\":[\"axhexiilivp\"],\"description\":\"iirqtd\"},\"eTag\":\"axoruzfgsquy\",\"location\":\"rxxle\",\"tags\":{\"wxuqlcvydypatdoo\":\"amxjezwlw\",\"kooebwnu\":\"ojknio\",\"vdkcrodtj\":\"hemms\"},\"id\":\"nfwjlfltkacjvefk\",\"name\":\"lfoakg\",\"type\":\"kfpagao\"}")
             .toObject(ResourceGuardResourceInner.class);
-        Assertions.assertEquals("quxvypomgkop", model.location());
-        Assertions.assertEquals("ojvpa", model.tags().get("qgxy"));
-        Assertions.assertEquals("zzlvmbmpaxmodfv", model.properties().vaultCriticalOperationExclusionList().get(0));
-        Assertions.assertEquals("smond", model.etag());
+        Assertions.assertEquals("rxxle", model.location());
+        Assertions.assertEquals("amxjezwlw", model.tags().get("wxuqlcvydypatdoo"));
+        Assertions.assertEquals("axhexiilivp", model.properties().vaultCriticalOperationExclusionList().get(0));
+        Assertions.assertEquals("axoruzfgsquy", model.etag());
     }
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
-        ResourceGuardResourceInner model = new ResourceGuardResourceInner().withLocation("quxvypomgkop")
-            .withTags(mapOf("qgxy", "ojvpa", "xozap", "mocmbqfqvmk", "dd", "helxprglya", "rjxgciqib", "kcbcue"))
-            .withProperties(new ResourceGuard().withVaultCriticalOperationExclusionList(
-                Arrays.asList("zzlvmbmpaxmodfv", "efyw", "bpfvm", "yhrfouyftaakcpw")))
-            .withEtag("smond");
+        ResourceGuardResourceInner model = new ResourceGuardResourceInner().withLocation("rxxle")
+            .withTags(mapOf("wxuqlcvydypatdoo", "amxjezwlw", "kooebwnu", "ojknio", "vdkcrodtj", "hemms"))
+            .withProperties(new ResourceGuard().withVaultCriticalOperationExclusionList(Arrays.asList("axhexiilivp")))
+            .withEtag("axoruzfgsquy");
         model = BinaryData.fromObject(model).toObject(ResourceGuardResourceInner.class);
-        Assertions.assertEquals("quxvypomgkop", model.location());
-        Assertions.assertEquals("ojvpa", model.tags().get("qgxy"));
-        Assertions.assertEquals("zzlvmbmpaxmodfv", model.properties().vaultCriticalOperationExclusionList().get(0));
-        Assertions.assertEquals("smond", model.etag());
+        Assertions.assertEquals("rxxle", model.location());
+        Assertions.assertEquals("amxjezwlw", model.tags().get("wxuqlcvydypatdoo"));
+        Assertions.assertEquals("axhexiilivp", model.properties().vaultCriticalOperationExclusionList().get(0));
+        Assertions.assertEquals("axoruzfgsquy", model.etag());
     }
 
     // Use "Map.of" if available

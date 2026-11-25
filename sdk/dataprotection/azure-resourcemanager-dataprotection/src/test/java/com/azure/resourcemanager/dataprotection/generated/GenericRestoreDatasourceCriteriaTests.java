@@ -16,24 +16,23 @@ public final class GenericRestoreDatasourceCriteriaTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
         GenericRestoreDatasourceCriteria model = BinaryData.fromString(
-            "{\"objectType\":\"GenericRestoreDatasourceCriteria\",\"resourceSelectors\":{\"objectType\":\"nwvlryavwhheunmm\",\"resourceIdentifiers\":[\"gyxzk\",\"noc\",\"koklya\"],\"resourceNameOverrides\":{\"zf\":\"onuq\",\"vjektcxsenh\":\"beypewrmjmw\",\"rzpwvlqdqgbiq\":\"lrsf\",\"vf\":\"lihkaetcktvfc\"}}}")
+            "{\"objectType\":\"GenericRestoreDatasourceCriteria\",\"resourceSelectors\":{\"objectType\":\"vu\",\"resourceIdentifiers\":[\"hzovawjvzunlut\",\"nnprn\",\"i\",\"eilpjzuaejxdu\"],\"resourceNameOverrides\":{\"umveekgpwozuhkf\":\"kzbbtd\",\"uusdttouwa\":\"bsjyofdx\"}}}")
             .toObject(GenericRestoreDatasourceCriteria.class);
-        Assertions.assertEquals("nwvlryavwhheunmm", model.resourceSelectors().objectType());
-        Assertions.assertEquals("gyxzk", model.resourceSelectors().resourceIdentifiers().get(0));
-        Assertions.assertEquals("onuq", model.resourceSelectors().resourceNameOverrides().get("zf"));
+        Assertions.assertEquals("vu", model.resourceSelectors().objectType());
+        Assertions.assertEquals("hzovawjvzunlut", model.resourceSelectors().resourceIdentifiers().get(0));
+        Assertions.assertEquals("kzbbtd", model.resourceSelectors().resourceNameOverrides().get("umveekgpwozuhkf"));
     }
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
         GenericRestoreDatasourceCriteria model = new GenericRestoreDatasourceCriteria()
-            .withResourceSelectors(new ResourceListSelectionCriteria().withObjectType("nwvlryavwhheunmm")
-                .withResourceIdentifiers(Arrays.asList("gyxzk", "noc", "koklya"))
-                .withResourceNameOverrides(
-                    mapOf("zf", "onuq", "vjektcxsenh", "beypewrmjmw", "rzpwvlqdqgbiq", "lrsf", "vf", "lihkaetcktvfc")));
+            .withResourceSelectors(new ResourceListSelectionCriteria().withObjectType("vu")
+                .withResourceIdentifiers(Arrays.asList("hzovawjvzunlut", "nnprn", "i", "eilpjzuaejxdu"))
+                .withResourceNameOverrides(mapOf("umveekgpwozuhkf", "kzbbtd", "uusdttouwa", "bsjyofdx")));
         model = BinaryData.fromObject(model).toObject(GenericRestoreDatasourceCriteria.class);
-        Assertions.assertEquals("nwvlryavwhheunmm", model.resourceSelectors().objectType());
-        Assertions.assertEquals("gyxzk", model.resourceSelectors().resourceIdentifiers().get(0));
-        Assertions.assertEquals("onuq", model.resourceSelectors().resourceNameOverrides().get("zf"));
+        Assertions.assertEquals("vu", model.resourceSelectors().objectType());
+        Assertions.assertEquals("hzovawjvzunlut", model.resourceSelectors().resourceIdentifiers().get(0));
+        Assertions.assertEquals("kzbbtd", model.resourceSelectors().resourceNameOverrides().get("umveekgpwozuhkf"));
     }
 
     // Use "Map.of" if available

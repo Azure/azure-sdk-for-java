@@ -11,17 +11,19 @@ import org.junit.jupiter.api.Assertions;
 public final class NamespacedNameResourceTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
-        NamespacedNameResource model = BinaryData.fromString("{\"name\":\"qktapspwgcuert\",\"namespace\":\"kdosvqw\"}")
-            .toObject(NamespacedNameResource.class);
-        Assertions.assertEquals("qktapspwgcuert", model.name());
-        Assertions.assertEquals("kdosvqw", model.namespace());
+        NamespacedNameResource model
+            = BinaryData.fromString("{\"name\":\"ummajtjaod\",\"namespace\":\"bnbdxkqpxokajion\"}")
+                .toObject(NamespacedNameResource.class);
+        Assertions.assertEquals("ummajtjaod", model.name());
+        Assertions.assertEquals("bnbdxkqpxokajion", model.namespace());
     }
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
-        NamespacedNameResource model = new NamespacedNameResource().withName("qktapspwgcuert").withNamespace("kdosvqw");
+        NamespacedNameResource model
+            = new NamespacedNameResource().withName("ummajtjaod").withNamespace("bnbdxkqpxokajion");
         model = BinaryData.fromObject(model).toObject(NamespacedNameResource.class);
-        Assertions.assertEquals("qktapspwgcuert", model.name());
-        Assertions.assertEquals("kdosvqw", model.namespace());
+        Assertions.assertEquals("ummajtjaod", model.name());
+        Assertions.assertEquals("bnbdxkqpxokajion", model.namespace());
     }
 }

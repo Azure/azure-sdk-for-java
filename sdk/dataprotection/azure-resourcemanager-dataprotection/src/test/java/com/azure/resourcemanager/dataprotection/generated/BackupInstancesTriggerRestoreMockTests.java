@@ -26,7 +26,7 @@ import reactor.core.publisher.Mono;
 public final class BackupInstancesTriggerRestoreMockTests {
     @Test
     public void testTriggerRestore() throws Exception {
-        String responseStr = "{\"objectType\":\"OperationJobExtendedInfo\",\"jobId\":\"fr\"}";
+        String responseStr = "{\"objectType\":\"OperationJobExtendedInfo\",\"jobId\":\"fzmpjwyivq\"}";
 
         HttpClient httpClient
             = response -> Mono.just(new MockHttpResponse(response, 200, responseStr.getBytes(StandardCharsets.UTF_8)));
@@ -37,16 +37,16 @@ public final class BackupInstancesTriggerRestoreMockTests {
 
         OperationJobExtendedInfo response
             = manager.backupInstances()
-                .triggerRestore("la", "hnfhqlyvijouwi", "kxoyzunbixxr", new AzureBackupRestoreRequest()
+                .triggerRestore("fnzjvusfzldm", "zuxylfsbtkadpyso", "nbtgkbugrjqctoj", new AzureBackupRestoreRequest()
                     .withRestoreTargetInfo(new RestoreTargetInfoBase().withRecoveryOption(RecoveryOption.FAIL_IF_EXISTS)
-                        .withRestoreLocation("vcpwpgclrc"))
-                    .withSourceDataStoreType(SourceDataStoreType.SNAPSHOT_STORE)
-                    .withSourceResourceId("soxfrken")
-                    .withResourceGuardOperationRequests(Arrays.asList("yyefrpmpdnqqs"))
-                    .withIdentityDetails(new IdentityDetails().withUseSystemAssignedIdentity(false)
-                        .withUserAssignedIdentityArmUrl("qvmmbn")),
+                        .withRestoreLocation("sofieypefojyqd"))
+                    .withSourceDataStoreType(SourceDataStoreType.VAULT_STORE)
+                    .withSourceResourceId("plcplcwkhi")
+                    .withResourceGuardOperationRequests(Arrays.asList("lhzdsqtzb", "rgnowcjhfgm", "ecactx", "wotey"))
+                    .withIdentityDetails(new IdentityDetails().withUseSystemAssignedIdentity(true)
+                        .withUserAssignedIdentityArmUrl("qovekqvgqou")),
                     com.azure.core.util.Context.NONE);
 
-        Assertions.assertEquals("fr", response.jobId());
+        Assertions.assertEquals("fzmpjwyivq", response.jobId());
     }
 }

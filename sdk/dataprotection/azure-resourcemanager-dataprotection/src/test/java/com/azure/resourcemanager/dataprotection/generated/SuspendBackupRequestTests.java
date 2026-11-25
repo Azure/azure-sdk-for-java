@@ -12,16 +12,17 @@ import org.junit.jupiter.api.Assertions;
 public final class SuspendBackupRequestTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
-        SuspendBackupRequest model = BinaryData.fromString("{\"resourceGuardOperationRequests\":[\"veual\"]}")
+        SuspendBackupRequest model = BinaryData.fromString(
+            "{\"resourceGuardOperationRequests\":[\"lauwzizxbmpgcjef\",\"zmuvpbttdumorppx\",\"bmnzbtbhjpgl\",\"fgohdneuelfphs\"]}")
             .toObject(SuspendBackupRequest.class);
-        Assertions.assertEquals("veual", model.resourceGuardOperationRequests().get(0));
+        Assertions.assertEquals("lauwzizxbmpgcjef", model.resourceGuardOperationRequests().get(0));
     }
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
-        SuspendBackupRequest model
-            = new SuspendBackupRequest().withResourceGuardOperationRequests(Arrays.asList("veual"));
+        SuspendBackupRequest model = new SuspendBackupRequest().withResourceGuardOperationRequests(
+            Arrays.asList("lauwzizxbmpgcjef", "zmuvpbttdumorppx", "bmnzbtbhjpgl", "fgohdneuelfphs"));
         model = BinaryData.fromObject(model).toObject(SuspendBackupRequest.class);
-        Assertions.assertEquals("veual", model.resourceGuardOperationRequests().get(0));
+        Assertions.assertEquals("lauwzizxbmpgcjef", model.resourceGuardOperationRequests().get(0));
     }
 }

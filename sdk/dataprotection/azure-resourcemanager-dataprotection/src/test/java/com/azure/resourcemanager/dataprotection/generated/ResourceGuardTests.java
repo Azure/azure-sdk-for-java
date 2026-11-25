@@ -13,16 +13,16 @@ public final class ResourceGuardTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
         ResourceGuard model = BinaryData.fromString(
-            "{\"provisioningState\":\"Updating\",\"allowAutoApprovals\":false,\"resourceGuardOperations\":[{\"vaultCriticalOperation\":\"ofyyvoqacpi\",\"requestResourceType\":\"pbtg\"},{\"vaultCriticalOperation\":\"bwoenwashrt\",\"requestResourceType\":\"kcnqxwbpo\"},{\"vaultCriticalOperation\":\"lpiujwaa\",\"requestResourceType\":\"pqiiobyuqe\"}],\"vaultCriticalOperationExclusionList\":[\"lp\",\"wcciuqgbdbu\",\"auvfbtkuwhhmhyk\"],\"description\":\"oxafn\"}")
+            "{\"provisioningState\":\"Succeeded\",\"allowAutoApprovals\":true,\"resourceGuardOperations\":[{\"vaultCriticalOperation\":\"ylsyxkqjnsje\",\"requestResourceType\":\"tiagx\"},{\"vaultCriticalOperation\":\"sz\",\"requestResourceType\":\"mpsbzkfzbeyv\"},{\"vaultCriticalOperation\":\"qi\",\"requestResourceType\":\"invkjjxdxrbuu\"},{\"vaultCriticalOperation\":\"clewyhm\",\"requestResourceType\":\"paztzpofncck\"}],\"vaultCriticalOperationExclusionList\":[\"zqwhxxbuyqaxzfeq\"],\"description\":\"ppriol\"}")
             .toObject(ResourceGuard.class);
-        Assertions.assertEquals("lp", model.vaultCriticalOperationExclusionList().get(0));
+        Assertions.assertEquals("zqwhxxbuyqaxzfeq", model.vaultCriticalOperationExclusionList().get(0));
     }
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
-        ResourceGuard model = new ResourceGuard()
-            .withVaultCriticalOperationExclusionList(Arrays.asList("lp", "wcciuqgbdbu", "auvfbtkuwhhmhyk"));
+        ResourceGuard model
+            = new ResourceGuard().withVaultCriticalOperationExclusionList(Arrays.asList("zqwhxxbuyqaxzfeq"));
         model = BinaryData.fromObject(model).toObject(ResourceGuard.class);
-        Assertions.assertEquals("lp", model.vaultCriticalOperationExclusionList().get(0));
+        Assertions.assertEquals("zqwhxxbuyqaxzfeq", model.vaultCriticalOperationExclusionList().get(0));
     }
 }

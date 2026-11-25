@@ -12,13 +12,13 @@ public final class ResourceGuardResourceListTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
         ResourceGuardResourceList model = BinaryData.fromString(
-            "{\"value\":[{\"properties\":{\"provisioningState\":\"Succeeded\",\"allowAutoApprovals\":false,\"resourceGuardOperations\":[{\"vaultCriticalOperation\":\"ibwwiftohqkv\",\"requestResourceType\":\"vksgplsaknynfsy\"},{\"vaultCriticalOperation\":\"jphuopxodlqi\",\"requestResourceType\":\"torzih\"},{\"vaultCriticalOperation\":\"osjswsr\",\"requestResourceType\":\"lyzrpzbchckqqzqi\"}],\"vaultCriticalOperationExclusionList\":[\"ysuiizynkedya\",\"rwyhqmibzyhwitsm\"],\"description\":\"yynpcdpumnzgmwz\"},\"eTag\":\"abikns\",\"location\":\"gj\",\"tags\":{\"kdmtncvokotll\":\"ldtlwwr\",\"h\":\"d\"},\"id\":\"syocogjltdtbnnha\",\"name\":\"oocrkvcikhnv\",\"type\":\"amqgxqquezikyw\"},{\"properties\":{\"provisioningState\":\"Provisioning\",\"allowAutoApprovals\":false,\"resourceGuardOperations\":[{\"vaultCriticalOperation\":\"melwuipiccjz\",\"requestResourceType\":\"ivgvvcna\"},{\"vaultCriticalOperation\":\"hyrnxxmu\",\"requestResourceType\":\"dndrdvstkwqqtche\"}],\"vaultCriticalOperationExclusionList\":[\"fmtdaaygdvwvgp\",\"ohgwxrtfudxepxg\",\"qagvrvm\"],\"description\":\"k\"},\"eTag\":\"ghimdblx\",\"location\":\"imfnjhfjx\",\"tags\":{\"foqreyfkzik\":\"zk\",\"wczelpci\":\"jawneaiv\",\"abfatkl\":\"elsfeaen\"},\"id\":\"dxbjhwuaanozj\",\"name\":\"sphyoulpjrvxa\",\"type\":\"l\"}],\"nextLink\":\"imjwosyt\"}")
+            "{\"value\":[{\"properties\":{\"provisioningState\":\"Updating\",\"allowAutoApprovals\":false,\"resourceGuardOperations\":[{\"vaultCriticalOperation\":\"udflvkgjubgdknn\",\"requestResourceType\":\"saznqntoruds\"},{\"vaultCriticalOperation\":\"a\",\"requestResourceType\":\"kycgrauwj\"},{\"vaultCriticalOperation\":\"taeburuvdm\",\"requestResourceType\":\"s\"}],\"vaultCriticalOperationExclusionList\":[\"xwabmqoe\"],\"description\":\"ifrvtpu\"},\"eTag\":\"jmqlgkfb\",\"location\":\"doaon\",\"tags\":{\"ujitcjedftww\":\"cn\",\"foqouicybx\":\"ezkojvdcp\"},\"id\":\"rzgszufoxci\",\"name\":\"opidoamciodh\",\"type\":\"haz\"}],\"nextLink\":\"hnzbonl\"}")
             .toObject(ResourceGuardResourceList.class);
-        Assertions.assertEquals("imjwosyt", model.nextLink());
-        Assertions.assertEquals("gj", model.value().get(0).location());
-        Assertions.assertEquals("ldtlwwr", model.value().get(0).tags().get("kdmtncvokotll"));
-        Assertions.assertEquals("ysuiizynkedya",
+        Assertions.assertEquals("hnzbonl", model.nextLink());
+        Assertions.assertEquals("doaon", model.value().get(0).location());
+        Assertions.assertEquals("cn", model.value().get(0).tags().get("ujitcjedftww"));
+        Assertions.assertEquals("xwabmqoe",
             model.value().get(0).properties().vaultCriticalOperationExclusionList().get(0));
-        Assertions.assertEquals("abikns", model.value().get(0).etag());
+        Assertions.assertEquals("jmqlgkfb", model.value().get(0).etag());
     }
 }

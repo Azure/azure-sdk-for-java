@@ -28,7 +28,7 @@ public final class BackupInstancesDeleteMockTests {
                 new AzureProfile("", "", AzureCloud.AZURE_PUBLIC_CLOUD));
 
         manager.backupInstances()
-            .delete("nwsdtutnwlduyc", "uzhyrmewipmvekdx", "kuqgsjjxundxgket", com.azure.core.util.Context.NONE);
+            .delete("cjnaeoisrvhmgor", "fukiscvwmzhw", "lefaxvxilcbtgn", com.azure.core.util.Context.NONE);
 
     }
 }
