@@ -263,18 +263,7 @@ public final class WorkloadsClientImpl implements WorkloadsClient {
             .flatMap(res -> Mono.justOrEmpty(res.getValue()));
     }
 
-    /**
-     * Get a WorkloadResource.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param virtualEnclaveName The name of the enclaveResource Resource.
-     * @param workloadName The name of the workloadResource Resource.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return a WorkloadResource along with {@link Response}.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Response<WorkloadResourceInner> getWithResponse(String resourceGroupName, String virtualEnclaveName,
         String workloadName, Context context) {
@@ -283,17 +272,7 @@ public final class WorkloadsClientImpl implements WorkloadsClient {
             resourceGroupName, virtualEnclaveName, workloadName, accept, context);
     }
 
-    /**
-     * Get a WorkloadResource.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param virtualEnclaveName The name of the enclaveResource Resource.
-     * @param workloadName The name of the workloadResource Resource.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return a WorkloadResource.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public WorkloadResourceInner get(String resourceGroupName, String virtualEnclaveName, String workloadName) {
         return getWithResponse(resourceGroupName, virtualEnclaveName, workloadName, Context.NONE).getValue();
@@ -338,11 +317,7 @@ public final class WorkloadsClientImpl implements WorkloadsClient {
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Response<BinaryData> createOrUpdateWithResponse(String resourceGroupName, String virtualEnclaveName,
         String workloadName, WorkloadResourceInner resource) {
-        final String contentType = "application/json";
-        final String accept = "application/json";
-        return service.createOrUpdateSync(this.client.getEndpoint(), this.client.getApiVersion(),
-            this.client.getSubscriptionId(), resourceGroupName, virtualEnclaveName, workloadName, contentType, accept,
-            resource, Context.NONE);
+        return createOrUpdateWithResponse(resourceGroupName, virtualEnclaveName, workloadName, resource, Context.NONE);
     }
 
     /**
@@ -390,40 +365,14 @@ public final class WorkloadsClientImpl implements WorkloadsClient {
             this.client.getContext());
     }
 
-    /**
-     * Create a WorkloadResource.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param virtualEnclaveName The name of the enclaveResource Resource.
-     * @param workloadName The name of the workloadResource Resource.
-     * @param resource Resource create parameters.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the {@link SyncPoller} for polling of workload Model Resource.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public SyncPoller<PollResult<WorkloadResourceInner>, WorkloadResourceInner> beginCreateOrUpdate(
         String resourceGroupName, String virtualEnclaveName, String workloadName, WorkloadResourceInner resource) {
-        Response<BinaryData> response
-            = createOrUpdateWithResponse(resourceGroupName, virtualEnclaveName, workloadName, resource);
-        return this.client.<WorkloadResourceInner, WorkloadResourceInner>getLroResult(response,
-            WorkloadResourceInner.class, WorkloadResourceInner.class, Context.NONE);
+        return beginCreateOrUpdate(resourceGroupName, virtualEnclaveName, workloadName, resource, Context.NONE);
     }
 
-    /**
-     * Create a WorkloadResource.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param virtualEnclaveName The name of the enclaveResource Resource.
-     * @param workloadName The name of the workloadResource Resource.
-     * @param resource Resource create parameters.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the {@link SyncPoller} for polling of workload Model Resource.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public SyncPoller<PollResult<WorkloadResourceInner>, WorkloadResourceInner> beginCreateOrUpdate(
         String resourceGroupName, String virtualEnclaveName, String workloadName, WorkloadResourceInner resource,
@@ -453,42 +402,19 @@ public final class WorkloadsClientImpl implements WorkloadsClient {
             .flatMap(this.client::getLroFinalResultOrError);
     }
 
-    /**
-     * Create a WorkloadResource.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param virtualEnclaveName The name of the enclaveResource Resource.
-     * @param workloadName The name of the workloadResource Resource.
-     * @param resource Resource create parameters.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return workload Model Resource.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public WorkloadResourceInner createOrUpdate(String resourceGroupName, String virtualEnclaveName,
         String workloadName, WorkloadResourceInner resource) {
-        return beginCreateOrUpdate(resourceGroupName, virtualEnclaveName, workloadName, resource).getFinalResult();
+        return createOrUpdate(resourceGroupName, virtualEnclaveName, workloadName, resource, Context.NONE);
     }
 
-    /**
-     * Create a WorkloadResource.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param virtualEnclaveName The name of the enclaveResource Resource.
-     * @param workloadName The name of the workloadResource Resource.
-     * @param resource Resource create parameters.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return workload Model Resource.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public WorkloadResourceInner createOrUpdate(String resourceGroupName, String virtualEnclaveName,
         String workloadName, WorkloadResourceInner resource, Context context) {
-        return beginCreateOrUpdate(resourceGroupName, virtualEnclaveName, workloadName, resource, context)
-            .getFinalResult();
+        return this.client.getLroFinalResultOrError(
+            beginCreateOrUpdate(resourceGroupName, virtualEnclaveName, workloadName, resource, context));
     }
 
     /**
@@ -530,11 +456,7 @@ public final class WorkloadsClientImpl implements WorkloadsClient {
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Response<BinaryData> updateWithResponse(String resourceGroupName, String virtualEnclaveName,
         String workloadName, WorkloadPatchModel properties) {
-        final String contentType = "application/json";
-        final String accept = "application/json";
-        return service.updateSync(this.client.getEndpoint(), this.client.getApiVersion(),
-            this.client.getSubscriptionId(), resourceGroupName, virtualEnclaveName, workloadName, contentType, accept,
-            properties, Context.NONE);
+        return updateWithResponse(resourceGroupName, virtualEnclaveName, workloadName, properties, Context.NONE);
     }
 
     /**
@@ -582,40 +504,14 @@ public final class WorkloadsClientImpl implements WorkloadsClient {
             this.client.getContext());
     }
 
-    /**
-     * Update a WorkloadResource.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param virtualEnclaveName The name of the enclaveResource Resource.
-     * @param workloadName The name of the workloadResource Resource.
-     * @param properties The resource properties to be updated.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the {@link SyncPoller} for polling of workload Model Resource.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public SyncPoller<PollResult<WorkloadResourceInner>, WorkloadResourceInner> beginUpdate(String resourceGroupName,
         String virtualEnclaveName, String workloadName, WorkloadPatchModel properties) {
-        Response<BinaryData> response
-            = updateWithResponse(resourceGroupName, virtualEnclaveName, workloadName, properties);
-        return this.client.<WorkloadResourceInner, WorkloadResourceInner>getLroResult(response,
-            WorkloadResourceInner.class, WorkloadResourceInner.class, Context.NONE);
+        return beginUpdate(resourceGroupName, virtualEnclaveName, workloadName, properties, Context.NONE);
     }
 
-    /**
-     * Update a WorkloadResource.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param virtualEnclaveName The name of the enclaveResource Resource.
-     * @param workloadName The name of the workloadResource Resource.
-     * @param properties The resource properties to be updated.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the {@link SyncPoller} for polling of workload Model Resource.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public SyncPoller<PollResult<WorkloadResourceInner>, WorkloadResourceInner> beginUpdate(String resourceGroupName,
         String virtualEnclaveName, String workloadName, WorkloadPatchModel properties, Context context) {
@@ -644,41 +540,19 @@ public final class WorkloadsClientImpl implements WorkloadsClient {
             .flatMap(this.client::getLroFinalResultOrError);
     }
 
-    /**
-     * Update a WorkloadResource.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param virtualEnclaveName The name of the enclaveResource Resource.
-     * @param workloadName The name of the workloadResource Resource.
-     * @param properties The resource properties to be updated.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return workload Model Resource.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public WorkloadResourceInner update(String resourceGroupName, String virtualEnclaveName, String workloadName,
         WorkloadPatchModel properties) {
-        return beginUpdate(resourceGroupName, virtualEnclaveName, workloadName, properties).getFinalResult();
+        return update(resourceGroupName, virtualEnclaveName, workloadName, properties, Context.NONE);
     }
 
-    /**
-     * Update a WorkloadResource.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param virtualEnclaveName The name of the enclaveResource Resource.
-     * @param workloadName The name of the workloadResource Resource.
-     * @param properties The resource properties to be updated.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return workload Model Resource.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public WorkloadResourceInner update(String resourceGroupName, String virtualEnclaveName, String workloadName,
         WorkloadPatchModel properties, Context context) {
-        return beginUpdate(resourceGroupName, virtualEnclaveName, workloadName, properties, context).getFinalResult();
+        return this.client.getLroFinalResultOrError(
+            beginUpdate(resourceGroupName, virtualEnclaveName, workloadName, properties, context));
     }
 
     /**
@@ -715,8 +589,7 @@ public final class WorkloadsClientImpl implements WorkloadsClient {
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Response<BinaryData> deleteWithResponse(String resourceGroupName, String virtualEnclaveName,
         String workloadName) {
-        return service.deleteSync(this.client.getEndpoint(), this.client.getApiVersion(),
-            this.client.getSubscriptionId(), resourceGroupName, virtualEnclaveName, workloadName, Context.NONE);
+        return deleteWithResponse(resourceGroupName, virtualEnclaveName, workloadName, Context.NONE);
     }
 
     /**
@@ -758,36 +631,14 @@ public final class WorkloadsClientImpl implements WorkloadsClient {
             this.client.getContext());
     }
 
-    /**
-     * Delete a WorkloadResource.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param virtualEnclaveName The name of the enclaveResource Resource.
-     * @param workloadName The name of the workloadResource Resource.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the {@link SyncPoller} for polling of long-running operation.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public SyncPoller<PollResult<Void>, Void> beginDelete(String resourceGroupName, String virtualEnclaveName,
         String workloadName) {
-        Response<BinaryData> response = deleteWithResponse(resourceGroupName, virtualEnclaveName, workloadName);
-        return this.client.<Void, Void>getLroResult(response, Void.class, Void.class, Context.NONE);
+        return beginDelete(resourceGroupName, virtualEnclaveName, workloadName, Context.NONE);
     }
 
-    /**
-     * Delete a WorkloadResource.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param virtualEnclaveName The name of the enclaveResource Resource.
-     * @param workloadName The name of the workloadResource Resource.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the {@link SyncPoller} for polling of long-running operation.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public SyncPoller<PollResult<Void>, Void> beginDelete(String resourceGroupName, String virtualEnclaveName,
         String workloadName, Context context) {
@@ -813,35 +664,16 @@ public final class WorkloadsClientImpl implements WorkloadsClient {
             .flatMap(this.client::getLroFinalResultOrError);
     }
 
-    /**
-     * Delete a WorkloadResource.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param virtualEnclaveName The name of the enclaveResource Resource.
-     * @param workloadName The name of the workloadResource Resource.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public void delete(String resourceGroupName, String virtualEnclaveName, String workloadName) {
-        beginDelete(resourceGroupName, virtualEnclaveName, workloadName).getFinalResult();
+        delete(resourceGroupName, virtualEnclaveName, workloadName, Context.NONE);
     }
 
-    /**
-     * Delete a WorkloadResource.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param virtualEnclaveName The name of the enclaveResource Resource.
-     * @param workloadName The name of the workloadResource Resource.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public void delete(String resourceGroupName, String virtualEnclaveName, String workloadName, Context context) {
-        beginDelete(resourceGroupName, virtualEnclaveName, workloadName, context).getFinalResult();
+        this.client.getLroFinalResultOrError(beginDelete(resourceGroupName, virtualEnclaveName, workloadName, context));
     }
 
     /**
@@ -898,12 +730,7 @@ public final class WorkloadsClientImpl implements WorkloadsClient {
     @ServiceMethod(returns = ReturnType.SINGLE)
     private PagedResponse<WorkloadResourceInner> listByEnclaveResourceSinglePage(String resourceGroupName,
         String virtualEnclaveName) {
-        final String accept = "application/json";
-        Response<WorkloadResourceListResult> res
-            = service.listByEnclaveResourceSync(this.client.getEndpoint(), this.client.getApiVersion(),
-                this.client.getSubscriptionId(), resourceGroupName, virtualEnclaveName, accept, Context.NONE);
-        return new PagedResponseBase<>(res.getRequest(), res.getStatusCode(), res.getHeaders(), res.getValue().value(),
-            res.getValue().nextLink(), null);
+        return listByEnclaveResourceSinglePage(resourceGroupName, virtualEnclaveName, Context.NONE);
     }
 
     /**
@@ -928,34 +755,14 @@ public final class WorkloadsClientImpl implements WorkloadsClient {
             res.getValue().nextLink(), null);
     }
 
-    /**
-     * List WorkloadResource resources by EnclaveResource.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param virtualEnclaveName The name of the enclaveResource Resource.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the response of a WorkloadResource list operation as paginated response with {@link PagedIterable}.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.COLLECTION)
     public PagedIterable<WorkloadResourceInner> listByEnclaveResource(String resourceGroupName,
         String virtualEnclaveName) {
-        return new PagedIterable<>(() -> listByEnclaveResourceSinglePage(resourceGroupName, virtualEnclaveName),
-            nextLink -> listByEnclaveResourceNextSinglePage(nextLink));
+        return listByEnclaveResource(resourceGroupName, virtualEnclaveName, Context.NONE);
     }
 
-    /**
-     * List WorkloadResource resources by EnclaveResource.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param virtualEnclaveName The name of the enclaveResource Resource.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the response of a WorkloadResource list operation as paginated response with {@link PagedIterable}.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.COLLECTION)
     public PagedIterable<WorkloadResourceInner> listByEnclaveResource(String resourceGroupName,
         String virtualEnclaveName, Context context) {
@@ -1011,11 +818,7 @@ public final class WorkloadsClientImpl implements WorkloadsClient {
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private PagedResponse<WorkloadResourceInner> listBySubscriptionSinglePage(String virtualEnclaveName) {
-        final String accept = "application/json";
-        Response<WorkloadResourceListResult> res = service.listBySubscriptionSync(this.client.getEndpoint(),
-            this.client.getApiVersion(), this.client.getSubscriptionId(), virtualEnclaveName, accept, Context.NONE);
-        return new PagedResponseBase<>(res.getRequest(), res.getStatusCode(), res.getHeaders(), res.getValue().value(),
-            res.getValue().nextLink(), null);
+        return listBySubscriptionSinglePage(virtualEnclaveName, Context.NONE);
     }
 
     /**
@@ -1038,31 +841,13 @@ public final class WorkloadsClientImpl implements WorkloadsClient {
             res.getValue().nextLink(), null);
     }
 
-    /**
-     * List WorkloadResource resources by subscription ID.
-     * 
-     * @param virtualEnclaveName The name of the enclaveResource Resource.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the response of a WorkloadResource list operation as paginated response with {@link PagedIterable}.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.COLLECTION)
     public PagedIterable<WorkloadResourceInner> listBySubscription(String virtualEnclaveName) {
-        return new PagedIterable<>(() -> listBySubscriptionSinglePage(virtualEnclaveName),
-            nextLink -> listBySubscriptionNextSinglePage(nextLink));
+        return listBySubscription(virtualEnclaveName, Context.NONE);
     }
 
-    /**
-     * List WorkloadResource resources by subscription ID.
-     * 
-     * @param virtualEnclaveName The name of the enclaveResource Resource.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the response of a WorkloadResource list operation as paginated response with {@link PagedIterable}.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.COLLECTION)
     public PagedIterable<WorkloadResourceInner> listBySubscription(String virtualEnclaveName, Context context) {
         return new PagedIterable<>(() -> listBySubscriptionSinglePage(virtualEnclaveName, context),
@@ -1101,11 +886,7 @@ public final class WorkloadsClientImpl implements WorkloadsClient {
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private PagedResponse<WorkloadResourceInner> listByEnclaveResourceNextSinglePage(String nextLink) {
-        final String accept = "application/json";
-        Response<WorkloadResourceListResult> res
-            = service.listByEnclaveResourceNextSync(nextLink, this.client.getEndpoint(), accept, Context.NONE);
-        return new PagedResponseBase<>(res.getRequest(), res.getStatusCode(), res.getHeaders(), res.getValue().value(),
-            res.getValue().nextLink(), null);
+        return listByEnclaveResourceNextSinglePage(nextLink, Context.NONE);
     }
 
     /**
@@ -1159,11 +940,7 @@ public final class WorkloadsClientImpl implements WorkloadsClient {
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private PagedResponse<WorkloadResourceInner> listBySubscriptionNextSinglePage(String nextLink) {
-        final String accept = "application/json";
-        Response<WorkloadResourceListResult> res
-            = service.listBySubscriptionNextSync(nextLink, this.client.getEndpoint(), accept, Context.NONE);
-        return new PagedResponseBase<>(res.getRequest(), res.getStatusCode(), res.getHeaders(), res.getValue().value(),
-            res.getValue().nextLink(), null);
+        return listBySubscriptionNextSinglePage(nextLink, Context.NONE);
     }
 
     /**

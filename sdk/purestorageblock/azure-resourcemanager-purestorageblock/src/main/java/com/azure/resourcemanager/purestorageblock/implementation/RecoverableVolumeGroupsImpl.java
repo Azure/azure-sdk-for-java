@@ -47,9 +47,7 @@ public final class RecoverableVolumeGroupsImpl implements RecoverableVolumeGroup
     }
 
     public PagedIterable<RecoverableVolumeGroup> listByStoragePool(String resourceGroupName, String storagePoolName) {
-        PagedIterable<RecoverableVolumeGroupInner> inner
-            = this.serviceClient().listByStoragePool(resourceGroupName, storagePoolName);
-        return ResourceManagerUtils.mapPage(inner, inner1 -> new RecoverableVolumeGroupImpl(inner1, this.manager()));
+        return this.listByStoragePool(resourceGroupName, storagePoolName, Context.NONE);
     }
 
     public PagedIterable<RecoverableVolumeGroup> listByStoragePool(String resourceGroupName, String storagePoolName,
@@ -60,7 +58,7 @@ public final class RecoverableVolumeGroupsImpl implements RecoverableVolumeGroup
     }
 
     public void delete(String resourceGroupName, String storagePoolName, String recoverableVolumeGroupName) {
-        this.serviceClient().delete(resourceGroupName, storagePoolName, recoverableVolumeGroupName);
+        this.delete(resourceGroupName, storagePoolName, recoverableVolumeGroupName, Context.NONE);
     }
 
     public void delete(String resourceGroupName, String storagePoolName, String recoverableVolumeGroupName,

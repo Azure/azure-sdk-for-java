@@ -12,8 +12,8 @@ public final class CommitmentPlanAccountAssociationListResultTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
         CommitmentPlanAccountAssociationListResult model = BinaryData.fromString(
-            "{\"nextLink\":\"ikdgszywkbir\",\"value\":[{\"properties\":{\"accountId\":\"lhkjoqrvqq\"},\"etag\":\"t\",\"tags\":{\"oupmfii\":\"rv\",\"x\":\"fggjioolvr\",\"kkgll\":\"v\",\"uhbxvvy\":\"wjygvjayvblmhvk\"},\"id\":\"s\",\"name\":\"pbyrqufegxu\",\"type\":\"wz\"},{\"properties\":{\"accountId\":\"hlmctlpdngitvgb\"},\"etag\":\"rixkwmyijejve\",\"tags\":{\"xhcexdrrvqahq\":\"bpnaixexccbdre\",\"jnhyjsvf\":\"ghtpw\",\"mtg\":\"cxzbfvoowvr\",\"y\":\"qp\"},\"id\":\"tronzmyhgfi\",\"name\":\"nsxkmcwaekrrjr\",\"type\":\"afxtsgum\"},{\"properties\":{\"accountId\":\"lik\"},\"etag\":\"wslolbqp\",\"tags\":{\"elfk\":\"lmv\",\"njwmwkpnbsazejj\":\"gplcrpwjxeznoigb\",\"augzxnfaazpxdtn\":\"qkagfhsxt\"},\"id\":\"mkqjj\",\"name\":\"wuenvr\",\"type\":\"pyouaibrebqaays\"}]}")
+            "{\"nextLink\":\"yhddvia\",\"value\":[{\"properties\":{\"accountId\":\"m\"},\"etag\":\"fpmvmemfnczd\",\"tags\":{\"lxlllchpo\":\"b\",\"hfuk\":\"bzevwrd\",\"fcvlerch\":\"vsjcswsmystuluqy\"},\"id\":\"bm\",\"name\":\"pjbabwidfc\",\"type\":\"sspuunnoxyhkx\"},{\"properties\":{\"accountId\":\"drihpfhoqcaaewda\"},\"etag\":\"djvlpj\",\"tags\":{\"msgeivsiykzk\":\"zb\",\"xonbzoggculapz\":\"ncj\",\"pgogtqxepny\":\"y\",\"uajlyj\":\"b\"},\"id\":\"vofqzhvfc\",\"name\":\"byfmowuxr\",\"type\":\"jpvd\"},{\"properties\":{\"accountId\":\"zwiivwzjbhyzs\"},\"etag\":\"rkambt\",\"tags\":{\"lds\":\"gvmnvuqeq\"},\"id\":\"stjbkkdmfl\",\"name\":\"est\",\"type\":\"jlxr\"},{\"properties\":{\"accountId\":\"ozapeew\"},\"etag\":\"pxlktwkuziycsl\",\"tags\":{\"ztcktyh\":\"f\",\"rqzz\":\"tqedcgzulwm\",\"toepryu\":\"rjvpglydzgkrvqee\",\"pzdm\":\"nwy\"},\"id\":\"zvfvaawz\",\"name\":\"adflgzu\",\"type\":\"iglaecx\"}]}")
             .toObject(CommitmentPlanAccountAssociationListResult.class);
-        Assertions.assertEquals("ikdgszywkbir", model.nextLink());
+        Assertions.assertEquals("yhddvia", model.nextLink());
     }
 }

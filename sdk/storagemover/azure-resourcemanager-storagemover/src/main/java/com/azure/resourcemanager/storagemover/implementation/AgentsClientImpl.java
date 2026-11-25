@@ -225,18 +225,7 @@ public final class AgentsClientImpl implements AgentsClient {
             .flatMap(res -> Mono.justOrEmpty(res.getValue()));
     }
 
-    /**
-     * Gets an Agent resource.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param storageMoverName The name of the Storage Mover resource.
-     * @param agentName The name of the Agent resource.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return an Agent resource along with {@link Response}.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Response<AgentInner> getWithResponse(String resourceGroupName, String storageMoverName, String agentName,
         Context context) {
@@ -245,17 +234,7 @@ public final class AgentsClientImpl implements AgentsClient {
             resourceGroupName, storageMoverName, agentName, accept, context);
     }
 
-    /**
-     * Gets an Agent resource.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param storageMoverName The name of the Storage Mover resource.
-     * @param agentName The name of the Agent resource.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return an Agent resource.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public AgentInner get(String resourceGroupName, String storageMoverName, String agentName) {
         return getWithResponse(resourceGroupName, storageMoverName, agentName, Context.NONE).getValue();
@@ -304,19 +283,7 @@ public final class AgentsClientImpl implements AgentsClient {
             .flatMap(res -> Mono.justOrEmpty(res.getValue()));
     }
 
-    /**
-     * Creates or updates an Agent resource, which references a hybrid compute machine that can run jobs.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param storageMoverName The name of the Storage Mover resource.
-     * @param agentName The name of the Agent resource.
-     * @param agent The agent parameter.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the Agent resource along with {@link Response}.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Response<AgentInner> createOrUpdateWithResponse(String resourceGroupName, String storageMoverName,
         String agentName, AgentInner agent, Context context) {
@@ -327,18 +294,7 @@ public final class AgentsClientImpl implements AgentsClient {
             context);
     }
 
-    /**
-     * Creates or updates an Agent resource, which references a hybrid compute machine that can run jobs.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param storageMoverName The name of the Storage Mover resource.
-     * @param agentName The name of the Agent resource.
-     * @param agent The agent parameter.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the Agent resource.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public AgentInner createOrUpdate(String resourceGroupName, String storageMoverName, String agentName,
         AgentInner agent) {
@@ -389,19 +345,7 @@ public final class AgentsClientImpl implements AgentsClient {
             .flatMap(res -> Mono.justOrEmpty(res.getValue()));
     }
 
-    /**
-     * Creates or updates an Agent resource.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param storageMoverName The name of the Storage Mover resource.
-     * @param agentName The name of the Agent resource.
-     * @param agent The agent parameter.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the Agent resource along with {@link Response}.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Response<AgentInner> updateWithResponse(String resourceGroupName, String storageMoverName, String agentName,
         AgentUpdateParameters agent, Context context) {
@@ -412,18 +356,7 @@ public final class AgentsClientImpl implements AgentsClient {
             context);
     }
 
-    /**
-     * Creates or updates an Agent resource.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param storageMoverName The name of the Storage Mover resource.
-     * @param agentName The name of the Agent resource.
-     * @param agent The agent parameter.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the Agent resource.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public AgentInner update(String resourceGroupName, String storageMoverName, String agentName,
         AgentUpdateParameters agent) {
@@ -464,8 +397,7 @@ public final class AgentsClientImpl implements AgentsClient {
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Response<BinaryData> deleteWithResponse(String resourceGroupName, String storageMoverName,
         String agentName) {
-        return service.deleteSync(this.client.getEndpoint(), this.client.getApiVersion(),
-            this.client.getSubscriptionId(), resourceGroupName, storageMoverName, agentName, Context.NONE);
+        return deleteWithResponse(resourceGroupName, storageMoverName, agentName, Context.NONE);
     }
 
     /**
@@ -506,36 +438,14 @@ public final class AgentsClientImpl implements AgentsClient {
             this.client.getContext());
     }
 
-    /**
-     * Deletes an Agent resource.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param storageMoverName The name of the Storage Mover resource.
-     * @param agentName The name of the Agent resource.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the {@link SyncPoller} for polling of long-running operation.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public SyncPoller<PollResult<Void>, Void> beginDelete(String resourceGroupName, String storageMoverName,
         String agentName) {
-        Response<BinaryData> response = deleteWithResponse(resourceGroupName, storageMoverName, agentName);
-        return this.client.<Void, Void>getLroResult(response, Void.class, Void.class, Context.NONE);
+        return beginDelete(resourceGroupName, storageMoverName, agentName, Context.NONE);
     }
 
-    /**
-     * Deletes an Agent resource.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param storageMoverName The name of the Storage Mover resource.
-     * @param agentName The name of the Agent resource.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the {@link SyncPoller} for polling of long-running operation.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public SyncPoller<PollResult<Void>, Void> beginDelete(String resourceGroupName, String storageMoverName,
         String agentName, Context context) {
@@ -560,35 +470,16 @@ public final class AgentsClientImpl implements AgentsClient {
             .flatMap(this.client::getLroFinalResultOrError);
     }
 
-    /**
-     * Deletes an Agent resource.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param storageMoverName The name of the Storage Mover resource.
-     * @param agentName The name of the Agent resource.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public void delete(String resourceGroupName, String storageMoverName, String agentName) {
-        beginDelete(resourceGroupName, storageMoverName, agentName).getFinalResult();
+        delete(resourceGroupName, storageMoverName, agentName, Context.NONE);
     }
 
-    /**
-     * Deletes an Agent resource.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param storageMoverName The name of the Storage Mover resource.
-     * @param agentName The name of the Agent resource.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public void delete(String resourceGroupName, String storageMoverName, String agentName, Context context) {
-        beginDelete(resourceGroupName, storageMoverName, agentName, context).getFinalResult();
+        this.client.getLroFinalResultOrError(beginDelete(resourceGroupName, storageMoverName, agentName, context));
     }
 
     /**
@@ -640,11 +531,7 @@ public final class AgentsClientImpl implements AgentsClient {
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private PagedResponse<AgentInner> listSinglePage(String resourceGroupName, String storageMoverName) {
-        final String accept = "application/json";
-        Response<AgentList> res = service.listSync(this.client.getEndpoint(), this.client.getApiVersion(),
-            this.client.getSubscriptionId(), resourceGroupName, storageMoverName, accept, Context.NONE);
-        return new PagedResponseBase<>(res.getRequest(), res.getStatusCode(), res.getHeaders(), res.getValue().value(),
-            res.getValue().nextLink(), null);
+        return listSinglePage(resourceGroupName, storageMoverName, Context.NONE);
     }
 
     /**
@@ -668,33 +555,13 @@ public final class AgentsClientImpl implements AgentsClient {
             res.getValue().nextLink(), null);
     }
 
-    /**
-     * Lists all Agents in a Storage Mover.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param storageMoverName The name of the Storage Mover resource.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return list of Agents as paginated response with {@link PagedIterable}.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.COLLECTION)
     public PagedIterable<AgentInner> list(String resourceGroupName, String storageMoverName) {
-        return new PagedIterable<>(() -> listSinglePage(resourceGroupName, storageMoverName),
-            nextLink -> listNextSinglePage(nextLink));
+        return list(resourceGroupName, storageMoverName, Context.NONE);
     }
 
-    /**
-     * Lists all Agents in a Storage Mover.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param storageMoverName The name of the Storage Mover resource.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return list of Agents as paginated response with {@link PagedIterable}.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.COLLECTION)
     public PagedIterable<AgentInner> list(String resourceGroupName, String storageMoverName, Context context) {
         return new PagedIterable<>(() -> listSinglePage(resourceGroupName, storageMoverName, context),
@@ -730,10 +597,7 @@ public final class AgentsClientImpl implements AgentsClient {
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private PagedResponse<AgentInner> listNextSinglePage(String nextLink) {
-        final String accept = "application/json";
-        Response<AgentList> res = service.listNextSync(nextLink, this.client.getEndpoint(), accept, Context.NONE);
-        return new PagedResponseBase<>(res.getRequest(), res.getStatusCode(), res.getHeaders(), res.getValue().value(),
-            res.getValue().nextLink(), null);
+        return listNextSinglePage(nextLink, Context.NONE);
     }
 
     /**

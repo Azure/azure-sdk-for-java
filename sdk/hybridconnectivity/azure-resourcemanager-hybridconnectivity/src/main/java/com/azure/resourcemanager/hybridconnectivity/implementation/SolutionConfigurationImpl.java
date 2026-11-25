@@ -59,11 +59,7 @@ public final class SolutionConfigurationImpl
     }
 
     public SolutionConfiguration create() {
-        this.innerObject = serviceManager.serviceClient()
-            .getSolutionConfigurations()
-            .createOrUpdateWithResponse(resourceUri, solutionConfiguration, this.innerModel(), Context.NONE)
-            .getValue();
-        return this;
+        return this.create(Context.NONE);
     }
 
     public SolutionConfiguration create(Context context) {
@@ -87,11 +83,7 @@ public final class SolutionConfigurationImpl
     }
 
     public SolutionConfiguration apply() {
-        this.innerObject = serviceManager.serviceClient()
-            .getSolutionConfigurations()
-            .updateWithResponse(resourceUri, solutionConfiguration, updateProperties, Context.NONE)
-            .getValue();
-        return this;
+        return this.apply(Context.NONE);
     }
 
     public SolutionConfiguration apply(Context context) {
@@ -115,11 +107,7 @@ public final class SolutionConfigurationImpl
     }
 
     public SolutionConfiguration refresh() {
-        this.innerObject = serviceManager.serviceClient()
-            .getSolutionConfigurations()
-            .getWithResponse(resourceUri, solutionConfiguration, Context.NONE)
-            .getValue();
-        return this;
+        return this.refresh(Context.NONE);
     }
 
     public SolutionConfiguration refresh(Context context) {

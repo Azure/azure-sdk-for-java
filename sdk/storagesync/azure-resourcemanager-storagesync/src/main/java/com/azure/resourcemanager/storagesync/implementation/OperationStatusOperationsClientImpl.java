@@ -118,19 +118,7 @@ public final class OperationStatusOperationsClientImpl implements OperationStatu
             .flatMap(res -> Mono.justOrEmpty(res.getValue()));
     }
 
-    /**
-     * Get Operation status.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param locationName The desired region to obtain information from.
-     * @param workflowId workflow Id.
-     * @param operationId operation Id.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws StorageSyncApiErrorException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return operation status.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public OperationStatusOperationsGetResponse getWithResponse(String resourceGroupName, String locationName,
         String workflowId, String operationId, Context context) {
@@ -139,18 +127,7 @@ public final class OperationStatusOperationsClientImpl implements OperationStatu
             resourceGroupName, locationName, workflowId, operationId, accept, context);
     }
 
-    /**
-     * Get Operation status.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param locationName The desired region to obtain information from.
-     * @param workflowId workflow Id.
-     * @param operationId operation Id.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws StorageSyncApiErrorException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return operation status.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public OperationStatusInner get(String resourceGroupName, String locationName, String workflowId,
         String operationId) {

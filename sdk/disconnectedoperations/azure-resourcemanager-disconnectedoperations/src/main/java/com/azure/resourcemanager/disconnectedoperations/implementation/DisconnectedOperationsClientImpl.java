@@ -268,17 +268,7 @@ public final class DisconnectedOperationsClientImpl implements DisconnectedOpera
             .flatMap(res -> Mono.justOrEmpty(res.getValue()));
     }
 
-    /**
-     * Get a DisconnectedOperation.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param name Name of the resource.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return a DisconnectedOperation along with {@link Response}.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Response<DisconnectedOperationInner> getByResourceGroupWithResponse(String resourceGroupName, String name,
         Context context) {
@@ -287,16 +277,7 @@ public final class DisconnectedOperationsClientImpl implements DisconnectedOpera
             this.client.getSubscriptionId(), resourceGroupName, name, accept, context);
     }
 
-    /**
-     * Get a DisconnectedOperation.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param name Name of the resource.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return a DisconnectedOperation.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public DisconnectedOperationInner getByResourceGroup(String resourceGroupName, String name) {
         return getByResourceGroupWithResponse(resourceGroupName, name, Context.NONE).getValue();
@@ -338,10 +319,7 @@ public final class DisconnectedOperationsClientImpl implements DisconnectedOpera
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Response<BinaryData> createOrUpdateWithResponse(String resourceGroupName, String name,
         DisconnectedOperationInner resource) {
-        final String contentType = "application/json";
-        final String accept = "application/json";
-        return service.createOrUpdateSync(this.client.getEndpoint(), this.client.getApiVersion(),
-            this.client.getSubscriptionId(), resourceGroupName, name, contentType, accept, resource, Context.NONE);
+        return createOrUpdateWithResponse(resourceGroupName, name, resource, Context.NONE);
     }
 
     /**
@@ -385,37 +363,14 @@ public final class DisconnectedOperationsClientImpl implements DisconnectedOpera
             this.client.getContext());
     }
 
-    /**
-     * Create a DisconnectedOperation.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param name Name of the resource.
-     * @param resource Resource create parameters.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the {@link SyncPoller} for polling of disconnected operation resource.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public SyncPoller<PollResult<DisconnectedOperationInner>, DisconnectedOperationInner>
         beginCreateOrUpdate(String resourceGroupName, String name, DisconnectedOperationInner resource) {
-        Response<BinaryData> response = createOrUpdateWithResponse(resourceGroupName, name, resource);
-        return this.client.<DisconnectedOperationInner, DisconnectedOperationInner>getLroResult(response,
-            DisconnectedOperationInner.class, DisconnectedOperationInner.class, Context.NONE);
+        return beginCreateOrUpdate(resourceGroupName, name, resource, Context.NONE);
     }
 
-    /**
-     * Create a DisconnectedOperation.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param name Name of the resource.
-     * @param resource Resource create parameters.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the {@link SyncPoller} for polling of disconnected operation resource.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public SyncPoller<PollResult<DisconnectedOperationInner>, DisconnectedOperationInner> beginCreateOrUpdate(
         String resourceGroupName, String name, DisconnectedOperationInner resource, Context context) {
@@ -442,39 +397,18 @@ public final class DisconnectedOperationsClientImpl implements DisconnectedOpera
             .flatMap(this.client::getLroFinalResultOrError);
     }
 
-    /**
-     * Create a DisconnectedOperation.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param name Name of the resource.
-     * @param resource Resource create parameters.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return disconnected operation resource.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public DisconnectedOperationInner createOrUpdate(String resourceGroupName, String name,
         DisconnectedOperationInner resource) {
-        return beginCreateOrUpdate(resourceGroupName, name, resource).getFinalResult();
+        return createOrUpdate(resourceGroupName, name, resource, Context.NONE);
     }
 
-    /**
-     * Create a DisconnectedOperation.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param name Name of the resource.
-     * @param resource Resource create parameters.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return disconnected operation resource.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public DisconnectedOperationInner createOrUpdate(String resourceGroupName, String name,
         DisconnectedOperationInner resource, Context context) {
-        return beginCreateOrUpdate(resourceGroupName, name, resource, context).getFinalResult();
+        return this.client.getLroFinalResultOrError(beginCreateOrUpdate(resourceGroupName, name, resource, context));
     }
 
     /**
@@ -517,18 +451,7 @@ public final class DisconnectedOperationsClientImpl implements DisconnectedOpera
             .flatMap(res -> Mono.justOrEmpty(res.getValue()));
     }
 
-    /**
-     * Update a DisconnectedOperation.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param name Name of the resource.
-     * @param properties The resource properties to be updated.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return disconnected operation resource along with {@link Response}.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Response<DisconnectedOperationInner> updateWithResponse(String resourceGroupName, String name,
         DisconnectedOperationUpdate properties, Context context) {
@@ -538,17 +461,7 @@ public final class DisconnectedOperationsClientImpl implements DisconnectedOpera
             this.client.getSubscriptionId(), resourceGroupName, name, contentType, accept, properties, context);
     }
 
-    /**
-     * Update a DisconnectedOperation.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param name Name of the resource.
-     * @param properties The resource properties to be updated.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return disconnected operation resource.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public DisconnectedOperationInner update(String resourceGroupName, String name,
         DisconnectedOperationUpdate properties) {
@@ -585,8 +498,7 @@ public final class DisconnectedOperationsClientImpl implements DisconnectedOpera
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Response<BinaryData> deleteWithResponse(String resourceGroupName, String name) {
-        return service.deleteSync(this.client.getEndpoint(), this.client.getApiVersion(),
-            this.client.getSubscriptionId(), resourceGroupName, name, Context.NONE);
+        return deleteWithResponse(resourceGroupName, name, Context.NONE);
     }
 
     /**
@@ -623,33 +535,13 @@ public final class DisconnectedOperationsClientImpl implements DisconnectedOpera
             this.client.getContext());
     }
 
-    /**
-     * Delete a DisconnectedOperation.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param name Name of the resource.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the {@link SyncPoller} for polling of long-running operation.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public SyncPoller<PollResult<Void>, Void> beginDelete(String resourceGroupName, String name) {
-        Response<BinaryData> response = deleteWithResponse(resourceGroupName, name);
-        return this.client.<Void, Void>getLroResult(response, Void.class, Void.class, Context.NONE);
+        return beginDelete(resourceGroupName, name, Context.NONE);
     }
 
-    /**
-     * Delete a DisconnectedOperation.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param name Name of the resource.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the {@link SyncPoller} for polling of long-running operation.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public SyncPoller<PollResult<Void>, Void> beginDelete(String resourceGroupName, String name, Context context) {
         Response<BinaryData> response = deleteWithResponse(resourceGroupName, name, context);
@@ -671,33 +563,16 @@ public final class DisconnectedOperationsClientImpl implements DisconnectedOpera
         return beginDeleteAsync(resourceGroupName, name).last().flatMap(this.client::getLroFinalResultOrError);
     }
 
-    /**
-     * Delete a DisconnectedOperation.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param name Name of the resource.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public void delete(String resourceGroupName, String name) {
-        beginDelete(resourceGroupName, name).getFinalResult();
+        delete(resourceGroupName, name, Context.NONE);
     }
 
-    /**
-     * Delete a DisconnectedOperation.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param name Name of the resource.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public void delete(String resourceGroupName, String name, Context context) {
-        beginDelete(resourceGroupName, name, context).getFinalResult();
+        this.client.getLroFinalResultOrError(beginDelete(resourceGroupName, name, context));
     }
 
     /**
@@ -748,11 +623,7 @@ public final class DisconnectedOperationsClientImpl implements DisconnectedOpera
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private PagedResponse<DisconnectedOperationInner> listByResourceGroupSinglePage(String resourceGroupName) {
-        final String accept = "application/json";
-        Response<DisconnectedOperationListResult> res = service.listByResourceGroupSync(this.client.getEndpoint(),
-            this.client.getApiVersion(), this.client.getSubscriptionId(), resourceGroupName, accept, Context.NONE);
-        return new PagedResponseBase<>(res.getRequest(), res.getStatusCode(), res.getHeaders(), res.getValue().value(),
-            res.getValue().nextLink(), null);
+        return listByResourceGroupSinglePage(resourceGroupName, Context.NONE);
     }
 
     /**
@@ -775,31 +646,13 @@ public final class DisconnectedOperationsClientImpl implements DisconnectedOpera
             res.getValue().nextLink(), null);
     }
 
-    /**
-     * List DisconnectedOperation resources by resource group.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the response of a DisconnectedOperation list operation as paginated response with {@link PagedIterable}.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.COLLECTION)
     public PagedIterable<DisconnectedOperationInner> listByResourceGroup(String resourceGroupName) {
-        return new PagedIterable<>(() -> listByResourceGroupSinglePage(resourceGroupName),
-            nextLink -> listByResourceGroupNextSinglePage(nextLink));
+        return listByResourceGroup(resourceGroupName, Context.NONE);
     }
 
-    /**
-     * List DisconnectedOperation resources by resource group.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the response of a DisconnectedOperation list operation as paginated response with {@link PagedIterable}.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.COLLECTION)
     public PagedIterable<DisconnectedOperationInner> listByResourceGroup(String resourceGroupName, Context context) {
         return new PagedIterable<>(() -> listByResourceGroupSinglePage(resourceGroupName, context),
@@ -847,11 +700,7 @@ public final class DisconnectedOperationsClientImpl implements DisconnectedOpera
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private PagedResponse<DisconnectedOperationInner> listSinglePage() {
-        final String accept = "application/json";
-        Response<DisconnectedOperationListResult> res = service.listSync(this.client.getEndpoint(),
-            this.client.getApiVersion(), this.client.getSubscriptionId(), accept, Context.NONE);
-        return new PagedResponseBase<>(res.getRequest(), res.getStatusCode(), res.getHeaders(), res.getValue().value(),
-            res.getValue().nextLink(), null);
+        return listSinglePage(Context.NONE);
     }
 
     /**
@@ -872,27 +721,13 @@ public final class DisconnectedOperationsClientImpl implements DisconnectedOpera
             res.getValue().nextLink(), null);
     }
 
-    /**
-     * List DisconnectedOperation resources by subscription ID.
-     * 
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the response of a DisconnectedOperation list operation as paginated response with {@link PagedIterable}.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.COLLECTION)
     public PagedIterable<DisconnectedOperationInner> list() {
-        return new PagedIterable<>(() -> listSinglePage(), nextLink -> listBySubscriptionNextSinglePage(nextLink));
+        return list(Context.NONE);
     }
 
-    /**
-     * List DisconnectedOperation resources by subscription ID.
-     * 
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the response of a DisconnectedOperation list operation as paginated response with {@link PagedIterable}.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.COLLECTION)
     public PagedIterable<DisconnectedOperationInner> list(Context context) {
         return new PagedIterable<>(() -> listSinglePage(context),
@@ -936,17 +771,7 @@ public final class DisconnectedOperationsClientImpl implements DisconnectedOpera
             .flatMap(res -> Mono.justOrEmpty(res.getValue()));
     }
 
-    /**
-     * get deployment manifest.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param name Name of the resource.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return deployment manifest along with {@link Response}.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Response<DisconnectedOperationDeploymentManifestInner>
         listDeploymentManifestWithResponse(String resourceGroupName, String name, Context context) {
@@ -955,16 +780,7 @@ public final class DisconnectedOperationsClientImpl implements DisconnectedOpera
             this.client.getSubscriptionId(), resourceGroupName, name, accept, context);
     }
 
-    /**
-     * get deployment manifest.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param name Name of the resource.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return deployment manifest.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public DisconnectedOperationDeploymentManifestInner listDeploymentManifest(String resourceGroupName, String name) {
         return listDeploymentManifestWithResponse(resourceGroupName, name, Context.NONE).getValue();
@@ -1002,11 +818,7 @@ public final class DisconnectedOperationsClientImpl implements DisconnectedOpera
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private PagedResponse<DisconnectedOperationInner> listByResourceGroupNextSinglePage(String nextLink) {
-        final String accept = "application/json";
-        Response<DisconnectedOperationListResult> res
-            = service.listByResourceGroupNextSync(nextLink, this.client.getEndpoint(), accept, Context.NONE);
-        return new PagedResponseBase<>(res.getRequest(), res.getStatusCode(), res.getHeaders(), res.getValue().value(),
-            res.getValue().nextLink(), null);
+        return listByResourceGroupNextSinglePage(nextLink, Context.NONE);
     }
 
     /**
@@ -1061,11 +873,7 @@ public final class DisconnectedOperationsClientImpl implements DisconnectedOpera
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private PagedResponse<DisconnectedOperationInner> listBySubscriptionNextSinglePage(String nextLink) {
-        final String accept = "application/json";
-        Response<DisconnectedOperationListResult> res
-            = service.listBySubscriptionNextSync(nextLink, this.client.getEndpoint(), accept, Context.NONE);
-        return new PagedResponseBase<>(res.getRequest(), res.getStatusCode(), res.getHeaders(), res.getValue().value(),
-            res.getValue().nextLink(), null);
+        return listBySubscriptionNextSinglePage(nextLink, Context.NONE);
     }
 
     /**

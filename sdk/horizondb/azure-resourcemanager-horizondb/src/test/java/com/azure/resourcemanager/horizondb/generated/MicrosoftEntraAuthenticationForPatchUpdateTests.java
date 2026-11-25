@@ -14,17 +14,17 @@ public final class MicrosoftEntraAuthenticationForPatchUpdateTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
         MicrosoftEntraAuthenticationForPatchUpdate model
-            = BinaryData.fromString("{\"properties\":{\"state\":\"Enabled\"}}")
+            = BinaryData.fromString("{\"properties\":{\"state\":\"Disabled\"}}")
                 .toObject(MicrosoftEntraAuthenticationForPatchUpdate.class);
-        Assertions.assertEquals(AuthenticationState.ENABLED, model.properties().state());
+        Assertions.assertEquals(AuthenticationState.DISABLED, model.properties().state());
     }
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
         MicrosoftEntraAuthenticationForPatchUpdate model
             = new MicrosoftEntraAuthenticationForPatchUpdate().withProperties(
-                new MicrosoftEntraAuthenticationPropertiesForPatchUpdate().withState(AuthenticationState.ENABLED));
+                new MicrosoftEntraAuthenticationPropertiesForPatchUpdate().withState(AuthenticationState.DISABLED));
         model = BinaryData.fromObject(model).toObject(MicrosoftEntraAuthenticationForPatchUpdate.class);
-        Assertions.assertEquals(AuthenticationState.ENABLED, model.properties().state());
+        Assertions.assertEquals(AuthenticationState.DISABLED, model.properties().state());
     }
 }

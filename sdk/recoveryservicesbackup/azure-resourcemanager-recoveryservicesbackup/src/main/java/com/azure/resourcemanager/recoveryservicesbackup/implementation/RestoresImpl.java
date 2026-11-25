@@ -25,9 +25,8 @@ public final class RestoresImpl implements Restores {
 
     public void trigger(String vaultName, String resourceGroupName, String fabricName, String containerName,
         String protectedItemName, String recoveryPointId, RestoreRequestResource parameters) {
-        this.serviceClient()
-            .trigger(vaultName, resourceGroupName, fabricName, containerName, protectedItemName, recoveryPointId,
-                parameters);
+        this.trigger(vaultName, resourceGroupName, fabricName, containerName, protectedItemName, recoveryPointId,
+            parameters, Context.NONE);
     }
 
     public void trigger(String vaultName, String resourceGroupName, String fabricName, String containerName,

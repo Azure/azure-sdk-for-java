@@ -5,8 +5,8 @@ package com.azure.ai.agents.voice;
 
 import com.azure.ai.agents.AgentsClient;
 import com.azure.ai.agents.AgentsClientBuilder;
-import com.azure.ai.agents.BetaVoiceAgentsConversationsClient;
-import com.azure.ai.agents.BetaVoiceAgentWebSocketSessionClient;
+import com.azure.ai.agents.VoiceAgentsConversationsClient;
+import com.azure.ai.agents.VoiceAgentsWebSocketSessionClient;
 import com.azure.ai.agents.models.CreateAgentVersionInput;
 import com.azure.ai.agents.models.RealtimeServerEvent;
 import com.azure.ai.agents.models.RealtimeResponseDoneEvent;
@@ -88,11 +88,10 @@ public class VoiceAgentConversationsTests {
         assertNotNull(endpoint, "FOUNDRY_PROJECT_ENDPOINT is required for live parity testing.");
         assertNotNull(model, "FOUNDRY_VOICE_MODEL_NAME is required for live parity testing.");
         String agentName = "test-voice-read-sync-" + UUID.randomUUID();
-        AgentsClientBuilder builder = new AgentsClientBuilder().endpoint(endpoint)
-            .credential(new DefaultAzureCredentialBuilder().build())
-            .allowPreview(true);
+        AgentsClientBuilder builder
+            = new AgentsClientBuilder().endpoint(endpoint).credential(new DefaultAzureCredentialBuilder().build());
         AgentsClient agents = builder.buildAgentsClient();
-        BetaVoiceAgentsConversationsClient conversations = builder.beta().buildBetaVoiceAgentsConversationsClient();
+        VoiceAgentsConversationsClient conversations = builder.buildVoiceAgentsConversationsClient();
         VoiceAgentDefinition definition = new VoiceAgentDefinition().setModelType(VoiceModelType.MANAGED)
             .setModel(model)
             .setInstructions("You are a helpful voice assistant. Keep replies short.")
@@ -107,8 +106,8 @@ public class VoiceAgentConversationsTests {
         try {
             agents.createAgentVersion(agentName, new CreateAgentVersionInput(definition));
             created = true;
-            try (BetaVoiceAgentWebSocketSessionClient session
-                = builder.beta().buildBetaVoiceAgentWebSocketClient().openWebSocketSession(agentName)) {
+            try (VoiceAgentsWebSocketSessionClient session
+                = builder.buildVoiceAgentsWebSocketClient().openWebSocketSession(agentName)) {
                 Iterator<RealtimeServerEvent> events = session.receiveEvents(TIMEOUT).iterator();
                 assertTrue(events.hasNext(), "Expected session.created.");
                 RealtimeServerEvent first = events.next();
@@ -203,16 +202,14 @@ public class VoiceAgentConversationsTests {
         transport.get(PATH + "/items/user-1", 200, USER_ITEM);
     }
 
-    private static BetaVoiceAgentsConversationsClient client(HttpClient transport) {
+    private static VoiceAgentsConversationsClient client(HttpClient transport) {
         return new AgentsClientBuilder().endpoint("https://localhost")
             .credential(new MockTokenCredential())
             .httpClient(transport)
-            .allowPreview(true)
-            .beta()
-            .buildBetaVoiceAgentsConversationsClient();
+            .buildVoiceAgentsConversationsClient();
     }
 
-    private static void assertPersistedConversation(BetaVoiceAgentsConversationsClient client, String agentName,
+    private static void assertPersistedConversation(VoiceAgentsConversationsClient client, String agentName,
         String conversationId) {
         try {
             assertTrue(client.listAgentConversations(agentName)
@@ -257,7 +254,7 @@ public class VoiceAgentConversationsTests {
             VoiceRecording recording = client.getAgentConversationAudio(agentName, conversationId);
             assertNotNull(recording);
             assertNotNull(recording.getFormat());
-            if (recording.getBlobUri() == null || recording.getBlobUri().isEmpty()) {
+            if (recording.getBlobUrl() == null || recording.getBlobUrl().isEmpty()) {
                 assertAudio(client.downloadAgentConversationAudio(agentName, conversationId));
             }
             for (BinaryData item : items) {
@@ -276,7 +273,7 @@ public class VoiceAgentConversationsTests {
                 }
                 assertNotNull(audio);
                 assertNotNull(audio.getRole());
-                if (audio.getBlobUri() == null || audio.getBlobUri().isEmpty()) {
+                if (audio.getBlobUrl() == null || audio.getBlobUrl().isEmpty()) {
                     assertAudio(client.downloadAgentConversationAudioItem(agentName, conversationId, id));
                 }
                 break;

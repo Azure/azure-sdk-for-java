@@ -13,25 +13,25 @@ public final class RaiPolicyCustomExternalSafetyProviderReferenceTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
         RaiPolicyCustomExternalSafetyProviderReference model = BinaryData.fromString(
-            "{\"externalSafetyProviderName\":\"guwpi\",\"managedIdentityResourceId\":\"ajc\",\"source\":\"PreRun\",\"blocking\":true}")
+            "{\"externalSafetyProviderName\":\"eoiojfizfavkjzw\",\"managedIdentityResourceId\":\"cyayk\",\"source\":\"PreToolCall\",\"blocking\":false}")
             .toObject(RaiPolicyCustomExternalSafetyProviderReference.class);
-        Assertions.assertEquals("guwpi", model.externalSafetyProviderName());
-        Assertions.assertEquals("ajc", model.managedIdentityResourceId());
-        Assertions.assertEquals(RaiPolicyContentSource.PRE_RUN, model.source());
-        Assertions.assertTrue(model.blocking());
+        Assertions.assertEquals("eoiojfizfavkjzw", model.externalSafetyProviderName());
+        Assertions.assertEquals("cyayk", model.managedIdentityResourceId());
+        Assertions.assertEquals(RaiPolicyContentSource.PRE_TOOL_CALL, model.source());
+        Assertions.assertFalse(model.blocking());
     }
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
         RaiPolicyCustomExternalSafetyProviderReference model
-            = new RaiPolicyCustomExternalSafetyProviderReference().withExternalSafetyProviderName("guwpi")
-                .withManagedIdentityResourceId("ajc")
-                .withSource(RaiPolicyContentSource.PRE_RUN)
-                .withBlocking(true);
+            = new RaiPolicyCustomExternalSafetyProviderReference().withExternalSafetyProviderName("eoiojfizfavkjzw")
+                .withManagedIdentityResourceId("cyayk")
+                .withSource(RaiPolicyContentSource.PRE_TOOL_CALL)
+                .withBlocking(false);
         model = BinaryData.fromObject(model).toObject(RaiPolicyCustomExternalSafetyProviderReference.class);
-        Assertions.assertEquals("guwpi", model.externalSafetyProviderName());
-        Assertions.assertEquals("ajc", model.managedIdentityResourceId());
-        Assertions.assertEquals(RaiPolicyContentSource.PRE_RUN, model.source());
-        Assertions.assertTrue(model.blocking());
+        Assertions.assertEquals("eoiojfizfavkjzw", model.externalSafetyProviderName());
+        Assertions.assertEquals("cyayk", model.managedIdentityResourceId());
+        Assertions.assertEquals(RaiPolicyContentSource.PRE_TOOL_CALL, model.source());
+        Assertions.assertFalse(model.blocking());
     }
 }

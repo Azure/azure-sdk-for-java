@@ -120,19 +120,7 @@ public final class MhsmPrivateEndpointConnectionsClientImpl implements MhsmPriva
             @HeaderParam("Accept") String accept, Context context);
     }
 
-    /**
-     * Gets the specified private endpoint connection associated with the managed HSM Pool.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param name The name of the managed HSM Pool.
-     * @param privateEndpointConnectionName Name of the private endpoint connection associated with the managed hsm
-     * pool.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ErrorException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the specified private endpoint connection associated with the managed HSM Pool along with
-     * {@link Response} on successful completion of {@link Mono}.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Response<MhsmPrivateEndpointConnectionInner>> getWithResponseAsync(String resourceGroupName,
         String name, String privateEndpointConnectionName) {
@@ -203,19 +191,7 @@ public final class MhsmPrivateEndpointConnectionsClientImpl implements MhsmPriva
             resourceGroupName, name, privateEndpointConnectionName, accept, context);
     }
 
-    /**
-     * Gets the specified private endpoint connection associated with the managed HSM Pool.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param name The name of the managed HSM Pool.
-     * @param privateEndpointConnectionName Name of the private endpoint connection associated with the managed hsm
-     * pool.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ErrorException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the specified private endpoint connection associated with the managed HSM Pool on successful completion
-     * of {@link Mono}.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<MhsmPrivateEndpointConnectionInner> getAsync(String resourceGroupName, String name,
         String privateEndpointConnectionName) {
@@ -223,57 +199,21 @@ public final class MhsmPrivateEndpointConnectionsClientImpl implements MhsmPriva
             .flatMap(res -> Mono.justOrEmpty(res.getValue()));
     }
 
-    /**
-     * Gets the specified private endpoint connection associated with the managed HSM Pool.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param name The name of the managed HSM Pool.
-     * @param privateEndpointConnectionName Name of the private endpoint connection associated with the managed hsm
-     * pool.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ErrorException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the specified private endpoint connection associated with the managed HSM Pool along with
-     * {@link Response}.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Response<MhsmPrivateEndpointConnectionInner> getWithResponse(String resourceGroupName, String name,
         String privateEndpointConnectionName, Context context) {
         return getWithResponseAsync(resourceGroupName, name, privateEndpointConnectionName, context).block();
     }
 
-    /**
-     * Gets the specified private endpoint connection associated with the managed HSM Pool.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param name The name of the managed HSM Pool.
-     * @param privateEndpointConnectionName Name of the private endpoint connection associated with the managed hsm
-     * pool.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ErrorException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the specified private endpoint connection associated with the managed HSM Pool.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public MhsmPrivateEndpointConnectionInner get(String resourceGroupName, String name,
         String privateEndpointConnectionName) {
         return getWithResponse(resourceGroupName, name, privateEndpointConnectionName, Context.NONE).getValue();
     }
 
-    /**
-     * Updates the specified private endpoint connection associated with the managed hsm pool.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param name The name of the managed HSM Pool.
-     * @param privateEndpointConnectionName Name of the private endpoint connection associated with the managed hsm
-     * pool.
-     * @param properties The intended state of private endpoint connection.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return private endpoint connection resource on successful completion of {@link Mono}.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<MhsmPrivateEndpointConnectionsPutResponse> putWithResponseAsync(String resourceGroupName, String name,
         String privateEndpointConnectionName, MhsmPrivateEndpointConnectionInner properties) {
@@ -358,19 +298,7 @@ public final class MhsmPrivateEndpointConnectionsClientImpl implements MhsmPriva
             resourceGroupName, name, privateEndpointConnectionName, contentType, accept, properties, context);
     }
 
-    /**
-     * Updates the specified private endpoint connection associated with the managed hsm pool.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param name The name of the managed HSM Pool.
-     * @param privateEndpointConnectionName Name of the private endpoint connection associated with the managed hsm
-     * pool.
-     * @param properties The intended state of private endpoint connection.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return private endpoint connection resource on successful completion of {@link Mono}.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<MhsmPrivateEndpointConnectionInner> putAsync(String resourceGroupName, String name,
         String privateEndpointConnectionName, MhsmPrivateEndpointConnectionInner properties) {
@@ -378,20 +306,7 @@ public final class MhsmPrivateEndpointConnectionsClientImpl implements MhsmPriva
             .flatMap(res -> Mono.justOrEmpty(res.getValue()));
     }
 
-    /**
-     * Updates the specified private endpoint connection associated with the managed hsm pool.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param name The name of the managed HSM Pool.
-     * @param privateEndpointConnectionName Name of the private endpoint connection associated with the managed hsm
-     * pool.
-     * @param properties The intended state of private endpoint connection.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return private endpoint connection resource.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public MhsmPrivateEndpointConnectionsPutResponse putWithResponse(String resourceGroupName, String name,
         String privateEndpointConnectionName, MhsmPrivateEndpointConnectionInner properties, Context context) {
@@ -399,19 +314,7 @@ public final class MhsmPrivateEndpointConnectionsClientImpl implements MhsmPriva
             .block();
     }
 
-    /**
-     * Updates the specified private endpoint connection associated with the managed hsm pool.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param name The name of the managed HSM Pool.
-     * @param privateEndpointConnectionName Name of the private endpoint connection associated with the managed hsm
-     * pool.
-     * @param properties The intended state of private endpoint connection.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return private endpoint connection resource.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public MhsmPrivateEndpointConnectionInner put(String resourceGroupName, String name,
         String privateEndpointConnectionName, MhsmPrivateEndpointConnectionInner properties) {
@@ -419,19 +322,7 @@ public final class MhsmPrivateEndpointConnectionsClientImpl implements MhsmPriva
             .getValue();
     }
 
-    /**
-     * Deletes the specified private endpoint connection associated with the managed hsm pool.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param name The name of the managed HSM Pool.
-     * @param privateEndpointConnectionName Name of the private endpoint connection associated with the managed hsm
-     * pool.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return private endpoint connection resource along with {@link Response} on successful completion of
-     * {@link Mono}.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Response<Flux<ByteBuffer>>> deleteWithResponseAsync(String resourceGroupName, String name,
         String privateEndpointConnectionName) {
@@ -502,18 +393,7 @@ public final class MhsmPrivateEndpointConnectionsClientImpl implements MhsmPriva
             resourceGroupName, name, privateEndpointConnectionName, accept, context);
     }
 
-    /**
-     * Deletes the specified private endpoint connection associated with the managed hsm pool.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param name The name of the managed HSM Pool.
-     * @param privateEndpointConnectionName Name of the private endpoint connection associated with the managed hsm
-     * pool.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the {@link PollerFlux} for polling of private endpoint connection resource.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public PollerFlux<PollResult<Void>, Void> beginDeleteAsync(String resourceGroupName, String name,
         String privateEndpointConnectionName) {
@@ -546,55 +426,21 @@ public final class MhsmPrivateEndpointConnectionsClientImpl implements MhsmPriva
             context);
     }
 
-    /**
-     * Deletes the specified private endpoint connection associated with the managed hsm pool.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param name The name of the managed HSM Pool.
-     * @param privateEndpointConnectionName Name of the private endpoint connection associated with the managed hsm
-     * pool.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the {@link SyncPoller} for polling of private endpoint connection resource.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public SyncPoller<PollResult<Void>, Void> beginDelete(String resourceGroupName, String name,
         String privateEndpointConnectionName) {
         return this.beginDeleteAsync(resourceGroupName, name, privateEndpointConnectionName).getSyncPoller();
     }
 
-    /**
-     * Deletes the specified private endpoint connection associated with the managed hsm pool.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param name The name of the managed HSM Pool.
-     * @param privateEndpointConnectionName Name of the private endpoint connection associated with the managed hsm
-     * pool.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the {@link SyncPoller} for polling of private endpoint connection resource.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public SyncPoller<PollResult<Void>, Void> beginDelete(String resourceGroupName, String name,
         String privateEndpointConnectionName, Context context) {
         return this.beginDeleteAsync(resourceGroupName, name, privateEndpointConnectionName, context).getSyncPoller();
     }
 
-    /**
-     * Deletes the specified private endpoint connection associated with the managed hsm pool.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param name The name of the managed HSM Pool.
-     * @param privateEndpointConnectionName Name of the private endpoint connection associated with the managed hsm
-     * pool.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return private endpoint connection resource on successful completion of {@link Mono}.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Void> deleteAsync(String resourceGroupName, String name, String privateEndpointConnectionName) {
         return beginDeleteAsync(resourceGroupName, name, privateEndpointConnectionName).last()
@@ -621,34 +467,13 @@ public final class MhsmPrivateEndpointConnectionsClientImpl implements MhsmPriva
             .flatMap(this.client::getLroFinalResultOrError);
     }
 
-    /**
-     * Deletes the specified private endpoint connection associated with the managed hsm pool.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param name The name of the managed HSM Pool.
-     * @param privateEndpointConnectionName Name of the private endpoint connection associated with the managed hsm
-     * pool.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public void delete(String resourceGroupName, String name, String privateEndpointConnectionName) {
         deleteAsync(resourceGroupName, name, privateEndpointConnectionName).block();
     }
 
-    /**
-     * Deletes the specified private endpoint connection associated with the managed hsm pool.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param name The name of the managed HSM Pool.
-     * @param privateEndpointConnectionName Name of the private endpoint connection associated with the managed hsm
-     * pool.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public void delete(String resourceGroupName, String name, String privateEndpointConnectionName, Context context) {
         deleteAsync(resourceGroupName, name, privateEndpointConnectionName, context).block();
@@ -731,17 +556,7 @@ public final class MhsmPrivateEndpointConnectionsClientImpl implements MhsmPriva
                 res.getValue().value(), res.getValue().nextLink(), null));
     }
 
-    /**
-     * The List operation gets information about the private endpoint connections associated with the managed HSM Pool.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param name The name of the managed HSM Pool.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ErrorException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return list of private endpoint connections associated with a managed HSM Pools as paginated response with
-     * {@link PagedFlux}.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.COLLECTION)
     public PagedFlux<MhsmPrivateEndpointConnectionInner> listByResourceAsync(String resourceGroupName, String name) {
         return new PagedFlux<>(() -> listByResourceSinglePageAsync(resourceGroupName, name),
@@ -767,34 +582,13 @@ public final class MhsmPrivateEndpointConnectionsClientImpl implements MhsmPriva
             nextLink -> listByResourceNextSinglePageAsync(nextLink, context));
     }
 
-    /**
-     * The List operation gets information about the private endpoint connections associated with the managed HSM Pool.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param name The name of the managed HSM Pool.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ErrorException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return list of private endpoint connections associated with a managed HSM Pools as paginated response with
-     * {@link PagedIterable}.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.COLLECTION)
     public PagedIterable<MhsmPrivateEndpointConnectionInner> listByResource(String resourceGroupName, String name) {
         return new PagedIterable<>(listByResourceAsync(resourceGroupName, name));
     }
 
-    /**
-     * The List operation gets information about the private endpoint connections associated with the managed HSM Pool.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param name The name of the managed HSM Pool.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ErrorException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return list of private endpoint connections associated with a managed HSM Pools as paginated response with
-     * {@link PagedIterable}.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.COLLECTION)
     public PagedIterable<MhsmPrivateEndpointConnectionInner> listByResource(String resourceGroupName, String name,
         Context context) {

@@ -26,8 +26,7 @@ public final class ExtensionTypesImpl implements ExtensionTypes {
     }
 
     public PagedIterable<ExtensionType> list(String location, String publisher) {
-        PagedIterable<ExtensionTypeInner> inner = this.serviceClient().list(location, publisher);
-        return ResourceManagerUtils.mapPage(inner, inner1 -> new ExtensionTypeImpl(inner1, this.manager()));
+        return this.list(location, publisher, Context.NONE);
     }
 
     public PagedIterable<ExtensionType> list(String location, String publisher, Context context) {

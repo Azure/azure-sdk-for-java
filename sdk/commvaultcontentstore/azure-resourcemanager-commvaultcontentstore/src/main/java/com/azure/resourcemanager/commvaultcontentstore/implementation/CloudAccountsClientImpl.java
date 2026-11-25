@@ -38,6 +38,7 @@ import com.azure.resourcemanager.commvaultcontentstore.fluent.CloudAccountsClien
 import com.azure.resourcemanager.commvaultcontentstore.fluent.models.CloudAccountInner;
 import com.azure.resourcemanager.commvaultcontentstore.fluent.models.LatestLinkedSaaSResponseInner;
 import com.azure.resourcemanager.commvaultcontentstore.implementation.models.CloudAccountListResult;
+import com.azure.resourcemanager.commvaultcontentstore.models.CloudAccountUpdate;
 import com.azure.resourcemanager.commvaultcontentstore.models.SaaSData;
 import java.nio.ByteBuffer;
 import reactor.core.publisher.Flux;
@@ -122,7 +123,7 @@ public final class CloudAccountsClientImpl implements CloudAccountsClient {
             @QueryParam("api-version") String apiVersion, @PathParam("subscriptionId") String subscriptionId,
             @PathParam("resourceGroupName") String resourceGroupName,
             @PathParam("cloudAccountName") String cloudAccountName, @HeaderParam("Content-Type") String contentType,
-            @HeaderParam("Accept") String accept, @BodyParam("application/json") CloudAccountInner properties,
+            @HeaderParam("Accept") String accept, @BodyParam("application/json") CloudAccountUpdate properties,
             Context context);
 
         @Patch("/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Commvault.ContentStore/cloudAccounts/{cloudAccountName}")
@@ -132,7 +133,7 @@ public final class CloudAccountsClientImpl implements CloudAccountsClient {
             @QueryParam("api-version") String apiVersion, @PathParam("subscriptionId") String subscriptionId,
             @PathParam("resourceGroupName") String resourceGroupName,
             @PathParam("cloudAccountName") String cloudAccountName, @HeaderParam("Content-Type") String contentType,
-            @HeaderParam("Accept") String accept, @BodyParam("application/json") CloudAccountInner properties,
+            @HeaderParam("Accept") String accept, @BodyParam("application/json") CloudAccountUpdate properties,
             Context context);
 
         @Headers({ "Accept: application/json;q=0.9", "Content-Type: application/json" })
@@ -294,17 +295,7 @@ public final class CloudAccountsClientImpl implements CloudAccountsClient {
             .flatMap(res -> Mono.justOrEmpty(res.getValue()));
     }
 
-    /**
-     * Get a CloudAccount.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param cloudAccountName Name of the Cloud Account resource.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return a CloudAccount along with {@link Response}.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Response<CloudAccountInner> getByResourceGroupWithResponse(String resourceGroupName, String cloudAccountName,
         Context context) {
@@ -313,16 +304,7 @@ public final class CloudAccountsClientImpl implements CloudAccountsClient {
             this.client.getSubscriptionId(), resourceGroupName, cloudAccountName, accept, context);
     }
 
-    /**
-     * Get a CloudAccount.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param cloudAccountName Name of the Cloud Account resource.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return a CloudAccount.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public CloudAccountInner getByResourceGroup(String resourceGroupName, String cloudAccountName) {
         return getByResourceGroupWithResponse(resourceGroupName, cloudAccountName, Context.NONE).getValue();
@@ -365,11 +347,7 @@ public final class CloudAccountsClientImpl implements CloudAccountsClient {
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Response<BinaryData> createOrUpdateWithResponse(String resourceGroupName, String cloudAccountName,
         CloudAccountInner resource) {
-        final String contentType = "application/json";
-        final String accept = "application/json";
-        return service.createOrUpdateSync(this.client.getEndpoint(), this.client.getApiVersion(),
-            this.client.getSubscriptionId(), resourceGroupName, cloudAccountName, contentType, accept, resource,
-            Context.NONE);
+        return createOrUpdateWithResponse(resourceGroupName, cloudAccountName, resource, Context.NONE);
     }
 
     /**
@@ -414,37 +392,14 @@ public final class CloudAccountsClientImpl implements CloudAccountsClient {
             CloudAccountInner.class, CloudAccountInner.class, this.client.getContext());
     }
 
-    /**
-     * Create a CloudAccount.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param cloudAccountName Name of the Cloud Account resource.
-     * @param resource Resource create parameters.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the {@link SyncPoller} for polling of a Commvault Cloud Account Resource.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public SyncPoller<PollResult<CloudAccountInner>, CloudAccountInner> beginCreateOrUpdate(String resourceGroupName,
         String cloudAccountName, CloudAccountInner resource) {
-        Response<BinaryData> response = createOrUpdateWithResponse(resourceGroupName, cloudAccountName, resource);
-        return this.client.<CloudAccountInner, CloudAccountInner>getLroResult(response, CloudAccountInner.class,
-            CloudAccountInner.class, Context.NONE);
+        return beginCreateOrUpdate(resourceGroupName, cloudAccountName, resource, Context.NONE);
     }
 
-    /**
-     * Create a CloudAccount.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param cloudAccountName Name of the Cloud Account resource.
-     * @param resource Resource create parameters.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the {@link SyncPoller} for polling of a Commvault Cloud Account Resource.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public SyncPoller<PollResult<CloudAccountInner>, CloudAccountInner> beginCreateOrUpdate(String resourceGroupName,
         String cloudAccountName, CloudAccountInner resource, Context context) {
@@ -472,39 +427,19 @@ public final class CloudAccountsClientImpl implements CloudAccountsClient {
             .flatMap(this.client::getLroFinalResultOrError);
     }
 
-    /**
-     * Create a CloudAccount.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param cloudAccountName Name of the Cloud Account resource.
-     * @param resource Resource create parameters.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return a Commvault Cloud Account Resource.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public CloudAccountInner createOrUpdate(String resourceGroupName, String cloudAccountName,
         CloudAccountInner resource) {
-        return beginCreateOrUpdate(resourceGroupName, cloudAccountName, resource).getFinalResult();
+        return createOrUpdate(resourceGroupName, cloudAccountName, resource, Context.NONE);
     }
 
-    /**
-     * Create a CloudAccount.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param cloudAccountName Name of the Cloud Account resource.
-     * @param resource Resource create parameters.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return a Commvault Cloud Account Resource.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public CloudAccountInner createOrUpdate(String resourceGroupName, String cloudAccountName,
         CloudAccountInner resource, Context context) {
-        return beginCreateOrUpdate(resourceGroupName, cloudAccountName, resource, context).getFinalResult();
+        return this.client
+            .getLroFinalResultOrError(beginCreateOrUpdate(resourceGroupName, cloudAccountName, resource, context));
     }
 
     /**
@@ -520,7 +455,7 @@ public final class CloudAccountsClientImpl implements CloudAccountsClient {
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<Response<Flux<ByteBuffer>>> updateWithResponseAsync(String resourceGroupName, String cloudAccountName,
-        CloudAccountInner properties) {
+        CloudAccountUpdate properties) {
         final String contentType = "application/json";
         final String accept = "application/json";
         return FluxUtil
@@ -543,12 +478,8 @@ public final class CloudAccountsClientImpl implements CloudAccountsClient {
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Response<BinaryData> updateWithResponse(String resourceGroupName, String cloudAccountName,
-        CloudAccountInner properties) {
-        final String contentType = "application/json";
-        final String accept = "application/json";
-        return service.updateSync(this.client.getEndpoint(), this.client.getApiVersion(),
-            this.client.getSubscriptionId(), resourceGroupName, cloudAccountName, contentType, accept, properties,
-            Context.NONE);
+        CloudAccountUpdate properties) {
+        return updateWithResponse(resourceGroupName, cloudAccountName, properties, Context.NONE);
     }
 
     /**
@@ -565,7 +496,7 @@ public final class CloudAccountsClientImpl implements CloudAccountsClient {
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Response<BinaryData> updateWithResponse(String resourceGroupName, String cloudAccountName,
-        CloudAccountInner properties, Context context) {
+        CloudAccountUpdate properties, Context context) {
         final String contentType = "application/json";
         final String accept = "application/json";
         return service.updateSync(this.client.getEndpoint(), this.client.getApiVersion(),
@@ -586,47 +517,24 @@ public final class CloudAccountsClientImpl implements CloudAccountsClient {
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     private PollerFlux<PollResult<CloudAccountInner>, CloudAccountInner> beginUpdateAsync(String resourceGroupName,
-        String cloudAccountName, CloudAccountInner properties) {
+        String cloudAccountName, CloudAccountUpdate properties) {
         Mono<Response<Flux<ByteBuffer>>> mono
             = updateWithResponseAsync(resourceGroupName, cloudAccountName, properties);
         return this.client.<CloudAccountInner, CloudAccountInner>getLroResult(mono, this.client.getHttpPipeline(),
             CloudAccountInner.class, CloudAccountInner.class, this.client.getContext());
     }
 
-    /**
-     * Update a CloudAccount.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param cloudAccountName Name of the Cloud Account resource.
-     * @param properties The resource properties to be updated.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the {@link SyncPoller} for polling of a Commvault Cloud Account Resource.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public SyncPoller<PollResult<CloudAccountInner>, CloudAccountInner> beginUpdate(String resourceGroupName,
-        String cloudAccountName, CloudAccountInner properties) {
-        Response<BinaryData> response = updateWithResponse(resourceGroupName, cloudAccountName, properties);
-        return this.client.<CloudAccountInner, CloudAccountInner>getLroResult(response, CloudAccountInner.class,
-            CloudAccountInner.class, Context.NONE);
+        String cloudAccountName, CloudAccountUpdate properties) {
+        return beginUpdate(resourceGroupName, cloudAccountName, properties, Context.NONE);
     }
 
-    /**
-     * Update a CloudAccount.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param cloudAccountName Name of the Cloud Account resource.
-     * @param properties The resource properties to be updated.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the {@link SyncPoller} for polling of a Commvault Cloud Account Resource.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public SyncPoller<PollResult<CloudAccountInner>, CloudAccountInner> beginUpdate(String resourceGroupName,
-        String cloudAccountName, CloudAccountInner properties, Context context) {
+        String cloudAccountName, CloudAccountUpdate properties, Context context) {
         Response<BinaryData> response = updateWithResponse(resourceGroupName, cloudAccountName, properties, context);
         return this.client.<CloudAccountInner, CloudAccountInner>getLroResult(response, CloudAccountInner.class,
             CloudAccountInner.class, context);
@@ -645,43 +553,23 @@ public final class CloudAccountsClientImpl implements CloudAccountsClient {
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<CloudAccountInner> updateAsync(String resourceGroupName, String cloudAccountName,
-        CloudAccountInner properties) {
+        CloudAccountUpdate properties) {
         return beginUpdateAsync(resourceGroupName, cloudAccountName, properties).last()
             .flatMap(this.client::getLroFinalResultOrError);
     }
 
-    /**
-     * Update a CloudAccount.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param cloudAccountName Name of the Cloud Account resource.
-     * @param properties The resource properties to be updated.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return a Commvault Cloud Account Resource.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public CloudAccountInner update(String resourceGroupName, String cloudAccountName, CloudAccountInner properties) {
-        return beginUpdate(resourceGroupName, cloudAccountName, properties).getFinalResult();
+    public CloudAccountInner update(String resourceGroupName, String cloudAccountName, CloudAccountUpdate properties) {
+        return update(resourceGroupName, cloudAccountName, properties, Context.NONE);
     }
 
-    /**
-     * Update a CloudAccount.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param cloudAccountName Name of the Cloud Account resource.
-     * @param properties The resource properties to be updated.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return a Commvault Cloud Account Resource.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public CloudAccountInner update(String resourceGroupName, String cloudAccountName, CloudAccountInner properties,
+    public CloudAccountInner update(String resourceGroupName, String cloudAccountName, CloudAccountUpdate properties,
         Context context) {
-        return beginUpdate(resourceGroupName, cloudAccountName, properties, context).getFinalResult();
+        return this.client
+            .getLroFinalResultOrError(beginUpdate(resourceGroupName, cloudAccountName, properties, context));
     }
 
     /**
@@ -715,8 +603,7 @@ public final class CloudAccountsClientImpl implements CloudAccountsClient {
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Response<BinaryData> deleteWithResponse(String resourceGroupName, String cloudAccountName) {
-        return service.deleteSync(this.client.getEndpoint(), this.client.getApiVersion(),
-            this.client.getSubscriptionId(), resourceGroupName, cloudAccountName, Context.NONE);
+        return deleteWithResponse(resourceGroupName, cloudAccountName, Context.NONE);
     }
 
     /**
@@ -754,33 +641,13 @@ public final class CloudAccountsClientImpl implements CloudAccountsClient {
             this.client.getContext());
     }
 
-    /**
-     * Delete a CloudAccount.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param cloudAccountName Name of the Cloud Account resource.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the {@link SyncPoller} for polling of long-running operation.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public SyncPoller<PollResult<Void>, Void> beginDelete(String resourceGroupName, String cloudAccountName) {
-        Response<BinaryData> response = deleteWithResponse(resourceGroupName, cloudAccountName);
-        return this.client.<Void, Void>getLroResult(response, Void.class, Void.class, Context.NONE);
+        return beginDelete(resourceGroupName, cloudAccountName, Context.NONE);
     }
 
-    /**
-     * Delete a CloudAccount.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param cloudAccountName Name of the Cloud Account resource.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the {@link SyncPoller} for polling of long-running operation.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public SyncPoller<PollResult<Void>, Void> beginDelete(String resourceGroupName, String cloudAccountName,
         Context context) {
@@ -804,33 +671,16 @@ public final class CloudAccountsClientImpl implements CloudAccountsClient {
             .flatMap(this.client::getLroFinalResultOrError);
     }
 
-    /**
-     * Delete a CloudAccount.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param cloudAccountName Name of the Cloud Account resource.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public void delete(String resourceGroupName, String cloudAccountName) {
-        beginDelete(resourceGroupName, cloudAccountName).getFinalResult();
+        delete(resourceGroupName, cloudAccountName, Context.NONE);
     }
 
-    /**
-     * Delete a CloudAccount.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param cloudAccountName Name of the Cloud Account resource.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public void delete(String resourceGroupName, String cloudAccountName, Context context) {
-        beginDelete(resourceGroupName, cloudAccountName, context).getFinalResult();
+        this.client.getLroFinalResultOrError(beginDelete(resourceGroupName, cloudAccountName, context));
     }
 
     /**
@@ -880,11 +730,7 @@ public final class CloudAccountsClientImpl implements CloudAccountsClient {
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private PagedResponse<CloudAccountInner> listByResourceGroupSinglePage(String resourceGroupName) {
-        final String accept = "application/json";
-        Response<CloudAccountListResult> res = service.listByResourceGroupSync(this.client.getEndpoint(),
-            this.client.getApiVersion(), this.client.getSubscriptionId(), resourceGroupName, accept, Context.NONE);
-        return new PagedResponseBase<>(res.getRequest(), res.getStatusCode(), res.getHeaders(), res.getValue().value(),
-            res.getValue().nextLink(), null);
+        return listByResourceGroupSinglePage(resourceGroupName, Context.NONE);
     }
 
     /**
@@ -906,31 +752,13 @@ public final class CloudAccountsClientImpl implements CloudAccountsClient {
             res.getValue().nextLink(), null);
     }
 
-    /**
-     * List CloudAccount resources by resource group.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the response of a CloudAccount list operation as paginated response with {@link PagedIterable}.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.COLLECTION)
     public PagedIterable<CloudAccountInner> listByResourceGroup(String resourceGroupName) {
-        return new PagedIterable<>(() -> listByResourceGroupSinglePage(resourceGroupName),
-            nextLink -> listByResourceGroupNextSinglePage(nextLink));
+        return listByResourceGroup(resourceGroupName, Context.NONE);
     }
 
-    /**
-     * List CloudAccount resources by resource group.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the response of a CloudAccount list operation as paginated response with {@link PagedIterable}.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.COLLECTION)
     public PagedIterable<CloudAccountInner> listByResourceGroup(String resourceGroupName, Context context) {
         return new PagedIterable<>(() -> listByResourceGroupSinglePage(resourceGroupName, context),
@@ -978,11 +806,7 @@ public final class CloudAccountsClientImpl implements CloudAccountsClient {
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private PagedResponse<CloudAccountInner> listSinglePage() {
-        final String accept = "application/json";
-        Response<CloudAccountListResult> res = service.listSync(this.client.getEndpoint(), this.client.getApiVersion(),
-            this.client.getSubscriptionId(), accept, Context.NONE);
-        return new PagedResponseBase<>(res.getRequest(), res.getStatusCode(), res.getHeaders(), res.getValue().value(),
-            res.getValue().nextLink(), null);
+        return listSinglePage(Context.NONE);
     }
 
     /**
@@ -1003,27 +827,13 @@ public final class CloudAccountsClientImpl implements CloudAccountsClient {
             res.getValue().nextLink(), null);
     }
 
-    /**
-     * List CloudAccount resources by subscription ID.
-     * 
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the response of a CloudAccount list operation as paginated response with {@link PagedIterable}.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.COLLECTION)
     public PagedIterable<CloudAccountInner> list() {
-        return new PagedIterable<>(() -> listSinglePage(), nextLink -> listBySubscriptionNextSinglePage(nextLink));
+        return list(Context.NONE);
     }
 
-    /**
-     * List CloudAccount resources by subscription ID.
-     * 
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the response of a CloudAccount list operation as paginated response with {@link PagedIterable}.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.COLLECTION)
     public PagedIterable<CloudAccountInner> list(Context context) {
         return new PagedIterable<>(() -> listSinglePage(context),
@@ -1065,11 +875,7 @@ public final class CloudAccountsClientImpl implements CloudAccountsClient {
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Response<BinaryData> linkSaaSWithResponse(String resourceGroupName, String cloudAccountName,
         SaaSData body) {
-        final String contentType = "application/json";
-        final String accept = "application/json";
-        return service.linkSaaSSync(this.client.getEndpoint(), this.client.getApiVersion(),
-            this.client.getSubscriptionId(), resourceGroupName, cloudAccountName, contentType, accept, body,
-            Context.NONE);
+        return linkSaaSWithResponse(resourceGroupName, cloudAccountName, body, Context.NONE);
     }
 
     /**
@@ -1112,37 +918,14 @@ public final class CloudAccountsClientImpl implements CloudAccountsClient {
             CloudAccountInner.class, CloudAccountInner.class, this.client.getContext());
     }
 
-    /**
-     * Links a new SaaS to the cloud account.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param cloudAccountName Name of the Cloud Account resource.
-     * @param body The content of the action request.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the {@link SyncPoller} for polling of long-running operation.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public SyncPoller<PollResult<CloudAccountInner>, CloudAccountInner> beginLinkSaaS(String resourceGroupName,
         String cloudAccountName, SaaSData body) {
-        Response<BinaryData> response = linkSaaSWithResponse(resourceGroupName, cloudAccountName, body);
-        return this.client.<CloudAccountInner, CloudAccountInner>getLroResult(response, CloudAccountInner.class,
-            CloudAccountInner.class, Context.NONE);
+        return beginLinkSaaS(resourceGroupName, cloudAccountName, body, Context.NONE);
     }
 
-    /**
-     * Links a new SaaS to the cloud account.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param cloudAccountName Name of the Cloud Account resource.
-     * @param body The content of the action request.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the {@link SyncPoller} for polling of long-running operation.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public SyncPoller<PollResult<CloudAccountInner>, CloudAccountInner> beginLinkSaaS(String resourceGroupName,
         String cloudAccountName, SaaSData body, Context context) {
@@ -1168,38 +951,17 @@ public final class CloudAccountsClientImpl implements CloudAccountsClient {
             .flatMap(this.client::getLroFinalResultOrError);
     }
 
-    /**
-     * Links a new SaaS to the cloud account.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param cloudAccountName Name of the Cloud Account resource.
-     * @param body The content of the action request.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the response.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public CloudAccountInner linkSaaS(String resourceGroupName, String cloudAccountName, SaaSData body) {
-        return beginLinkSaaS(resourceGroupName, cloudAccountName, body).getFinalResult();
+        return linkSaaS(resourceGroupName, cloudAccountName, body, Context.NONE);
     }
 
-    /**
-     * Links a new SaaS to the cloud account.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param cloudAccountName Name of the Cloud Account resource.
-     * @param body The content of the action request.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the response.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public CloudAccountInner linkSaaS(String resourceGroupName, String cloudAccountName, SaaSData body,
         Context context) {
-        return beginLinkSaaS(resourceGroupName, cloudAccountName, body, context).getFinalResult();
+        return this.client.getLroFinalResultOrError(beginLinkSaaS(resourceGroupName, cloudAccountName, body, context));
     }
 
     /**
@@ -1240,17 +1002,7 @@ public final class CloudAccountsClientImpl implements CloudAccountsClient {
             .flatMap(res -> Mono.justOrEmpty(res.getValue()));
     }
 
-    /**
-     * Returns the latest SaaS linked to the cloud account.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param cloudAccountName Name of the Cloud Account resource.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return response of get latest linked SaaS resource operation along with {@link Response}.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Response<LatestLinkedSaaSResponseInner> latestLinkedSaaSWithResponse(String resourceGroupName,
         String cloudAccountName, Context context) {
@@ -1259,16 +1011,7 @@ public final class CloudAccountsClientImpl implements CloudAccountsClient {
             this.client.getSubscriptionId(), resourceGroupName, cloudAccountName, accept, context);
     }
 
-    /**
-     * Returns the latest SaaS linked to the cloud account.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param cloudAccountName Name of the Cloud Account resource.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return response of get latest linked SaaS resource operation.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public LatestLinkedSaaSResponseInner latestLinkedSaaS(String resourceGroupName, String cloudAccountName) {
         return latestLinkedSaaSWithResponse(resourceGroupName, cloudAccountName, Context.NONE).getValue();
@@ -1306,11 +1049,7 @@ public final class CloudAccountsClientImpl implements CloudAccountsClient {
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private PagedResponse<CloudAccountInner> listByResourceGroupNextSinglePage(String nextLink) {
-        final String accept = "application/json";
-        Response<CloudAccountListResult> res
-            = service.listByResourceGroupNextSync(nextLink, this.client.getEndpoint(), accept, Context.NONE);
-        return new PagedResponseBase<>(res.getRequest(), res.getStatusCode(), res.getHeaders(), res.getValue().value(),
-            res.getValue().nextLink(), null);
+        return listByResourceGroupNextSinglePage(nextLink, Context.NONE);
     }
 
     /**
@@ -1364,11 +1103,7 @@ public final class CloudAccountsClientImpl implements CloudAccountsClient {
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private PagedResponse<CloudAccountInner> listBySubscriptionNextSinglePage(String nextLink) {
-        final String accept = "application/json";
-        Response<CloudAccountListResult> res
-            = service.listBySubscriptionNextSync(nextLink, this.client.getEndpoint(), accept, Context.NONE);
-        return new PagedResponseBase<>(res.getRequest(), res.getStatusCode(), res.getHeaders(), res.getValue().value(),
-            res.getValue().nextLink(), null);
+        return listBySubscriptionNextSinglePage(nextLink, Context.NONE);
     }
 
     /**

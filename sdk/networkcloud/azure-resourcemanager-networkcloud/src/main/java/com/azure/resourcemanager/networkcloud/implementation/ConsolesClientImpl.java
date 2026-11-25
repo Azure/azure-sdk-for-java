@@ -234,18 +234,7 @@ public final class ConsolesClientImpl implements ConsolesClient {
             .flatMap(res -> Mono.justOrEmpty(res.getValue()));
     }
 
-    /**
-     * Get properties of the provided virtual machine console.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param virtualMachineName The name of the virtual machine.
-     * @param consoleName The name of the virtual machine console.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return properties of the provided virtual machine console along with {@link Response}.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Response<ConsoleInner> getWithResponse(String resourceGroupName, String virtualMachineName,
         String consoleName, Context context) {
@@ -254,17 +243,7 @@ public final class ConsolesClientImpl implements ConsolesClient {
             resourceGroupName, virtualMachineName, consoleName, accept, context);
     }
 
-    /**
-     * Get properties of the provided virtual machine console.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param virtualMachineName The name of the virtual machine.
-     * @param consoleName The name of the virtual machine console.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return properties of the provided virtual machine console.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public ConsoleInner get(String resourceGroupName, String virtualMachineName, String consoleName) {
         return getWithResponse(resourceGroupName, virtualMachineName, consoleName, Context.NONE).getValue();
@@ -320,11 +299,8 @@ public final class ConsolesClientImpl implements ConsolesClient {
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Response<BinaryData> createOrUpdateWithResponse(String resourceGroupName, String virtualMachineName,
         String consoleName, ConsoleInner consoleParameters, String ifMatch, String ifNoneMatch) {
-        final String contentType = "application/json";
-        final String accept = "application/json";
-        return service.createOrUpdateSync(this.client.getEndpoint(), this.client.getApiVersion(),
-            this.client.getSubscriptionId(), resourceGroupName, virtualMachineName, consoleName, ifMatch, ifNoneMatch,
-            contentType, accept, consoleParameters, Context.NONE);
+        return createOrUpdateWithResponse(resourceGroupName, virtualMachineName, consoleName, consoleParameters,
+            ifMatch, ifNoneMatch, Context.NONE);
     }
 
     /**
@@ -424,57 +400,24 @@ public final class ConsolesClientImpl implements ConsolesClient {
      * virtual machine.
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
-    public SyncPoller<PollResult<ConsoleInner>, ConsoleInner> beginCreateOrUpdate(String resourceGroupName,
+    private SyncPoller<PollResult<ConsoleInner>, ConsoleInner> beginCreateOrUpdate(String resourceGroupName,
         String virtualMachineName, String consoleName, ConsoleInner consoleParameters, String ifMatch,
         String ifNoneMatch) {
-        Response<BinaryData> response = createOrUpdateWithResponse(resourceGroupName, virtualMachineName, consoleName,
-            consoleParameters, ifMatch, ifNoneMatch);
-        return this.client.<ConsoleInner, ConsoleInner>getLroResult(response, ConsoleInner.class, ConsoleInner.class,
-            Context.NONE);
+        return beginCreateOrUpdate(resourceGroupName, virtualMachineName, consoleName, consoleParameters, ifMatch,
+            ifNoneMatch, Context.NONE);
     }
 
-    /**
-     * Create a new virtual machine console or update the properties of the existing virtual machine console.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param virtualMachineName The name of the virtual machine.
-     * @param consoleName The name of the virtual machine console.
-     * @param consoleParameters The request body.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the {@link SyncPoller} for polling of console represents the console of an on-premises Network Cloud
-     * virtual machine.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public SyncPoller<PollResult<ConsoleInner>, ConsoleInner> beginCreateOrUpdate(String resourceGroupName,
         String virtualMachineName, String consoleName, ConsoleInner consoleParameters) {
         final String ifMatch = null;
         final String ifNoneMatch = null;
-        Response<BinaryData> response = createOrUpdateWithResponse(resourceGroupName, virtualMachineName, consoleName,
-            consoleParameters, ifMatch, ifNoneMatch);
-        return this.client.<ConsoleInner, ConsoleInner>getLroResult(response, ConsoleInner.class, ConsoleInner.class,
-            Context.NONE);
+        return beginCreateOrUpdate(resourceGroupName, virtualMachineName, consoleName, consoleParameters, ifMatch,
+            ifNoneMatch, Context.NONE);
     }
 
-    /**
-     * Create a new virtual machine console or update the properties of the existing virtual machine console.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param virtualMachineName The name of the virtual machine.
-     * @param consoleName The name of the virtual machine console.
-     * @param consoleParameters The request body.
-     * @param ifMatch The ETag of the transformation. Omit this value to always overwrite the current resource. Specify
-     * the last-seen ETag value to prevent accidentally overwriting concurrent changes.
-     * @param ifNoneMatch Set to '*' to allow a new record set to be created, but to prevent updating an existing
-     * resource. Other values will result in error from server as they are not supported.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the {@link SyncPoller} for polling of console represents the console of an on-premises Network Cloud
-     * virtual machine.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public SyncPoller<PollResult<ConsoleInner>, ConsoleInner> beginCreateOrUpdate(String resourceGroupName,
         String virtualMachineName, String consoleName, ConsoleInner consoleParameters, String ifMatch,
@@ -531,49 +474,22 @@ public final class ConsolesClientImpl implements ConsolesClient {
             ifNoneMatch).last().flatMap(this.client::getLroFinalResultOrError);
     }
 
-    /**
-     * Create a new virtual machine console or update the properties of the existing virtual machine console.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param virtualMachineName The name of the virtual machine.
-     * @param consoleName The name of the virtual machine console.
-     * @param consoleParameters The request body.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return console represents the console of an on-premises Network Cloud virtual machine.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public ConsoleInner createOrUpdate(String resourceGroupName, String virtualMachineName, String consoleName,
         ConsoleInner consoleParameters) {
         final String ifMatch = null;
         final String ifNoneMatch = null;
-        return beginCreateOrUpdate(resourceGroupName, virtualMachineName, consoleName, consoleParameters, ifMatch,
-            ifNoneMatch).getFinalResult();
+        return createOrUpdate(resourceGroupName, virtualMachineName, consoleName, consoleParameters, ifMatch,
+            ifNoneMatch, Context.NONE);
     }
 
-    /**
-     * Create a new virtual machine console or update the properties of the existing virtual machine console.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param virtualMachineName The name of the virtual machine.
-     * @param consoleName The name of the virtual machine console.
-     * @param consoleParameters The request body.
-     * @param ifMatch The ETag of the transformation. Omit this value to always overwrite the current resource. Specify
-     * the last-seen ETag value to prevent accidentally overwriting concurrent changes.
-     * @param ifNoneMatch Set to '*' to allow a new record set to be created, but to prevent updating an existing
-     * resource. Other values will result in error from server as they are not supported.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return console represents the console of an on-premises Network Cloud virtual machine.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public ConsoleInner createOrUpdate(String resourceGroupName, String virtualMachineName, String consoleName,
         ConsoleInner consoleParameters, String ifMatch, String ifNoneMatch, Context context) {
-        return beginCreateOrUpdate(resourceGroupName, virtualMachineName, consoleName, consoleParameters, ifMatch,
-            ifNoneMatch, context).getFinalResult();
+        return this.client.getLroFinalResultOrError(beginCreateOrUpdate(resourceGroupName, virtualMachineName,
+            consoleName, consoleParameters, ifMatch, ifNoneMatch, context));
     }
 
     /**
@@ -627,10 +543,8 @@ public final class ConsolesClientImpl implements ConsolesClient {
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Response<BinaryData> updateWithResponse(String resourceGroupName, String virtualMachineName,
         String consoleName, String ifMatch, String ifNoneMatch, ConsolePatchParameters consoleUpdateParameters) {
-        final String accept = "application/json";
-        return service.updateSync(this.client.getEndpoint(), this.client.getApiVersion(),
-            this.client.getSubscriptionId(), resourceGroupName, virtualMachineName, consoleName, ifMatch, ifNoneMatch,
-            accept, consoleUpdateParameters, Context.NONE);
+        return updateWithResponse(resourceGroupName, virtualMachineName, consoleName, ifMatch, ifNoneMatch,
+            consoleUpdateParameters, Context.NONE);
     }
 
     /**
@@ -734,59 +648,25 @@ public final class ConsolesClientImpl implements ConsolesClient {
      * virtual machine.
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
-    public SyncPoller<PollResult<ConsoleInner>, ConsoleInner> beginUpdate(String resourceGroupName,
+    private SyncPoller<PollResult<ConsoleInner>, ConsoleInner> beginUpdate(String resourceGroupName,
         String virtualMachineName, String consoleName, String ifMatch, String ifNoneMatch,
         ConsolePatchParameters consoleUpdateParameters) {
-        Response<BinaryData> response = updateWithResponse(resourceGroupName, virtualMachineName, consoleName, ifMatch,
-            ifNoneMatch, consoleUpdateParameters);
-        return this.client.<ConsoleInner, ConsoleInner>getLroResult(response, ConsoleInner.class, ConsoleInner.class,
-            Context.NONE);
+        return beginUpdate(resourceGroupName, virtualMachineName, consoleName, ifMatch, ifNoneMatch,
+            consoleUpdateParameters, Context.NONE);
     }
 
-    /**
-     * Patch the properties of the provided virtual machine console, or update the tags associated with the virtual
-     * machine console. Properties and tag updates can be done independently.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param virtualMachineName The name of the virtual machine.
-     * @param consoleName The name of the virtual machine console.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the {@link SyncPoller} for polling of console represents the console of an on-premises Network Cloud
-     * virtual machine.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public SyncPoller<PollResult<ConsoleInner>, ConsoleInner> beginUpdate(String resourceGroupName,
         String virtualMachineName, String consoleName) {
         final String ifMatch = null;
         final String ifNoneMatch = null;
         final ConsolePatchParameters consoleUpdateParameters = null;
-        Response<BinaryData> response = updateWithResponse(resourceGroupName, virtualMachineName, consoleName, ifMatch,
-            ifNoneMatch, consoleUpdateParameters);
-        return this.client.<ConsoleInner, ConsoleInner>getLroResult(response, ConsoleInner.class, ConsoleInner.class,
-            Context.NONE);
+        return beginUpdate(resourceGroupName, virtualMachineName, consoleName, ifMatch, ifNoneMatch,
+            consoleUpdateParameters, Context.NONE);
     }
 
-    /**
-     * Patch the properties of the provided virtual machine console, or update the tags associated with the virtual
-     * machine console. Properties and tag updates can be done independently.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param virtualMachineName The name of the virtual machine.
-     * @param consoleName The name of the virtual machine console.
-     * @param ifMatch The ETag of the transformation. Omit this value to always overwrite the current resource. Specify
-     * the last-seen ETag value to prevent accidentally overwriting concurrent changes.
-     * @param ifNoneMatch Set to '*' to allow a new record set to be created, but to prevent updating an existing
-     * resource. Other values will result in error from server as they are not supported.
-     * @param consoleUpdateParameters The request body.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the {@link SyncPoller} for polling of console represents the console of an on-premises Network Cloud
-     * virtual machine.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public SyncPoller<PollResult<ConsoleInner>, ConsoleInner> beginUpdate(String resourceGroupName,
         String virtualMachineName, String consoleName, String ifMatch, String ifNoneMatch,
@@ -844,50 +724,22 @@ public final class ConsolesClientImpl implements ConsolesClient {
             consoleUpdateParameters).last().flatMap(this.client::getLroFinalResultOrError);
     }
 
-    /**
-     * Patch the properties of the provided virtual machine console, or update the tags associated with the virtual
-     * machine console. Properties and tag updates can be done independently.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param virtualMachineName The name of the virtual machine.
-     * @param consoleName The name of the virtual machine console.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return console represents the console of an on-premises Network Cloud virtual machine.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public ConsoleInner update(String resourceGroupName, String virtualMachineName, String consoleName) {
         final String ifMatch = null;
         final String ifNoneMatch = null;
         final ConsolePatchParameters consoleUpdateParameters = null;
-        return beginUpdate(resourceGroupName, virtualMachineName, consoleName, ifMatch, ifNoneMatch,
-            consoleUpdateParameters).getFinalResult();
+        return update(resourceGroupName, virtualMachineName, consoleName, ifMatch, ifNoneMatch, consoleUpdateParameters,
+            Context.NONE);
     }
 
-    /**
-     * Patch the properties of the provided virtual machine console, or update the tags associated with the virtual
-     * machine console. Properties and tag updates can be done independently.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param virtualMachineName The name of the virtual machine.
-     * @param consoleName The name of the virtual machine console.
-     * @param ifMatch The ETag of the transformation. Omit this value to always overwrite the current resource. Specify
-     * the last-seen ETag value to prevent accidentally overwriting concurrent changes.
-     * @param ifNoneMatch Set to '*' to allow a new record set to be created, but to prevent updating an existing
-     * resource. Other values will result in error from server as they are not supported.
-     * @param consoleUpdateParameters The request body.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return console represents the console of an on-premises Network Cloud virtual machine.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public ConsoleInner update(String resourceGroupName, String virtualMachineName, String consoleName, String ifMatch,
         String ifNoneMatch, ConsolePatchParameters consoleUpdateParameters, Context context) {
-        return beginUpdate(resourceGroupName, virtualMachineName, consoleName, ifMatch, ifNoneMatch,
-            consoleUpdateParameters, context).getFinalResult();
+        return this.client.getLroFinalResultOrError(beginUpdate(resourceGroupName, virtualMachineName, consoleName,
+            ifMatch, ifNoneMatch, consoleUpdateParameters, context));
     }
 
     /**
@@ -933,8 +785,7 @@ public final class ConsolesClientImpl implements ConsolesClient {
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Response<BinaryData> deleteWithResponse(String resourceGroupName, String virtualMachineName,
         String consoleName, String ifMatch, String ifNoneMatch) {
-        return service.deleteSync(this.client.getEndpoint(), this.client.getApiVersion(),
-            this.client.getSubscriptionId(), resourceGroupName, virtualMachineName, consoleName, ifMatch, ifNoneMatch,
+        return deleteWithResponse(resourceGroupName, virtualMachineName, consoleName, ifMatch, ifNoneMatch,
             Context.NONE);
     }
 
@@ -1024,50 +875,21 @@ public final class ConsolesClientImpl implements ConsolesClient {
      * @return the {@link SyncPoller} for polling of long-running operation.
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
-    public SyncPoller<PollResult<Void>, Void> beginDelete(String resourceGroupName, String virtualMachineName,
+    private SyncPoller<PollResult<Void>, Void> beginDelete(String resourceGroupName, String virtualMachineName,
         String consoleName, String ifMatch, String ifNoneMatch) {
-        Response<BinaryData> response
-            = deleteWithResponse(resourceGroupName, virtualMachineName, consoleName, ifMatch, ifNoneMatch);
-        return this.client.<Void, Void>getLroResult(response, Void.class, Void.class, Context.NONE);
+        return beginDelete(resourceGroupName, virtualMachineName, consoleName, ifMatch, ifNoneMatch, Context.NONE);
     }
 
-    /**
-     * Delete the provided virtual machine console.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param virtualMachineName The name of the virtual machine.
-     * @param consoleName The name of the virtual machine console.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the {@link SyncPoller} for polling of long-running operation.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public SyncPoller<PollResult<Void>, Void> beginDelete(String resourceGroupName, String virtualMachineName,
         String consoleName) {
         final String ifMatch = null;
         final String ifNoneMatch = null;
-        Response<BinaryData> response
-            = deleteWithResponse(resourceGroupName, virtualMachineName, consoleName, ifMatch, ifNoneMatch);
-        return this.client.<Void, Void>getLroResult(response, Void.class, Void.class, Context.NONE);
+        return beginDelete(resourceGroupName, virtualMachineName, consoleName, ifMatch, ifNoneMatch, Context.NONE);
     }
 
-    /**
-     * Delete the provided virtual machine console.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param virtualMachineName The name of the virtual machine.
-     * @param consoleName The name of the virtual machine console.
-     * @param ifMatch The ETag of the transformation. Omit this value to always overwrite the current resource. Specify
-     * the last-seen ETag value to prevent accidentally overwriting concurrent changes.
-     * @param ifNoneMatch Set to '*' to allow a new record set to be created, but to prevent updating an existing
-     * resource. Other values will result in error from server as they are not supported.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the {@link SyncPoller} for polling of long-running operation.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public SyncPoller<PollResult<Void>, Void> beginDelete(String resourceGroupName, String virtualMachineName,
         String consoleName, String ifMatch, String ifNoneMatch, Context context) {
@@ -1117,42 +939,20 @@ public final class ConsolesClientImpl implements ConsolesClient {
             .flatMap(this.client::getLroFinalResultOrError);
     }
 
-    /**
-     * Delete the provided virtual machine console.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param virtualMachineName The name of the virtual machine.
-     * @param consoleName The name of the virtual machine console.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public void delete(String resourceGroupName, String virtualMachineName, String consoleName) {
         final String ifMatch = null;
         final String ifNoneMatch = null;
-        beginDelete(resourceGroupName, virtualMachineName, consoleName, ifMatch, ifNoneMatch).getFinalResult();
+        delete(resourceGroupName, virtualMachineName, consoleName, ifMatch, ifNoneMatch, Context.NONE);
     }
 
-    /**
-     * Delete the provided virtual machine console.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param virtualMachineName The name of the virtual machine.
-     * @param consoleName The name of the virtual machine console.
-     * @param ifMatch The ETag of the transformation. Omit this value to always overwrite the current resource. Specify
-     * the last-seen ETag value to prevent accidentally overwriting concurrent changes.
-     * @param ifNoneMatch Set to '*' to allow a new record set to be created, but to prevent updating an existing
-     * resource. Other values will result in error from server as they are not supported.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public void delete(String resourceGroupName, String virtualMachineName, String consoleName, String ifMatch,
         String ifNoneMatch, Context context) {
-        beginDelete(resourceGroupName, virtualMachineName, consoleName, ifMatch, ifNoneMatch, context).getFinalResult();
+        this.client.getLroFinalResultOrError(
+            beginDelete(resourceGroupName, virtualMachineName, consoleName, ifMatch, ifNoneMatch, context));
     }
 
     /**
@@ -1238,12 +1038,7 @@ public final class ConsolesClientImpl implements ConsolesClient {
     @ServiceMethod(returns = ReturnType.SINGLE)
     private PagedResponse<ConsoleInner> listByVirtualMachineSinglePage(String resourceGroupName,
         String virtualMachineName, Integer top, String skipToken) {
-        final String accept = "application/json";
-        Response<ConsoleList> res = service.listByVirtualMachineSync(this.client.getEndpoint(),
-            this.client.getApiVersion(), this.client.getSubscriptionId(), resourceGroupName, virtualMachineName, top,
-            skipToken, accept, Context.NONE);
-        return new PagedResponseBase<>(res.getRequest(), res.getStatusCode(), res.getHeaders(), res.getValue().value(),
-            res.getValue().nextLink(), null);
+        return listByVirtualMachineSinglePage(resourceGroupName, virtualMachineName, top, skipToken, Context.NONE);
     }
 
     /**
@@ -1271,39 +1066,15 @@ public final class ConsolesClientImpl implements ConsolesClient {
             res.getValue().nextLink(), null);
     }
 
-    /**
-     * Get a list of consoles for the provided virtual machine.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param virtualMachineName The name of the virtual machine.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return a list of consoles for the provided virtual machine as paginated response with {@link PagedIterable}.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.COLLECTION)
     public PagedIterable<ConsoleInner> listByVirtualMachine(String resourceGroupName, String virtualMachineName) {
         final Integer top = null;
         final String skipToken = null;
-        return new PagedIterable<>(
-            () -> listByVirtualMachineSinglePage(resourceGroupName, virtualMachineName, top, skipToken),
-            nextLink -> listByVirtualMachineNextSinglePage(nextLink));
+        return listByVirtualMachine(resourceGroupName, virtualMachineName, top, skipToken, Context.NONE);
     }
 
-    /**
-     * Get a list of consoles for the provided virtual machine.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param virtualMachineName The name of the virtual machine.
-     * @param top The maximum number of resources to return from the operation. Example: '$top=10'.
-     * @param skipToken The opaque token that the server returns to indicate where to continue listing resources from.
-     * This is used for paging through large result sets.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return a list of consoles for the provided virtual machine as paginated response with {@link PagedIterable}.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.COLLECTION)
     public PagedIterable<ConsoleInner> listByVirtualMachine(String resourceGroupName, String virtualMachineName,
         Integer top, String skipToken, Context context) {
@@ -1344,11 +1115,7 @@ public final class ConsolesClientImpl implements ConsolesClient {
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private PagedResponse<ConsoleInner> listByVirtualMachineNextSinglePage(String nextLink) {
-        final String accept = "application/json";
-        Response<ConsoleList> res
-            = service.listByVirtualMachineNextSync(nextLink, this.client.getEndpoint(), accept, Context.NONE);
-        return new PagedResponseBase<>(res.getRequest(), res.getStatusCode(), res.getHeaders(), res.getValue().value(),
-            res.getValue().nextLink(), null);
+        return listByVirtualMachineNextSinglePage(nextLink, Context.NONE);
     }
 
     /**

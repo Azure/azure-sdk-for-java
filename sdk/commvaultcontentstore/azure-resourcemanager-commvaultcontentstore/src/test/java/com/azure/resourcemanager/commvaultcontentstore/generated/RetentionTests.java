@@ -11,14 +11,14 @@ import org.junit.jupiter.api.Assertions;
 public final class RetentionTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
-        Retention model = BinaryData.fromString("{\"numberOfSnapshots\":53032115}").toObject(Retention.class);
-        Assertions.assertEquals(53032115, model.numberOfSnapshots());
+        Retention model = BinaryData.fromString("{\"numberOfSnapshots\":1803945661}").toObject(Retention.class);
+        Assertions.assertEquals(1803945661, model.numberOfSnapshots());
     }
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
-        Retention model = new Retention().withNumberOfSnapshots(53032115);
+        Retention model = new Retention().withNumberOfSnapshots(1803945661);
         model = BinaryData.fromObject(model).toObject(Retention.class);
-        Assertions.assertEquals(53032115, model.numberOfSnapshots());
+        Assertions.assertEquals(1803945661, model.numberOfSnapshots());
     }
 }

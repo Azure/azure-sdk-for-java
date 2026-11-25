@@ -12,9 +12,9 @@ public final class ClusterPeerCommandResponsePropertiesTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
         ClusterPeerCommandResponseProperties model
-            = BinaryData.fromString("{\"clusterPeeringCommand\":\"hdneuelfph\",\"passphrase\":\"yhtozfikdowwqu\"}")
+            = BinaryData.fromString("{\"clusterPeeringCommand\":\"konzmnsik\",\"passphrase\":\"kqze\"}")
                 .toObject(ClusterPeerCommandResponseProperties.class);
-        Assertions.assertEquals("hdneuelfph", model.clusterPeeringCommand());
-        Assertions.assertEquals("yhtozfikdowwqu", model.passphrase());
+        Assertions.assertEquals("konzmnsik", model.clusterPeeringCommand());
+        Assertions.assertEquals("kqze", model.passphrase());
     }
 }

@@ -83,12 +83,7 @@ public final class RaiBindingImpl implements RaiBinding, RaiBinding.Definition, 
     }
 
     public RaiBinding create() {
-        this.innerObject = serviceManager.serviceClient()
-            .getRaiBindings()
-            .createOrUpdateWithResponse(resourceGroupName, accountName, raiBindingName, this.innerModel(),
-                createIfMatch, createIfNoneMatch, Context.NONE)
-            .getValue();
-        return this;
+        return this.create(Context.NONE);
     }
 
     public RaiBinding create(Context context) {
@@ -115,12 +110,7 @@ public final class RaiBindingImpl implements RaiBinding, RaiBinding.Definition, 
     }
 
     public RaiBinding apply() {
-        this.innerObject = serviceManager.serviceClient()
-            .getRaiBindings()
-            .createOrUpdateWithResponse(resourceGroupName, accountName, raiBindingName, this.innerModel(),
-                updateIfMatch, updateIfNoneMatch, Context.NONE)
-            .getValue();
-        return this;
+        return this.apply(Context.NONE);
     }
 
     public RaiBinding apply(Context context) {
@@ -148,11 +138,7 @@ public final class RaiBindingImpl implements RaiBinding, RaiBinding.Definition, 
     }
 
     public RaiBinding refresh() {
-        this.innerObject = serviceManager.serviceClient()
-            .getRaiBindings()
-            .getWithResponse(resourceGroupName, accountName, raiBindingName, Context.NONE)
-            .getValue();
-        return this;
+        return this.refresh(Context.NONE);
     }
 
     public RaiBinding refresh(Context context) {

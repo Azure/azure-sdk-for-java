@@ -90,18 +90,7 @@ public final class SubgroupsClientImpl implements SubgroupsClient {
             @HostParam("endpoint") String endpoint, @HeaderParam("Accept") String accept, Context context);
     }
 
-    /**
-     * Gets the specified subgroup in an interconnect group.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param interconnectGroupName The name of the interconnect group.
-     * @param subgroupName The name of the subgroup.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the specified subgroup in an interconnect group along with {@link Response} on successful completion of
-     * {@link Mono}.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Response<SubgroupInner>> getWithResponseAsync(String resourceGroupName, String interconnectGroupName,
         String subgroupName) {
@@ -124,7 +113,7 @@ public final class SubgroupsClientImpl implements SubgroupsClient {
         if (subgroupName == null) {
             return Mono.error(new IllegalArgumentException("Parameter subgroupName is required and cannot be null."));
         }
-        final String apiVersion = "2026-03-01";
+        final String apiVersion = "2026-05-01";
         final String accept = "application/json";
         return FluxUtil
             .withContext(context -> service.get(this.client.getEndpoint(), apiVersion, this.client.getSubscriptionId(),
@@ -167,59 +156,28 @@ public final class SubgroupsClientImpl implements SubgroupsClient {
         if (subgroupName == null) {
             return Mono.error(new IllegalArgumentException("Parameter subgroupName is required and cannot be null."));
         }
-        final String apiVersion = "2026-03-01";
+        final String apiVersion = "2026-05-01";
         final String accept = "application/json";
         context = this.client.mergeContext(context);
         return service.get(this.client.getEndpoint(), apiVersion, this.client.getSubscriptionId(), resourceGroupName,
             interconnectGroupName, subgroupName, accept, context);
     }
 
-    /**
-     * Gets the specified subgroup in an interconnect group.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param interconnectGroupName The name of the interconnect group.
-     * @param subgroupName The name of the subgroup.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the specified subgroup in an interconnect group on successful completion of {@link Mono}.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<SubgroupInner> getAsync(String resourceGroupName, String interconnectGroupName, String subgroupName) {
         return getWithResponseAsync(resourceGroupName, interconnectGroupName, subgroupName)
             .flatMap(res -> Mono.justOrEmpty(res.getValue()));
     }
 
-    /**
-     * Gets the specified subgroup in an interconnect group.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param interconnectGroupName The name of the interconnect group.
-     * @param subgroupName The name of the subgroup.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the specified subgroup in an interconnect group along with {@link Response}.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Response<SubgroupInner> getWithResponse(String resourceGroupName, String interconnectGroupName,
         String subgroupName, Context context) {
         return getWithResponseAsync(resourceGroupName, interconnectGroupName, subgroupName, context).block();
     }
 
-    /**
-     * Gets the specified subgroup in an interconnect group.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param interconnectGroupName The name of the interconnect group.
-     * @param subgroupName The name of the subgroup.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the specified subgroup in an interconnect group.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public SubgroupInner get(String resourceGroupName, String interconnectGroupName, String subgroupName) {
         return getWithResponse(resourceGroupName, interconnectGroupName, subgroupName, Context.NONE).getValue();
@@ -255,7 +213,7 @@ public final class SubgroupsClientImpl implements SubgroupsClient {
             return Mono
                 .error(new IllegalArgumentException("Parameter interconnectGroupName is required and cannot be null."));
         }
-        final String apiVersion = "2026-03-01";
+        final String apiVersion = "2026-05-01";
         final String accept = "application/json";
         return FluxUtil
             .withContext(context -> service.list(this.client.getEndpoint(), apiVersion, this.client.getSubscriptionId(),
@@ -296,7 +254,7 @@ public final class SubgroupsClientImpl implements SubgroupsClient {
             return Mono
                 .error(new IllegalArgumentException("Parameter interconnectGroupName is required and cannot be null."));
         }
-        final String apiVersion = "2026-03-01";
+        final String apiVersion = "2026-05-01";
         final String accept = "application/json";
         context = this.client.mergeContext(context);
         return service
@@ -306,16 +264,7 @@ public final class SubgroupsClientImpl implements SubgroupsClient {
                 res.getValue().value(), res.getValue().nextLink(), null));
     }
 
-    /**
-     * Gets all subgroups in an interconnect group.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param interconnectGroupName The name of the interconnect group.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return all subgroups in an interconnect group as paginated response with {@link PagedFlux}.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.COLLECTION)
     public PagedFlux<SubgroupInner> listAsync(String resourceGroupName, String interconnectGroupName) {
         return new PagedFlux<>(() -> listSinglePageAsync(resourceGroupName, interconnectGroupName),
@@ -340,32 +289,13 @@ public final class SubgroupsClientImpl implements SubgroupsClient {
             nextLink -> listNextSinglePageAsync(nextLink, context));
     }
 
-    /**
-     * Gets all subgroups in an interconnect group.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param interconnectGroupName The name of the interconnect group.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return all subgroups in an interconnect group as paginated response with {@link PagedIterable}.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.COLLECTION)
     public PagedIterable<SubgroupInner> list(String resourceGroupName, String interconnectGroupName) {
         return new PagedIterable<>(listAsync(resourceGroupName, interconnectGroupName));
     }
 
-    /**
-     * Gets all subgroups in an interconnect group.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param interconnectGroupName The name of the interconnect group.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return all subgroups in an interconnect group as paginated response with {@link PagedIterable}.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.COLLECTION)
     public PagedIterable<SubgroupInner> list(String resourceGroupName, String interconnectGroupName, Context context) {
         return new PagedIterable<>(listAsync(resourceGroupName, interconnectGroupName, context));

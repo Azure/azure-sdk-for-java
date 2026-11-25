@@ -180,17 +180,7 @@ public final class ChangeDataCaptureCapabilitiesClientImpl implements ChangeData
             @HeaderParam("Accept") String accept, Context context);
     }
 
-    /**
-     * Gets the singleton change data capture capability for a HorizonDB cluster.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param clusterName The name of the HorizonDB cluster.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the singleton change data capture capability for a HorizonDB cluster along with {@link Response} on
-     * successful completion of {@link Mono}.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Response<ChangeDataCaptureCapabilityInner>> getWithResponseAsync(String resourceGroupName,
         String clusterName) {
@@ -201,33 +191,13 @@ public final class ChangeDataCaptureCapabilitiesClientImpl implements ChangeData
             .contextWrite(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext()).readOnly()));
     }
 
-    /**
-     * Gets the singleton change data capture capability for a HorizonDB cluster.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param clusterName The name of the HorizonDB cluster.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the singleton change data capture capability for a HorizonDB cluster on successful completion of
-     * {@link Mono}.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<ChangeDataCaptureCapabilityInner> getAsync(String resourceGroupName, String clusterName) {
         return getWithResponseAsync(resourceGroupName, clusterName).flatMap(res -> Mono.justOrEmpty(res.getValue()));
     }
 
-    /**
-     * Gets the singleton change data capture capability for a HorizonDB cluster.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param clusterName The name of the HorizonDB cluster.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the singleton change data capture capability for a HorizonDB cluster along with {@link Response}.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Response<ChangeDataCaptureCapabilityInner> getWithResponse(String resourceGroupName, String clusterName,
         Context context) {
@@ -236,33 +206,13 @@ public final class ChangeDataCaptureCapabilitiesClientImpl implements ChangeData
             resourceGroupName, clusterName, accept, context);
     }
 
-    /**
-     * Gets the singleton change data capture capability for a HorizonDB cluster.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param clusterName The name of the HorizonDB cluster.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the singleton change data capture capability for a HorizonDB cluster.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public ChangeDataCaptureCapabilityInner get(String resourceGroupName, String clusterName) {
         return getWithResponse(resourceGroupName, clusterName, Context.NONE).getValue();
     }
 
-    /**
-     * Creates or replaces the singleton change data capture capability and reconciles shared engine prerequisites.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param clusterName The name of the HorizonDB cluster.
-     * @param resource Resource create parameters.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the singleton change data capture capability for a HorizonDB cluster along with {@link Response} on
-     * successful completion of {@link Mono}.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Response<Flux<ByteBuffer>>> createOrReplaceWithResponseAsync(String resourceGroupName,
         String clusterName, ChangeDataCaptureCapabilityInner resource) {
@@ -289,11 +239,7 @@ public final class ChangeDataCaptureCapabilitiesClientImpl implements ChangeData
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Response<BinaryData> createOrReplaceWithResponse(String resourceGroupName, String clusterName,
         ChangeDataCaptureCapabilityInner resource) {
-        final String contentType = "application/json";
-        final String accept = "application/json";
-        return service.createOrReplaceSync(this.client.getEndpoint(), this.client.getApiVersion(),
-            this.client.getSubscriptionId(), resourceGroupName, clusterName, contentType, accept, resource,
-            Context.NONE);
+        return createOrReplaceWithResponse(resourceGroupName, clusterName, resource, Context.NONE);
     }
 
     /**
@@ -317,18 +263,7 @@ public final class ChangeDataCaptureCapabilitiesClientImpl implements ChangeData
             this.client.getSubscriptionId(), resourceGroupName, clusterName, contentType, accept, resource, context);
     }
 
-    /**
-     * Creates or replaces the singleton change data capture capability and reconciles shared engine prerequisites.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param clusterName The name of the HorizonDB cluster.
-     * @param resource Resource create parameters.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the {@link PollerFlux} for polling of the singleton change data capture capability for a HorizonDB
-     * cluster.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public PollerFlux<PollResult<ChangeDataCaptureCapabilityInner>, ChangeDataCaptureCapabilityInner>
         beginCreateOrReplaceAsync(String resourceGroupName, String clusterName,
@@ -340,39 +275,14 @@ public final class ChangeDataCaptureCapabilitiesClientImpl implements ChangeData
             ChangeDataCaptureCapabilityInner.class, this.client.getContext());
     }
 
-    /**
-     * Creates or replaces the singleton change data capture capability and reconciles shared engine prerequisites.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param clusterName The name of the HorizonDB cluster.
-     * @param resource Resource create parameters.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the {@link SyncPoller} for polling of the singleton change data capture capability for a HorizonDB
-     * cluster.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public SyncPoller<PollResult<ChangeDataCaptureCapabilityInner>, ChangeDataCaptureCapabilityInner>
         beginCreateOrReplace(String resourceGroupName, String clusterName, ChangeDataCaptureCapabilityInner resource) {
-        Response<BinaryData> response = createOrReplaceWithResponse(resourceGroupName, clusterName, resource);
-        return this.client.<ChangeDataCaptureCapabilityInner, ChangeDataCaptureCapabilityInner>getLroResult(response,
-            ChangeDataCaptureCapabilityInner.class, ChangeDataCaptureCapabilityInner.class, Context.NONE);
+        return beginCreateOrReplace(resourceGroupName, clusterName, resource, Context.NONE);
     }
 
-    /**
-     * Creates or replaces the singleton change data capture capability and reconciles shared engine prerequisites.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param clusterName The name of the HorizonDB cluster.
-     * @param resource Resource create parameters.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the {@link SyncPoller} for polling of the singleton change data capture capability for a HorizonDB
-     * cluster.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public SyncPoller<PollResult<ChangeDataCaptureCapabilityInner>, ChangeDataCaptureCapabilityInner>
         beginCreateOrReplace(String resourceGroupName, String clusterName, ChangeDataCaptureCapabilityInner resource,
@@ -382,18 +292,7 @@ public final class ChangeDataCaptureCapabilitiesClientImpl implements ChangeData
             ChangeDataCaptureCapabilityInner.class, ChangeDataCaptureCapabilityInner.class, context);
     }
 
-    /**
-     * Creates or replaces the singleton change data capture capability and reconciles shared engine prerequisites.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param clusterName The name of the HorizonDB cluster.
-     * @param resource Resource create parameters.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the singleton change data capture capability for a HorizonDB cluster on successful completion of
-     * {@link Mono}.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<ChangeDataCaptureCapabilityInner> createOrReplaceAsync(String resourceGroupName, String clusterName,
         ChangeDataCaptureCapabilityInner resource) {
@@ -401,53 +300,22 @@ public final class ChangeDataCaptureCapabilitiesClientImpl implements ChangeData
             .flatMap(this.client::getLroFinalResultOrError);
     }
 
-    /**
-     * Creates or replaces the singleton change data capture capability and reconciles shared engine prerequisites.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param clusterName The name of the HorizonDB cluster.
-     * @param resource Resource create parameters.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the singleton change data capture capability for a HorizonDB cluster.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public ChangeDataCaptureCapabilityInner createOrReplace(String resourceGroupName, String clusterName,
         ChangeDataCaptureCapabilityInner resource) {
-        return beginCreateOrReplace(resourceGroupName, clusterName, resource).getFinalResult();
+        return createOrReplace(resourceGroupName, clusterName, resource, Context.NONE);
     }
 
-    /**
-     * Creates or replaces the singleton change data capture capability and reconciles shared engine prerequisites.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param clusterName The name of the HorizonDB cluster.
-     * @param resource Resource create parameters.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the singleton change data capture capability for a HorizonDB cluster.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public ChangeDataCaptureCapabilityInner createOrReplace(String resourceGroupName, String clusterName,
         ChangeDataCaptureCapabilityInner resource, Context context) {
-        return beginCreateOrReplace(resourceGroupName, clusterName, resource, context).getFinalResult();
+        return this.client
+            .getLroFinalResultOrError(beginCreateOrReplace(resourceGroupName, clusterName, resource, context));
     }
 
-    /**
-     * Updates mutable change data capture capability properties. Omitted properties preserve their current values.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param clusterName The name of the HorizonDB cluster.
-     * @param properties The resource properties to be updated.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the singleton change data capture capability for a HorizonDB cluster along with {@link Response} on
-     * successful completion of {@link Mono}.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Response<Flux<ByteBuffer>>> updateWithResponseAsync(String resourceGroupName, String clusterName,
         ChangeDataCaptureCapabilityForPatchUpdate properties) {
@@ -472,11 +340,7 @@ public final class ChangeDataCaptureCapabilitiesClientImpl implements ChangeData
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Response<BinaryData> updateWithResponse(String resourceGroupName, String clusterName,
         ChangeDataCaptureCapabilityForPatchUpdate properties) {
-        final String contentType = "application/json";
-        final String accept = "application/json";
-        return service.updateSync(this.client.getEndpoint(), this.client.getApiVersion(),
-            this.client.getSubscriptionId(), resourceGroupName, clusterName, contentType, accept, properties,
-            Context.NONE);
+        return updateWithResponse(resourceGroupName, clusterName, properties, Context.NONE);
     }
 
     /**
@@ -500,18 +364,7 @@ public final class ChangeDataCaptureCapabilitiesClientImpl implements ChangeData
             this.client.getSubscriptionId(), resourceGroupName, clusterName, contentType, accept, properties, context);
     }
 
-    /**
-     * Updates mutable change data capture capability properties. Omitted properties preserve their current values.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param clusterName The name of the HorizonDB cluster.
-     * @param properties The resource properties to be updated.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the {@link PollerFlux} for polling of the singleton change data capture capability for a HorizonDB
-     * cluster.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public PollerFlux<PollResult<ChangeDataCaptureCapabilityInner>, ChangeDataCaptureCapabilityInner> beginUpdateAsync(
         String resourceGroupName, String clusterName, ChangeDataCaptureCapabilityForPatchUpdate properties) {
@@ -521,39 +374,14 @@ public final class ChangeDataCaptureCapabilitiesClientImpl implements ChangeData
             ChangeDataCaptureCapabilityInner.class, this.client.getContext());
     }
 
-    /**
-     * Updates mutable change data capture capability properties. Omitted properties preserve their current values.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param clusterName The name of the HorizonDB cluster.
-     * @param properties The resource properties to be updated.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the {@link SyncPoller} for polling of the singleton change data capture capability for a HorizonDB
-     * cluster.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public SyncPoller<PollResult<ChangeDataCaptureCapabilityInner>, ChangeDataCaptureCapabilityInner> beginUpdate(
         String resourceGroupName, String clusterName, ChangeDataCaptureCapabilityForPatchUpdate properties) {
-        Response<BinaryData> response = updateWithResponse(resourceGroupName, clusterName, properties);
-        return this.client.<ChangeDataCaptureCapabilityInner, ChangeDataCaptureCapabilityInner>getLroResult(response,
-            ChangeDataCaptureCapabilityInner.class, ChangeDataCaptureCapabilityInner.class, Context.NONE);
+        return beginUpdate(resourceGroupName, clusterName, properties, Context.NONE);
     }
 
-    /**
-     * Updates mutable change data capture capability properties. Omitted properties preserve their current values.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param clusterName The name of the HorizonDB cluster.
-     * @param properties The resource properties to be updated.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the {@link SyncPoller} for polling of the singleton change data capture capability for a HorizonDB
-     * cluster.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public SyncPoller<PollResult<ChangeDataCaptureCapabilityInner>, ChangeDataCaptureCapabilityInner> beginUpdate(
         String resourceGroupName, String clusterName, ChangeDataCaptureCapabilityForPatchUpdate properties,
@@ -563,18 +391,7 @@ public final class ChangeDataCaptureCapabilitiesClientImpl implements ChangeData
             ChangeDataCaptureCapabilityInner.class, ChangeDataCaptureCapabilityInner.class, context);
     }
 
-    /**
-     * Updates mutable change data capture capability properties. Omitted properties preserve their current values.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param clusterName The name of the HorizonDB cluster.
-     * @param properties The resource properties to be updated.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the singleton change data capture capability for a HorizonDB cluster on successful completion of
-     * {@link Mono}.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<ChangeDataCaptureCapabilityInner> updateAsync(String resourceGroupName, String clusterName,
         ChangeDataCaptureCapabilityForPatchUpdate properties) {
@@ -582,52 +399,21 @@ public final class ChangeDataCaptureCapabilitiesClientImpl implements ChangeData
             .flatMap(this.client::getLroFinalResultOrError);
     }
 
-    /**
-     * Updates mutable change data capture capability properties. Omitted properties preserve their current values.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param clusterName The name of the HorizonDB cluster.
-     * @param properties The resource properties to be updated.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the singleton change data capture capability for a HorizonDB cluster.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public ChangeDataCaptureCapabilityInner update(String resourceGroupName, String clusterName,
         ChangeDataCaptureCapabilityForPatchUpdate properties) {
-        return beginUpdate(resourceGroupName, clusterName, properties).getFinalResult();
+        return update(resourceGroupName, clusterName, properties, Context.NONE);
     }
 
-    /**
-     * Updates mutable change data capture capability properties. Omitted properties preserve their current values.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param clusterName The name of the HorizonDB cluster.
-     * @param properties The resource properties to be updated.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the singleton change data capture capability for a HorizonDB cluster.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public ChangeDataCaptureCapabilityInner update(String resourceGroupName, String clusterName,
         ChangeDataCaptureCapabilityForPatchUpdate properties, Context context) {
-        return beginUpdate(resourceGroupName, clusterName, properties, context).getFinalResult();
+        return this.client.getLroFinalResultOrError(beginUpdate(resourceGroupName, clusterName, properties, context));
     }
 
-    /**
-     * Deletes the change data capture capability after all change data capture destinations and configurations have
-     * been removed.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param clusterName The name of the HorizonDB cluster.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the {@link Response} on successful completion of {@link Mono}.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Response<Flux<ByteBuffer>>> deleteWithResponseAsync(String resourceGroupName, String clusterName) {
         return FluxUtil
@@ -649,8 +435,7 @@ public final class ChangeDataCaptureCapabilitiesClientImpl implements ChangeData
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Response<BinaryData> deleteWithResponse(String resourceGroupName, String clusterName) {
-        return service.deleteSync(this.client.getEndpoint(), this.client.getApiVersion(),
-            this.client.getSubscriptionId(), resourceGroupName, clusterName, Context.NONE);
+        return deleteWithResponse(resourceGroupName, clusterName, Context.NONE);
     }
 
     /**
@@ -671,17 +456,7 @@ public final class ChangeDataCaptureCapabilitiesClientImpl implements ChangeData
             this.client.getSubscriptionId(), resourceGroupName, clusterName, context);
     }
 
-    /**
-     * Deletes the change data capture capability after all change data capture destinations and configurations have
-     * been removed.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param clusterName The name of the HorizonDB cluster.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the {@link PollerFlux} for polling of long-running operation.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public PollerFlux<PollResult<Void>, Void> beginDeleteAsync(String resourceGroupName, String clusterName) {
         Mono<Response<Flux<ByteBuffer>>> mono = deleteWithResponseAsync(resourceGroupName, clusterName);
@@ -689,35 +464,13 @@ public final class ChangeDataCaptureCapabilitiesClientImpl implements ChangeData
             this.client.getContext());
     }
 
-    /**
-     * Deletes the change data capture capability after all change data capture destinations and configurations have
-     * been removed.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param clusterName The name of the HorizonDB cluster.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the {@link SyncPoller} for polling of long-running operation.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public SyncPoller<PollResult<Void>, Void> beginDelete(String resourceGroupName, String clusterName) {
-        Response<BinaryData> response = deleteWithResponse(resourceGroupName, clusterName);
-        return this.client.<Void, Void>getLroResult(response, Void.class, Void.class, Context.NONE);
+        return beginDelete(resourceGroupName, clusterName, Context.NONE);
     }
 
-    /**
-     * Deletes the change data capture capability after all change data capture destinations and configurations have
-     * been removed.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param clusterName The name of the HorizonDB cluster.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the {@link SyncPoller} for polling of long-running operation.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public SyncPoller<PollResult<Void>, Void> beginDelete(String resourceGroupName, String clusterName,
         Context context) {
@@ -725,51 +478,22 @@ public final class ChangeDataCaptureCapabilitiesClientImpl implements ChangeData
         return this.client.<Void, Void>getLroResult(response, Void.class, Void.class, context);
     }
 
-    /**
-     * Deletes the change data capture capability after all change data capture destinations and configurations have
-     * been removed.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param clusterName The name of the HorizonDB cluster.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return A {@link Mono} that completes when a successful response is received.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Void> deleteAsync(String resourceGroupName, String clusterName) {
         return beginDeleteAsync(resourceGroupName, clusterName).last().flatMap(this.client::getLroFinalResultOrError);
     }
 
-    /**
-     * Deletes the change data capture capability after all change data capture destinations and configurations have
-     * been removed.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param clusterName The name of the HorizonDB cluster.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public void delete(String resourceGroupName, String clusterName) {
-        beginDelete(resourceGroupName, clusterName).getFinalResult();
+        delete(resourceGroupName, clusterName, Context.NONE);
     }
 
-    /**
-     * Deletes the change data capture capability after all change data capture destinations and configurations have
-     * been removed.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param clusterName The name of the HorizonDB cluster.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public void delete(String resourceGroupName, String clusterName, Context context) {
-        beginDelete(resourceGroupName, clusterName, context).getFinalResult();
+        this.client.getLroFinalResultOrError(beginDelete(resourceGroupName, clusterName, context));
     }
 
     /**
@@ -795,17 +519,7 @@ public final class ChangeDataCaptureCapabilitiesClientImpl implements ChangeData
             .contextWrite(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext()).readOnly()));
     }
 
-    /**
-     * Lists the optional singleton change data capture capability for a cluster. The result contains zero or one item.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param clusterName The name of the HorizonDB cluster.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the response of a ChangeDataCaptureCapability list operation as paginated response with
-     * {@link PagedFlux}.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.COLLECTION)
     public PagedFlux<ChangeDataCaptureCapabilityInner> listAsync(String resourceGroupName, String clusterName) {
         return new PagedFlux<>(() -> listSinglePageAsync(resourceGroupName, clusterName),
@@ -825,12 +539,7 @@ public final class ChangeDataCaptureCapabilitiesClientImpl implements ChangeData
     @ServiceMethod(returns = ReturnType.SINGLE)
     private PagedResponse<ChangeDataCaptureCapabilityInner> listSinglePage(String resourceGroupName,
         String clusterName) {
-        final String accept = "application/json";
-        Response<ChangeDataCaptureCapabilityListResult> res
-            = service.listSync(this.client.getEndpoint(), this.client.getApiVersion(), this.client.getSubscriptionId(),
-                resourceGroupName, clusterName, accept, Context.NONE);
-        return new PagedResponseBase<>(res.getRequest(), res.getStatusCode(), res.getHeaders(), res.getValue().value(),
-            res.getValue().nextLink(), null);
+        return listSinglePage(resourceGroupName, clusterName, Context.NONE);
     }
 
     /**
@@ -855,35 +564,13 @@ public final class ChangeDataCaptureCapabilitiesClientImpl implements ChangeData
             res.getValue().nextLink(), null);
     }
 
-    /**
-     * Lists the optional singleton change data capture capability for a cluster. The result contains zero or one item.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param clusterName The name of the HorizonDB cluster.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the response of a ChangeDataCaptureCapability list operation as paginated response with
-     * {@link PagedIterable}.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.COLLECTION)
     public PagedIterable<ChangeDataCaptureCapabilityInner> list(String resourceGroupName, String clusterName) {
-        return new PagedIterable<>(() -> listSinglePage(resourceGroupName, clusterName),
-            nextLink -> listNextSinglePage(nextLink));
+        return list(resourceGroupName, clusterName, Context.NONE);
     }
 
-    /**
-     * Lists the optional singleton change data capture capability for a cluster. The result contains zero or one item.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param clusterName The name of the HorizonDB cluster.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the response of a ChangeDataCaptureCapability list operation as paginated response with
-     * {@link PagedIterable}.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.COLLECTION)
     public PagedIterable<ChangeDataCaptureCapabilityInner> list(String resourceGroupName, String clusterName,
         Context context) {
@@ -921,11 +608,7 @@ public final class ChangeDataCaptureCapabilitiesClientImpl implements ChangeData
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private PagedResponse<ChangeDataCaptureCapabilityInner> listNextSinglePage(String nextLink) {
-        final String accept = "application/json";
-        Response<ChangeDataCaptureCapabilityListResult> res
-            = service.listNextSync(nextLink, this.client.getEndpoint(), accept, Context.NONE);
-        return new PagedResponseBase<>(res.getRequest(), res.getStatusCode(), res.getHeaders(), res.getValue().value(),
-            res.getValue().nextLink(), null);
+        return listNextSinglePage(nextLink, Context.NONE);
     }
 
     /**

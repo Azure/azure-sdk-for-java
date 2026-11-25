@@ -96,11 +96,7 @@ public final class PreparedImageSpecificationImpl
     }
 
     public PreparedImageSpecification create() {
-        this.innerObject = serviceManager.serviceClient()
-            .getPreparedImageSpecifications()
-            .createOrUpdate(resourceGroupName, preparedImageSpecificationName, this.innerModel(), createIfMatch,
-                createIfNoneMatch, Context.NONE);
-        return this;
+        return this.create(Context.NONE);
     }
 
     public PreparedImageSpecification create(Context context) {
@@ -127,12 +123,7 @@ public final class PreparedImageSpecificationImpl
     }
 
     public PreparedImageSpecification apply() {
-        this.innerObject = serviceManager.serviceClient()
-            .getPreparedImageSpecifications()
-            .updateWithResponse(resourceGroupName, preparedImageSpecificationName, updateProperties, updateIfMatch,
-                Context.NONE)
-            .getValue();
-        return this;
+        return this.apply(Context.NONE);
     }
 
     public PreparedImageSpecification apply(Context context) {
@@ -157,11 +148,7 @@ public final class PreparedImageSpecificationImpl
     }
 
     public PreparedImageSpecification refresh() {
-        this.innerObject = serviceManager.serviceClient()
-            .getPreparedImageSpecifications()
-            .getByResourceGroupWithResponse(resourceGroupName, preparedImageSpecificationName, Context.NONE)
-            .getValue();
-        return this;
+        return this.refresh(Context.NONE);
     }
 
     public PreparedImageSpecification refresh(Context context) {

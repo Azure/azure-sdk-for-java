@@ -43,8 +43,7 @@ public final class OsImagesImpl implements OsImages {
     }
 
     public PagedIterable<OsImage> listBySubscriptionLocationResource(String location) {
-        PagedIterable<OsImageInner> inner = this.serviceClient().listBySubscriptionLocationResource(location);
-        return ResourceManagerUtils.mapPage(inner, inner1 -> new OsImageImpl(inner1, this.manager()));
+        return this.listBySubscriptionLocationResource(location, Context.NONE);
     }
 
     public PagedIterable<OsImage> listBySubscriptionLocationResource(String location, Context context) {

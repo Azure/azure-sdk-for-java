@@ -53,7 +53,7 @@ public final class NetworkToNetworkInterconnectsImpl implements NetworkToNetwork
     }
 
     public void delete(String resourceGroupName, String networkFabricName, String networkToNetworkInterconnectName) {
-        this.serviceClient().delete(resourceGroupName, networkFabricName, networkToNetworkInterconnectName);
+        this.delete(resourceGroupName, networkFabricName, networkToNetworkInterconnectName, Context.NONE);
     }
 
     public void delete(String resourceGroupName, String networkFabricName, String networkToNetworkInterconnectName,
@@ -63,10 +63,7 @@ public final class NetworkToNetworkInterconnectsImpl implements NetworkToNetwork
 
     public PagedIterable<NetworkToNetworkInterconnect> listByNetworkFabric(String resourceGroupName,
         String networkFabricName) {
-        PagedIterable<NetworkToNetworkInterconnectInner> inner
-            = this.serviceClient().listByNetworkFabric(resourceGroupName, networkFabricName);
-        return ResourceManagerUtils.mapPage(inner,
-            inner1 -> new NetworkToNetworkInterconnectImpl(inner1, this.manager()));
+        return this.listByNetworkFabric(resourceGroupName, networkFabricName, Context.NONE);
     }
 
     public PagedIterable<NetworkToNetworkInterconnect> listByNetworkFabric(String resourceGroupName,
@@ -79,14 +76,8 @@ public final class NetworkToNetworkInterconnectsImpl implements NetworkToNetwork
 
     public UpdateAdministrativeStateResponse updateNpbStaticRouteBfdAdministrativeState(String resourceGroupName,
         String networkFabricName, String networkToNetworkInterconnectName, UpdateAdministrativeState body) {
-        UpdateAdministrativeStateResponseInner inner = this.serviceClient()
-            .updateNpbStaticRouteBfdAdministrativeState(resourceGroupName, networkFabricName,
-                networkToNetworkInterconnectName, body);
-        if (inner != null) {
-            return new UpdateAdministrativeStateResponseImpl(inner, this.manager());
-        } else {
-            return null;
-        }
+        return this.updateNpbStaticRouteBfdAdministrativeState(resourceGroupName, networkFabricName,
+            networkToNetworkInterconnectName, body, Context.NONE);
     }
 
     public UpdateAdministrativeStateResponse updateNpbStaticRouteBfdAdministrativeState(String resourceGroupName,
@@ -104,13 +95,8 @@ public final class NetworkToNetworkInterconnectsImpl implements NetworkToNetwork
 
     public UpdateAdministrativeStateResponse updateAdministrativeState(String resourceGroupName,
         String networkFabricName, String networkToNetworkInterconnectName, UpdateAdministrativeState body) {
-        UpdateAdministrativeStateResponseInner inner = this.serviceClient()
-            .updateAdministrativeState(resourceGroupName, networkFabricName, networkToNetworkInterconnectName, body);
-        if (inner != null) {
-            return new UpdateAdministrativeStateResponseImpl(inner, this.manager());
-        } else {
-            return null;
-        }
+        return this.updateAdministrativeState(resourceGroupName, networkFabricName, networkToNetworkInterconnectName,
+            body, Context.NONE);
     }
 
     public UpdateAdministrativeStateResponse updateAdministrativeState(String resourceGroupName,
@@ -129,13 +115,8 @@ public final class NetworkToNetworkInterconnectsImpl implements NetworkToNetwork
     public NniUpdateBfdAdministrativeStateResponse updateBfdAdministrativeState(String resourceGroupName,
         String networkFabricName, String networkToNetworkInterconnectName,
         NniUpdateBfdAdministrativeStateRequest body) {
-        NniUpdateBfdAdministrativeStateResponseInner inner = this.serviceClient()
-            .updateBfdAdministrativeState(resourceGroupName, networkFabricName, networkToNetworkInterconnectName, body);
-        if (inner != null) {
-            return new NniUpdateBfdAdministrativeStateResponseImpl(inner, this.manager());
-        } else {
-            return null;
-        }
+        return this.updateBfdAdministrativeState(resourceGroupName, networkFabricName, networkToNetworkInterconnectName,
+            body, Context.NONE);
     }
 
     public NniUpdateBfdAdministrativeStateResponse updateBfdAdministrativeState(String resourceGroupName,
@@ -152,104 +133,36 @@ public final class NetworkToNetworkInterconnectsImpl implements NetworkToNetwork
     }
 
     public NetworkToNetworkInterconnect getById(String id) {
-        String resourceGroupName = ResourceManagerUtils.getValueFromIdByParameterName(id,
-            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.ManagedNetworkFabric/networkFabrics/{networkFabricName}/networkToNetworkInterconnects/{networkToNetworkInterconnectName}",
-            "resourceGroupName");
-        if (resourceGroupName == null) {
-            throw LOGGER.logExceptionAsError(new IllegalArgumentException(
-                String.format("The resource ID '%s' is not valid. Missing path segment 'resourceGroups'.", id)));
-        }
-        String networkFabricName = ResourceManagerUtils.getValueFromIdByParameterName(id,
-            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.ManagedNetworkFabric/networkFabrics/{networkFabricName}/networkToNetworkInterconnects/{networkToNetworkInterconnectName}",
-            "networkFabricName");
-        if (networkFabricName == null) {
-            throw LOGGER.logExceptionAsError(new IllegalArgumentException(
-                String.format("The resource ID '%s' is not valid. Missing path segment 'networkFabrics'.", id)));
-        }
-        String networkToNetworkInterconnectName = ResourceManagerUtils.getValueFromIdByParameterName(id,
-            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.ManagedNetworkFabric/networkFabrics/{networkFabricName}/networkToNetworkInterconnects/{networkToNetworkInterconnectName}",
-            "networkToNetworkInterconnectName");
-        if (networkToNetworkInterconnectName == null) {
-            throw LOGGER.logExceptionAsError(new IllegalArgumentException(String.format(
-                "The resource ID '%s' is not valid. Missing path segment 'networkToNetworkInterconnects'.", id)));
-        }
-        return this
-            .getWithResponse(resourceGroupName, networkFabricName, networkToNetworkInterconnectName, Context.NONE)
-            .getValue();
+        return this.getByIdWithResponse(id, Context.NONE).getValue();
     }
 
     public Response<NetworkToNetworkInterconnect> getByIdWithResponse(String id, Context context) {
-        String resourceGroupName = ResourceManagerUtils.getValueFromIdByParameterName(id,
+        String resourceGroupName = ResourceManagerUtils.getRequiredValueFromIdByParameterName(id,
             "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.ManagedNetworkFabric/networkFabrics/{networkFabricName}/networkToNetworkInterconnects/{networkToNetworkInterconnectName}",
-            "resourceGroupName");
-        if (resourceGroupName == null) {
-            throw LOGGER.logExceptionAsError(new IllegalArgumentException(
-                String.format("The resource ID '%s' is not valid. Missing path segment 'resourceGroups'.", id)));
-        }
-        String networkFabricName = ResourceManagerUtils.getValueFromIdByParameterName(id,
+            "resourceGroupName", "resourceGroups", LOGGER);
+        String networkFabricName = ResourceManagerUtils.getRequiredValueFromIdByParameterName(id,
             "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.ManagedNetworkFabric/networkFabrics/{networkFabricName}/networkToNetworkInterconnects/{networkToNetworkInterconnectName}",
-            "networkFabricName");
-        if (networkFabricName == null) {
-            throw LOGGER.logExceptionAsError(new IllegalArgumentException(
-                String.format("The resource ID '%s' is not valid. Missing path segment 'networkFabrics'.", id)));
-        }
-        String networkToNetworkInterconnectName = ResourceManagerUtils.getValueFromIdByParameterName(id,
+            "networkFabricName", "networkFabrics", LOGGER);
+        String networkToNetworkInterconnectName = ResourceManagerUtils.getRequiredValueFromIdByParameterName(id,
             "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.ManagedNetworkFabric/networkFabrics/{networkFabricName}/networkToNetworkInterconnects/{networkToNetworkInterconnectName}",
-            "networkToNetworkInterconnectName");
-        if (networkToNetworkInterconnectName == null) {
-            throw LOGGER.logExceptionAsError(new IllegalArgumentException(String.format(
-                "The resource ID '%s' is not valid. Missing path segment 'networkToNetworkInterconnects'.", id)));
-        }
+            "networkToNetworkInterconnectName", "networkToNetworkInterconnects", LOGGER);
         return this.getWithResponse(resourceGroupName, networkFabricName, networkToNetworkInterconnectName, context);
     }
 
     public void deleteById(String id) {
-        String resourceGroupName = ResourceManagerUtils.getValueFromIdByParameterName(id,
-            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.ManagedNetworkFabric/networkFabrics/{networkFabricName}/networkToNetworkInterconnects/{networkToNetworkInterconnectName}",
-            "resourceGroupName");
-        if (resourceGroupName == null) {
-            throw LOGGER.logExceptionAsError(new IllegalArgumentException(
-                String.format("The resource ID '%s' is not valid. Missing path segment 'resourceGroups'.", id)));
-        }
-        String networkFabricName = ResourceManagerUtils.getValueFromIdByParameterName(id,
-            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.ManagedNetworkFabric/networkFabrics/{networkFabricName}/networkToNetworkInterconnects/{networkToNetworkInterconnectName}",
-            "networkFabricName");
-        if (networkFabricName == null) {
-            throw LOGGER.logExceptionAsError(new IllegalArgumentException(
-                String.format("The resource ID '%s' is not valid. Missing path segment 'networkFabrics'.", id)));
-        }
-        String networkToNetworkInterconnectName = ResourceManagerUtils.getValueFromIdByParameterName(id,
-            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.ManagedNetworkFabric/networkFabrics/{networkFabricName}/networkToNetworkInterconnects/{networkToNetworkInterconnectName}",
-            "networkToNetworkInterconnectName");
-        if (networkToNetworkInterconnectName == null) {
-            throw LOGGER.logExceptionAsError(new IllegalArgumentException(String.format(
-                "The resource ID '%s' is not valid. Missing path segment 'networkToNetworkInterconnects'.", id)));
-        }
-        this.delete(resourceGroupName, networkFabricName, networkToNetworkInterconnectName, Context.NONE);
+        this.deleteByIdWithResponse(id, Context.NONE);
     }
 
     public void deleteByIdWithResponse(String id, Context context) {
-        String resourceGroupName = ResourceManagerUtils.getValueFromIdByParameterName(id,
+        String resourceGroupName = ResourceManagerUtils.getRequiredValueFromIdByParameterName(id,
             "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.ManagedNetworkFabric/networkFabrics/{networkFabricName}/networkToNetworkInterconnects/{networkToNetworkInterconnectName}",
-            "resourceGroupName");
-        if (resourceGroupName == null) {
-            throw LOGGER.logExceptionAsError(new IllegalArgumentException(
-                String.format("The resource ID '%s' is not valid. Missing path segment 'resourceGroups'.", id)));
-        }
-        String networkFabricName = ResourceManagerUtils.getValueFromIdByParameterName(id,
+            "resourceGroupName", "resourceGroups", LOGGER);
+        String networkFabricName = ResourceManagerUtils.getRequiredValueFromIdByParameterName(id,
             "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.ManagedNetworkFabric/networkFabrics/{networkFabricName}/networkToNetworkInterconnects/{networkToNetworkInterconnectName}",
-            "networkFabricName");
-        if (networkFabricName == null) {
-            throw LOGGER.logExceptionAsError(new IllegalArgumentException(
-                String.format("The resource ID '%s' is not valid. Missing path segment 'networkFabrics'.", id)));
-        }
-        String networkToNetworkInterconnectName = ResourceManagerUtils.getValueFromIdByParameterName(id,
+            "networkFabricName", "networkFabrics", LOGGER);
+        String networkToNetworkInterconnectName = ResourceManagerUtils.getRequiredValueFromIdByParameterName(id,
             "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.ManagedNetworkFabric/networkFabrics/{networkFabricName}/networkToNetworkInterconnects/{networkToNetworkInterconnectName}",
-            "networkToNetworkInterconnectName");
-        if (networkToNetworkInterconnectName == null) {
-            throw LOGGER.logExceptionAsError(new IllegalArgumentException(String.format(
-                "The resource ID '%s' is not valid. Missing path segment 'networkToNetworkInterconnects'.", id)));
-        }
+            "networkToNetworkInterconnectName", "networkToNetworkInterconnects", LOGGER);
         this.delete(resourceGroupName, networkFabricName, networkToNetworkInterconnectName, context);
     }
 

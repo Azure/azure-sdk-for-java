@@ -11,7 +11,7 @@ import com.azure.resourcemanager.storagemover.models.ConnectionProperties;
  */
 public final class ConnectionsCreateOrUpdateSamples {
     /*
-     * x-ms-original-file: 2025-12-01/Connections_CreateOrUpdate.json
+     * x-ms-original-file: 2026-05-01/Connections_CreateOrUpdate.json
      */
     /**
      * Sample code: Connections_CreateOrUpdate.

@@ -101,11 +101,7 @@ public final class AIManagerImpl implements AIManager, AIManager.Definition, AIM
     }
 
     public AIManager create() {
-        this.innerObject = serviceManager.serviceClient()
-            .getAIManagers()
-            .createOrUpdate(resourceGroupName, aiManagerName, this.innerModel(), createIfMatch, createIfNoneMatch,
-                Context.NONE);
-        return this;
+        return this.create(Context.NONE);
     }
 
     public AIManager create(Context context) {
@@ -132,11 +128,7 @@ public final class AIManagerImpl implements AIManager, AIManager.Definition, AIM
     }
 
     public AIManager apply() {
-        this.innerObject = serviceManager.serviceClient()
-            .getAIManagers()
-            .updateWithResponse(resourceGroupName, aiManagerName, updateProperties, updateIfMatch, Context.NONE)
-            .getValue();
-        return this;
+        return this.apply(Context.NONE);
     }
 
     public AIManager apply(Context context) {
@@ -160,11 +152,7 @@ public final class AIManagerImpl implements AIManager, AIManager.Definition, AIM
     }
 
     public AIManager refresh() {
-        this.innerObject = serviceManager.serviceClient()
-            .getAIManagers()
-            .getByResourceGroupWithResponse(resourceGroupName, aiManagerName, Context.NONE)
-            .getValue();
-        return this;
+        return this.refresh(Context.NONE);
     }
 
     public AIManager refresh(Context context) {

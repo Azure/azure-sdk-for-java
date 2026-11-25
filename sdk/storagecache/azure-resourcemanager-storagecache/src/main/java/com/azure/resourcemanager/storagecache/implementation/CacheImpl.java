@@ -174,10 +174,7 @@ public final class CacheImpl implements Cache, Cache.Definition, Cache.Update {
     }
 
     public Cache create() {
-        this.innerObject = serviceManager.serviceClient()
-            .getCaches()
-            .createOrUpdate(resourceGroupName, cacheName, this.innerModel(), Context.NONE);
-        return this;
+        return this.create(Context.NONE);
     }
 
     public Cache create(Context context) {
@@ -198,10 +195,7 @@ public final class CacheImpl implements Cache, Cache.Definition, Cache.Update {
     }
 
     public Cache apply() {
-        this.innerObject = serviceManager.serviceClient()
-            .getCaches()
-            .update(resourceGroupName, cacheName, this.innerModel(), Context.NONE);
-        return this;
+        return this.apply(Context.NONE);
     }
 
     public Cache apply(Context context) {
@@ -223,11 +217,7 @@ public final class CacheImpl implements Cache, Cache.Definition, Cache.Update {
     }
 
     public Cache refresh() {
-        this.innerObject = serviceManager.serviceClient()
-            .getCaches()
-            .getByResourceGroupWithResponse(resourceGroupName, cacheName, Context.NONE)
-            .getValue();
-        return this;
+        return this.refresh(Context.NONE);
     }
 
     public Cache refresh(Context context) {

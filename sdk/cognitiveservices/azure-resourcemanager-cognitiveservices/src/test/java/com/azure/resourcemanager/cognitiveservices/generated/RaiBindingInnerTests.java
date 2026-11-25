@@ -15,22 +15,22 @@ public final class RaiBindingInnerTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
         RaiBindingInner model = BinaryData.fromString(
-            "{\"properties\":{\"boundResourceId\":\"fh\",\"targetPolicyName\":\"l\"},\"etag\":\"ryxynqnzrd\",\"tags\":{\"tgoe\":\"vwxzn\"},\"id\":\"bbabp\",\"name\":\"hv\",\"type\":\"slkvntjl\"}")
+            "{\"properties\":{\"boundResourceId\":\"vgjcodkkg\",\"targetPolicyName\":\"iiy\"},\"etag\":\"sik\",\"tags\":{\"rhcekxgnly\":\"cufqbvntnrgmqs\",\"dt\":\"mxcpwzvmdoks\",\"chygtvxbyjane\":\"wlwxlboncqbazqic\"},\"id\":\"bdpkxyqvgx\",\"name\":\"aodetv\",\"type\":\"hkxdxuwsaifmc\"}")
             .toObject(RaiBindingInner.class);
-        Assertions.assertEquals("fh", model.properties().boundResourceId());
-        Assertions.assertEquals("l", model.properties().targetPolicyName());
-        Assertions.assertEquals("vwxzn", model.tags().get("tgoe"));
+        Assertions.assertEquals("vgjcodkkg", model.properties().boundResourceId());
+        Assertions.assertEquals("iiy", model.properties().targetPolicyName());
+        Assertions.assertEquals("cufqbvntnrgmqs", model.tags().get("rhcekxgnly"));
     }
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
         RaiBindingInner model = new RaiBindingInner()
-            .withProperties(new RaiBindingProperties().withBoundResourceId("fh").withTargetPolicyName("l"))
-            .withTags(mapOf("tgoe", "vwxzn"));
+            .withProperties(new RaiBindingProperties().withBoundResourceId("vgjcodkkg").withTargetPolicyName("iiy"))
+            .withTags(mapOf("rhcekxgnly", "cufqbvntnrgmqs", "dt", "mxcpwzvmdoks", "chygtvxbyjane", "wlwxlboncqbazqic"));
         model = BinaryData.fromObject(model).toObject(RaiBindingInner.class);
-        Assertions.assertEquals("fh", model.properties().boundResourceId());
-        Assertions.assertEquals("l", model.properties().targetPolicyName());
-        Assertions.assertEquals("vwxzn", model.tags().get("tgoe"));
+        Assertions.assertEquals("vgjcodkkg", model.properties().boundResourceId());
+        Assertions.assertEquals("iiy", model.properties().targetPolicyName());
+        Assertions.assertEquals("cufqbvntnrgmqs", model.tags().get("rhcekxgnly"));
     }
 
     // Use "Map.of" if available

@@ -6,6 +6,7 @@ package com.azure.storage.common.implementation;
 import com.azure.core.http.HttpHeaderName;
 import com.azure.core.util.Configuration;
 import com.azure.storage.common.sas.SasProtocol;
+import java.time.Duration;
 import java.time.ZoneId;
 import java.time.format.DateTimeFormatter;
 import java.util.Locale;
@@ -88,11 +89,19 @@ public final class Constants {
     public static final String PROPERTY_AZURE_STORAGE_SAS_SERVICE_VERSION = "AZURE_STORAGE_SAS_SERVICE_VERSION";
 
     public static final String SAS_SERVICE_VERSION
-        = Configuration.getGlobalConfiguration().get(PROPERTY_AZURE_STORAGE_SAS_SERVICE_VERSION, "2026-10-06");
+        = Configuration.getGlobalConfiguration().get(PROPERTY_AZURE_STORAGE_SAS_SERVICE_VERSION, "2027-03-07");
+
+    public static final String PROPERTY_AZURE_STORAGE_DISABLE_EXPECT_CONTINUE_HEADER
+        = "AZURE_STORAGE_DISABLE_EXPECT_CONTINUE_HEADER";
 
     public static final String ADJUSTED_BLOB_LENGTH_KEY = "adjustedBlobLength";
 
     public static final String SKIP_ECHO_VALIDATION_KEY = "skipEchoValidation";
+
+    /**
+     * Default lifetime for storage values cached when the service does not provide an expiration.
+     */
+    public static final Duration DEFAULT_CACHE_LIFETIME = Duration.ofMinutes(5);
 
     private Constants() {
     }
@@ -220,7 +229,7 @@ public final class Constants {
          * @deprecated For SAS Service Version use {@link Constants#SAS_SERVICE_VERSION}.
          */
         @Deprecated
-        public static final String TARGET_STORAGE_VERSION = "2026-10-06";
+        public static final String TARGET_STORAGE_VERSION = "2027-03-07";
 
         /**
          * Error code returned from the service.

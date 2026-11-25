@@ -257,17 +257,7 @@ public final class L2NetworksClientImpl implements L2NetworksClient {
             .flatMap(res -> Mono.justOrEmpty(res.getValue()));
     }
 
-    /**
-     * Get properties of the provided layer 2 (L2) network.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param l2NetworkName The name of the L2 network.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return properties of the provided layer 2 (L2) network along with {@link Response}.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Response<L2NetworkInner> getByResourceGroupWithResponse(String resourceGroupName, String l2NetworkName,
         Context context) {
@@ -276,16 +266,7 @@ public final class L2NetworksClientImpl implements L2NetworksClient {
             this.client.getSubscriptionId(), resourceGroupName, l2NetworkName, accept, context);
     }
 
-    /**
-     * Get properties of the provided layer 2 (L2) network.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param l2NetworkName The name of the L2 network.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return properties of the provided layer 2 (L2) network.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public L2NetworkInner getByResourceGroup(String resourceGroupName, String l2NetworkName) {
         return getByResourceGroupWithResponse(resourceGroupName, l2NetworkName, Context.NONE).getValue();
@@ -338,11 +319,8 @@ public final class L2NetworksClientImpl implements L2NetworksClient {
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Response<BinaryData> createOrUpdateWithResponse(String resourceGroupName, String l2NetworkName,
         L2NetworkInner l2NetworkParameters, String ifMatch, String ifNoneMatch) {
-        final String contentType = "application/json";
-        final String accept = "application/json";
-        return service.createOrUpdateSync(this.client.getEndpoint(), this.client.getApiVersion(),
-            this.client.getSubscriptionId(), resourceGroupName, l2NetworkName, ifMatch, ifNoneMatch, contentType,
-            accept, l2NetworkParameters, Context.NONE);
+        return createOrUpdateWithResponse(resourceGroupName, l2NetworkName, l2NetworkParameters, ifMatch, ifNoneMatch,
+            Context.NONE);
     }
 
     /**
@@ -437,54 +415,23 @@ public final class L2NetworksClientImpl implements L2NetworksClient {
      * domain set up for layer-2 resources.
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
-    public SyncPoller<PollResult<L2NetworkInner>, L2NetworkInner> beginCreateOrUpdate(String resourceGroupName,
+    private SyncPoller<PollResult<L2NetworkInner>, L2NetworkInner> beginCreateOrUpdate(String resourceGroupName,
         String l2NetworkName, L2NetworkInner l2NetworkParameters, String ifMatch, String ifNoneMatch) {
-        Response<BinaryData> response
-            = createOrUpdateWithResponse(resourceGroupName, l2NetworkName, l2NetworkParameters, ifMatch, ifNoneMatch);
-        return this.client.<L2NetworkInner, L2NetworkInner>getLroResult(response, L2NetworkInner.class,
-            L2NetworkInner.class, Context.NONE);
+        return beginCreateOrUpdate(resourceGroupName, l2NetworkName, l2NetworkParameters, ifMatch, ifNoneMatch,
+            Context.NONE);
     }
 
-    /**
-     * Create a new layer 2 (L2) network or update the properties of the existing network.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param l2NetworkName The name of the L2 network.
-     * @param l2NetworkParameters The request body.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the {@link SyncPoller} for polling of l2Network represents a network that utilizes a single isolation
-     * domain set up for layer-2 resources.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public SyncPoller<PollResult<L2NetworkInner>, L2NetworkInner> beginCreateOrUpdate(String resourceGroupName,
         String l2NetworkName, L2NetworkInner l2NetworkParameters) {
         final String ifMatch = null;
         final String ifNoneMatch = null;
-        Response<BinaryData> response
-            = createOrUpdateWithResponse(resourceGroupName, l2NetworkName, l2NetworkParameters, ifMatch, ifNoneMatch);
-        return this.client.<L2NetworkInner, L2NetworkInner>getLroResult(response, L2NetworkInner.class,
-            L2NetworkInner.class, Context.NONE);
+        return beginCreateOrUpdate(resourceGroupName, l2NetworkName, l2NetworkParameters, ifMatch, ifNoneMatch,
+            Context.NONE);
     }
 
-    /**
-     * Create a new layer 2 (L2) network or update the properties of the existing network.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param l2NetworkName The name of the L2 network.
-     * @param l2NetworkParameters The request body.
-     * @param ifMatch The ETag of the transformation. Omit this value to always overwrite the current resource. Specify
-     * the last-seen ETag value to prevent accidentally overwriting concurrent changes.
-     * @param ifNoneMatch Set to '*' to allow a new record set to be created, but to prevent updating an existing
-     * resource. Other values will result in error from server as they are not supported.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the {@link SyncPoller} for polling of l2Network represents a network that utilizes a single isolation
-     * domain set up for layer-2 resources.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public SyncPoller<PollResult<L2NetworkInner>, L2NetworkInner> beginCreateOrUpdate(String resourceGroupName,
         String l2NetworkName, L2NetworkInner l2NetworkParameters, String ifMatch, String ifNoneMatch, Context context) {
@@ -540,47 +487,22 @@ public final class L2NetworksClientImpl implements L2NetworksClient {
             .flatMap(this.client::getLroFinalResultOrError);
     }
 
-    /**
-     * Create a new layer 2 (L2) network or update the properties of the existing network.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param l2NetworkName The name of the L2 network.
-     * @param l2NetworkParameters The request body.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return l2Network represents a network that utilizes a single isolation domain set up for layer-2 resources.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public L2NetworkInner createOrUpdate(String resourceGroupName, String l2NetworkName,
         L2NetworkInner l2NetworkParameters) {
         final String ifMatch = null;
         final String ifNoneMatch = null;
-        return beginCreateOrUpdate(resourceGroupName, l2NetworkName, l2NetworkParameters, ifMatch, ifNoneMatch)
-            .getFinalResult();
+        return createOrUpdate(resourceGroupName, l2NetworkName, l2NetworkParameters, ifMatch, ifNoneMatch,
+            Context.NONE);
     }
 
-    /**
-     * Create a new layer 2 (L2) network or update the properties of the existing network.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param l2NetworkName The name of the L2 network.
-     * @param l2NetworkParameters The request body.
-     * @param ifMatch The ETag of the transformation. Omit this value to always overwrite the current resource. Specify
-     * the last-seen ETag value to prevent accidentally overwriting concurrent changes.
-     * @param ifNoneMatch Set to '*' to allow a new record set to be created, but to prevent updating an existing
-     * resource. Other values will result in error from server as they are not supported.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return l2Network represents a network that utilizes a single isolation domain set up for layer-2 resources.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public L2NetworkInner createOrUpdate(String resourceGroupName, String l2NetworkName,
         L2NetworkInner l2NetworkParameters, String ifMatch, String ifNoneMatch, Context context) {
-        return beginCreateOrUpdate(resourceGroupName, l2NetworkName, l2NetworkParameters, ifMatch, ifNoneMatch, context)
-            .getFinalResult();
+        return this.client.getLroFinalResultOrError(
+            beginCreateOrUpdate(resourceGroupName, l2NetworkName, l2NetworkParameters, ifMatch, ifNoneMatch, context));
     }
 
     /**
@@ -630,23 +552,7 @@ public final class L2NetworksClientImpl implements L2NetworksClient {
             l2NetworkUpdateParameters).flatMap(res -> Mono.justOrEmpty(res.getValue()));
     }
 
-    /**
-     * Update tags associated with the provided layer 2 (L2) network.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param l2NetworkName The name of the L2 network.
-     * @param ifMatch The ETag of the transformation. Omit this value to always overwrite the current resource. Specify
-     * the last-seen ETag value to prevent accidentally overwriting concurrent changes.
-     * @param ifNoneMatch Set to '*' to allow a new record set to be created, but to prevent updating an existing
-     * resource. Other values will result in error from server as they are not supported.
-     * @param l2NetworkUpdateParameters The request body.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return l2Network represents a network that utilizes a single isolation domain set up for layer-2 resources along
-     * with {@link Response}.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Response<L2NetworkInner> updateWithResponse(String resourceGroupName, String l2NetworkName, String ifMatch,
         String ifNoneMatch, L2NetworkPatchParameters l2NetworkUpdateParameters, Context context) {
@@ -656,16 +562,7 @@ public final class L2NetworksClientImpl implements L2NetworksClient {
             l2NetworkUpdateParameters, context);
     }
 
-    /**
-     * Update tags associated with the provided layer 2 (L2) network.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param l2NetworkName The name of the L2 network.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return l2Network represents a network that utilizes a single isolation domain set up for layer-2 resources.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public L2NetworkInner update(String resourceGroupName, String l2NetworkName) {
         final String ifMatch = null;
@@ -715,8 +612,7 @@ public final class L2NetworksClientImpl implements L2NetworksClient {
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Response<BinaryData> deleteWithResponse(String resourceGroupName, String l2NetworkName, String ifMatch,
         String ifNoneMatch) {
-        return service.deleteSync(this.client.getEndpoint(), this.client.getApiVersion(),
-            this.client.getSubscriptionId(), resourceGroupName, l2NetworkName, ifMatch, ifNoneMatch, Context.NONE);
+        return deleteWithResponse(resourceGroupName, l2NetworkName, ifMatch, ifNoneMatch, Context.NONE);
     }
 
     /**
@@ -799,45 +695,20 @@ public final class L2NetworksClientImpl implements L2NetworksClient {
      * @return the {@link SyncPoller} for polling of long-running operation.
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
-    public SyncPoller<PollResult<Void>, Void> beginDelete(String resourceGroupName, String l2NetworkName,
+    private SyncPoller<PollResult<Void>, Void> beginDelete(String resourceGroupName, String l2NetworkName,
         String ifMatch, String ifNoneMatch) {
-        Response<BinaryData> response = deleteWithResponse(resourceGroupName, l2NetworkName, ifMatch, ifNoneMatch);
-        return this.client.<Void, Void>getLroResult(response, Void.class, Void.class, Context.NONE);
+        return beginDelete(resourceGroupName, l2NetworkName, ifMatch, ifNoneMatch, Context.NONE);
     }
 
-    /**
-     * Delete the provided layer 2 (L2) network.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param l2NetworkName The name of the L2 network.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the {@link SyncPoller} for polling of long-running operation.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public SyncPoller<PollResult<Void>, Void> beginDelete(String resourceGroupName, String l2NetworkName) {
         final String ifMatch = null;
         final String ifNoneMatch = null;
-        Response<BinaryData> response = deleteWithResponse(resourceGroupName, l2NetworkName, ifMatch, ifNoneMatch);
-        return this.client.<Void, Void>getLroResult(response, Void.class, Void.class, Context.NONE);
+        return beginDelete(resourceGroupName, l2NetworkName, ifMatch, ifNoneMatch, Context.NONE);
     }
 
-    /**
-     * Delete the provided layer 2 (L2) network.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param l2NetworkName The name of the L2 network.
-     * @param ifMatch The ETag of the transformation. Omit this value to always overwrite the current resource. Specify
-     * the last-seen ETag value to prevent accidentally overwriting concurrent changes.
-     * @param ifNoneMatch Set to '*' to allow a new record set to be created, but to prevent updating an existing
-     * resource. Other values will result in error from server as they are not supported.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the {@link SyncPoller} for polling of long-running operation.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public SyncPoller<PollResult<Void>, Void> beginDelete(String resourceGroupName, String l2NetworkName,
         String ifMatch, String ifNoneMatch, Context context) {
@@ -884,40 +755,20 @@ public final class L2NetworksClientImpl implements L2NetworksClient {
             .flatMap(this.client::getLroFinalResultOrError);
     }
 
-    /**
-     * Delete the provided layer 2 (L2) network.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param l2NetworkName The name of the L2 network.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public void delete(String resourceGroupName, String l2NetworkName) {
         final String ifMatch = null;
         final String ifNoneMatch = null;
-        beginDelete(resourceGroupName, l2NetworkName, ifMatch, ifNoneMatch).getFinalResult();
+        delete(resourceGroupName, l2NetworkName, ifMatch, ifNoneMatch, Context.NONE);
     }
 
-    /**
-     * Delete the provided layer 2 (L2) network.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param l2NetworkName The name of the L2 network.
-     * @param ifMatch The ETag of the transformation. Omit this value to always overwrite the current resource. Specify
-     * the last-seen ETag value to prevent accidentally overwriting concurrent changes.
-     * @param ifNoneMatch Set to '*' to allow a new record set to be created, but to prevent updating an existing
-     * resource. Other values will result in error from server as they are not supported.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public void delete(String resourceGroupName, String l2NetworkName, String ifMatch, String ifNoneMatch,
         Context context) {
-        beginDelete(resourceGroupName, l2NetworkName, ifMatch, ifNoneMatch, context).getFinalResult();
+        this.client
+            .getLroFinalResultOrError(beginDelete(resourceGroupName, l2NetworkName, ifMatch, ifNoneMatch, context));
     }
 
     /**
@@ -998,12 +849,7 @@ public final class L2NetworksClientImpl implements L2NetworksClient {
     @ServiceMethod(returns = ReturnType.SINGLE)
     private PagedResponse<L2NetworkInner> listByResourceGroupSinglePage(String resourceGroupName, Integer top,
         String skipToken) {
-        final String accept = "application/json";
-        Response<L2NetworkList> res
-            = service.listByResourceGroupSync(this.client.getEndpoint(), this.client.getApiVersion(),
-                this.client.getSubscriptionId(), resourceGroupName, top, skipToken, accept, Context.NONE);
-        return new PagedResponseBase<>(res.getRequest(), res.getStatusCode(), res.getHeaders(), res.getValue().value(),
-            res.getValue().nextLink(), null);
+        return listByResourceGroupSinglePage(resourceGroupName, top, skipToken, Context.NONE);
     }
 
     /**
@@ -1030,38 +876,15 @@ public final class L2NetworksClientImpl implements L2NetworksClient {
             res.getValue().nextLink(), null);
     }
 
-    /**
-     * Get a list of layer 2 (L2) networks in the provided resource group.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return a list of layer 2 (L2) networks in the provided resource group as paginated response with
-     * {@link PagedIterable}.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.COLLECTION)
     public PagedIterable<L2NetworkInner> listByResourceGroup(String resourceGroupName) {
         final Integer top = null;
         final String skipToken = null;
-        return new PagedIterable<>(() -> listByResourceGroupSinglePage(resourceGroupName, top, skipToken),
-            nextLink -> listByResourceGroupNextSinglePage(nextLink));
+        return listByResourceGroup(resourceGroupName, top, skipToken, Context.NONE);
     }
 
-    /**
-     * Get a list of layer 2 (L2) networks in the provided resource group.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param top The maximum number of resources to return from the operation. Example: '$top=10'.
-     * @param skipToken The opaque token that the server returns to indicate where to continue listing resources from.
-     * This is used for paging through large result sets.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return a list of layer 2 (L2) networks in the provided resource group as paginated response with
-     * {@link PagedIterable}.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.COLLECTION)
     public PagedIterable<L2NetworkInner> listByResourceGroup(String resourceGroupName, Integer top, String skipToken,
         Context context) {
@@ -1139,11 +962,7 @@ public final class L2NetworksClientImpl implements L2NetworksClient {
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private PagedResponse<L2NetworkInner> listSinglePage(Integer top, String skipToken) {
-        final String accept = "application/json";
-        Response<L2NetworkList> res = service.listSync(this.client.getEndpoint(), this.client.getApiVersion(),
-            this.client.getSubscriptionId(), top, skipToken, accept, Context.NONE);
-        return new PagedResponseBase<>(res.getRequest(), res.getStatusCode(), res.getHeaders(), res.getValue().value(),
-            res.getValue().nextLink(), null);
+        return listSinglePage(top, skipToken, Context.NONE);
     }
 
     /**
@@ -1167,35 +986,15 @@ public final class L2NetworksClientImpl implements L2NetworksClient {
             res.getValue().nextLink(), null);
     }
 
-    /**
-     * Get a list of layer 2 (L2) networks in the provided subscription.
-     * 
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return a list of layer 2 (L2) networks in the provided subscription as paginated response with
-     * {@link PagedIterable}.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.COLLECTION)
     public PagedIterable<L2NetworkInner> list() {
         final Integer top = null;
         final String skipToken = null;
-        return new PagedIterable<>(() -> listSinglePage(top, skipToken),
-            nextLink -> listBySubscriptionNextSinglePage(nextLink));
+        return list(top, skipToken, Context.NONE);
     }
 
-    /**
-     * Get a list of layer 2 (L2) networks in the provided subscription.
-     * 
-     * @param top The maximum number of resources to return from the operation. Example: '$top=10'.
-     * @param skipToken The opaque token that the server returns to indicate where to continue listing resources from.
-     * This is used for paging through large result sets.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return a list of layer 2 (L2) networks in the provided subscription as paginated response with
-     * {@link PagedIterable}.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.COLLECTION)
     public PagedIterable<L2NetworkInner> list(Integer top, String skipToken, Context context) {
         return new PagedIterable<>(() -> listSinglePage(top, skipToken, context),
@@ -1234,11 +1033,7 @@ public final class L2NetworksClientImpl implements L2NetworksClient {
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private PagedResponse<L2NetworkInner> listByResourceGroupNextSinglePage(String nextLink) {
-        final String accept = "application/json";
-        Response<L2NetworkList> res
-            = service.listByResourceGroupNextSync(nextLink, this.client.getEndpoint(), accept, Context.NONE);
-        return new PagedResponseBase<>(res.getRequest(), res.getStatusCode(), res.getHeaders(), res.getValue().value(),
-            res.getValue().nextLink(), null);
+        return listByResourceGroupNextSinglePage(nextLink, Context.NONE);
     }
 
     /**
@@ -1292,11 +1087,7 @@ public final class L2NetworksClientImpl implements L2NetworksClient {
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private PagedResponse<L2NetworkInner> listBySubscriptionNextSinglePage(String nextLink) {
-        final String accept = "application/json";
-        Response<L2NetworkList> res
-            = service.listBySubscriptionNextSync(nextLink, this.client.getEndpoint(), accept, Context.NONE);
-        return new PagedResponseBase<>(res.getRequest(), res.getStatusCode(), res.getHeaders(), res.getValue().value(),
-            res.getValue().nextLink(), null);
+        return listBySubscriptionNextSinglePage(nextLink, Context.NONE);
     }
 
     /**

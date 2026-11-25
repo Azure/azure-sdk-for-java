@@ -26,13 +26,7 @@ public final class ResourceProvidersImpl implements ResourceProviders {
 
     public Volume restoreVolume(String resourceGroupName, String elasticSanName, String volumeGroupName,
         String volumeName) {
-        VolumeInner inner
-            = this.serviceClient().restoreVolume(resourceGroupName, elasticSanName, volumeGroupName, volumeName);
-        if (inner != null) {
-            return new VolumeImpl(inner, this.manager());
-        } else {
-            return null;
-        }
+        return this.restoreVolume(resourceGroupName, elasticSanName, volumeGroupName, volumeName, Context.NONE);
     }
 
     public Volume restoreVolume(String resourceGroupName, String elasticSanName, String volumeGroupName,

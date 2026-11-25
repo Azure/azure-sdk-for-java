@@ -61,12 +61,7 @@ public final class AlertRuleResourceImpl
     }
 
     public AlertRuleResource create() {
-        this.innerObject = serviceManager.serviceClient()
-            .getAlertRuleResources()
-            .createOrUpdateWithResponse(resourceGroupName, watcherName, alertRuleResourceName, this.innerModel(),
-                Context.NONE)
-            .getValue();
-        return this;
+        return this.create(Context.NONE);
     }
 
     public AlertRuleResource create(Context context) {
@@ -90,12 +85,7 @@ public final class AlertRuleResourceImpl
     }
 
     public AlertRuleResource apply() {
-        this.innerObject = serviceManager.serviceClient()
-            .getAlertRuleResources()
-            .createOrUpdateWithResponse(resourceGroupName, watcherName, alertRuleResourceName, this.innerModel(),
-                Context.NONE)
-            .getValue();
-        return this;
+        return this.apply(Context.NONE);
     }
 
     public AlertRuleResource apply(Context context) {
@@ -123,11 +113,7 @@ public final class AlertRuleResourceImpl
     }
 
     public AlertRuleResource refresh() {
-        this.innerObject = serviceManager.serviceClient()
-            .getAlertRuleResources()
-            .getWithResponse(resourceGroupName, watcherName, alertRuleResourceName, Context.NONE)
-            .getValue();
-        return this;
+        return this.refresh(Context.NONE);
     }
 
     public AlertRuleResource refresh(Context context) {

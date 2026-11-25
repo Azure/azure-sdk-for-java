@@ -60,10 +60,7 @@ public final class HardwareSettingImpl implements HardwareSetting, HardwareSetti
     }
 
     public HardwareSetting create() {
-        this.innerObject = serviceManager.serviceClient()
-            .getHardwareSettings()
-            .createOrUpdate(resourceGroupName, name, hardwareSettingName, this.innerModel(), Context.NONE);
-        return this;
+        return this.create(Context.NONE);
     }
 
     public HardwareSetting create(Context context) {
@@ -85,10 +82,7 @@ public final class HardwareSettingImpl implements HardwareSetting, HardwareSetti
     }
 
     public HardwareSetting apply() {
-        this.innerObject = serviceManager.serviceClient()
-            .getHardwareSettings()
-            .createOrUpdate(resourceGroupName, name, hardwareSettingName, this.innerModel(), Context.NONE);
-        return this;
+        return this.apply(Context.NONE);
     }
 
     public HardwareSetting apply(Context context) {
@@ -114,11 +108,7 @@ public final class HardwareSettingImpl implements HardwareSetting, HardwareSetti
     }
 
     public HardwareSetting refresh() {
-        this.innerObject = serviceManager.serviceClient()
-            .getHardwareSettings()
-            .getWithResponse(resourceGroupName, name, hardwareSettingName, Context.NONE)
-            .getValue();
-        return this;
+        return this.refresh(Context.NONE);
     }
 
     public HardwareSetting refresh(Context context) {

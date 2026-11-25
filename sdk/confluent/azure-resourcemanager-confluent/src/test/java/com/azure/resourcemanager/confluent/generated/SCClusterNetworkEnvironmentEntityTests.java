@@ -12,24 +12,24 @@ public final class SCClusterNetworkEnvironmentEntityTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
         SCClusterNetworkEnvironmentEntity model = BinaryData.fromString(
-            "{\"id\":\"gbkdmoizpos\",\"environment\":\"grcfb\",\"related\":\"rmfqjhhkxbpvj\",\"resourceName\":\"jhxxjyn\"}")
+            "{\"id\":\"hqcrailvpnpp\",\"environment\":\"flrwd\",\"related\":\"dlxyjrxs\",\"resourceName\":\"afcnih\"}")
             .toObject(SCClusterNetworkEnvironmentEntity.class);
-        Assertions.assertEquals("gbkdmoizpos", model.id());
-        Assertions.assertEquals("grcfb", model.environment());
-        Assertions.assertEquals("rmfqjhhkxbpvj", model.related());
-        Assertions.assertEquals("jhxxjyn", model.resourceName());
+        Assertions.assertEquals("hqcrailvpnpp", model.id());
+        Assertions.assertEquals("flrwd", model.environment());
+        Assertions.assertEquals("dlxyjrxs", model.related());
+        Assertions.assertEquals("afcnih", model.resourceName());
     }
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
-        SCClusterNetworkEnvironmentEntity model = new SCClusterNetworkEnvironmentEntity().withId("gbkdmoizpos")
-            .withEnvironment("grcfb")
-            .withRelated("rmfqjhhkxbpvj")
-            .withResourceName("jhxxjyn");
+        SCClusterNetworkEnvironmentEntity model = new SCClusterNetworkEnvironmentEntity().withId("hqcrailvpnpp")
+            .withEnvironment("flrwd")
+            .withRelated("dlxyjrxs")
+            .withResourceName("afcnih");
         model = BinaryData.fromObject(model).toObject(SCClusterNetworkEnvironmentEntity.class);
-        Assertions.assertEquals("gbkdmoizpos", model.id());
-        Assertions.assertEquals("grcfb", model.environment());
-        Assertions.assertEquals("rmfqjhhkxbpvj", model.related());
-        Assertions.assertEquals("jhxxjyn", model.resourceName());
+        Assertions.assertEquals("hqcrailvpnpp", model.id());
+        Assertions.assertEquals("flrwd", model.environment());
+        Assertions.assertEquals("dlxyjrxs", model.related());
+        Assertions.assertEquals("afcnih", model.resourceName());
     }
 }

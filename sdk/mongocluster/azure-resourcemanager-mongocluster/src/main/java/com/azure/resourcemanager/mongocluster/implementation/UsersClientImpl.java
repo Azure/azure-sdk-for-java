@@ -168,15 +168,15 @@ public final class UsersClientImpl implements UsersClient {
     }
 
     /**
-     * Gets the defintion of a Mongo cluster user.
+     * Gets the defintion of a DocumentDB cluster user.
      * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param mongoClusterName The name of the mongo cluster.
-     * @param userName The name of the mongo cluster user.
+     * @param mongoClusterName The name of the DocumentDB cluster.
+     * @param userName The name of the DocumentDB cluster user.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the defintion of a Mongo cluster user along with {@link Response} on successful completion of
+     * @return the defintion of a DocumentDB cluster user along with {@link Response} on successful completion of
      * {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
@@ -190,15 +190,15 @@ public final class UsersClientImpl implements UsersClient {
     }
 
     /**
-     * Gets the defintion of a Mongo cluster user.
+     * Gets the defintion of a DocumentDB cluster user.
      * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param mongoClusterName The name of the mongo cluster.
-     * @param userName The name of the mongo cluster user.
+     * @param mongoClusterName The name of the DocumentDB cluster.
+     * @param userName The name of the DocumentDB cluster user.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the defintion of a Mongo cluster user on successful completion of {@link Mono}.
+     * @return the defintion of a DocumentDB cluster user on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<UserInner> getAsync(String resourceGroupName, String mongoClusterName, String userName) {
@@ -206,18 +206,7 @@ public final class UsersClientImpl implements UsersClient {
             .flatMap(res -> Mono.justOrEmpty(res.getValue()));
     }
 
-    /**
-     * Gets the defintion of a Mongo cluster user.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param mongoClusterName The name of the mongo cluster.
-     * @param userName The name of the mongo cluster user.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the defintion of a Mongo cluster user along with {@link Response}.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Response<UserInner> getWithResponse(String resourceGroupName, String mongoClusterName, String userName,
         Context context) {
@@ -226,33 +215,24 @@ public final class UsersClientImpl implements UsersClient {
             resourceGroupName, mongoClusterName, userName, accept, context);
     }
 
-    /**
-     * Gets the defintion of a Mongo cluster user.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param mongoClusterName The name of the mongo cluster.
-     * @param userName The name of the mongo cluster user.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the defintion of a Mongo cluster user.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public UserInner get(String resourceGroupName, String mongoClusterName, String userName) {
         return getWithResponse(resourceGroupName, mongoClusterName, userName, Context.NONE).getValue();
     }
 
     /**
-     * Creates a new user or updates an existing user on a mongo cluster.
+     * Creates a new user or updates an existing user on a DocumentDB cluster.
      * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param mongoClusterName The name of the mongo cluster.
-     * @param userName The name of the mongo cluster user.
+     * @param mongoClusterName The name of the DocumentDB cluster.
+     * @param userName The name of the DocumentDB cluster user.
      * @param resource Resource create parameters.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return represents a Mongo cluster user along with {@link Response} on successful completion of {@link Mono}.
+     * @return represents a DocumentDB cluster user along with {@link Response} on successful completion of
+     * {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<Response<Flux<ByteBuffer>>> createOrUpdateWithResponseAsync(String resourceGroupName,
@@ -267,39 +247,35 @@ public final class UsersClientImpl implements UsersClient {
     }
 
     /**
-     * Creates a new user or updates an existing user on a mongo cluster.
+     * Creates a new user or updates an existing user on a DocumentDB cluster.
      * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param mongoClusterName The name of the mongo cluster.
-     * @param userName The name of the mongo cluster user.
+     * @param mongoClusterName The name of the DocumentDB cluster.
+     * @param userName The name of the DocumentDB cluster user.
      * @param resource Resource create parameters.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return represents a Mongo cluster user along with {@link Response}.
+     * @return represents a DocumentDB cluster user along with {@link Response}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Response<BinaryData> createOrUpdateWithResponse(String resourceGroupName, String mongoClusterName,
         String userName, UserInner resource) {
-        final String contentType = "application/json";
-        final String accept = "application/json";
-        return service.createOrUpdateSync(this.client.getEndpoint(), this.client.getApiVersion(),
-            this.client.getSubscriptionId(), resourceGroupName, mongoClusterName, userName, contentType, accept,
-            resource, Context.NONE);
+        return createOrUpdateWithResponse(resourceGroupName, mongoClusterName, userName, resource, Context.NONE);
     }
 
     /**
-     * Creates a new user or updates an existing user on a mongo cluster.
+     * Creates a new user or updates an existing user on a DocumentDB cluster.
      * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param mongoClusterName The name of the mongo cluster.
-     * @param userName The name of the mongo cluster user.
+     * @param mongoClusterName The name of the DocumentDB cluster.
+     * @param userName The name of the DocumentDB cluster user.
      * @param resource Resource create parameters.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return represents a Mongo cluster user along with {@link Response}.
+     * @return represents a DocumentDB cluster user along with {@link Response}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Response<BinaryData> createOrUpdateWithResponse(String resourceGroupName, String mongoClusterName,
@@ -312,16 +288,16 @@ public final class UsersClientImpl implements UsersClient {
     }
 
     /**
-     * Creates a new user or updates an existing user on a mongo cluster.
+     * Creates a new user or updates an existing user on a DocumentDB cluster.
      * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param mongoClusterName The name of the mongo cluster.
-     * @param userName The name of the mongo cluster user.
+     * @param mongoClusterName The name of the DocumentDB cluster.
+     * @param userName The name of the DocumentDB cluster user.
      * @param resource Resource create parameters.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the {@link PollerFlux} for polling of represents a Mongo cluster user.
+     * @return the {@link PollerFlux} for polling of represents a DocumentDB cluster user.
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     private PollerFlux<PollResult<UserInner>, UserInner> beginCreateOrUpdateAsync(String resourceGroupName,
@@ -332,39 +308,14 @@ public final class UsersClientImpl implements UsersClient {
             UserInner.class, this.client.getContext());
     }
 
-    /**
-     * Creates a new user or updates an existing user on a mongo cluster.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param mongoClusterName The name of the mongo cluster.
-     * @param userName The name of the mongo cluster user.
-     * @param resource Resource create parameters.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the {@link SyncPoller} for polling of represents a Mongo cluster user.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public SyncPoller<PollResult<UserInner>, UserInner> beginCreateOrUpdate(String resourceGroupName,
         String mongoClusterName, String userName, UserInner resource) {
-        Response<BinaryData> response
-            = createOrUpdateWithResponse(resourceGroupName, mongoClusterName, userName, resource);
-        return this.client.<UserInner, UserInner>getLroResult(response, UserInner.class, UserInner.class, Context.NONE);
+        return beginCreateOrUpdate(resourceGroupName, mongoClusterName, userName, resource, Context.NONE);
     }
 
-    /**
-     * Creates a new user or updates an existing user on a mongo cluster.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param mongoClusterName The name of the mongo cluster.
-     * @param userName The name of the mongo cluster user.
-     * @param resource Resource create parameters.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the {@link SyncPoller} for polling of represents a Mongo cluster user.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public SyncPoller<PollResult<UserInner>, UserInner> beginCreateOrUpdate(String resourceGroupName,
         String mongoClusterName, String userName, UserInner resource, Context context) {
@@ -374,16 +325,16 @@ public final class UsersClientImpl implements UsersClient {
     }
 
     /**
-     * Creates a new user or updates an existing user on a mongo cluster.
+     * Creates a new user or updates an existing user on a DocumentDB cluster.
      * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param mongoClusterName The name of the mongo cluster.
-     * @param userName The name of the mongo cluster user.
+     * @param mongoClusterName The name of the DocumentDB cluster.
+     * @param userName The name of the DocumentDB cluster user.
      * @param resource Resource create parameters.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return represents a Mongo cluster user on successful completion of {@link Mono}.
+     * @return represents a DocumentDB cluster user on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<UserInner> createOrUpdateAsync(String resourceGroupName, String mongoClusterName, String userName,
@@ -392,49 +343,27 @@ public final class UsersClientImpl implements UsersClient {
             .flatMap(this.client::getLroFinalResultOrError);
     }
 
-    /**
-     * Creates a new user or updates an existing user on a mongo cluster.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param mongoClusterName The name of the mongo cluster.
-     * @param userName The name of the mongo cluster user.
-     * @param resource Resource create parameters.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return represents a Mongo cluster user.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public UserInner createOrUpdate(String resourceGroupName, String mongoClusterName, String userName,
         UserInner resource) {
-        return beginCreateOrUpdate(resourceGroupName, mongoClusterName, userName, resource).getFinalResult();
+        return createOrUpdate(resourceGroupName, mongoClusterName, userName, resource, Context.NONE);
     }
 
-    /**
-     * Creates a new user or updates an existing user on a mongo cluster.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param mongoClusterName The name of the mongo cluster.
-     * @param userName The name of the mongo cluster user.
-     * @param resource Resource create parameters.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return represents a Mongo cluster user.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public UserInner createOrUpdate(String resourceGroupName, String mongoClusterName, String userName,
         UserInner resource, Context context) {
-        return beginCreateOrUpdate(resourceGroupName, mongoClusterName, userName, resource, context).getFinalResult();
+        return this.client.getLroFinalResultOrError(
+            beginCreateOrUpdate(resourceGroupName, mongoClusterName, userName, resource, context));
     }
 
     /**
-     * Deletes a mongo cluster user.
+     * Deletes a DocumentDB cluster user.
      * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param mongoClusterName The name of the mongo cluster.
-     * @param userName The name of the mongo cluster user.
+     * @param mongoClusterName The name of the DocumentDB cluster.
+     * @param userName The name of the DocumentDB cluster user.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
@@ -450,11 +379,11 @@ public final class UsersClientImpl implements UsersClient {
     }
 
     /**
-     * Deletes a mongo cluster user.
+     * Deletes a DocumentDB cluster user.
      * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param mongoClusterName The name of the mongo cluster.
-     * @param userName The name of the mongo cluster user.
+     * @param mongoClusterName The name of the DocumentDB cluster.
+     * @param userName The name of the DocumentDB cluster user.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
@@ -463,16 +392,15 @@ public final class UsersClientImpl implements UsersClient {
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Response<BinaryData> deleteWithResponse(String resourceGroupName, String mongoClusterName,
         String userName) {
-        return service.deleteSync(this.client.getEndpoint(), this.client.getApiVersion(),
-            this.client.getSubscriptionId(), resourceGroupName, mongoClusterName, userName, Context.NONE);
+        return deleteWithResponse(resourceGroupName, mongoClusterName, userName, Context.NONE);
     }
 
     /**
-     * Deletes a mongo cluster user.
+     * Deletes a DocumentDB cluster user.
      * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param mongoClusterName The name of the mongo cluster.
-     * @param userName The name of the mongo cluster user.
+     * @param mongoClusterName The name of the DocumentDB cluster.
+     * @param userName The name of the DocumentDB cluster user.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
@@ -487,11 +415,11 @@ public final class UsersClientImpl implements UsersClient {
     }
 
     /**
-     * Deletes a mongo cluster user.
+     * Deletes a DocumentDB cluster user.
      * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param mongoClusterName The name of the mongo cluster.
-     * @param userName The name of the mongo cluster user.
+     * @param mongoClusterName The name of the DocumentDB cluster.
+     * @param userName The name of the DocumentDB cluster user.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
@@ -505,36 +433,14 @@ public final class UsersClientImpl implements UsersClient {
             this.client.getContext());
     }
 
-    /**
-     * Deletes a mongo cluster user.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param mongoClusterName The name of the mongo cluster.
-     * @param userName The name of the mongo cluster user.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the {@link SyncPoller} for polling of long-running operation.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public SyncPoller<PollResult<Void>, Void> beginDelete(String resourceGroupName, String mongoClusterName,
         String userName) {
-        Response<BinaryData> response = deleteWithResponse(resourceGroupName, mongoClusterName, userName);
-        return this.client.<Void, Void>getLroResult(response, Void.class, Void.class, Context.NONE);
+        return beginDelete(resourceGroupName, mongoClusterName, userName, Context.NONE);
     }
 
-    /**
-     * Deletes a mongo cluster user.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param mongoClusterName The name of the mongo cluster.
-     * @param userName The name of the mongo cluster user.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the {@link SyncPoller} for polling of long-running operation.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public SyncPoller<PollResult<Void>, Void> beginDelete(String resourceGroupName, String mongoClusterName,
         String userName, Context context) {
@@ -543,11 +449,11 @@ public final class UsersClientImpl implements UsersClient {
     }
 
     /**
-     * Deletes a mongo cluster user.
+     * Deletes a DocumentDB cluster user.
      * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param mongoClusterName The name of the mongo cluster.
-     * @param userName The name of the mongo cluster user.
+     * @param mongoClusterName The name of the DocumentDB cluster.
+     * @param userName The name of the DocumentDB cluster user.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
@@ -559,42 +465,23 @@ public final class UsersClientImpl implements UsersClient {
             .flatMap(this.client::getLroFinalResultOrError);
     }
 
-    /**
-     * Deletes a mongo cluster user.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param mongoClusterName The name of the mongo cluster.
-     * @param userName The name of the mongo cluster user.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public void delete(String resourceGroupName, String mongoClusterName, String userName) {
-        beginDelete(resourceGroupName, mongoClusterName, userName).getFinalResult();
+        delete(resourceGroupName, mongoClusterName, userName, Context.NONE);
     }
 
-    /**
-     * Deletes a mongo cluster user.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param mongoClusterName The name of the mongo cluster.
-     * @param userName The name of the mongo cluster user.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public void delete(String resourceGroupName, String mongoClusterName, String userName, Context context) {
-        beginDelete(resourceGroupName, mongoClusterName, userName, context).getFinalResult();
+        this.client.getLroFinalResultOrError(beginDelete(resourceGroupName, mongoClusterName, userName, context));
     }
 
     /**
-     * List all the users on a mongo cluster.
+     * List all the users on a DocumentDB cluster.
      * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param mongoClusterName The name of the mongo cluster.
+     * @param mongoClusterName The name of the DocumentDB cluster.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
@@ -614,10 +501,10 @@ public final class UsersClientImpl implements UsersClient {
     }
 
     /**
-     * List all the users on a mongo cluster.
+     * List all the users on a DocumentDB cluster.
      * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param mongoClusterName The name of the mongo cluster.
+     * @param mongoClusterName The name of the DocumentDB cluster.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
@@ -630,10 +517,10 @@ public final class UsersClientImpl implements UsersClient {
     }
 
     /**
-     * List all the users on a mongo cluster.
+     * List all the users on a DocumentDB cluster.
      * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param mongoClusterName The name of the mongo cluster.
+     * @param mongoClusterName The name of the DocumentDB cluster.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
@@ -641,19 +528,14 @@ public final class UsersClientImpl implements UsersClient {
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private PagedResponse<UserInner> listByMongoClusterSinglePage(String resourceGroupName, String mongoClusterName) {
-        final String accept = "application/json";
-        Response<UserListResult> res
-            = service.listByMongoClusterSync(this.client.getEndpoint(), this.client.getApiVersion(),
-                this.client.getSubscriptionId(), resourceGroupName, mongoClusterName, accept, Context.NONE);
-        return new PagedResponseBase<>(res.getRequest(), res.getStatusCode(), res.getHeaders(), res.getValue().value(),
-            res.getValue().nextLink(), null);
+        return listByMongoClusterSinglePage(resourceGroupName, mongoClusterName, Context.NONE);
     }
 
     /**
-     * List all the users on a mongo cluster.
+     * List all the users on a DocumentDB cluster.
      * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param mongoClusterName The name of the mongo cluster.
+     * @param mongoClusterName The name of the DocumentDB cluster.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
@@ -671,33 +553,13 @@ public final class UsersClientImpl implements UsersClient {
             res.getValue().nextLink(), null);
     }
 
-    /**
-     * List all the users on a mongo cluster.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param mongoClusterName The name of the mongo cluster.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the response of a User list operation as paginated response with {@link PagedIterable}.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.COLLECTION)
     public PagedIterable<UserInner> listByMongoCluster(String resourceGroupName, String mongoClusterName) {
-        return new PagedIterable<>(() -> listByMongoClusterSinglePage(resourceGroupName, mongoClusterName),
-            nextLink -> listByMongoClusterNextSinglePage(nextLink));
+        return listByMongoCluster(resourceGroupName, mongoClusterName, Context.NONE);
     }
 
-    /**
-     * List all the users on a mongo cluster.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param mongoClusterName The name of the mongo cluster.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the response of a User list operation as paginated response with {@link PagedIterable}.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.COLLECTION)
     public PagedIterable<UserInner> listByMongoCluster(String resourceGroupName, String mongoClusterName,
         Context context) {
@@ -737,11 +599,7 @@ public final class UsersClientImpl implements UsersClient {
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private PagedResponse<UserInner> listByMongoClusterNextSinglePage(String nextLink) {
-        final String accept = "application/json";
-        Response<UserListResult> res
-            = service.listByMongoClusterNextSync(nextLink, this.client.getEndpoint(), accept, Context.NONE);
-        return new PagedResponseBase<>(res.getRequest(), res.getStatusCode(), res.getHeaders(), res.getValue().value(),
-            res.getValue().nextLink(), null);
+        return listByMongoClusterNextSinglePage(nextLink, Context.NONE);
     }
 
     /**

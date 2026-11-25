@@ -167,18 +167,7 @@ public final class ReplicationLinksClientImpl implements ReplicationLinksClient 
             @HeaderParam("Accept") String accept, Context context);
     }
 
-    /**
-     * Gets a replication link.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param serverName The name of the server.
-     * @param databaseName The name of the database.
-     * @param linkId The name of the replication link.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return a replication link along with {@link Response} on successful completion of {@link Mono}.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Response<ReplicationLinkInner>> getWithResponseAsync(String resourceGroupName, String serverName,
         String databaseName, String linkId) {
@@ -253,18 +242,7 @@ public final class ReplicationLinksClientImpl implements ReplicationLinksClient 
             resourceGroupName, serverName, databaseName, linkId, accept, context);
     }
 
-    /**
-     * Gets a replication link.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param serverName The name of the server.
-     * @param databaseName The name of the database.
-     * @param linkId The name of the replication link.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return a replication link on successful completion of {@link Mono}.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<ReplicationLinkInner> getAsync(String resourceGroupName, String serverName, String databaseName,
         String linkId) {
@@ -272,55 +250,20 @@ public final class ReplicationLinksClientImpl implements ReplicationLinksClient 
             .flatMap(res -> Mono.justOrEmpty(res.getValue()));
     }
 
-    /**
-     * Gets a replication link.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param serverName The name of the server.
-     * @param databaseName The name of the database.
-     * @param linkId The name of the replication link.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return a replication link along with {@link Response}.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Response<ReplicationLinkInner> getWithResponse(String resourceGroupName, String serverName,
         String databaseName, String linkId, Context context) {
         return getWithResponseAsync(resourceGroupName, serverName, databaseName, linkId, context).block();
     }
 
-    /**
-     * Gets a replication link.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param serverName The name of the server.
-     * @param databaseName The name of the database.
-     * @param linkId The name of the replication link.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return a replication link.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public ReplicationLinkInner get(String resourceGroupName, String serverName, String databaseName, String linkId) {
         return getWithResponse(resourceGroupName, serverName, databaseName, linkId, Context.NONE).getValue();
     }
 
-    /**
-     * Updates the replication link type.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param serverName The name of the server.
-     * @param databaseName The name of the database.
-     * @param linkId The name of the replication link.
-     * @param parameters The parameters parameter.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return a replication link along with {@link Response} on successful completion of {@link Mono}.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Response<Flux<ByteBuffer>>> createOrUpdateWithResponseAsync(String resourceGroupName, String serverName,
         String databaseName, String linkId, ReplicationLinkInner parameters) {
@@ -410,19 +353,7 @@ public final class ReplicationLinksClientImpl implements ReplicationLinksClient 
             parameters, context);
     }
 
-    /**
-     * Updates the replication link type.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param serverName The name of the server.
-     * @param databaseName The name of the database.
-     * @param linkId The name of the replication link.
-     * @param parameters The parameters parameter.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the {@link PollerFlux} for polling of a replication link.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public PollerFlux<PollResult<ReplicationLinkInner>, ReplicationLinkInner> beginCreateOrUpdateAsync(
         String resourceGroupName, String serverName, String databaseName, String linkId,
@@ -458,19 +389,7 @@ public final class ReplicationLinksClientImpl implements ReplicationLinksClient 
             ReplicationLinkInner.class, ReplicationLinkInner.class, context);
     }
 
-    /**
-     * Updates the replication link type.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param serverName The name of the server.
-     * @param databaseName The name of the database.
-     * @param linkId The name of the replication link.
-     * @param parameters The parameters parameter.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the {@link SyncPoller} for polling of a replication link.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public SyncPoller<PollResult<ReplicationLinkInner>, ReplicationLinkInner> beginCreateOrUpdate(
         String resourceGroupName, String serverName, String databaseName, String linkId,
@@ -479,20 +398,7 @@ public final class ReplicationLinksClientImpl implements ReplicationLinksClient 
             .getSyncPoller();
     }
 
-    /**
-     * Updates the replication link type.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param serverName The name of the server.
-     * @param databaseName The name of the database.
-     * @param linkId The name of the replication link.
-     * @param parameters The parameters parameter.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the {@link SyncPoller} for polling of a replication link.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public SyncPoller<PollResult<ReplicationLinkInner>, ReplicationLinkInner> beginCreateOrUpdate(
         String resourceGroupName, String serverName, String databaseName, String linkId,
@@ -501,19 +407,7 @@ public final class ReplicationLinksClientImpl implements ReplicationLinksClient 
             .getSyncPoller();
     }
 
-    /**
-     * Updates the replication link type.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param serverName The name of the server.
-     * @param databaseName The name of the database.
-     * @param linkId The name of the replication link.
-     * @param parameters The parameters parameter.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return a replication link on successful completion of {@link Mono}.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<ReplicationLinkInner> createOrUpdateAsync(String resourceGroupName, String serverName,
         String databaseName, String linkId, ReplicationLinkInner parameters) {
@@ -542,58 +436,21 @@ public final class ReplicationLinksClientImpl implements ReplicationLinksClient 
             .flatMap(this.client::getLroFinalResultOrError);
     }
 
-    /**
-     * Updates the replication link type.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param serverName The name of the server.
-     * @param databaseName The name of the database.
-     * @param linkId The name of the replication link.
-     * @param parameters The parameters parameter.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return a replication link.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public ReplicationLinkInner createOrUpdate(String resourceGroupName, String serverName, String databaseName,
         String linkId, ReplicationLinkInner parameters) {
         return createOrUpdateAsync(resourceGroupName, serverName, databaseName, linkId, parameters).block();
     }
 
-    /**
-     * Updates the replication link type.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param serverName The name of the server.
-     * @param databaseName The name of the database.
-     * @param linkId The name of the replication link.
-     * @param parameters The parameters parameter.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return a replication link.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public ReplicationLinkInner createOrUpdate(String resourceGroupName, String serverName, String databaseName,
         String linkId, ReplicationLinkInner parameters, Context context) {
         return createOrUpdateAsync(resourceGroupName, serverName, databaseName, linkId, parameters, context).block();
     }
 
-    /**
-     * Updates the replication link type.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param serverName The name of the server.
-     * @param databaseName The name of the database.
-     * @param linkId The name of the replication link.
-     * @param parameters The parameters parameter.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return a replication link along with {@link Response} on successful completion of {@link Mono}.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Response<Flux<ByteBuffer>>> updateWithResponseAsync(String resourceGroupName, String serverName,
         String databaseName, String linkId, ReplicationLinkUpdate parameters) {
@@ -682,19 +539,7 @@ public final class ReplicationLinksClientImpl implements ReplicationLinksClient 
             resourceGroupName, serverName, databaseName, linkId, contentType, accept, parameters, context);
     }
 
-    /**
-     * Updates the replication link type.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param serverName The name of the server.
-     * @param databaseName The name of the database.
-     * @param linkId The name of the replication link.
-     * @param parameters The parameters parameter.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the {@link PollerFlux} for polling of a replication link.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public PollerFlux<PollResult<ReplicationLinkInner>, ReplicationLinkInner> beginUpdateAsync(String resourceGroupName,
         String serverName, String databaseName, String linkId, ReplicationLinkUpdate parameters) {
@@ -729,39 +574,14 @@ public final class ReplicationLinksClientImpl implements ReplicationLinksClient 
             ReplicationLinkInner.class, ReplicationLinkInner.class, context);
     }
 
-    /**
-     * Updates the replication link type.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param serverName The name of the server.
-     * @param databaseName The name of the database.
-     * @param linkId The name of the replication link.
-     * @param parameters The parameters parameter.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the {@link SyncPoller} for polling of a replication link.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public SyncPoller<PollResult<ReplicationLinkInner>, ReplicationLinkInner> beginUpdate(String resourceGroupName,
         String serverName, String databaseName, String linkId, ReplicationLinkUpdate parameters) {
         return this.beginUpdateAsync(resourceGroupName, serverName, databaseName, linkId, parameters).getSyncPoller();
     }
 
-    /**
-     * Updates the replication link type.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param serverName The name of the server.
-     * @param databaseName The name of the database.
-     * @param linkId The name of the replication link.
-     * @param parameters The parameters parameter.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the {@link SyncPoller} for polling of a replication link.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public SyncPoller<PollResult<ReplicationLinkInner>, ReplicationLinkInner> beginUpdate(String resourceGroupName,
         String serverName, String databaseName, String linkId, ReplicationLinkUpdate parameters, Context context) {
@@ -769,19 +589,7 @@ public final class ReplicationLinksClientImpl implements ReplicationLinksClient 
             .getSyncPoller();
     }
 
-    /**
-     * Updates the replication link type.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param serverName The name of the server.
-     * @param databaseName The name of the database.
-     * @param linkId The name of the replication link.
-     * @param parameters The parameters parameter.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return a replication link on successful completion of {@link Mono}.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<ReplicationLinkInner> updateAsync(String resourceGroupName, String serverName, String databaseName,
         String linkId, ReplicationLinkUpdate parameters) {
@@ -810,57 +618,21 @@ public final class ReplicationLinksClientImpl implements ReplicationLinksClient 
             .flatMap(this.client::getLroFinalResultOrError);
     }
 
-    /**
-     * Updates the replication link type.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param serverName The name of the server.
-     * @param databaseName The name of the database.
-     * @param linkId The name of the replication link.
-     * @param parameters The parameters parameter.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return a replication link.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public ReplicationLinkInner update(String resourceGroupName, String serverName, String databaseName, String linkId,
         ReplicationLinkUpdate parameters) {
         return updateAsync(resourceGroupName, serverName, databaseName, linkId, parameters).block();
     }
 
-    /**
-     * Updates the replication link type.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param serverName The name of the server.
-     * @param databaseName The name of the database.
-     * @param linkId The name of the replication link.
-     * @param parameters The parameters parameter.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return a replication link.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public ReplicationLinkInner update(String resourceGroupName, String serverName, String databaseName, String linkId,
         ReplicationLinkUpdate parameters, Context context) {
         return updateAsync(resourceGroupName, serverName, databaseName, linkId, parameters, context).block();
     }
 
-    /**
-     * Deletes the replication link.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param serverName The name of the server.
-     * @param databaseName The name of the database.
-     * @param linkId The name of the replication link.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the {@link Response} on successful completion of {@link Mono}.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Response<Flux<ByteBuffer>>> deleteWithResponseAsync(String resourceGroupName, String serverName,
         String databaseName, String linkId) {
@@ -933,18 +705,7 @@ public final class ReplicationLinksClientImpl implements ReplicationLinksClient 
             resourceGroupName, serverName, databaseName, linkId, context);
     }
 
-    /**
-     * Deletes the replication link.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param serverName The name of the server.
-     * @param databaseName The name of the database.
-     * @param linkId The name of the replication link.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the {@link PollerFlux} for polling of long-running operation.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public PollerFlux<PollResult<Void>, Void> beginDeleteAsync(String resourceGroupName, String serverName,
         String databaseName, String linkId) {
@@ -977,55 +738,21 @@ public final class ReplicationLinksClientImpl implements ReplicationLinksClient 
             context);
     }
 
-    /**
-     * Deletes the replication link.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param serverName The name of the server.
-     * @param databaseName The name of the database.
-     * @param linkId The name of the replication link.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the {@link SyncPoller} for polling of long-running operation.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public SyncPoller<PollResult<Void>, Void> beginDelete(String resourceGroupName, String serverName,
         String databaseName, String linkId) {
         return this.beginDeleteAsync(resourceGroupName, serverName, databaseName, linkId).getSyncPoller();
     }
 
-    /**
-     * Deletes the replication link.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param serverName The name of the server.
-     * @param databaseName The name of the database.
-     * @param linkId The name of the replication link.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the {@link SyncPoller} for polling of long-running operation.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public SyncPoller<PollResult<Void>, Void> beginDelete(String resourceGroupName, String serverName,
         String databaseName, String linkId, Context context) {
         return this.beginDeleteAsync(resourceGroupName, serverName, databaseName, linkId, context).getSyncPoller();
     }
 
-    /**
-     * Deletes the replication link.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param serverName The name of the server.
-     * @param databaseName The name of the database.
-     * @param linkId The name of the replication link.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return A {@link Mono} that completes when a successful response is received.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Void> deleteAsync(String resourceGroupName, String serverName, String databaseName, String linkId) {
         return beginDeleteAsync(resourceGroupName, serverName, databaseName, linkId).last()
@@ -1052,34 +779,13 @@ public final class ReplicationLinksClientImpl implements ReplicationLinksClient 
             .flatMap(this.client::getLroFinalResultOrError);
     }
 
-    /**
-     * Deletes the replication link.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param serverName The name of the server.
-     * @param databaseName The name of the database.
-     * @param linkId The name of the replication link.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public void delete(String resourceGroupName, String serverName, String databaseName, String linkId) {
         deleteAsync(resourceGroupName, serverName, databaseName, linkId).block();
     }
 
-    /**
-     * Deletes the replication link.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param serverName The name of the server.
-     * @param databaseName The name of the database.
-     * @param linkId The name of the replication link.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public void delete(String resourceGroupName, String serverName, String databaseName, String linkId,
         Context context) {
@@ -1171,17 +877,7 @@ public final class ReplicationLinksClientImpl implements ReplicationLinksClient 
                 res.getValue().value(), res.getValue().nextLink(), null));
     }
 
-    /**
-     * Gets a list of replication links on database.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param serverName The name of the server.
-     * @param databaseName The name of the database.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return a list of replication links on database as paginated response with {@link PagedFlux}.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.COLLECTION)
     public PagedFlux<ReplicationLinkInner> listByDatabaseAsync(String resourceGroupName, String serverName,
         String databaseName) {
@@ -1209,53 +905,21 @@ public final class ReplicationLinksClientImpl implements ReplicationLinksClient 
             nextLink -> listByDatabaseNextSinglePageAsync(nextLink, context));
     }
 
-    /**
-     * Gets a list of replication links on database.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param serverName The name of the server.
-     * @param databaseName The name of the database.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return a list of replication links on database as paginated response with {@link PagedIterable}.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.COLLECTION)
     public PagedIterable<ReplicationLinkInner> listByDatabase(String resourceGroupName, String serverName,
         String databaseName) {
         return new PagedIterable<>(listByDatabaseAsync(resourceGroupName, serverName, databaseName));
     }
 
-    /**
-     * Gets a list of replication links on database.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param serverName The name of the server.
-     * @param databaseName The name of the database.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return a list of replication links on database as paginated response with {@link PagedIterable}.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.COLLECTION)
     public PagedIterable<ReplicationLinkInner> listByDatabase(String resourceGroupName, String serverName,
         String databaseName, Context context) {
         return new PagedIterable<>(listByDatabaseAsync(resourceGroupName, serverName, databaseName, context));
     }
 
-    /**
-     * Fails over from the current primary server to this server.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param serverName The name of the server.
-     * @param databaseName The name of the database.
-     * @param linkId The name of the replication link.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return a replication link along with {@link Response} on successful completion of {@link Mono}.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Response<Flux<ByteBuffer>>> failoverWithResponseAsync(String resourceGroupName, String serverName,
         String databaseName, String linkId) {
@@ -1330,18 +994,7 @@ public final class ReplicationLinksClientImpl implements ReplicationLinksClient 
             resourceGroupName, serverName, databaseName, linkId, accept, context);
     }
 
-    /**
-     * Fails over from the current primary server to this server.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param serverName The name of the server.
-     * @param databaseName The name of the database.
-     * @param linkId The name of the replication link.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the {@link PollerFlux} for polling of a replication link.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public PollerFlux<PollResult<ReplicationLinkInner>, ReplicationLinkInner>
         beginFailoverAsync(String resourceGroupName, String serverName, String databaseName, String linkId) {
@@ -1374,55 +1027,21 @@ public final class ReplicationLinksClientImpl implements ReplicationLinksClient 
             ReplicationLinkInner.class, ReplicationLinkInner.class, context);
     }
 
-    /**
-     * Fails over from the current primary server to this server.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param serverName The name of the server.
-     * @param databaseName The name of the database.
-     * @param linkId The name of the replication link.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the {@link SyncPoller} for polling of a replication link.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public SyncPoller<PollResult<ReplicationLinkInner>, ReplicationLinkInner> beginFailover(String resourceGroupName,
         String serverName, String databaseName, String linkId) {
         return this.beginFailoverAsync(resourceGroupName, serverName, databaseName, linkId).getSyncPoller();
     }
 
-    /**
-     * Fails over from the current primary server to this server.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param serverName The name of the server.
-     * @param databaseName The name of the database.
-     * @param linkId The name of the replication link.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the {@link SyncPoller} for polling of a replication link.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public SyncPoller<PollResult<ReplicationLinkInner>, ReplicationLinkInner> beginFailover(String resourceGroupName,
         String serverName, String databaseName, String linkId, Context context) {
         return this.beginFailoverAsync(resourceGroupName, serverName, databaseName, linkId, context).getSyncPoller();
     }
 
-    /**
-     * Fails over from the current primary server to this server.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param serverName The name of the server.
-     * @param databaseName The name of the database.
-     * @param linkId The name of the replication link.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return a replication link on successful completion of {@link Mono}.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<ReplicationLinkInner> failoverAsync(String resourceGroupName, String serverName, String databaseName,
         String linkId) {
@@ -1450,55 +1069,21 @@ public final class ReplicationLinksClientImpl implements ReplicationLinksClient 
             .flatMap(this.client::getLroFinalResultOrError);
     }
 
-    /**
-     * Fails over from the current primary server to this server.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param serverName The name of the server.
-     * @param databaseName The name of the database.
-     * @param linkId The name of the replication link.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return a replication link.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public ReplicationLinkInner failover(String resourceGroupName, String serverName, String databaseName,
         String linkId) {
         return failoverAsync(resourceGroupName, serverName, databaseName, linkId).block();
     }
 
-    /**
-     * Fails over from the current primary server to this server.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param serverName The name of the server.
-     * @param databaseName The name of the database.
-     * @param linkId The name of the replication link.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return a replication link.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public ReplicationLinkInner failover(String resourceGroupName, String serverName, String databaseName,
         String linkId, Context context) {
         return failoverAsync(resourceGroupName, serverName, databaseName, linkId, context).block();
     }
 
-    /**
-     * Fails over from the current primary server to this server allowing data loss.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param serverName The name of the server.
-     * @param databaseName The name of the database.
-     * @param linkId The name of the replication link.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return a replication link along with {@link Response} on successful completion of {@link Mono}.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Response<Flux<ByteBuffer>>> failoverAllowDataLossWithResponseAsync(String resourceGroupName,
         String serverName, String databaseName, String linkId) {
@@ -1574,18 +1159,7 @@ public final class ReplicationLinksClientImpl implements ReplicationLinksClient 
             this.client.getSubscriptionId(), resourceGroupName, serverName, databaseName, linkId, accept, context);
     }
 
-    /**
-     * Fails over from the current primary server to this server allowing data loss.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param serverName The name of the server.
-     * @param databaseName The name of the database.
-     * @param linkId The name of the replication link.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the {@link PollerFlux} for polling of a replication link.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public PollerFlux<PollResult<ReplicationLinkInner>, ReplicationLinkInner> beginFailoverAllowDataLossAsync(
         String resourceGroupName, String serverName, String databaseName, String linkId) {
@@ -1618,18 +1192,7 @@ public final class ReplicationLinksClientImpl implements ReplicationLinksClient 
             ReplicationLinkInner.class, ReplicationLinkInner.class, context);
     }
 
-    /**
-     * Fails over from the current primary server to this server allowing data loss.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param serverName The name of the server.
-     * @param databaseName The name of the database.
-     * @param linkId The name of the replication link.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the {@link SyncPoller} for polling of a replication link.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public SyncPoller<PollResult<ReplicationLinkInner>, ReplicationLinkInner>
         beginFailoverAllowDataLoss(String resourceGroupName, String serverName, String databaseName, String linkId) {
@@ -1637,19 +1200,7 @@ public final class ReplicationLinksClientImpl implements ReplicationLinksClient 
             .getSyncPoller();
     }
 
-    /**
-     * Fails over from the current primary server to this server allowing data loss.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param serverName The name of the server.
-     * @param databaseName The name of the database.
-     * @param linkId The name of the replication link.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the {@link SyncPoller} for polling of a replication link.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public SyncPoller<PollResult<ReplicationLinkInner>, ReplicationLinkInner> beginFailoverAllowDataLoss(
         String resourceGroupName, String serverName, String databaseName, String linkId, Context context) {
@@ -1657,18 +1208,7 @@ public final class ReplicationLinksClientImpl implements ReplicationLinksClient 
             .getSyncPoller();
     }
 
-    /**
-     * Fails over from the current primary server to this server allowing data loss.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param serverName The name of the server.
-     * @param databaseName The name of the database.
-     * @param linkId The name of the replication link.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return a replication link on successful completion of {@link Mono}.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<ReplicationLinkInner> failoverAllowDataLossAsync(String resourceGroupName, String serverName,
         String databaseName, String linkId) {
@@ -1696,37 +1236,14 @@ public final class ReplicationLinksClientImpl implements ReplicationLinksClient 
             .flatMap(this.client::getLroFinalResultOrError);
     }
 
-    /**
-     * Fails over from the current primary server to this server allowing data loss.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param serverName The name of the server.
-     * @param databaseName The name of the database.
-     * @param linkId The name of the replication link.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return a replication link.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public ReplicationLinkInner failoverAllowDataLoss(String resourceGroupName, String serverName, String databaseName,
         String linkId) {
         return failoverAllowDataLossAsync(resourceGroupName, serverName, databaseName, linkId).block();
     }
 
-    /**
-     * Fails over from the current primary server to this server allowing data loss.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param serverName The name of the server.
-     * @param databaseName The name of the database.
-     * @param linkId The name of the replication link.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return a replication link.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public ReplicationLinkInner failoverAllowDataLoss(String resourceGroupName, String serverName, String databaseName,
         String linkId, Context context) {
@@ -1808,16 +1325,7 @@ public final class ReplicationLinksClientImpl implements ReplicationLinksClient 
                 res.getValue().value(), res.getValue().nextLink(), null));
     }
 
-    /**
-     * Gets a list of replication links.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param serverName The name of the server.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return a list of replication links as paginated response with {@link PagedFlux}.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.COLLECTION)
     public PagedFlux<ReplicationLinkInner> listByServerAsync(String resourceGroupName, String serverName) {
         return new PagedFlux<>(() -> listByServerSinglePageAsync(resourceGroupName, serverName),
@@ -1842,32 +1350,13 @@ public final class ReplicationLinksClientImpl implements ReplicationLinksClient 
             nextLink -> listByServerNextSinglePageAsync(nextLink, context));
     }
 
-    /**
-     * Gets a list of replication links.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param serverName The name of the server.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return a list of replication links as paginated response with {@link PagedIterable}.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.COLLECTION)
     public PagedIterable<ReplicationLinkInner> listByServer(String resourceGroupName, String serverName) {
         return new PagedIterable<>(listByServerAsync(resourceGroupName, serverName));
     }
 
-    /**
-     * Gets a list of replication links.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param serverName The name of the server.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return a list of replication links as paginated response with {@link PagedIterable}.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.COLLECTION)
     public PagedIterable<ReplicationLinkInner> listByServer(String resourceGroupName, String serverName,
         Context context) {

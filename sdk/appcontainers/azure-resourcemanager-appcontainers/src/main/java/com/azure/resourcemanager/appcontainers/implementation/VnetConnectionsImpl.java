@@ -45,7 +45,7 @@ public final class VnetConnectionsImpl implements VnetConnections {
     }
 
     public void delete(String resourceGroupName, String sandboxGroupName, String vnetConnectionName) {
-        this.serviceClient().delete(resourceGroupName, sandboxGroupName, vnetConnectionName);
+        this.delete(resourceGroupName, sandboxGroupName, vnetConnectionName, Context.NONE);
     }
 
     public void delete(String resourceGroupName, String sandboxGroupName, String vnetConnectionName, Context context) {
@@ -53,9 +53,7 @@ public final class VnetConnectionsImpl implements VnetConnections {
     }
 
     public PagedIterable<VnetConnection> listBySandboxGroup(String resourceGroupName, String sandboxGroupName) {
-        PagedIterable<VnetConnectionInner> inner
-            = this.serviceClient().listBySandboxGroup(resourceGroupName, sandboxGroupName);
-        return ResourceManagerUtils.mapPage(inner, inner1 -> new VnetConnectionImpl(inner1, this.manager()));
+        return this.listBySandboxGroup(resourceGroupName, sandboxGroupName, Context.NONE);
     }
 
     public PagedIterable<VnetConnection> listBySandboxGroup(String resourceGroupName, String sandboxGroupName,
@@ -66,102 +64,36 @@ public final class VnetConnectionsImpl implements VnetConnections {
     }
 
     public VnetConnection getById(String id) {
-        String resourceGroupName = ResourceManagerUtils.getValueFromIdByParameterName(id,
-            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.App/sandboxGroups/{sandboxGroupName}/vnetConnections/{vnetConnectionName}",
-            "resourceGroupName");
-        if (resourceGroupName == null) {
-            throw LOGGER.logExceptionAsError(new IllegalArgumentException(
-                String.format("The resource ID '%s' is not valid. Missing path segment 'resourceGroups'.", id)));
-        }
-        String sandboxGroupName = ResourceManagerUtils.getValueFromIdByParameterName(id,
-            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.App/sandboxGroups/{sandboxGroupName}/vnetConnections/{vnetConnectionName}",
-            "sandboxGroupName");
-        if (sandboxGroupName == null) {
-            throw LOGGER.logExceptionAsError(new IllegalArgumentException(
-                String.format("The resource ID '%s' is not valid. Missing path segment 'sandboxGroups'.", id)));
-        }
-        String vnetConnectionName = ResourceManagerUtils.getValueFromIdByParameterName(id,
-            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.App/sandboxGroups/{sandboxGroupName}/vnetConnections/{vnetConnectionName}",
-            "vnetConnectionName");
-        if (vnetConnectionName == null) {
-            throw LOGGER.logExceptionAsError(new IllegalArgumentException(
-                String.format("The resource ID '%s' is not valid. Missing path segment 'vnetConnections'.", id)));
-        }
-        return this.getWithResponse(resourceGroupName, sandboxGroupName, vnetConnectionName, Context.NONE).getValue();
+        return this.getByIdWithResponse(id, Context.NONE).getValue();
     }
 
     public Response<VnetConnection> getByIdWithResponse(String id, Context context) {
-        String resourceGroupName = ResourceManagerUtils.getValueFromIdByParameterName(id,
+        String resourceGroupName = ResourceManagerUtils.getRequiredValueFromIdByParameterName(id,
             "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.App/sandboxGroups/{sandboxGroupName}/vnetConnections/{vnetConnectionName}",
-            "resourceGroupName");
-        if (resourceGroupName == null) {
-            throw LOGGER.logExceptionAsError(new IllegalArgumentException(
-                String.format("The resource ID '%s' is not valid. Missing path segment 'resourceGroups'.", id)));
-        }
-        String sandboxGroupName = ResourceManagerUtils.getValueFromIdByParameterName(id,
+            "resourceGroupName", "resourceGroups", LOGGER);
+        String sandboxGroupName = ResourceManagerUtils.getRequiredValueFromIdByParameterName(id,
             "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.App/sandboxGroups/{sandboxGroupName}/vnetConnections/{vnetConnectionName}",
-            "sandboxGroupName");
-        if (sandboxGroupName == null) {
-            throw LOGGER.logExceptionAsError(new IllegalArgumentException(
-                String.format("The resource ID '%s' is not valid. Missing path segment 'sandboxGroups'.", id)));
-        }
-        String vnetConnectionName = ResourceManagerUtils.getValueFromIdByParameterName(id,
+            "sandboxGroupName", "sandboxGroups", LOGGER);
+        String vnetConnectionName = ResourceManagerUtils.getRequiredValueFromIdByParameterName(id,
             "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.App/sandboxGroups/{sandboxGroupName}/vnetConnections/{vnetConnectionName}",
-            "vnetConnectionName");
-        if (vnetConnectionName == null) {
-            throw LOGGER.logExceptionAsError(new IllegalArgumentException(
-                String.format("The resource ID '%s' is not valid. Missing path segment 'vnetConnections'.", id)));
-        }
+            "vnetConnectionName", "vnetConnections", LOGGER);
         return this.getWithResponse(resourceGroupName, sandboxGroupName, vnetConnectionName, context);
     }
 
     public void deleteById(String id) {
-        String resourceGroupName = ResourceManagerUtils.getValueFromIdByParameterName(id,
-            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.App/sandboxGroups/{sandboxGroupName}/vnetConnections/{vnetConnectionName}",
-            "resourceGroupName");
-        if (resourceGroupName == null) {
-            throw LOGGER.logExceptionAsError(new IllegalArgumentException(
-                String.format("The resource ID '%s' is not valid. Missing path segment 'resourceGroups'.", id)));
-        }
-        String sandboxGroupName = ResourceManagerUtils.getValueFromIdByParameterName(id,
-            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.App/sandboxGroups/{sandboxGroupName}/vnetConnections/{vnetConnectionName}",
-            "sandboxGroupName");
-        if (sandboxGroupName == null) {
-            throw LOGGER.logExceptionAsError(new IllegalArgumentException(
-                String.format("The resource ID '%s' is not valid. Missing path segment 'sandboxGroups'.", id)));
-        }
-        String vnetConnectionName = ResourceManagerUtils.getValueFromIdByParameterName(id,
-            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.App/sandboxGroups/{sandboxGroupName}/vnetConnections/{vnetConnectionName}",
-            "vnetConnectionName");
-        if (vnetConnectionName == null) {
-            throw LOGGER.logExceptionAsError(new IllegalArgumentException(
-                String.format("The resource ID '%s' is not valid. Missing path segment 'vnetConnections'.", id)));
-        }
-        this.delete(resourceGroupName, sandboxGroupName, vnetConnectionName, Context.NONE);
+        this.deleteByIdWithResponse(id, Context.NONE);
     }
 
     public void deleteByIdWithResponse(String id, Context context) {
-        String resourceGroupName = ResourceManagerUtils.getValueFromIdByParameterName(id,
+        String resourceGroupName = ResourceManagerUtils.getRequiredValueFromIdByParameterName(id,
             "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.App/sandboxGroups/{sandboxGroupName}/vnetConnections/{vnetConnectionName}",
-            "resourceGroupName");
-        if (resourceGroupName == null) {
-            throw LOGGER.logExceptionAsError(new IllegalArgumentException(
-                String.format("The resource ID '%s' is not valid. Missing path segment 'resourceGroups'.", id)));
-        }
-        String sandboxGroupName = ResourceManagerUtils.getValueFromIdByParameterName(id,
+            "resourceGroupName", "resourceGroups", LOGGER);
+        String sandboxGroupName = ResourceManagerUtils.getRequiredValueFromIdByParameterName(id,
             "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.App/sandboxGroups/{sandboxGroupName}/vnetConnections/{vnetConnectionName}",
-            "sandboxGroupName");
-        if (sandboxGroupName == null) {
-            throw LOGGER.logExceptionAsError(new IllegalArgumentException(
-                String.format("The resource ID '%s' is not valid. Missing path segment 'sandboxGroups'.", id)));
-        }
-        String vnetConnectionName = ResourceManagerUtils.getValueFromIdByParameterName(id,
+            "sandboxGroupName", "sandboxGroups", LOGGER);
+        String vnetConnectionName = ResourceManagerUtils.getRequiredValueFromIdByParameterName(id,
             "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.App/sandboxGroups/{sandboxGroupName}/vnetConnections/{vnetConnectionName}",
-            "vnetConnectionName");
-        if (vnetConnectionName == null) {
-            throw LOGGER.logExceptionAsError(new IllegalArgumentException(
-                String.format("The resource ID '%s' is not valid. Missing path segment 'vnetConnections'.", id)));
-        }
+            "vnetConnectionName", "vnetConnections", LOGGER);
         this.delete(resourceGroupName, sandboxGroupName, vnetConnectionName, context);
     }
 

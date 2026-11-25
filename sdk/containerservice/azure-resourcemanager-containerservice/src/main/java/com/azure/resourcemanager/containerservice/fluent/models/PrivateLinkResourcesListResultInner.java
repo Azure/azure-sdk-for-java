@@ -23,6 +23,11 @@ public final class PrivateLinkResourcesListResultInner
      */
     private List<PrivateLinkResourceInner> value;
 
+    /*
+     * The link to the next page, if any. Omitted when all results are returned in a single response.
+     */
+    private String nextLink;
+
     /**
      * Creates an instance of PrivateLinkResourcesListResultInner class.
      */
@@ -36,6 +41,16 @@ public final class PrivateLinkResourcesListResultInner
      */
     public List<PrivateLinkResourceInner> value() {
         return this.value;
+    }
+
+    /**
+     * Get the nextLink property: The link to the next page, if any. Omitted when all results are returned in a single
+     * response.
+     * 
+     * @return the nextLink value.
+     */
+    public String nextLink() {
+        return this.nextLink;
     }
 
     /**
@@ -56,6 +71,7 @@ public final class PrivateLinkResourcesListResultInner
     public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
         jsonWriter.writeStartObject();
         jsonWriter.writeArrayField("value", this.value, (writer, element) -> writer.writeJson(element));
+        jsonWriter.writeStringField("nextLink", this.nextLink);
         return jsonWriter.writeEndObject();
     }
 
@@ -79,6 +95,8 @@ public final class PrivateLinkResourcesListResultInner
                     List<PrivateLinkResourceInner> value
                         = reader.readArray(reader1 -> PrivateLinkResourceInner.fromJson(reader1));
                     deserializedPrivateLinkResourcesListResultInner.value = value;
+                } else if ("nextLink".equals(fieldName)) {
+                    deserializedPrivateLinkResourcesListResultInner.nextLink = reader.getString();
                 } else {
                     reader.skipChildren();
                 }

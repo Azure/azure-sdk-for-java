@@ -26,9 +26,7 @@ public final class RaiExternalSafetyProvidersOperationsImpl implements RaiExtern
     }
 
     public PagedIterable<RaiExternalSafetyProviderSchema> list() {
-        PagedIterable<RaiExternalSafetyProviderSchemaInner> inner = this.serviceClient().list();
-        return ResourceManagerUtils.mapPage(inner,
-            inner1 -> new RaiExternalSafetyProviderSchemaImpl(inner1, this.manager()));
+        return this.list(Context.NONE);
     }
 
     public PagedIterable<RaiExternalSafetyProviderSchema> list(Context context) {

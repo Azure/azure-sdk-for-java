@@ -44,8 +44,7 @@ public final class DnsPrivateViewsImpl implements DnsPrivateViews {
     }
 
     public PagedIterable<DnsPrivateView> listByLocation(String location) {
-        PagedIterable<DnsPrivateViewInner> inner = this.serviceClient().listByLocation(location);
-        return ResourceManagerUtils.mapPage(inner, inner1 -> new DnsPrivateViewImpl(inner1, this.manager()));
+        return this.listByLocation(location, Context.NONE);
     }
 
     public PagedIterable<DnsPrivateView> listByLocation(String location, Context context) {

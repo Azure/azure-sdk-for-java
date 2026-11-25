@@ -23,7 +23,7 @@ public final class ExportJobsImpl implements ExportJobs {
     }
 
     public void trigger(String resourceGroupName, String vaultName) {
-        this.serviceClient().trigger(resourceGroupName, vaultName);
+        this.trigger(resourceGroupName, vaultName, Context.NONE);
     }
 
     public void trigger(String resourceGroupName, String vaultName, Context context) {

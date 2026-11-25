@@ -68,16 +68,7 @@ public final class ApplicationGatewayWafDynamicManifestsDefaultsClientImpl
             @PathParam("location") String location, @HeaderParam("Accept") String accept, Context context);
     }
 
-    /**
-     * Gets the regional application gateway waf manifest.
-     * 
-     * @param location The location for which the WAF dynamic manifest is requested.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the regional application gateway waf manifest along with {@link Response} on successful completion of
-     * {@link Mono}.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Response<ApplicationGatewayWafDynamicManifestResultInner>> getWithResponseAsync(String location) {
         if (this.client.getEndpoint() == null) {
@@ -91,7 +82,7 @@ public final class ApplicationGatewayWafDynamicManifestsDefaultsClientImpl
         if (location == null) {
             return Mono.error(new IllegalArgumentException("Parameter location is required and cannot be null."));
         }
-        final String apiVersion = "2026-03-01";
+        final String apiVersion = "2026-05-01";
         final String accept = "application/json";
         return FluxUtil
             .withContext(context -> service.get(this.client.getEndpoint(), apiVersion, this.client.getSubscriptionId(),
@@ -124,51 +115,26 @@ public final class ApplicationGatewayWafDynamicManifestsDefaultsClientImpl
         if (location == null) {
             return Mono.error(new IllegalArgumentException("Parameter location is required and cannot be null."));
         }
-        final String apiVersion = "2026-03-01";
+        final String apiVersion = "2026-05-01";
         final String accept = "application/json";
         context = this.client.mergeContext(context);
         return service.get(this.client.getEndpoint(), apiVersion, this.client.getSubscriptionId(), location, accept,
             context);
     }
 
-    /**
-     * Gets the regional application gateway waf manifest.
-     * 
-     * @param location The location for which the WAF dynamic manifest is requested.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the regional application gateway waf manifest on successful completion of {@link Mono}.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<ApplicationGatewayWafDynamicManifestResultInner> getAsync(String location) {
         return getWithResponseAsync(location).flatMap(res -> Mono.justOrEmpty(res.getValue()));
     }
 
-    /**
-     * Gets the regional application gateway waf manifest.
-     * 
-     * @param location The location for which the WAF dynamic manifest is requested.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the regional application gateway waf manifest along with {@link Response}.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Response<ApplicationGatewayWafDynamicManifestResultInner> getWithResponse(String location, Context context) {
         return getWithResponseAsync(location, context).block();
     }
 
-    /**
-     * Gets the regional application gateway waf manifest.
-     * 
-     * @param location The location for which the WAF dynamic manifest is requested.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the regional application gateway waf manifest.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public ApplicationGatewayWafDynamicManifestResultInner get(String location) {
         return getWithResponse(location, Context.NONE).getValue();

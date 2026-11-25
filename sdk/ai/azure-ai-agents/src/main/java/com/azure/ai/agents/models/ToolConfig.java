@@ -18,6 +18,7 @@ import java.io.IOException;
 public final class ToolConfig implements JsonSerializable<ToolConfig> {
 
     /*
+     * 
      * When true, the tool is always included in agent context and visible in `tools/list`.
      * When false (default), the tool is hidden from `tools/list` and only discoverable via `tool_search`.
      */
@@ -25,6 +26,7 @@ public final class ToolConfig implements JsonSerializable<ToolConfig> {
     private Boolean pin;
 
     /*
+     * 
      * Additional text indexed for tool_search. Supplements the native tool description
      * to improve discoverability. Does not alter `tools/list` output.
      */
@@ -39,7 +41,8 @@ public final class ToolConfig implements JsonSerializable<ToolConfig> {
     }
 
     /**
-     * Get the pin property: When true, the tool is always included in agent context and visible in `tools/list`.
+     * Get the pin property:
+     * When true, the tool is always included in agent context and visible in `tools/list`.
      * When false (default), the tool is hidden from `tools/list` and only discoverable via `tool_search`.
      *
      * @return the pin value.
@@ -50,7 +53,8 @@ public final class ToolConfig implements JsonSerializable<ToolConfig> {
     }
 
     /**
-     * Set the pin property: When true, the tool is always included in agent context and visible in `tools/list`.
+     * Set the pin property:
+     * When true, the tool is always included in agent context and visible in `tools/list`.
      * When false (default), the tool is hidden from `tools/list` and only discoverable via `tool_search`.
      *
      * @param pin the pin value to set.
@@ -63,8 +67,8 @@ public final class ToolConfig implements JsonSerializable<ToolConfig> {
     }
 
     /**
-     * Get the additionalSearchText property: Additional text indexed for tool_search. Supplements the native tool
-     * description
+     * Get the additionalSearchText property:
+     * Additional text indexed for tool_search. Supplements the native tool description
      * to improve discoverability. Does not alter `tools/list` output.
      *
      * @return the additionalSearchText value.
@@ -75,8 +79,8 @@ public final class ToolConfig implements JsonSerializable<ToolConfig> {
     }
 
     /**
-     * Set the additionalSearchText property: Additional text indexed for tool_search. Supplements the native tool
-     * description
+     * Set the additionalSearchText property:
+     * Additional text indexed for tool_search. Supplements the native tool description
      * to improve discoverability. Does not alter `tools/list` output.
      *
      * @param additionalSearchText the additionalSearchText value to set.

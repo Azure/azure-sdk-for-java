@@ -53,9 +53,7 @@ public final class DeploymentStacksWhatIfResultsAtManagementGroupsImpl
     }
 
     public PagedIterable<DeploymentStacksWhatIfResult> list(String managementGroupId) {
-        PagedIterable<DeploymentStacksWhatIfResultInner> inner = this.serviceClient().list(managementGroupId);
-        return ResourceManagerUtils.mapPage(inner,
-            inner1 -> new DeploymentStacksWhatIfResultImpl(inner1, this.manager()));
+        return this.list(managementGroupId, Context.NONE);
     }
 
     public PagedIterable<DeploymentStacksWhatIfResult> list(String managementGroupId, Context context) {
@@ -66,13 +64,7 @@ public final class DeploymentStacksWhatIfResultsAtManagementGroupsImpl
 
     public DeploymentStacksWhatIfResult createOrUpdate(String managementGroupId,
         String deploymentStacksWhatIfResultName, DeploymentStacksWhatIfResultInner resource) {
-        DeploymentStacksWhatIfResultInner inner
-            = this.serviceClient().createOrUpdate(managementGroupId, deploymentStacksWhatIfResultName, resource);
-        if (inner != null) {
-            return new DeploymentStacksWhatIfResultImpl(inner, this.manager());
-        } else {
-            return null;
-        }
+        return this.createOrUpdate(managementGroupId, deploymentStacksWhatIfResultName, resource, Context.NONE);
     }
 
     public DeploymentStacksWhatIfResult createOrUpdate(String managementGroupId,
@@ -103,13 +95,7 @@ public final class DeploymentStacksWhatIfResultsAtManagementGroupsImpl
     }
 
     public DeploymentStacksWhatIfResult whatIf(String managementGroupId, String deploymentStacksWhatIfResultName) {
-        DeploymentStacksWhatIfResultInner inner
-            = this.serviceClient().whatIf(managementGroupId, deploymentStacksWhatIfResultName);
-        if (inner != null) {
-            return new DeploymentStacksWhatIfResultImpl(inner, this.manager());
-        } else {
-            return null;
-        }
+        return this.whatIf(managementGroupId, deploymentStacksWhatIfResultName, Context.NONE);
     }
 
     public DeploymentStacksWhatIfResult whatIf(String managementGroupId, String deploymentStacksWhatIfResultName,

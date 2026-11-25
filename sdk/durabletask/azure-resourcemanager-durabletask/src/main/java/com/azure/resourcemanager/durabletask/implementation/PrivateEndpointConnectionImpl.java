@@ -65,11 +65,7 @@ public final class PrivateEndpointConnectionImpl
     }
 
     public PrivateEndpointConnection create() {
-        this.innerObject = serviceManager.serviceClient()
-            .getSchedulers()
-            .createOrUpdatePrivateEndpointConnection(resourceGroupName, schedulerName, privateEndpointConnectionName,
-                this.innerModel(), Context.NONE);
-        return this;
+        return this.create(Context.NONE);
     }
 
     public PrivateEndpointConnection create(Context context) {
@@ -93,11 +89,7 @@ public final class PrivateEndpointConnectionImpl
     }
 
     public PrivateEndpointConnection apply() {
-        this.innerObject = serviceManager.serviceClient()
-            .getSchedulers()
-            .updatePrivateEndpointConnection(resourceGroupName, schedulerName, privateEndpointConnectionName,
-                updateProperties, Context.NONE);
-        return this;
+        return this.apply(Context.NONE);
     }
 
     public PrivateEndpointConnection apply(Context context) {
@@ -124,12 +116,7 @@ public final class PrivateEndpointConnectionImpl
     }
 
     public PrivateEndpointConnection refresh() {
-        this.innerObject = serviceManager.serviceClient()
-            .getSchedulers()
-            .getPrivateEndpointConnectionWithResponse(resourceGroupName, schedulerName, privateEndpointConnectionName,
-                Context.NONE)
-            .getValue();
-        return this;
+        return this.refresh(Context.NONE);
     }
 
     public PrivateEndpointConnection refresh(Context context) {

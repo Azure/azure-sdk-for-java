@@ -84,12 +84,7 @@ public final class AuthorizationRuleImpl
     }
 
     public AuthorizationRule create() {
-        this.innerObject = serviceManager.serviceClient()
-            .getNamespaces()
-            .createOrUpdateAuthorizationRuleWithResponse(resourceGroupName, namespaceName, authorizationRuleName,
-                this.innerModel(), Context.NONE)
-            .getValue();
-        return this;
+        return this.create(Context.NONE);
     }
 
     public AuthorizationRule create(Context context) {
@@ -112,12 +107,7 @@ public final class AuthorizationRuleImpl
     }
 
     public AuthorizationRule apply() {
-        this.innerObject = serviceManager.serviceClient()
-            .getNamespaces()
-            .createOrUpdateAuthorizationRuleWithResponse(resourceGroupName, namespaceName, authorizationRuleName,
-                this.innerModel(), Context.NONE)
-            .getValue();
-        return this;
+        return this.apply(Context.NONE);
     }
 
     public AuthorizationRule apply(Context context) {
@@ -175,11 +165,7 @@ public final class AuthorizationRuleImpl
     }
 
     public AuthorizationRule refresh() {
-        this.innerObject = serviceManager.serviceClient()
-            .getNamespaces()
-            .getAuthorizationRuleWithResponse(resourceGroupName, namespaceName, authorizationRuleName, Context.NONE)
-            .getValue();
-        return this;
+        return this.refresh(Context.NONE);
     }
 
     public AuthorizationRule refresh(Context context) {

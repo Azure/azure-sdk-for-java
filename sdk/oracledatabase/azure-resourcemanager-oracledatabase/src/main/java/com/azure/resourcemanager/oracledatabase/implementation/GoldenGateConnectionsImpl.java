@@ -31,8 +31,7 @@ public final class GoldenGateConnectionsImpl implements GoldenGateConnections {
     }
 
     public PagedIterable<GoldenGateConnection> list() {
-        PagedIterable<GoldenGateConnectionInner> inner = this.serviceClient().list();
-        return ResourceManagerUtils.mapPage(inner, inner1 -> new GoldenGateConnectionImpl(inner1, this.manager()));
+        return this.list(Context.NONE);
     }
 
     public PagedIterable<GoldenGateConnection> list(Context context) {
@@ -59,7 +58,7 @@ public final class GoldenGateConnectionsImpl implements GoldenGateConnections {
     }
 
     public void deleteByResourceGroup(String resourceGroupName, String goldenGateConnectionName) {
-        this.serviceClient().delete(resourceGroupName, goldenGateConnectionName);
+        this.delete(resourceGroupName, goldenGateConnectionName, Context.NONE);
     }
 
     public void delete(String resourceGroupName, String goldenGateConnectionName, Context context) {
@@ -67,8 +66,7 @@ public final class GoldenGateConnectionsImpl implements GoldenGateConnections {
     }
 
     public PagedIterable<GoldenGateConnection> listByResourceGroup(String resourceGroupName) {
-        PagedIterable<GoldenGateConnectionInner> inner = this.serviceClient().listByResourceGroup(resourceGroupName);
-        return ResourceManagerUtils.mapPage(inner, inner1 -> new GoldenGateConnectionImpl(inner1, this.manager()));
+        return this.listByResourceGroup(resourceGroupName, Context.NONE);
     }
 
     public PagedIterable<GoldenGateConnection> listByResourceGroup(String resourceGroupName, Context context) {
@@ -79,13 +77,7 @@ public final class GoldenGateConnectionsImpl implements GoldenGateConnections {
 
     public AssignedDeployment assignDeployment(String resourceGroupName, String goldenGateConnectionName,
         AssignUnassignDeployment body) {
-        AssignedDeploymentInner inner
-            = this.serviceClient().assignDeployment(resourceGroupName, goldenGateConnectionName, body);
-        if (inner != null) {
-            return new AssignedDeploymentImpl(inner, this.manager());
-        } else {
-            return null;
-        }
+        return this.assignDeployment(resourceGroupName, goldenGateConnectionName, body, Context.NONE);
     }
 
     public AssignedDeployment assignDeployment(String resourceGroupName, String goldenGateConnectionName,
@@ -101,13 +93,7 @@ public final class GoldenGateConnectionsImpl implements GoldenGateConnections {
 
     public AssignedDeployment unassignDeployment(String resourceGroupName, String goldenGateConnectionName,
         AssignUnassignDeployment body) {
-        AssignedDeploymentInner inner
-            = this.serviceClient().unassignDeployment(resourceGroupName, goldenGateConnectionName, body);
-        if (inner != null) {
-            return new AssignedDeploymentImpl(inner, this.manager());
-        } else {
-            return null;
-        }
+        return this.unassignDeployment(resourceGroupName, goldenGateConnectionName, body, Context.NONE);
     }
 
     public AssignedDeployment unassignDeployment(String resourceGroupName, String goldenGateConnectionName,
@@ -123,9 +109,7 @@ public final class GoldenGateConnectionsImpl implements GoldenGateConnections {
 
     public PagedIterable<AssignedDeployment> listAssignedDeploymentsByParent(String resourceGroupName,
         String goldenGateConnectionName) {
-        PagedIterable<AssignedDeploymentInner> inner
-            = this.serviceClient().listAssignedDeploymentsByParent(resourceGroupName, goldenGateConnectionName);
-        return ResourceManagerUtils.mapPage(inner, inner1 -> new AssignedDeploymentImpl(inner1, this.manager()));
+        return this.listAssignedDeploymentsByParent(resourceGroupName, goldenGateConnectionName, Context.NONE);
     }
 
     public PagedIterable<AssignedDeployment> listAssignedDeploymentsByParent(String resourceGroupName,
@@ -155,75 +139,30 @@ public final class GoldenGateConnectionsImpl implements GoldenGateConnections {
     }
 
     public GoldenGateConnection getById(String id) {
-        String resourceGroupName = ResourceManagerUtils.getValueFromIdByParameterName(id,
-            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Oracle.Database/goldenGateConnections/{goldenGateConnectionName}",
-            "resourceGroupName");
-        if (resourceGroupName == null) {
-            throw LOGGER.logExceptionAsError(new IllegalArgumentException(
-                String.format("The resource ID '%s' is not valid. Missing path segment 'resourceGroups'.", id)));
-        }
-        String goldenGateConnectionName = ResourceManagerUtils.getValueFromIdByParameterName(id,
-            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Oracle.Database/goldenGateConnections/{goldenGateConnectionName}",
-            "goldenGateConnectionName");
-        if (goldenGateConnectionName == null) {
-            throw LOGGER.logExceptionAsError(new IllegalArgumentException(
-                String.format("The resource ID '%s' is not valid. Missing path segment 'goldenGateConnections'.", id)));
-        }
-        return this.getByResourceGroupWithResponse(resourceGroupName, goldenGateConnectionName, Context.NONE)
-            .getValue();
+        return this.getByIdWithResponse(id, Context.NONE).getValue();
     }
 
     public Response<GoldenGateConnection> getByIdWithResponse(String id, Context context) {
-        String resourceGroupName = ResourceManagerUtils.getValueFromIdByParameterName(id,
+        String resourceGroupName = ResourceManagerUtils.getRequiredValueFromIdByParameterName(id,
             "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Oracle.Database/goldenGateConnections/{goldenGateConnectionName}",
-            "resourceGroupName");
-        if (resourceGroupName == null) {
-            throw LOGGER.logExceptionAsError(new IllegalArgumentException(
-                String.format("The resource ID '%s' is not valid. Missing path segment 'resourceGroups'.", id)));
-        }
-        String goldenGateConnectionName = ResourceManagerUtils.getValueFromIdByParameterName(id,
+            "resourceGroupName", "resourceGroups", LOGGER);
+        String goldenGateConnectionName = ResourceManagerUtils.getRequiredValueFromIdByParameterName(id,
             "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Oracle.Database/goldenGateConnections/{goldenGateConnectionName}",
-            "goldenGateConnectionName");
-        if (goldenGateConnectionName == null) {
-            throw LOGGER.logExceptionAsError(new IllegalArgumentException(
-                String.format("The resource ID '%s' is not valid. Missing path segment 'goldenGateConnections'.", id)));
-        }
+            "goldenGateConnectionName", "goldenGateConnections", LOGGER);
         return this.getByResourceGroupWithResponse(resourceGroupName, goldenGateConnectionName, context);
     }
 
     public void deleteById(String id) {
-        String resourceGroupName = ResourceManagerUtils.getValueFromIdByParameterName(id,
-            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Oracle.Database/goldenGateConnections/{goldenGateConnectionName}",
-            "resourceGroupName");
-        if (resourceGroupName == null) {
-            throw LOGGER.logExceptionAsError(new IllegalArgumentException(
-                String.format("The resource ID '%s' is not valid. Missing path segment 'resourceGroups'.", id)));
-        }
-        String goldenGateConnectionName = ResourceManagerUtils.getValueFromIdByParameterName(id,
-            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Oracle.Database/goldenGateConnections/{goldenGateConnectionName}",
-            "goldenGateConnectionName");
-        if (goldenGateConnectionName == null) {
-            throw LOGGER.logExceptionAsError(new IllegalArgumentException(
-                String.format("The resource ID '%s' is not valid. Missing path segment 'goldenGateConnections'.", id)));
-        }
-        this.delete(resourceGroupName, goldenGateConnectionName, Context.NONE);
+        this.deleteByIdWithResponse(id, Context.NONE);
     }
 
     public void deleteByIdWithResponse(String id, Context context) {
-        String resourceGroupName = ResourceManagerUtils.getValueFromIdByParameterName(id,
+        String resourceGroupName = ResourceManagerUtils.getRequiredValueFromIdByParameterName(id,
             "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Oracle.Database/goldenGateConnections/{goldenGateConnectionName}",
-            "resourceGroupName");
-        if (resourceGroupName == null) {
-            throw LOGGER.logExceptionAsError(new IllegalArgumentException(
-                String.format("The resource ID '%s' is not valid. Missing path segment 'resourceGroups'.", id)));
-        }
-        String goldenGateConnectionName = ResourceManagerUtils.getValueFromIdByParameterName(id,
+            "resourceGroupName", "resourceGroups", LOGGER);
+        String goldenGateConnectionName = ResourceManagerUtils.getRequiredValueFromIdByParameterName(id,
             "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Oracle.Database/goldenGateConnections/{goldenGateConnectionName}",
-            "goldenGateConnectionName");
-        if (goldenGateConnectionName == null) {
-            throw LOGGER.logExceptionAsError(new IllegalArgumentException(
-                String.format("The resource ID '%s' is not valid. Missing path segment 'goldenGateConnections'.", id)));
-        }
+            "goldenGateConnectionName", "goldenGateConnections", LOGGER);
         this.delete(resourceGroupName, goldenGateConnectionName, context);
     }
 

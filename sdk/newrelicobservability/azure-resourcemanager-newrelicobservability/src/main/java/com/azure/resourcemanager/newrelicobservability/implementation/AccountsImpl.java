@@ -26,8 +26,7 @@ public final class AccountsImpl implements Accounts {
     }
 
     public PagedIterable<AccountResource> list(String userEmail, String location) {
-        PagedIterable<AccountResourceInner> inner = this.serviceClient().list(userEmail, location);
-        return ResourceManagerUtils.mapPage(inner, inner1 -> new AccountResourceImpl(inner1, this.manager()));
+        return this.list(userEmail, location, Context.NONE);
     }
 
     public PagedIterable<AccountResource> list(String userEmail, String location, Context context) {

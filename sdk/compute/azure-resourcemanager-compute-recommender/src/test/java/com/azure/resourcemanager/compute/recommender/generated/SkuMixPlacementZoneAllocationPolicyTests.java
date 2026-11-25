@@ -15,34 +15,29 @@ public final class SkuMixPlacementZoneAllocationPolicyTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
         SkuMixPlacementZoneAllocationPolicy model = BinaryData.fromString(
-            "{\"distributionStrategy\":\"BestEffortSingleZone\",\"zonePreferences\":[{\"zone\":\"cctazakljlahbc\",\"rank\":1201536256,\"targetMaxCapacity\":529020115},{\"zone\":\"fdosyg\",\"rank\":1094512246,\"targetMaxCapacity\":1678061557},{\"zone\":\"jakhmsbzjh\",\"rank\":1969349443,\"targetMaxCapacity\":1441176241}]}")
+            "{\"distributionStrategy\":\"Prioritized\",\"zonePreferences\":[{\"zone\":\"bquxigjy\",\"rank\":852656000,\"targetMaxCapacity\":2011636323},{\"zone\":\"o\",\"rank\":376943175,\"targetMaxCapacity\":628087679}]}")
             .toObject(SkuMixPlacementZoneAllocationPolicy.class);
-        Assertions.assertEquals(SkuMixPlacementZonalDistributionStrategy.BEST_EFFORT_SINGLE_ZONE,
-            model.distributionStrategy());
-        Assertions.assertEquals("cctazakljlahbc", model.zonePreferences().get(0).zone());
-        Assertions.assertEquals(1201536256, model.zonePreferences().get(0).rank());
-        Assertions.assertEquals(529020115, model.zonePreferences().get(0).targetMaxCapacity());
+        Assertions.assertEquals(SkuMixPlacementZonalDistributionStrategy.PRIORITIZED, model.distributionStrategy());
+        Assertions.assertEquals("bquxigjy", model.zonePreferences().get(0).zone());
+        Assertions.assertEquals(852656000, model.zonePreferences().get(0).rank());
+        Assertions.assertEquals(2011636323, model.zonePreferences().get(0).targetMaxCapacity());
     }
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
         SkuMixPlacementZoneAllocationPolicy model = new SkuMixPlacementZoneAllocationPolicy()
-            .withDistributionStrategy(SkuMixPlacementZonalDistributionStrategy.BEST_EFFORT_SINGLE_ZONE)
+            .withDistributionStrategy(SkuMixPlacementZonalDistributionStrategy.PRIORITIZED)
             .withZonePreferences(Arrays.asList(
-                new SkuMixPlacementZonePreference().withZone("cctazakljlahbc")
-                    .withRank(1201536256)
-                    .withTargetMaxCapacity(529020115),
-                new SkuMixPlacementZonePreference().withZone("fdosyg")
-                    .withRank(1094512246)
-                    .withTargetMaxCapacity(1678061557),
-                new SkuMixPlacementZonePreference().withZone("jakhmsbzjh")
-                    .withRank(1969349443)
-                    .withTargetMaxCapacity(1441176241)));
+                new SkuMixPlacementZonePreference().withZone("bquxigjy")
+                    .withRank(852656000)
+                    .withTargetMaxCapacity(2011636323),
+                new SkuMixPlacementZonePreference().withZone("o")
+                    .withRank(376943175)
+                    .withTargetMaxCapacity(628087679)));
         model = BinaryData.fromObject(model).toObject(SkuMixPlacementZoneAllocationPolicy.class);
-        Assertions.assertEquals(SkuMixPlacementZonalDistributionStrategy.BEST_EFFORT_SINGLE_ZONE,
-            model.distributionStrategy());
-        Assertions.assertEquals("cctazakljlahbc", model.zonePreferences().get(0).zone());
-        Assertions.assertEquals(1201536256, model.zonePreferences().get(0).rank());
-        Assertions.assertEquals(529020115, model.zonePreferences().get(0).targetMaxCapacity());
+        Assertions.assertEquals(SkuMixPlacementZonalDistributionStrategy.PRIORITIZED, model.distributionStrategy());
+        Assertions.assertEquals("bquxigjy", model.zonePreferences().get(0).zone());
+        Assertions.assertEquals(852656000, model.zonePreferences().get(0).rank());
+        Assertions.assertEquals(2011636323, model.zonePreferences().get(0).targetMaxCapacity());
     }
 }

@@ -123,9 +123,7 @@ public final class OrganizationsClientImpl implements OrganizationsClient {
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Response<BinaryData> resubscribeWithResponse(String resourceGroupName, String monitorName,
         ResubscribeProperties body) {
-        final String accept = "application/json";
-        return service.resubscribeSync(this.client.getEndpoint(), this.client.getApiVersion(),
-            this.client.getSubscriptionId(), resourceGroupName, monitorName, accept, body, Context.NONE);
+        return resubscribeWithResponse(resourceGroupName, monitorName, body, Context.NONE);
     }
 
     /**
@@ -204,46 +202,20 @@ public final class OrganizationsClientImpl implements OrganizationsClient {
      * type using a specific property type.
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
-    public SyncPoller<PollResult<DatadogMonitorResourceInner>, DatadogMonitorResourceInner>
+    private SyncPoller<PollResult<DatadogMonitorResourceInner>, DatadogMonitorResourceInner>
         beginResubscribe(String resourceGroupName, String monitorName, ResubscribeProperties body) {
-        Response<BinaryData> response = resubscribeWithResponse(resourceGroupName, monitorName, body);
-        return this.client.<DatadogMonitorResourceInner, DatadogMonitorResourceInner>getLroResult(response,
-            DatadogMonitorResourceInner.class, DatadogMonitorResourceInner.class, Context.NONE);
+        return beginResubscribe(resourceGroupName, monitorName, body, Context.NONE);
     }
 
-    /**
-     * Reinstate integration with your Datadog organization by choosing one of the available subscription plans.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param monitorName Monitor resource name.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the {@link SyncPoller} for polling of concrete tracked resource types can be created by aliasing this
-     * type using a specific property type.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public SyncPoller<PollResult<DatadogMonitorResourceInner>, DatadogMonitorResourceInner>
         beginResubscribe(String resourceGroupName, String monitorName) {
         final ResubscribeProperties body = null;
-        Response<BinaryData> response = resubscribeWithResponse(resourceGroupName, monitorName, body);
-        return this.client.<DatadogMonitorResourceInner, DatadogMonitorResourceInner>getLroResult(response,
-            DatadogMonitorResourceInner.class, DatadogMonitorResourceInner.class, Context.NONE);
+        return beginResubscribe(resourceGroupName, monitorName, body, Context.NONE);
     }
 
-    /**
-     * Reinstate integration with your Datadog organization by choosing one of the available subscription plans.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param monitorName Monitor resource name.
-     * @param body Resubscribe Properties.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the {@link SyncPoller} for polling of concrete tracked resource types can be created by aliasing this
-     * type using a specific property type.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public SyncPoller<PollResult<DatadogMonitorResourceInner>, DatadogMonitorResourceInner>
         beginResubscribe(String resourceGroupName, String monitorName, ResubscribeProperties body, Context context) {
@@ -289,37 +261,17 @@ public final class OrganizationsClientImpl implements OrganizationsClient {
             .flatMap(this.client::getLroFinalResultOrError);
     }
 
-    /**
-     * Reinstate integration with your Datadog organization by choosing one of the available subscription plans.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param monitorName Monitor resource name.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return concrete tracked resource types can be created by aliasing this type using a specific property type.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public DatadogMonitorResourceInner resubscribe(String resourceGroupName, String monitorName) {
         final ResubscribeProperties body = null;
-        return beginResubscribe(resourceGroupName, monitorName, body).getFinalResult();
+        return resubscribe(resourceGroupName, monitorName, body, Context.NONE);
     }
 
-    /**
-     * Reinstate integration with your Datadog organization by choosing one of the available subscription plans.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param monitorName Monitor resource name.
-     * @param body Resubscribe Properties.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return concrete tracked resource types can be created by aliasing this type using a specific property type.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public DatadogMonitorResourceInner resubscribe(String resourceGroupName, String monitorName,
         ResubscribeProperties body, Context context) {
-        return beginResubscribe(resourceGroupName, monitorName, body, context).getFinalResult();
+        return this.client.getLroFinalResultOrError(beginResubscribe(resourceGroupName, monitorName, body, context));
     }
 }

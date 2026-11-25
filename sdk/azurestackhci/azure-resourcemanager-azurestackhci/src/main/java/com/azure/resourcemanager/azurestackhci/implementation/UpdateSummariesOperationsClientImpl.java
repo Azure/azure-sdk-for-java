@@ -193,17 +193,7 @@ public final class UpdateSummariesOperationsClientImpl implements UpdateSummarie
         return getWithResponseAsync(resourceGroupName, clusterName).flatMap(res -> Mono.justOrEmpty(res.getValue()));
     }
 
-    /**
-     * Get all Update summaries under the HCI cluster.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param clusterName The name of the cluster.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return all Update summaries under the HCI cluster along with {@link Response}.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Response<UpdateSummariesInner> getWithResponse(String resourceGroupName, String clusterName,
         Context context) {
@@ -212,16 +202,7 @@ public final class UpdateSummariesOperationsClientImpl implements UpdateSummarie
             resourceGroupName, clusterName, accept, context);
     }
 
-    /**
-     * Get all Update summaries under the HCI cluster.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param clusterName The name of the cluster.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return all Update summaries under the HCI cluster.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public UpdateSummariesInner get(String resourceGroupName, String clusterName) {
         return getWithResponse(resourceGroupName, clusterName, Context.NONE).getValue();
@@ -269,18 +250,7 @@ public final class UpdateSummariesOperationsClientImpl implements UpdateSummarie
             .flatMap(res -> Mono.justOrEmpty(res.getValue()));
     }
 
-    /**
-     * Put Update summaries under the HCI cluster.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param clusterName The name of the cluster.
-     * @param updateLocationProperties Properties of the UpdateSummaries resource.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return get the update summaries for the cluster along with {@link Response}.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Response<UpdateSummariesInner> putWithResponse(String resourceGroupName, String clusterName,
         UpdateSummariesInner updateLocationProperties, Context context) {
@@ -290,17 +260,7 @@ public final class UpdateSummariesOperationsClientImpl implements UpdateSummarie
             resourceGroupName, clusterName, contentType, accept, updateLocationProperties, context);
     }
 
-    /**
-     * Put Update summaries under the HCI cluster.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param clusterName The name of the cluster.
-     * @param updateLocationProperties Properties of the UpdateSummaries resource.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return get the update summaries for the cluster.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public UpdateSummariesInner put(String resourceGroupName, String clusterName,
         UpdateSummariesInner updateLocationProperties) {
@@ -337,8 +297,7 @@ public final class UpdateSummariesOperationsClientImpl implements UpdateSummarie
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Response<BinaryData> deleteWithResponse(String resourceGroupName, String clusterName) {
-        return service.deleteSync(this.client.getEndpoint(), this.client.getApiVersion(),
-            this.client.getSubscriptionId(), resourceGroupName, clusterName, Context.NONE);
+        return deleteWithResponse(resourceGroupName, clusterName, Context.NONE);
     }
 
     /**
@@ -375,33 +334,13 @@ public final class UpdateSummariesOperationsClientImpl implements UpdateSummarie
             this.client.getContext());
     }
 
-    /**
-     * Delete Update Summaries.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param clusterName The name of the cluster.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the {@link SyncPoller} for polling of long-running operation.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public SyncPoller<PollResult<Void>, Void> beginDelete(String resourceGroupName, String clusterName) {
-        Response<BinaryData> response = deleteWithResponse(resourceGroupName, clusterName);
-        return this.client.<Void, Void>getLroResult(response, Void.class, Void.class, Context.NONE);
+        return beginDelete(resourceGroupName, clusterName, Context.NONE);
     }
 
-    /**
-     * Delete Update Summaries.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param clusterName The name of the cluster.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the {@link SyncPoller} for polling of long-running operation.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public SyncPoller<PollResult<Void>, Void> beginDelete(String resourceGroupName, String clusterName,
         Context context) {
@@ -424,33 +363,16 @@ public final class UpdateSummariesOperationsClientImpl implements UpdateSummarie
         return beginDeleteAsync(resourceGroupName, clusterName).last().flatMap(this.client::getLroFinalResultOrError);
     }
 
-    /**
-     * Delete Update Summaries.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param clusterName The name of the cluster.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public void delete(String resourceGroupName, String clusterName) {
-        beginDelete(resourceGroupName, clusterName).getFinalResult();
+        delete(resourceGroupName, clusterName, Context.NONE);
     }
 
-    /**
-     * Delete Update Summaries.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param clusterName The name of the cluster.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public void delete(String resourceGroupName, String clusterName, Context context) {
-        beginDelete(resourceGroupName, clusterName, context).getFinalResult();
+        this.client.getLroFinalResultOrError(beginDelete(resourceGroupName, clusterName, context));
     }
 
     /**
@@ -503,11 +425,7 @@ public final class UpdateSummariesOperationsClientImpl implements UpdateSummarie
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private PagedResponse<UpdateSummariesInner> listSinglePage(String resourceGroupName, String clusterName) {
-        final String accept = "application/json";
-        Response<UpdateSummariesList> res = service.listSync(this.client.getEndpoint(), this.client.getApiVersion(),
-            this.client.getSubscriptionId(), resourceGroupName, clusterName, accept, Context.NONE);
-        return new PagedResponseBase<>(res.getRequest(), res.getStatusCode(), res.getHeaders(), res.getValue().value(),
-            res.getValue().nextLink(), null);
+        return listSinglePage(resourceGroupName, clusterName, Context.NONE);
     }
 
     /**
@@ -531,33 +449,13 @@ public final class UpdateSummariesOperationsClientImpl implements UpdateSummarie
             res.getValue().nextLink(), null);
     }
 
-    /**
-     * List all Update summaries under the HCI cluster.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param clusterName The name of the cluster.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return list of Update Summaries as paginated response with {@link PagedIterable}.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.COLLECTION)
     public PagedIterable<UpdateSummariesInner> list(String resourceGroupName, String clusterName) {
-        return new PagedIterable<>(() -> listSinglePage(resourceGroupName, clusterName),
-            nextLink -> listNextSinglePage(nextLink));
+        return list(resourceGroupName, clusterName, Context.NONE);
     }
 
-    /**
-     * List all Update summaries under the HCI cluster.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param clusterName The name of the cluster.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return list of Update Summaries as paginated response with {@link PagedIterable}.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.COLLECTION)
     public PagedIterable<UpdateSummariesInner> list(String resourceGroupName, String clusterName, Context context) {
         return new PagedIterable<>(() -> listSinglePage(resourceGroupName, clusterName, context),
@@ -593,11 +491,7 @@ public final class UpdateSummariesOperationsClientImpl implements UpdateSummarie
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private PagedResponse<UpdateSummariesInner> listNextSinglePage(String nextLink) {
-        final String accept = "application/json";
-        Response<UpdateSummariesList> res
-            = service.listNextSync(nextLink, this.client.getEndpoint(), accept, Context.NONE);
-        return new PagedResponseBase<>(res.getRequest(), res.getStatusCode(), res.getHeaders(), res.getValue().value(),
-            res.getValue().nextLink(), null);
+        return listNextSinglePage(nextLink, Context.NONE);
     }
 
     /**

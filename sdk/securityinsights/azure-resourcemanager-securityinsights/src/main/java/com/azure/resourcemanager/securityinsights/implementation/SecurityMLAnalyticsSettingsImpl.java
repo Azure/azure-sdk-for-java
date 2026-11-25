@@ -72,14 +72,11 @@ public final class SecurityMLAnalyticsSettingsImpl implements SecurityMLAnalytic
     }
 
     public void delete(String resourceGroupName, String workspaceName, String settingsResourceName) {
-        this.serviceClient().delete(resourceGroupName, workspaceName, settingsResourceName);
+        this.deleteWithResponse(resourceGroupName, workspaceName, settingsResourceName, Context.NONE);
     }
 
     public PagedIterable<SecurityMLAnalyticsSetting> list(String resourceGroupName, String workspaceName) {
-        PagedIterable<SecurityMLAnalyticsSettingInner> inner
-            = this.serviceClient().list(resourceGroupName, workspaceName);
-        return ResourceManagerUtils.mapPage(inner,
-            inner1 -> new SecurityMLAnalyticsSettingImpl(inner1, this.manager()));
+        return this.list(resourceGroupName, workspaceName, Context.NONE);
     }
 
     public PagedIterable<SecurityMLAnalyticsSetting> list(String resourceGroupName, String workspaceName,

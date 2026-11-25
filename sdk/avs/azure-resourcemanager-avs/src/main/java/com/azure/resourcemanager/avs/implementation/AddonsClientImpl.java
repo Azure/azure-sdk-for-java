@@ -232,29 +232,7 @@ public final class AddonsClientImpl implements AddonsClient {
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private PagedResponse<AddonInner> listSinglePage(String resourceGroupName, String privateCloudName) {
-        if (this.client.getEndpoint() == null) {
-            throw LOGGER.atError()
-                .log(new IllegalArgumentException(
-                    "Parameter this.client.getEndpoint() is required and cannot be null."));
-        }
-        if (this.client.getSubscriptionId() == null) {
-            throw LOGGER.atError()
-                .log(new IllegalArgumentException(
-                    "Parameter this.client.getSubscriptionId() is required and cannot be null."));
-        }
-        if (resourceGroupName == null) {
-            throw LOGGER.atError()
-                .log(new IllegalArgumentException("Parameter resourceGroupName is required and cannot be null."));
-        }
-        if (privateCloudName == null) {
-            throw LOGGER.atError()
-                .log(new IllegalArgumentException("Parameter privateCloudName is required and cannot be null."));
-        }
-        final String accept = "application/json";
-        Response<AddonList> res = service.listSync(this.client.getEndpoint(), this.client.getApiVersion(),
-            this.client.getSubscriptionId(), resourceGroupName, privateCloudName, accept, Context.NONE);
-        return new PagedResponseBase<>(res.getRequest(), res.getStatusCode(), res.getHeaders(), res.getValue().value(),
-            res.getValue().nextLink(), null);
+        return listSinglePage(resourceGroupName, privateCloudName, Context.NONE);
     }
 
     /**
@@ -296,33 +274,13 @@ public final class AddonsClientImpl implements AddonsClient {
             res.getValue().nextLink(), null);
     }
 
-    /**
-     * List Addon resources by PrivateCloud.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param privateCloudName Name of the private cloud.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the response of a Addon list operation as paginated response with {@link PagedIterable}.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.COLLECTION)
     public PagedIterable<AddonInner> list(String resourceGroupName, String privateCloudName) {
-        return new PagedIterable<>(() -> listSinglePage(resourceGroupName, privateCloudName),
-            nextLink -> listNextSinglePage(nextLink));
+        return list(resourceGroupName, privateCloudName, Context.NONE);
     }
 
-    /**
-     * List Addon resources by PrivateCloud.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param privateCloudName Name of the private cloud.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the response of a Addon list operation as paginated response with {@link PagedIterable}.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.COLLECTION)
     public PagedIterable<AddonInner> list(String resourceGroupName, String privateCloudName, Context context) {
         return new PagedIterable<>(() -> listSinglePage(resourceGroupName, privateCloudName, context),
@@ -386,18 +344,7 @@ public final class AddonsClientImpl implements AddonsClient {
             .flatMap(res -> Mono.justOrEmpty(res.getValue()));
     }
 
-    /**
-     * Get a Addon.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param privateCloudName Name of the private cloud.
-     * @param addonName Name of the addon.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return a Addon along with {@link Response}.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Response<AddonInner> getWithResponse(String resourceGroupName, String privateCloudName, String addonName,
         Context context) {
@@ -428,17 +375,7 @@ public final class AddonsClientImpl implements AddonsClient {
             resourceGroupName, privateCloudName, addonName, accept, context);
     }
 
-    /**
-     * Get a Addon.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param privateCloudName Name of the private cloud.
-     * @param addonName Name of the addon.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return a Addon.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public AddonInner get(String resourceGroupName, String privateCloudName, String addonName) {
         return getWithResponse(resourceGroupName, privateCloudName, addonName, Context.NONE).getValue();
@@ -507,38 +444,7 @@ public final class AddonsClientImpl implements AddonsClient {
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Response<BinaryData> createOrUpdateWithResponse(String resourceGroupName, String privateCloudName,
         String addonName, AddonInner addon) {
-        if (this.client.getEndpoint() == null) {
-            throw LOGGER.atError()
-                .log(new IllegalArgumentException(
-                    "Parameter this.client.getEndpoint() is required and cannot be null."));
-        }
-        if (this.client.getSubscriptionId() == null) {
-            throw LOGGER.atError()
-                .log(new IllegalArgumentException(
-                    "Parameter this.client.getSubscriptionId() is required and cannot be null."));
-        }
-        if (resourceGroupName == null) {
-            throw LOGGER.atError()
-                .log(new IllegalArgumentException("Parameter resourceGroupName is required and cannot be null."));
-        }
-        if (privateCloudName == null) {
-            throw LOGGER.atError()
-                .log(new IllegalArgumentException("Parameter privateCloudName is required and cannot be null."));
-        }
-        if (addonName == null) {
-            throw LOGGER.atError()
-                .log(new IllegalArgumentException("Parameter addonName is required and cannot be null."));
-        }
-        if (addon == null) {
-            throw LOGGER.atError().log(new IllegalArgumentException("Parameter addon is required and cannot be null."));
-        } else {
-            addon.validate();
-        }
-        final String contentType = "application/json";
-        final String accept = "application/json";
-        return service.createOrUpdateSync(this.client.getEndpoint(), this.client.getApiVersion(),
-            this.client.getSubscriptionId(), resourceGroupName, privateCloudName, addonName, contentType, accept, addon,
-            Context.NONE);
+        return createOrUpdateWithResponse(resourceGroupName, privateCloudName, addonName, addon, Context.NONE);
     }
 
     /**
@@ -612,40 +518,14 @@ public final class AddonsClientImpl implements AddonsClient {
             AddonInner.class, this.client.getContext());
     }
 
-    /**
-     * Create a Addon.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param privateCloudName Name of the private cloud.
-     * @param addonName Name of the addon.
-     * @param addon Resource create parameters.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the {@link SyncPoller} for polling of an addon resource.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public SyncPoller<PollResult<AddonInner>, AddonInner> beginCreateOrUpdate(String resourceGroupName,
         String privateCloudName, String addonName, AddonInner addon) {
-        Response<BinaryData> response
-            = createOrUpdateWithResponse(resourceGroupName, privateCloudName, addonName, addon);
-        return this.client.<AddonInner, AddonInner>getLroResult(response, AddonInner.class, AddonInner.class,
-            Context.NONE);
+        return beginCreateOrUpdate(resourceGroupName, privateCloudName, addonName, addon, Context.NONE);
     }
 
-    /**
-     * Create a Addon.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param privateCloudName Name of the private cloud.
-     * @param addonName Name of the addon.
-     * @param addon Resource create parameters.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the {@link SyncPoller} for polling of an addon resource.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public SyncPoller<PollResult<AddonInner>, AddonInner> beginCreateOrUpdate(String resourceGroupName,
         String privateCloudName, String addonName, AddonInner addon, Context context) {
@@ -673,41 +553,19 @@ public final class AddonsClientImpl implements AddonsClient {
             .flatMap(this.client::getLroFinalResultOrError);
     }
 
-    /**
-     * Create a Addon.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param privateCloudName Name of the private cloud.
-     * @param addonName Name of the addon.
-     * @param addon Resource create parameters.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return an addon resource.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public AddonInner createOrUpdate(String resourceGroupName, String privateCloudName, String addonName,
         AddonInner addon) {
-        return beginCreateOrUpdate(resourceGroupName, privateCloudName, addonName, addon).getFinalResult();
+        return createOrUpdate(resourceGroupName, privateCloudName, addonName, addon, Context.NONE);
     }
 
-    /**
-     * Create a Addon.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param privateCloudName Name of the private cloud.
-     * @param addonName Name of the addon.
-     * @param addon Resource create parameters.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return an addon resource.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public AddonInner createOrUpdate(String resourceGroupName, String privateCloudName, String addonName,
         AddonInner addon, Context context) {
-        return beginCreateOrUpdate(resourceGroupName, privateCloudName, addonName, addon, context).getFinalResult();
+        return this.client.getLroFinalResultOrError(
+            beginCreateOrUpdate(resourceGroupName, privateCloudName, addonName, addon, context));
     }
 
     /**
@@ -763,30 +621,7 @@ public final class AddonsClientImpl implements AddonsClient {
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Response<BinaryData> deleteWithResponse(String resourceGroupName, String privateCloudName,
         String addonName) {
-        if (this.client.getEndpoint() == null) {
-            throw LOGGER.atError()
-                .log(new IllegalArgumentException(
-                    "Parameter this.client.getEndpoint() is required and cannot be null."));
-        }
-        if (this.client.getSubscriptionId() == null) {
-            throw LOGGER.atError()
-                .log(new IllegalArgumentException(
-                    "Parameter this.client.getSubscriptionId() is required and cannot be null."));
-        }
-        if (resourceGroupName == null) {
-            throw LOGGER.atError()
-                .log(new IllegalArgumentException("Parameter resourceGroupName is required and cannot be null."));
-        }
-        if (privateCloudName == null) {
-            throw LOGGER.atError()
-                .log(new IllegalArgumentException("Parameter privateCloudName is required and cannot be null."));
-        }
-        if (addonName == null) {
-            throw LOGGER.atError()
-                .log(new IllegalArgumentException("Parameter addonName is required and cannot be null."));
-        }
-        return service.deleteSync(this.client.getEndpoint(), this.client.getApiVersion(),
-            this.client.getSubscriptionId(), resourceGroupName, privateCloudName, addonName, Context.NONE);
+        return deleteWithResponse(resourceGroupName, privateCloudName, addonName, Context.NONE);
     }
 
     /**
@@ -849,36 +684,14 @@ public final class AddonsClientImpl implements AddonsClient {
             this.client.getContext());
     }
 
-    /**
-     * Delete a Addon.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param privateCloudName Name of the private cloud.
-     * @param addonName Name of the addon.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the {@link SyncPoller} for polling of long-running operation.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public SyncPoller<PollResult<Void>, Void> beginDelete(String resourceGroupName, String privateCloudName,
         String addonName) {
-        Response<BinaryData> response = deleteWithResponse(resourceGroupName, privateCloudName, addonName);
-        return this.client.<Void, Void>getLroResult(response, Void.class, Void.class, Context.NONE);
+        return beginDelete(resourceGroupName, privateCloudName, addonName, Context.NONE);
     }
 
-    /**
-     * Delete a Addon.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param privateCloudName Name of the private cloud.
-     * @param addonName Name of the addon.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the {@link SyncPoller} for polling of long-running operation.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public SyncPoller<PollResult<Void>, Void> beginDelete(String resourceGroupName, String privateCloudName,
         String addonName, Context context) {
@@ -903,35 +716,16 @@ public final class AddonsClientImpl implements AddonsClient {
             .flatMap(this.client::getLroFinalResultOrError);
     }
 
-    /**
-     * Delete a Addon.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param privateCloudName Name of the private cloud.
-     * @param addonName Name of the addon.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public void delete(String resourceGroupName, String privateCloudName, String addonName) {
-        beginDelete(resourceGroupName, privateCloudName, addonName).getFinalResult();
+        delete(resourceGroupName, privateCloudName, addonName, Context.NONE);
     }
 
-    /**
-     * Delete a Addon.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param privateCloudName Name of the private cloud.
-     * @param addonName Name of the addon.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public void delete(String resourceGroupName, String privateCloudName, String addonName, Context context) {
-        beginDelete(resourceGroupName, privateCloudName, addonName, context).getFinalResult();
+        this.client.getLroFinalResultOrError(beginDelete(resourceGroupName, privateCloudName, addonName, context));
     }
 
     /**
@@ -971,19 +765,7 @@ public final class AddonsClientImpl implements AddonsClient {
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private PagedResponse<AddonInner> listNextSinglePage(String nextLink) {
-        if (nextLink == null) {
-            throw LOGGER.atError()
-                .log(new IllegalArgumentException("Parameter nextLink is required and cannot be null."));
-        }
-        if (this.client.getEndpoint() == null) {
-            throw LOGGER.atError()
-                .log(new IllegalArgumentException(
-                    "Parameter this.client.getEndpoint() is required and cannot be null."));
-        }
-        final String accept = "application/json";
-        Response<AddonList> res = service.listNextSync(nextLink, this.client.getEndpoint(), accept, Context.NONE);
-        return new PagedResponseBase<>(res.getRequest(), res.getStatusCode(), res.getHeaders(), res.getValue().value(),
-            res.getValue().nextLink(), null);
+        return listNextSinglePage(nextLink, Context.NONE);
     }
 
     /**

@@ -493,17 +493,7 @@ public final class MonitorsClientImpl implements MonitorsClient {
             .flatMap(res -> Mono.justOrEmpty(res.getValue()));
     }
 
-    /**
-     * Get the properties of a specific monitor resource.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param monitorName Monitor resource name.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the properties of a specific monitor resource along with {@link Response}.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Response<DatadogMonitorResourceInner> getByResourceGroupWithResponse(String resourceGroupName,
         String monitorName, Context context) {
@@ -512,16 +502,7 @@ public final class MonitorsClientImpl implements MonitorsClient {
             this.client.getSubscriptionId(), resourceGroupName, monitorName, accept, context);
     }
 
-    /**
-     * Get the properties of a specific monitor resource.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param monitorName Monitor resource name.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the properties of a specific monitor resource.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public DatadogMonitorResourceInner getByResourceGroup(String resourceGroupName, String monitorName) {
         return getByResourceGroupWithResponse(resourceGroupName, monitorName, Context.NONE).getValue();
@@ -564,9 +545,7 @@ public final class MonitorsClientImpl implements MonitorsClient {
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Response<BinaryData> createWithResponse(String resourceGroupName, String monitorName,
         DatadogMonitorResourceInner body) {
-        final String accept = "application/json";
-        return service.createSync(this.client.getEndpoint(), this.client.getApiVersion(),
-            this.client.getSubscriptionId(), resourceGroupName, monitorName, accept, body, Context.NONE);
+        return createWithResponse(resourceGroupName, monitorName, body, Context.NONE);
     }
 
     /**
@@ -645,46 +624,20 @@ public final class MonitorsClientImpl implements MonitorsClient {
      * type using a specific property type.
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
-    public SyncPoller<PollResult<DatadogMonitorResourceInner>, DatadogMonitorResourceInner>
+    private SyncPoller<PollResult<DatadogMonitorResourceInner>, DatadogMonitorResourceInner>
         beginCreate(String resourceGroupName, String monitorName, DatadogMonitorResourceInner body) {
-        Response<BinaryData> response = createWithResponse(resourceGroupName, monitorName, body);
-        return this.client.<DatadogMonitorResourceInner, DatadogMonitorResourceInner>getLroResult(response,
-            DatadogMonitorResourceInner.class, DatadogMonitorResourceInner.class, Context.NONE);
+        return beginCreate(resourceGroupName, monitorName, body, Context.NONE);
     }
 
-    /**
-     * Create a monitor resource.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param monitorName Monitor resource name.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the {@link SyncPoller} for polling of concrete tracked resource types can be created by aliasing this
-     * type using a specific property type.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public SyncPoller<PollResult<DatadogMonitorResourceInner>, DatadogMonitorResourceInner>
         beginCreate(String resourceGroupName, String monitorName) {
         final DatadogMonitorResourceInner body = null;
-        Response<BinaryData> response = createWithResponse(resourceGroupName, monitorName, body);
-        return this.client.<DatadogMonitorResourceInner, DatadogMonitorResourceInner>getLroResult(response,
-            DatadogMonitorResourceInner.class, DatadogMonitorResourceInner.class, Context.NONE);
+        return beginCreate(resourceGroupName, monitorName, body, Context.NONE);
     }
 
-    /**
-     * Create a monitor resource.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param monitorName Monitor resource name.
-     * @param body The body parameter.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the {@link SyncPoller} for polling of concrete tracked resource types can be created by aliasing this
-     * type using a specific property type.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public SyncPoller<PollResult<DatadogMonitorResourceInner>, DatadogMonitorResourceInner>
         beginCreate(String resourceGroupName, String monitorName, DatadogMonitorResourceInner body, Context context) {
@@ -730,38 +683,18 @@ public final class MonitorsClientImpl implements MonitorsClient {
             .flatMap(this.client::getLroFinalResultOrError);
     }
 
-    /**
-     * Create a monitor resource.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param monitorName Monitor resource name.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return concrete tracked resource types can be created by aliasing this type using a specific property type.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public DatadogMonitorResourceInner create(String resourceGroupName, String monitorName) {
         final DatadogMonitorResourceInner body = null;
-        return beginCreate(resourceGroupName, monitorName, body).getFinalResult();
+        return create(resourceGroupName, monitorName, body, Context.NONE);
     }
 
-    /**
-     * Create a monitor resource.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param monitorName Monitor resource name.
-     * @param body The body parameter.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return concrete tracked resource types can be created by aliasing this type using a specific property type.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public DatadogMonitorResourceInner create(String resourceGroupName, String monitorName,
         DatadogMonitorResourceInner body, Context context) {
-        return beginCreate(resourceGroupName, monitorName, body, context).getFinalResult();
+        return this.client.getLroFinalResultOrError(beginCreate(resourceGroupName, monitorName, body, context));
     }
 
     /**
@@ -801,9 +734,7 @@ public final class MonitorsClientImpl implements MonitorsClient {
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Response<BinaryData> updateWithResponse(String resourceGroupName, String monitorName,
         DatadogMonitorResourceUpdateParameters body) {
-        final String accept = "application/json";
-        return service.updateSync(this.client.getEndpoint(), this.client.getApiVersion(),
-            this.client.getSubscriptionId(), resourceGroupName, monitorName, accept, body, Context.NONE);
+        return updateWithResponse(resourceGroupName, monitorName, body, Context.NONE);
     }
 
     /**
@@ -882,46 +813,20 @@ public final class MonitorsClientImpl implements MonitorsClient {
      * type using a specific property type.
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
-    public SyncPoller<PollResult<DatadogMonitorResourceInner>, DatadogMonitorResourceInner>
+    private SyncPoller<PollResult<DatadogMonitorResourceInner>, DatadogMonitorResourceInner>
         beginUpdate(String resourceGroupName, String monitorName, DatadogMonitorResourceUpdateParameters body) {
-        Response<BinaryData> response = updateWithResponse(resourceGroupName, monitorName, body);
-        return this.client.<DatadogMonitorResourceInner, DatadogMonitorResourceInner>getLroResult(response,
-            DatadogMonitorResourceInner.class, DatadogMonitorResourceInner.class, Context.NONE);
+        return beginUpdate(resourceGroupName, monitorName, body, Context.NONE);
     }
 
-    /**
-     * Update a monitor resource.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param monitorName Monitor resource name.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the {@link SyncPoller} for polling of concrete tracked resource types can be created by aliasing this
-     * type using a specific property type.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public SyncPoller<PollResult<DatadogMonitorResourceInner>, DatadogMonitorResourceInner>
         beginUpdate(String resourceGroupName, String monitorName) {
         final DatadogMonitorResourceUpdateParameters body = null;
-        Response<BinaryData> response = updateWithResponse(resourceGroupName, monitorName, body);
-        return this.client.<DatadogMonitorResourceInner, DatadogMonitorResourceInner>getLroResult(response,
-            DatadogMonitorResourceInner.class, DatadogMonitorResourceInner.class, Context.NONE);
+        return beginUpdate(resourceGroupName, monitorName, body, Context.NONE);
     }
 
-    /**
-     * Update a monitor resource.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param monitorName Monitor resource name.
-     * @param body The body parameter.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the {@link SyncPoller} for polling of concrete tracked resource types can be created by aliasing this
-     * type using a specific property type.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public SyncPoller<PollResult<DatadogMonitorResourceInner>, DatadogMonitorResourceInner> beginUpdate(
         String resourceGroupName, String monitorName, DatadogMonitorResourceUpdateParameters body, Context context) {
@@ -967,38 +872,18 @@ public final class MonitorsClientImpl implements MonitorsClient {
             .flatMap(this.client::getLroFinalResultOrError);
     }
 
-    /**
-     * Update a monitor resource.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param monitorName Monitor resource name.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return concrete tracked resource types can be created by aliasing this type using a specific property type.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public DatadogMonitorResourceInner update(String resourceGroupName, String monitorName) {
         final DatadogMonitorResourceUpdateParameters body = null;
-        return beginUpdate(resourceGroupName, monitorName, body).getFinalResult();
+        return update(resourceGroupName, monitorName, body, Context.NONE);
     }
 
-    /**
-     * Update a monitor resource.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param monitorName Monitor resource name.
-     * @param body The body parameter.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return concrete tracked resource types can be created by aliasing this type using a specific property type.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public DatadogMonitorResourceInner update(String resourceGroupName, String monitorName,
         DatadogMonitorResourceUpdateParameters body, Context context) {
-        return beginUpdate(resourceGroupName, monitorName, body, context).getFinalResult();
+        return this.client.getLroFinalResultOrError(beginUpdate(resourceGroupName, monitorName, body, context));
     }
 
     /**
@@ -1031,8 +916,7 @@ public final class MonitorsClientImpl implements MonitorsClient {
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Response<BinaryData> deleteWithResponse(String resourceGroupName, String monitorName) {
-        return service.deleteSync(this.client.getEndpoint(), this.client.getApiVersion(),
-            this.client.getSubscriptionId(), resourceGroupName, monitorName, Context.NONE);
+        return deleteWithResponse(resourceGroupName, monitorName, Context.NONE);
     }
 
     /**
@@ -1069,33 +953,13 @@ public final class MonitorsClientImpl implements MonitorsClient {
             this.client.getContext());
     }
 
-    /**
-     * Delete a monitor resource.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param monitorName Monitor resource name.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the {@link SyncPoller} for polling of long-running operation.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public SyncPoller<PollResult<Void>, Void> beginDelete(String resourceGroupName, String monitorName) {
-        Response<BinaryData> response = deleteWithResponse(resourceGroupName, monitorName);
-        return this.client.<Void, Void>getLroResult(response, Void.class, Void.class, Context.NONE);
+        return beginDelete(resourceGroupName, monitorName, Context.NONE);
     }
 
-    /**
-     * Delete a monitor resource.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param monitorName Monitor resource name.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the {@link SyncPoller} for polling of long-running operation.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public SyncPoller<PollResult<Void>, Void> beginDelete(String resourceGroupName, String monitorName,
         Context context) {
@@ -1118,33 +982,16 @@ public final class MonitorsClientImpl implements MonitorsClient {
         return beginDeleteAsync(resourceGroupName, monitorName).last().flatMap(this.client::getLroFinalResultOrError);
     }
 
-    /**
-     * Delete a monitor resource.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param monitorName Monitor resource name.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public void delete(String resourceGroupName, String monitorName) {
-        beginDelete(resourceGroupName, monitorName).getFinalResult();
+        delete(resourceGroupName, monitorName, Context.NONE);
     }
 
-    /**
-     * Delete a monitor resource.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param monitorName Monitor resource name.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public void delete(String resourceGroupName, String monitorName, Context context) {
-        beginDelete(resourceGroupName, monitorName, context).getFinalResult();
+        this.client.getLroFinalResultOrError(beginDelete(resourceGroupName, monitorName, context));
     }
 
     /**
@@ -1194,11 +1041,7 @@ public final class MonitorsClientImpl implements MonitorsClient {
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private PagedResponse<DatadogMonitorResourceInner> listByResourceGroupSinglePage(String resourceGroupName) {
-        final String accept = "application/json";
-        Response<DatadogMonitorResourceListResponse> res = service.listByResourceGroupSync(this.client.getEndpoint(),
-            this.client.getApiVersion(), this.client.getSubscriptionId(), resourceGroupName, accept, Context.NONE);
-        return new PagedResponseBase<>(res.getRequest(), res.getStatusCode(), res.getHeaders(), res.getValue().value(),
-            res.getValue().nextLink(), null);
+        return listByResourceGroupSinglePage(resourceGroupName, Context.NONE);
     }
 
     /**
@@ -1221,31 +1064,13 @@ public final class MonitorsClientImpl implements MonitorsClient {
             res.getValue().nextLink(), null);
     }
 
-    /**
-     * List all monitors under the specified resource group.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return response of a list operation as paginated response with {@link PagedIterable}.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.COLLECTION)
     public PagedIterable<DatadogMonitorResourceInner> listByResourceGroup(String resourceGroupName) {
-        return new PagedIterable<>(() -> listByResourceGroupSinglePage(resourceGroupName),
-            nextLink -> listByResourceGroupNextSinglePage(nextLink));
+        return listByResourceGroup(resourceGroupName, Context.NONE);
     }
 
-    /**
-     * List all monitors under the specified resource group.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return response of a list operation as paginated response with {@link PagedIterable}.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.COLLECTION)
     public PagedIterable<DatadogMonitorResourceInner> listByResourceGroup(String resourceGroupName, Context context) {
         return new PagedIterable<>(() -> listByResourceGroupSinglePage(resourceGroupName, context),
@@ -1291,11 +1116,7 @@ public final class MonitorsClientImpl implements MonitorsClient {
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private PagedResponse<DatadogMonitorResourceInner> listSinglePage() {
-        final String accept = "application/json";
-        Response<DatadogMonitorResourceListResponse> res = service.listSync(this.client.getEndpoint(),
-            this.client.getApiVersion(), this.client.getSubscriptionId(), accept, Context.NONE);
-        return new PagedResponseBase<>(res.getRequest(), res.getStatusCode(), res.getHeaders(), res.getValue().value(),
-            res.getValue().nextLink(), null);
+        return listSinglePage(Context.NONE);
     }
 
     /**
@@ -1316,27 +1137,13 @@ public final class MonitorsClientImpl implements MonitorsClient {
             res.getValue().nextLink(), null);
     }
 
-    /**
-     * List all monitors under the specified subscription.
-     * 
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return response of a list operation as paginated response with {@link PagedIterable}.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.COLLECTION)
     public PagedIterable<DatadogMonitorResourceInner> list() {
-        return new PagedIterable<>(() -> listSinglePage(), nextLink -> listNextSinglePage(nextLink));
+        return list(Context.NONE);
     }
 
-    /**
-     * List all monitors under the specified subscription.
-     * 
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return response of a list operation as paginated response with {@link PagedIterable}.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.COLLECTION)
     public PagedIterable<DatadogMonitorResourceInner> list(Context context) {
         return new PagedIterable<>(() -> listSinglePage(context), nextLink -> listNextSinglePage(nextLink, context));
@@ -1383,18 +1190,7 @@ public final class MonitorsClientImpl implements MonitorsClient {
             .flatMap(res -> Mono.justOrEmpty(res.getValue()));
     }
 
-    /**
-     * Manages Datadog MCP connectors to add/remove for the SRE Agent.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param monitorName Monitor resource name.
-     * @param request The content of the action request.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return response of a list operation along with {@link Response}.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Response<SreAgentConfigurationListResponseInner> manageSreAgentConnectorsWithResponse(
         String resourceGroupName, String monitorName, SreAgentConnectorRequest request, Context context) {
@@ -1404,17 +1200,7 @@ public final class MonitorsClientImpl implements MonitorsClient {
             this.client.getSubscriptionId(), resourceGroupName, monitorName, contentType, accept, request, context);
     }
 
-    /**
-     * Manages Datadog MCP connectors to add/remove for the SRE Agent.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param monitorName Monitor resource name.
-     * @param request The content of the action request.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return response of a list operation.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public SreAgentConfigurationListResponseInner manageSreAgentConnectors(String resourceGroupName, String monitorName,
         SreAgentConnectorRequest request) {
@@ -1459,17 +1245,7 @@ public final class MonitorsClientImpl implements MonitorsClient {
             .flatMap(res -> Mono.justOrEmpty(res.getValue()));
     }
 
-    /**
-     * Get the default application key.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param monitorName Monitor resource name.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the default application key along with {@link Response}.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Response<DatadogApplicationKeyInner> getDefaultApplicationKeyWithResponse(String resourceGroupName,
         String monitorName, Context context) {
@@ -1478,16 +1254,7 @@ public final class MonitorsClientImpl implements MonitorsClient {
             this.client.getSubscriptionId(), resourceGroupName, monitorName, accept, context);
     }
 
-    /**
-     * Get the default application key.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param monitorName Monitor resource name.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the default application key.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public DatadogApplicationKeyInner getDefaultApplicationKey(String resourceGroupName, String monitorName) {
         return getDefaultApplicationKeyWithResponse(resourceGroupName, monitorName, Context.NONE).getValue();
@@ -1543,12 +1310,7 @@ public final class MonitorsClientImpl implements MonitorsClient {
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private PagedResponse<DatadogApiKeyInner> listApiKeysSinglePage(String resourceGroupName, String monitorName) {
-        final String accept = "application/json";
-        Response<DatadogApiKeyListResponse> res
-            = service.listApiKeysSync(this.client.getEndpoint(), this.client.getApiVersion(),
-                this.client.getSubscriptionId(), resourceGroupName, monitorName, accept, Context.NONE);
-        return new PagedResponseBase<>(res.getRequest(), res.getStatusCode(), res.getHeaders(), res.getValue().value(),
-            res.getValue().nextLink(), null);
+        return listApiKeysSinglePage(resourceGroupName, monitorName, Context.NONE);
     }
 
     /**
@@ -1573,33 +1335,13 @@ public final class MonitorsClientImpl implements MonitorsClient {
             res.getValue().nextLink(), null);
     }
 
-    /**
-     * List the api keys for a given monitor resource.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param monitorName Monitor resource name.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return response of a list operation as paginated response with {@link PagedIterable}.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.COLLECTION)
     public PagedIterable<DatadogApiKeyInner> listApiKeys(String resourceGroupName, String monitorName) {
-        return new PagedIterable<>(() -> listApiKeysSinglePage(resourceGroupName, monitorName),
-            nextLink -> listApiKeysNextSinglePage(nextLink));
+        return listApiKeys(resourceGroupName, monitorName, Context.NONE);
     }
 
-    /**
-     * List the api keys for a given monitor resource.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param monitorName Monitor resource name.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return response of a list operation as paginated response with {@link PagedIterable}.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.COLLECTION)
     public PagedIterable<DatadogApiKeyInner> listApiKeys(String resourceGroupName, String monitorName,
         Context context) {
@@ -1643,17 +1385,7 @@ public final class MonitorsClientImpl implements MonitorsClient {
             .flatMap(res -> Mono.justOrEmpty(res.getValue()));
     }
 
-    /**
-     * Get the default api key.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param monitorName Monitor resource name.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the default api key along with {@link Response}.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Response<DatadogApiKeyInner> getDefaultKeyWithResponse(String resourceGroupName, String monitorName,
         Context context) {
@@ -1662,16 +1394,7 @@ public final class MonitorsClientImpl implements MonitorsClient {
             this.client.getSubscriptionId(), resourceGroupName, monitorName, accept, context);
     }
 
-    /**
-     * Get the default api key.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param monitorName Monitor resource name.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the default api key.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public DatadogApiKeyInner getDefaultKey(String resourceGroupName, String monitorName) {
         return getDefaultKeyWithResponse(resourceGroupName, monitorName, Context.NONE).getValue();
@@ -1713,18 +1436,7 @@ public final class MonitorsClientImpl implements MonitorsClient {
         return setDefaultKeyWithResponseAsync(resourceGroupName, monitorName, body).flatMap(ignored -> Mono.empty());
     }
 
-    /**
-     * Set the default api key.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param monitorName Monitor resource name.
-     * @param body The body parameter.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the {@link Response}.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Response<Void> setDefaultKeyWithResponse(String resourceGroupName, String monitorName,
         DatadogApiKeyInner body, Context context) {
@@ -1732,15 +1444,7 @@ public final class MonitorsClientImpl implements MonitorsClient {
             this.client.getSubscriptionId(), resourceGroupName, monitorName, body, context);
     }
 
-    /**
-     * Set the default api key.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param monitorName Monitor resource name.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public void setDefaultKey(String resourceGroupName, String monitorName) {
         final DatadogApiKeyInner body = null;
@@ -1797,12 +1501,7 @@ public final class MonitorsClientImpl implements MonitorsClient {
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private PagedResponse<DatadogHostInner> listHostsSinglePage(String resourceGroupName, String monitorName) {
-        final String accept = "application/json";
-        Response<DatadogHostListResponse> res
-            = service.listHostsSync(this.client.getEndpoint(), this.client.getApiVersion(),
-                this.client.getSubscriptionId(), resourceGroupName, monitorName, accept, Context.NONE);
-        return new PagedResponseBase<>(res.getRequest(), res.getStatusCode(), res.getHeaders(), res.getValue().value(),
-            res.getValue().nextLink(), null);
+        return listHostsSinglePage(resourceGroupName, monitorName, Context.NONE);
     }
 
     /**
@@ -1827,33 +1526,13 @@ public final class MonitorsClientImpl implements MonitorsClient {
             res.getValue().nextLink(), null);
     }
 
-    /**
-     * List the hosts for a given monitor resource.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param monitorName Monitor resource name.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return response of a list operation as paginated response with {@link PagedIterable}.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.COLLECTION)
     public PagedIterable<DatadogHostInner> listHosts(String resourceGroupName, String monitorName) {
-        return new PagedIterable<>(() -> listHostsSinglePage(resourceGroupName, monitorName),
-            nextLink -> listHostsNextSinglePage(nextLink));
+        return listHosts(resourceGroupName, monitorName, Context.NONE);
     }
 
-    /**
-     * List the hosts for a given monitor resource.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param monitorName Monitor resource name.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return response of a list operation as paginated response with {@link PagedIterable}.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.COLLECTION)
     public PagedIterable<DatadogHostInner> listHosts(String resourceGroupName, String monitorName, Context context) {
         return new PagedIterable<>(() -> listHostsSinglePage(resourceGroupName, monitorName, context),
@@ -1911,12 +1590,7 @@ public final class MonitorsClientImpl implements MonitorsClient {
     @ServiceMethod(returns = ReturnType.SINGLE)
     private PagedResponse<LinkedResourceInner> listLinkedResourcesSinglePage(String resourceGroupName,
         String monitorName) {
-        final String accept = "application/json";
-        Response<LinkedResourceListResponse> res
-            = service.listLinkedResourcesSync(this.client.getEndpoint(), this.client.getApiVersion(),
-                this.client.getSubscriptionId(), resourceGroupName, monitorName, accept, Context.NONE);
-        return new PagedResponseBase<>(res.getRequest(), res.getStatusCode(), res.getHeaders(), res.getValue().value(),
-            res.getValue().nextLink(), null);
+        return listLinkedResourcesSinglePage(resourceGroupName, monitorName, Context.NONE);
     }
 
     /**
@@ -1941,33 +1615,13 @@ public final class MonitorsClientImpl implements MonitorsClient {
             res.getValue().nextLink(), null);
     }
 
-    /**
-     * List all Azure resources associated to the same Datadog organization as the target resource.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param monitorName Monitor resource name.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return response of a list operation as paginated response with {@link PagedIterable}.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.COLLECTION)
     public PagedIterable<LinkedResourceInner> listLinkedResources(String resourceGroupName, String monitorName) {
-        return new PagedIterable<>(() -> listLinkedResourcesSinglePage(resourceGroupName, monitorName),
-            nextLink -> listLinkedResourcesNextSinglePage(nextLink));
+        return listLinkedResources(resourceGroupName, monitorName, Context.NONE);
     }
 
-    /**
-     * List all Azure resources associated to the same Datadog organization as the target resource.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param monitorName Monitor resource name.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return response of a list operation as paginated response with {@link PagedIterable}.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.COLLECTION)
     public PagedIterable<LinkedResourceInner> listLinkedResources(String resourceGroupName, String monitorName,
         Context context) {
@@ -2028,12 +1682,7 @@ public final class MonitorsClientImpl implements MonitorsClient {
     @ServiceMethod(returns = ReturnType.SINGLE)
     private PagedResponse<MonitoredResourceInner> listMonitoredResourcesSinglePage(String resourceGroupName,
         String monitorName) {
-        final String accept = "application/json";
-        Response<MonitoredResourceListResponse> res
-            = service.listMonitoredResourcesSync(this.client.getEndpoint(), this.client.getApiVersion(),
-                this.client.getSubscriptionId(), resourceGroupName, monitorName, accept, Context.NONE);
-        return new PagedResponseBase<>(res.getRequest(), res.getStatusCode(), res.getHeaders(), res.getValue().value(),
-            res.getValue().nextLink(), null);
+        return listMonitoredResourcesSinglePage(resourceGroupName, monitorName, Context.NONE);
     }
 
     /**
@@ -2058,33 +1707,13 @@ public final class MonitorsClientImpl implements MonitorsClient {
             res.getValue().nextLink(), null);
     }
 
-    /**
-     * List the resources currently being monitored by the Datadog monitor resource.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param monitorName Monitor resource name.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return response of a list operation as paginated response with {@link PagedIterable}.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.COLLECTION)
     public PagedIterable<MonitoredResourceInner> listMonitoredResources(String resourceGroupName, String monitorName) {
-        return new PagedIterable<>(() -> listMonitoredResourcesSinglePage(resourceGroupName, monitorName),
-            nextLink -> listMonitoredResourcesNextSinglePage(nextLink));
+        return listMonitoredResources(resourceGroupName, monitorName, Context.NONE);
     }
 
-    /**
-     * List the resources currently being monitored by the Datadog monitor resource.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param monitorName Monitor resource name.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return response of a list operation as paginated response with {@link PagedIterable}.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.COLLECTION)
     public PagedIterable<MonitoredResourceInner> listMonitoredResources(String resourceGroupName, String monitorName,
         Context context) {
@@ -2130,17 +1759,7 @@ public final class MonitorsClientImpl implements MonitorsClient {
             .flatMap(res -> Mono.justOrEmpty(res.getValue()));
     }
 
-    /**
-     * Refresh the set password link and return a latest one.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param monitorName Monitor resource name.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the response body along with {@link Response}.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Response<DatadogSetPasswordLinkInner> refreshSetPasswordLinkWithResponse(String resourceGroupName,
         String monitorName, Context context) {
@@ -2149,16 +1768,7 @@ public final class MonitorsClientImpl implements MonitorsClient {
             this.client.getSubscriptionId(), resourceGroupName, monitorName, accept, context);
     }
 
-    /**
-     * Refresh the set password link and return a latest one.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param monitorName Monitor resource name.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the response.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public DatadogSetPasswordLinkInner refreshSetPasswordLink(String resourceGroupName, String monitorName) {
         return refreshSetPasswordLinkWithResponse(resourceGroupName, monitorName, Context.NONE).getValue();
@@ -2199,11 +1809,7 @@ public final class MonitorsClientImpl implements MonitorsClient {
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private PagedResponse<DatadogMonitorResourceInner> listByResourceGroupNextSinglePage(String nextLink) {
-        final String accept = "application/json";
-        Response<DatadogMonitorResourceListResponse> res
-            = service.listByResourceGroupNextSync(nextLink, this.client.getEndpoint(), accept, Context.NONE);
-        return new PagedResponseBase<>(res.getRequest(), res.getStatusCode(), res.getHeaders(), res.getValue().value(),
-            res.getValue().nextLink(), null);
+        return listByResourceGroupNextSinglePage(nextLink, Context.NONE);
     }
 
     /**
@@ -2261,11 +1867,7 @@ public final class MonitorsClientImpl implements MonitorsClient {
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private PagedResponse<DatadogMonitorResourceInner> listNextSinglePage(String nextLink) {
-        final String accept = "application/json";
-        Response<DatadogMonitorResourceListResponse> res
-            = service.listNextSync(nextLink, this.client.getEndpoint(), accept, Context.NONE);
-        return new PagedResponseBase<>(res.getRequest(), res.getStatusCode(), res.getHeaders(), res.getValue().value(),
-            res.getValue().nextLink(), null);
+        return listNextSinglePage(nextLink, Context.NONE);
     }
 
     /**
@@ -2323,11 +1925,7 @@ public final class MonitorsClientImpl implements MonitorsClient {
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private PagedResponse<DatadogApiKeyInner> listApiKeysNextSinglePage(String nextLink) {
-        final String accept = "application/json";
-        Response<DatadogApiKeyListResponse> res
-            = service.listApiKeysNextSync(nextLink, this.client.getEndpoint(), accept, Context.NONE);
-        return new PagedResponseBase<>(res.getRequest(), res.getStatusCode(), res.getHeaders(), res.getValue().value(),
-            res.getValue().nextLink(), null);
+        return listApiKeysNextSinglePage(nextLink, Context.NONE);
     }
 
     /**
@@ -2385,11 +1983,7 @@ public final class MonitorsClientImpl implements MonitorsClient {
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private PagedResponse<DatadogHostInner> listHostsNextSinglePage(String nextLink) {
-        final String accept = "application/json";
-        Response<DatadogHostListResponse> res
-            = service.listHostsNextSync(nextLink, this.client.getEndpoint(), accept, Context.NONE);
-        return new PagedResponseBase<>(res.getRequest(), res.getStatusCode(), res.getHeaders(), res.getValue().value(),
-            res.getValue().nextLink(), null);
+        return listHostsNextSinglePage(nextLink, Context.NONE);
     }
 
     /**
@@ -2448,11 +2042,7 @@ public final class MonitorsClientImpl implements MonitorsClient {
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private PagedResponse<LinkedResourceInner> listLinkedResourcesNextSinglePage(String nextLink) {
-        final String accept = "application/json";
-        Response<LinkedResourceListResponse> res
-            = service.listLinkedResourcesNextSync(nextLink, this.client.getEndpoint(), accept, Context.NONE);
-        return new PagedResponseBase<>(res.getRequest(), res.getStatusCode(), res.getHeaders(), res.getValue().value(),
-            res.getValue().nextLink(), null);
+        return listLinkedResourcesNextSinglePage(nextLink, Context.NONE);
     }
 
     /**
@@ -2511,11 +2101,7 @@ public final class MonitorsClientImpl implements MonitorsClient {
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private PagedResponse<MonitoredResourceInner> listMonitoredResourcesNextSinglePage(String nextLink) {
-        final String accept = "application/json";
-        Response<MonitoredResourceListResponse> res
-            = service.listMonitoredResourcesNextSync(nextLink, this.client.getEndpoint(), accept, Context.NONE);
-        return new PagedResponseBase<>(res.getRequest(), res.getStatusCode(), res.getHeaders(), res.getValue().value(),
-            res.getValue().nextLink(), null);
+        return listMonitoredResourcesNextSinglePage(nextLink, Context.NONE);
     }
 
     /**

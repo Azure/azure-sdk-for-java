@@ -62,7 +62,7 @@ public final class RaiExternalSafetyProvidersImpl implements RaiExternalSafetyPr
     }
 
     public void delete(String safetyProviderName) {
-        this.serviceClient().delete(safetyProviderName);
+        this.delete(safetyProviderName, Context.NONE);
     }
 
     public void delete(String safetyProviderName, Context context) {

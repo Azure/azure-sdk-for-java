@@ -18,6 +18,15 @@ public final class DatabaseImpl implements Database, Database.Definition {
         com.azure.resourcemanager.postgresqlflexibleserver.PostgreSqlManager serviceManager) {
         this.innerObject = innerObject;
         this.serviceManager = serviceManager;
+        this.resourceGroupName = ResourceManagerUtils.getValueFromIdByParameterName(innerObject.id(),
+            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.DBforPostgreSQL/flexibleServers/{serverName}/databases/{databaseName}",
+            "resourceGroupName");
+        this.serverName = ResourceManagerUtils.getValueFromIdByParameterName(innerObject.id(),
+            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.DBforPostgreSQL/flexibleServers/{serverName}/databases/{databaseName}",
+            "serverName");
+        this.databaseName = ResourceManagerUtils.getValueFromIdByParameterName(innerObject.id(),
+            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.DBforPostgreSQL/flexibleServers/{serverName}/databases/{databaseName}",
+            "databaseName");
     }
 
     public String id() {
@@ -65,10 +74,7 @@ public final class DatabaseImpl implements Database, Database.Definition {
     }
 
     public Database create() {
-        this.innerObject = serviceManager.serviceClient()
-            .getDatabases()
-            .create(resourceGroupName, serverName, databaseName, this.innerModel(), Context.NONE);
-        return this;
+        return this.create(Context.NONE);
     }
 
     public Database create(Context context) {
@@ -85,11 +91,7 @@ public final class DatabaseImpl implements Database, Database.Definition {
     }
 
     public Database refresh() {
-        this.innerObject = serviceManager.serviceClient()
-            .getDatabases()
-            .getWithResponse(resourceGroupName, serverName, databaseName, Context.NONE)
-            .getValue();
-        return this;
+        return this.refresh(Context.NONE);
     }
 
     public Database refresh(Context context) {

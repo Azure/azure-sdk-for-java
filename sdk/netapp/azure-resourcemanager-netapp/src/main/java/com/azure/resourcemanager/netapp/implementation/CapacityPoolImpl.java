@@ -129,10 +129,7 @@ public final class CapacityPoolImpl implements CapacityPool, CapacityPool.Defini
     }
 
     public CapacityPool create() {
-        this.innerObject = serviceManager.serviceClient()
-            .getPools()
-            .createOrUpdate(resourceGroupName, accountName, poolName, this.innerModel(), Context.NONE);
-        return this;
+        return this.create(Context.NONE);
     }
 
     public CapacityPool create(Context context) {
@@ -154,10 +151,7 @@ public final class CapacityPoolImpl implements CapacityPool, CapacityPool.Defini
     }
 
     public CapacityPool apply() {
-        this.innerObject = serviceManager.serviceClient()
-            .getPools()
-            .update(resourceGroupName, accountName, poolName, updateBody, Context.NONE);
-        return this;
+        return this.apply(Context.NONE);
     }
 
     public CapacityPool apply(Context context) {
@@ -183,11 +177,7 @@ public final class CapacityPoolImpl implements CapacityPool, CapacityPool.Defini
     }
 
     public CapacityPool refresh() {
-        this.innerObject = serviceManager.serviceClient()
-            .getPools()
-            .getWithResponse(resourceGroupName, accountName, poolName, Context.NONE)
-            .getValue();
-        return this;
+        return this.refresh(Context.NONE);
     }
 
     public CapacityPool refresh(Context context) {

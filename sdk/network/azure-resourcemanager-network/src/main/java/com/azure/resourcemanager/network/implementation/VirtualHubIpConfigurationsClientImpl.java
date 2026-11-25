@@ -118,18 +118,7 @@ public final class VirtualHubIpConfigurationsClientImpl implements VirtualHubIpC
             @HeaderParam("Accept") String accept, Context context);
     }
 
-    /**
-     * Retrieves the details of a Virtual Hub Ip configuration.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param virtualHubName The name of the VirtualHub.
-     * @param ipConfigName The name of the resource that is unique within a resource group. This name can be used to
-     * access the resource.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return ipConfigurations along with {@link Response} on successful completion of {@link Mono}.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Response<HubIpConfigurationInner>> getWithResponseAsync(String resourceGroupName, String virtualHubName,
         String ipConfigName) {
@@ -151,7 +140,7 @@ public final class VirtualHubIpConfigurationsClientImpl implements VirtualHubIpC
         if (ipConfigName == null) {
             return Mono.error(new IllegalArgumentException("Parameter ipConfigName is required and cannot be null."));
         }
-        final String apiVersion = "2026-03-01";
+        final String apiVersion = "2026-05-01";
         final String accept = "application/json";
         return FluxUtil
             .withContext(context -> service.get(this.client.getEndpoint(), apiVersion, this.client.getSubscriptionId(),
@@ -193,25 +182,14 @@ public final class VirtualHubIpConfigurationsClientImpl implements VirtualHubIpC
         if (ipConfigName == null) {
             return Mono.error(new IllegalArgumentException("Parameter ipConfigName is required and cannot be null."));
         }
-        final String apiVersion = "2026-03-01";
+        final String apiVersion = "2026-05-01";
         final String accept = "application/json";
         context = this.client.mergeContext(context);
         return service.get(this.client.getEndpoint(), apiVersion, this.client.getSubscriptionId(), resourceGroupName,
             virtualHubName, ipConfigName, accept, context);
     }
 
-    /**
-     * Retrieves the details of a Virtual Hub Ip configuration.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param virtualHubName The name of the VirtualHub.
-     * @param ipConfigName The name of the resource that is unique within a resource group. This name can be used to
-     * access the resource.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return ipConfigurations on successful completion of {@link Mono}.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<HubIpConfigurationInner> getAsync(String resourceGroupName, String virtualHubName,
         String ipConfigName) {
@@ -219,56 +197,20 @@ public final class VirtualHubIpConfigurationsClientImpl implements VirtualHubIpC
             .flatMap(res -> Mono.justOrEmpty(res.getValue()));
     }
 
-    /**
-     * Retrieves the details of a Virtual Hub Ip configuration.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param virtualHubName The name of the VirtualHub.
-     * @param ipConfigName The name of the resource that is unique within a resource group. This name can be used to
-     * access the resource.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return ipConfigurations along with {@link Response}.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Response<HubIpConfigurationInner> getWithResponse(String resourceGroupName, String virtualHubName,
         String ipConfigName, Context context) {
         return getWithResponseAsync(resourceGroupName, virtualHubName, ipConfigName, context).block();
     }
 
-    /**
-     * Retrieves the details of a Virtual Hub Ip configuration.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param virtualHubName The name of the VirtualHub.
-     * @param ipConfigName The name of the resource that is unique within a resource group. This name can be used to
-     * access the resource.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return ipConfigurations.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public HubIpConfigurationInner get(String resourceGroupName, String virtualHubName, String ipConfigName) {
         return getWithResponse(resourceGroupName, virtualHubName, ipConfigName, Context.NONE).getValue();
     }
 
-    /**
-     * Creates a VirtualHubIpConfiguration resource if it doesn't exist else updates the existing
-     * VirtualHubIpConfiguration.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param virtualHubName The name of the VirtualHub.
-     * @param ipConfigName The name of the resource that is unique within a resource group. This name can be used to
-     * access the resource.
-     * @param parameters Hub Ip Configuration parameters.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return ipConfigurations along with {@link Response} on successful completion of {@link Mono}.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Response<Flux<ByteBuffer>>> createOrUpdateWithResponseAsync(String resourceGroupName,
         String virtualHubName, String ipConfigName, HubIpConfigurationInner parameters) {
@@ -295,7 +237,7 @@ public final class VirtualHubIpConfigurationsClientImpl implements VirtualHubIpC
         } else {
             parameters.validate();
         }
-        final String apiVersion = "2026-03-01";
+        final String apiVersion = "2026-05-01";
         final String contentType = "application/json";
         final String accept = "application/json";
         return FluxUtil
@@ -346,7 +288,7 @@ public final class VirtualHubIpConfigurationsClientImpl implements VirtualHubIpC
         } else {
             parameters.validate();
         }
-        final String apiVersion = "2026-03-01";
+        final String apiVersion = "2026-05-01";
         final String contentType = "application/json";
         final String accept = "application/json";
         context = this.client.mergeContext(context);
@@ -354,20 +296,7 @@ public final class VirtualHubIpConfigurationsClientImpl implements VirtualHubIpC
             resourceGroupName, virtualHubName, ipConfigName, contentType, accept, parameters, context);
     }
 
-    /**
-     * Creates a VirtualHubIpConfiguration resource if it doesn't exist else updates the existing
-     * VirtualHubIpConfiguration.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param virtualHubName The name of the VirtualHub.
-     * @param ipConfigName The name of the resource that is unique within a resource group. This name can be used to
-     * access the resource.
-     * @param parameters Hub Ip Configuration parameters.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the {@link PollerFlux} for polling of ipConfigurations.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public PollerFlux<PollResult<HubIpConfigurationInner>, HubIpConfigurationInner> beginCreateOrUpdateAsync(
         String resourceGroupName, String virtualHubName, String ipConfigName, HubIpConfigurationInner parameters) {
@@ -404,20 +333,7 @@ public final class VirtualHubIpConfigurationsClientImpl implements VirtualHubIpC
             this.client.getHttpPipeline(), HubIpConfigurationInner.class, HubIpConfigurationInner.class, context);
     }
 
-    /**
-     * Creates a VirtualHubIpConfiguration resource if it doesn't exist else updates the existing
-     * VirtualHubIpConfiguration.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param virtualHubName The name of the VirtualHub.
-     * @param ipConfigName The name of the resource that is unique within a resource group. This name can be used to
-     * access the resource.
-     * @param parameters Hub Ip Configuration parameters.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the {@link SyncPoller} for polling of ipConfigurations.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public SyncPoller<PollResult<HubIpConfigurationInner>, HubIpConfigurationInner> beginCreateOrUpdate(
         String resourceGroupName, String virtualHubName, String ipConfigName, HubIpConfigurationInner parameters) {
@@ -425,21 +341,7 @@ public final class VirtualHubIpConfigurationsClientImpl implements VirtualHubIpC
             .getSyncPoller();
     }
 
-    /**
-     * Creates a VirtualHubIpConfiguration resource if it doesn't exist else updates the existing
-     * VirtualHubIpConfiguration.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param virtualHubName The name of the VirtualHub.
-     * @param ipConfigName The name of the resource that is unique within a resource group. This name can be used to
-     * access the resource.
-     * @param parameters Hub Ip Configuration parameters.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the {@link SyncPoller} for polling of ipConfigurations.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public SyncPoller<PollResult<HubIpConfigurationInner>, HubIpConfigurationInner> beginCreateOrUpdate(
         String resourceGroupName, String virtualHubName, String ipConfigName, HubIpConfigurationInner parameters,
@@ -448,20 +350,7 @@ public final class VirtualHubIpConfigurationsClientImpl implements VirtualHubIpC
             .getSyncPoller();
     }
 
-    /**
-     * Creates a VirtualHubIpConfiguration resource if it doesn't exist else updates the existing
-     * VirtualHubIpConfiguration.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param virtualHubName The name of the VirtualHub.
-     * @param ipConfigName The name of the resource that is unique within a resource group. This name can be used to
-     * access the resource.
-     * @param parameters Hub Ip Configuration parameters.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return ipConfigurations on successful completion of {@link Mono}.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<HubIpConfigurationInner> createOrUpdateAsync(String resourceGroupName, String virtualHubName,
         String ipConfigName, HubIpConfigurationInner parameters) {
@@ -491,59 +380,21 @@ public final class VirtualHubIpConfigurationsClientImpl implements VirtualHubIpC
             .flatMap(this.client::getLroFinalResultOrError);
     }
 
-    /**
-     * Creates a VirtualHubIpConfiguration resource if it doesn't exist else updates the existing
-     * VirtualHubIpConfiguration.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param virtualHubName The name of the VirtualHub.
-     * @param ipConfigName The name of the resource that is unique within a resource group. This name can be used to
-     * access the resource.
-     * @param parameters Hub Ip Configuration parameters.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return ipConfigurations.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public HubIpConfigurationInner createOrUpdate(String resourceGroupName, String virtualHubName, String ipConfigName,
         HubIpConfigurationInner parameters) {
         return createOrUpdateAsync(resourceGroupName, virtualHubName, ipConfigName, parameters).block();
     }
 
-    /**
-     * Creates a VirtualHubIpConfiguration resource if it doesn't exist else updates the existing
-     * VirtualHubIpConfiguration.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param virtualHubName The name of the VirtualHub.
-     * @param ipConfigName The name of the resource that is unique within a resource group. This name can be used to
-     * access the resource.
-     * @param parameters Hub Ip Configuration parameters.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return ipConfigurations.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public HubIpConfigurationInner createOrUpdate(String resourceGroupName, String virtualHubName, String ipConfigName,
         HubIpConfigurationInner parameters, Context context) {
         return createOrUpdateAsync(resourceGroupName, virtualHubName, ipConfigName, parameters, context).block();
     }
 
-    /**
-     * Deletes a VirtualHubIpConfiguration.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param virtualHubName The name of the VirtualHub.
-     * @param ipConfigName The name of the resource that is unique within a resource group. This name can be used to
-     * access the resource.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the {@link Response} on successful completion of {@link Mono}.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Response<Flux<ByteBuffer>>> deleteWithResponseAsync(String resourceGroupName, String virtualHubName,
         String ipConfigName) {
@@ -565,7 +416,7 @@ public final class VirtualHubIpConfigurationsClientImpl implements VirtualHubIpC
         if (ipConfigName == null) {
             return Mono.error(new IllegalArgumentException("Parameter ipConfigName is required and cannot be null."));
         }
-        final String apiVersion = "2026-03-01";
+        final String apiVersion = "2026-05-01";
         return FluxUtil
             .withContext(context -> service.delete(this.client.getEndpoint(), apiVersion,
                 this.client.getSubscriptionId(), resourceGroupName, virtualHubName, ipConfigName, context))
@@ -606,24 +457,13 @@ public final class VirtualHubIpConfigurationsClientImpl implements VirtualHubIpC
         if (ipConfigName == null) {
             return Mono.error(new IllegalArgumentException("Parameter ipConfigName is required and cannot be null."));
         }
-        final String apiVersion = "2026-03-01";
+        final String apiVersion = "2026-05-01";
         context = this.client.mergeContext(context);
         return service.delete(this.client.getEndpoint(), apiVersion, this.client.getSubscriptionId(), resourceGroupName,
             virtualHubName, ipConfigName, context);
     }
 
-    /**
-     * Deletes a VirtualHubIpConfiguration.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param virtualHubName The name of the VirtualHub.
-     * @param ipConfigName The name of the resource that is unique within a resource group. This name can be used to
-     * access the resource.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the {@link PollerFlux} for polling of long-running operation.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public PollerFlux<PollResult<Void>, Void> beginDeleteAsync(String resourceGroupName, String virtualHubName,
         String ipConfigName) {
@@ -656,55 +496,21 @@ public final class VirtualHubIpConfigurationsClientImpl implements VirtualHubIpC
             context);
     }
 
-    /**
-     * Deletes a VirtualHubIpConfiguration.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param virtualHubName The name of the VirtualHub.
-     * @param ipConfigName The name of the resource that is unique within a resource group. This name can be used to
-     * access the resource.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the {@link SyncPoller} for polling of long-running operation.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public SyncPoller<PollResult<Void>, Void> beginDelete(String resourceGroupName, String virtualHubName,
         String ipConfigName) {
         return this.beginDeleteAsync(resourceGroupName, virtualHubName, ipConfigName).getSyncPoller();
     }
 
-    /**
-     * Deletes a VirtualHubIpConfiguration.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param virtualHubName The name of the VirtualHub.
-     * @param ipConfigName The name of the resource that is unique within a resource group. This name can be used to
-     * access the resource.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the {@link SyncPoller} for polling of long-running operation.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public SyncPoller<PollResult<Void>, Void> beginDelete(String resourceGroupName, String virtualHubName,
         String ipConfigName, Context context) {
         return this.beginDeleteAsync(resourceGroupName, virtualHubName, ipConfigName, context).getSyncPoller();
     }
 
-    /**
-     * Deletes a VirtualHubIpConfiguration.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param virtualHubName The name of the VirtualHub.
-     * @param ipConfigName The name of the resource that is unique within a resource group. This name can be used to
-     * access the resource.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return A {@link Mono} that completes when a successful response is received.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Void> deleteAsync(String resourceGroupName, String virtualHubName, String ipConfigName) {
         return beginDeleteAsync(resourceGroupName, virtualHubName, ipConfigName).last()
@@ -731,34 +537,13 @@ public final class VirtualHubIpConfigurationsClientImpl implements VirtualHubIpC
             .flatMap(this.client::getLroFinalResultOrError);
     }
 
-    /**
-     * Deletes a VirtualHubIpConfiguration.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param virtualHubName The name of the VirtualHub.
-     * @param ipConfigName The name of the resource that is unique within a resource group. This name can be used to
-     * access the resource.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public void delete(String resourceGroupName, String virtualHubName, String ipConfigName) {
         deleteAsync(resourceGroupName, virtualHubName, ipConfigName).block();
     }
 
-    /**
-     * Deletes a VirtualHubIpConfiguration.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param virtualHubName The name of the VirtualHub.
-     * @param ipConfigName The name of the resource that is unique within a resource group. This name can be used to
-     * access the resource.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public void delete(String resourceGroupName, String virtualHubName, String ipConfigName, Context context) {
         deleteAsync(resourceGroupName, virtualHubName, ipConfigName, context).block();
@@ -793,7 +578,7 @@ public final class VirtualHubIpConfigurationsClientImpl implements VirtualHubIpC
         if (virtualHubName == null) {
             return Mono.error(new IllegalArgumentException("Parameter virtualHubName is required and cannot be null."));
         }
-        final String apiVersion = "2026-03-01";
+        final String apiVersion = "2026-05-01";
         final String accept = "application/json";
         return FluxUtil
             .withContext(context -> service.list(this.client.getEndpoint(), apiVersion, this.client.getSubscriptionId(),
@@ -833,7 +618,7 @@ public final class VirtualHubIpConfigurationsClientImpl implements VirtualHubIpC
         if (virtualHubName == null) {
             return Mono.error(new IllegalArgumentException("Parameter virtualHubName is required and cannot be null."));
         }
-        final String apiVersion = "2026-03-01";
+        final String apiVersion = "2026-05-01";
         final String accept = "application/json";
         context = this.client.mergeContext(context);
         return service
@@ -843,16 +628,7 @@ public final class VirtualHubIpConfigurationsClientImpl implements VirtualHubIpC
                 res.getValue().value(), res.getValue().nextLink(), null));
     }
 
-    /**
-     * Retrieves the details of all VirtualHubIpConfigurations.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param virtualHubName The name of the VirtualHub.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return virtualHubIpConfigurations list as paginated response with {@link PagedFlux}.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.COLLECTION)
     public PagedFlux<HubIpConfigurationInner> listAsync(String resourceGroupName, String virtualHubName) {
         return new PagedFlux<>(() -> listSinglePageAsync(resourceGroupName, virtualHubName),
@@ -877,32 +653,13 @@ public final class VirtualHubIpConfigurationsClientImpl implements VirtualHubIpC
             nextLink -> listNextSinglePageAsync(nextLink, context));
     }
 
-    /**
-     * Retrieves the details of all VirtualHubIpConfigurations.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param virtualHubName The name of the VirtualHub.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return virtualHubIpConfigurations list as paginated response with {@link PagedIterable}.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.COLLECTION)
     public PagedIterable<HubIpConfigurationInner> list(String resourceGroupName, String virtualHubName) {
         return new PagedIterable<>(listAsync(resourceGroupName, virtualHubName));
     }
 
-    /**
-     * Retrieves the details of all VirtualHubIpConfigurations.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param virtualHubName The name of the VirtualHub.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return virtualHubIpConfigurations list as paginated response with {@link PagedIterable}.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.COLLECTION)
     public PagedIterable<HubIpConfigurationInner> list(String resourceGroupName, String virtualHubName,
         Context context) {

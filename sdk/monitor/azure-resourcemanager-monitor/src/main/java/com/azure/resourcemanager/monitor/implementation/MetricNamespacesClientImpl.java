@@ -140,31 +140,14 @@ public final class MetricNamespacesClientImpl implements MetricNamespacesClient 
                 res.getValue().value(), res.getValue().nextLink(), null));
     }
 
-    /**
-     * Lists the metric namespaces for the resource.
-     * 
-     * @param resourceUri The identifier of the resource.
-     * @param startTime The ISO 8601 conform Date start time from which to query for metric namespaces.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return represents collection of metric namespaces as paginated response with {@link PagedFlux}.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.COLLECTION)
     public PagedFlux<MetricNamespaceInner> listAsync(String resourceUri, String startTime) {
         return new PagedFlux<>(() -> listSinglePageAsync(resourceUri, startTime),
             nextLink -> listNextSinglePageAsync(nextLink));
     }
 
-    /**
-     * Lists the metric namespaces for the resource.
-     * 
-     * @param resourceUri The identifier of the resource.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return represents collection of metric namespaces as paginated response with {@link PagedFlux}.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.COLLECTION)
     public PagedFlux<MetricNamespaceInner> listAsync(String resourceUri) {
         final String startTime = null;
@@ -189,32 +172,14 @@ public final class MetricNamespacesClientImpl implements MetricNamespacesClient 
             nextLink -> listNextSinglePageAsync(nextLink, context));
     }
 
-    /**
-     * Lists the metric namespaces for the resource.
-     * 
-     * @param resourceUri The identifier of the resource.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return represents collection of metric namespaces as paginated response with {@link PagedIterable}.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.COLLECTION)
     public PagedIterable<MetricNamespaceInner> list(String resourceUri) {
         final String startTime = null;
         return new PagedIterable<>(listAsync(resourceUri, startTime));
     }
 
-    /**
-     * Lists the metric namespaces for the resource.
-     * 
-     * @param resourceUri The identifier of the resource.
-     * @param startTime The ISO 8601 conform Date start time from which to query for metric namespaces.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return represents collection of metric namespaces as paginated response with {@link PagedIterable}.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.COLLECTION)
     public PagedIterable<MetricNamespaceInner> list(String resourceUri, String startTime, Context context) {
         return new PagedIterable<>(listAsync(resourceUri, startTime, context));

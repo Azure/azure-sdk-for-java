@@ -198,18 +198,7 @@ public final class WebPubSubCustomDomainsClientImpl implements WebPubSubCustomDo
             .flatMap(res -> Mono.justOrEmpty(res.getValue()));
     }
 
-    /**
-     * Get a custom domain.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param resourceName The name of the resource.
-     * @param name Custom domain name.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return a custom domain along with {@link Response}.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Response<CustomDomainInner> getWithResponse(String resourceGroupName, String resourceName, String name,
         Context context) {
@@ -218,17 +207,7 @@ public final class WebPubSubCustomDomainsClientImpl implements WebPubSubCustomDo
             resourceGroupName, resourceName, name, accept, context);
     }
 
-    /**
-     * Get a custom domain.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param resourceName The name of the resource.
-     * @param name Custom domain name.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return a custom domain.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public CustomDomainInner get(String resourceGroupName, String resourceName, String name) {
         return getWithResponse(resourceGroupName, resourceName, name, Context.NONE).getValue();
@@ -273,11 +252,7 @@ public final class WebPubSubCustomDomainsClientImpl implements WebPubSubCustomDo
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Response<BinaryData> createOrUpdateWithResponse(String resourceGroupName, String resourceName, String name,
         CustomDomainInner parameters) {
-        final String contentType = "application/json";
-        final String accept = "application/json";
-        return service.createOrUpdateSync(this.client.getEndpoint(), this.client.getApiVersion(),
-            this.client.getSubscriptionId(), resourceGroupName, resourceName, name, contentType, accept, parameters,
-            Context.NONE);
+        return createOrUpdateWithResponse(resourceGroupName, resourceName, name, parameters, Context.NONE);
     }
 
     /**
@@ -324,39 +299,14 @@ public final class WebPubSubCustomDomainsClientImpl implements WebPubSubCustomDo
             CustomDomainInner.class, CustomDomainInner.class, this.client.getContext());
     }
 
-    /**
-     * Create or update a custom domain.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param resourceName The name of the resource.
-     * @param name Custom domain name.
-     * @param parameters The parameters parameter.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the {@link SyncPoller} for polling of a custom domain.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public SyncPoller<PollResult<CustomDomainInner>, CustomDomainInner> beginCreateOrUpdate(String resourceGroupName,
         String resourceName, String name, CustomDomainInner parameters) {
-        Response<BinaryData> response = createOrUpdateWithResponse(resourceGroupName, resourceName, name, parameters);
-        return this.client.<CustomDomainInner, CustomDomainInner>getLroResult(response, CustomDomainInner.class,
-            CustomDomainInner.class, Context.NONE);
+        return beginCreateOrUpdate(resourceGroupName, resourceName, name, parameters, Context.NONE);
     }
 
-    /**
-     * Create or update a custom domain.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param resourceName The name of the resource.
-     * @param name Custom domain name.
-     * @param parameters The parameters parameter.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the {@link SyncPoller} for polling of a custom domain.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public SyncPoller<PollResult<CustomDomainInner>, CustomDomainInner> beginCreateOrUpdate(String resourceGroupName,
         String resourceName, String name, CustomDomainInner parameters, Context context) {
@@ -385,41 +335,19 @@ public final class WebPubSubCustomDomainsClientImpl implements WebPubSubCustomDo
             .flatMap(this.client::getLroFinalResultOrError);
     }
 
-    /**
-     * Create or update a custom domain.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param resourceName The name of the resource.
-     * @param name Custom domain name.
-     * @param parameters The parameters parameter.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return a custom domain.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public CustomDomainInner createOrUpdate(String resourceGroupName, String resourceName, String name,
         CustomDomainInner parameters) {
-        return beginCreateOrUpdate(resourceGroupName, resourceName, name, parameters).getFinalResult();
+        return createOrUpdate(resourceGroupName, resourceName, name, parameters, Context.NONE);
     }
 
-    /**
-     * Create or update a custom domain.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param resourceName The name of the resource.
-     * @param name Custom domain name.
-     * @param parameters The parameters parameter.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return a custom domain.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public CustomDomainInner createOrUpdate(String resourceGroupName, String resourceName, String name,
         CustomDomainInner parameters, Context context) {
-        return beginCreateOrUpdate(resourceGroupName, resourceName, name, parameters, context).getFinalResult();
+        return this.client
+            .getLroFinalResultOrError(beginCreateOrUpdate(resourceGroupName, resourceName, name, parameters, context));
     }
 
     /**
@@ -455,8 +383,7 @@ public final class WebPubSubCustomDomainsClientImpl implements WebPubSubCustomDo
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Response<BinaryData> deleteWithResponse(String resourceGroupName, String resourceName, String name) {
-        return service.deleteSync(this.client.getEndpoint(), this.client.getApiVersion(),
-            this.client.getSubscriptionId(), resourceGroupName, resourceName, name, Context.NONE);
+        return deleteWithResponse(resourceGroupName, resourceName, name, Context.NONE);
     }
 
     /**
@@ -497,35 +424,13 @@ public final class WebPubSubCustomDomainsClientImpl implements WebPubSubCustomDo
             this.client.getContext());
     }
 
-    /**
-     * Delete a custom domain.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param resourceName The name of the resource.
-     * @param name Custom domain name.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the {@link SyncPoller} for polling of long-running operation.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public SyncPoller<PollResult<Void>, Void> beginDelete(String resourceGroupName, String resourceName, String name) {
-        Response<BinaryData> response = deleteWithResponse(resourceGroupName, resourceName, name);
-        return this.client.<Void, Void>getLroResult(response, Void.class, Void.class, Context.NONE);
+        return beginDelete(resourceGroupName, resourceName, name, Context.NONE);
     }
 
-    /**
-     * Delete a custom domain.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param resourceName The name of the resource.
-     * @param name Custom domain name.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the {@link SyncPoller} for polling of long-running operation.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public SyncPoller<PollResult<Void>, Void> beginDelete(String resourceGroupName, String resourceName, String name,
         Context context) {
@@ -550,35 +455,16 @@ public final class WebPubSubCustomDomainsClientImpl implements WebPubSubCustomDo
             .flatMap(this.client::getLroFinalResultOrError);
     }
 
-    /**
-     * Delete a custom domain.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param resourceName The name of the resource.
-     * @param name Custom domain name.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public void delete(String resourceGroupName, String resourceName, String name) {
-        beginDelete(resourceGroupName, resourceName, name).getFinalResult();
+        delete(resourceGroupName, resourceName, name, Context.NONE);
     }
 
-    /**
-     * Delete a custom domain.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param resourceName The name of the resource.
-     * @param name Custom domain name.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public void delete(String resourceGroupName, String resourceName, String name, Context context) {
-        beginDelete(resourceGroupName, resourceName, name, context).getFinalResult();
+        this.client.getLroFinalResultOrError(beginDelete(resourceGroupName, resourceName, name, context));
     }
 
     /**
@@ -630,11 +516,7 @@ public final class WebPubSubCustomDomainsClientImpl implements WebPubSubCustomDo
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private PagedResponse<CustomDomainInner> listSinglePage(String resourceGroupName, String resourceName) {
-        final String accept = "application/json";
-        Response<CustomDomainList> res = service.listSync(this.client.getEndpoint(), this.client.getApiVersion(),
-            this.client.getSubscriptionId(), resourceGroupName, resourceName, accept, Context.NONE);
-        return new PagedResponseBase<>(res.getRequest(), res.getStatusCode(), res.getHeaders(), res.getValue().value(),
-            res.getValue().nextLink(), null);
+        return listSinglePage(resourceGroupName, resourceName, Context.NONE);
     }
 
     /**
@@ -658,33 +540,13 @@ public final class WebPubSubCustomDomainsClientImpl implements WebPubSubCustomDo
             res.getValue().nextLink(), null);
     }
 
-    /**
-     * List all custom domains.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param resourceName The name of the resource.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return custom domains list as paginated response with {@link PagedIterable}.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.COLLECTION)
     public PagedIterable<CustomDomainInner> list(String resourceGroupName, String resourceName) {
-        return new PagedIterable<>(() -> listSinglePage(resourceGroupName, resourceName),
-            nextLink -> listNextSinglePage(nextLink));
+        return list(resourceGroupName, resourceName, Context.NONE);
     }
 
-    /**
-     * List all custom domains.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param resourceName The name of the resource.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return custom domains list as paginated response with {@link PagedIterable}.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.COLLECTION)
     public PagedIterable<CustomDomainInner> list(String resourceGroupName, String resourceName, Context context) {
         return new PagedIterable<>(() -> listSinglePage(resourceGroupName, resourceName, context),
@@ -720,11 +582,7 @@ public final class WebPubSubCustomDomainsClientImpl implements WebPubSubCustomDo
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private PagedResponse<CustomDomainInner> listNextSinglePage(String nextLink) {
-        final String accept = "application/json";
-        Response<CustomDomainList> res
-            = service.listNextSync(nextLink, this.client.getEndpoint(), accept, Context.NONE);
-        return new PagedResponseBase<>(res.getRequest(), res.getStatusCode(), res.getHeaders(), res.getValue().value(),
-            res.getValue().nextLink(), null);
+        return listNextSinglePage(nextLink, Context.NONE);
     }
 
     /**

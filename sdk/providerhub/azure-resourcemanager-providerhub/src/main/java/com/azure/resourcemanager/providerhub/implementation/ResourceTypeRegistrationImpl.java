@@ -59,10 +59,7 @@ public final class ResourceTypeRegistrationImpl
     }
 
     public ResourceTypeRegistration create() {
-        this.innerObject = serviceManager.serviceClient()
-            .getResourceTypeRegistrations()
-            .createOrUpdate(providerNamespace, resourceType, this.innerModel(), Context.NONE);
-        return this;
+        return this.create(Context.NONE);
     }
 
     public ResourceTypeRegistration create(Context context) {
@@ -83,10 +80,7 @@ public final class ResourceTypeRegistrationImpl
     }
 
     public ResourceTypeRegistration apply() {
-        this.innerObject = serviceManager.serviceClient()
-            .getResourceTypeRegistrations()
-            .createOrUpdate(providerNamespace, resourceType, this.innerModel(), Context.NONE);
-        return this;
+        return this.apply(Context.NONE);
     }
 
     public ResourceTypeRegistration apply(Context context) {
@@ -119,11 +113,7 @@ public final class ResourceTypeRegistrationImpl
     }
 
     public ResourceTypeRegistration refresh() {
-        this.innerObject = serviceManager.serviceClient()
-            .getResourceTypeRegistrations()
-            .getWithResponse(providerNamespace, resourceType, Context.NONE)
-            .getValue();
-        return this;
+        return this.refresh(Context.NONE);
     }
 
     public ResourceTypeRegistration refresh(Context context) {

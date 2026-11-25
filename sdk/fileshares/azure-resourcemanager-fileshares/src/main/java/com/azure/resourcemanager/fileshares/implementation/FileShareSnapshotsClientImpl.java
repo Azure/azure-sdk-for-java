@@ -225,19 +225,7 @@ public final class FileShareSnapshotsClientImpl implements FileShareSnapshotsCli
             .flatMap(res -> Mono.justOrEmpty(res.getValue()));
     }
 
-    /**
-     * Get a FileShareSnapshot.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param resourceName The resource name of the file share, as seen by the administrator through Azure Resource
-     * Manager.
-     * @param name The name of the FileShareSnapshot.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return a FileShareSnapshot along with {@link Response}.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Response<FileShareSnapshotInner> getFileShareSnapshotWithResponse(String resourceGroupName,
         String resourceName, String name, Context context) {
@@ -246,18 +234,7 @@ public final class FileShareSnapshotsClientImpl implements FileShareSnapshotsCli
             this.client.getSubscriptionId(), resourceGroupName, resourceName, name, accept, context);
     }
 
-    /**
-     * Get a FileShareSnapshot.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param resourceName The resource name of the file share, as seen by the administrator through Azure Resource
-     * Manager.
-     * @param name The name of the FileShareSnapshot.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return a FileShareSnapshot.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public FileShareSnapshotInner getFileShareSnapshot(String resourceGroupName, String resourceName, String name) {
         return getFileShareSnapshotWithResponse(resourceGroupName, resourceName, name, Context.NONE).getValue();
@@ -303,9 +280,7 @@ public final class FileShareSnapshotsClientImpl implements FileShareSnapshotsCli
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Response<BinaryData> createOrUpdateFileShareSnapshotWithResponse(String resourceGroupName,
         String resourceName, String name, FileShareSnapshotInner resource) {
-        final String contentType = "application/json";
-        return service.createOrUpdateFileShareSnapshotSync(this.client.getEndpoint(), this.client.getApiVersion(),
-            this.client.getSubscriptionId(), resourceGroupName, resourceName, name, contentType, resource,
+        return createOrUpdateFileShareSnapshotWithResponse(resourceGroupName, resourceName, name, resource,
             Context.NONE);
     }
 
@@ -355,42 +330,14 @@ public final class FileShareSnapshotsClientImpl implements FileShareSnapshotsCli
             this.client.getContext());
     }
 
-    /**
-     * Create a FileShareSnapshot.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param resourceName The resource name of the file share, as seen by the administrator through Azure Resource
-     * Manager.
-     * @param name The name of the FileShareSnapshot.
-     * @param resource Resource create parameters.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the {@link SyncPoller} for polling of long-running operation.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public SyncPoller<PollResult<FileShareSnapshotInner>, FileShareSnapshotInner> beginCreateOrUpdateFileShareSnapshot(
         String resourceGroupName, String resourceName, String name, FileShareSnapshotInner resource) {
-        Response<BinaryData> response
-            = createOrUpdateFileShareSnapshotWithResponse(resourceGroupName, resourceName, name, resource);
-        return this.client.<FileShareSnapshotInner, FileShareSnapshotInner>getLroResult(response,
-            FileShareSnapshotInner.class, FileShareSnapshotInner.class, Context.NONE);
+        return beginCreateOrUpdateFileShareSnapshot(resourceGroupName, resourceName, name, resource, Context.NONE);
     }
 
-    /**
-     * Create a FileShareSnapshot.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param resourceName The resource name of the file share, as seen by the administrator through Azure Resource
-     * Manager.
-     * @param name The name of the FileShareSnapshot.
-     * @param resource Resource create parameters.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the {@link SyncPoller} for polling of long-running operation.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public SyncPoller<PollResult<FileShareSnapshotInner>, FileShareSnapshotInner> beginCreateOrUpdateFileShareSnapshot(
         String resourceGroupName, String resourceName, String name, FileShareSnapshotInner resource, Context context) {
@@ -420,44 +367,19 @@ public final class FileShareSnapshotsClientImpl implements FileShareSnapshotsCli
             .flatMap(this.client::getLroFinalResultOrError);
     }
 
-    /**
-     * Create a FileShareSnapshot.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param resourceName The resource name of the file share, as seen by the administrator through Azure Resource
-     * Manager.
-     * @param name The name of the FileShareSnapshot.
-     * @param resource Resource create parameters.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the response.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public FileShareSnapshotInner createOrUpdateFileShareSnapshot(String resourceGroupName, String resourceName,
         String name, FileShareSnapshotInner resource) {
-        return beginCreateOrUpdateFileShareSnapshot(resourceGroupName, resourceName, name, resource).getFinalResult();
+        return createOrUpdateFileShareSnapshot(resourceGroupName, resourceName, name, resource, Context.NONE);
     }
 
-    /**
-     * Create a FileShareSnapshot.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param resourceName The resource name of the file share, as seen by the administrator through Azure Resource
-     * Manager.
-     * @param name The name of the FileShareSnapshot.
-     * @param resource Resource create parameters.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the response.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public FileShareSnapshotInner createOrUpdateFileShareSnapshot(String resourceGroupName, String resourceName,
         String name, FileShareSnapshotInner resource, Context context) {
-        return beginCreateOrUpdateFileShareSnapshot(resourceGroupName, resourceName, name, resource, context)
-            .getFinalResult();
+        return this.client.getLroFinalResultOrError(
+            beginCreateOrUpdateFileShareSnapshot(resourceGroupName, resourceName, name, resource, context));
     }
 
     /**
@@ -501,11 +423,7 @@ public final class FileShareSnapshotsClientImpl implements FileShareSnapshotsCli
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Response<BinaryData> updateFileShareSnapshotWithResponse(String resourceGroupName, String resourceName,
         String name, FileShareSnapshotUpdate properties) {
-        final String contentType = "application/json";
-        final String accept = "application/json";
-        return service.updateFileShareSnapshotSync(this.client.getEndpoint(), this.client.getApiVersion(),
-            this.client.getSubscriptionId(), resourceGroupName, resourceName, name, contentType, accept, properties,
-            Context.NONE);
+        return updateFileShareSnapshotWithResponse(resourceGroupName, resourceName, name, properties, Context.NONE);
     }
 
     /**
@@ -555,42 +473,14 @@ public final class FileShareSnapshotsClientImpl implements FileShareSnapshotsCli
             this.client.getContext());
     }
 
-    /**
-     * Update a FileShareSnapshot.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param resourceName The resource name of the file share, as seen by the administrator through Azure Resource
-     * Manager.
-     * @param name The name of the FileShareSnapshot.
-     * @param properties The resource properties to be updated.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the {@link SyncPoller} for polling of fileShareSnapshot resource.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public SyncPoller<PollResult<FileShareSnapshotInner>, FileShareSnapshotInner> beginUpdateFileShareSnapshot(
         String resourceGroupName, String resourceName, String name, FileShareSnapshotUpdate properties) {
-        Response<BinaryData> response
-            = updateFileShareSnapshotWithResponse(resourceGroupName, resourceName, name, properties);
-        return this.client.<FileShareSnapshotInner, FileShareSnapshotInner>getLroResult(response,
-            FileShareSnapshotInner.class, FileShareSnapshotInner.class, Context.NONE);
+        return beginUpdateFileShareSnapshot(resourceGroupName, resourceName, name, properties, Context.NONE);
     }
 
-    /**
-     * Update a FileShareSnapshot.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param resourceName The resource name of the file share, as seen by the administrator through Azure Resource
-     * Manager.
-     * @param name The name of the FileShareSnapshot.
-     * @param properties The resource properties to be updated.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the {@link SyncPoller} for polling of fileShareSnapshot resource.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public SyncPoller<PollResult<FileShareSnapshotInner>, FileShareSnapshotInner> beginUpdateFileShareSnapshot(
         String resourceGroupName, String resourceName, String name, FileShareSnapshotUpdate properties,
@@ -621,44 +511,19 @@ public final class FileShareSnapshotsClientImpl implements FileShareSnapshotsCli
             .flatMap(this.client::getLroFinalResultOrError);
     }
 
-    /**
-     * Update a FileShareSnapshot.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param resourceName The resource name of the file share, as seen by the administrator through Azure Resource
-     * Manager.
-     * @param name The name of the FileShareSnapshot.
-     * @param properties The resource properties to be updated.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return fileShareSnapshot resource.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public FileShareSnapshotInner updateFileShareSnapshot(String resourceGroupName, String resourceName, String name,
         FileShareSnapshotUpdate properties) {
-        return beginUpdateFileShareSnapshot(resourceGroupName, resourceName, name, properties).getFinalResult();
+        return updateFileShareSnapshot(resourceGroupName, resourceName, name, properties, Context.NONE);
     }
 
-    /**
-     * Update a FileShareSnapshot.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param resourceName The resource name of the file share, as seen by the administrator through Azure Resource
-     * Manager.
-     * @param name The name of the FileShareSnapshot.
-     * @param properties The resource properties to be updated.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return fileShareSnapshot resource.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public FileShareSnapshotInner updateFileShareSnapshot(String resourceGroupName, String resourceName, String name,
         FileShareSnapshotUpdate properties, Context context) {
-        return beginUpdateFileShareSnapshot(resourceGroupName, resourceName, name, properties, context)
-            .getFinalResult();
+        return this.client.getLroFinalResultOrError(
+            beginUpdateFileShareSnapshot(resourceGroupName, resourceName, name, properties, context));
     }
 
     /**
@@ -698,8 +563,7 @@ public final class FileShareSnapshotsClientImpl implements FileShareSnapshotsCli
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Response<BinaryData> deleteFileShareSnapshotWithResponse(String resourceGroupName, String resourceName,
         String name) {
-        return service.deleteFileShareSnapshotSync(this.client.getEndpoint(), this.client.getApiVersion(),
-            this.client.getSubscriptionId(), resourceGroupName, resourceName, name, Context.NONE);
+        return deleteFileShareSnapshotWithResponse(resourceGroupName, resourceName, name, Context.NONE);
     }
 
     /**
@@ -743,38 +607,14 @@ public final class FileShareSnapshotsClientImpl implements FileShareSnapshotsCli
             this.client.getContext());
     }
 
-    /**
-     * Delete a FileShareSnapshot.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param resourceName The resource name of the file share, as seen by the administrator through Azure Resource
-     * Manager.
-     * @param name The name of the FileShareSnapshot.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the {@link SyncPoller} for polling of long-running operation.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public SyncPoller<PollResult<Void>, Void> beginDeleteFileShareSnapshot(String resourceGroupName,
         String resourceName, String name) {
-        Response<BinaryData> response = deleteFileShareSnapshotWithResponse(resourceGroupName, resourceName, name);
-        return this.client.<Void, Void>getLroResult(response, Void.class, Void.class, Context.NONE);
+        return beginDeleteFileShareSnapshot(resourceGroupName, resourceName, name, Context.NONE);
     }
 
-    /**
-     * Delete a FileShareSnapshot.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param resourceName The resource name of the file share, as seen by the administrator through Azure Resource
-     * Manager.
-     * @param name The name of the FileShareSnapshot.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the {@link SyncPoller} for polling of long-running operation.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public SyncPoller<PollResult<Void>, Void> beginDeleteFileShareSnapshot(String resourceGroupName,
         String resourceName, String name, Context context) {
@@ -801,37 +641,17 @@ public final class FileShareSnapshotsClientImpl implements FileShareSnapshotsCli
             .flatMap(this.client::getLroFinalResultOrError);
     }
 
-    /**
-     * Delete a FileShareSnapshot.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param resourceName The resource name of the file share, as seen by the administrator through Azure Resource
-     * Manager.
-     * @param name The name of the FileShareSnapshot.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public void deleteFileShareSnapshot(String resourceGroupName, String resourceName, String name) {
-        beginDeleteFileShareSnapshot(resourceGroupName, resourceName, name).getFinalResult();
+        deleteFileShareSnapshot(resourceGroupName, resourceName, name, Context.NONE);
     }
 
-    /**
-     * Delete a FileShareSnapshot.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param resourceName The resource name of the file share, as seen by the administrator through Azure Resource
-     * Manager.
-     * @param name The name of the FileShareSnapshot.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public void deleteFileShareSnapshot(String resourceGroupName, String resourceName, String name, Context context) {
-        beginDeleteFileShareSnapshot(resourceGroupName, resourceName, name, context).getFinalResult();
+        this.client
+            .getLroFinalResultOrError(beginDeleteFileShareSnapshot(resourceGroupName, resourceName, name, context));
     }
 
     /**
@@ -889,12 +709,7 @@ public final class FileShareSnapshotsClientImpl implements FileShareSnapshotsCli
     @ServiceMethod(returns = ReturnType.SINGLE)
     private PagedResponse<FileShareSnapshotInner> listByFileShareSinglePage(String resourceGroupName,
         String resourceName) {
-        final String accept = "application/json";
-        Response<FileShareSnapshotListResult> res
-            = service.listByFileShareSync(this.client.getEndpoint(), this.client.getApiVersion(),
-                this.client.getSubscriptionId(), resourceGroupName, resourceName, accept, Context.NONE);
-        return new PagedResponseBase<>(res.getRequest(), res.getStatusCode(), res.getHeaders(), res.getValue().value(),
-            res.getValue().nextLink(), null);
+        return listByFileShareSinglePage(resourceGroupName, resourceName, Context.NONE);
     }
 
     /**
@@ -920,35 +735,13 @@ public final class FileShareSnapshotsClientImpl implements FileShareSnapshotsCli
             res.getValue().nextLink(), null);
     }
 
-    /**
-     * List FileShareSnapshot by FileShare.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param resourceName The resource name of the file share, as seen by the administrator through Azure Resource
-     * Manager.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the response of a FileShareSnapshot list operation as paginated response with {@link PagedIterable}.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.COLLECTION)
     public PagedIterable<FileShareSnapshotInner> listByFileShare(String resourceGroupName, String resourceName) {
-        return new PagedIterable<>(() -> listByFileShareSinglePage(resourceGroupName, resourceName),
-            nextLink -> listByFileShareNextSinglePage(nextLink));
+        return listByFileShare(resourceGroupName, resourceName, Context.NONE);
     }
 
-    /**
-     * List FileShareSnapshot by FileShare.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param resourceName The resource name of the file share, as seen by the administrator through Azure Resource
-     * Manager.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the response of a FileShareSnapshot list operation as paginated response with {@link PagedIterable}.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.COLLECTION)
     public PagedIterable<FileShareSnapshotInner> listByFileShare(String resourceGroupName, String resourceName,
         Context context) {
@@ -987,11 +780,7 @@ public final class FileShareSnapshotsClientImpl implements FileShareSnapshotsCli
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private PagedResponse<FileShareSnapshotInner> listByFileShareNextSinglePage(String nextLink) {
-        final String accept = "application/json";
-        Response<FileShareSnapshotListResult> res
-            = service.listByFileShareNextSync(nextLink, this.client.getEndpoint(), accept, Context.NONE);
-        return new PagedResponseBase<>(res.getRequest(), res.getStatusCode(), res.getHeaders(), res.getValue().value(),
-            res.getValue().nextLink(), null);
+        return listByFileShareNextSinglePage(nextLink, Context.NONE);
     }
 
     /**

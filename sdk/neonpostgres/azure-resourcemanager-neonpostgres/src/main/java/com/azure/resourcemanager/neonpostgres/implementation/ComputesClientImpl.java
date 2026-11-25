@@ -156,12 +156,7 @@ public final class ComputesClientImpl implements ComputesClient {
     @ServiceMethod(returns = ReturnType.SINGLE)
     private PagedResponse<ComputeInner> listSinglePage(String resourceGroupName, String organizationName,
         String projectName, String branchName) {
-        final String accept = "application/json";
-        Response<ComputeListResult> res
-            = service.listSync(this.client.getEndpoint(), this.client.getApiVersion(), this.client.getSubscriptionId(),
-                resourceGroupName, organizationName, projectName, branchName, accept, Context.NONE);
-        return new PagedResponseBase<>(res.getRequest(), res.getStatusCode(), res.getHeaders(), res.getValue().value(),
-            res.getValue().nextLink(), null);
+        return listSinglePage(resourceGroupName, organizationName, projectName, branchName, Context.NONE);
     }
 
     /**
@@ -188,38 +183,14 @@ public final class ComputesClientImpl implements ComputesClient {
             res.getValue().nextLink(), null);
     }
 
-    /**
-     * List Compute resources by Branch.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param organizationName Name of the Neon Organizations resource.
-     * @param projectName The name of the Project.
-     * @param branchName The name of the Branch.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the response of a Compute list operation as paginated response with {@link PagedIterable}.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.COLLECTION)
     public PagedIterable<ComputeInner> list(String resourceGroupName, String organizationName, String projectName,
         String branchName) {
-        return new PagedIterable<>(() -> listSinglePage(resourceGroupName, organizationName, projectName, branchName),
-            nextLink -> listNextSinglePage(nextLink));
+        return list(resourceGroupName, organizationName, projectName, branchName, Context.NONE);
     }
 
-    /**
-     * List Compute resources by Branch.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param organizationName Name of the Neon Organizations resource.
-     * @param projectName The name of the Project.
-     * @param branchName The name of the Branch.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the response of a Compute list operation as paginated response with {@link PagedIterable}.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.COLLECTION)
     public PagedIterable<ComputeInner> list(String resourceGroupName, String organizationName, String projectName,
         String branchName, Context context) {
@@ -258,11 +229,7 @@ public final class ComputesClientImpl implements ComputesClient {
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private PagedResponse<ComputeInner> listNextSinglePage(String nextLink) {
-        final String accept = "application/json";
-        Response<ComputeListResult> res
-            = service.listNextSync(nextLink, this.client.getEndpoint(), accept, Context.NONE);
-        return new PagedResponseBase<>(res.getRequest(), res.getStatusCode(), res.getHeaders(), res.getValue().value(),
-            res.getValue().nextLink(), null);
+        return listNextSinglePage(nextLink, Context.NONE);
     }
 
     /**

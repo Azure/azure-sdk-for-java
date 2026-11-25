@@ -121,19 +121,7 @@ public final class FirewallPolicyKubeSelectorGroupsClientImpl implements Firewal
             @HeaderParam("Accept") String accept, Context context);
     }
 
-    /**
-     * Gets the specified FirewallPolicyKubeSelectorGroup.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param firewallPolicyName The name of the Firewall Policy.
-     * @param kubeSelectorGroupName The name of the resource that is unique within a resource group. This name can be
-     * used to access the resource.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the specified FirewallPolicyKubeSelectorGroup along with {@link Response} on successful completion of
-     * {@link Mono}.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Response<FirewallPolicyKubeSelectorGroupInner>> getWithResponseAsync(String resourceGroupName,
         String firewallPolicyName, String kubeSelectorGroupName) {
@@ -157,7 +145,7 @@ public final class FirewallPolicyKubeSelectorGroupsClientImpl implements Firewal
             return Mono
                 .error(new IllegalArgumentException("Parameter kubeSelectorGroupName is required and cannot be null."));
         }
-        final String apiVersion = "2026-03-01";
+        final String apiVersion = "2026-05-01";
         final String accept = "application/json";
         return FluxUtil
             .withContext(context -> service.get(this.client.getEndpoint(), apiVersion, this.client.getSubscriptionId(),
@@ -202,25 +190,14 @@ public final class FirewallPolicyKubeSelectorGroupsClientImpl implements Firewal
             return Mono
                 .error(new IllegalArgumentException("Parameter kubeSelectorGroupName is required and cannot be null."));
         }
-        final String apiVersion = "2026-03-01";
+        final String apiVersion = "2026-05-01";
         final String accept = "application/json";
         context = this.client.mergeContext(context);
         return service.get(this.client.getEndpoint(), apiVersion, this.client.getSubscriptionId(), resourceGroupName,
             firewallPolicyName, kubeSelectorGroupName, accept, context);
     }
 
-    /**
-     * Gets the specified FirewallPolicyKubeSelectorGroup.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param firewallPolicyName The name of the Firewall Policy.
-     * @param kubeSelectorGroupName The name of the resource that is unique within a resource group. This name can be
-     * used to access the resource.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the specified FirewallPolicyKubeSelectorGroup on successful completion of {@link Mono}.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<FirewallPolicyKubeSelectorGroupInner> getAsync(String resourceGroupName, String firewallPolicyName,
         String kubeSelectorGroupName) {
@@ -228,57 +205,21 @@ public final class FirewallPolicyKubeSelectorGroupsClientImpl implements Firewal
             .flatMap(res -> Mono.justOrEmpty(res.getValue()));
     }
 
-    /**
-     * Gets the specified FirewallPolicyKubeSelectorGroup.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param firewallPolicyName The name of the Firewall Policy.
-     * @param kubeSelectorGroupName The name of the resource that is unique within a resource group. This name can be
-     * used to access the resource.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the specified FirewallPolicyKubeSelectorGroup along with {@link Response}.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Response<FirewallPolicyKubeSelectorGroupInner> getWithResponse(String resourceGroupName,
         String firewallPolicyName, String kubeSelectorGroupName, Context context) {
         return getWithResponseAsync(resourceGroupName, firewallPolicyName, kubeSelectorGroupName, context).block();
     }
 
-    /**
-     * Gets the specified FirewallPolicyKubeSelectorGroup.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param firewallPolicyName The name of the Firewall Policy.
-     * @param kubeSelectorGroupName The name of the resource that is unique within a resource group. This name can be
-     * used to access the resource.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the specified FirewallPolicyKubeSelectorGroup.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public FirewallPolicyKubeSelectorGroupInner get(String resourceGroupName, String firewallPolicyName,
         String kubeSelectorGroupName) {
         return getWithResponse(resourceGroupName, firewallPolicyName, kubeSelectorGroupName, Context.NONE).getValue();
     }
 
-    /**
-     * Creates or updates the specified FirewallPolicyKubeSelectorGroup.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param firewallPolicyName The name of the Firewall Policy.
-     * @param kubeSelectorGroupName The name of the resource that is unique within a resource group. This name can be
-     * used to access the resource.
-     * @param resource Parameters supplied to the create or update FirewallPolicyKubeSelectorGroup operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return firewall Policy Kubernetes Selector Group resource along with {@link Response} on successful completion
-     * of {@link Mono}.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Response<Flux<ByteBuffer>>> createOrUpdateWithResponseAsync(String resourceGroupName,
         String firewallPolicyName, String kubeSelectorGroupName, FirewallPolicyKubeSelectorGroupInner resource) {
@@ -307,7 +248,7 @@ public final class FirewallPolicyKubeSelectorGroupsClientImpl implements Firewal
         } else {
             resource.validate();
         }
-        final String apiVersion = "2026-03-01";
+        final String apiVersion = "2026-05-01";
         final String contentType = "application/json";
         final String accept = "application/json";
         return FluxUtil
@@ -361,7 +302,7 @@ public final class FirewallPolicyKubeSelectorGroupsClientImpl implements Firewal
         } else {
             resource.validate();
         }
-        final String apiVersion = "2026-03-01";
+        final String apiVersion = "2026-05-01";
         final String contentType = "application/json";
         final String accept = "application/json";
         context = this.client.mergeContext(context);
@@ -369,19 +310,7 @@ public final class FirewallPolicyKubeSelectorGroupsClientImpl implements Firewal
             resourceGroupName, firewallPolicyName, kubeSelectorGroupName, contentType, accept, resource, context);
     }
 
-    /**
-     * Creates or updates the specified FirewallPolicyKubeSelectorGroup.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param firewallPolicyName The name of the Firewall Policy.
-     * @param kubeSelectorGroupName The name of the resource that is unique within a resource group. This name can be
-     * used to access the resource.
-     * @param resource Parameters supplied to the create or update FirewallPolicyKubeSelectorGroup operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the {@link PollerFlux} for polling of firewall Policy Kubernetes Selector Group resource.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public PollerFlux<PollResult<FirewallPolicyKubeSelectorGroupInner>, FirewallPolicyKubeSelectorGroupInner>
         beginCreateOrUpdateAsync(String resourceGroupName, String firewallPolicyName, String kubeSelectorGroupName,
@@ -419,19 +348,7 @@ public final class FirewallPolicyKubeSelectorGroupsClientImpl implements Firewal
             FirewallPolicyKubeSelectorGroupInner.class, context);
     }
 
-    /**
-     * Creates or updates the specified FirewallPolicyKubeSelectorGroup.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param firewallPolicyName The name of the Firewall Policy.
-     * @param kubeSelectorGroupName The name of the resource that is unique within a resource group. This name can be
-     * used to access the resource.
-     * @param resource Parameters supplied to the create or update FirewallPolicyKubeSelectorGroup operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the {@link SyncPoller} for polling of firewall Policy Kubernetes Selector Group resource.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public SyncPoller<PollResult<FirewallPolicyKubeSelectorGroupInner>, FirewallPolicyKubeSelectorGroupInner>
         beginCreateOrUpdate(String resourceGroupName, String firewallPolicyName, String kubeSelectorGroupName,
@@ -440,20 +357,7 @@ public final class FirewallPolicyKubeSelectorGroupsClientImpl implements Firewal
             .getSyncPoller();
     }
 
-    /**
-     * Creates or updates the specified FirewallPolicyKubeSelectorGroup.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param firewallPolicyName The name of the Firewall Policy.
-     * @param kubeSelectorGroupName The name of the resource that is unique within a resource group. This name can be
-     * used to access the resource.
-     * @param resource Parameters supplied to the create or update FirewallPolicyKubeSelectorGroup operation.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the {@link SyncPoller} for polling of firewall Policy Kubernetes Selector Group resource.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public SyncPoller<PollResult<FirewallPolicyKubeSelectorGroupInner>, FirewallPolicyKubeSelectorGroupInner>
         beginCreateOrUpdate(String resourceGroupName, String firewallPolicyName, String kubeSelectorGroupName,
@@ -463,19 +367,7 @@ public final class FirewallPolicyKubeSelectorGroupsClientImpl implements Firewal
             .getSyncPoller();
     }
 
-    /**
-     * Creates or updates the specified FirewallPolicyKubeSelectorGroup.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param firewallPolicyName The name of the Firewall Policy.
-     * @param kubeSelectorGroupName The name of the resource that is unique within a resource group. This name can be
-     * used to access the resource.
-     * @param resource Parameters supplied to the create or update FirewallPolicyKubeSelectorGroup operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return firewall Policy Kubernetes Selector Group resource on successful completion of {@link Mono}.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<FirewallPolicyKubeSelectorGroupInner> createOrUpdateAsync(String resourceGroupName,
         String firewallPolicyName, String kubeSelectorGroupName, FirewallPolicyKubeSelectorGroupInner resource) {
@@ -506,39 +398,14 @@ public final class FirewallPolicyKubeSelectorGroupsClientImpl implements Firewal
             .flatMap(this.client::getLroFinalResultOrError);
     }
 
-    /**
-     * Creates or updates the specified FirewallPolicyKubeSelectorGroup.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param firewallPolicyName The name of the Firewall Policy.
-     * @param kubeSelectorGroupName The name of the resource that is unique within a resource group. This name can be
-     * used to access the resource.
-     * @param resource Parameters supplied to the create or update FirewallPolicyKubeSelectorGroup operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return firewall Policy Kubernetes Selector Group resource.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public FirewallPolicyKubeSelectorGroupInner createOrUpdate(String resourceGroupName, String firewallPolicyName,
         String kubeSelectorGroupName, FirewallPolicyKubeSelectorGroupInner resource) {
         return createOrUpdateAsync(resourceGroupName, firewallPolicyName, kubeSelectorGroupName, resource).block();
     }
 
-    /**
-     * Creates or updates the specified FirewallPolicyKubeSelectorGroup.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param firewallPolicyName The name of the Firewall Policy.
-     * @param kubeSelectorGroupName The name of the resource that is unique within a resource group. This name can be
-     * used to access the resource.
-     * @param resource Parameters supplied to the create or update FirewallPolicyKubeSelectorGroup operation.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return firewall Policy Kubernetes Selector Group resource.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public FirewallPolicyKubeSelectorGroupInner createOrUpdate(String resourceGroupName, String firewallPolicyName,
         String kubeSelectorGroupName, FirewallPolicyKubeSelectorGroupInner resource, Context context) {
@@ -546,18 +413,7 @@ public final class FirewallPolicyKubeSelectorGroupsClientImpl implements Firewal
             .block();
     }
 
-    /**
-     * Deletes the specified FirewallPolicyKubeSelectorGroup.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param firewallPolicyName The name of the Firewall Policy.
-     * @param kubeSelectorGroupName The name of the resource that is unique within a resource group. This name can be
-     * used to access the resource.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the {@link Response} on successful completion of {@link Mono}.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Response<Flux<ByteBuffer>>> deleteWithResponseAsync(String resourceGroupName, String firewallPolicyName,
         String kubeSelectorGroupName) {
@@ -581,7 +437,7 @@ public final class FirewallPolicyKubeSelectorGroupsClientImpl implements Firewal
             return Mono
                 .error(new IllegalArgumentException("Parameter kubeSelectorGroupName is required and cannot be null."));
         }
-        final String apiVersion = "2026-03-01";
+        final String apiVersion = "2026-05-01";
         return FluxUtil
             .withContext(context -> service.delete(this.client.getEndpoint(), apiVersion,
                 this.client.getSubscriptionId(), resourceGroupName, firewallPolicyName, kubeSelectorGroupName, context))
@@ -624,24 +480,13 @@ public final class FirewallPolicyKubeSelectorGroupsClientImpl implements Firewal
             return Mono
                 .error(new IllegalArgumentException("Parameter kubeSelectorGroupName is required and cannot be null."));
         }
-        final String apiVersion = "2026-03-01";
+        final String apiVersion = "2026-05-01";
         context = this.client.mergeContext(context);
         return service.delete(this.client.getEndpoint(), apiVersion, this.client.getSubscriptionId(), resourceGroupName,
             firewallPolicyName, kubeSelectorGroupName, context);
     }
 
-    /**
-     * Deletes the specified FirewallPolicyKubeSelectorGroup.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param firewallPolicyName The name of the Firewall Policy.
-     * @param kubeSelectorGroupName The name of the resource that is unique within a resource group. This name can be
-     * used to access the resource.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the {@link PollerFlux} for polling of long-running operation.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public PollerFlux<PollResult<Void>, Void> beginDeleteAsync(String resourceGroupName, String firewallPolicyName,
         String kubeSelectorGroupName) {
@@ -674,37 +519,14 @@ public final class FirewallPolicyKubeSelectorGroupsClientImpl implements Firewal
             context);
     }
 
-    /**
-     * Deletes the specified FirewallPolicyKubeSelectorGroup.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param firewallPolicyName The name of the Firewall Policy.
-     * @param kubeSelectorGroupName The name of the resource that is unique within a resource group. This name can be
-     * used to access the resource.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the {@link SyncPoller} for polling of long-running operation.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public SyncPoller<PollResult<Void>, Void> beginDelete(String resourceGroupName, String firewallPolicyName,
         String kubeSelectorGroupName) {
         return this.beginDeleteAsync(resourceGroupName, firewallPolicyName, kubeSelectorGroupName).getSyncPoller();
     }
 
-    /**
-     * Deletes the specified FirewallPolicyKubeSelectorGroup.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param firewallPolicyName The name of the Firewall Policy.
-     * @param kubeSelectorGroupName The name of the resource that is unique within a resource group. This name can be
-     * used to access the resource.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the {@link SyncPoller} for polling of long-running operation.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public SyncPoller<PollResult<Void>, Void> beginDelete(String resourceGroupName, String firewallPolicyName,
         String kubeSelectorGroupName, Context context) {
@@ -712,18 +534,7 @@ public final class FirewallPolicyKubeSelectorGroupsClientImpl implements Firewal
             .getSyncPoller();
     }
 
-    /**
-     * Deletes the specified FirewallPolicyKubeSelectorGroup.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param firewallPolicyName The name of the Firewall Policy.
-     * @param kubeSelectorGroupName The name of the resource that is unique within a resource group. This name can be
-     * used to access the resource.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return A {@link Mono} that completes when a successful response is received.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Void> deleteAsync(String resourceGroupName, String firewallPolicyName, String kubeSelectorGroupName) {
         return beginDeleteAsync(resourceGroupName, firewallPolicyName, kubeSelectorGroupName).last()
@@ -750,34 +561,13 @@ public final class FirewallPolicyKubeSelectorGroupsClientImpl implements Firewal
             .flatMap(this.client::getLroFinalResultOrError);
     }
 
-    /**
-     * Deletes the specified FirewallPolicyKubeSelectorGroup.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param firewallPolicyName The name of the Firewall Policy.
-     * @param kubeSelectorGroupName The name of the resource that is unique within a resource group. This name can be
-     * used to access the resource.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public void delete(String resourceGroupName, String firewallPolicyName, String kubeSelectorGroupName) {
         deleteAsync(resourceGroupName, firewallPolicyName, kubeSelectorGroupName).block();
     }
 
-    /**
-     * Deletes the specified FirewallPolicyKubeSelectorGroup.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param firewallPolicyName The name of the Firewall Policy.
-     * @param kubeSelectorGroupName The name of the resource that is unique within a resource group. This name can be
-     * used to access the resource.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public void delete(String resourceGroupName, String firewallPolicyName, String kubeSelectorGroupName,
         Context context) {
@@ -814,7 +604,7 @@ public final class FirewallPolicyKubeSelectorGroupsClientImpl implements Firewal
             return Mono
                 .error(new IllegalArgumentException("Parameter firewallPolicyName is required and cannot be null."));
         }
-        final String apiVersion = "2026-03-01";
+        final String apiVersion = "2026-05-01";
         final String accept = "application/json";
         return FluxUtil
             .withContext(context -> service.list(this.client.getEndpoint(), apiVersion, this.client.getSubscriptionId(),
@@ -855,7 +645,7 @@ public final class FirewallPolicyKubeSelectorGroupsClientImpl implements Firewal
             return Mono
                 .error(new IllegalArgumentException("Parameter firewallPolicyName is required and cannot be null."));
         }
-        final String apiVersion = "2026-03-01";
+        final String apiVersion = "2026-05-01";
         final String accept = "application/json";
         context = this.client.mergeContext(context);
         return service
@@ -865,17 +655,7 @@ public final class FirewallPolicyKubeSelectorGroupsClientImpl implements Firewal
                 res.getValue().value(), res.getValue().nextLink(), null));
     }
 
-    /**
-     * Lists all FirewallPolicyKubeSelectorGroups in a FirewallPolicy resource.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param firewallPolicyName The name of the Firewall Policy.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the response of a FirewallPolicyKubeSelectorGroup list operation as paginated response with
-     * {@link PagedFlux}.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.COLLECTION)
     public PagedFlux<FirewallPolicyKubeSelectorGroupInner> listAsync(String resourceGroupName,
         String firewallPolicyName) {
@@ -902,35 +682,14 @@ public final class FirewallPolicyKubeSelectorGroupsClientImpl implements Firewal
             nextLink -> listNextSinglePageAsync(nextLink, context));
     }
 
-    /**
-     * Lists all FirewallPolicyKubeSelectorGroups in a FirewallPolicy resource.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param firewallPolicyName The name of the Firewall Policy.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the response of a FirewallPolicyKubeSelectorGroup list operation as paginated response with
-     * {@link PagedIterable}.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.COLLECTION)
     public PagedIterable<FirewallPolicyKubeSelectorGroupInner> list(String resourceGroupName,
         String firewallPolicyName) {
         return new PagedIterable<>(listAsync(resourceGroupName, firewallPolicyName));
     }
 
-    /**
-     * Lists all FirewallPolicyKubeSelectorGroups in a FirewallPolicy resource.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param firewallPolicyName The name of the Firewall Policy.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the response of a FirewallPolicyKubeSelectorGroup list operation as paginated response with
-     * {@link PagedIterable}.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.COLLECTION)
     public PagedIterable<FirewallPolicyKubeSelectorGroupInner> list(String resourceGroupName, String firewallPolicyName,
         Context context) {

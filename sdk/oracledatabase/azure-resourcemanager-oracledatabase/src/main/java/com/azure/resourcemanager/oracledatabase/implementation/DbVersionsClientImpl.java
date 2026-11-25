@@ -162,17 +162,7 @@ public final class DbVersionsClientImpl implements DbVersionsClient {
         return getWithResponseAsync(location, dbversionsname).flatMap(res -> Mono.justOrEmpty(res.getValue()));
     }
 
-    /**
-     * Get a DbVersion.
-     * 
-     * @param location The name of the Azure region.
-     * @param dbversionsname DbVersion name.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return a DbVersion along with {@link Response}.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Response<DbVersionInner> getWithResponse(String location, String dbversionsname, Context context) {
         final String accept = "application/json";
@@ -180,16 +170,7 @@ public final class DbVersionsClientImpl implements DbVersionsClient {
             location, dbversionsname, accept, context);
     }
 
-    /**
-     * Get a DbVersion.
-     * 
-     * @param location The name of the Azure region.
-     * @param dbversionsname DbVersion name.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return a DbVersion.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public DbVersionInner get(String location, String dbversionsname) {
         return getWithResponse(location, dbversionsname, Context.NONE).getValue();
@@ -310,12 +291,8 @@ public final class DbVersionsClientImpl implements DbVersionsClient {
     private PagedResponse<DbVersionInner> listByLocationSinglePage(String location, BaseDbSystemShapes dbSystemShape,
         String dbSystemId, StorageManagementType storageManagement, Boolean isUpgradeSupported,
         Boolean isDatabaseSoftwareImageSupported, ShapeFamilyType shapeFamily) {
-        final String accept = "application/json";
-        Response<DbVersionListResult> res = service.listByLocationSync(this.client.getEndpoint(),
-            this.client.getApiVersion(), this.client.getSubscriptionId(), location, dbSystemShape, dbSystemId,
-            storageManagement, isUpgradeSupported, isDatabaseSoftwareImageSupported, shapeFamily, accept, Context.NONE);
-        return new PagedResponseBase<>(res.getRequest(), res.getStatusCode(), res.getHeaders(), res.getValue().value(),
-            res.getValue().nextLink(), null);
+        return listByLocationSinglePage(location, dbSystemShape, dbSystemId, storageManagement, isUpgradeSupported,
+            isDatabaseSoftwareImageSupported, shapeFamily, Context.NONE);
     }
 
     /**
@@ -352,15 +329,7 @@ public final class DbVersionsClientImpl implements DbVersionsClient {
             res.getValue().nextLink(), null);
     }
 
-    /**
-     * List DbVersion resources by SubscriptionLocationResource.
-     * 
-     * @param location The name of the Azure region.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the response of a DbVersion list operation as paginated response with {@link PagedIterable}.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.COLLECTION)
     public PagedIterable<DbVersionInner> listByLocation(String location) {
         final BaseDbSystemShapes dbSystemShape = null;
@@ -369,33 +338,11 @@ public final class DbVersionsClientImpl implements DbVersionsClient {
         final Boolean isUpgradeSupported = null;
         final Boolean isDatabaseSoftwareImageSupported = null;
         final ShapeFamilyType shapeFamily = null;
-        return new PagedIterable<>(() -> listByLocationSinglePage(location, dbSystemShape, dbSystemId,
-            storageManagement, isUpgradeSupported, isDatabaseSoftwareImageSupported, shapeFamily),
-            nextLink -> listByLocationNextSinglePage(nextLink));
+        return listByLocation(location, dbSystemShape, dbSystemId, storageManagement, isUpgradeSupported,
+            isDatabaseSoftwareImageSupported, shapeFamily, Context.NONE);
     }
 
-    /**
-     * List DbVersion resources by SubscriptionLocationResource.
-     * 
-     * @param location The name of the Azure region.
-     * @param dbSystemShape If provided, filters the results to the set of database versions which are supported for the
-     * given shape. e.g., VM.Standard.E5.Flex.
-     * @param dbSystemId The DB system AzureId. If provided, filters the results to the set of database versions which
-     * are supported for the DB system.
-     * @param storageManagement The DB system storage management option. Used to list database versions available for
-     * that storage manager. Valid values are ASM and LVM.
-     * @param isUpgradeSupported If true, filters the results to the set of database versions which are supported for
-     * Upgrade.
-     * @param isDatabaseSoftwareImageSupported If true, filters the results to the set of Oracle Database versions that
-     * are supported for the database software images.
-     * @param shapeFamily If provided, filters the results to the set of database versions which are supported for the
-     * given shape family.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the response of a DbVersion list operation as paginated response with {@link PagedIterable}.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.COLLECTION)
     public PagedIterable<DbVersionInner> listByLocation(String location, BaseDbSystemShapes dbSystemShape,
         String dbSystemId, StorageManagementType storageManagement, Boolean isUpgradeSupported,
@@ -437,11 +384,7 @@ public final class DbVersionsClientImpl implements DbVersionsClient {
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private PagedResponse<DbVersionInner> listByLocationNextSinglePage(String nextLink) {
-        final String accept = "application/json";
-        Response<DbVersionListResult> res
-            = service.listByLocationNextSync(nextLink, this.client.getEndpoint(), accept, Context.NONE);
-        return new PagedResponseBase<>(res.getRequest(), res.getStatusCode(), res.getHeaders(), res.getValue().value(),
-            res.getValue().nextLink(), null);
+        return listByLocationNextSinglePage(nextLink, Context.NONE);
     }
 
     /**

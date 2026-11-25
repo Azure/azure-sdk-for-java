@@ -269,6 +269,16 @@ public class AppendBlobApiTests extends BlobTestBase {
         assertResponseStatusCode(secondResponse, 409);
     }
 
+    @Test
+    public void createIfNotExistsOnABlobOfAnotherType() {
+        String blobName = cc.getBlobClient(generateBlobName()).getBlobName();
+        cc.getBlobClient(blobName).getBlockBlobClient().upload(DATA.getDefaultInputStream(), DATA.getDefaultDataSize());
+        bc = cc.getBlobClient(blobName).getAppendBlobClient();
+
+        BlobStorageException e = assertThrows(BlobStorageException.class, () -> bc.createIfNotExists());
+        assertExceptionStatusCodeAndMessage(e, 409, BlobErrorCode.INVALID_BLOB_TYPE);
+    }
+
     @ParameterizedTest
     @MethodSource("createHeadersSupplier")
     public void createIfNotExistsHeaders(String cacheControl, String contentDisposition, String contentEncoding,

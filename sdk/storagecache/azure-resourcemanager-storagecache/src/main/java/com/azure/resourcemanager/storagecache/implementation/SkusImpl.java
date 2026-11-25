@@ -25,8 +25,7 @@ public final class SkusImpl implements Skus {
     }
 
     public PagedIterable<ResourceSku> list() {
-        PagedIterable<ResourceSkuInner> inner = this.serviceClient().list();
-        return ResourceManagerUtils.mapPage(inner, inner1 -> new ResourceSkuImpl(inner1, this.manager()));
+        return this.list(Context.NONE);
     }
 
     public PagedIterable<ResourceSku> list(Context context) {

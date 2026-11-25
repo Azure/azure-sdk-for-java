@@ -13,6 +13,7 @@ import com.azure.core.util.Context;
 import com.azure.core.util.polling.SyncPoller;
 import com.azure.resourcemanager.commvaultcontentstore.fluent.models.CloudAccountInner;
 import com.azure.resourcemanager.commvaultcontentstore.fluent.models.LatestLinkedSaaSResponseInner;
+import com.azure.resourcemanager.commvaultcontentstore.models.CloudAccountUpdate;
 import com.azure.resourcemanager.commvaultcontentstore.models.SaaSData;
 
 /**
@@ -121,7 +122,7 @@ public interface CloudAccountsClient {
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     SyncPoller<PollResult<CloudAccountInner>, CloudAccountInner> beginUpdate(String resourceGroupName,
-        String cloudAccountName, CloudAccountInner properties);
+        String cloudAccountName, CloudAccountUpdate properties);
 
     /**
      * Update a CloudAccount.
@@ -137,7 +138,7 @@ public interface CloudAccountsClient {
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     SyncPoller<PollResult<CloudAccountInner>, CloudAccountInner> beginUpdate(String resourceGroupName,
-        String cloudAccountName, CloudAccountInner properties, Context context);
+        String cloudAccountName, CloudAccountUpdate properties, Context context);
 
     /**
      * Update a CloudAccount.
@@ -151,7 +152,7 @@ public interface CloudAccountsClient {
      * @return a Commvault Cloud Account Resource.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    CloudAccountInner update(String resourceGroupName, String cloudAccountName, CloudAccountInner properties);
+    CloudAccountInner update(String resourceGroupName, String cloudAccountName, CloudAccountUpdate properties);
 
     /**
      * Update a CloudAccount.
@@ -166,7 +167,7 @@ public interface CloudAccountsClient {
      * @return a Commvault Cloud Account Resource.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    CloudAccountInner update(String resourceGroupName, String cloudAccountName, CloudAccountInner properties,
+    CloudAccountInner update(String resourceGroupName, String cloudAccountName, CloudAccountUpdate properties,
         Context context);
 
     /**

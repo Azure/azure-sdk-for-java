@@ -129,19 +129,7 @@ public final class ManagedBackupShortTermRetentionPoliciesClientImpl
             @HeaderParam("Accept") String accept, Context context);
     }
 
-    /**
-     * Gets a managed database's short term retention policy.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param managedInstanceName The name of the managed instance.
-     * @param databaseName The name of the database.
-     * @param policyName The policy name.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return a managed database's short term retention policy along with {@link Response} on successful completion of
-     * {@link Mono}.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Response<ManagedBackupShortTermRetentionPolicyInner>> getWithResponseAsync(String resourceGroupName,
         String managedInstanceName, String databaseName, ManagedShortTermRetentionPolicyName policyName) {
@@ -221,18 +209,7 @@ public final class ManagedBackupShortTermRetentionPoliciesClientImpl
             resourceGroupName, managedInstanceName, databaseName, policyName, accept, context);
     }
 
-    /**
-     * Gets a managed database's short term retention policy.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param managedInstanceName The name of the managed instance.
-     * @param databaseName The name of the database.
-     * @param policyName The policy name.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return a managed database's short term retention policy on successful completion of {@link Mono}.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<ManagedBackupShortTermRetentionPolicyInner> getAsync(String resourceGroupName,
         String managedInstanceName, String databaseName, ManagedShortTermRetentionPolicyName policyName) {
@@ -240,19 +217,7 @@ public final class ManagedBackupShortTermRetentionPoliciesClientImpl
             .flatMap(res -> Mono.justOrEmpty(res.getValue()));
     }
 
-    /**
-     * Gets a managed database's short term retention policy.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param managedInstanceName The name of the managed instance.
-     * @param databaseName The name of the database.
-     * @param policyName The policy name.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return a managed database's short term retention policy along with {@link Response}.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Response<ManagedBackupShortTermRetentionPolicyInner> getWithResponse(String resourceGroupName,
         String managedInstanceName, String databaseName, ManagedShortTermRetentionPolicyName policyName,
@@ -260,18 +225,7 @@ public final class ManagedBackupShortTermRetentionPoliciesClientImpl
         return getWithResponseAsync(resourceGroupName, managedInstanceName, databaseName, policyName, context).block();
     }
 
-    /**
-     * Gets a managed database's short term retention policy.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param managedInstanceName The name of the managed instance.
-     * @param databaseName The name of the database.
-     * @param policyName The policy name.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return a managed database's short term retention policy.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public ManagedBackupShortTermRetentionPolicyInner get(String resourceGroupName, String managedInstanceName,
         String databaseName, ManagedShortTermRetentionPolicyName policyName) {
@@ -279,19 +233,7 @@ public final class ManagedBackupShortTermRetentionPoliciesClientImpl
             .getValue();
     }
 
-    /**
-     * Updates a managed database's short term retention policy.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param managedInstanceName The name of the managed instance.
-     * @param databaseName The name of the database.
-     * @param policyName The policy name.
-     * @param parameters The short term retention policy info.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return a short term retention policy along with {@link Response} on successful completion of {@link Mono}.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Response<Flux<ByteBuffer>>> createOrUpdateWithResponseAsync(String resourceGroupName,
         String managedInstanceName, String databaseName, ManagedShortTermRetentionPolicyName policyName,
@@ -385,19 +327,7 @@ public final class ManagedBackupShortTermRetentionPoliciesClientImpl
             contentType, accept, parameters, context);
     }
 
-    /**
-     * Updates a managed database's short term retention policy.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param managedInstanceName The name of the managed instance.
-     * @param databaseName The name of the database.
-     * @param policyName The policy name.
-     * @param parameters The short term retention policy info.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the {@link PollerFlux} for polling of a short term retention policy.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public
         PollerFlux<PollResult<ManagedBackupShortTermRetentionPolicyInner>, ManagedBackupShortTermRetentionPolicyInner>
@@ -440,19 +370,7 @@ public final class ManagedBackupShortTermRetentionPoliciesClientImpl
                 ManagedBackupShortTermRetentionPolicyInner.class, context);
     }
 
-    /**
-     * Updates a managed database's short term retention policy.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param managedInstanceName The name of the managed instance.
-     * @param databaseName The name of the database.
-     * @param policyName The policy name.
-     * @param parameters The short term retention policy info.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the {@link SyncPoller} for polling of a short term retention policy.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public
         SyncPoller<PollResult<ManagedBackupShortTermRetentionPolicyInner>, ManagedBackupShortTermRetentionPolicyInner>
@@ -463,20 +381,7 @@ public final class ManagedBackupShortTermRetentionPoliciesClientImpl
             .getSyncPoller();
     }
 
-    /**
-     * Updates a managed database's short term retention policy.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param managedInstanceName The name of the managed instance.
-     * @param databaseName The name of the database.
-     * @param policyName The policy name.
-     * @param parameters The short term retention policy info.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the {@link SyncPoller} for polling of a short term retention policy.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public
         SyncPoller<PollResult<ManagedBackupShortTermRetentionPolicyInner>, ManagedBackupShortTermRetentionPolicyInner>
@@ -489,19 +394,7 @@ public final class ManagedBackupShortTermRetentionPoliciesClientImpl
             .getSyncPoller();
     }
 
-    /**
-     * Updates a managed database's short term retention policy.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param managedInstanceName The name of the managed instance.
-     * @param databaseName The name of the database.
-     * @param policyName The policy name.
-     * @param parameters The short term retention policy info.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return a short term retention policy on successful completion of {@link Mono}.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<ManagedBackupShortTermRetentionPolicyInner> createOrUpdateAsync(String resourceGroupName,
         String managedInstanceName, String databaseName, ManagedShortTermRetentionPolicyName policyName,
@@ -533,19 +426,7 @@ public final class ManagedBackupShortTermRetentionPoliciesClientImpl
             context).last().flatMap(this.client::getLroFinalResultOrError);
     }
 
-    /**
-     * Updates a managed database's short term retention policy.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param managedInstanceName The name of the managed instance.
-     * @param databaseName The name of the database.
-     * @param policyName The policy name.
-     * @param parameters The short term retention policy info.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return a short term retention policy.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public ManagedBackupShortTermRetentionPolicyInner createOrUpdate(String resourceGroupName,
         String managedInstanceName, String databaseName, ManagedShortTermRetentionPolicyName policyName,
@@ -554,20 +435,7 @@ public final class ManagedBackupShortTermRetentionPoliciesClientImpl
             .block();
     }
 
-    /**
-     * Updates a managed database's short term retention policy.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param managedInstanceName The name of the managed instance.
-     * @param databaseName The name of the database.
-     * @param policyName The policy name.
-     * @param parameters The short term retention policy info.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return a short term retention policy.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public ManagedBackupShortTermRetentionPolicyInner createOrUpdate(String resourceGroupName,
         String managedInstanceName, String databaseName, ManagedShortTermRetentionPolicyName policyName,
@@ -576,19 +444,7 @@ public final class ManagedBackupShortTermRetentionPoliciesClientImpl
             context).block();
     }
 
-    /**
-     * Updates a managed database's short term retention policy.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param managedInstanceName The name of the managed instance.
-     * @param databaseName The name of the database.
-     * @param policyName The policy name.
-     * @param parameters The short term retention policy info.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return a short term retention policy along with {@link Response} on successful completion of {@link Mono}.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Response<Flux<ByteBuffer>>> updateWithResponseAsync(String resourceGroupName,
         String managedInstanceName, String databaseName, ManagedShortTermRetentionPolicyName policyName,
@@ -681,19 +537,7 @@ public final class ManagedBackupShortTermRetentionPoliciesClientImpl
             resourceGroupName, managedInstanceName, databaseName, policyName, contentType, accept, parameters, context);
     }
 
-    /**
-     * Updates a managed database's short term retention policy.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param managedInstanceName The name of the managed instance.
-     * @param databaseName The name of the database.
-     * @param policyName The policy name.
-     * @param parameters The short term retention policy info.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the {@link PollerFlux} for polling of a short term retention policy.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public
         PollerFlux<PollResult<ManagedBackupShortTermRetentionPolicyInner>, ManagedBackupShortTermRetentionPolicyInner>
@@ -736,19 +580,7 @@ public final class ManagedBackupShortTermRetentionPoliciesClientImpl
                 ManagedBackupShortTermRetentionPolicyInner.class, context);
     }
 
-    /**
-     * Updates a managed database's short term retention policy.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param managedInstanceName The name of the managed instance.
-     * @param databaseName The name of the database.
-     * @param policyName The policy name.
-     * @param parameters The short term retention policy info.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the {@link SyncPoller} for polling of a short term retention policy.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public
         SyncPoller<PollResult<ManagedBackupShortTermRetentionPolicyInner>, ManagedBackupShortTermRetentionPolicyInner>
@@ -758,20 +590,7 @@ public final class ManagedBackupShortTermRetentionPoliciesClientImpl
             .getSyncPoller();
     }
 
-    /**
-     * Updates a managed database's short term retention policy.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param managedInstanceName The name of the managed instance.
-     * @param databaseName The name of the database.
-     * @param policyName The policy name.
-     * @param parameters The short term retention policy info.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the {@link SyncPoller} for polling of a short term retention policy.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public
         SyncPoller<PollResult<ManagedBackupShortTermRetentionPolicyInner>, ManagedBackupShortTermRetentionPolicyInner>
@@ -783,19 +602,7 @@ public final class ManagedBackupShortTermRetentionPoliciesClientImpl
             .getSyncPoller();
     }
 
-    /**
-     * Updates a managed database's short term retention policy.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param managedInstanceName The name of the managed instance.
-     * @param databaseName The name of the database.
-     * @param policyName The policy name.
-     * @param parameters The short term retention policy info.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return a short term retention policy on successful completion of {@link Mono}.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<ManagedBackupShortTermRetentionPolicyInner> updateAsync(String resourceGroupName,
         String managedInstanceName, String databaseName, ManagedShortTermRetentionPolicyName policyName,
@@ -827,19 +634,7 @@ public final class ManagedBackupShortTermRetentionPoliciesClientImpl
             .flatMap(this.client::getLroFinalResultOrError);
     }
 
-    /**
-     * Updates a managed database's short term retention policy.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param managedInstanceName The name of the managed instance.
-     * @param databaseName The name of the database.
-     * @param policyName The policy name.
-     * @param parameters The short term retention policy info.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return a short term retention policy.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public ManagedBackupShortTermRetentionPolicyInner update(String resourceGroupName, String managedInstanceName,
         String databaseName, ManagedShortTermRetentionPolicyName policyName,
@@ -847,20 +642,7 @@ public final class ManagedBackupShortTermRetentionPoliciesClientImpl
         return updateAsync(resourceGroupName, managedInstanceName, databaseName, policyName, parameters).block();
     }
 
-    /**
-     * Updates a managed database's short term retention policy.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param managedInstanceName The name of the managed instance.
-     * @param databaseName The name of the database.
-     * @param policyName The policy name.
-     * @param parameters The short term retention policy info.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return a short term retention policy.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public ManagedBackupShortTermRetentionPolicyInner update(String resourceGroupName, String managedInstanceName,
         String databaseName, ManagedShortTermRetentionPolicyName policyName,
@@ -957,17 +739,7 @@ public final class ManagedBackupShortTermRetentionPoliciesClientImpl
                 res.getValue().value(), res.getValue().nextLink(), null));
     }
 
-    /**
-     * Gets a managed database's short term retention policy list.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param managedInstanceName The name of the managed instance.
-     * @param databaseName The name of the database.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return a managed database's short term retention policy list as paginated response with {@link PagedFlux}.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.COLLECTION)
     public PagedFlux<ManagedBackupShortTermRetentionPolicyInner> listByDatabaseAsync(String resourceGroupName,
         String managedInstanceName, String databaseName) {
@@ -996,35 +768,14 @@ public final class ManagedBackupShortTermRetentionPoliciesClientImpl
             nextLink -> listByDatabaseNextSinglePageAsync(nextLink, context));
     }
 
-    /**
-     * Gets a managed database's short term retention policy list.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param managedInstanceName The name of the managed instance.
-     * @param databaseName The name of the database.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return a managed database's short term retention policy list as paginated response with {@link PagedIterable}.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.COLLECTION)
     public PagedIterable<ManagedBackupShortTermRetentionPolicyInner> listByDatabase(String resourceGroupName,
         String managedInstanceName, String databaseName) {
         return new PagedIterable<>(listByDatabaseAsync(resourceGroupName, managedInstanceName, databaseName));
     }
 
-    /**
-     * Gets a managed database's short term retention policy list.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param managedInstanceName The name of the managed instance.
-     * @param databaseName The name of the database.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return a managed database's short term retention policy list as paginated response with {@link PagedIterable}.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.COLLECTION)
     public PagedIterable<ManagedBackupShortTermRetentionPolicyInner> listByDatabase(String resourceGroupName,
         String managedInstanceName, String databaseName, Context context) {

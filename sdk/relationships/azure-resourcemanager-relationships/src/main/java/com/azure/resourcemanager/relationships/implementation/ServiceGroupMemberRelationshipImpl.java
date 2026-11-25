@@ -54,10 +54,7 @@ public final class ServiceGroupMemberRelationshipImpl implements ServiceGroupMem
     }
 
     public ServiceGroupMemberRelationship create() {
-        this.innerObject = serviceManager.serviceClient()
-            .getServiceGroupMemberRelationships()
-            .createOrUpdate(resourceUri, name, this.innerModel(), Context.NONE);
-        return this;
+        return this.create(Context.NONE);
     }
 
     public ServiceGroupMemberRelationship create(Context context) {
@@ -79,10 +76,7 @@ public final class ServiceGroupMemberRelationshipImpl implements ServiceGroupMem
     }
 
     public ServiceGroupMemberRelationship apply() {
-        this.innerObject = serviceManager.serviceClient()
-            .getServiceGroupMemberRelationships()
-            .createOrUpdate(resourceUri, name, this.innerModel(), Context.NONE);
-        return this;
+        return this.apply(Context.NONE);
     }
 
     public ServiceGroupMemberRelationship apply(Context context) {
@@ -103,11 +97,7 @@ public final class ServiceGroupMemberRelationshipImpl implements ServiceGroupMem
     }
 
     public ServiceGroupMemberRelationship refresh() {
-        this.innerObject = serviceManager.serviceClient()
-            .getServiceGroupMemberRelationships()
-            .getWithResponse(resourceUri, name, Context.NONE)
-            .getValue();
-        return this;
+        return this.refresh(Context.NONE);
     }
 
     public ServiceGroupMemberRelationship refresh(Context context) {

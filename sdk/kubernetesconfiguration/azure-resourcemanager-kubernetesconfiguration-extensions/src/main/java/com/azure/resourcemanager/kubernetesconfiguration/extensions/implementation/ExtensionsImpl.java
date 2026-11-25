@@ -49,13 +49,8 @@ public final class ExtensionsImpl implements Extensions {
 
     public Extension create(String resourceGroupName, String clusterRp, String clusterResourceName, String clusterName,
         String extensionName, ExtensionInner extension) {
-        ExtensionInner inner = this.serviceClient()
-            .create(resourceGroupName, clusterRp, clusterResourceName, clusterName, extensionName, extension);
-        if (inner != null) {
-            return new ExtensionImpl(inner, this.manager());
-        } else {
-            return null;
-        }
+        return this.create(resourceGroupName, clusterRp, clusterResourceName, clusterName, extensionName, extension,
+            Context.NONE);
     }
 
     public Extension create(String resourceGroupName, String clusterRp, String clusterResourceName, String clusterName,
@@ -71,13 +66,8 @@ public final class ExtensionsImpl implements Extensions {
 
     public Extension update(String resourceGroupName, String clusterRp, String clusterResourceName, String clusterName,
         String extensionName, PatchExtension patchExtension) {
-        ExtensionInner inner = this.serviceClient()
-            .update(resourceGroupName, clusterRp, clusterResourceName, clusterName, extensionName, patchExtension);
-        if (inner != null) {
-            return new ExtensionImpl(inner, this.manager());
-        } else {
-            return null;
-        }
+        return this.update(resourceGroupName, clusterRp, clusterResourceName, clusterName, extensionName,
+            patchExtension, Context.NONE);
     }
 
     public Extension update(String resourceGroupName, String clusterRp, String clusterResourceName, String clusterName,
@@ -106,9 +96,7 @@ public final class ExtensionsImpl implements Extensions {
 
     public PagedIterable<Extension> list(String resourceGroupName, String clusterRp, String clusterResourceName,
         String clusterName) {
-        PagedIterable<ExtensionInner> inner
-            = this.serviceClient().list(resourceGroupName, clusterRp, clusterResourceName, clusterName);
-        return ResourceManagerUtils.mapPage(inner, inner1 -> new ExtensionImpl(inner1, this.manager()));
+        return this.list(resourceGroupName, clusterRp, clusterResourceName, clusterName, Context.NONE);
     }
 
     public PagedIterable<Extension> list(String resourceGroupName, String clusterRp, String clusterResourceName,

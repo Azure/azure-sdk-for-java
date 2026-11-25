@@ -231,18 +231,7 @@ public final class FrontendsInterfacesClientImpl implements FrontendsInterfacesC
             .flatMap(res -> Mono.justOrEmpty(res.getValue()));
     }
 
-    /**
-     * Get a Frontend.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param trafficControllerName traffic controller name for path.
-     * @param frontendName Frontends.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return a Frontend along with {@link Response}.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Response<FrontendInner> getWithResponse(String resourceGroupName, String trafficControllerName,
         String frontendName, Context context) {
@@ -251,17 +240,7 @@ public final class FrontendsInterfacesClientImpl implements FrontendsInterfacesC
             resourceGroupName, trafficControllerName, frontendName, accept, context);
     }
 
-    /**
-     * Get a Frontend.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param trafficControllerName traffic controller name for path.
-     * @param frontendName Frontends.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return a Frontend.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public FrontendInner get(String resourceGroupName, String trafficControllerName, String frontendName) {
         return getWithResponse(resourceGroupName, trafficControllerName, frontendName, Context.NONE).getValue();
@@ -307,11 +286,8 @@ public final class FrontendsInterfacesClientImpl implements FrontendsInterfacesC
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Response<BinaryData> createOrUpdateWithResponse(String resourceGroupName, String trafficControllerName,
         String frontendName, FrontendInner resource) {
-        final String contentType = "application/json";
-        final String accept = "application/json";
-        return service.createOrUpdateSync(this.client.getEndpoint(), this.client.getApiVersion(),
-            this.client.getSubscriptionId(), resourceGroupName, trafficControllerName, frontendName, contentType,
-            accept, resource, Context.NONE);
+        return createOrUpdateWithResponse(resourceGroupName, trafficControllerName, frontendName, resource,
+            Context.NONE);
     }
 
     /**
@@ -358,40 +334,14 @@ public final class FrontendsInterfacesClientImpl implements FrontendsInterfacesC
             FrontendInner.class, FrontendInner.class, this.client.getContext());
     }
 
-    /**
-     * Create a Frontend.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param trafficControllerName traffic controller name for path.
-     * @param frontendName Frontends.
-     * @param resource Resource create parameters.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the {@link SyncPoller} for polling of frontend Sub Resource of Traffic Controller.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public SyncPoller<PollResult<FrontendInner>, FrontendInner> beginCreateOrUpdate(String resourceGroupName,
         String trafficControllerName, String frontendName, FrontendInner resource) {
-        Response<BinaryData> response
-            = createOrUpdateWithResponse(resourceGroupName, trafficControllerName, frontendName, resource);
-        return this.client.<FrontendInner, FrontendInner>getLroResult(response, FrontendInner.class,
-            FrontendInner.class, Context.NONE);
+        return beginCreateOrUpdate(resourceGroupName, trafficControllerName, frontendName, resource, Context.NONE);
     }
 
-    /**
-     * Create a Frontend.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param trafficControllerName traffic controller name for path.
-     * @param frontendName Frontends.
-     * @param resource Resource create parameters.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the {@link SyncPoller} for polling of frontend Sub Resource of Traffic Controller.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public SyncPoller<PollResult<FrontendInner>, FrontendInner> beginCreateOrUpdate(String resourceGroupName,
         String trafficControllerName, String frontendName, FrontendInner resource, Context context) {
@@ -420,42 +370,19 @@ public final class FrontendsInterfacesClientImpl implements FrontendsInterfacesC
             .flatMap(this.client::getLroFinalResultOrError);
     }
 
-    /**
-     * Create a Frontend.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param trafficControllerName traffic controller name for path.
-     * @param frontendName Frontends.
-     * @param resource Resource create parameters.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return frontend Sub Resource of Traffic Controller.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public FrontendInner createOrUpdate(String resourceGroupName, String trafficControllerName, String frontendName,
         FrontendInner resource) {
-        return beginCreateOrUpdate(resourceGroupName, trafficControllerName, frontendName, resource).getFinalResult();
+        return createOrUpdate(resourceGroupName, trafficControllerName, frontendName, resource, Context.NONE);
     }
 
-    /**
-     * Create a Frontend.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param trafficControllerName traffic controller name for path.
-     * @param frontendName Frontends.
-     * @param resource Resource create parameters.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return frontend Sub Resource of Traffic Controller.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public FrontendInner createOrUpdate(String resourceGroupName, String trafficControllerName, String frontendName,
         FrontendInner resource, Context context) {
-        return beginCreateOrUpdate(resourceGroupName, trafficControllerName, frontendName, resource, context)
-            .getFinalResult();
+        return this.client.getLroFinalResultOrError(
+            beginCreateOrUpdate(resourceGroupName, trafficControllerName, frontendName, resource, context));
     }
 
     /**
@@ -502,19 +429,7 @@ public final class FrontendsInterfacesClientImpl implements FrontendsInterfacesC
             .flatMap(res -> Mono.justOrEmpty(res.getValue()));
     }
 
-    /**
-     * Update a Frontend.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param trafficControllerName traffic controller name for path.
-     * @param frontendName Frontends.
-     * @param properties The resource properties to be updated.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return frontend Sub Resource of Traffic Controller along with {@link Response}.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Response<FrontendInner> updateWithResponse(String resourceGroupName, String trafficControllerName,
         String frontendName, FrontendUpdate properties, Context context) {
@@ -525,18 +440,7 @@ public final class FrontendsInterfacesClientImpl implements FrontendsInterfacesC
             accept, properties, context);
     }
 
-    /**
-     * Update a Frontend.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param trafficControllerName traffic controller name for path.
-     * @param frontendName Frontends.
-     * @param properties The resource properties to be updated.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return frontend Sub Resource of Traffic Controller.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public FrontendInner update(String resourceGroupName, String trafficControllerName, String frontendName,
         FrontendUpdate properties) {
@@ -578,8 +482,7 @@ public final class FrontendsInterfacesClientImpl implements FrontendsInterfacesC
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Response<BinaryData> deleteWithResponse(String resourceGroupName, String trafficControllerName,
         String frontendName) {
-        return service.deleteSync(this.client.getEndpoint(), this.client.getApiVersion(),
-            this.client.getSubscriptionId(), resourceGroupName, trafficControllerName, frontendName, Context.NONE);
+        return deleteWithResponse(resourceGroupName, trafficControllerName, frontendName, Context.NONE);
     }
 
     /**
@@ -621,36 +524,14 @@ public final class FrontendsInterfacesClientImpl implements FrontendsInterfacesC
             this.client.getContext());
     }
 
-    /**
-     * Delete a Frontend.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param trafficControllerName traffic controller name for path.
-     * @param frontendName Frontends.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the {@link SyncPoller} for polling of long-running operation.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public SyncPoller<PollResult<Void>, Void> beginDelete(String resourceGroupName, String trafficControllerName,
         String frontendName) {
-        Response<BinaryData> response = deleteWithResponse(resourceGroupName, trafficControllerName, frontendName);
-        return this.client.<Void, Void>getLroResult(response, Void.class, Void.class, Context.NONE);
+        return beginDelete(resourceGroupName, trafficControllerName, frontendName, Context.NONE);
     }
 
-    /**
-     * Delete a Frontend.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param trafficControllerName traffic controller name for path.
-     * @param frontendName Frontends.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the {@link SyncPoller} for polling of long-running operation.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public SyncPoller<PollResult<Void>, Void> beginDelete(String resourceGroupName, String trafficControllerName,
         String frontendName, Context context) {
@@ -676,35 +557,17 @@ public final class FrontendsInterfacesClientImpl implements FrontendsInterfacesC
             .flatMap(this.client::getLroFinalResultOrError);
     }
 
-    /**
-     * Delete a Frontend.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param trafficControllerName traffic controller name for path.
-     * @param frontendName Frontends.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public void delete(String resourceGroupName, String trafficControllerName, String frontendName) {
-        beginDelete(resourceGroupName, trafficControllerName, frontendName).getFinalResult();
+        delete(resourceGroupName, trafficControllerName, frontendName, Context.NONE);
     }
 
-    /**
-     * Delete a Frontend.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param trafficControllerName traffic controller name for path.
-     * @param frontendName Frontends.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public void delete(String resourceGroupName, String trafficControllerName, String frontendName, Context context) {
-        beginDelete(resourceGroupName, trafficControllerName, frontendName, context).getFinalResult();
+        this.client
+            .getLroFinalResultOrError(beginDelete(resourceGroupName, trafficControllerName, frontendName, context));
     }
 
     /**
@@ -761,12 +624,7 @@ public final class FrontendsInterfacesClientImpl implements FrontendsInterfacesC
     @ServiceMethod(returns = ReturnType.SINGLE)
     private PagedResponse<FrontendInner> listByTrafficControllerSinglePage(String resourceGroupName,
         String trafficControllerName) {
-        final String accept = "application/json";
-        Response<FrontendListResult> res
-            = service.listByTrafficControllerSync(this.client.getEndpoint(), this.client.getApiVersion(),
-                this.client.getSubscriptionId(), resourceGroupName, trafficControllerName, accept, Context.NONE);
-        return new PagedResponseBase<>(res.getRequest(), res.getStatusCode(), res.getHeaders(), res.getValue().value(),
-            res.getValue().nextLink(), null);
+        return listByTrafficControllerSinglePage(resourceGroupName, trafficControllerName, Context.NONE);
     }
 
     /**
@@ -791,34 +649,14 @@ public final class FrontendsInterfacesClientImpl implements FrontendsInterfacesC
             res.getValue().nextLink(), null);
     }
 
-    /**
-     * List Frontend resources by TrafficController.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param trafficControllerName traffic controller name for path.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the response of a Frontend list operation as paginated response with {@link PagedIterable}.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.COLLECTION)
     public PagedIterable<FrontendInner> listByTrafficController(String resourceGroupName,
         String trafficControllerName) {
-        return new PagedIterable<>(() -> listByTrafficControllerSinglePage(resourceGroupName, trafficControllerName),
-            nextLink -> listByTrafficControllerNextSinglePage(nextLink));
+        return listByTrafficController(resourceGroupName, trafficControllerName, Context.NONE);
     }
 
-    /**
-     * List Frontend resources by TrafficController.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param trafficControllerName traffic controller name for path.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the response of a Frontend list operation as paginated response with {@link PagedIterable}.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.COLLECTION)
     public PagedIterable<FrontendInner> listByTrafficController(String resourceGroupName, String trafficControllerName,
         Context context) {
@@ -859,11 +697,7 @@ public final class FrontendsInterfacesClientImpl implements FrontendsInterfacesC
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private PagedResponse<FrontendInner> listByTrafficControllerNextSinglePage(String nextLink) {
-        final String accept = "application/json";
-        Response<FrontendListResult> res
-            = service.listByTrafficControllerNextSync(nextLink, this.client.getEndpoint(), accept, Context.NONE);
-        return new PagedResponseBase<>(res.getRequest(), res.getStatusCode(), res.getHeaders(), res.getValue().value(),
-            res.getValue().nextLink(), null);
+        return listByTrafficControllerNextSinglePage(nextLink, Context.NONE);
     }
 
     /**
