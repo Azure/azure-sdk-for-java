@@ -22,7 +22,7 @@ public final class ParameterGroupsGetByResourceGroupWithResponseMockTests {
     @Test
     public void testGetByResourceGroupWithResponse() throws Exception {
         String responseStr
-            = "{\"properties\":{\"parameters\":[{\"name\":\"vzm\",\"description\":\"t\",\"value\":\"dgxobfircl\",\"defaultValue\":\"kciayzri\",\"valueSource\":\"SystemDefault\",\"dataType\":\"awfvjlboxqvkjl\",\"allowedValues\":\"ho\",\"isDynamic\":true,\"isReadOnly\":false,\"documentationLink\":\"wdigumbnraauz\",\"unit\":\"tj\"},{\"name\":\"ysdzhez\",\"description\":\"vaiqyuvvf\",\"value\":\"kphhq\",\"defaultValue\":\"kvylauyavl\",\"valueSource\":\"UserOverride\",\"dataType\":\"csttijfybvpoekr\",\"allowedValues\":\"sgbdhuz\",\"isDynamic\":true,\"isReadOnly\":true,\"documentationLink\":\"kynscliqhzv\",\"unit\":\"nk\"}],\"description\":\"tkubotppn\",\"postgreSqlVersion\":\"17\",\"provisioningState\":\"InProgress\"},\"location\":\"hihfrbbcevqagtlt\",\"tags\":{\"vgtrdcnifmzzs\":\"fkqojpy\",\"g\":\"ymbrnysuxmpraf\"},\"id\":\"khocxvdfffwaf\",\"name\":\"roud\",\"type\":\"spave\"}";
+            = "{\"properties\":{\"parameters\":[{\"name\":\"bgq\",\"description\":\"rtalmet\",\"value\":\"wgdsl\",\"defaultValue\":\"ihhrmo\",\"valueSource\":\"SystemDefault\",\"dataType\":\"seypxiutcxapz\",\"allowedValues\":\"rpetogebjoxsl\",\"isDynamic\":false,\"isReadOnly\":true,\"documentationLink\":\"brqnkkzjcjb\",\"unit\":\"gaehvvibrxjjst\"}],\"description\":\"beitpkx\",\"postgreSqlVersion\":\"17\",\"provisioningState\":\"Provisioning\"},\"location\":\"bklftidgfcwqmpim\",\"tags\":{\"jyhohujswtwkoz\":\"zhe\",\"fajnjwltlwtjjguk\":\"wculkbaw\"},\"id\":\"alhsnvkc\",\"name\":\"mxzrpoa\",\"type\":\"mlnwiaaomylweazu\"}";
 
         HttpClient httpClient
             = response -> Mono.just(new MockHttpResponse(response, 200, responseStr.getBytes(StandardCharsets.UTF_8)));
@@ -32,14 +32,14 @@ public final class ParameterGroupsGetByResourceGroupWithResponseMockTests {
                 new AzureProfile("", "", AzureCloud.AZURE_PUBLIC_CLOUD));
 
         ParameterGroup response = manager.parameterGroups()
-            .getByResourceGroupWithResponse("f", "gzuriglaecxndt", com.azure.core.util.Context.NONE)
+            .getByResourceGroupWithResponse("kvyklxubyjaffmm", "bl", com.azure.core.util.Context.NONE)
             .getValue();
 
-        Assertions.assertEquals("hihfrbbcevqagtlt", response.location());
-        Assertions.assertEquals("fkqojpy", response.tags().get("vgtrdcnifmzzs"));
-        Assertions.assertEquals("vzm", response.properties().parameters().get(0).name());
-        Assertions.assertEquals("dgxobfircl", response.properties().parameters().get(0).value());
-        Assertions.assertEquals("tkubotppn", response.properties().description());
+        Assertions.assertEquals("bklftidgfcwqmpim", response.location());
+        Assertions.assertEquals("zhe", response.tags().get("jyhohujswtwkoz"));
+        Assertions.assertEquals("bgq", response.properties().parameters().get(0).name());
+        Assertions.assertEquals("wgdsl", response.properties().parameters().get(0).value());
+        Assertions.assertEquals("beitpkx", response.properties().description());
         Assertions.assertEquals(PostgreSqlVersion.V17, response.properties().postgreSqlVersion());
     }
 }

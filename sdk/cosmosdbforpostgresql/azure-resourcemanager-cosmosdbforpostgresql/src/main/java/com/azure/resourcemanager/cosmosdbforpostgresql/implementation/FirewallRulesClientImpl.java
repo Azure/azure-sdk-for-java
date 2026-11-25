@@ -203,18 +203,7 @@ public final class FirewallRulesClientImpl implements FirewallRulesClient {
             .flatMap(res -> Mono.justOrEmpty(res.getValue()));
     }
 
-    /**
-     * Gets information about a cluster firewall rule.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param clusterName The name of the cluster.
-     * @param firewallRuleName The name of the cluster firewall rule.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return information about a cluster firewall rule along with {@link Response}.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Response<FirewallRuleInner> getWithResponse(String resourceGroupName, String clusterName,
         String firewallRuleName, Context context) {
@@ -223,17 +212,7 @@ public final class FirewallRulesClientImpl implements FirewallRulesClient {
             resourceGroupName, clusterName, firewallRuleName, accept, context);
     }
 
-    /**
-     * Gets information about a cluster firewall rule.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param clusterName The name of the cluster.
-     * @param firewallRuleName The name of the cluster firewall rule.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return information about a cluster firewall rule.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public FirewallRuleInner get(String resourceGroupName, String clusterName, String firewallRuleName) {
         return getWithResponse(resourceGroupName, clusterName, firewallRuleName, Context.NONE).getValue();
@@ -278,11 +257,7 @@ public final class FirewallRulesClientImpl implements FirewallRulesClient {
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Response<BinaryData> createOrUpdateWithResponse(String resourceGroupName, String clusterName,
         String firewallRuleName, FirewallRuleInner parameters) {
-        final String contentType = "application/json";
-        final String accept = "application/json";
-        return service.createOrUpdateSync(this.client.getEndpoint(), this.client.getApiVersion(),
-            this.client.getSubscriptionId(), resourceGroupName, clusterName, firewallRuleName, contentType, accept,
-            parameters, Context.NONE);
+        return createOrUpdateWithResponse(resourceGroupName, clusterName, firewallRuleName, parameters, Context.NONE);
     }
 
     /**
@@ -329,40 +304,14 @@ public final class FirewallRulesClientImpl implements FirewallRulesClient {
             FirewallRuleInner.class, FirewallRuleInner.class, this.client.getContext());
     }
 
-    /**
-     * Creates a new cluster firewall rule or updates an existing cluster firewall rule.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param clusterName The name of the cluster.
-     * @param firewallRuleName The name of the cluster firewall rule.
-     * @param parameters The required parameters for creating or updating a firewall rule.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the {@link SyncPoller} for polling of represents a cluster firewall rule.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public SyncPoller<PollResult<FirewallRuleInner>, FirewallRuleInner> beginCreateOrUpdate(String resourceGroupName,
         String clusterName, String firewallRuleName, FirewallRuleInner parameters) {
-        Response<BinaryData> response
-            = createOrUpdateWithResponse(resourceGroupName, clusterName, firewallRuleName, parameters);
-        return this.client.<FirewallRuleInner, FirewallRuleInner>getLroResult(response, FirewallRuleInner.class,
-            FirewallRuleInner.class, Context.NONE);
+        return beginCreateOrUpdate(resourceGroupName, clusterName, firewallRuleName, parameters, Context.NONE);
     }
 
-    /**
-     * Creates a new cluster firewall rule or updates an existing cluster firewall rule.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param clusterName The name of the cluster.
-     * @param firewallRuleName The name of the cluster firewall rule.
-     * @param parameters The required parameters for creating or updating a firewall rule.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the {@link SyncPoller} for polling of represents a cluster firewall rule.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public SyncPoller<PollResult<FirewallRuleInner>, FirewallRuleInner> beginCreateOrUpdate(String resourceGroupName,
         String clusterName, String firewallRuleName, FirewallRuleInner parameters, Context context) {
@@ -391,42 +340,19 @@ public final class FirewallRulesClientImpl implements FirewallRulesClient {
             .flatMap(this.client::getLroFinalResultOrError);
     }
 
-    /**
-     * Creates a new cluster firewall rule or updates an existing cluster firewall rule.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param clusterName The name of the cluster.
-     * @param firewallRuleName The name of the cluster firewall rule.
-     * @param parameters The required parameters for creating or updating a firewall rule.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return represents a cluster firewall rule.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public FirewallRuleInner createOrUpdate(String resourceGroupName, String clusterName, String firewallRuleName,
         FirewallRuleInner parameters) {
-        return beginCreateOrUpdate(resourceGroupName, clusterName, firewallRuleName, parameters).getFinalResult();
+        return createOrUpdate(resourceGroupName, clusterName, firewallRuleName, parameters, Context.NONE);
     }
 
-    /**
-     * Creates a new cluster firewall rule or updates an existing cluster firewall rule.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param clusterName The name of the cluster.
-     * @param firewallRuleName The name of the cluster firewall rule.
-     * @param parameters The required parameters for creating or updating a firewall rule.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return represents a cluster firewall rule.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public FirewallRuleInner createOrUpdate(String resourceGroupName, String clusterName, String firewallRuleName,
         FirewallRuleInner parameters, Context context) {
-        return beginCreateOrUpdate(resourceGroupName, clusterName, firewallRuleName, parameters, context)
-            .getFinalResult();
+        return this.client.getLroFinalResultOrError(
+            beginCreateOrUpdate(resourceGroupName, clusterName, firewallRuleName, parameters, context));
     }
 
     /**
@@ -463,8 +389,7 @@ public final class FirewallRulesClientImpl implements FirewallRulesClient {
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Response<BinaryData> deleteWithResponse(String resourceGroupName, String clusterName,
         String firewallRuleName) {
-        return service.deleteSync(this.client.getEndpoint(), this.client.getApiVersion(),
-            this.client.getSubscriptionId(), resourceGroupName, clusterName, firewallRuleName, Context.NONE);
+        return deleteWithResponse(resourceGroupName, clusterName, firewallRuleName, Context.NONE);
     }
 
     /**
@@ -506,36 +431,14 @@ public final class FirewallRulesClientImpl implements FirewallRulesClient {
             this.client.getContext());
     }
 
-    /**
-     * Deletes a cluster firewall rule.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param clusterName The name of the cluster.
-     * @param firewallRuleName The name of the cluster firewall rule.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the {@link SyncPoller} for polling of long-running operation.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public SyncPoller<PollResult<Void>, Void> beginDelete(String resourceGroupName, String clusterName,
         String firewallRuleName) {
-        Response<BinaryData> response = deleteWithResponse(resourceGroupName, clusterName, firewallRuleName);
-        return this.client.<Void, Void>getLroResult(response, Void.class, Void.class, Context.NONE);
+        return beginDelete(resourceGroupName, clusterName, firewallRuleName, Context.NONE);
     }
 
-    /**
-     * Deletes a cluster firewall rule.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param clusterName The name of the cluster.
-     * @param firewallRuleName The name of the cluster firewall rule.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the {@link SyncPoller} for polling of long-running operation.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public SyncPoller<PollResult<Void>, Void> beginDelete(String resourceGroupName, String clusterName,
         String firewallRuleName, Context context) {
@@ -560,35 +463,16 @@ public final class FirewallRulesClientImpl implements FirewallRulesClient {
             .flatMap(this.client::getLroFinalResultOrError);
     }
 
-    /**
-     * Deletes a cluster firewall rule.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param clusterName The name of the cluster.
-     * @param firewallRuleName The name of the cluster firewall rule.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public void delete(String resourceGroupName, String clusterName, String firewallRuleName) {
-        beginDelete(resourceGroupName, clusterName, firewallRuleName).getFinalResult();
+        delete(resourceGroupName, clusterName, firewallRuleName, Context.NONE);
     }
 
-    /**
-     * Deletes a cluster firewall rule.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param clusterName The name of the cluster.
-     * @param firewallRuleName The name of the cluster firewall rule.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public void delete(String resourceGroupName, String clusterName, String firewallRuleName, Context context) {
-        beginDelete(resourceGroupName, clusterName, firewallRuleName, context).getFinalResult();
+        this.client.getLroFinalResultOrError(beginDelete(resourceGroupName, clusterName, firewallRuleName, context));
     }
 
     /**
@@ -642,12 +526,7 @@ public final class FirewallRulesClientImpl implements FirewallRulesClient {
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private PagedResponse<FirewallRuleInner> listByClusterSinglePage(String resourceGroupName, String clusterName) {
-        final String accept = "application/json";
-        Response<FirewallRuleListResult> res
-            = service.listByClusterSync(this.client.getEndpoint(), this.client.getApiVersion(),
-                this.client.getSubscriptionId(), resourceGroupName, clusterName, accept, Context.NONE);
-        return new PagedResponseBase<>(res.getRequest(), res.getStatusCode(), res.getHeaders(), res.getValue().value(),
-            res.getValue().nextLink(), null);
+        return listByClusterSinglePage(resourceGroupName, clusterName, Context.NONE);
     }
 
     /**
@@ -672,33 +551,13 @@ public final class FirewallRulesClientImpl implements FirewallRulesClient {
             res.getValue().nextLink(), null);
     }
 
-    /**
-     * Lists all the firewall rules on cluster.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param clusterName The name of the cluster.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the response of a FirewallRule list operation as paginated response with {@link PagedIterable}.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.COLLECTION)
     public PagedIterable<FirewallRuleInner> listByCluster(String resourceGroupName, String clusterName) {
-        return new PagedIterable<>(() -> listByClusterSinglePage(resourceGroupName, clusterName),
-            nextLink -> listByClusterNextSinglePage(nextLink));
+        return listByCluster(resourceGroupName, clusterName, Context.NONE);
     }
 
-    /**
-     * Lists all the firewall rules on cluster.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param clusterName The name of the cluster.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the response of a FirewallRule list operation as paginated response with {@link PagedIterable}.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.COLLECTION)
     public PagedIterable<FirewallRuleInner> listByCluster(String resourceGroupName, String clusterName,
         Context context) {
@@ -737,11 +596,7 @@ public final class FirewallRulesClientImpl implements FirewallRulesClient {
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private PagedResponse<FirewallRuleInner> listByClusterNextSinglePage(String nextLink) {
-        final String accept = "application/json";
-        Response<FirewallRuleListResult> res
-            = service.listByClusterNextSync(nextLink, this.client.getEndpoint(), accept, Context.NONE);
-        return new PagedResponseBase<>(res.getRequest(), res.getStatusCode(), res.getHeaders(), res.getValue().value(),
-            res.getValue().nextLink(), null);
+        return listByClusterNextSinglePage(nextLink, Context.NONE);
     }
 
     /**

@@ -254,17 +254,7 @@ public final class ContainerAppsSessionPoolsClientImpl implements ContainerAppsS
             .flatMap(res -> Mono.justOrEmpty(res.getValue()));
     }
 
-    /**
-     * Get the properties of a session pool.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param sessionPoolName Name of the session pool.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the properties of a session pool along with {@link Response}.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Response<SessionPoolInner> getByResourceGroupWithResponse(String resourceGroupName, String sessionPoolName,
         Context context) {
@@ -273,16 +263,7 @@ public final class ContainerAppsSessionPoolsClientImpl implements ContainerAppsS
             this.client.getSubscriptionId(), resourceGroupName, sessionPoolName, accept, context);
     }
 
-    /**
-     * Get the properties of a session pool.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param sessionPoolName Name of the session pool.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the properties of a session pool.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public SessionPoolInner getByResourceGroup(String resourceGroupName, String sessionPoolName) {
         return getByResourceGroupWithResponse(resourceGroupName, sessionPoolName, Context.NONE).getValue();
@@ -329,11 +310,7 @@ public final class ContainerAppsSessionPoolsClientImpl implements ContainerAppsS
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Response<BinaryData> createOrUpdateWithResponse(String resourceGroupName, String sessionPoolName,
         SessionPoolInner sessionPoolEnvelope) {
-        final String contentType = "application/json";
-        final String accept = "application/json";
-        return service.createOrUpdateSync(this.client.getEndpoint(), this.client.getApiVersion(),
-            this.client.getSubscriptionId(), resourceGroupName, sessionPoolName, contentType, accept,
-            sessionPoolEnvelope, Context.NONE);
+        return createOrUpdateWithResponse(resourceGroupName, sessionPoolName, sessionPoolEnvelope, Context.NONE);
     }
 
     /**
@@ -382,42 +359,14 @@ public final class ContainerAppsSessionPoolsClientImpl implements ContainerAppsS
             SessionPoolInner.class, SessionPoolInner.class, this.client.getContext());
     }
 
-    /**
-     * Create or update a session pool.
-     * 
-     * Create or update a session pool with the given properties.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param sessionPoolName Name of the session pool.
-     * @param sessionPoolEnvelope Properties used to create a session pool.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the {@link SyncPoller} for polling of container App session pool.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public SyncPoller<PollResult<SessionPoolInner>, SessionPoolInner> beginCreateOrUpdate(String resourceGroupName,
         String sessionPoolName, SessionPoolInner sessionPoolEnvelope) {
-        Response<BinaryData> response
-            = createOrUpdateWithResponse(resourceGroupName, sessionPoolName, sessionPoolEnvelope);
-        return this.client.<SessionPoolInner, SessionPoolInner>getLroResult(response, SessionPoolInner.class,
-            SessionPoolInner.class, Context.NONE);
+        return beginCreateOrUpdate(resourceGroupName, sessionPoolName, sessionPoolEnvelope, Context.NONE);
     }
 
-    /**
-     * Create or update a session pool.
-     * 
-     * Create or update a session pool with the given properties.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param sessionPoolName Name of the session pool.
-     * @param sessionPoolEnvelope Properties used to create a session pool.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the {@link SyncPoller} for polling of container App session pool.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public SyncPoller<PollResult<SessionPoolInner>, SessionPoolInner> beginCreateOrUpdate(String resourceGroupName,
         String sessionPoolName, SessionPoolInner sessionPoolEnvelope, Context context) {
@@ -447,43 +396,19 @@ public final class ContainerAppsSessionPoolsClientImpl implements ContainerAppsS
             .flatMap(this.client::getLroFinalResultOrError);
     }
 
-    /**
-     * Create or update a session pool.
-     * 
-     * Create or update a session pool with the given properties.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param sessionPoolName Name of the session pool.
-     * @param sessionPoolEnvelope Properties used to create a session pool.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return container App session pool.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public SessionPoolInner createOrUpdate(String resourceGroupName, String sessionPoolName,
         SessionPoolInner sessionPoolEnvelope) {
-        return beginCreateOrUpdate(resourceGroupName, sessionPoolName, sessionPoolEnvelope).getFinalResult();
+        return createOrUpdate(resourceGroupName, sessionPoolName, sessionPoolEnvelope, Context.NONE);
     }
 
-    /**
-     * Create or update a session pool.
-     * 
-     * Create or update a session pool with the given properties.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param sessionPoolName Name of the session pool.
-     * @param sessionPoolEnvelope Properties used to create a session pool.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return container App session pool.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public SessionPoolInner createOrUpdate(String resourceGroupName, String sessionPoolName,
         SessionPoolInner sessionPoolEnvelope, Context context) {
-        return beginCreateOrUpdate(resourceGroupName, sessionPoolName, sessionPoolEnvelope, context).getFinalResult();
+        return this.client.getLroFinalResultOrError(
+            beginCreateOrUpdate(resourceGroupName, sessionPoolName, sessionPoolEnvelope, context));
     }
 
     /**
@@ -527,11 +452,7 @@ public final class ContainerAppsSessionPoolsClientImpl implements ContainerAppsS
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Response<BinaryData> updateWithResponse(String resourceGroupName, String sessionPoolName,
         SessionPoolUpdatableProperties sessionPoolEnvelope) {
-        final String contentType = "application/json";
-        final String accept = "application/json";
-        return service.updateSync(this.client.getEndpoint(), this.client.getApiVersion(),
-            this.client.getSubscriptionId(), resourceGroupName, sessionPoolName, contentType, accept,
-            sessionPoolEnvelope, Context.NONE);
+        return updateWithResponse(resourceGroupName, sessionPoolName, sessionPoolEnvelope, Context.NONE);
     }
 
     /**
@@ -580,41 +501,14 @@ public final class ContainerAppsSessionPoolsClientImpl implements ContainerAppsS
             SessionPoolInner.class, SessionPoolInner.class, this.client.getContext());
     }
 
-    /**
-     * Update properties of a session pool
-     * 
-     * Patches a session pool using JSON merge patch.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param sessionPoolName Name of the session pool.
-     * @param sessionPoolEnvelope Properties used to create a session pool.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the {@link SyncPoller} for polling of container App session pool.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public SyncPoller<PollResult<SessionPoolInner>, SessionPoolInner> beginUpdate(String resourceGroupName,
         String sessionPoolName, SessionPoolUpdatableProperties sessionPoolEnvelope) {
-        Response<BinaryData> response = updateWithResponse(resourceGroupName, sessionPoolName, sessionPoolEnvelope);
-        return this.client.<SessionPoolInner, SessionPoolInner>getLroResult(response, SessionPoolInner.class,
-            SessionPoolInner.class, Context.NONE);
+        return beginUpdate(resourceGroupName, sessionPoolName, sessionPoolEnvelope, Context.NONE);
     }
 
-    /**
-     * Update properties of a session pool
-     * 
-     * Patches a session pool using JSON merge patch.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param sessionPoolName Name of the session pool.
-     * @param sessionPoolEnvelope Properties used to create a session pool.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the {@link SyncPoller} for polling of container App session pool.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public SyncPoller<PollResult<SessionPoolInner>, SessionPoolInner> beginUpdate(String resourceGroupName,
         String sessionPoolName, SessionPoolUpdatableProperties sessionPoolEnvelope, Context context) {
@@ -644,43 +538,19 @@ public final class ContainerAppsSessionPoolsClientImpl implements ContainerAppsS
             .flatMap(this.client::getLroFinalResultOrError);
     }
 
-    /**
-     * Update properties of a session pool
-     * 
-     * Patches a session pool using JSON merge patch.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param sessionPoolName Name of the session pool.
-     * @param sessionPoolEnvelope Properties used to create a session pool.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return container App session pool.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public SessionPoolInner update(String resourceGroupName, String sessionPoolName,
         SessionPoolUpdatableProperties sessionPoolEnvelope) {
-        return beginUpdate(resourceGroupName, sessionPoolName, sessionPoolEnvelope).getFinalResult();
+        return update(resourceGroupName, sessionPoolName, sessionPoolEnvelope, Context.NONE);
     }
 
-    /**
-     * Update properties of a session pool
-     * 
-     * Patches a session pool using JSON merge patch.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param sessionPoolName Name of the session pool.
-     * @param sessionPoolEnvelope Properties used to create a session pool.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return container App session pool.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public SessionPoolInner update(String resourceGroupName, String sessionPoolName,
         SessionPoolUpdatableProperties sessionPoolEnvelope, Context context) {
-        return beginUpdate(resourceGroupName, sessionPoolName, sessionPoolEnvelope, context).getFinalResult();
+        return this.client
+            .getLroFinalResultOrError(beginUpdate(resourceGroupName, sessionPoolName, sessionPoolEnvelope, context));
     }
 
     /**
@@ -717,8 +587,7 @@ public final class ContainerAppsSessionPoolsClientImpl implements ContainerAppsS
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Response<BinaryData> deleteWithResponse(String resourceGroupName, String sessionPoolName) {
-        return service.deleteSync(this.client.getEndpoint(), this.client.getApiVersion(),
-            this.client.getSubscriptionId(), resourceGroupName, sessionPoolName, Context.NONE);
+        return deleteWithResponse(resourceGroupName, sessionPoolName, Context.NONE);
     }
 
     /**
@@ -759,37 +628,13 @@ public final class ContainerAppsSessionPoolsClientImpl implements ContainerAppsS
             this.client.getContext());
     }
 
-    /**
-     * Delete a session pool.
-     * 
-     * Delete the session pool with the given name.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param sessionPoolName Name of the session pool.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the {@link SyncPoller} for polling of long-running operation.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public SyncPoller<PollResult<Void>, Void> beginDelete(String resourceGroupName, String sessionPoolName) {
-        Response<BinaryData> response = deleteWithResponse(resourceGroupName, sessionPoolName);
-        return this.client.<Void, Void>getLroResult(response, Void.class, Void.class, Context.NONE);
+        return beginDelete(resourceGroupName, sessionPoolName, Context.NONE);
     }
 
-    /**
-     * Delete a session pool.
-     * 
-     * Delete the session pool with the given name.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param sessionPoolName Name of the session pool.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the {@link SyncPoller} for polling of long-running operation.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public SyncPoller<PollResult<Void>, Void> beginDelete(String resourceGroupName, String sessionPoolName,
         Context context) {
@@ -815,37 +660,16 @@ public final class ContainerAppsSessionPoolsClientImpl implements ContainerAppsS
             .flatMap(this.client::getLroFinalResultOrError);
     }
 
-    /**
-     * Delete a session pool.
-     * 
-     * Delete the session pool with the given name.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param sessionPoolName Name of the session pool.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public void delete(String resourceGroupName, String sessionPoolName) {
-        beginDelete(resourceGroupName, sessionPoolName).getFinalResult();
+        delete(resourceGroupName, sessionPoolName, Context.NONE);
     }
 
-    /**
-     * Delete a session pool.
-     * 
-     * Delete the session pool with the given name.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param sessionPoolName Name of the session pool.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public void delete(String resourceGroupName, String sessionPoolName, Context context) {
-        beginDelete(resourceGroupName, sessionPoolName, context).getFinalResult();
+        this.client.getLroFinalResultOrError(beginDelete(resourceGroupName, sessionPoolName, context));
     }
 
     /**
@@ -896,11 +720,7 @@ public final class ContainerAppsSessionPoolsClientImpl implements ContainerAppsS
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private PagedResponse<SessionPoolInner> listByResourceGroupSinglePage(String resourceGroupName) {
-        final String accept = "application/json";
-        Response<SessionPoolCollection> res = service.listByResourceGroupSync(this.client.getEndpoint(),
-            this.client.getApiVersion(), this.client.getSubscriptionId(), resourceGroupName, accept, Context.NONE);
-        return new PagedResponseBase<>(res.getRequest(), res.getStatusCode(), res.getHeaders(), res.getValue().value(),
-            res.getValue().nextLink(), null);
+        return listByResourceGroupSinglePage(resourceGroupName, Context.NONE);
     }
 
     /**
@@ -922,33 +742,13 @@ public final class ContainerAppsSessionPoolsClientImpl implements ContainerAppsS
             res.getValue().nextLink(), null);
     }
 
-    /**
-     * Get the session pools in a given resource group of a subscription.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the session pools in a given resource group of a subscription as paginated response with
-     * {@link PagedIterable}.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.COLLECTION)
     public PagedIterable<SessionPoolInner> listByResourceGroup(String resourceGroupName) {
-        return new PagedIterable<>(() -> listByResourceGroupSinglePage(resourceGroupName),
-            nextLink -> listByResourceGroupNextSinglePage(nextLink));
+        return listByResourceGroup(resourceGroupName, Context.NONE);
     }
 
-    /**
-     * Get the session pools in a given resource group of a subscription.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the session pools in a given resource group of a subscription as paginated response with
-     * {@link PagedIterable}.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.COLLECTION)
     public PagedIterable<SessionPoolInner> listByResourceGroup(String resourceGroupName, Context context) {
         return new PagedIterable<>(() -> listByResourceGroupSinglePage(resourceGroupName, context),
@@ -996,11 +796,7 @@ public final class ContainerAppsSessionPoolsClientImpl implements ContainerAppsS
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private PagedResponse<SessionPoolInner> listSinglePage() {
-        final String accept = "application/json";
-        Response<SessionPoolCollection> res = service.listSync(this.client.getEndpoint(), this.client.getApiVersion(),
-            this.client.getSubscriptionId(), accept, Context.NONE);
-        return new PagedResponseBase<>(res.getRequest(), res.getStatusCode(), res.getHeaders(), res.getValue().value(),
-            res.getValue().nextLink(), null);
+        return listSinglePage(Context.NONE);
     }
 
     /**
@@ -1021,27 +817,13 @@ public final class ContainerAppsSessionPoolsClientImpl implements ContainerAppsS
             res.getValue().nextLink(), null);
     }
 
-    /**
-     * Get the session pools in a given subscription.
-     * 
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the session pools in a given subscription as paginated response with {@link PagedIterable}.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.COLLECTION)
     public PagedIterable<SessionPoolInner> list() {
-        return new PagedIterable<>(() -> listSinglePage(), nextLink -> listBySubscriptionNextSinglePage(nextLink));
+        return list(Context.NONE);
     }
 
-    /**
-     * Get the session pools in a given subscription.
-     * 
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the session pools in a given subscription as paginated response with {@link PagedIterable}.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.COLLECTION)
     public PagedIterable<SessionPoolInner> list(Context context) {
         return new PagedIterable<>(() -> listSinglePage(context),
@@ -1084,11 +866,7 @@ public final class ContainerAppsSessionPoolsClientImpl implements ContainerAppsS
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private PagedResponse<SessionPoolInner> listByResourceGroupNextSinglePage(String nextLink) {
-        final String accept = "application/json";
-        Response<SessionPoolCollection> res
-            = service.listByResourceGroupNextSync(nextLink, this.client.getEndpoint(), accept, Context.NONE);
-        return new PagedResponseBase<>(res.getRequest(), res.getStatusCode(), res.getHeaders(), res.getValue().value(),
-            res.getValue().nextLink(), null);
+        return listByResourceGroupNextSinglePage(nextLink, Context.NONE);
     }
 
     /**
@@ -1148,11 +926,7 @@ public final class ContainerAppsSessionPoolsClientImpl implements ContainerAppsS
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private PagedResponse<SessionPoolInner> listBySubscriptionNextSinglePage(String nextLink) {
-        final String accept = "application/json";
-        Response<SessionPoolCollection> res
-            = service.listBySubscriptionNextSync(nextLink, this.client.getEndpoint(), accept, Context.NONE);
-        return new PagedResponseBase<>(res.getRequest(), res.getStatusCode(), res.getHeaders(), res.getValue().value(),
-            res.getValue().nextLink(), null);
+        return listBySubscriptionNextSinglePage(nextLink, Context.NONE);
     }
 
     /**

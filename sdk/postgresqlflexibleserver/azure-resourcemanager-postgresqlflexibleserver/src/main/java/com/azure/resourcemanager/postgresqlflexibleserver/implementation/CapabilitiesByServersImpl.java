@@ -26,8 +26,7 @@ public final class CapabilitiesByServersImpl implements CapabilitiesByServers {
     }
 
     public PagedIterable<Capability> list(String resourceGroupName, String serverName) {
-        PagedIterable<CapabilityInner> inner = this.serviceClient().list(resourceGroupName, serverName);
-        return ResourceManagerUtils.mapPage(inner, inner1 -> new CapabilityImpl(inner1, this.manager()));
+        return this.list(resourceGroupName, serverName, Context.NONE);
     }
 
     public PagedIterable<Capability> list(String resourceGroupName, String serverName, Context context) {

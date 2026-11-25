@@ -74,10 +74,7 @@ public final class NginxCertificateImpl
     }
 
     public NginxCertificate create() {
-        this.innerObject = serviceManager.serviceClient()
-            .getCertificates()
-            .createOrUpdate(resourceGroupName, deploymentName, certificateName, this.innerModel(), Context.NONE);
-        return this;
+        return this.create(Context.NONE);
     }
 
     public NginxCertificate create(Context context) {
@@ -98,10 +95,7 @@ public final class NginxCertificateImpl
     }
 
     public NginxCertificate apply() {
-        this.innerObject = serviceManager.serviceClient()
-            .getCertificates()
-            .createOrUpdate(resourceGroupName, deploymentName, certificateName, this.innerModel(), Context.NONE);
-        return this;
+        return this.apply(Context.NONE);
     }
 
     public NginxCertificate apply(Context context) {
@@ -127,11 +121,7 @@ public final class NginxCertificateImpl
     }
 
     public NginxCertificate refresh() {
-        this.innerObject = serviceManager.serviceClient()
-            .getCertificates()
-            .getWithResponse(resourceGroupName, deploymentName, certificateName, Context.NONE)
-            .getValue();
-        return this;
+        return this.refresh(Context.NONE);
     }
 
     public NginxCertificate refresh(Context context) {

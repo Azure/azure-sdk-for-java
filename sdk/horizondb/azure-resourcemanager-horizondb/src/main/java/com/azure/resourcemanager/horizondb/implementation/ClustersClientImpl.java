@@ -230,17 +230,7 @@ public final class ClustersClientImpl implements ClustersClient {
             @HeaderParam("Accept") String accept, Context context);
     }
 
-    /**
-     * Gets information about a HorizonDB cluster.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param clusterName The name of the HorizonDB cluster.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return information about a HorizonDB cluster along with {@link Response} on successful completion of
-     * {@link Mono}.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Response<ClusterInner>> getByResourceGroupWithResponseAsync(String resourceGroupName,
         String clusterName) {
@@ -251,33 +241,14 @@ public final class ClustersClientImpl implements ClustersClient {
             .contextWrite(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext()).readOnly()));
     }
 
-    /**
-     * Gets information about a HorizonDB cluster.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param clusterName The name of the HorizonDB cluster.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return information about a HorizonDB cluster on successful completion of {@link Mono}.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<ClusterInner> getByResourceGroupAsync(String resourceGroupName, String clusterName) {
         return getByResourceGroupWithResponseAsync(resourceGroupName, clusterName)
             .flatMap(res -> Mono.justOrEmpty(res.getValue()));
     }
 
-    /**
-     * Gets information about a HorizonDB cluster.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param clusterName The name of the HorizonDB cluster.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return information about a HorizonDB cluster along with {@link Response}.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Response<ClusterInner> getByResourceGroupWithResponse(String resourceGroupName, String clusterName,
         Context context) {
@@ -286,40 +257,13 @@ public final class ClustersClientImpl implements ClustersClient {
             this.client.getSubscriptionId(), resourceGroupName, clusterName, accept, context);
     }
 
-    /**
-     * Gets information about a HorizonDB cluster.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param clusterName The name of the HorizonDB cluster.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return information about a HorizonDB cluster.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public ClusterInner getByResourceGroup(String resourceGroupName, String clusterName) {
         return getByResourceGroupWithResponse(resourceGroupName, clusterName, Context.NONE).getValue();
     }
 
-    /**
-     * Creates a new HorizonDB cluster or replaces an existing cluster. PointInTimeRestore creates the new Cluster
-     * resource and hydrates its service-owned database storage from an available source backup. It does not clone
-     * source pools, Pool-scoped endpoints, firewall rules, parameter-group associations, or other child resources. The
-     * new Cluster receives its service-generated Cluster-scoped Endpoint named cluster. For restore, postgreSqlVersion
-     * must be omitted because the service obtains it from backup metadata; all other new-cluster configuration comes
-     * from the request or service defaults. Same-location restore requires and honors pointInTimeUtc and allows
-     * creationSourceClusterLocation to be omitted. Cross-location restore requires creationSourceClusterLocation to
-     * identify the source cluster's Azure location and requires pointInTimeUtc, but ignores the supplied timestamp and
-     * restores the latest available backup. Cross-location responses omit pointInTimeUtc.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param clusterName The name of the HorizonDB cluster.
-     * @param resource Resource create parameters.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return represents the HorizonDB cluster along with {@link Response} on successful completion of {@link Mono}.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Response<Flux<ByteBuffer>>> createOrReplaceWithResponseAsync(String resourceGroupName,
         String clusterName, ClusterInner resource) {
@@ -337,11 +281,14 @@ public final class ClustersClientImpl implements ClustersClient {
      * resource and hydrates its service-owned database storage from an available source backup. It does not clone
      * source pools, Pool-scoped endpoints, firewall rules, parameter-group associations, or other child resources. The
      * new Cluster receives its service-generated Cluster-scoped Endpoint named cluster. For restore, postgreSqlVersion
-     * must be omitted because the service obtains it from backup metadata; all other new-cluster configuration comes
-     * from the request or service defaults. Same-location restore requires and honors pointInTimeUtc and allows
-     * creationSourceClusterLocation to be omitted. Cross-location restore requires creationSourceClusterLocation to
-     * identify the source cluster's Azure location and requires pointInTimeUtc, but ignores the supplied timestamp and
-     * restores the latest available backup. Cross-location responses omit pointInTimeUtc.
+     * must be omitted because the service obtains it from backup metadata. During restore creation, the service ignores
+     * the requested backup.geoRedundancy value and configures the new cluster with the same geo-redundancy setting as
+     * the source cluster; this applies to both same-location and cross-location restores. All remaining new-cluster
+     * configuration comes from the request or service defaults. Same-location restore requires and honors
+     * pointInTimeUtc and allows creationSourceClusterLocation to be omitted. Cross-location restore requires
+     * creationSourceClusterLocation to identify the source cluster's Azure location and requires pointInTimeUtc, but
+     * ignores the supplied timestamp and restores the latest available backup. Cross-location responses omit
+     * pointInTimeUtc.
      * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param clusterName The name of the HorizonDB cluster.
@@ -354,11 +301,7 @@ public final class ClustersClientImpl implements ClustersClient {
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Response<BinaryData> createOrReplaceWithResponse(String resourceGroupName, String clusterName,
         ClusterInner resource) {
-        final String contentType = "application/json";
-        final String accept = "application/json";
-        return service.createOrReplaceSync(this.client.getEndpoint(), this.client.getApiVersion(),
-            this.client.getSubscriptionId(), resourceGroupName, clusterName, contentType, accept, resource,
-            Context.NONE);
+        return createOrReplaceWithResponse(resourceGroupName, clusterName, resource, Context.NONE);
     }
 
     /**
@@ -366,11 +309,14 @@ public final class ClustersClientImpl implements ClustersClient {
      * resource and hydrates its service-owned database storage from an available source backup. It does not clone
      * source pools, Pool-scoped endpoints, firewall rules, parameter-group associations, or other child resources. The
      * new Cluster receives its service-generated Cluster-scoped Endpoint named cluster. For restore, postgreSqlVersion
-     * must be omitted because the service obtains it from backup metadata; all other new-cluster configuration comes
-     * from the request or service defaults. Same-location restore requires and honors pointInTimeUtc and allows
-     * creationSourceClusterLocation to be omitted. Cross-location restore requires creationSourceClusterLocation to
-     * identify the source cluster's Azure location and requires pointInTimeUtc, but ignores the supplied timestamp and
-     * restores the latest available backup. Cross-location responses omit pointInTimeUtc.
+     * must be omitted because the service obtains it from backup metadata. During restore creation, the service ignores
+     * the requested backup.geoRedundancy value and configures the new cluster with the same geo-redundancy setting as
+     * the source cluster; this applies to both same-location and cross-location restores. All remaining new-cluster
+     * configuration comes from the request or service defaults. Same-location restore requires and honors
+     * pointInTimeUtc and allows creationSourceClusterLocation to be omitted. Cross-location restore requires
+     * creationSourceClusterLocation to identify the source cluster's Azure location and requires pointInTimeUtc, but
+     * ignores the supplied timestamp and restores the latest available backup. Cross-location responses omit
+     * pointInTimeUtc.
      * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param clusterName The name of the HorizonDB cluster.
@@ -390,25 +336,7 @@ public final class ClustersClientImpl implements ClustersClient {
             this.client.getSubscriptionId(), resourceGroupName, clusterName, contentType, accept, resource, context);
     }
 
-    /**
-     * Creates a new HorizonDB cluster or replaces an existing cluster. PointInTimeRestore creates the new Cluster
-     * resource and hydrates its service-owned database storage from an available source backup. It does not clone
-     * source pools, Pool-scoped endpoints, firewall rules, parameter-group associations, or other child resources. The
-     * new Cluster receives its service-generated Cluster-scoped Endpoint named cluster. For restore, postgreSqlVersion
-     * must be omitted because the service obtains it from backup metadata; all other new-cluster configuration comes
-     * from the request or service defaults. Same-location restore requires and honors pointInTimeUtc and allows
-     * creationSourceClusterLocation to be omitted. Cross-location restore requires creationSourceClusterLocation to
-     * identify the source cluster's Azure location and requires pointInTimeUtc, but ignores the supplied timestamp and
-     * restores the latest available backup. Cross-location responses omit pointInTimeUtc.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param clusterName The name of the HorizonDB cluster.
-     * @param resource Resource create parameters.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the {@link PollerFlux} for polling of represents the HorizonDB cluster.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public PollerFlux<PollResult<ClusterInner>, ClusterInner> beginCreateOrReplaceAsync(String resourceGroupName,
         String clusterName, ClusterInner resource) {
@@ -418,53 +346,14 @@ public final class ClustersClientImpl implements ClustersClient {
             ClusterInner.class, ClusterInner.class, this.client.getContext());
     }
 
-    /**
-     * Creates a new HorizonDB cluster or replaces an existing cluster. PointInTimeRestore creates the new Cluster
-     * resource and hydrates its service-owned database storage from an available source backup. It does not clone
-     * source pools, Pool-scoped endpoints, firewall rules, parameter-group associations, or other child resources. The
-     * new Cluster receives its service-generated Cluster-scoped Endpoint named cluster. For restore, postgreSqlVersion
-     * must be omitted because the service obtains it from backup metadata; all other new-cluster configuration comes
-     * from the request or service defaults. Same-location restore requires and honors pointInTimeUtc and allows
-     * creationSourceClusterLocation to be omitted. Cross-location restore requires creationSourceClusterLocation to
-     * identify the source cluster's Azure location and requires pointInTimeUtc, but ignores the supplied timestamp and
-     * restores the latest available backup. Cross-location responses omit pointInTimeUtc.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param clusterName The name of the HorizonDB cluster.
-     * @param resource Resource create parameters.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the {@link SyncPoller} for polling of represents the HorizonDB cluster.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public SyncPoller<PollResult<ClusterInner>, ClusterInner> beginCreateOrReplace(String resourceGroupName,
         String clusterName, ClusterInner resource) {
-        Response<BinaryData> response = createOrReplaceWithResponse(resourceGroupName, clusterName, resource);
-        return this.client.<ClusterInner, ClusterInner>getLroResult(response, ClusterInner.class, ClusterInner.class,
-            Context.NONE);
+        return beginCreateOrReplace(resourceGroupName, clusterName, resource, Context.NONE);
     }
 
-    /**
-     * Creates a new HorizonDB cluster or replaces an existing cluster. PointInTimeRestore creates the new Cluster
-     * resource and hydrates its service-owned database storage from an available source backup. It does not clone
-     * source pools, Pool-scoped endpoints, firewall rules, parameter-group associations, or other child resources. The
-     * new Cluster receives its service-generated Cluster-scoped Endpoint named cluster. For restore, postgreSqlVersion
-     * must be omitted because the service obtains it from backup metadata; all other new-cluster configuration comes
-     * from the request or service defaults. Same-location restore requires and honors pointInTimeUtc and allows
-     * creationSourceClusterLocation to be omitted. Cross-location restore requires creationSourceClusterLocation to
-     * identify the source cluster's Azure location and requires pointInTimeUtc, but ignores the supplied timestamp and
-     * restores the latest available backup. Cross-location responses omit pointInTimeUtc.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param clusterName The name of the HorizonDB cluster.
-     * @param resource Resource create parameters.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the {@link SyncPoller} for polling of represents the HorizonDB cluster.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public SyncPoller<PollResult<ClusterInner>, ClusterInner> beginCreateOrReplace(String resourceGroupName,
         String clusterName, ClusterInner resource, Context context) {
@@ -473,25 +362,7 @@ public final class ClustersClientImpl implements ClustersClient {
             context);
     }
 
-    /**
-     * Creates a new HorizonDB cluster or replaces an existing cluster. PointInTimeRestore creates the new Cluster
-     * resource and hydrates its service-owned database storage from an available source backup. It does not clone
-     * source pools, Pool-scoped endpoints, firewall rules, parameter-group associations, or other child resources. The
-     * new Cluster receives its service-generated Cluster-scoped Endpoint named cluster. For restore, postgreSqlVersion
-     * must be omitted because the service obtains it from backup metadata; all other new-cluster configuration comes
-     * from the request or service defaults. Same-location restore requires and honors pointInTimeUtc and allows
-     * creationSourceClusterLocation to be omitted. Cross-location restore requires creationSourceClusterLocation to
-     * identify the source cluster's Azure location and requires pointInTimeUtc, but ignores the supplied timestamp and
-     * restores the latest available backup. Cross-location responses omit pointInTimeUtc.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param clusterName The name of the HorizonDB cluster.
-     * @param resource Resource create parameters.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return represents the HorizonDB cluster on successful completion of {@link Mono}.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<ClusterInner> createOrReplaceAsync(String resourceGroupName, String clusterName,
         ClusterInner resource) {
@@ -499,67 +370,21 @@ public final class ClustersClientImpl implements ClustersClient {
             .flatMap(this.client::getLroFinalResultOrError);
     }
 
-    /**
-     * Creates a new HorizonDB cluster or replaces an existing cluster. PointInTimeRestore creates the new Cluster
-     * resource and hydrates its service-owned database storage from an available source backup. It does not clone
-     * source pools, Pool-scoped endpoints, firewall rules, parameter-group associations, or other child resources. The
-     * new Cluster receives its service-generated Cluster-scoped Endpoint named cluster. For restore, postgreSqlVersion
-     * must be omitted because the service obtains it from backup metadata; all other new-cluster configuration comes
-     * from the request or service defaults. Same-location restore requires and honors pointInTimeUtc and allows
-     * creationSourceClusterLocation to be omitted. Cross-location restore requires creationSourceClusterLocation to
-     * identify the source cluster's Azure location and requires pointInTimeUtc, but ignores the supplied timestamp and
-     * restores the latest available backup. Cross-location responses omit pointInTimeUtc.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param clusterName The name of the HorizonDB cluster.
-     * @param resource Resource create parameters.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return represents the HorizonDB cluster.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public ClusterInner createOrReplace(String resourceGroupName, String clusterName, ClusterInner resource) {
-        return beginCreateOrReplace(resourceGroupName, clusterName, resource).getFinalResult();
+        return createOrReplace(resourceGroupName, clusterName, resource, Context.NONE);
     }
 
-    /**
-     * Creates a new HorizonDB cluster or replaces an existing cluster. PointInTimeRestore creates the new Cluster
-     * resource and hydrates its service-owned database storage from an available source backup. It does not clone
-     * source pools, Pool-scoped endpoints, firewall rules, parameter-group associations, or other child resources. The
-     * new Cluster receives its service-generated Cluster-scoped Endpoint named cluster. For restore, postgreSqlVersion
-     * must be omitted because the service obtains it from backup metadata; all other new-cluster configuration comes
-     * from the request or service defaults. Same-location restore requires and honors pointInTimeUtc and allows
-     * creationSourceClusterLocation to be omitted. Cross-location restore requires creationSourceClusterLocation to
-     * identify the source cluster's Azure location and requires pointInTimeUtc, but ignores the supplied timestamp and
-     * restores the latest available backup. Cross-location responses omit pointInTimeUtc.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param clusterName The name of the HorizonDB cluster.
-     * @param resource Resource create parameters.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return represents the HorizonDB cluster.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public ClusterInner createOrReplace(String resourceGroupName, String clusterName, ClusterInner resource,
         Context context) {
-        return beginCreateOrReplace(resourceGroupName, clusterName, resource, context).getFinalResult();
+        return this.client
+            .getLroFinalResultOrError(beginCreateOrReplace(resourceGroupName, clusterName, resource, context));
     }
 
-    /**
-     * Updates an existing HorizonDB cluster.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param clusterName The name of the HorizonDB cluster.
-     * @param properties The resource properties to be updated.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return represents the HorizonDB cluster along with {@link Response} on successful completion of {@link Mono}.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Response<Flux<ByteBuffer>>> updateWithResponseAsync(String resourceGroupName, String clusterName,
         ClusterForPatchUpdate properties) {
@@ -584,11 +409,7 @@ public final class ClustersClientImpl implements ClustersClient {
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Response<BinaryData> updateWithResponse(String resourceGroupName, String clusterName,
         ClusterForPatchUpdate properties) {
-        final String contentType = "application/json";
-        final String accept = "application/json";
-        return service.updateSync(this.client.getEndpoint(), this.client.getApiVersion(),
-            this.client.getSubscriptionId(), resourceGroupName, clusterName, contentType, accept, properties,
-            Context.NONE);
+        return updateWithResponse(resourceGroupName, clusterName, properties, Context.NONE);
     }
 
     /**
@@ -612,17 +433,7 @@ public final class ClustersClientImpl implements ClustersClient {
             this.client.getSubscriptionId(), resourceGroupName, clusterName, contentType, accept, properties, context);
     }
 
-    /**
-     * Updates an existing HorizonDB cluster.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param clusterName The name of the HorizonDB cluster.
-     * @param properties The resource properties to be updated.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the {@link PollerFlux} for polling of represents the HorizonDB cluster.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public PollerFlux<PollResult<ClusterInner>, ClusterInner> beginUpdateAsync(String resourceGroupName,
         String clusterName, ClusterForPatchUpdate properties) {
@@ -631,37 +442,14 @@ public final class ClustersClientImpl implements ClustersClient {
             ClusterInner.class, ClusterInner.class, this.client.getContext());
     }
 
-    /**
-     * Updates an existing HorizonDB cluster.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param clusterName The name of the HorizonDB cluster.
-     * @param properties The resource properties to be updated.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the {@link SyncPoller} for polling of represents the HorizonDB cluster.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public SyncPoller<PollResult<ClusterInner>, ClusterInner> beginUpdate(String resourceGroupName, String clusterName,
         ClusterForPatchUpdate properties) {
-        Response<BinaryData> response = updateWithResponse(resourceGroupName, clusterName, properties);
-        return this.client.<ClusterInner, ClusterInner>getLroResult(response, ClusterInner.class, ClusterInner.class,
-            Context.NONE);
+        return beginUpdate(resourceGroupName, clusterName, properties, Context.NONE);
     }
 
-    /**
-     * Updates an existing HorizonDB cluster.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param clusterName The name of the HorizonDB cluster.
-     * @param properties The resource properties to be updated.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the {@link SyncPoller} for polling of represents the HorizonDB cluster.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public SyncPoller<PollResult<ClusterInner>, ClusterInner> beginUpdate(String resourceGroupName, String clusterName,
         ClusterForPatchUpdate properties, Context context) {
@@ -670,17 +458,7 @@ public final class ClustersClientImpl implements ClustersClient {
             context);
     }
 
-    /**
-     * Updates an existing HorizonDB cluster.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param clusterName The name of the HorizonDB cluster.
-     * @param properties The resource properties to be updated.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return represents the HorizonDB cluster on successful completion of {@link Mono}.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<ClusterInner> updateAsync(String resourceGroupName, String clusterName,
         ClusterForPatchUpdate properties) {
@@ -688,52 +466,20 @@ public final class ClustersClientImpl implements ClustersClient {
             .flatMap(this.client::getLroFinalResultOrError);
     }
 
-    /**
-     * Updates an existing HorizonDB cluster.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param clusterName The name of the HorizonDB cluster.
-     * @param properties The resource properties to be updated.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return represents the HorizonDB cluster.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public ClusterInner update(String resourceGroupName, String clusterName, ClusterForPatchUpdate properties) {
-        return beginUpdate(resourceGroupName, clusterName, properties).getFinalResult();
+        return update(resourceGroupName, clusterName, properties, Context.NONE);
     }
 
-    /**
-     * Updates an existing HorizonDB cluster.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param clusterName The name of the HorizonDB cluster.
-     * @param properties The resource properties to be updated.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return represents the HorizonDB cluster.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public ClusterInner update(String resourceGroupName, String clusterName, ClusterForPatchUpdate properties,
         Context context) {
-        return beginUpdate(resourceGroupName, clusterName, properties, context).getFinalResult();
+        return this.client.getLroFinalResultOrError(beginUpdate(resourceGroupName, clusterName, properties, context));
     }
 
-    /**
-     * Deletes a HorizonDB cluster, its Cluster-scoped Endpoint, and all remaining child resources. For an accepted
-     * deletion, the long-running operation remains nonterminal until physical deletion completes and point GET returns
-     * 404 Not Found.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param clusterName The name of the HorizonDB cluster.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the {@link Response} on successful completion of {@link Mono}.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Response<Flux<ByteBuffer>>> deleteWithResponseAsync(String resourceGroupName, String clusterName) {
         return FluxUtil
@@ -756,8 +502,7 @@ public final class ClustersClientImpl implements ClustersClient {
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Response<BinaryData> deleteWithResponse(String resourceGroupName, String clusterName) {
-        return service.deleteSync(this.client.getEndpoint(), this.client.getApiVersion(),
-            this.client.getSubscriptionId(), resourceGroupName, clusterName, Context.NONE);
+        return deleteWithResponse(resourceGroupName, clusterName, Context.NONE);
     }
 
     /**
@@ -779,18 +524,7 @@ public final class ClustersClientImpl implements ClustersClient {
             this.client.getSubscriptionId(), resourceGroupName, clusterName, context);
     }
 
-    /**
-     * Deletes a HorizonDB cluster, its Cluster-scoped Endpoint, and all remaining child resources. For an accepted
-     * deletion, the long-running operation remains nonterminal until physical deletion completes and point GET returns
-     * 404 Not Found.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param clusterName The name of the HorizonDB cluster.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the {@link PollerFlux} for polling of long-running operation.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public PollerFlux<PollResult<Void>, Void> beginDeleteAsync(String resourceGroupName, String clusterName) {
         Mono<Response<Flux<ByteBuffer>>> mono = deleteWithResponseAsync(resourceGroupName, clusterName);
@@ -798,37 +532,13 @@ public final class ClustersClientImpl implements ClustersClient {
             this.client.getContext());
     }
 
-    /**
-     * Deletes a HorizonDB cluster, its Cluster-scoped Endpoint, and all remaining child resources. For an accepted
-     * deletion, the long-running operation remains nonterminal until physical deletion completes and point GET returns
-     * 404 Not Found.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param clusterName The name of the HorizonDB cluster.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the {@link SyncPoller} for polling of long-running operation.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public SyncPoller<PollResult<Void>, Void> beginDelete(String resourceGroupName, String clusterName) {
-        Response<BinaryData> response = deleteWithResponse(resourceGroupName, clusterName);
-        return this.client.<Void, Void>getLroResult(response, Void.class, Void.class, Context.NONE);
+        return beginDelete(resourceGroupName, clusterName, Context.NONE);
     }
 
-    /**
-     * Deletes a HorizonDB cluster, its Cluster-scoped Endpoint, and all remaining child resources. For an accepted
-     * deletion, the long-running operation remains nonterminal until physical deletion completes and point GET returns
-     * 404 Not Found.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param clusterName The name of the HorizonDB cluster.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the {@link SyncPoller} for polling of long-running operation.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public SyncPoller<PollResult<Void>, Void> beginDelete(String resourceGroupName, String clusterName,
         Context context) {
@@ -836,54 +546,22 @@ public final class ClustersClientImpl implements ClustersClient {
         return this.client.<Void, Void>getLroResult(response, Void.class, Void.class, context);
     }
 
-    /**
-     * Deletes a HorizonDB cluster, its Cluster-scoped Endpoint, and all remaining child resources. For an accepted
-     * deletion, the long-running operation remains nonterminal until physical deletion completes and point GET returns
-     * 404 Not Found.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param clusterName The name of the HorizonDB cluster.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return A {@link Mono} that completes when a successful response is received.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Void> deleteAsync(String resourceGroupName, String clusterName) {
         return beginDeleteAsync(resourceGroupName, clusterName).last().flatMap(this.client::getLroFinalResultOrError);
     }
 
-    /**
-     * Deletes a HorizonDB cluster, its Cluster-scoped Endpoint, and all remaining child resources. For an accepted
-     * deletion, the long-running operation remains nonterminal until physical deletion completes and point GET returns
-     * 404 Not Found.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param clusterName The name of the HorizonDB cluster.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public void delete(String resourceGroupName, String clusterName) {
-        beginDelete(resourceGroupName, clusterName).getFinalResult();
+        delete(resourceGroupName, clusterName, Context.NONE);
     }
 
-    /**
-     * Deletes a HorizonDB cluster, its Cluster-scoped Endpoint, and all remaining child resources. For an accepted
-     * deletion, the long-running operation remains nonterminal until physical deletion completes and point GET returns
-     * 404 Not Found.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param clusterName The name of the HorizonDB cluster.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public void delete(String resourceGroupName, String clusterName, Context context) {
-        beginDelete(resourceGroupName, clusterName, context).getFinalResult();
+        this.client.getLroFinalResultOrError(beginDelete(resourceGroupName, clusterName, context));
     }
 
     /**
@@ -907,15 +585,7 @@ public final class ClustersClientImpl implements ClustersClient {
             .contextWrite(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext()).readOnly()));
     }
 
-    /**
-     * Lists all HorizonDB clusters in a resource group.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the response of a Cluster list operation as paginated response with {@link PagedFlux}.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.COLLECTION)
     public PagedFlux<ClusterInner> listByResourceGroupAsync(String resourceGroupName) {
         return new PagedFlux<>(() -> listByResourceGroupSinglePageAsync(resourceGroupName),
@@ -933,11 +603,7 @@ public final class ClustersClientImpl implements ClustersClient {
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private PagedResponse<ClusterInner> listByResourceGroupSinglePage(String resourceGroupName) {
-        final String accept = "application/json";
-        Response<ClusterListResult> res = service.listByResourceGroupSync(this.client.getEndpoint(),
-            this.client.getApiVersion(), this.client.getSubscriptionId(), resourceGroupName, accept, Context.NONE);
-        return new PagedResponseBase<>(res.getRequest(), res.getStatusCode(), res.getHeaders(), res.getValue().value(),
-            res.getValue().nextLink(), null);
+        return listByResourceGroupSinglePage(resourceGroupName, Context.NONE);
     }
 
     /**
@@ -959,31 +625,13 @@ public final class ClustersClientImpl implements ClustersClient {
             res.getValue().nextLink(), null);
     }
 
-    /**
-     * Lists all HorizonDB clusters in a resource group.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the response of a Cluster list operation as paginated response with {@link PagedIterable}.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.COLLECTION)
     public PagedIterable<ClusterInner> listByResourceGroup(String resourceGroupName) {
-        return new PagedIterable<>(() -> listByResourceGroupSinglePage(resourceGroupName),
-            nextLink -> listByResourceGroupNextSinglePage(nextLink));
+        return listByResourceGroup(resourceGroupName, Context.NONE);
     }
 
-    /**
-     * Lists all HorizonDB clusters in a resource group.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the response of a Cluster list operation as paginated response with {@link PagedIterable}.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.COLLECTION)
     public PagedIterable<ClusterInner> listByResourceGroup(String resourceGroupName, Context context) {
         return new PagedIterable<>(() -> listByResourceGroupSinglePage(resourceGroupName, context),
@@ -1009,13 +657,7 @@ public final class ClustersClientImpl implements ClustersClient {
             .contextWrite(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext()).readOnly()));
     }
 
-    /**
-     * Lists all HorizonDB clusters in a subscription.
-     * 
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the response of a Cluster list operation as paginated response with {@link PagedFlux}.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.COLLECTION)
     public PagedFlux<ClusterInner> listAsync() {
         return new PagedFlux<>(() -> listSinglePageAsync(),
@@ -1031,11 +673,7 @@ public final class ClustersClientImpl implements ClustersClient {
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private PagedResponse<ClusterInner> listSinglePage() {
-        final String accept = "application/json";
-        Response<ClusterListResult> res = service.listSync(this.client.getEndpoint(), this.client.getApiVersion(),
-            this.client.getSubscriptionId(), accept, Context.NONE);
-        return new PagedResponseBase<>(res.getRequest(), res.getStatusCode(), res.getHeaders(), res.getValue().value(),
-            res.getValue().nextLink(), null);
+        return listSinglePage(Context.NONE);
     }
 
     /**
@@ -1056,45 +694,20 @@ public final class ClustersClientImpl implements ClustersClient {
             res.getValue().nextLink(), null);
     }
 
-    /**
-     * Lists all HorizonDB clusters in a subscription.
-     * 
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the response of a Cluster list operation as paginated response with {@link PagedIterable}.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.COLLECTION)
     public PagedIterable<ClusterInner> list() {
-        return new PagedIterable<>(() -> listSinglePage(), nextLink -> listBySubscriptionNextSinglePage(nextLink));
+        return list(Context.NONE);
     }
 
-    /**
-     * Lists all HorizonDB clusters in a subscription.
-     * 
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the response of a Cluster list operation as paginated response with {@link PagedIterable}.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.COLLECTION)
     public PagedIterable<ClusterInner> list(Context context) {
         return new PagedIterable<>(() -> listSinglePage(context),
             nextLink -> listBySubscriptionNextSinglePage(nextLink, context));
     }
 
-    /**
-     * Triggers failover within the cluster's designated read-write pool. HorizonDB selects the replacement node using
-     * the same eligibility and node-selection rules as automatic failover. The request fails with 409 Conflict when the
-     * designated pool is not eligible for failover or another conflicting operation is in progress.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param clusterName The name of the HorizonDB cluster.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the response body along with {@link Response} on successful completion of {@link Mono}.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Response<Flux<ByteBuffer>>> failoverWithResponseAsync(String resourceGroupName, String clusterName) {
         final String accept = "application/json";
@@ -1118,9 +731,7 @@ public final class ClustersClientImpl implements ClustersClient {
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Response<BinaryData> failoverWithResponse(String resourceGroupName, String clusterName) {
-        final String accept = "application/json";
-        return service.failoverSync(this.client.getEndpoint(), this.client.getApiVersion(),
-            this.client.getSubscriptionId(), resourceGroupName, clusterName, accept, Context.NONE);
+        return failoverWithResponse(resourceGroupName, clusterName, Context.NONE);
     }
 
     /**
@@ -1143,18 +754,7 @@ public final class ClustersClientImpl implements ClustersClient {
             this.client.getSubscriptionId(), resourceGroupName, clusterName, accept, context);
     }
 
-    /**
-     * Triggers failover within the cluster's designated read-write pool. HorizonDB selects the replacement node using
-     * the same eligibility and node-selection rules as automatic failover. The request fails with 409 Conflict when the
-     * designated pool is not eligible for failover or another conflicting operation is in progress.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param clusterName The name of the HorizonDB cluster.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the {@link PollerFlux} for polling of long-running operation.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public PollerFlux<PollResult<ClusterInner>, ClusterInner> beginFailoverAsync(String resourceGroupName,
         String clusterName) {
@@ -1163,39 +763,14 @@ public final class ClustersClientImpl implements ClustersClient {
             ClusterInner.class, ClusterInner.class, this.client.getContext());
     }
 
-    /**
-     * Triggers failover within the cluster's designated read-write pool. HorizonDB selects the replacement node using
-     * the same eligibility and node-selection rules as automatic failover. The request fails with 409 Conflict when the
-     * designated pool is not eligible for failover or another conflicting operation is in progress.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param clusterName The name of the HorizonDB cluster.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the {@link SyncPoller} for polling of long-running operation.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public SyncPoller<PollResult<ClusterInner>, ClusterInner> beginFailover(String resourceGroupName,
         String clusterName) {
-        Response<BinaryData> response = failoverWithResponse(resourceGroupName, clusterName);
-        return this.client.<ClusterInner, ClusterInner>getLroResult(response, ClusterInner.class, ClusterInner.class,
-            Context.NONE);
+        return beginFailover(resourceGroupName, clusterName, Context.NONE);
     }
 
-    /**
-     * Triggers failover within the cluster's designated read-write pool. HorizonDB selects the replacement node using
-     * the same eligibility and node-selection rules as automatic failover. The request fails with 409 Conflict when the
-     * designated pool is not eligible for failover or another conflicting operation is in progress.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param clusterName The name of the HorizonDB cluster.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the {@link SyncPoller} for polling of long-running operation.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public SyncPoller<PollResult<ClusterInner>, ClusterInner> beginFailover(String resourceGroupName,
         String clusterName, Context context) {
@@ -1204,56 +779,22 @@ public final class ClustersClientImpl implements ClustersClient {
             context);
     }
 
-    /**
-     * Triggers failover within the cluster's designated read-write pool. HorizonDB selects the replacement node using
-     * the same eligibility and node-selection rules as automatic failover. The request fails with 409 Conflict when the
-     * designated pool is not eligible for failover or another conflicting operation is in progress.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param clusterName The name of the HorizonDB cluster.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the response body on successful completion of {@link Mono}.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<ClusterInner> failoverAsync(String resourceGroupName, String clusterName) {
         return beginFailoverAsync(resourceGroupName, clusterName).last().flatMap(this.client::getLroFinalResultOrError);
     }
 
-    /**
-     * Triggers failover within the cluster's designated read-write pool. HorizonDB selects the replacement node using
-     * the same eligibility and node-selection rules as automatic failover. The request fails with 409 Conflict when the
-     * designated pool is not eligible for failover or another conflicting operation is in progress.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param clusterName The name of the HorizonDB cluster.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the response.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public ClusterInner failover(String resourceGroupName, String clusterName) {
-        return beginFailover(resourceGroupName, clusterName).getFinalResult();
+        return failover(resourceGroupName, clusterName, Context.NONE);
     }
 
-    /**
-     * Triggers failover within the cluster's designated read-write pool. HorizonDB selects the replacement node using
-     * the same eligibility and node-selection rules as automatic failover. The request fails with 409 Conflict when the
-     * designated pool is not eligible for failover or another conflicting operation is in progress.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param clusterName The name of the HorizonDB cluster.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the response.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public ClusterInner failover(String resourceGroupName, String clusterName, Context context) {
-        return beginFailover(resourceGroupName, clusterName, context).getFinalResult();
+        return this.client.getLroFinalResultOrError(beginFailover(resourceGroupName, clusterName, context));
     }
 
     /**
@@ -1288,11 +829,7 @@ public final class ClustersClientImpl implements ClustersClient {
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private PagedResponse<ClusterInner> listByResourceGroupNextSinglePage(String nextLink) {
-        final String accept = "application/json";
-        Response<ClusterListResult> res
-            = service.listByResourceGroupNextSync(nextLink, this.client.getEndpoint(), accept, Context.NONE);
-        return new PagedResponseBase<>(res.getRequest(), res.getStatusCode(), res.getHeaders(), res.getValue().value(),
-            res.getValue().nextLink(), null);
+        return listByResourceGroupNextSinglePage(nextLink, Context.NONE);
     }
 
     /**
@@ -1346,11 +883,7 @@ public final class ClustersClientImpl implements ClustersClient {
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private PagedResponse<ClusterInner> listBySubscriptionNextSinglePage(String nextLink) {
-        final String accept = "application/json";
-        Response<ClusterListResult> res
-            = service.listBySubscriptionNextSync(nextLink, this.client.getEndpoint(), accept, Context.NONE);
-        return new PagedResponseBase<>(res.getRequest(), res.getStatusCode(), res.getHeaders(), res.getValue().value(),
-            res.getValue().nextLink(), null);
+        return listBySubscriptionNextSinglePage(nextLink, Context.NONE);
     }
 
     /**

@@ -66,13 +66,11 @@ public final class TraceAssociationsAtResourceGroupsImpl implements TraceAssocia
     }
 
     public void delete(String resourceGroupName) {
-        this.serviceClient().delete(resourceGroupName);
+        this.deleteWithResponse(resourceGroupName, Context.NONE);
     }
 
     public PagedIterable<TraceAssociationResource> listByResourceGroup(String resourceGroupName) {
-        PagedIterable<TraceAssociationResourceInner> inner
-            = this.serviceClient().listByResourceGroup(resourceGroupName);
-        return ResourceManagerUtils.mapPage(inner, inner1 -> new TraceAssociationResourceImpl(inner1, this.manager()));
+        return this.listByResourceGroup(resourceGroupName, Context.NONE);
     }
 
     public PagedIterable<TraceAssociationResource> listByResourceGroup(String resourceGroupName, Context context) {

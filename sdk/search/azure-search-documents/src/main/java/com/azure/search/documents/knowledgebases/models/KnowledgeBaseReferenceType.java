@@ -114,4 +114,10 @@ public final class KnowledgeBaseReferenceType extends ExpandableStringEnum<Knowl
      */
     @Generated
     public static final KnowledgeBaseReferenceType INDEXED_SQL = fromString("indexedSql");
+
+    /**
+     * Graph result or hydrated graph-source document reference.
+     */
+    @Generated
+    public static final KnowledgeBaseReferenceType GRAPH_SEARCH = fromString("graphSearch");
 }

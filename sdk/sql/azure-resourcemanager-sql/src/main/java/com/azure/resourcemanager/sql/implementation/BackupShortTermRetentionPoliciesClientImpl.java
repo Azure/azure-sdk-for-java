@@ -122,19 +122,7 @@ public final class BackupShortTermRetentionPoliciesClientImpl implements BackupS
             @HeaderParam("Accept") String accept, Context context);
     }
 
-    /**
-     * Gets a database's short term retention policy.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param serverName The name of the server.
-     * @param databaseName The name of the database.
-     * @param policyName The policy name. Should always be default.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return a database's short term retention policy along with {@link Response} on successful completion of
-     * {@link Mono}.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Response<BackupShortTermRetentionPolicyInner>> getWithResponseAsync(String resourceGroupName,
         String serverName, String databaseName, ShortTermRetentionPolicyName policyName) {
@@ -209,18 +197,7 @@ public final class BackupShortTermRetentionPoliciesClientImpl implements BackupS
             resourceGroupName, serverName, databaseName, policyName, accept, context);
     }
 
-    /**
-     * Gets a database's short term retention policy.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param serverName The name of the server.
-     * @param databaseName The name of the database.
-     * @param policyName The policy name. Should always be default.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return a database's short term retention policy on successful completion of {@link Mono}.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<BackupShortTermRetentionPolicyInner> getAsync(String resourceGroupName, String serverName,
         String databaseName, ShortTermRetentionPolicyName policyName) {
@@ -228,56 +205,21 @@ public final class BackupShortTermRetentionPoliciesClientImpl implements BackupS
             .flatMap(res -> Mono.justOrEmpty(res.getValue()));
     }
 
-    /**
-     * Gets a database's short term retention policy.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param serverName The name of the server.
-     * @param databaseName The name of the database.
-     * @param policyName The policy name. Should always be default.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return a database's short term retention policy along with {@link Response}.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Response<BackupShortTermRetentionPolicyInner> getWithResponse(String resourceGroupName, String serverName,
         String databaseName, ShortTermRetentionPolicyName policyName, Context context) {
         return getWithResponseAsync(resourceGroupName, serverName, databaseName, policyName, context).block();
     }
 
-    /**
-     * Gets a database's short term retention policy.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param serverName The name of the server.
-     * @param databaseName The name of the database.
-     * @param policyName The policy name. Should always be default.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return a database's short term retention policy.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public BackupShortTermRetentionPolicyInner get(String resourceGroupName, String serverName, String databaseName,
         ShortTermRetentionPolicyName policyName) {
         return getWithResponse(resourceGroupName, serverName, databaseName, policyName, Context.NONE).getValue();
     }
 
-    /**
-     * Updates a database's short term retention policy.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param serverName The name of the server.
-     * @param databaseName The name of the database.
-     * @param policyName The policy name. Should always be default.
-     * @param parameters The short term retention policy info.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return a short term retention policy along with {@link Response} on successful completion of {@link Mono}.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Response<Flux<ByteBuffer>>> createOrUpdateWithResponseAsync(String resourceGroupName, String serverName,
         String databaseName, ShortTermRetentionPolicyName policyName, BackupShortTermRetentionPolicyInner parameters) {
@@ -368,19 +310,7 @@ public final class BackupShortTermRetentionPoliciesClientImpl implements BackupS
             accept, parameters, context);
     }
 
-    /**
-     * Updates a database's short term retention policy.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param serverName The name of the server.
-     * @param databaseName The name of the database.
-     * @param policyName The policy name. Should always be default.
-     * @param parameters The short term retention policy info.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the {@link PollerFlux} for polling of a short term retention policy.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public PollerFlux<PollResult<BackupShortTermRetentionPolicyInner>, BackupShortTermRetentionPolicyInner>
         beginCreateOrUpdateAsync(String resourceGroupName, String serverName, String databaseName,
@@ -418,19 +348,7 @@ public final class BackupShortTermRetentionPoliciesClientImpl implements BackupS
             BackupShortTermRetentionPolicyInner.class, context);
     }
 
-    /**
-     * Updates a database's short term retention policy.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param serverName The name of the server.
-     * @param databaseName The name of the database.
-     * @param policyName The policy name. Should always be default.
-     * @param parameters The short term retention policy info.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the {@link SyncPoller} for polling of a short term retention policy.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public SyncPoller<PollResult<BackupShortTermRetentionPolicyInner>, BackupShortTermRetentionPolicyInner>
         beginCreateOrUpdate(String resourceGroupName, String serverName, String databaseName,
@@ -439,20 +357,7 @@ public final class BackupShortTermRetentionPoliciesClientImpl implements BackupS
             .getSyncPoller();
     }
 
-    /**
-     * Updates a database's short term retention policy.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param serverName The name of the server.
-     * @param databaseName The name of the database.
-     * @param policyName The policy name. Should always be default.
-     * @param parameters The short term retention policy info.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the {@link SyncPoller} for polling of a short term retention policy.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public SyncPoller<PollResult<BackupShortTermRetentionPolicyInner>, BackupShortTermRetentionPolicyInner>
         beginCreateOrUpdate(String resourceGroupName, String serverName, String databaseName,
@@ -462,19 +367,7 @@ public final class BackupShortTermRetentionPoliciesClientImpl implements BackupS
             .getSyncPoller();
     }
 
-    /**
-     * Updates a database's short term retention policy.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param serverName The name of the server.
-     * @param databaseName The name of the database.
-     * @param policyName The policy name. Should always be default.
-     * @param parameters The short term retention policy info.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return a short term retention policy on successful completion of {@link Mono}.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<BackupShortTermRetentionPolicyInner> createOrUpdateAsync(String resourceGroupName, String serverName,
         String databaseName, ShortTermRetentionPolicyName policyName, BackupShortTermRetentionPolicyInner parameters) {
@@ -505,39 +398,14 @@ public final class BackupShortTermRetentionPoliciesClientImpl implements BackupS
             .flatMap(this.client::getLroFinalResultOrError);
     }
 
-    /**
-     * Updates a database's short term retention policy.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param serverName The name of the server.
-     * @param databaseName The name of the database.
-     * @param policyName The policy name. Should always be default.
-     * @param parameters The short term retention policy info.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return a short term retention policy.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public BackupShortTermRetentionPolicyInner createOrUpdate(String resourceGroupName, String serverName,
         String databaseName, ShortTermRetentionPolicyName policyName, BackupShortTermRetentionPolicyInner parameters) {
         return createOrUpdateAsync(resourceGroupName, serverName, databaseName, policyName, parameters).block();
     }
 
-    /**
-     * Updates a database's short term retention policy.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param serverName The name of the server.
-     * @param databaseName The name of the database.
-     * @param policyName The policy name. Should always be default.
-     * @param parameters The short term retention policy info.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return a short term retention policy.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public BackupShortTermRetentionPolicyInner createOrUpdate(String resourceGroupName, String serverName,
         String databaseName, ShortTermRetentionPolicyName policyName, BackupShortTermRetentionPolicyInner parameters,
@@ -546,19 +414,7 @@ public final class BackupShortTermRetentionPoliciesClientImpl implements BackupS
             .block();
     }
 
-    /**
-     * Updates a database's short term retention policy.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param serverName The name of the server.
-     * @param databaseName The name of the database.
-     * @param policyName The policy name. Should always be default.
-     * @param parameters The short term retention policy info.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return a short term retention policy along with {@link Response} on successful completion of {@link Mono}.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Response<Flux<ByteBuffer>>> updateWithResponseAsync(String resourceGroupName, String serverName,
         String databaseName, ShortTermRetentionPolicyName policyName, BackupShortTermRetentionPolicyInner parameters) {
@@ -648,19 +504,7 @@ public final class BackupShortTermRetentionPoliciesClientImpl implements BackupS
             resourceGroupName, serverName, databaseName, policyName, contentType, accept, parameters, context);
     }
 
-    /**
-     * Updates a database's short term retention policy.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param serverName The name of the server.
-     * @param databaseName The name of the database.
-     * @param policyName The policy name. Should always be default.
-     * @param parameters The short term retention policy info.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the {@link PollerFlux} for polling of a short term retention policy.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public PollerFlux<PollResult<BackupShortTermRetentionPolicyInner>, BackupShortTermRetentionPolicyInner>
         beginUpdateAsync(String resourceGroupName, String serverName, String databaseName,
@@ -698,19 +542,7 @@ public final class BackupShortTermRetentionPoliciesClientImpl implements BackupS
             BackupShortTermRetentionPolicyInner.class, context);
     }
 
-    /**
-     * Updates a database's short term retention policy.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param serverName The name of the server.
-     * @param databaseName The name of the database.
-     * @param policyName The policy name. Should always be default.
-     * @param parameters The short term retention policy info.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the {@link SyncPoller} for polling of a short term retention policy.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public SyncPoller<PollResult<BackupShortTermRetentionPolicyInner>, BackupShortTermRetentionPolicyInner> beginUpdate(
         String resourceGroupName, String serverName, String databaseName, ShortTermRetentionPolicyName policyName,
@@ -719,20 +551,7 @@ public final class BackupShortTermRetentionPoliciesClientImpl implements BackupS
             .getSyncPoller();
     }
 
-    /**
-     * Updates a database's short term retention policy.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param serverName The name of the server.
-     * @param databaseName The name of the database.
-     * @param policyName The policy name. Should always be default.
-     * @param parameters The short term retention policy info.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the {@link SyncPoller} for polling of a short term retention policy.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public SyncPoller<PollResult<BackupShortTermRetentionPolicyInner>, BackupShortTermRetentionPolicyInner> beginUpdate(
         String resourceGroupName, String serverName, String databaseName, ShortTermRetentionPolicyName policyName,
@@ -741,19 +560,7 @@ public final class BackupShortTermRetentionPoliciesClientImpl implements BackupS
             .getSyncPoller();
     }
 
-    /**
-     * Updates a database's short term retention policy.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param serverName The name of the server.
-     * @param databaseName The name of the database.
-     * @param policyName The policy name. Should always be default.
-     * @param parameters The short term retention policy info.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return a short term retention policy on successful completion of {@link Mono}.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<BackupShortTermRetentionPolicyInner> updateAsync(String resourceGroupName, String serverName,
         String databaseName, ShortTermRetentionPolicyName policyName, BackupShortTermRetentionPolicyInner parameters) {
@@ -783,39 +590,14 @@ public final class BackupShortTermRetentionPoliciesClientImpl implements BackupS
             .flatMap(this.client::getLroFinalResultOrError);
     }
 
-    /**
-     * Updates a database's short term retention policy.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param serverName The name of the server.
-     * @param databaseName The name of the database.
-     * @param policyName The policy name. Should always be default.
-     * @param parameters The short term retention policy info.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return a short term retention policy.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public BackupShortTermRetentionPolicyInner update(String resourceGroupName, String serverName, String databaseName,
         ShortTermRetentionPolicyName policyName, BackupShortTermRetentionPolicyInner parameters) {
         return updateAsync(resourceGroupName, serverName, databaseName, policyName, parameters).block();
     }
 
-    /**
-     * Updates a database's short term retention policy.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param serverName The name of the server.
-     * @param databaseName The name of the database.
-     * @param policyName The policy name. Should always be default.
-     * @param parameters The short term retention policy info.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return a short term retention policy.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public BackupShortTermRetentionPolicyInner update(String resourceGroupName, String serverName, String databaseName,
         ShortTermRetentionPolicyName policyName, BackupShortTermRetentionPolicyInner parameters, Context context) {
@@ -907,17 +689,7 @@ public final class BackupShortTermRetentionPoliciesClientImpl implements BackupS
                 res.getValue().value(), res.getValue().nextLink(), null));
     }
 
-    /**
-     * Gets a database's short term retention policy.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param serverName The name of the server.
-     * @param databaseName The name of the database.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return a database's short term retention policy as paginated response with {@link PagedFlux}.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.COLLECTION)
     public PagedFlux<BackupShortTermRetentionPolicyInner> listByDatabaseAsync(String resourceGroupName,
         String serverName, String databaseName) {
@@ -945,35 +717,14 @@ public final class BackupShortTermRetentionPoliciesClientImpl implements BackupS
             nextLink -> listByDatabaseNextSinglePageAsync(nextLink, context));
     }
 
-    /**
-     * Gets a database's short term retention policy.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param serverName The name of the server.
-     * @param databaseName The name of the database.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return a database's short term retention policy as paginated response with {@link PagedIterable}.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.COLLECTION)
     public PagedIterable<BackupShortTermRetentionPolicyInner> listByDatabase(String resourceGroupName,
         String serverName, String databaseName) {
         return new PagedIterable<>(listByDatabaseAsync(resourceGroupName, serverName, databaseName));
     }
 
-    /**
-     * Gets a database's short term retention policy.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param serverName The name of the server.
-     * @param databaseName The name of the database.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return a database's short term retention policy as paginated response with {@link PagedIterable}.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.COLLECTION)
     public PagedIterable<BackupShortTermRetentionPolicyInner> listByDatabase(String resourceGroupName,
         String serverName, String databaseName, Context context) {

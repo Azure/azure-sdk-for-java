@@ -180,25 +180,7 @@ public final class NetAppResourceUsagesClientImpl implements NetAppResourceUsage
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private PagedResponse<UsageResultInner> listSinglePage(String location) {
-        if (this.client.getEndpoint() == null) {
-            throw LOGGER.atError()
-                .log(new IllegalArgumentException(
-                    "Parameter this.client.getEndpoint() is required and cannot be null."));
-        }
-        if (this.client.getSubscriptionId() == null) {
-            throw LOGGER.atError()
-                .log(new IllegalArgumentException(
-                    "Parameter this.client.getSubscriptionId() is required and cannot be null."));
-        }
-        if (location == null) {
-            throw LOGGER.atError()
-                .log(new IllegalArgumentException("Parameter location is required and cannot be null."));
-        }
-        final String accept = "application/json";
-        Response<UsagesListResult> res = service.listSync(this.client.getEndpoint(), this.client.getApiVersion(),
-            this.client.getSubscriptionId(), location, accept, Context.NONE);
-        return new PagedResponseBase<>(res.getRequest(), res.getStatusCode(), res.getHeaders(), res.getValue().value(),
-            res.getValue().nextLink(), null);
+        return listSinglePage(location, Context.NONE);
     }
 
     /**
@@ -238,38 +220,13 @@ public final class NetAppResourceUsagesClientImpl implements NetAppResourceUsage
             res.getValue().nextLink(), null);
     }
 
-    /**
-     * Get usages
-     * 
-     * Get current subscription usages.
-     * 
-     * @param location The name of the Azure region.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return usages
-     * 
-     * Get current subscription usages as paginated response with {@link PagedIterable}.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.COLLECTION)
     public PagedIterable<UsageResultInner> list(String location) {
-        return new PagedIterable<>(() -> listSinglePage(location), nextLink -> listNextSinglePage(nextLink));
+        return list(location, Context.NONE);
     }
 
-    /**
-     * Get usages
-     * 
-     * Get current subscription usages.
-     * 
-     * @param location The name of the Azure region.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return usages
-     * 
-     * Get current subscription usages as paginated response with {@link PagedIterable}.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.COLLECTION)
     public PagedIterable<UsageResultInner> list(String location, Context context) {
         return new PagedIterable<>(() -> listSinglePage(location, context),
@@ -333,21 +290,7 @@ public final class NetAppResourceUsagesClientImpl implements NetAppResourceUsage
         return getWithResponseAsync(location, usageType).flatMap(res -> Mono.justOrEmpty(res.getValue()));
     }
 
-    /**
-     * Get specific type of usage
-     * 
-     * Get current subscription usage of the specific type.
-     * 
-     * @param location The name of the Azure region.
-     * @param usageType The type of usage.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return specific type of usage
-     * 
-     * Get current subscription usage of the specific type along with {@link Response}.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Response<UsageResultInner> getWithResponse(String location, String usageType, Context context) {
         if (this.client.getEndpoint() == null) {
@@ -373,20 +316,7 @@ public final class NetAppResourceUsagesClientImpl implements NetAppResourceUsage
             location, usageType, accept, context);
     }
 
-    /**
-     * Get specific type of usage
-     * 
-     * Get current subscription usage of the specific type.
-     * 
-     * @param location The name of the Azure region.
-     * @param usageType The type of usage.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return specific type of usage
-     * 
-     * Get current subscription usage of the specific type.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public UsageResultInner get(String location, String usageType) {
         return getWithResponse(location, usageType, Context.NONE).getValue();
@@ -436,20 +366,7 @@ public final class NetAppResourceUsagesClientImpl implements NetAppResourceUsage
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private PagedResponse<UsageResultInner> listNextSinglePage(String nextLink) {
-        if (nextLink == null) {
-            throw LOGGER.atError()
-                .log(new IllegalArgumentException("Parameter nextLink is required and cannot be null."));
-        }
-        if (this.client.getEndpoint() == null) {
-            throw LOGGER.atError()
-                .log(new IllegalArgumentException(
-                    "Parameter this.client.getEndpoint() is required and cannot be null."));
-        }
-        final String accept = "application/json";
-        Response<UsagesListResult> res
-            = service.listNextSync(nextLink, this.client.getEndpoint(), accept, Context.NONE);
-        return new PagedResponseBase<>(res.getRequest(), res.getStatusCode(), res.getHeaders(), res.getValue().value(),
-            res.getValue().nextLink(), null);
+        return listNextSinglePage(nextLink, Context.NONE);
     }
 
     /**

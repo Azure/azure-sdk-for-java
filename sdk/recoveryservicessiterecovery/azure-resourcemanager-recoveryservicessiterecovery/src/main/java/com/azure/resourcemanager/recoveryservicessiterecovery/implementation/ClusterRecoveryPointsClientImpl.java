@@ -211,43 +211,8 @@ public final class ClusterRecoveryPointsClientImpl implements ClusterRecoveryPoi
     private PagedResponse<ClusterRecoveryPointInner> listByReplicationProtectionClusterSinglePage(
         String resourceGroupName, String resourceName, String fabricName, String protectionContainerName,
         String replicationProtectionClusterName) {
-        if (this.client.getEndpoint() == null) {
-            throw LOGGER.atError()
-                .log(new IllegalArgumentException(
-                    "Parameter this.client.getEndpoint() is required and cannot be null."));
-        }
-        if (this.client.getSubscriptionId() == null) {
-            throw LOGGER.atError()
-                .log(new IllegalArgumentException(
-                    "Parameter this.client.getSubscriptionId() is required and cannot be null."));
-        }
-        if (resourceGroupName == null) {
-            throw LOGGER.atError()
-                .log(new IllegalArgumentException("Parameter resourceGroupName is required and cannot be null."));
-        }
-        if (resourceName == null) {
-            throw LOGGER.atError()
-                .log(new IllegalArgumentException("Parameter resourceName is required and cannot be null."));
-        }
-        if (fabricName == null) {
-            throw LOGGER.atError()
-                .log(new IllegalArgumentException("Parameter fabricName is required and cannot be null."));
-        }
-        if (protectionContainerName == null) {
-            throw LOGGER.atError()
-                .log(new IllegalArgumentException("Parameter protectionContainerName is required and cannot be null."));
-        }
-        if (replicationProtectionClusterName == null) {
-            throw LOGGER.atError()
-                .log(new IllegalArgumentException(
-                    "Parameter replicationProtectionClusterName is required and cannot be null."));
-        }
-        final String accept = "application/json";
-        Response<ClusterRecoveryPointCollection> res = service.listByReplicationProtectionClusterSync(
-            this.client.getEndpoint(), this.client.getApiVersion(), this.client.getSubscriptionId(), resourceGroupName,
-            resourceName, fabricName, protectionContainerName, replicationProtectionClusterName, accept, Context.NONE);
-        return new PagedResponseBase<>(res.getRequest(), res.getStatusCode(), res.getHeaders(), res.getValue().value(),
-            res.getValue().nextLink(), null);
+        return listByReplicationProtectionClusterSinglePage(resourceGroupName, resourceName, fabricName,
+            protectionContainerName, replicationProtectionClusterName, Context.NONE);
     }
 
     /**
@@ -311,51 +276,16 @@ public final class ClusterRecoveryPointsClientImpl implements ClusterRecoveryPoi
             res.getValue().nextLink(), null);
     }
 
-    /**
-     * Gets the list of cluster recovery points.
-     * 
-     * The list of cluster recovery points.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param resourceName The name of the recovery services vault.
-     * @param fabricName Fabric name.
-     * @param protectionContainerName Protection container name.
-     * @param replicationProtectionClusterName Replication protection cluster name.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the list of cluster recovery points.
-     * 
-     * The list of cluster recovery points as paginated response with {@link PagedIterable}.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.COLLECTION)
     public PagedIterable<ClusterRecoveryPointInner> listByReplicationProtectionCluster(String resourceGroupName,
         String resourceName, String fabricName, String protectionContainerName,
         String replicationProtectionClusterName) {
-        return new PagedIterable<>(
-            () -> listByReplicationProtectionClusterSinglePage(resourceGroupName, resourceName, fabricName,
-                protectionContainerName, replicationProtectionClusterName),
-            nextLink -> listByReplicationProtectionClusterNextSinglePage(nextLink));
+        return listByReplicationProtectionCluster(resourceGroupName, resourceName, fabricName, protectionContainerName,
+            replicationProtectionClusterName, Context.NONE);
     }
 
-    /**
-     * Gets the list of cluster recovery points.
-     * 
-     * The list of cluster recovery points.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param resourceName The name of the recovery services vault.
-     * @param fabricName Fabric name.
-     * @param protectionContainerName Protection container name.
-     * @param replicationProtectionClusterName Replication protection cluster name.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the list of cluster recovery points.
-     * 
-     * The list of cluster recovery points as paginated response with {@link PagedIterable}.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.COLLECTION)
     public PagedIterable<ClusterRecoveryPointInner> listByReplicationProtectionCluster(String resourceGroupName,
         String resourceName, String fabricName, String protectionContainerName, String replicationProtectionClusterName,
@@ -413,20 +343,7 @@ public final class ClusterRecoveryPointsClientImpl implements ClusterRecoveryPoi
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private PagedResponse<ClusterRecoveryPointInner> listByReplicationProtectionClusterNextSinglePage(String nextLink) {
-        if (nextLink == null) {
-            throw LOGGER.atError()
-                .log(new IllegalArgumentException("Parameter nextLink is required and cannot be null."));
-        }
-        if (this.client.getEndpoint() == null) {
-            throw LOGGER.atError()
-                .log(new IllegalArgumentException(
-                    "Parameter this.client.getEndpoint() is required and cannot be null."));
-        }
-        final String accept = "application/json";
-        Response<ClusterRecoveryPointCollection> res = service.listByReplicationProtectionClusterNextSync(nextLink,
-            this.client.getEndpoint(), accept, Context.NONE);
-        return new PagedResponseBase<>(res.getRequest(), res.getStatusCode(), res.getHeaders(), res.getValue().value(),
-            res.getValue().nextLink(), null);
+        return listByReplicationProtectionClusterNextSinglePage(nextLink, Context.NONE);
     }
 
     /**

@@ -52,7 +52,7 @@ public final class TriggerRunsImpl implements TriggerRuns {
     }
 
     public void rerun(String resourceGroupName, String factoryName, String triggerName, String runId) {
-        this.serviceClient().rerun(resourceGroupName, factoryName, triggerName, runId);
+        this.rerunWithResponse(resourceGroupName, factoryName, triggerName, runId, Context.NONE);
     }
 
     public Response<Void> cancelWithResponse(String resourceGroupName, String factoryName, String triggerName,
@@ -61,7 +61,7 @@ public final class TriggerRunsImpl implements TriggerRuns {
     }
 
     public void cancel(String resourceGroupName, String factoryName, String triggerName, String runId) {
-        this.serviceClient().cancel(resourceGroupName, factoryName, triggerName, runId);
+        this.cancelWithResponse(resourceGroupName, factoryName, triggerName, runId, Context.NONE);
     }
 
     private TriggerRunsClient serviceClient() {

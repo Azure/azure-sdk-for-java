@@ -47,12 +47,7 @@ public final class DatadogMonitorResourcesImpl implements DatadogMonitorResource
     }
 
     public DatadogMonitorResource linkSaaS(String resourceGroupName, String monitorName, SaaSData body) {
-        DatadogMonitorResourceInner inner = this.serviceClient().linkSaaS(resourceGroupName, monitorName, body);
-        if (inner != null) {
-            return new DatadogMonitorResourceImpl(inner, this.manager());
-        } else {
-            return null;
-        }
+        return this.linkSaaS(resourceGroupName, monitorName, body, Context.NONE);
     }
 
     public DatadogMonitorResource linkSaaS(String resourceGroupName, String monitorName, SaaSData body,

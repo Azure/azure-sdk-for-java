@@ -9,7 +9,7 @@ package com.azure.resourcemanager.eventhubs.generated;
  */
 public final class ClustersDeleteSamples {
     /*
-     * x-ms-original-file: 2025-05-01-preview/Clusters/ClusterDelete.json
+     * x-ms-original-file: 2026-07-01-preview/Clusters/ClusterDelete.json
      */
     /**
      * Sample code: ClusterDelete.

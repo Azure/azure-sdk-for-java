@@ -128,17 +128,7 @@ public final class JobAgentsClientImpl implements JobAgentsClient {
             @HeaderParam("Accept") String accept, Context context);
     }
 
-    /**
-     * Gets a job agent.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param serverName The name of the server.
-     * @param jobAgentName The name of the job agent to be retrieved.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return a job agent along with {@link Response} on successful completion of {@link Mono}.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Response<JobAgentInner>> getWithResponseAsync(String resourceGroupName, String serverName,
         String jobAgentName) {
@@ -206,69 +196,27 @@ public final class JobAgentsClientImpl implements JobAgentsClient {
             resourceGroupName, serverName, jobAgentName, accept, context);
     }
 
-    /**
-     * Gets a job agent.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param serverName The name of the server.
-     * @param jobAgentName The name of the job agent to be retrieved.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return a job agent on successful completion of {@link Mono}.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<JobAgentInner> getAsync(String resourceGroupName, String serverName, String jobAgentName) {
         return getWithResponseAsync(resourceGroupName, serverName, jobAgentName)
             .flatMap(res -> Mono.justOrEmpty(res.getValue()));
     }
 
-    /**
-     * Gets a job agent.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param serverName The name of the server.
-     * @param jobAgentName The name of the job agent to be retrieved.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return a job agent along with {@link Response}.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Response<JobAgentInner> getWithResponse(String resourceGroupName, String serverName, String jobAgentName,
         Context context) {
         return getWithResponseAsync(resourceGroupName, serverName, jobAgentName, context).block();
     }
 
-    /**
-     * Gets a job agent.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param serverName The name of the server.
-     * @param jobAgentName The name of the job agent to be retrieved.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return a job agent.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public JobAgentInner get(String resourceGroupName, String serverName, String jobAgentName) {
         return getWithResponse(resourceGroupName, serverName, jobAgentName, Context.NONE).getValue();
     }
 
-    /**
-     * Creates or updates a job agent.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param serverName The name of the server.
-     * @param jobAgentName The name of the job agent to be retrieved.
-     * @param parameters The requested job agent resource state.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return an Azure SQL job agent along with {@link Response} on successful completion of {@link Mono}.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Response<Flux<ByteBuffer>>> createOrUpdateWithResponseAsync(String resourceGroupName, String serverName,
         String jobAgentName, JobAgentInner parameters) {
@@ -351,18 +299,7 @@ public final class JobAgentsClientImpl implements JobAgentsClient {
             parameters, context);
     }
 
-    /**
-     * Creates or updates a job agent.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param serverName The name of the server.
-     * @param jobAgentName The name of the job agent to be retrieved.
-     * @param parameters The requested job agent resource state.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the {@link PollerFlux} for polling of an Azure SQL job agent.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public PollerFlux<PollResult<JobAgentInner>, JobAgentInner> beginCreateOrUpdateAsync(String resourceGroupName,
         String serverName, String jobAgentName, JobAgentInner parameters) {
@@ -395,37 +332,14 @@ public final class JobAgentsClientImpl implements JobAgentsClient {
             JobAgentInner.class, JobAgentInner.class, context);
     }
 
-    /**
-     * Creates or updates a job agent.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param serverName The name of the server.
-     * @param jobAgentName The name of the job agent to be retrieved.
-     * @param parameters The requested job agent resource state.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the {@link SyncPoller} for polling of an Azure SQL job agent.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public SyncPoller<PollResult<JobAgentInner>, JobAgentInner> beginCreateOrUpdate(String resourceGroupName,
         String serverName, String jobAgentName, JobAgentInner parameters) {
         return this.beginCreateOrUpdateAsync(resourceGroupName, serverName, jobAgentName, parameters).getSyncPoller();
     }
 
-    /**
-     * Creates or updates a job agent.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param serverName The name of the server.
-     * @param jobAgentName The name of the job agent to be retrieved.
-     * @param parameters The requested job agent resource state.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the {@link SyncPoller} for polling of an Azure SQL job agent.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public SyncPoller<PollResult<JobAgentInner>, JobAgentInner> beginCreateOrUpdate(String resourceGroupName,
         String serverName, String jobAgentName, JobAgentInner parameters, Context context) {
@@ -433,18 +347,7 @@ public final class JobAgentsClientImpl implements JobAgentsClient {
             .getSyncPoller();
     }
 
-    /**
-     * Creates or updates a job agent.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param serverName The name of the server.
-     * @param jobAgentName The name of the job agent to be retrieved.
-     * @param parameters The requested job agent resource state.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return an Azure SQL job agent on successful completion of {@link Mono}.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<JobAgentInner> createOrUpdateAsync(String resourceGroupName, String serverName, String jobAgentName,
         JobAgentInner parameters) {
@@ -472,55 +375,21 @@ public final class JobAgentsClientImpl implements JobAgentsClient {
             .flatMap(this.client::getLroFinalResultOrError);
     }
 
-    /**
-     * Creates or updates a job agent.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param serverName The name of the server.
-     * @param jobAgentName The name of the job agent to be retrieved.
-     * @param parameters The requested job agent resource state.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return an Azure SQL job agent.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public JobAgentInner createOrUpdate(String resourceGroupName, String serverName, String jobAgentName,
         JobAgentInner parameters) {
         return createOrUpdateAsync(resourceGroupName, serverName, jobAgentName, parameters).block();
     }
 
-    /**
-     * Creates or updates a job agent.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param serverName The name of the server.
-     * @param jobAgentName The name of the job agent to be retrieved.
-     * @param parameters The requested job agent resource state.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return an Azure SQL job agent.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public JobAgentInner createOrUpdate(String resourceGroupName, String serverName, String jobAgentName,
         JobAgentInner parameters, Context context) {
         return createOrUpdateAsync(resourceGroupName, serverName, jobAgentName, parameters, context).block();
     }
 
-    /**
-     * Updates a job agent.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param serverName The name of the server.
-     * @param jobAgentName The name of the job agent to be retrieved.
-     * @param parameters The update to the job agent.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return an Azure SQL job agent along with {@link Response} on successful completion of {@link Mono}.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Response<Flux<ByteBuffer>>> updateWithResponseAsync(String resourceGroupName, String serverName,
         String jobAgentName, JobAgentUpdate parameters) {
@@ -602,18 +471,7 @@ public final class JobAgentsClientImpl implements JobAgentsClient {
             resourceGroupName, serverName, jobAgentName, contentType, accept, parameters, context);
     }
 
-    /**
-     * Updates a job agent.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param serverName The name of the server.
-     * @param jobAgentName The name of the job agent to be retrieved.
-     * @param parameters The update to the job agent.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the {@link PollerFlux} for polling of an Azure SQL job agent.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public PollerFlux<PollResult<JobAgentInner>, JobAgentInner> beginUpdateAsync(String resourceGroupName,
         String serverName, String jobAgentName, JobAgentUpdate parameters) {
@@ -646,55 +504,21 @@ public final class JobAgentsClientImpl implements JobAgentsClient {
             JobAgentInner.class, JobAgentInner.class, context);
     }
 
-    /**
-     * Updates a job agent.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param serverName The name of the server.
-     * @param jobAgentName The name of the job agent to be retrieved.
-     * @param parameters The update to the job agent.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the {@link SyncPoller} for polling of an Azure SQL job agent.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public SyncPoller<PollResult<JobAgentInner>, JobAgentInner> beginUpdate(String resourceGroupName, String serverName,
         String jobAgentName, JobAgentUpdate parameters) {
         return this.beginUpdateAsync(resourceGroupName, serverName, jobAgentName, parameters).getSyncPoller();
     }
 
-    /**
-     * Updates a job agent.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param serverName The name of the server.
-     * @param jobAgentName The name of the job agent to be retrieved.
-     * @param parameters The update to the job agent.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the {@link SyncPoller} for polling of an Azure SQL job agent.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public SyncPoller<PollResult<JobAgentInner>, JobAgentInner> beginUpdate(String resourceGroupName, String serverName,
         String jobAgentName, JobAgentUpdate parameters, Context context) {
         return this.beginUpdateAsync(resourceGroupName, serverName, jobAgentName, parameters, context).getSyncPoller();
     }
 
-    /**
-     * Updates a job agent.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param serverName The name of the server.
-     * @param jobAgentName The name of the job agent to be retrieved.
-     * @param parameters The update to the job agent.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return an Azure SQL job agent on successful completion of {@link Mono}.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<JobAgentInner> updateAsync(String resourceGroupName, String serverName, String jobAgentName,
         JobAgentUpdate parameters) {
@@ -722,54 +546,21 @@ public final class JobAgentsClientImpl implements JobAgentsClient {
             .flatMap(this.client::getLroFinalResultOrError);
     }
 
-    /**
-     * Updates a job agent.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param serverName The name of the server.
-     * @param jobAgentName The name of the job agent to be retrieved.
-     * @param parameters The update to the job agent.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return an Azure SQL job agent.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public JobAgentInner update(String resourceGroupName, String serverName, String jobAgentName,
         JobAgentUpdate parameters) {
         return updateAsync(resourceGroupName, serverName, jobAgentName, parameters).block();
     }
 
-    /**
-     * Updates a job agent.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param serverName The name of the server.
-     * @param jobAgentName The name of the job agent to be retrieved.
-     * @param parameters The update to the job agent.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return an Azure SQL job agent.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public JobAgentInner update(String resourceGroupName, String serverName, String jobAgentName,
         JobAgentUpdate parameters, Context context) {
         return updateAsync(resourceGroupName, serverName, jobAgentName, parameters, context).block();
     }
 
-    /**
-     * Deletes a job agent.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param serverName The name of the server.
-     * @param jobAgentName The name of the job agent to be retrieved.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the {@link Response} on successful completion of {@link Mono}.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Response<Flux<ByteBuffer>>> deleteWithResponseAsync(String resourceGroupName, String serverName,
         String jobAgentName) {
@@ -835,17 +626,7 @@ public final class JobAgentsClientImpl implements JobAgentsClient {
             resourceGroupName, serverName, jobAgentName, context);
     }
 
-    /**
-     * Deletes a job agent.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param serverName The name of the server.
-     * @param jobAgentName The name of the job agent to be retrieved.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the {@link PollerFlux} for polling of long-running operation.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public PollerFlux<PollResult<Void>, Void> beginDeleteAsync(String resourceGroupName, String serverName,
         String jobAgentName) {
@@ -876,52 +657,21 @@ public final class JobAgentsClientImpl implements JobAgentsClient {
             context);
     }
 
-    /**
-     * Deletes a job agent.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param serverName The name of the server.
-     * @param jobAgentName The name of the job agent to be retrieved.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the {@link SyncPoller} for polling of long-running operation.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public SyncPoller<PollResult<Void>, Void> beginDelete(String resourceGroupName, String serverName,
         String jobAgentName) {
         return this.beginDeleteAsync(resourceGroupName, serverName, jobAgentName).getSyncPoller();
     }
 
-    /**
-     * Deletes a job agent.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param serverName The name of the server.
-     * @param jobAgentName The name of the job agent to be retrieved.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the {@link SyncPoller} for polling of long-running operation.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public SyncPoller<PollResult<Void>, Void> beginDelete(String resourceGroupName, String serverName,
         String jobAgentName, Context context) {
         return this.beginDeleteAsync(resourceGroupName, serverName, jobAgentName, context).getSyncPoller();
     }
 
-    /**
-     * Deletes a job agent.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param serverName The name of the server.
-     * @param jobAgentName The name of the job agent to be retrieved.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return A {@link Mono} that completes when a successful response is received.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Void> deleteAsync(String resourceGroupName, String serverName, String jobAgentName) {
         return beginDeleteAsync(resourceGroupName, serverName, jobAgentName).last()
@@ -946,32 +696,13 @@ public final class JobAgentsClientImpl implements JobAgentsClient {
             .flatMap(this.client::getLroFinalResultOrError);
     }
 
-    /**
-     * Deletes a job agent.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param serverName The name of the server.
-     * @param jobAgentName The name of the job agent to be retrieved.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public void delete(String resourceGroupName, String serverName, String jobAgentName) {
         deleteAsync(resourceGroupName, serverName, jobAgentName).block();
     }
 
-    /**
-     * Deletes a job agent.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param serverName The name of the server.
-     * @param jobAgentName The name of the job agent to be retrieved.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public void delete(String resourceGroupName, String serverName, String jobAgentName, Context context) {
         deleteAsync(resourceGroupName, serverName, jobAgentName, context).block();
@@ -1054,16 +785,7 @@ public final class JobAgentsClientImpl implements JobAgentsClient {
                 res.getValue().value(), res.getValue().nextLink(), null));
     }
 
-    /**
-     * Gets a list of job agents in a server.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param serverName The name of the server.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return a list of job agents in a server as paginated response with {@link PagedFlux}.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.COLLECTION)
     public PagedFlux<JobAgentInner> listByServerAsync(String resourceGroupName, String serverName) {
         return new PagedFlux<>(() -> listByServerSinglePageAsync(resourceGroupName, serverName),
@@ -1087,32 +809,13 @@ public final class JobAgentsClientImpl implements JobAgentsClient {
             nextLink -> listByServerNextSinglePageAsync(nextLink, context));
     }
 
-    /**
-     * Gets a list of job agents in a server.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param serverName The name of the server.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return a list of job agents in a server as paginated response with {@link PagedIterable}.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.COLLECTION)
     public PagedIterable<JobAgentInner> listByServer(String resourceGroupName, String serverName) {
         return new PagedIterable<>(listByServerAsync(resourceGroupName, serverName));
     }
 
-    /**
-     * Gets a list of job agents in a server.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param serverName The name of the server.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return a list of job agents in a server as paginated response with {@link PagedIterable}.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.COLLECTION)
     public PagedIterable<JobAgentInner> listByServer(String resourceGroupName, String serverName, Context context) {
         return new PagedIterable<>(listByServerAsync(resourceGroupName, serverName, context));

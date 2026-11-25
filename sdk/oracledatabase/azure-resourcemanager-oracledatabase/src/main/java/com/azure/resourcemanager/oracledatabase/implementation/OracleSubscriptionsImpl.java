@@ -36,8 +36,7 @@ public final class OracleSubscriptionsImpl implements OracleSubscriptions {
     }
 
     public PagedIterable<OracleSubscription> list() {
-        PagedIterable<OracleSubscriptionInner> inner = this.serviceClient().list();
-        return ResourceManagerUtils.mapPage(inner, inner1 -> new OracleSubscriptionImpl(inner1, this.manager()));
+        return this.list(Context.NONE);
     }
 
     public PagedIterable<OracleSubscription> list(Context context) {
@@ -46,12 +45,7 @@ public final class OracleSubscriptionsImpl implements OracleSubscriptions {
     }
 
     public OracleSubscription createOrUpdate(OracleSubscriptionInner resource) {
-        OracleSubscriptionInner inner = this.serviceClient().createOrUpdate(resource);
-        if (inner != null) {
-            return new OracleSubscriptionImpl(inner, this.manager());
-        } else {
-            return null;
-        }
+        return this.createOrUpdate(resource, Context.NONE);
     }
 
     public OracleSubscription createOrUpdate(OracleSubscriptionInner resource, Context context) {
@@ -79,12 +73,7 @@ public final class OracleSubscriptionsImpl implements OracleSubscriptions {
     }
 
     public OracleSubscription update(OracleSubscriptionUpdate properties) {
-        OracleSubscriptionInner inner = this.serviceClient().update(properties);
-        if (inner != null) {
-            return new OracleSubscriptionImpl(inner, this.manager());
-        } else {
-            return null;
-        }
+        return this.update(properties, Context.NONE);
     }
 
     public OracleSubscription update(OracleSubscriptionUpdate properties, Context context) {
@@ -97,7 +86,7 @@ public final class OracleSubscriptionsImpl implements OracleSubscriptions {
     }
 
     public void delete() {
-        this.serviceClient().delete();
+        this.delete(Context.NONE);
     }
 
     public void delete(Context context) {
@@ -105,12 +94,7 @@ public final class OracleSubscriptionsImpl implements OracleSubscriptions {
     }
 
     public CloudAccountDetails listCloudAccountDetails() {
-        CloudAccountDetailsInner inner = this.serviceClient().listCloudAccountDetails();
-        if (inner != null) {
-            return new CloudAccountDetailsImpl(inner, this.manager());
-        } else {
-            return null;
-        }
+        return this.listCloudAccountDetails(Context.NONE);
     }
 
     public CloudAccountDetails listCloudAccountDetails(Context context) {
@@ -123,12 +107,7 @@ public final class OracleSubscriptionsImpl implements OracleSubscriptions {
     }
 
     public SaasSubscriptionDetails listSaasSubscriptionDetails() {
-        SaasSubscriptionDetailsInner inner = this.serviceClient().listSaasSubscriptionDetails();
-        if (inner != null) {
-            return new SaasSubscriptionDetailsImpl(inner, this.manager());
-        } else {
-            return null;
-        }
+        return this.listSaasSubscriptionDetails(Context.NONE);
     }
 
     public SaasSubscriptionDetails listSaasSubscriptionDetails(Context context) {
@@ -141,12 +120,7 @@ public final class OracleSubscriptionsImpl implements OracleSubscriptions {
     }
 
     public ActivationLinks listActivationLinks() {
-        ActivationLinksInner inner = this.serviceClient().listActivationLinks();
-        if (inner != null) {
-            return new ActivationLinksImpl(inner, this.manager());
-        } else {
-            return null;
-        }
+        return this.listActivationLinks(Context.NONE);
     }
 
     public ActivationLinks listActivationLinks(Context context) {
@@ -159,7 +133,7 @@ public final class OracleSubscriptionsImpl implements OracleSubscriptions {
     }
 
     public void addAzureSubscriptions(AzureSubscriptions body) {
-        this.serviceClient().addAzureSubscriptions(body);
+        this.addAzureSubscriptions(body, Context.NONE);
     }
 
     public void addAzureSubscriptions(AzureSubscriptions body, Context context) {

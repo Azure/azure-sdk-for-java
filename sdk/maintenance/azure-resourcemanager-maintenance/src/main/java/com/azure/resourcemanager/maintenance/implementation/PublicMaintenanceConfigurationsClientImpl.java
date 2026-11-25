@@ -144,16 +144,7 @@ public final class PublicMaintenanceConfigurationsClientImpl implements PublicMa
         return getWithResponseAsync(resourceName).flatMap(res -> Mono.justOrEmpty(res.getValue()));
     }
 
-    /**
-     * Get Public Maintenance Configuration record.
-     * 
-     * @param resourceName The name of the MaintenanceConfiguration.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return public Maintenance Configuration record along with {@link Response}.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Response<MaintenanceConfigurationInner> getWithResponse(String resourceName, Context context) {
         final String accept = "application/json";
@@ -161,15 +152,7 @@ public final class PublicMaintenanceConfigurationsClientImpl implements PublicMa
             resourceName, accept, context);
     }
 
-    /**
-     * Get Public Maintenance Configuration record.
-     * 
-     * @param resourceName The name of the MaintenanceConfiguration.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return public Maintenance Configuration record.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public MaintenanceConfigurationInner get(String resourceName) {
         return getWithResponse(resourceName, Context.NONE).getValue();
@@ -215,11 +198,7 @@ public final class PublicMaintenanceConfigurationsClientImpl implements PublicMa
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private PagedResponse<MaintenanceConfigurationInner> listSinglePage() {
-        final String accept = "application/json";
-        Response<ListMaintenanceConfigurationsResult> res = service.listSync(this.client.getEndpoint(),
-            this.client.getApiVersion(), this.client.getSubscriptionId(), accept, Context.NONE);
-        return new PagedResponseBase<>(res.getRequest(), res.getStatusCode(), res.getHeaders(), res.getValue().value(),
-            res.getValue().nextLink(), null);
+        return listSinglePage(Context.NONE);
     }
 
     /**
@@ -240,27 +219,13 @@ public final class PublicMaintenanceConfigurationsClientImpl implements PublicMa
             res.getValue().nextLink(), null);
     }
 
-    /**
-     * Get Public Maintenance Configuration records.
-     * 
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return public Maintenance Configuration records as paginated response with {@link PagedIterable}.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.COLLECTION)
     public PagedIterable<MaintenanceConfigurationInner> list() {
-        return new PagedIterable<>(() -> listSinglePage(), nextLink -> listNextSinglePage(nextLink));
+        return list(Context.NONE);
     }
 
-    /**
-     * Get Public Maintenance Configuration records.
-     * 
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return public Maintenance Configuration records as paginated response with {@link PagedIterable}.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.COLLECTION)
     public PagedIterable<MaintenanceConfigurationInner> list(Context context) {
         return new PagedIterable<>(() -> listSinglePage(context), nextLink -> listNextSinglePage(nextLink, context));
@@ -296,11 +261,7 @@ public final class PublicMaintenanceConfigurationsClientImpl implements PublicMa
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private PagedResponse<MaintenanceConfigurationInner> listNextSinglePage(String nextLink) {
-        final String accept = "application/json";
-        Response<ListMaintenanceConfigurationsResult> res
-            = service.listNextSync(nextLink, this.client.getEndpoint(), accept, Context.NONE);
-        return new PagedResponseBase<>(res.getRequest(), res.getStatusCode(), res.getHeaders(), res.getValue().value(),
-            res.getValue().nextLink(), null);
+        return listNextSinglePage(nextLink, Context.NONE);
     }
 
     /**

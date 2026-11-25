@@ -223,15 +223,21 @@ public final class AccountProperties implements JsonSerializable<AccountProperti
     private List<AgentHostingConfiguration> agentHostingConfigurations;
 
     /*
-     * The full resource IDs of cost controls directly attached to this account.
-     * At the moment the service only supports a single cost control. This will be expanded in future API versions.
+     * Private CA trust sources for supported features in an AIServices account with allowProjectManagement enabled.
+     * Supports one Azure Key Vault source containing version-pinned references to secrets with PEM-encoded CA
+     * certificates or certificate bundles. On PUT or PATCH, a non-null array replaces the complete configuration, so
+     * include all references to retain. Omit this property or send null to preserve the existing configuration; send an
+     * empty array to clear it.
      */
-    private List<String> costControlIds;
+    private List<TrustedCertificateSource> trustedCertificateSources;
 
     /*
-     * The account-level connections used to publish cost control telemetry and events. Application Insights is optional
-     * for attachment, accounting, and enforcement and can be configured later. Event Grid must be configured before
-     * attaching a cost control with an alert threshold.
+     * Account-level cost-control telemetry connections. Application Insights is optional.
+     * Budget notifications use their own Event Grid connection IDs; account-level Event Grid configuration is not
+     * exposed or accepted by this API version.
+     * Set this object to null in an account update to clear the Application Insights connection. Existing legacy Event
+     * Grid configuration is preserved.
+     * This property is available independently of Microsoft.CognitiveServices/CostControls subscription registration.
      */
     private CostControlConnections costControlConnections;
 
@@ -881,31 +887,41 @@ public final class AccountProperties implements JsonSerializable<AccountProperti
     }
 
     /**
-     * Get the costControlIds property: The full resource IDs of cost controls directly attached to this account.
-     * At the moment the service only supports a single cost control. This will be expanded in future API versions.
+     * Get the trustedCertificateSources property: Private CA trust sources for supported features in an AIServices
+     * account with allowProjectManagement enabled. Supports one Azure Key Vault source containing version-pinned
+     * references to secrets with PEM-encoded CA certificates or certificate bundles. On PUT or PATCH, a non-null array
+     * replaces the complete configuration, so include all references to retain. Omit this property or send null to
+     * preserve the existing configuration; send an empty array to clear it.
      * 
-     * @return the costControlIds value.
+     * @return the trustedCertificateSources value.
      */
-    public List<String> costControlIds() {
-        return this.costControlIds;
+    public List<TrustedCertificateSource> trustedCertificateSources() {
+        return this.trustedCertificateSources;
     }
 
     /**
-     * Set the costControlIds property: The full resource IDs of cost controls directly attached to this account.
-     * At the moment the service only supports a single cost control. This will be expanded in future API versions.
+     * Set the trustedCertificateSources property: Private CA trust sources for supported features in an AIServices
+     * account with allowProjectManagement enabled. Supports one Azure Key Vault source containing version-pinned
+     * references to secrets with PEM-encoded CA certificates or certificate bundles. On PUT or PATCH, a non-null array
+     * replaces the complete configuration, so include all references to retain. Omit this property or send null to
+     * preserve the existing configuration; send an empty array to clear it.
      * 
-     * @param costControlIds the costControlIds value to set.
+     * @param trustedCertificateSources the trustedCertificateSources value to set.
      * @return the AccountProperties object itself.
      */
-    public AccountProperties withCostControlIds(List<String> costControlIds) {
-        this.costControlIds = costControlIds;
+    public AccountProperties withTrustedCertificateSources(List<TrustedCertificateSource> trustedCertificateSources) {
+        this.trustedCertificateSources = trustedCertificateSources;
         return this;
     }
 
     /**
-     * Get the costControlConnections property: The account-level connections used to publish cost control telemetry and
-     * events. Application Insights is optional for attachment, accounting, and enforcement and can be configured later.
-     * Event Grid must be configured before attaching a cost control with an alert threshold.
+     * Get the costControlConnections property: Account-level cost-control telemetry connections. Application Insights
+     * is optional.
+     * Budget notifications use their own Event Grid connection IDs; account-level Event Grid configuration is not
+     * exposed or accepted by this API version.
+     * Set this object to null in an account update to clear the Application Insights connection. Existing legacy Event
+     * Grid configuration is preserved.
+     * This property is available independently of Microsoft.CognitiveServices/CostControls subscription registration.
      * 
      * @return the costControlConnections value.
      */
@@ -914,9 +930,13 @@ public final class AccountProperties implements JsonSerializable<AccountProperti
     }
 
     /**
-     * Set the costControlConnections property: The account-level connections used to publish cost control telemetry and
-     * events. Application Insights is optional for attachment, accounting, and enforcement and can be configured later.
-     * Event Grid must be configured before attaching a cost control with an alert threshold.
+     * Set the costControlConnections property: Account-level cost-control telemetry connections. Application Insights
+     * is optional.
+     * Budget notifications use their own Event Grid connection IDs; account-level Event Grid configuration is not
+     * exposed or accepted by this API version.
+     * Set this object to null in an account update to clear the Application Insights connection. Existing legacy Event
+     * Grid configuration is preserved.
+     * This property is available independently of Microsoft.CognitiveServices/CostControls subscription registration.
      * 
      * @param costControlConnections the costControlConnections value to set.
      * @return the AccountProperties object itself.
@@ -962,8 +982,8 @@ public final class AccountProperties implements JsonSerializable<AccountProperti
         jsonWriter.writeJsonField("capabilitySettings", this.capabilitySettings);
         jsonWriter.writeArrayField("agentHostingConfigurations", this.agentHostingConfigurations,
             (writer, element) -> writer.writeJson(element));
-        jsonWriter.writeArrayField("costControlIds", this.costControlIds,
-            (writer, element) -> writer.writeString(element));
+        jsonWriter.writeArrayField("trustedCertificateSources", this.trustedCertificateSources,
+            (writer, element) -> writer.writeJson(element));
         jsonWriter.writeJsonField("costControlConnections", this.costControlConnections);
         return jsonWriter.writeEndObject();
     }
@@ -1078,9 +1098,10 @@ public final class AccountProperties implements JsonSerializable<AccountProperti
                     List<AgentHostingConfiguration> agentHostingConfigurations
                         = reader.readArray(reader1 -> AgentHostingConfiguration.fromJson(reader1));
                     deserializedAccountProperties.agentHostingConfigurations = agentHostingConfigurations;
-                } else if ("costControlIds".equals(fieldName)) {
-                    List<String> costControlIds = reader.readArray(reader1 -> reader1.getString());
-                    deserializedAccountProperties.costControlIds = costControlIds;
+                } else if ("trustedCertificateSources".equals(fieldName)) {
+                    List<TrustedCertificateSource> trustedCertificateSources
+                        = reader.readArray(reader1 -> TrustedCertificateSource.fromJson(reader1));
+                    deserializedAccountProperties.trustedCertificateSources = trustedCertificateSources;
                 } else if ("costControlConnections".equals(fieldName)) {
                     deserializedAccountProperties.costControlConnections = CostControlConnections.fromJson(reader);
                 } else {

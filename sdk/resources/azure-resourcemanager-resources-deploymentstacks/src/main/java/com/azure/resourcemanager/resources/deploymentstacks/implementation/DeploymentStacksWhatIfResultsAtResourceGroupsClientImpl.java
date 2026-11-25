@@ -241,17 +241,7 @@ public final class DeploymentStacksWhatIfResultsAtResourceGroupsClientImpl
             .flatMap(res -> Mono.justOrEmpty(res.getValue()));
     }
 
-    /**
-     * Gets the Deployment stack with the given name.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param deploymentStacksWhatIfResultName Name of the deployment stack what-if result.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the Deployment stack with the given name along with {@link Response}.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Response<DeploymentStacksWhatIfResultInner> getByResourceGroupWithResponse(String resourceGroupName,
         String deploymentStacksWhatIfResultName, Context context) {
@@ -260,16 +250,7 @@ public final class DeploymentStacksWhatIfResultsAtResourceGroupsClientImpl
             this.client.getSubscriptionId(), resourceGroupName, deploymentStacksWhatIfResultName, accept, context);
     }
 
-    /**
-     * Gets the Deployment stack with the given name.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param deploymentStacksWhatIfResultName Name of the deployment stack what-if result.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the Deployment stack with the given name.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public DeploymentStacksWhatIfResultInner getByResourceGroup(String resourceGroupName,
         String deploymentStacksWhatIfResultName) {
@@ -326,12 +307,7 @@ public final class DeploymentStacksWhatIfResultsAtResourceGroupsClientImpl
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private PagedResponse<DeploymentStacksWhatIfResultInner> listByResourceGroupSinglePage(String resourceGroupName) {
-        final String accept = "application/json";
-        Response<DeploymentStacksWhatIfResultListResult> res
-            = service.listByResourceGroupSync(this.client.getEndpoint(), this.client.getApiVersion(),
-                this.client.getSubscriptionId(), resourceGroupName, accept, Context.NONE);
-        return new PagedResponseBase<>(res.getRequest(), res.getStatusCode(), res.getHeaders(), res.getValue().value(),
-            res.getValue().nextLink(), null);
+        return listByResourceGroupSinglePage(resourceGroupName, Context.NONE);
     }
 
     /**
@@ -355,33 +331,13 @@ public final class DeploymentStacksWhatIfResultsAtResourceGroupsClientImpl
             res.getValue().nextLink(), null);
     }
 
-    /**
-     * Lists Deployment stacks at the specified scope.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the response of a DeploymentStacksWhatIfResult list operation as paginated response with
-     * {@link PagedIterable}.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.COLLECTION)
     public PagedIterable<DeploymentStacksWhatIfResultInner> listByResourceGroup(String resourceGroupName) {
-        return new PagedIterable<>(() -> listByResourceGroupSinglePage(resourceGroupName),
-            nextLink -> listNextSinglePage(nextLink));
+        return listByResourceGroup(resourceGroupName, Context.NONE);
     }
 
-    /**
-     * Lists Deployment stacks at the specified scope.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the response of a DeploymentStacksWhatIfResult list operation as paginated response with
-     * {@link PagedIterable}.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.COLLECTION)
     public PagedIterable<DeploymentStacksWhatIfResultInner> listByResourceGroup(String resourceGroupName,
         Context context) {
@@ -426,11 +382,7 @@ public final class DeploymentStacksWhatIfResultsAtResourceGroupsClientImpl
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Response<BinaryData> createOrUpdateWithResponse(String resourceGroupName,
         String deploymentStacksWhatIfResultName, DeploymentStacksWhatIfResultInner resource) {
-        final String contentType = "application/json";
-        final String accept = "application/json";
-        return service.createOrUpdateSync(this.client.getEndpoint(), this.client.getApiVersion(),
-            this.client.getSubscriptionId(), resourceGroupName, deploymentStacksWhatIfResultName, contentType, accept,
-            resource, Context.NONE);
+        return createOrUpdateWithResponse(resourceGroupName, deploymentStacksWhatIfResultName, resource, Context.NONE);
     }
 
     /**
@@ -477,39 +429,15 @@ public final class DeploymentStacksWhatIfResultsAtResourceGroupsClientImpl
             DeploymentStacksWhatIfResultInner.class, this.client.getContext());
     }
 
-    /**
-     * Creates or updates a Deployment stack at the specified scope.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param deploymentStacksWhatIfResultName Name of the deployment stack what-if result.
-     * @param resource Resource create parameters.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the {@link SyncPoller} for polling of deployment stack object.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public SyncPoller<PollResult<DeploymentStacksWhatIfResultInner>, DeploymentStacksWhatIfResultInner>
         beginCreateOrUpdate(String resourceGroupName, String deploymentStacksWhatIfResultName,
             DeploymentStacksWhatIfResultInner resource) {
-        Response<BinaryData> response
-            = createOrUpdateWithResponse(resourceGroupName, deploymentStacksWhatIfResultName, resource);
-        return this.client.<DeploymentStacksWhatIfResultInner, DeploymentStacksWhatIfResultInner>getLroResult(response,
-            DeploymentStacksWhatIfResultInner.class, DeploymentStacksWhatIfResultInner.class, Context.NONE);
+        return beginCreateOrUpdate(resourceGroupName, deploymentStacksWhatIfResultName, resource, Context.NONE);
     }
 
-    /**
-     * Creates or updates a Deployment stack at the specified scope.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param deploymentStacksWhatIfResultName Name of the deployment stack what-if result.
-     * @param resource Resource create parameters.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the {@link SyncPoller} for polling of deployment stack object.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public SyncPoller<PollResult<DeploymentStacksWhatIfResultInner>, DeploymentStacksWhatIfResultInner>
         beginCreateOrUpdate(String resourceGroupName, String deploymentStacksWhatIfResultName,
@@ -538,40 +466,19 @@ public final class DeploymentStacksWhatIfResultsAtResourceGroupsClientImpl
             .flatMap(this.client::getLroFinalResultOrError);
     }
 
-    /**
-     * Creates or updates a Deployment stack at the specified scope.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param deploymentStacksWhatIfResultName Name of the deployment stack what-if result.
-     * @param resource Resource create parameters.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return deployment stack object.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public DeploymentStacksWhatIfResultInner createOrUpdate(String resourceGroupName,
         String deploymentStacksWhatIfResultName, DeploymentStacksWhatIfResultInner resource) {
-        return beginCreateOrUpdate(resourceGroupName, deploymentStacksWhatIfResultName, resource).getFinalResult();
+        return createOrUpdate(resourceGroupName, deploymentStacksWhatIfResultName, resource, Context.NONE);
     }
 
-    /**
-     * Creates or updates a Deployment stack at the specified scope.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param deploymentStacksWhatIfResultName Name of the deployment stack what-if result.
-     * @param resource Resource create parameters.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return deployment stack object.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public DeploymentStacksWhatIfResultInner createOrUpdate(String resourceGroupName,
         String deploymentStacksWhatIfResultName, DeploymentStacksWhatIfResultInner resource, Context context) {
-        return beginCreateOrUpdate(resourceGroupName, deploymentStacksWhatIfResultName, resource, context)
-            .getFinalResult();
+        return this.client.getLroFinalResultOrError(
+            beginCreateOrUpdate(resourceGroupName, deploymentStacksWhatIfResultName, resource, context));
     }
 
     /**
@@ -630,25 +537,7 @@ public final class DeploymentStacksWhatIfResultsAtResourceGroupsClientImpl
             bypassStackOutOfSyncError).flatMap(ignored -> Mono.empty());
     }
 
-    /**
-     * Deletes a Deployment stack by name at the specified scope. When operation completes, status code 200 returned
-     * without content.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param deploymentStacksWhatIfResultName Name of the deployment stack what-if result.
-     * @param unmanageActionResources Flag to indicate delete rather than detach for unmanaged resources.
-     * @param unmanageActionResourceGroups Flag to indicate delete rather than detach for unmanaged resource groups.
-     * @param unmanageActionManagementGroups Flag to indicate delete rather than detach for unmanaged management groups.
-     * @param unmanageActionResourcesWithoutDeleteSupport Some resources do not support deletion. This flag will denote
-     * how the stack should handle those resources.
-     * @param bypassStackOutOfSyncError Flag to bypass service errors that indicate the stack resource list is not
-     * correctly synchronized.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the {@link Response}.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Response<Void> deleteWithResponse(String resourceGroupName, String deploymentStacksWhatIfResultName,
         UnmanageActionResourceMode unmanageActionResources,
@@ -662,16 +551,7 @@ public final class DeploymentStacksWhatIfResultsAtResourceGroupsClientImpl
             unmanageActionResourcesWithoutDeleteSupport, bypassStackOutOfSyncError, context);
     }
 
-    /**
-     * Deletes a Deployment stack by name at the specified scope. When operation completes, status code 200 returned
-     * without content.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param deploymentStacksWhatIfResultName Name of the deployment stack what-if result.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public void delete(String resourceGroupName, String deploymentStacksWhatIfResultName) {
         final UnmanageActionResourceMode unmanageActionResources = null;
@@ -716,9 +596,7 @@ public final class DeploymentStacksWhatIfResultsAtResourceGroupsClientImpl
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Response<BinaryData> whatIfWithResponse(String resourceGroupName, String deploymentStacksWhatIfResultName) {
-        final String accept = "application/json";
-        return service.whatIfSync(this.client.getEndpoint(), this.client.getApiVersion(),
-            this.client.getSubscriptionId(), resourceGroupName, deploymentStacksWhatIfResultName, accept, Context.NONE);
+        return whatIfWithResponse(resourceGroupName, deploymentStacksWhatIfResultName, Context.NONE);
     }
 
     /**
@@ -760,35 +638,14 @@ public final class DeploymentStacksWhatIfResultsAtResourceGroupsClientImpl
             DeploymentStacksWhatIfResultInner.class, this.client.getContext());
     }
 
-    /**
-     * Returns property-level changes that will be made by the deployment if executed.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param deploymentStacksWhatIfResultName Name of the deployment stack what-if result.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the {@link SyncPoller} for polling of deployment stack object.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public SyncPoller<PollResult<DeploymentStacksWhatIfResultInner>, DeploymentStacksWhatIfResultInner>
         beginWhatIf(String resourceGroupName, String deploymentStacksWhatIfResultName) {
-        Response<BinaryData> response = whatIfWithResponse(resourceGroupName, deploymentStacksWhatIfResultName);
-        return this.client.<DeploymentStacksWhatIfResultInner, DeploymentStacksWhatIfResultInner>getLroResult(response,
-            DeploymentStacksWhatIfResultInner.class, DeploymentStacksWhatIfResultInner.class, Context.NONE);
+        return beginWhatIf(resourceGroupName, deploymentStacksWhatIfResultName, Context.NONE);
     }
 
-    /**
-     * Returns property-level changes that will be made by the deployment if executed.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param deploymentStacksWhatIfResultName Name of the deployment stack what-if result.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the {@link SyncPoller} for polling of deployment stack object.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public SyncPoller<PollResult<DeploymentStacksWhatIfResultInner>, DeploymentStacksWhatIfResultInner>
         beginWhatIf(String resourceGroupName, String deploymentStacksWhatIfResultName, Context context) {
@@ -815,36 +672,18 @@ public final class DeploymentStacksWhatIfResultsAtResourceGroupsClientImpl
             .flatMap(this.client::getLroFinalResultOrError);
     }
 
-    /**
-     * Returns property-level changes that will be made by the deployment if executed.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param deploymentStacksWhatIfResultName Name of the deployment stack what-if result.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return deployment stack object.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public DeploymentStacksWhatIfResultInner whatIf(String resourceGroupName, String deploymentStacksWhatIfResultName) {
-        return beginWhatIf(resourceGroupName, deploymentStacksWhatIfResultName).getFinalResult();
+        return whatIf(resourceGroupName, deploymentStacksWhatIfResultName, Context.NONE);
     }
 
-    /**
-     * Returns property-level changes that will be made by the deployment if executed.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param deploymentStacksWhatIfResultName Name of the deployment stack what-if result.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return deployment stack object.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public DeploymentStacksWhatIfResultInner whatIf(String resourceGroupName, String deploymentStacksWhatIfResultName,
         Context context) {
-        return beginWhatIf(resourceGroupName, deploymentStacksWhatIfResultName, context).getFinalResult();
+        return this.client
+            .getLroFinalResultOrError(beginWhatIf(resourceGroupName, deploymentStacksWhatIfResultName, context));
     }
 
     /**
@@ -877,11 +716,7 @@ public final class DeploymentStacksWhatIfResultsAtResourceGroupsClientImpl
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private PagedResponse<DeploymentStacksWhatIfResultInner> listNextSinglePage(String nextLink) {
-        final String accept = "application/json";
-        Response<DeploymentStacksWhatIfResultListResult> res
-            = service.listNextSync(nextLink, this.client.getEndpoint(), accept, Context.NONE);
-        return new PagedResponseBase<>(res.getRequest(), res.getStatusCode(), res.getHeaders(), res.getValue().value(),
-            res.getValue().nextLink(), null);
+        return listNextSinglePage(nextLink, Context.NONE);
     }
 
     /**

@@ -165,18 +165,7 @@ public final class PrivateEndpointConnectionsClientImpl implements PrivateEndpoi
             .flatMap(res -> Mono.justOrEmpty(res.getValue()));
     }
 
-    /**
-     * Get Private Endpoint Connection. This call is made by Backup Admin.
-     * 
-     * @param vaultName The name of the VaultResource.
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param privateEndpointConnectionName The name of the private endpoint connection.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return private Endpoint Connection along with {@link Response}.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Response<PrivateEndpointConnectionResourceInner> getWithResponse(String vaultName, String resourceGroupName,
         String privateEndpointConnectionName, Context context) {
@@ -185,17 +174,7 @@ public final class PrivateEndpointConnectionsClientImpl implements PrivateEndpoi
             resourceGroupName, vaultName, privateEndpointConnectionName, accept, context);
     }
 
-    /**
-     * Get Private Endpoint Connection. This call is made by Backup Admin.
-     * 
-     * @param vaultName The name of the VaultResource.
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param privateEndpointConnectionName The name of the private endpoint connection.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return private Endpoint Connection.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public PrivateEndpointConnectionResourceInner get(String vaultName, String resourceGroupName,
         String privateEndpointConnectionName) {
@@ -242,10 +221,7 @@ public final class PrivateEndpointConnectionsClientImpl implements PrivateEndpoi
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Response<BinaryData> putWithResponse(String vaultName, String resourceGroupName,
         String privateEndpointConnectionName, PrivateEndpointConnectionResourceInner parameters) {
-        final String contentType = "application/json";
-        final String accept = "application/json";
-        return service.putSync(this.client.getEndpoint(), this.client.getApiVersion(), this.client.getSubscriptionId(),
-            resourceGroupName, vaultName, privateEndpointConnectionName, contentType, accept, parameters, Context.NONE);
+        return putWithResponse(vaultName, resourceGroupName, privateEndpointConnectionName, parameters, Context.NONE);
     }
 
     /**
@@ -293,42 +269,15 @@ public final class PrivateEndpointConnectionsClientImpl implements PrivateEndpoi
             PrivateEndpointConnectionResourceInner.class, this.client.getContext());
     }
 
-    /**
-     * Approve or Reject Private Endpoint requests. This call is made by Backup Admin.
-     * 
-     * @param vaultName The name of the VaultResource.
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param privateEndpointConnectionName The name of the private endpoint connection.
-     * @param parameters Request body for operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the {@link SyncPoller} for polling of private Endpoint Connection Response Properties.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public SyncPoller<PollResult<PrivateEndpointConnectionResourceInner>, PrivateEndpointConnectionResourceInner>
         beginPut(String vaultName, String resourceGroupName, String privateEndpointConnectionName,
             PrivateEndpointConnectionResourceInner parameters) {
-        Response<BinaryData> response
-            = putWithResponse(vaultName, resourceGroupName, privateEndpointConnectionName, parameters);
-        return this.client.<PrivateEndpointConnectionResourceInner, PrivateEndpointConnectionResourceInner>getLroResult(
-            response, PrivateEndpointConnectionResourceInner.class, PrivateEndpointConnectionResourceInner.class,
-            Context.NONE);
+        return beginPut(vaultName, resourceGroupName, privateEndpointConnectionName, parameters, Context.NONE);
     }
 
-    /**
-     * Approve or Reject Private Endpoint requests. This call is made by Backup Admin.
-     * 
-     * @param vaultName The name of the VaultResource.
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param privateEndpointConnectionName The name of the private endpoint connection.
-     * @param parameters Request body for operation.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the {@link SyncPoller} for polling of private Endpoint Connection Response Properties.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public SyncPoller<PollResult<PrivateEndpointConnectionResourceInner>, PrivateEndpointConnectionResourceInner>
         beginPut(String vaultName, String resourceGroupName, String privateEndpointConnectionName,
@@ -359,42 +308,19 @@ public final class PrivateEndpointConnectionsClientImpl implements PrivateEndpoi
             .flatMap(this.client::getLroFinalResultOrError);
     }
 
-    /**
-     * Approve or Reject Private Endpoint requests. This call is made by Backup Admin.
-     * 
-     * @param vaultName The name of the VaultResource.
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param privateEndpointConnectionName The name of the private endpoint connection.
-     * @param parameters Request body for operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return private Endpoint Connection Response Properties.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public PrivateEndpointConnectionResourceInner put(String vaultName, String resourceGroupName,
         String privateEndpointConnectionName, PrivateEndpointConnectionResourceInner parameters) {
-        return beginPut(vaultName, resourceGroupName, privateEndpointConnectionName, parameters).getFinalResult();
+        return put(vaultName, resourceGroupName, privateEndpointConnectionName, parameters, Context.NONE);
     }
 
-    /**
-     * Approve or Reject Private Endpoint requests. This call is made by Backup Admin.
-     * 
-     * @param vaultName The name of the VaultResource.
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param privateEndpointConnectionName The name of the private endpoint connection.
-     * @param parameters Request body for operation.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return private Endpoint Connection Response Properties.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public PrivateEndpointConnectionResourceInner put(String vaultName, String resourceGroupName,
         String privateEndpointConnectionName, PrivateEndpointConnectionResourceInner parameters, Context context) {
-        return beginPut(vaultName, resourceGroupName, privateEndpointConnectionName, parameters, context)
-            .getFinalResult();
+        return this.client.getLroFinalResultOrError(
+            beginPut(vaultName, resourceGroupName, privateEndpointConnectionName, parameters, context));
     }
 
     /**
@@ -431,8 +357,7 @@ public final class PrivateEndpointConnectionsClientImpl implements PrivateEndpoi
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Response<BinaryData> deleteWithResponse(String vaultName, String resourceGroupName,
         String privateEndpointConnectionName) {
-        return service.deleteSync(this.client.getEndpoint(), this.client.getApiVersion(),
-            this.client.getSubscriptionId(), resourceGroupName, vaultName, privateEndpointConnectionName, Context.NONE);
+        return deleteWithResponse(vaultName, resourceGroupName, privateEndpointConnectionName, Context.NONE);
     }
 
     /**
@@ -474,36 +399,14 @@ public final class PrivateEndpointConnectionsClientImpl implements PrivateEndpoi
             this.client.getContext());
     }
 
-    /**
-     * Delete Private Endpoint requests. This call is made by Backup Admin.
-     * 
-     * @param vaultName The name of the VaultResource.
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param privateEndpointConnectionName The name of the private endpoint connection.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the {@link SyncPoller} for polling of long-running operation.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public SyncPoller<PollResult<Void>, Void> beginDelete(String vaultName, String resourceGroupName,
         String privateEndpointConnectionName) {
-        Response<BinaryData> response = deleteWithResponse(vaultName, resourceGroupName, privateEndpointConnectionName);
-        return this.client.<Void, Void>getLroResult(response, Void.class, Void.class, Context.NONE);
+        return beginDelete(vaultName, resourceGroupName, privateEndpointConnectionName, Context.NONE);
     }
 
-    /**
-     * Delete Private Endpoint requests. This call is made by Backup Admin.
-     * 
-     * @param vaultName The name of the VaultResource.
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param privateEndpointConnectionName The name of the private endpoint connection.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the {@link SyncPoller} for polling of long-running operation.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public SyncPoller<PollResult<Void>, Void> beginDelete(String vaultName, String resourceGroupName,
         String privateEndpointConnectionName, Context context) {
@@ -529,35 +432,17 @@ public final class PrivateEndpointConnectionsClientImpl implements PrivateEndpoi
             .flatMap(this.client::getLroFinalResultOrError);
     }
 
-    /**
-     * Delete Private Endpoint requests. This call is made by Backup Admin.
-     * 
-     * @param vaultName The name of the VaultResource.
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param privateEndpointConnectionName The name of the private endpoint connection.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public void delete(String vaultName, String resourceGroupName, String privateEndpointConnectionName) {
-        beginDelete(vaultName, resourceGroupName, privateEndpointConnectionName).getFinalResult();
+        delete(vaultName, resourceGroupName, privateEndpointConnectionName, Context.NONE);
     }
 
-    /**
-     * Delete Private Endpoint requests. This call is made by Backup Admin.
-     * 
-     * @param vaultName The name of the VaultResource.
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param privateEndpointConnectionName The name of the private endpoint connection.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public void delete(String vaultName, String resourceGroupName, String privateEndpointConnectionName,
         Context context) {
-        beginDelete(vaultName, resourceGroupName, privateEndpointConnectionName, context).getFinalResult();
+        this.client.getLroFinalResultOrError(
+            beginDelete(vaultName, resourceGroupName, privateEndpointConnectionName, context));
     }
 }

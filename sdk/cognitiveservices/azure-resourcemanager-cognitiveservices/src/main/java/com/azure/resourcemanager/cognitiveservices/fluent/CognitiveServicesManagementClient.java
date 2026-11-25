@@ -75,6 +75,13 @@ public interface CognitiveServicesManagementClient {
     DeletedAccountsClient getDeletedAccounts();
 
     /**
+     * Gets the AttachedAksClustersClient object to access its operations.
+     * 
+     * @return the AttachedAksClustersClient object.
+     */
+    AttachedAksClustersClient getAttachedAksClusters();
+
+    /**
      * Gets the PrivateEndpointConnectionsClient object to access its operations.
      * 
      * @return the PrivateEndpointConnectionsClient object.
@@ -271,11 +278,18 @@ public interface CognitiveServicesManagementClient {
     ManagedComputeCapacitiesClient getManagedComputeCapacities();
 
     /**
-     * Gets the CostControlsClient object to access its operations.
+     * Gets the AccountCostControlsClient object to access its operations.
      * 
-     * @return the CostControlsClient object.
+     * @return the AccountCostControlsClient object.
      */
-    CostControlsClient getCostControls();
+    AccountCostControlsClient getAccountCostControls();
+
+    /**
+     * Gets the ProjectCostControlsClient object to access its operations.
+     * 
+     * @return the ProjectCostControlsClient object.
+     */
+    ProjectCostControlsClient getProjectCostControls();
 
     /**
      * Gets the PrivateLinkResourcesClient object to access its operations.

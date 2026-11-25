@@ -26,7 +26,7 @@ public final class PoolsListMockTests {
     @Test
     public void testList() throws Exception {
         String responseStr
-            = "{\"value\":[{\"properties\":{\"state\":\"Stopping\",\"computeModel\":{\"type\":\"Provisioned\",\"computeProcessor\":\"AMD\",\"computeGeneration\":1758314943,\"vCores\":504672156},\"nodeCount\":1832898132,\"highAvailability\":{\"mode\":\"ZoneRedundant\"},\"parameterGroup\":{\"parameterGroupResourceId\":\"cluyovwxnbkf\",\"applyMethod\":\"PendingReboot\",\"syncStatus\":\"PendingReboot\"},\"scheduledMaintenance\":{\"maintenanceManagementType\":\"ScheduledMaintenanceProperties\"},\"provisioningState\":\"Failed\"},\"tags\":{\"zbomvzzbtdcqvpni\":\"zdgiruj\",\"n\":\"ujviylwdshfs\",\"rymsgaojfmw\":\"bgye\"},\"id\":\"otmrfhir\",\"name\":\"tymoxoftp\",\"type\":\"piwyczuhxacpqjl\"}]}";
+            = "{\"value\":[{\"properties\":{\"state\":\"Updating\",\"computeModel\":{\"type\":\"Provisioned\",\"computeProcessor\":\"AMD\",\"computeGeneration\":1788432373,\"vCores\":1472152819},\"nodeCount\":2074857851,\"highAvailability\":{\"mode\":\"ZoneRedundant\"},\"parameterGroup\":{\"parameterGroupResourceId\":\"sivfomilo\",\"applyMethod\":\"PendingReboot\",\"syncStatus\":\"InSync\"},\"scheduledMaintenance\":{\"maintenanceManagementType\":\"ScheduledMaintenanceProperties\"},\"provisioningState\":\"Updating\"},\"id\":\"ndieuzaofj\",\"name\":\"hvcyyysfg\",\"type\":\"otcubi\"}]}";
 
         HttpClient httpClient
             = response -> Mono.just(new MockHttpResponse(response, 200, responseStr.getBytes(StandardCharsets.UTF_8)));
@@ -35,21 +35,20 @@ public final class PoolsListMockTests {
             .authenticate(tokenRequestContext -> Mono.just(new AccessToken("this_is_a_token", OffsetDateTime.MAX)),
                 new AzureProfile("", "", AzureCloud.AZURE_PUBLIC_CLOUD));
 
-        PagedIterable<Pool> response = manager.pools().list("hhavgrvkffovjz", "pjbi", com.azure.core.util.Context.NONE);
+        PagedIterable<Pool> response = manager.pools().list("vmnnrw", "biorktal", com.azure.core.util.Context.NONE);
 
         Assertions.assertEquals(PoolComputeModelType.PROVISIONED,
             response.iterator().next().properties().computeModel().type());
         Assertions.assertEquals(ComputeProcessorType.AMD,
             response.iterator().next().properties().computeModel().computeProcessor());
-        Assertions.assertEquals(1758314943, response.iterator().next().properties().computeModel().computeGeneration());
-        Assertions.assertEquals(504672156, response.iterator().next().properties().computeModel().vCores());
-        Assertions.assertEquals(1832898132, response.iterator().next().properties().nodeCount());
+        Assertions.assertEquals(1788432373, response.iterator().next().properties().computeModel().computeGeneration());
+        Assertions.assertEquals(1472152819, response.iterator().next().properties().computeModel().vCores());
+        Assertions.assertEquals(2074857851, response.iterator().next().properties().nodeCount());
         Assertions.assertEquals(PoolHighAvailabilityMode.ZONE_REDUNDANT,
             response.iterator().next().properties().highAvailability().mode());
-        Assertions.assertEquals("cluyovwxnbkf",
+        Assertions.assertEquals("sivfomilo",
             response.iterator().next().properties().parameterGroup().parameterGroupResourceId());
         Assertions.assertEquals(ParameterApplyMethod.PENDING_REBOOT,
             response.iterator().next().properties().parameterGroup().applyMethod());
-        Assertions.assertEquals("zdgiruj", response.iterator().next().tags().get("zbomvzzbtdcqvpni"));
     }
 }

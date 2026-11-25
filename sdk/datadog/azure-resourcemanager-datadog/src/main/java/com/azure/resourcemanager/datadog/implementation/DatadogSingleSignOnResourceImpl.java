@@ -61,10 +61,7 @@ public final class DatadogSingleSignOnResourceImpl
     }
 
     public DatadogSingleSignOnResource create() {
-        this.innerObject = serviceManager.serviceClient()
-            .getSingleSignOnConfigurations()
-            .createOrUpdate(resourceGroupName, monitorName, configurationName, this.innerModel(), Context.NONE);
-        return this;
+        return this.create(Context.NONE);
     }
 
     public DatadogSingleSignOnResource create(Context context) {
@@ -86,10 +83,7 @@ public final class DatadogSingleSignOnResourceImpl
     }
 
     public DatadogSingleSignOnResource apply() {
-        this.innerObject = serviceManager.serviceClient()
-            .getSingleSignOnConfigurations()
-            .createOrUpdate(resourceGroupName, monitorName, configurationName, this.innerModel(), Context.NONE);
-        return this;
+        return this.apply(Context.NONE);
     }
 
     public DatadogSingleSignOnResource apply(Context context) {
@@ -115,11 +109,7 @@ public final class DatadogSingleSignOnResourceImpl
     }
 
     public DatadogSingleSignOnResource refresh() {
-        this.innerObject = serviceManager.serviceClient()
-            .getSingleSignOnConfigurations()
-            .getWithResponse(resourceGroupName, monitorName, configurationName, Context.NONE)
-            .getValue();
-        return this;
+        return this.refresh(Context.NONE);
     }
 
     public DatadogSingleSignOnResource refresh(Context context) {

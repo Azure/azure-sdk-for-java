@@ -103,11 +103,7 @@ public final class ReplicationProtectedItemImpl
     }
 
     public ReplicationProtectedItem create() {
-        this.innerObject = serviceManager.serviceClient()
-            .getReplicationProtectedItems()
-            .create(resourceGroupName, resourceName, fabricName, protectionContainerName, replicatedProtectedItemName,
-                createInput, Context.NONE);
-        return this;
+        return this.create(Context.NONE);
     }
 
     public ReplicationProtectedItem create(Context context) {
@@ -131,11 +127,7 @@ public final class ReplicationProtectedItemImpl
     }
 
     public ReplicationProtectedItem apply() {
-        this.innerObject = serviceManager.serviceClient()
-            .getReplicationProtectedItems()
-            .update(resourceGroupName, resourceName, fabricName, protectionContainerName, replicatedProtectedItemName,
-                updateUpdateProtectionInput, Context.NONE);
-        return this;
+        return this.apply(Context.NONE);
     }
 
     public ReplicationProtectedItem apply(Context context) {
@@ -168,12 +160,7 @@ public final class ReplicationProtectedItemImpl
     }
 
     public ReplicationProtectedItem refresh() {
-        this.innerObject = serviceManager.serviceClient()
-            .getReplicationProtectedItems()
-            .getWithResponse(resourceGroupName, resourceName, fabricName, protectionContainerName,
-                replicatedProtectedItemName, Context.NONE)
-            .getValue();
-        return this;
+        return this.refresh(Context.NONE);
     }
 
     public ReplicationProtectedItem refresh(Context context) {

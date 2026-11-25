@@ -182,33 +182,14 @@ public final class InformationProtectionPoliciesClientImpl implements Informatio
             .flatMap(res -> Mono.justOrEmpty(res.getValue()));
     }
 
-    /**
-     * Details of the information protection policy.
-     * 
-     * @param scope The fully qualified Azure Resource manager identifier of the resource.
-     * @param informationProtectionPolicyName Name of the information protection policy.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return information protection policy along with {@link Response}.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Response<InformationProtectionPolicyInner> getWithResponse(String scope,
         InformationProtectionPolicyName informationProtectionPolicyName, Context context) {
         return getWithResponseAsync(scope, informationProtectionPolicyName, context).block();
     }
 
-    /**
-     * Details of the information protection policy.
-     * 
-     * @param scope The fully qualified Azure Resource manager identifier of the resource.
-     * @param informationProtectionPolicyName Name of the information protection policy.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return information protection policy.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public InformationProtectionPolicyInner get(String scope,
         InformationProtectionPolicyName informationProtectionPolicyName) {
@@ -316,18 +297,7 @@ public final class InformationProtectionPoliciesClientImpl implements Informatio
             .flatMap(res -> Mono.justOrEmpty(res.getValue()));
     }
 
-    /**
-     * Details of the information protection policy.
-     * 
-     * @param scope The fully qualified Azure Resource manager identifier of the resource.
-     * @param informationProtectionPolicyName Name of the information protection policy.
-     * @param informationProtectionPolicy Information protection policy.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return information protection policy along with {@link Response}.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Response<InformationProtectionPolicyInner> createOrUpdateWithResponse(String scope,
         InformationProtectionPolicyName informationProtectionPolicyName,
@@ -336,17 +306,7 @@ public final class InformationProtectionPoliciesClientImpl implements Informatio
             context).block();
     }
 
-    /**
-     * Details of the information protection policy.
-     * 
-     * @param scope The fully qualified Azure Resource manager identifier of the resource.
-     * @param informationProtectionPolicyName Name of the information protection policy.
-     * @param informationProtectionPolicy Information protection policy.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return information protection policy.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public InformationProtectionPolicyInner createOrUpdate(String scope,
         InformationProtectionPolicyName informationProtectionPolicyName,
@@ -441,30 +401,13 @@ public final class InformationProtectionPoliciesClientImpl implements Informatio
             nextLink -> listNextSinglePageAsync(nextLink, context));
     }
 
-    /**
-     * Information protection policies of a specific management group.
-     * 
-     * @param scope The fully qualified Azure Resource manager identifier of the resource.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return information protection policies response as paginated response with {@link PagedIterable}.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.COLLECTION)
     public PagedIterable<InformationProtectionPolicyInner> list(String scope) {
         return new PagedIterable<>(listAsync(scope));
     }
 
-    /**
-     * Information protection policies of a specific management group.
-     * 
-     * @param scope The fully qualified Azure Resource manager identifier of the resource.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return information protection policies response as paginated response with {@link PagedIterable}.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.COLLECTION)
     public PagedIterable<InformationProtectionPolicyInner> list(String scope, Context context) {
         return new PagedIterable<>(listAsync(scope, context));

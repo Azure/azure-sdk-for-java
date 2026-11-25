@@ -9,6 +9,7 @@ import com.azure.core.util.Context;
 import com.azure.resourcemanager.redisenterprise.fluent.models.AccessPolicyAssignmentInner;
 import com.azure.resourcemanager.redisenterprise.models.AccessPolicyAssignment;
 import com.azure.resourcemanager.redisenterprise.models.AccessPolicyAssignmentPropertiesUser;
+import com.azure.resourcemanager.redisenterprise.models.AccessPolicyAssignmentProvisioningError;
 import com.azure.resourcemanager.redisenterprise.models.ProvisioningState;
 
 public final class AccessPolicyAssignmentImpl
@@ -39,6 +40,14 @@ public final class AccessPolicyAssignmentImpl
 
     public String accessPolicyName() {
         return this.innerModel().accessPolicyName();
+    }
+
+    public String accessString() {
+        return this.innerModel().accessString();
+    }
+
+    public AccessPolicyAssignmentProvisioningError provisioningError() {
+        return this.innerModel().provisioningError();
     }
 
     public AccessPolicyAssignmentPropertiesUser user() {
@@ -74,11 +83,7 @@ public final class AccessPolicyAssignmentImpl
     }
 
     public AccessPolicyAssignment create() {
-        this.innerObject = serviceManager.serviceClient()
-            .getAccessPolicyAssignments()
-            .createUpdate(resourceGroupName, clusterName, databaseName, accessPolicyAssignmentName, this.innerModel(),
-                Context.NONE);
-        return this;
+        return this.create(Context.NONE);
     }
 
     public AccessPolicyAssignment create(Context context) {
@@ -101,11 +106,7 @@ public final class AccessPolicyAssignmentImpl
     }
 
     public AccessPolicyAssignment apply() {
-        this.innerObject = serviceManager.serviceClient()
-            .getAccessPolicyAssignments()
-            .createUpdate(resourceGroupName, clusterName, databaseName, accessPolicyAssignmentName, this.innerModel(),
-                Context.NONE);
-        return this;
+        return this.apply(Context.NONE);
     }
 
     public AccessPolicyAssignment apply(Context context) {
@@ -135,11 +136,7 @@ public final class AccessPolicyAssignmentImpl
     }
 
     public AccessPolicyAssignment refresh() {
-        this.innerObject = serviceManager.serviceClient()
-            .getAccessPolicyAssignments()
-            .getWithResponse(resourceGroupName, clusterName, databaseName, accessPolicyAssignmentName, Context.NONE)
-            .getValue();
-        return this;
+        return this.refresh(Context.NONE);
     }
 
     public AccessPolicyAssignment refresh(Context context) {
@@ -152,6 +149,11 @@ public final class AccessPolicyAssignmentImpl
 
     public AccessPolicyAssignmentImpl withAccessPolicyName(String accessPolicyName) {
         this.innerModel().withAccessPolicyName(accessPolicyName);
+        return this;
+    }
+
+    public AccessPolicyAssignmentImpl withAccessString(String accessString) {
+        this.innerModel().withAccessString(accessString);
         return this;
     }
 

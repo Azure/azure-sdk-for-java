@@ -4,8 +4,7 @@
 
 package com.azure.resourcemanager.containerservice.models;
 
-import com.azure.core.annotation.Fluent;
-import com.azure.core.util.logging.ClientLogger;
+import com.azure.core.annotation.Immutable;
 import com.azure.json.JsonReader;
 import com.azure.json.JsonSerializable;
 import com.azure.json.JsonToken;
@@ -15,17 +14,12 @@ import java.io.IOException;
 /**
  * Properties of the AgentFabric membership of a managed cluster.
  */
-@Fluent
+@Immutable
 public final class AgentFabricMembershipProperties implements JsonSerializable<AgentFabricMembershipProperties> {
     /*
      * The current provisioning state of the AgentFabric membership.
      */
     private AgentFabricMembershipProvisioningState provisioningState;
-
-    /*
-     * The SKU of the AgentFabric membership. Determines which AgentFabric components are deployed to the cluster.
-     */
-    private AgentFabricMembershipSkuName sku;
 
     /**
      * Creates an instance of AgentFabricMembershipProperties class.
@@ -43,41 +37,12 @@ public final class AgentFabricMembershipProperties implements JsonSerializable<A
     }
 
     /**
-     * Get the sku property: The SKU of the AgentFabric membership. Determines which AgentFabric components are deployed
-     * to the cluster.
-     * 
-     * @return the sku value.
-     */
-    public AgentFabricMembershipSkuName sku() {
-        return this.sku;
-    }
-
-    /**
-     * Set the sku property: The SKU of the AgentFabric membership. Determines which AgentFabric components are deployed
-     * to the cluster.
-     * 
-     * @param sku the sku value to set.
-     * @return the AgentFabricMembershipProperties object itself.
-     */
-    public AgentFabricMembershipProperties withSku(AgentFabricMembershipSkuName sku) {
-        this.sku = sku;
-        return this;
-    }
-
-    /**
      * Validates the instance.
      * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {
-        if (sku() == null) {
-            throw LOGGER.atError()
-                .log(new IllegalArgumentException(
-                    "Missing required property sku in model AgentFabricMembershipProperties"));
-        }
     }
-
-    private static final ClientLogger LOGGER = new ClientLogger(AgentFabricMembershipProperties.class);
 
     /**
      * {@inheritDoc}
@@ -85,7 +50,6 @@ public final class AgentFabricMembershipProperties implements JsonSerializable<A
     @Override
     public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
         jsonWriter.writeStartObject();
-        jsonWriter.writeStringField("sku", this.sku == null ? null : this.sku.toString());
         return jsonWriter.writeEndObject();
     }
 
@@ -95,7 +59,6 @@ public final class AgentFabricMembershipProperties implements JsonSerializable<A
      * @param jsonReader The JsonReader being read.
      * @return An instance of AgentFabricMembershipProperties if the JsonReader was pointing to an instance of it, or
      * null if it was pointing to JSON null.
-     * @throws IllegalStateException If the deserialized JSON object was missing any required properties.
      * @throws IOException If an error occurs while reading the AgentFabricMembershipProperties.
      */
     public static AgentFabricMembershipProperties fromJson(JsonReader jsonReader) throws IOException {
@@ -106,10 +69,7 @@ public final class AgentFabricMembershipProperties implements JsonSerializable<A
                 String fieldName = reader.getFieldName();
                 reader.nextToken();
 
-                if ("sku".equals(fieldName)) {
-                    deserializedAgentFabricMembershipProperties.sku
-                        = AgentFabricMembershipSkuName.fromString(reader.getString());
-                } else if ("provisioningState".equals(fieldName)) {
+                if ("provisioningState".equals(fieldName)) {
                     deserializedAgentFabricMembershipProperties.provisioningState
                         = AgentFabricMembershipProvisioningState.fromString(reader.getString());
                 } else {

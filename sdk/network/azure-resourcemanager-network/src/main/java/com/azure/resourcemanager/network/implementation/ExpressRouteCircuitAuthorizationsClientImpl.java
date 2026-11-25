@@ -129,18 +129,7 @@ public final class ExpressRouteCircuitAuthorizationsClientImpl implements Expres
             @HostParam("endpoint") String endpoint, @HeaderParam("Accept") String accept, Context context);
     }
 
-    /**
-     * Gets the specified authorization from the specified express route circuit.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param circuitName The name of express route circuit.
-     * @param authorizationName The name of the authorization.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the specified authorization from the specified express route circuit along with {@link Response} on
-     * successful completion of {@link Mono}.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Response<ExpressRouteCircuitAuthorizationInner>> getWithResponseAsync(String resourceGroupName,
         String circuitName, String authorizationName) {
@@ -163,7 +152,7 @@ public final class ExpressRouteCircuitAuthorizationsClientImpl implements Expres
             return Mono
                 .error(new IllegalArgumentException("Parameter authorizationName is required and cannot be null."));
         }
-        final String apiVersion = "2026-03-01";
+        final String apiVersion = "2026-05-01";
         final String accept = "application/json";
         return FluxUtil
             .withContext(context -> service.get(this.client.getEndpoint(), apiVersion, this.client.getSubscriptionId(),
@@ -206,25 +195,14 @@ public final class ExpressRouteCircuitAuthorizationsClientImpl implements Expres
             return Mono
                 .error(new IllegalArgumentException("Parameter authorizationName is required and cannot be null."));
         }
-        final String apiVersion = "2026-03-01";
+        final String apiVersion = "2026-05-01";
         final String accept = "application/json";
         context = this.client.mergeContext(context);
         return service.get(this.client.getEndpoint(), apiVersion, this.client.getSubscriptionId(), resourceGroupName,
             circuitName, authorizationName, accept, context);
     }
 
-    /**
-     * Gets the specified authorization from the specified express route circuit.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param circuitName The name of express route circuit.
-     * @param authorizationName The name of the authorization.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the specified authorization from the specified express route circuit on successful completion of
-     * {@link Mono}.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<ExpressRouteCircuitAuthorizationInner> getAsync(String resourceGroupName, String circuitName,
         String authorizationName) {
@@ -232,55 +210,21 @@ public final class ExpressRouteCircuitAuthorizationsClientImpl implements Expres
             .flatMap(res -> Mono.justOrEmpty(res.getValue()));
     }
 
-    /**
-     * Gets the specified authorization from the specified express route circuit.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param circuitName The name of express route circuit.
-     * @param authorizationName The name of the authorization.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the specified authorization from the specified express route circuit along with {@link Response}.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Response<ExpressRouteCircuitAuthorizationInner> getWithResponse(String resourceGroupName, String circuitName,
         String authorizationName, Context context) {
         return getWithResponseAsync(resourceGroupName, circuitName, authorizationName, context).block();
     }
 
-    /**
-     * Gets the specified authorization from the specified express route circuit.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param circuitName The name of express route circuit.
-     * @param authorizationName The name of the authorization.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the specified authorization from the specified express route circuit.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public ExpressRouteCircuitAuthorizationInner get(String resourceGroupName, String circuitName,
         String authorizationName) {
         return getWithResponse(resourceGroupName, circuitName, authorizationName, Context.NONE).getValue();
     }
 
-    /**
-     * Creates or updates an authorization in the specified express route circuit.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param circuitName The name of express route circuit.
-     * @param authorizationName The name of the authorization.
-     * @param authorizationParameters Parameters supplied to the create or update express route circuit authorization
-     * operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return authorization in an ExpressRouteCircuit resource along with {@link Response} on successful completion of
-     * {@link Mono}.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Response<Flux<ByteBuffer>>> createOrUpdateWithResponseAsync(String resourceGroupName,
         String circuitName, String authorizationName, ExpressRouteCircuitAuthorizationInner authorizationParameters) {
@@ -309,7 +253,7 @@ public final class ExpressRouteCircuitAuthorizationsClientImpl implements Expres
         } else {
             authorizationParameters.validate();
         }
-        final String apiVersion = "2026-03-01";
+        final String apiVersion = "2026-05-01";
         final String contentType = "application/json";
         final String accept = "application/json";
         return FluxUtil
@@ -363,7 +307,7 @@ public final class ExpressRouteCircuitAuthorizationsClientImpl implements Expres
         } else {
             authorizationParameters.validate();
         }
-        final String apiVersion = "2026-03-01";
+        final String apiVersion = "2026-05-01";
         final String contentType = "application/json";
         final String accept = "application/json";
         context = this.client.mergeContext(context);
@@ -371,19 +315,7 @@ public final class ExpressRouteCircuitAuthorizationsClientImpl implements Expres
             resourceGroupName, circuitName, authorizationName, contentType, accept, authorizationParameters, context);
     }
 
-    /**
-     * Creates or updates an authorization in the specified express route circuit.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param circuitName The name of express route circuit.
-     * @param authorizationName The name of the authorization.
-     * @param authorizationParameters Parameters supplied to the create or update express route circuit authorization
-     * operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the {@link PollerFlux} for polling of authorization in an ExpressRouteCircuit resource.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public PollerFlux<PollResult<ExpressRouteCircuitAuthorizationInner>, ExpressRouteCircuitAuthorizationInner>
         beginCreateOrUpdateAsync(String resourceGroupName, String circuitName, String authorizationName,
@@ -421,19 +353,7 @@ public final class ExpressRouteCircuitAuthorizationsClientImpl implements Expres
             ExpressRouteCircuitAuthorizationInner.class, context);
     }
 
-    /**
-     * Creates or updates an authorization in the specified express route circuit.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param circuitName The name of express route circuit.
-     * @param authorizationName The name of the authorization.
-     * @param authorizationParameters Parameters supplied to the create or update express route circuit authorization
-     * operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the {@link SyncPoller} for polling of authorization in an ExpressRouteCircuit resource.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public SyncPoller<PollResult<ExpressRouteCircuitAuthorizationInner>, ExpressRouteCircuitAuthorizationInner>
         beginCreateOrUpdate(String resourceGroupName, String circuitName, String authorizationName,
@@ -442,20 +362,7 @@ public final class ExpressRouteCircuitAuthorizationsClientImpl implements Expres
             .getSyncPoller();
     }
 
-    /**
-     * Creates or updates an authorization in the specified express route circuit.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param circuitName The name of express route circuit.
-     * @param authorizationName The name of the authorization.
-     * @param authorizationParameters Parameters supplied to the create or update express route circuit authorization
-     * operation.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the {@link SyncPoller} for polling of authorization in an ExpressRouteCircuit resource.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public SyncPoller<PollResult<ExpressRouteCircuitAuthorizationInner>, ExpressRouteCircuitAuthorizationInner>
         beginCreateOrUpdate(String resourceGroupName, String circuitName, String authorizationName,
@@ -466,19 +373,7 @@ public final class ExpressRouteCircuitAuthorizationsClientImpl implements Expres
             .getSyncPoller();
     }
 
-    /**
-     * Creates or updates an authorization in the specified express route circuit.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param circuitName The name of express route circuit.
-     * @param authorizationName The name of the authorization.
-     * @param authorizationParameters Parameters supplied to the create or update express route circuit authorization
-     * operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return authorization in an ExpressRouteCircuit resource on successful completion of {@link Mono}.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<ExpressRouteCircuitAuthorizationInner> createOrUpdateAsync(String resourceGroupName, String circuitName,
         String authorizationName, ExpressRouteCircuitAuthorizationInner authorizationParameters) {
@@ -509,39 +404,14 @@ public final class ExpressRouteCircuitAuthorizationsClientImpl implements Expres
             context).last().flatMap(this.client::getLroFinalResultOrError);
     }
 
-    /**
-     * Creates or updates an authorization in the specified express route circuit.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param circuitName The name of express route circuit.
-     * @param authorizationName The name of the authorization.
-     * @param authorizationParameters Parameters supplied to the create or update express route circuit authorization
-     * operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return authorization in an ExpressRouteCircuit resource.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public ExpressRouteCircuitAuthorizationInner createOrUpdate(String resourceGroupName, String circuitName,
         String authorizationName, ExpressRouteCircuitAuthorizationInner authorizationParameters) {
         return createOrUpdateAsync(resourceGroupName, circuitName, authorizationName, authorizationParameters).block();
     }
 
-    /**
-     * Creates or updates an authorization in the specified express route circuit.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param circuitName The name of express route circuit.
-     * @param authorizationName The name of the authorization.
-     * @param authorizationParameters Parameters supplied to the create or update express route circuit authorization
-     * operation.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return authorization in an ExpressRouteCircuit resource.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public ExpressRouteCircuitAuthorizationInner createOrUpdate(String resourceGroupName, String circuitName,
         String authorizationName, ExpressRouteCircuitAuthorizationInner authorizationParameters, Context context) {
@@ -549,17 +419,7 @@ public final class ExpressRouteCircuitAuthorizationsClientImpl implements Expres
             .block();
     }
 
-    /**
-     * Deletes the specified authorization from the specified express route circuit.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param circuitName The name of express route circuit.
-     * @param authorizationName The name of the authorization.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the {@link Response} on successful completion of {@link Mono}.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Response<Flux<ByteBuffer>>> deleteWithResponseAsync(String resourceGroupName, String circuitName,
         String authorizationName) {
@@ -582,7 +442,7 @@ public final class ExpressRouteCircuitAuthorizationsClientImpl implements Expres
             return Mono
                 .error(new IllegalArgumentException("Parameter authorizationName is required and cannot be null."));
         }
-        final String apiVersion = "2026-03-01";
+        final String apiVersion = "2026-05-01";
         return FluxUtil
             .withContext(context -> service.delete(this.client.getEndpoint(), apiVersion,
                 this.client.getSubscriptionId(), resourceGroupName, circuitName, authorizationName, context))
@@ -623,23 +483,13 @@ public final class ExpressRouteCircuitAuthorizationsClientImpl implements Expres
             return Mono
                 .error(new IllegalArgumentException("Parameter authorizationName is required and cannot be null."));
         }
-        final String apiVersion = "2026-03-01";
+        final String apiVersion = "2026-05-01";
         context = this.client.mergeContext(context);
         return service.delete(this.client.getEndpoint(), apiVersion, this.client.getSubscriptionId(), resourceGroupName,
             circuitName, authorizationName, context);
     }
 
-    /**
-     * Deletes the specified authorization from the specified express route circuit.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param circuitName The name of express route circuit.
-     * @param authorizationName The name of the authorization.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the {@link PollerFlux} for polling of long-running operation.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public PollerFlux<PollResult<Void>, Void> beginDeleteAsync(String resourceGroupName, String circuitName,
         String authorizationName) {
@@ -671,52 +521,21 @@ public final class ExpressRouteCircuitAuthorizationsClientImpl implements Expres
             context);
     }
 
-    /**
-     * Deletes the specified authorization from the specified express route circuit.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param circuitName The name of express route circuit.
-     * @param authorizationName The name of the authorization.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the {@link SyncPoller} for polling of long-running operation.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public SyncPoller<PollResult<Void>, Void> beginDelete(String resourceGroupName, String circuitName,
         String authorizationName) {
         return this.beginDeleteAsync(resourceGroupName, circuitName, authorizationName).getSyncPoller();
     }
 
-    /**
-     * Deletes the specified authorization from the specified express route circuit.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param circuitName The name of express route circuit.
-     * @param authorizationName The name of the authorization.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the {@link SyncPoller} for polling of long-running operation.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public SyncPoller<PollResult<Void>, Void> beginDelete(String resourceGroupName, String circuitName,
         String authorizationName, Context context) {
         return this.beginDeleteAsync(resourceGroupName, circuitName, authorizationName, context).getSyncPoller();
     }
 
-    /**
-     * Deletes the specified authorization from the specified express route circuit.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param circuitName The name of express route circuit.
-     * @param authorizationName The name of the authorization.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return A {@link Mono} that completes when a successful response is received.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Void> deleteAsync(String resourceGroupName, String circuitName, String authorizationName) {
         return beginDeleteAsync(resourceGroupName, circuitName, authorizationName).last()
@@ -742,32 +561,13 @@ public final class ExpressRouteCircuitAuthorizationsClientImpl implements Expres
             .flatMap(this.client::getLroFinalResultOrError);
     }
 
-    /**
-     * Deletes the specified authorization from the specified express route circuit.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param circuitName The name of express route circuit.
-     * @param authorizationName The name of the authorization.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public void delete(String resourceGroupName, String circuitName, String authorizationName) {
         deleteAsync(resourceGroupName, circuitName, authorizationName).block();
     }
 
-    /**
-     * Deletes the specified authorization from the specified express route circuit.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param circuitName The name of express route circuit.
-     * @param authorizationName The name of the authorization.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public void delete(String resourceGroupName, String circuitName, String authorizationName, Context context) {
         deleteAsync(resourceGroupName, circuitName, authorizationName, context).block();
@@ -802,7 +602,7 @@ public final class ExpressRouteCircuitAuthorizationsClientImpl implements Expres
         if (circuitName == null) {
             return Mono.error(new IllegalArgumentException("Parameter circuitName is required and cannot be null."));
         }
-        final String apiVersion = "2026-03-01";
+        final String apiVersion = "2026-05-01";
         final String accept = "application/json";
         return FluxUtil
             .withContext(context -> service.list(this.client.getEndpoint(), apiVersion, this.client.getSubscriptionId(),
@@ -842,7 +642,7 @@ public final class ExpressRouteCircuitAuthorizationsClientImpl implements Expres
         if (circuitName == null) {
             return Mono.error(new IllegalArgumentException("Parameter circuitName is required and cannot be null."));
         }
-        final String apiVersion = "2026-03-01";
+        final String apiVersion = "2026-05-01";
         final String accept = "application/json";
         context = this.client.mergeContext(context);
         return service
@@ -852,16 +652,7 @@ public final class ExpressRouteCircuitAuthorizationsClientImpl implements Expres
                 res.getValue().value(), res.getValue().nextLink(), null));
     }
 
-    /**
-     * Gets all authorizations in an express route circuit.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param circuitName The name of express route circuit.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return all authorizations in an express route circuit as paginated response with {@link PagedFlux}.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.COLLECTION)
     public PagedFlux<ExpressRouteCircuitAuthorizationInner> listAsync(String resourceGroupName, String circuitName) {
         return new PagedFlux<>(() -> listSinglePageAsync(resourceGroupName, circuitName),
@@ -886,50 +677,20 @@ public final class ExpressRouteCircuitAuthorizationsClientImpl implements Expres
             nextLink -> listNextSinglePageAsync(nextLink, context));
     }
 
-    /**
-     * Gets all authorizations in an express route circuit.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param circuitName The name of express route circuit.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return all authorizations in an express route circuit as paginated response with {@link PagedIterable}.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.COLLECTION)
     public PagedIterable<ExpressRouteCircuitAuthorizationInner> list(String resourceGroupName, String circuitName) {
         return new PagedIterable<>(listAsync(resourceGroupName, circuitName));
     }
 
-    /**
-     * Gets all authorizations in an express route circuit.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param circuitName The name of express route circuit.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return all authorizations in an express route circuit as paginated response with {@link PagedIterable}.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.COLLECTION)
     public PagedIterable<ExpressRouteCircuitAuthorizationInner> list(String resourceGroupName, String circuitName,
         Context context) {
         return new PagedIterable<>(listAsync(resourceGroupName, circuitName, context));
     }
 
-    /**
-     * Gets the authorization key associated with the specified express route circuit authorization.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param circuitName The name of express route circuit.
-     * @param authorizationName The name of the authorization.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the authorization key associated with the specified express route circuit authorization along with
-     * {@link Response} on successful completion of {@link Mono}.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Response<ExpressRouteAuthorizationKeyInner>> listKeysWithResponseAsync(String resourceGroupName,
         String circuitName, String authorizationName) {
@@ -952,7 +713,7 @@ public final class ExpressRouteCircuitAuthorizationsClientImpl implements Expres
             return Mono
                 .error(new IllegalArgumentException("Parameter authorizationName is required and cannot be null."));
         }
-        final String apiVersion = "2026-03-01";
+        final String apiVersion = "2026-05-01";
         final String accept = "application/json";
         return FluxUtil
             .withContext(context -> service.listKeys(this.client.getEndpoint(), apiVersion,
@@ -995,25 +756,14 @@ public final class ExpressRouteCircuitAuthorizationsClientImpl implements Expres
             return Mono
                 .error(new IllegalArgumentException("Parameter authorizationName is required and cannot be null."));
         }
-        final String apiVersion = "2026-03-01";
+        final String apiVersion = "2026-05-01";
         final String accept = "application/json";
         context = this.client.mergeContext(context);
         return service.listKeys(this.client.getEndpoint(), apiVersion, this.client.getSubscriptionId(),
             resourceGroupName, circuitName, authorizationName, accept, context);
     }
 
-    /**
-     * Gets the authorization key associated with the specified express route circuit authorization.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param circuitName The name of express route circuit.
-     * @param authorizationName The name of the authorization.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the authorization key associated with the specified express route circuit authorization on successful
-     * completion of {@link Mono}.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<ExpressRouteAuthorizationKeyInner> listKeysAsync(String resourceGroupName, String circuitName,
         String authorizationName) {
@@ -1021,36 +771,14 @@ public final class ExpressRouteCircuitAuthorizationsClientImpl implements Expres
             .flatMap(res -> Mono.justOrEmpty(res.getValue()));
     }
 
-    /**
-     * Gets the authorization key associated with the specified express route circuit authorization.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param circuitName The name of express route circuit.
-     * @param authorizationName The name of the authorization.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the authorization key associated with the specified express route circuit authorization along with
-     * {@link Response}.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Response<ExpressRouteAuthorizationKeyInner> listKeysWithResponse(String resourceGroupName,
         String circuitName, String authorizationName, Context context) {
         return listKeysWithResponseAsync(resourceGroupName, circuitName, authorizationName, context).block();
     }
 
-    /**
-     * Gets the authorization key associated with the specified express route circuit authorization.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param circuitName The name of express route circuit.
-     * @param authorizationName The name of the authorization.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the authorization key associated with the specified express route circuit authorization.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public ExpressRouteAuthorizationKeyInner listKeys(String resourceGroupName, String circuitName,
         String authorizationName) {

@@ -48,12 +48,7 @@ public final class DrillsImpl implements Drills {
     }
 
     public Drill create(String serviceGroupName, String drillName, DrillInner resource) {
-        DrillInner inner = this.serviceClient().create(serviceGroupName, drillName, resource);
-        if (inner != null) {
-            return new DrillImpl(inner, this.manager());
-        } else {
-            return null;
-        }
+        return this.create(serviceGroupName, drillName, resource, Context.NONE);
     }
 
     public Drill create(String serviceGroupName, String drillName, DrillInner resource, Context context) {
@@ -66,7 +61,7 @@ public final class DrillsImpl implements Drills {
     }
 
     public void update(String serviceGroupName, String drillName, DrillUpdate properties) {
-        this.serviceClient().update(serviceGroupName, drillName, properties);
+        this.update(serviceGroupName, drillName, properties, Context.NONE);
     }
 
     public void update(String serviceGroupName, String drillName, DrillUpdate properties, Context context) {
@@ -74,7 +69,7 @@ public final class DrillsImpl implements Drills {
     }
 
     public void deleteByResourceGroup(String serviceGroupName, String drillName) {
-        this.serviceClient().delete(serviceGroupName, drillName);
+        this.delete(serviceGroupName, drillName, Context.NONE);
     }
 
     public void delete(String serviceGroupName, String drillName, Context context) {
@@ -93,7 +88,7 @@ public final class DrillsImpl implements Drills {
 
     public void validateForExecution(String serviceGroupName, String operationId, String drillName,
         ValidateForExecutionRequest body) {
-        this.serviceClient().validateForExecution(serviceGroupName, operationId, drillName, body);
+        this.validateForExecution(serviceGroupName, operationId, drillName, body, Context.NONE);
     }
 
     public void validateForExecution(String serviceGroupName, String operationId, String drillName,
@@ -102,7 +97,7 @@ public final class DrillsImpl implements Drills {
     }
 
     public void start(String serviceGroupName, String operationId, String drillName, DrillStartRequest body) {
-        this.serviceClient().start(serviceGroupName, operationId, drillName, body);
+        this.start(serviceGroupName, operationId, drillName, body, Context.NONE);
     }
 
     public void start(String serviceGroupName, String operationId, String drillName, DrillStartRequest body,
@@ -111,7 +106,7 @@ public final class DrillsImpl implements Drills {
     }
 
     public void end(String serviceGroupName, String operationId, String drillName, DrillEndRequest body) {
-        this.serviceClient().end(serviceGroupName, operationId, drillName, body);
+        this.end(serviceGroupName, operationId, drillName, body, Context.NONE);
     }
 
     public void end(String serviceGroupName, String operationId, String drillName, DrillEndRequest body,
@@ -121,7 +116,7 @@ public final class DrillsImpl implements Drills {
 
     public void addOrUpdateResources(String serviceGroupName, String operationId, String drillName,
         AddOrUpdateResourcesRequest body) {
-        this.serviceClient().addOrUpdateResources(serviceGroupName, operationId, drillName, body);
+        this.addOrUpdateResources(serviceGroupName, operationId, drillName, body, Context.NONE);
     }
 
     public void addOrUpdateResources(String serviceGroupName, String operationId, String drillName,
@@ -130,7 +125,7 @@ public final class DrillsImpl implements Drills {
     }
 
     public void resyncReadinessCheck(String serviceGroupName, String operationId, String drillName) {
-        this.serviceClient().resyncReadinessCheck(serviceGroupName, operationId, drillName);
+        this.resyncReadinessCheck(serviceGroupName, operationId, drillName, Context.NONE);
     }
 
     public void resyncReadinessCheck(String serviceGroupName, String operationId, String drillName, Context context) {

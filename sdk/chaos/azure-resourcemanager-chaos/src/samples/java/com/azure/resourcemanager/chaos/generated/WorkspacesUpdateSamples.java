@@ -8,6 +8,9 @@ import com.azure.resourcemanager.chaos.models.ManagedServiceIdentityType;
 import com.azure.resourcemanager.chaos.models.ResourceIdentity;
 import com.azure.resourcemanager.chaos.models.UserAssignedIdentity;
 import com.azure.resourcemanager.chaos.models.Workspace;
+import com.azure.resourcemanager.chaos.models.WorkspaceCustomerManagedKeyEncryptionPatchMergePatchUpdateOrCreate;
+import com.azure.resourcemanager.chaos.models.WorkspaceEncryptionPatchMergePatchUpdateOrCreate;
+import com.azure.resourcemanager.chaos.models.WorkspaceUpdateProperties;
 import java.util.HashMap;
 import java.util.Map;
 
@@ -16,7 +19,70 @@ import java.util.Map;
  */
 public final class WorkspacesUpdateSamples {
     /*
-     * x-ms-original-file: 2026-08-01-preview/Workspaces_Update.json
+     * x-ms-original-file: 2026-11-01/Workspaces_Update_ChangeKeyVault.json
+     */
+    /**
+     * Sample code: Update a Workspace with a validated key and resource ID in another vault.
+     * 
+     * @param manager Entry point to ChaosManager.
+     */
+    public static void updateAWorkspaceWithAValidatedKeyAndResourceIDInAnotherVault(
+        com.azure.resourcemanager.chaos.ChaosManager manager) {
+        Workspace resource = manager.workspaces()
+            .getByResourceGroupWithResponse("exampleRG", "exampleWorkspace", com.azure.core.util.Context.NONE)
+            .getValue();
+        resource.update()
+            .withProperties(new WorkspaceUpdateProperties()
+                .withEncryption(new WorkspaceEncryptionPatchMergePatchUpdateOrCreate().withCustomerManagedKeyEncryption(
+                    new WorkspaceCustomerManagedKeyEncryptionPatchMergePatchUpdateOrCreate()
+                        .withKeyEncryptionKeyUrl("fakeTokenPlaceholder")
+                        .withKeyVaultResourceId("fakeTokenPlaceholder"))))
+            .apply();
+    }
+
+    /*
+     * x-ms-original-file: 2026-11-01/Workspaces_Update_ReplaceCustomerKey.json
+     */
+    /**
+     * Sample code: Update only the customer key URI of an encrypted Workspace.
+     * 
+     * @param manager Entry point to ChaosManager.
+     */
+    public static void
+        updateOnlyTheCustomerKeyURIOfAnEncryptedWorkspace(com.azure.resourcemanager.chaos.ChaosManager manager) {
+        Workspace resource = manager.workspaces()
+            .getByResourceGroupWithResponse("exampleRG", "exampleWorkspace", com.azure.core.util.Context.NONE)
+            .getValue();
+        resource.update()
+            .withProperties(new WorkspaceUpdateProperties()
+                .withEncryption(new WorkspaceEncryptionPatchMergePatchUpdateOrCreate().withCustomerManagedKeyEncryption(
+                    new WorkspaceCustomerManagedKeyEncryptionPatchMergePatchUpdateOrCreate()
+                        .withKeyEncryptionKeyUrl("fakeTokenPlaceholder"))))
+            .apply();
+    }
+
+    /*
+     * x-ms-original-file: 2026-11-01/Workspaces_Update_EmptyCustomerKeyPatch.json
+     */
+    /**
+     * Sample code: Update a Workspace with an empty CMK patch and retain its existing key URL.
+     * 
+     * @param manager Entry point to ChaosManager.
+     */
+    public static void updateAWorkspaceWithAnEmptyCMKPatchAndRetainItsExistingKeyURL(
+        com.azure.resourcemanager.chaos.ChaosManager manager) {
+        Workspace resource = manager.workspaces()
+            .getByResourceGroupWithResponse("exampleRG", "exampleWorkspace", com.azure.core.util.Context.NONE)
+            .getValue();
+        resource.update()
+            .withProperties(new WorkspaceUpdateProperties()
+                .withEncryption(new WorkspaceEncryptionPatchMergePatchUpdateOrCreate().withCustomerManagedKeyEncryption(
+                    new WorkspaceCustomerManagedKeyEncryptionPatchMergePatchUpdateOrCreate())))
+            .apply();
+    }
+
+    /*
+     * x-ms-original-file: 2026-11-01/Workspaces_Update.json
      */
     /**
      * Sample code: Update a Workspace in a resource group.
@@ -34,6 +100,22 @@ public final class WorkspacesUpdateSamples {
                     "/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/exampleResourceGroup/providers/Microsoft.ManagedIdentity/userAssignedIdentities/exampleIdentity",
                     new UserAssignedIdentity())))
             .apply();
+    }
+
+    /*
+     * x-ms-original-file: 2026-11-01/Workspaces_Update_OmitEncryption.json
+     */
+    /**
+     * Sample code: Update Workspace tags without changing customer-managed encryption.
+     * 
+     * @param manager Entry point to ChaosManager.
+     */
+    public static void updateWorkspaceTagsWithoutChangingCustomerManagedEncryption(
+        com.azure.resourcemanager.chaos.ChaosManager manager) {
+        Workspace resource = manager.workspaces()
+            .getByResourceGroupWithResponse("exampleRG", "exampleWorkspace", com.azure.core.util.Context.NONE)
+            .getValue();
+        resource.update().withTags(mapOf("environment", "production")).apply();
     }
 
     // Use "Map.of" if available

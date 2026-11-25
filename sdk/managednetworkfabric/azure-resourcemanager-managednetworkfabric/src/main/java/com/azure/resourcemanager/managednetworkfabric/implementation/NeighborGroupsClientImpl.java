@@ -276,17 +276,7 @@ public final class NeighborGroupsClientImpl implements NeighborGroupsClient {
             .flatMap(res -> Mono.justOrEmpty(res.getValue()));
     }
 
-    /**
-     * Gets the Neighbor Group.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param neighborGroupName Name of the Neighbor Group.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the Neighbor Group along with {@link Response}.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Response<NeighborGroupInner> getByResourceGroupWithResponse(String resourceGroupName,
         String neighborGroupName, Context context) {
@@ -295,16 +285,7 @@ public final class NeighborGroupsClientImpl implements NeighborGroupsClient {
             this.client.getSubscriptionId(), resourceGroupName, neighborGroupName, accept, context);
     }
 
-    /**
-     * Gets the Neighbor Group.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param neighborGroupName Name of the Neighbor Group.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the Neighbor Group.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public NeighborGroupInner getByResourceGroup(String resourceGroupName, String neighborGroupName) {
         return getByResourceGroupWithResponse(resourceGroupName, neighborGroupName, Context.NONE).getValue();
@@ -345,11 +326,7 @@ public final class NeighborGroupsClientImpl implements NeighborGroupsClient {
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Response<BinaryData> createWithResponse(String resourceGroupName, String neighborGroupName,
         NeighborGroupInner body) {
-        final String contentType = "application/json";
-        final String accept = "application/json";
-        return service.createSync(this.client.getEndpoint(), this.client.getApiVersion(),
-            this.client.getSubscriptionId(), resourceGroupName, neighborGroupName, contentType, accept, body,
-            Context.NONE);
+        return createWithResponse(resourceGroupName, neighborGroupName, body, Context.NONE);
     }
 
     /**
@@ -392,37 +369,14 @@ public final class NeighborGroupsClientImpl implements NeighborGroupsClient {
             NeighborGroupInner.class, NeighborGroupInner.class, this.client.getContext());
     }
 
-    /**
-     * Implements the Neighbor Group PUT method.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param neighborGroupName Name of the Neighbor Group.
-     * @param body Request payload.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the {@link SyncPoller} for polling of defines the Neighbor Group.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public SyncPoller<PollResult<NeighborGroupInner>, NeighborGroupInner> beginCreate(String resourceGroupName,
         String neighborGroupName, NeighborGroupInner body) {
-        Response<BinaryData> response = createWithResponse(resourceGroupName, neighborGroupName, body);
-        return this.client.<NeighborGroupInner, NeighborGroupInner>getLroResult(response, NeighborGroupInner.class,
-            NeighborGroupInner.class, Context.NONE);
+        return beginCreate(resourceGroupName, neighborGroupName, body, Context.NONE);
     }
 
-    /**
-     * Implements the Neighbor Group PUT method.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param neighborGroupName Name of the Neighbor Group.
-     * @param body Request payload.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the {@link SyncPoller} for polling of defines the Neighbor Group.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public SyncPoller<PollResult<NeighborGroupInner>, NeighborGroupInner> beginCreate(String resourceGroupName,
         String neighborGroupName, NeighborGroupInner body, Context context) {
@@ -449,38 +403,17 @@ public final class NeighborGroupsClientImpl implements NeighborGroupsClient {
             .flatMap(this.client::getLroFinalResultOrError);
     }
 
-    /**
-     * Implements the Neighbor Group PUT method.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param neighborGroupName Name of the Neighbor Group.
-     * @param body Request payload.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return defines the Neighbor Group.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public NeighborGroupInner create(String resourceGroupName, String neighborGroupName, NeighborGroupInner body) {
-        return beginCreate(resourceGroupName, neighborGroupName, body).getFinalResult();
+        return create(resourceGroupName, neighborGroupName, body, Context.NONE);
     }
 
-    /**
-     * Implements the Neighbor Group PUT method.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param neighborGroupName Name of the Neighbor Group.
-     * @param body Request payload.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return defines the Neighbor Group.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public NeighborGroupInner create(String resourceGroupName, String neighborGroupName, NeighborGroupInner body,
         Context context) {
-        return beginCreate(resourceGroupName, neighborGroupName, body, context).getFinalResult();
+        return this.client.getLroFinalResultOrError(beginCreate(resourceGroupName, neighborGroupName, body, context));
     }
 
     /**
@@ -518,11 +451,7 @@ public final class NeighborGroupsClientImpl implements NeighborGroupsClient {
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Response<BinaryData> updateWithResponse(String resourceGroupName, String neighborGroupName,
         NeighborGroupPatch body) {
-        final String contentType = "application/json";
-        final String accept = "application/json";
-        return service.updateSync(this.client.getEndpoint(), this.client.getApiVersion(),
-            this.client.getSubscriptionId(), resourceGroupName, neighborGroupName, contentType, accept, body,
-            Context.NONE);
+        return updateWithResponse(resourceGroupName, neighborGroupName, body, Context.NONE);
     }
 
     /**
@@ -565,37 +494,14 @@ public final class NeighborGroupsClientImpl implements NeighborGroupsClient {
             NeighborGroupInner.class, NeighborGroupInner.class, this.client.getContext());
     }
 
-    /**
-     * Updates the Neighbor Group.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param neighborGroupName Name of the Neighbor Group.
-     * @param body Neighbor Group properties to update. Only annotations are supported.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the {@link SyncPoller} for polling of defines the Neighbor Group.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public SyncPoller<PollResult<NeighborGroupInner>, NeighborGroupInner> beginUpdate(String resourceGroupName,
         String neighborGroupName, NeighborGroupPatch body) {
-        Response<BinaryData> response = updateWithResponse(resourceGroupName, neighborGroupName, body);
-        return this.client.<NeighborGroupInner, NeighborGroupInner>getLroResult(response, NeighborGroupInner.class,
-            NeighborGroupInner.class, Context.NONE);
+        return beginUpdate(resourceGroupName, neighborGroupName, body, Context.NONE);
     }
 
-    /**
-     * Updates the Neighbor Group.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param neighborGroupName Name of the Neighbor Group.
-     * @param body Neighbor Group properties to update. Only annotations are supported.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the {@link SyncPoller} for polling of defines the Neighbor Group.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public SyncPoller<PollResult<NeighborGroupInner>, NeighborGroupInner> beginUpdate(String resourceGroupName,
         String neighborGroupName, NeighborGroupPatch body, Context context) {
@@ -622,38 +528,17 @@ public final class NeighborGroupsClientImpl implements NeighborGroupsClient {
             .flatMap(this.client::getLroFinalResultOrError);
     }
 
-    /**
-     * Updates the Neighbor Group.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param neighborGroupName Name of the Neighbor Group.
-     * @param body Neighbor Group properties to update. Only annotations are supported.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return defines the Neighbor Group.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public NeighborGroupInner update(String resourceGroupName, String neighborGroupName, NeighborGroupPatch body) {
-        return beginUpdate(resourceGroupName, neighborGroupName, body).getFinalResult();
+        return update(resourceGroupName, neighborGroupName, body, Context.NONE);
     }
 
-    /**
-     * Updates the Neighbor Group.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param neighborGroupName Name of the Neighbor Group.
-     * @param body Neighbor Group properties to update. Only annotations are supported.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return defines the Neighbor Group.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public NeighborGroupInner update(String resourceGroupName, String neighborGroupName, NeighborGroupPatch body,
         Context context) {
-        return beginUpdate(resourceGroupName, neighborGroupName, body, context).getFinalResult();
+        return this.client.getLroFinalResultOrError(beginUpdate(resourceGroupName, neighborGroupName, body, context));
     }
 
     /**
@@ -687,8 +572,7 @@ public final class NeighborGroupsClientImpl implements NeighborGroupsClient {
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Response<BinaryData> deleteWithResponse(String resourceGroupName, String neighborGroupName) {
-        return service.deleteSync(this.client.getEndpoint(), this.client.getApiVersion(),
-            this.client.getSubscriptionId(), resourceGroupName, neighborGroupName, Context.NONE);
+        return deleteWithResponse(resourceGroupName, neighborGroupName, Context.NONE);
     }
 
     /**
@@ -726,33 +610,13 @@ public final class NeighborGroupsClientImpl implements NeighborGroupsClient {
             this.client.getContext());
     }
 
-    /**
-     * Implements Neighbor Group DELETE method.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param neighborGroupName Name of the Neighbor Group.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the {@link SyncPoller} for polling of long-running operation.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public SyncPoller<PollResult<Void>, Void> beginDelete(String resourceGroupName, String neighborGroupName) {
-        Response<BinaryData> response = deleteWithResponse(resourceGroupName, neighborGroupName);
-        return this.client.<Void, Void>getLroResult(response, Void.class, Void.class, Context.NONE);
+        return beginDelete(resourceGroupName, neighborGroupName, Context.NONE);
     }
 
-    /**
-     * Implements Neighbor Group DELETE method.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param neighborGroupName Name of the Neighbor Group.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the {@link SyncPoller} for polling of long-running operation.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public SyncPoller<PollResult<Void>, Void> beginDelete(String resourceGroupName, String neighborGroupName,
         Context context) {
@@ -776,33 +640,16 @@ public final class NeighborGroupsClientImpl implements NeighborGroupsClient {
             .flatMap(this.client::getLroFinalResultOrError);
     }
 
-    /**
-     * Implements Neighbor Group DELETE method.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param neighborGroupName Name of the Neighbor Group.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public void delete(String resourceGroupName, String neighborGroupName) {
-        beginDelete(resourceGroupName, neighborGroupName).getFinalResult();
+        delete(resourceGroupName, neighborGroupName, Context.NONE);
     }
 
-    /**
-     * Implements Neighbor Group DELETE method.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param neighborGroupName Name of the Neighbor Group.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public void delete(String resourceGroupName, String neighborGroupName, Context context) {
-        beginDelete(resourceGroupName, neighborGroupName, context).getFinalResult();
+        this.client.getLroFinalResultOrError(beginDelete(resourceGroupName, neighborGroupName, context));
     }
 
     /**
@@ -852,11 +699,7 @@ public final class NeighborGroupsClientImpl implements NeighborGroupsClient {
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private PagedResponse<NeighborGroupInner> listByResourceGroupSinglePage(String resourceGroupName) {
-        final String accept = "application/json";
-        Response<NeighborGroupsListResult> res = service.listByResourceGroupSync(this.client.getEndpoint(),
-            this.client.getApiVersion(), this.client.getSubscriptionId(), resourceGroupName, accept, Context.NONE);
-        return new PagedResponseBase<>(res.getRequest(), res.getStatusCode(), res.getHeaders(), res.getValue().value(),
-            res.getValue().nextLink(), null);
+        return listByResourceGroupSinglePage(resourceGroupName, Context.NONE);
     }
 
     /**
@@ -878,31 +721,13 @@ public final class NeighborGroupsClientImpl implements NeighborGroupsClient {
             res.getValue().nextLink(), null);
     }
 
-    /**
-     * Displays NeighborGroups list by resource group GET method.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return paged collection of NeighborGroup items as paginated response with {@link PagedIterable}.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.COLLECTION)
     public PagedIterable<NeighborGroupInner> listByResourceGroup(String resourceGroupName) {
-        return new PagedIterable<>(() -> listByResourceGroupSinglePage(resourceGroupName),
-            nextLink -> listByResourceGroupNextSinglePage(nextLink));
+        return listByResourceGroup(resourceGroupName, Context.NONE);
     }
 
-    /**
-     * Displays NeighborGroups list by resource group GET method.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return paged collection of NeighborGroup items as paginated response with {@link PagedIterable}.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.COLLECTION)
     public PagedIterable<NeighborGroupInner> listByResourceGroup(String resourceGroupName, Context context) {
         return new PagedIterable<>(() -> listByResourceGroupSinglePage(resourceGroupName, context),
@@ -950,11 +775,7 @@ public final class NeighborGroupsClientImpl implements NeighborGroupsClient {
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private PagedResponse<NeighborGroupInner> listSinglePage() {
-        final String accept = "application/json";
-        Response<NeighborGroupsListResult> res = service.listSync(this.client.getEndpoint(),
-            this.client.getApiVersion(), this.client.getSubscriptionId(), accept, Context.NONE);
-        return new PagedResponseBase<>(res.getRequest(), res.getStatusCode(), res.getHeaders(), res.getValue().value(),
-            res.getValue().nextLink(), null);
+        return listSinglePage(Context.NONE);
     }
 
     /**
@@ -975,27 +796,13 @@ public final class NeighborGroupsClientImpl implements NeighborGroupsClient {
             res.getValue().nextLink(), null);
     }
 
-    /**
-     * Displays NeighborGroups list by subscription GET method.
-     * 
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return paged collection of NeighborGroup items as paginated response with {@link PagedIterable}.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.COLLECTION)
     public PagedIterable<NeighborGroupInner> list() {
-        return new PagedIterable<>(() -> listSinglePage(), nextLink -> listBySubscriptionNextSinglePage(nextLink));
+        return list(Context.NONE);
     }
 
-    /**
-     * Displays NeighborGroups list by subscription GET method.
-     * 
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return paged collection of NeighborGroup items as paginated response with {@link PagedIterable}.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.COLLECTION)
     public PagedIterable<NeighborGroupInner> list(Context context) {
         return new PagedIterable<>(() -> listSinglePage(context),
@@ -1035,9 +842,7 @@ public final class NeighborGroupsClientImpl implements NeighborGroupsClient {
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Response<BinaryData> resyncWithResponse(String resourceGroupName, String neighborGroupName) {
-        final String accept = "application/json";
-        return service.resyncSync(this.client.getEndpoint(), this.client.getApiVersion(),
-            this.client.getSubscriptionId(), resourceGroupName, neighborGroupName, accept, Context.NONE);
+        return resyncWithResponse(resourceGroupName, neighborGroupName, Context.NONE);
     }
 
     /**
@@ -1078,35 +883,14 @@ public final class NeighborGroupsClientImpl implements NeighborGroupsClient {
             NeighborGroupResyncResponseInner.class, this.client.getContext());
     }
 
-    /**
-     * Resync the Neighbor Group after a configuration change.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param neighborGroupName Name of the Neighbor Group.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the {@link SyncPoller} for polling of response for Neighbor Group Resync operation.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public SyncPoller<PollResult<NeighborGroupResyncResponseInner>, NeighborGroupResyncResponseInner>
         beginResync(String resourceGroupName, String neighborGroupName) {
-        Response<BinaryData> response = resyncWithResponse(resourceGroupName, neighborGroupName);
-        return this.client.<NeighborGroupResyncResponseInner, NeighborGroupResyncResponseInner>getLroResult(response,
-            NeighborGroupResyncResponseInner.class, NeighborGroupResyncResponseInner.class, Context.NONE);
+        return beginResync(resourceGroupName, neighborGroupName, Context.NONE);
     }
 
-    /**
-     * Resync the Neighbor Group after a configuration change.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param neighborGroupName Name of the Neighbor Group.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the {@link SyncPoller} for polling of response for Neighbor Group Resync operation.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public SyncPoller<PollResult<NeighborGroupResyncResponseInner>, NeighborGroupResyncResponseInner>
         beginResync(String resourceGroupName, String neighborGroupName, Context context) {
@@ -1131,36 +915,17 @@ public final class NeighborGroupsClientImpl implements NeighborGroupsClient {
             .flatMap(this.client::getLroFinalResultOrError);
     }
 
-    /**
-     * Resync the Neighbor Group after a configuration change.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param neighborGroupName Name of the Neighbor Group.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return response for Neighbor Group Resync operation.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public NeighborGroupResyncResponseInner resync(String resourceGroupName, String neighborGroupName) {
-        return beginResync(resourceGroupName, neighborGroupName).getFinalResult();
+        return resync(resourceGroupName, neighborGroupName, Context.NONE);
     }
 
-    /**
-     * Resync the Neighbor Group after a configuration change.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param neighborGroupName Name of the Neighbor Group.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return response for Neighbor Group Resync operation.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public NeighborGroupResyncResponseInner resync(String resourceGroupName, String neighborGroupName,
         Context context) {
-        return beginResync(resourceGroupName, neighborGroupName, context).getFinalResult();
+        return this.client.getLroFinalResultOrError(beginResync(resourceGroupName, neighborGroupName, context));
     }
 
     /**
@@ -1195,11 +960,7 @@ public final class NeighborGroupsClientImpl implements NeighborGroupsClient {
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private PagedResponse<NeighborGroupInner> listByResourceGroupNextSinglePage(String nextLink) {
-        final String accept = "application/json";
-        Response<NeighborGroupsListResult> res
-            = service.listByResourceGroupNextSync(nextLink, this.client.getEndpoint(), accept, Context.NONE);
-        return new PagedResponseBase<>(res.getRequest(), res.getStatusCode(), res.getHeaders(), res.getValue().value(),
-            res.getValue().nextLink(), null);
+        return listByResourceGroupNextSinglePage(nextLink, Context.NONE);
     }
 
     /**
@@ -1253,11 +1014,7 @@ public final class NeighborGroupsClientImpl implements NeighborGroupsClient {
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private PagedResponse<NeighborGroupInner> listBySubscriptionNextSinglePage(String nextLink) {
-        final String accept = "application/json";
-        Response<NeighborGroupsListResult> res
-            = service.listBySubscriptionNextSync(nextLink, this.client.getEndpoint(), accept, Context.NONE);
-        return new PagedResponseBase<>(res.getRequest(), res.getStatusCode(), res.getHeaders(), res.getValue().value(),
-            res.getValue().nextLink(), null);
+        return listBySubscriptionNextSinglePage(nextLink, Context.NONE);
     }
 
     /**

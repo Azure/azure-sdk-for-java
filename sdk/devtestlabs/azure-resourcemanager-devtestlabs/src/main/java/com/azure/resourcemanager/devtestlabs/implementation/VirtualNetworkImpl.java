@@ -134,10 +134,7 @@ public final class VirtualNetworkImpl implements VirtualNetwork, VirtualNetwork.
     }
 
     public VirtualNetwork create() {
-        this.innerObject = serviceManager.serviceClient()
-            .getVirtualNetworks()
-            .createOrUpdate(resourceGroupName, labName, name, this.innerModel(), Context.NONE);
-        return this;
+        return this.create(Context.NONE);
     }
 
     public VirtualNetwork create(Context context) {
@@ -159,11 +156,7 @@ public final class VirtualNetworkImpl implements VirtualNetwork, VirtualNetwork.
     }
 
     public VirtualNetwork apply() {
-        this.innerObject = serviceManager.serviceClient()
-            .getVirtualNetworks()
-            .updateWithResponse(resourceGroupName, labName, name, updateVirtualNetwork, Context.NONE)
-            .getValue();
-        return this;
+        return this.apply(Context.NONE);
     }
 
     public VirtualNetwork apply(Context context) {
@@ -190,12 +183,7 @@ public final class VirtualNetworkImpl implements VirtualNetwork, VirtualNetwork.
     }
 
     public VirtualNetwork refresh() {
-        String localExpand = null;
-        this.innerObject = serviceManager.serviceClient()
-            .getVirtualNetworks()
-            .getWithResponse(resourceGroupName, labName, name, localExpand, Context.NONE)
-            .getValue();
-        return this;
+        return this.refresh(Context.NONE);
     }
 
     public VirtualNetwork refresh(Context context) {

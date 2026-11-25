@@ -290,23 +290,7 @@ public final class ReplicationvCentersClientImpl implements ReplicationvCentersC
             .flatMap(res -> Mono.justOrEmpty(res.getValue()));
     }
 
-    /**
-     * Gets the details of a vCenter.
-     * 
-     * Gets the details of a registered vCenter server(Add vCenter server).
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param resourceName The name of the Vault.
-     * @param fabricName Fabric name.
-     * @param vcenterName vcenter name.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the details of a vCenter.
-     * 
-     * Gets the details of a registered vCenter server(Add vCenter server) along with {@link Response}.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Response<VCenterInner> getWithResponse(String resourceGroupName, String resourceName, String fabricName,
         String vcenterName, Context context) {
@@ -341,22 +325,7 @@ public final class ReplicationvCentersClientImpl implements ReplicationvCentersC
             resourceGroupName, resourceName, fabricName, vcenterName, accept, context);
     }
 
-    /**
-     * Gets the details of a vCenter.
-     * 
-     * Gets the details of a registered vCenter server(Add vCenter server).
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param resourceName The name of the Vault.
-     * @param fabricName Fabric name.
-     * @param vcenterName vcenter name.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the details of a vCenter.
-     * 
-     * Gets the details of a registered vCenter server(Add vCenter server).
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public VCenterInner get(String resourceGroupName, String resourceName, String fabricName, String vcenterName) {
         return getWithResponse(resourceGroupName, resourceName, fabricName, vcenterName, Context.NONE).getValue();
@@ -434,43 +403,8 @@ public final class ReplicationvCentersClientImpl implements ReplicationvCentersC
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Response<BinaryData> createWithResponse(String resourceGroupName, String resourceName, String fabricName,
         String vcenterName, AddVCenterRequest addVCenterRequest) {
-        if (this.client.getEndpoint() == null) {
-            throw LOGGER.atError()
-                .log(new IllegalArgumentException(
-                    "Parameter this.client.getEndpoint() is required and cannot be null."));
-        }
-        if (this.client.getSubscriptionId() == null) {
-            throw LOGGER.atError()
-                .log(new IllegalArgumentException(
-                    "Parameter this.client.getSubscriptionId() is required and cannot be null."));
-        }
-        if (resourceGroupName == null) {
-            throw LOGGER.atError()
-                .log(new IllegalArgumentException("Parameter resourceGroupName is required and cannot be null."));
-        }
-        if (resourceName == null) {
-            throw LOGGER.atError()
-                .log(new IllegalArgumentException("Parameter resourceName is required and cannot be null."));
-        }
-        if (fabricName == null) {
-            throw LOGGER.atError()
-                .log(new IllegalArgumentException("Parameter fabricName is required and cannot be null."));
-        }
-        if (vcenterName == null) {
-            throw LOGGER.atError()
-                .log(new IllegalArgumentException("Parameter vcenterName is required and cannot be null."));
-        }
-        if (addVCenterRequest == null) {
-            throw LOGGER.atError()
-                .log(new IllegalArgumentException("Parameter addVCenterRequest is required and cannot be null."));
-        } else {
-            addVCenterRequest.validate();
-        }
-        final String contentType = "application/json";
-        final String accept = "application/json";
-        return service.createSync(this.client.getEndpoint(), this.client.getApiVersion(),
-            this.client.getSubscriptionId(), resourceGroupName, resourceName, fabricName, vcenterName, contentType,
-            accept, addVCenterRequest, Context.NONE);
+        return createWithResponse(resourceGroupName, resourceName, fabricName, vcenterName, addVCenterRequest,
+            Context.NONE);
     }
 
     /**
@@ -555,46 +489,14 @@ public final class ReplicationvCentersClientImpl implements ReplicationvCentersC
             VCenterInner.class, VCenterInner.class, this.client.getContext());
     }
 
-    /**
-     * Add vCenter.
-     * 
-     * The operation to create a vCenter object..
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param resourceName The name of the Vault.
-     * @param fabricName Fabric name.
-     * @param vcenterName vcenter name.
-     * @param addVCenterRequest The input to the add vCenter operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the {@link SyncPoller} for polling of vCenter definition.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public SyncPoller<PollResult<VCenterInner>, VCenterInner> beginCreate(String resourceGroupName, String resourceName,
         String fabricName, String vcenterName, AddVCenterRequest addVCenterRequest) {
-        Response<BinaryData> response
-            = createWithResponse(resourceGroupName, resourceName, fabricName, vcenterName, addVCenterRequest);
-        return this.client.<VCenterInner, VCenterInner>getLroResult(response, VCenterInner.class, VCenterInner.class,
-            Context.NONE);
+        return beginCreate(resourceGroupName, resourceName, fabricName, vcenterName, addVCenterRequest, Context.NONE);
     }
 
-    /**
-     * Add vCenter.
-     * 
-     * The operation to create a vCenter object..
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param resourceName The name of the Vault.
-     * @param fabricName Fabric name.
-     * @param vcenterName vcenter name.
-     * @param addVCenterRequest The input to the add vCenter operation.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the {@link SyncPoller} for polling of vCenter definition.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public SyncPoller<PollResult<VCenterInner>, VCenterInner> beginCreate(String resourceGroupName, String resourceName,
         String fabricName, String vcenterName, AddVCenterRequest addVCenterRequest, Context context) {
@@ -626,49 +528,19 @@ public final class ReplicationvCentersClientImpl implements ReplicationvCentersC
             .flatMap(this.client::getLroFinalResultOrError);
     }
 
-    /**
-     * Add vCenter.
-     * 
-     * The operation to create a vCenter object..
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param resourceName The name of the Vault.
-     * @param fabricName Fabric name.
-     * @param vcenterName vcenter name.
-     * @param addVCenterRequest The input to the add vCenter operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return vCenter definition.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public VCenterInner create(String resourceGroupName, String resourceName, String fabricName, String vcenterName,
         AddVCenterRequest addVCenterRequest) {
-        return beginCreate(resourceGroupName, resourceName, fabricName, vcenterName, addVCenterRequest)
-            .getFinalResult();
+        return create(resourceGroupName, resourceName, fabricName, vcenterName, addVCenterRequest, Context.NONE);
     }
 
-    /**
-     * Add vCenter.
-     * 
-     * The operation to create a vCenter object..
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param resourceName The name of the Vault.
-     * @param fabricName Fabric name.
-     * @param vcenterName vcenter name.
-     * @param addVCenterRequest The input to the add vCenter operation.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return vCenter definition.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public VCenterInner create(String resourceGroupName, String resourceName, String fabricName, String vcenterName,
         AddVCenterRequest addVCenterRequest, Context context) {
-        return beginCreate(resourceGroupName, resourceName, fabricName, vcenterName, addVCenterRequest, context)
-            .getFinalResult();
+        return this.client.getLroFinalResultOrError(
+            beginCreate(resourceGroupName, resourceName, fabricName, vcenterName, addVCenterRequest, context));
     }
 
     /**
@@ -743,43 +615,8 @@ public final class ReplicationvCentersClientImpl implements ReplicationvCentersC
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Response<BinaryData> updateWithResponse(String resourceGroupName, String resourceName, String fabricName,
         String vcenterName, UpdateVCenterRequest updateVCenterRequest) {
-        if (this.client.getEndpoint() == null) {
-            throw LOGGER.atError()
-                .log(new IllegalArgumentException(
-                    "Parameter this.client.getEndpoint() is required and cannot be null."));
-        }
-        if (this.client.getSubscriptionId() == null) {
-            throw LOGGER.atError()
-                .log(new IllegalArgumentException(
-                    "Parameter this.client.getSubscriptionId() is required and cannot be null."));
-        }
-        if (resourceGroupName == null) {
-            throw LOGGER.atError()
-                .log(new IllegalArgumentException("Parameter resourceGroupName is required and cannot be null."));
-        }
-        if (resourceName == null) {
-            throw LOGGER.atError()
-                .log(new IllegalArgumentException("Parameter resourceName is required and cannot be null."));
-        }
-        if (fabricName == null) {
-            throw LOGGER.atError()
-                .log(new IllegalArgumentException("Parameter fabricName is required and cannot be null."));
-        }
-        if (vcenterName == null) {
-            throw LOGGER.atError()
-                .log(new IllegalArgumentException("Parameter vcenterName is required and cannot be null."));
-        }
-        if (updateVCenterRequest == null) {
-            throw LOGGER.atError()
-                .log(new IllegalArgumentException("Parameter updateVCenterRequest is required and cannot be null."));
-        } else {
-            updateVCenterRequest.validate();
-        }
-        final String contentType = "application/json";
-        final String accept = "application/json";
-        return service.updateSync(this.client.getEndpoint(), this.client.getApiVersion(),
-            this.client.getSubscriptionId(), resourceGroupName, resourceName, fabricName, vcenterName, contentType,
-            accept, updateVCenterRequest, Context.NONE);
+        return updateWithResponse(resourceGroupName, resourceName, fabricName, vcenterName, updateVCenterRequest,
+            Context.NONE);
     }
 
     /**
@@ -864,46 +701,15 @@ public final class ReplicationvCentersClientImpl implements ReplicationvCentersC
             VCenterInner.class, VCenterInner.class, this.client.getContext());
     }
 
-    /**
-     * Update vCenter operation.
-     * 
-     * The operation to update a registered vCenter.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param resourceName The name of the Vault.
-     * @param fabricName Fabric name.
-     * @param vcenterName vcenter name.
-     * @param updateVCenterRequest The input to the update vCenter operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the {@link SyncPoller} for polling of vCenter definition.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public SyncPoller<PollResult<VCenterInner>, VCenterInner> beginUpdate(String resourceGroupName, String resourceName,
         String fabricName, String vcenterName, UpdateVCenterRequest updateVCenterRequest) {
-        Response<BinaryData> response
-            = updateWithResponse(resourceGroupName, resourceName, fabricName, vcenterName, updateVCenterRequest);
-        return this.client.<VCenterInner, VCenterInner>getLroResult(response, VCenterInner.class, VCenterInner.class,
+        return beginUpdate(resourceGroupName, resourceName, fabricName, vcenterName, updateVCenterRequest,
             Context.NONE);
     }
 
-    /**
-     * Update vCenter operation.
-     * 
-     * The operation to update a registered vCenter.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param resourceName The name of the Vault.
-     * @param fabricName Fabric name.
-     * @param vcenterName vcenter name.
-     * @param updateVCenterRequest The input to the update vCenter operation.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the {@link SyncPoller} for polling of vCenter definition.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public SyncPoller<PollResult<VCenterInner>, VCenterInner> beginUpdate(String resourceGroupName, String resourceName,
         String fabricName, String vcenterName, UpdateVCenterRequest updateVCenterRequest, Context context) {
@@ -935,49 +741,19 @@ public final class ReplicationvCentersClientImpl implements ReplicationvCentersC
             .flatMap(this.client::getLroFinalResultOrError);
     }
 
-    /**
-     * Update vCenter operation.
-     * 
-     * The operation to update a registered vCenter.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param resourceName The name of the Vault.
-     * @param fabricName Fabric name.
-     * @param vcenterName vcenter name.
-     * @param updateVCenterRequest The input to the update vCenter operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return vCenter definition.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public VCenterInner update(String resourceGroupName, String resourceName, String fabricName, String vcenterName,
         UpdateVCenterRequest updateVCenterRequest) {
-        return beginUpdate(resourceGroupName, resourceName, fabricName, vcenterName, updateVCenterRequest)
-            .getFinalResult();
+        return update(resourceGroupName, resourceName, fabricName, vcenterName, updateVCenterRequest, Context.NONE);
     }
 
-    /**
-     * Update vCenter operation.
-     * 
-     * The operation to update a registered vCenter.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param resourceName The name of the Vault.
-     * @param fabricName Fabric name.
-     * @param vcenterName vcenter name.
-     * @param updateVCenterRequest The input to the update vCenter operation.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return vCenter definition.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public VCenterInner update(String resourceGroupName, String resourceName, String fabricName, String vcenterName,
         UpdateVCenterRequest updateVCenterRequest, Context context) {
-        return beginUpdate(resourceGroupName, resourceName, fabricName, vcenterName, updateVCenterRequest, context)
-            .getFinalResult();
+        return this.client.getLroFinalResultOrError(
+            beginUpdate(resourceGroupName, resourceName, fabricName, vcenterName, updateVCenterRequest, context));
     }
 
     /**
@@ -1041,34 +817,7 @@ public final class ReplicationvCentersClientImpl implements ReplicationvCentersC
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Response<BinaryData> deleteWithResponse(String resourceGroupName, String resourceName, String fabricName,
         String vcenterName) {
-        if (this.client.getEndpoint() == null) {
-            throw LOGGER.atError()
-                .log(new IllegalArgumentException(
-                    "Parameter this.client.getEndpoint() is required and cannot be null."));
-        }
-        if (this.client.getSubscriptionId() == null) {
-            throw LOGGER.atError()
-                .log(new IllegalArgumentException(
-                    "Parameter this.client.getSubscriptionId() is required and cannot be null."));
-        }
-        if (resourceGroupName == null) {
-            throw LOGGER.atError()
-                .log(new IllegalArgumentException("Parameter resourceGroupName is required and cannot be null."));
-        }
-        if (resourceName == null) {
-            throw LOGGER.atError()
-                .log(new IllegalArgumentException("Parameter resourceName is required and cannot be null."));
-        }
-        if (fabricName == null) {
-            throw LOGGER.atError()
-                .log(new IllegalArgumentException("Parameter fabricName is required and cannot be null."));
-        }
-        if (vcenterName == null) {
-            throw LOGGER.atError()
-                .log(new IllegalArgumentException("Parameter vcenterName is required and cannot be null."));
-        }
-        return service.deleteSync(this.client.getEndpoint(), this.client.getApiVersion(),
-            this.client.getSubscriptionId(), resourceGroupName, resourceName, fabricName, vcenterName, Context.NONE);
+        return deleteWithResponse(resourceGroupName, resourceName, fabricName, vcenterName, Context.NONE);
     }
 
     /**
@@ -1142,42 +891,14 @@ public final class ReplicationvCentersClientImpl implements ReplicationvCentersC
             this.client.getContext());
     }
 
-    /**
-     * Remove vcenter operation.
-     * 
-     * The operation to remove(unregister) a registered vCenter server from the vault.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param resourceName The name of the Vault.
-     * @param fabricName Fabric name.
-     * @param vcenterName vcenter name.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the {@link SyncPoller} for polling of long-running operation.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public SyncPoller<PollResult<Void>, Void> beginDelete(String resourceGroupName, String resourceName,
         String fabricName, String vcenterName) {
-        Response<BinaryData> response = deleteWithResponse(resourceGroupName, resourceName, fabricName, vcenterName);
-        return this.client.<Void, Void>getLroResult(response, Void.class, Void.class, Context.NONE);
+        return beginDelete(resourceGroupName, resourceName, fabricName, vcenterName, Context.NONE);
     }
 
-    /**
-     * Remove vcenter operation.
-     * 
-     * The operation to remove(unregister) a registered vCenter server from the vault.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param resourceName The name of the Vault.
-     * @param fabricName Fabric name.
-     * @param vcenterName vcenter name.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the {@link SyncPoller} for polling of long-running operation.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public SyncPoller<PollResult<Void>, Void> beginDelete(String resourceGroupName, String resourceName,
         String fabricName, String vcenterName, Context context) {
@@ -1207,42 +928,18 @@ public final class ReplicationvCentersClientImpl implements ReplicationvCentersC
             .flatMap(this.client::getLroFinalResultOrError);
     }
 
-    /**
-     * Remove vcenter operation.
-     * 
-     * The operation to remove(unregister) a registered vCenter server from the vault.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param resourceName The name of the Vault.
-     * @param fabricName Fabric name.
-     * @param vcenterName vcenter name.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public void delete(String resourceGroupName, String resourceName, String fabricName, String vcenterName) {
-        beginDelete(resourceGroupName, resourceName, fabricName, vcenterName).getFinalResult();
+        delete(resourceGroupName, resourceName, fabricName, vcenterName, Context.NONE);
     }
 
-    /**
-     * Remove vcenter operation.
-     * 
-     * The operation to remove(unregister) a registered vCenter server from the vault.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param resourceName The name of the Vault.
-     * @param fabricName Fabric name.
-     * @param vcenterName vcenter name.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public void delete(String resourceGroupName, String resourceName, String fabricName, String vcenterName,
         Context context) {
-        beginDelete(resourceGroupName, resourceName, fabricName, vcenterName, context).getFinalResult();
+        this.client
+            .getLroFinalResultOrError(beginDelete(resourceGroupName, resourceName, fabricName, vcenterName, context));
     }
 
     /**
@@ -1333,34 +1030,7 @@ public final class ReplicationvCentersClientImpl implements ReplicationvCentersC
     @ServiceMethod(returns = ReturnType.SINGLE)
     private PagedResponse<VCenterInner> listByReplicationFabricsSinglePage(String resourceGroupName,
         String resourceName, String fabricName) {
-        if (this.client.getEndpoint() == null) {
-            throw LOGGER.atError()
-                .log(new IllegalArgumentException(
-                    "Parameter this.client.getEndpoint() is required and cannot be null."));
-        }
-        if (this.client.getSubscriptionId() == null) {
-            throw LOGGER.atError()
-                .log(new IllegalArgumentException(
-                    "Parameter this.client.getSubscriptionId() is required and cannot be null."));
-        }
-        if (resourceGroupName == null) {
-            throw LOGGER.atError()
-                .log(new IllegalArgumentException("Parameter resourceGroupName is required and cannot be null."));
-        }
-        if (resourceName == null) {
-            throw LOGGER.atError()
-                .log(new IllegalArgumentException("Parameter resourceName is required and cannot be null."));
-        }
-        if (fabricName == null) {
-            throw LOGGER.atError()
-                .log(new IllegalArgumentException("Parameter fabricName is required and cannot be null."));
-        }
-        final String accept = "application/json";
-        Response<VCenterCollection> res
-            = service.listByReplicationFabricsSync(this.client.getEndpoint(), this.client.getApiVersion(),
-                this.client.getSubscriptionId(), resourceGroupName, resourceName, fabricName, accept, Context.NONE);
-        return new PagedResponseBase<>(res.getRequest(), res.getStatusCode(), res.getHeaders(), res.getValue().value(),
-            res.getValue().nextLink(), null);
+        return listByReplicationFabricsSinglePage(resourceGroupName, resourceName, fabricName, Context.NONE);
     }
 
     /**
@@ -1412,45 +1082,14 @@ public final class ReplicationvCentersClientImpl implements ReplicationvCentersC
             res.getValue().nextLink(), null);
     }
 
-    /**
-     * Gets the list of vCenter registered under a fabric.
-     * 
-     * Lists the vCenter servers registered in a fabric.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param resourceName The name of the Vault.
-     * @param fabricName Fabric name.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the list of vCenter registered under a fabric.
-     * 
-     * Lists the vCenter servers registered in a fabric as paginated response with {@link PagedIterable}.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.COLLECTION)
     public PagedIterable<VCenterInner> listByReplicationFabrics(String resourceGroupName, String resourceName,
         String fabricName) {
-        return new PagedIterable<>(
-            () -> listByReplicationFabricsSinglePage(resourceGroupName, resourceName, fabricName),
-            nextLink -> listByReplicationFabricsNextSinglePage(nextLink));
+        return listByReplicationFabrics(resourceGroupName, resourceName, fabricName, Context.NONE);
     }
 
-    /**
-     * Gets the list of vCenter registered under a fabric.
-     * 
-     * Lists the vCenter servers registered in a fabric.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param resourceName The name of the Vault.
-     * @param fabricName Fabric name.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the list of vCenter registered under a fabric.
-     * 
-     * Lists the vCenter servers registered in a fabric as paginated response with {@link PagedIterable}.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.COLLECTION)
     public PagedIterable<VCenterInner> listByReplicationFabrics(String resourceGroupName, String resourceName,
         String fabricName, Context context) {
@@ -1536,29 +1175,7 @@ public final class ReplicationvCentersClientImpl implements ReplicationvCentersC
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private PagedResponse<VCenterInner> listSinglePage(String resourceGroupName, String resourceName) {
-        if (this.client.getEndpoint() == null) {
-            throw LOGGER.atError()
-                .log(new IllegalArgumentException(
-                    "Parameter this.client.getEndpoint() is required and cannot be null."));
-        }
-        if (this.client.getSubscriptionId() == null) {
-            throw LOGGER.atError()
-                .log(new IllegalArgumentException(
-                    "Parameter this.client.getSubscriptionId() is required and cannot be null."));
-        }
-        if (resourceGroupName == null) {
-            throw LOGGER.atError()
-                .log(new IllegalArgumentException("Parameter resourceGroupName is required and cannot be null."));
-        }
-        if (resourceName == null) {
-            throw LOGGER.atError()
-                .log(new IllegalArgumentException("Parameter resourceName is required and cannot be null."));
-        }
-        final String accept = "application/json";
-        Response<VCenterCollection> res = service.listSync(this.client.getEndpoint(), this.client.getApiVersion(),
-            this.client.getSubscriptionId(), resourceGroupName, resourceName, accept, Context.NONE);
-        return new PagedResponseBase<>(res.getRequest(), res.getStatusCode(), res.getHeaders(), res.getValue().value(),
-            res.getValue().nextLink(), null);
+        return listSinglePage(resourceGroupName, resourceName, Context.NONE);
     }
 
     /**
@@ -1603,41 +1220,13 @@ public final class ReplicationvCentersClientImpl implements ReplicationvCentersC
             res.getValue().nextLink(), null);
     }
 
-    /**
-     * Gets the list of vCenter registered under the vault.
-     * 
-     * Lists the vCenter servers registered in the vault.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param resourceName The name of the recovery services vault.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the list of vCenter registered under the vault.
-     * 
-     * Lists the vCenter servers registered in the vault as paginated response with {@link PagedIterable}.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.COLLECTION)
     public PagedIterable<VCenterInner> list(String resourceGroupName, String resourceName) {
-        return new PagedIterable<>(() -> listSinglePage(resourceGroupName, resourceName),
-            nextLink -> listNextSinglePage(nextLink));
+        return list(resourceGroupName, resourceName, Context.NONE);
     }
 
-    /**
-     * Gets the list of vCenter registered under the vault.
-     * 
-     * Lists the vCenter servers registered in the vault.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param resourceName The name of the recovery services vault.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the list of vCenter registered under the vault.
-     * 
-     * Lists the vCenter servers registered in the vault as paginated response with {@link PagedIterable}.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.COLLECTION)
     public PagedIterable<VCenterInner> list(String resourceGroupName, String resourceName, Context context) {
         return new PagedIterable<>(() -> listSinglePage(resourceGroupName, resourceName, context),
@@ -1691,20 +1280,7 @@ public final class ReplicationvCentersClientImpl implements ReplicationvCentersC
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private PagedResponse<VCenterInner> listByReplicationFabricsNextSinglePage(String nextLink) {
-        if (nextLink == null) {
-            throw LOGGER.atError()
-                .log(new IllegalArgumentException("Parameter nextLink is required and cannot be null."));
-        }
-        if (this.client.getEndpoint() == null) {
-            throw LOGGER.atError()
-                .log(new IllegalArgumentException(
-                    "Parameter this.client.getEndpoint() is required and cannot be null."));
-        }
-        final String accept = "application/json";
-        Response<VCenterCollection> res
-            = service.listByReplicationFabricsNextSync(nextLink, this.client.getEndpoint(), accept, Context.NONE);
-        return new PagedResponseBase<>(res.getRequest(), res.getStatusCode(), res.getHeaders(), res.getValue().value(),
-            res.getValue().nextLink(), null);
+        return listByReplicationFabricsNextSinglePage(nextLink, Context.NONE);
     }
 
     /**
@@ -1784,20 +1360,7 @@ public final class ReplicationvCentersClientImpl implements ReplicationvCentersC
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private PagedResponse<VCenterInner> listNextSinglePage(String nextLink) {
-        if (nextLink == null) {
-            throw LOGGER.atError()
-                .log(new IllegalArgumentException("Parameter nextLink is required and cannot be null."));
-        }
-        if (this.client.getEndpoint() == null) {
-            throw LOGGER.atError()
-                .log(new IllegalArgumentException(
-                    "Parameter this.client.getEndpoint() is required and cannot be null."));
-        }
-        final String accept = "application/json";
-        Response<VCenterCollection> res
-            = service.listNextSync(nextLink, this.client.getEndpoint(), accept, Context.NONE);
-        return new PagedResponseBase<>(res.getRequest(), res.getStatusCode(), res.getHeaders(), res.getValue().value(),
-            res.getValue().nextLink(), null);
+        return listNextSinglePage(nextLink, Context.NONE);
     }
 
     /**

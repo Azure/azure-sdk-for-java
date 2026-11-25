@@ -170,18 +170,7 @@ public final class MaintenanceEventsClientImpl implements MaintenanceEventsClien
             @HeaderParam("Accept") String accept, Context context);
     }
 
-    /**
-     * Gets information about a maintenance event for a flexible server.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param serverName The name of the server.
-     * @param maintenanceEventId The name of the MaintenanceEventResource.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return information about a maintenance event for a flexible server along with {@link Response} on successful
-     * completion of {@link Mono}.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Response<MaintenanceEventResourceInner>> getWithResponseAsync(String resourceGroupName,
         String serverName, String maintenanceEventId) {
@@ -192,17 +181,7 @@ public final class MaintenanceEventsClientImpl implements MaintenanceEventsClien
             .contextWrite(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext()).readOnly()));
     }
 
-    /**
-     * Gets information about a maintenance event for a flexible server.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param serverName The name of the server.
-     * @param maintenanceEventId The name of the MaintenanceEventResource.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return information about a maintenance event for a flexible server on successful completion of {@link Mono}.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<MaintenanceEventResourceInner> getAsync(String resourceGroupName, String serverName,
         String maintenanceEventId) {
@@ -210,18 +189,7 @@ public final class MaintenanceEventsClientImpl implements MaintenanceEventsClien
             .flatMap(res -> Mono.justOrEmpty(res.getValue()));
     }
 
-    /**
-     * Gets information about a maintenance event for a flexible server.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param serverName The name of the server.
-     * @param maintenanceEventId The name of the MaintenanceEventResource.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return information about a maintenance event for a flexible server along with {@link Response}.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Response<MaintenanceEventResourceInner> getWithResponse(String resourceGroupName, String serverName,
         String maintenanceEventId, Context context) {
@@ -230,17 +198,7 @@ public final class MaintenanceEventsClientImpl implements MaintenanceEventsClien
             resourceGroupName, serverName, maintenanceEventId, accept, context);
     }
 
-    /**
-     * Gets information about a maintenance event for a flexible server.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param serverName The name of the server.
-     * @param maintenanceEventId The name of the MaintenanceEventResource.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return information about a maintenance event for a flexible server.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public MaintenanceEventResourceInner get(String resourceGroupName, String serverName, String maintenanceEventId) {
         return getWithResponse(resourceGroupName, serverName, maintenanceEventId, Context.NONE).getValue();
@@ -270,17 +228,7 @@ public final class MaintenanceEventsClientImpl implements MaintenanceEventsClien
             .contextWrite(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext()).readOnly()));
     }
 
-    /**
-     * Lists all maintenance events for a flexible server.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param serverName The name of the server.
-     * @param maintenanceStatus Filter maintenance events by status.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the response of a MaintenanceEventResource list operation as paginated response with {@link PagedFlux}.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.COLLECTION)
     public PagedFlux<MaintenanceEventResourceInner> listAsync(String resourceGroupName, String serverName,
         MaintenanceEventStatusFilter maintenanceStatus) {
@@ -288,16 +236,7 @@ public final class MaintenanceEventsClientImpl implements MaintenanceEventsClien
             nextLink -> listNextSinglePageAsync(nextLink));
     }
 
-    /**
-     * Lists all maintenance events for a flexible server.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param serverName The name of the server.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the response of a MaintenanceEventResource list operation as paginated response with {@link PagedFlux}.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.COLLECTION)
     public PagedFlux<MaintenanceEventResourceInner> listAsync(String resourceGroupName, String serverName) {
         final MaintenanceEventStatusFilter maintenanceStatus = null;
@@ -319,12 +258,7 @@ public final class MaintenanceEventsClientImpl implements MaintenanceEventsClien
     @ServiceMethod(returns = ReturnType.SINGLE)
     private PagedResponse<MaintenanceEventResourceInner> listSinglePage(String resourceGroupName, String serverName,
         MaintenanceEventStatusFilter maintenanceStatus) {
-        final String accept = "application/json";
-        Response<MaintenanceEventResourceListResult> res
-            = service.listSync(this.client.getEndpoint(), this.client.getApiVersion(), this.client.getSubscriptionId(),
-                resourceGroupName, serverName, maintenanceStatus, accept, Context.NONE);
-        return new PagedResponseBase<>(res.getRequest(), res.getStatusCode(), res.getHeaders(), res.getValue().value(),
-            res.getValue().nextLink(), null);
+        return listSinglePage(resourceGroupName, serverName, maintenanceStatus, Context.NONE);
     }
 
     /**
@@ -350,37 +284,14 @@ public final class MaintenanceEventsClientImpl implements MaintenanceEventsClien
             res.getValue().nextLink(), null);
     }
 
-    /**
-     * Lists all maintenance events for a flexible server.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param serverName The name of the server.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the response of a MaintenanceEventResource list operation as paginated response with
-     * {@link PagedIterable}.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.COLLECTION)
     public PagedIterable<MaintenanceEventResourceInner> list(String resourceGroupName, String serverName) {
         final MaintenanceEventStatusFilter maintenanceStatus = null;
-        return new PagedIterable<>(() -> listSinglePage(resourceGroupName, serverName, maintenanceStatus),
-            nextLink -> listNextSinglePage(nextLink));
+        return list(resourceGroupName, serverName, maintenanceStatus, Context.NONE);
     }
 
-    /**
-     * Lists all maintenance events for a flexible server.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param serverName The name of the server.
-     * @param maintenanceStatus Filter maintenance events by status.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the response of a MaintenanceEventResource list operation as paginated response with
-     * {@link PagedIterable}.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.COLLECTION)
     public PagedIterable<MaintenanceEventResourceInner> list(String resourceGroupName, String serverName,
         MaintenanceEventStatusFilter maintenanceStatus, Context context) {
@@ -388,19 +299,7 @@ public final class MaintenanceEventsClientImpl implements MaintenanceEventsClien
             nextLink -> listNextSinglePage(nextLink, context));
     }
 
-    /**
-     * Reschedules a maintenance event to a new date and time.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param serverName The name of the server.
-     * @param maintenanceEventId The name of the MaintenanceEventResource.
-     * @param body The content of the action request.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return response model for maintenance event reschedule and apply-now actions along with {@link Response} on
-     * successful completion of {@link Mono}.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Response<Flux<ByteBuffer>>> rescheduleWithResponseAsync(String resourceGroupName, String serverName,
         String maintenanceEventId, MaintenanceEventRescheduleRequest body) {
@@ -428,11 +327,7 @@ public final class MaintenanceEventsClientImpl implements MaintenanceEventsClien
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Response<BinaryData> rescheduleWithResponse(String resourceGroupName, String serverName,
         String maintenanceEventId, MaintenanceEventRescheduleRequest body) {
-        final String contentType = "application/json";
-        final String accept = "application/json";
-        return service.rescheduleSync(this.client.getEndpoint(), this.client.getApiVersion(),
-            this.client.getSubscriptionId(), resourceGroupName, serverName, maintenanceEventId, contentType, accept,
-            body, Context.NONE);
+        return rescheduleWithResponse(resourceGroupName, serverName, maintenanceEventId, body, Context.NONE);
     }
 
     /**
@@ -458,19 +353,7 @@ public final class MaintenanceEventsClientImpl implements MaintenanceEventsClien
             body, context);
     }
 
-    /**
-     * Reschedules a maintenance event to a new date and time.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param serverName The name of the server.
-     * @param maintenanceEventId The name of the MaintenanceEventResource.
-     * @param body The content of the action request.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the {@link PollerFlux} for polling of response model for maintenance event reschedule and apply-now
-     * actions.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public PollerFlux<PollResult<MaintenanceEventActionResponseInner>, MaintenanceEventActionResponseInner>
         beginRescheduleAsync(String resourceGroupName, String serverName, String maintenanceEventId,
@@ -482,43 +365,15 @@ public final class MaintenanceEventsClientImpl implements MaintenanceEventsClien
             MaintenanceEventActionResponseInner.class, this.client.getContext());
     }
 
-    /**
-     * Reschedules a maintenance event to a new date and time.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param serverName The name of the server.
-     * @param maintenanceEventId The name of the MaintenanceEventResource.
-     * @param body The content of the action request.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the {@link SyncPoller} for polling of response model for maintenance event reschedule and apply-now
-     * actions.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public SyncPoller<PollResult<MaintenanceEventActionResponseInner>, MaintenanceEventActionResponseInner>
         beginReschedule(String resourceGroupName, String serverName, String maintenanceEventId,
             MaintenanceEventRescheduleRequest body) {
-        Response<BinaryData> response = rescheduleWithResponse(resourceGroupName, serverName, maintenanceEventId, body);
-        return this.client.<MaintenanceEventActionResponseInner, MaintenanceEventActionResponseInner>getLroResult(
-            response, MaintenanceEventActionResponseInner.class, MaintenanceEventActionResponseInner.class,
-            Context.NONE);
+        return beginReschedule(resourceGroupName, serverName, maintenanceEventId, body, Context.NONE);
     }
 
-    /**
-     * Reschedules a maintenance event to a new date and time.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param serverName The name of the server.
-     * @param maintenanceEventId The name of the MaintenanceEventResource.
-     * @param body The content of the action request.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the {@link SyncPoller} for polling of response model for maintenance event reschedule and apply-now
-     * actions.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public SyncPoller<PollResult<MaintenanceEventActionResponseInner>, MaintenanceEventActionResponseInner>
         beginReschedule(String resourceGroupName, String serverName, String maintenanceEventId,
@@ -529,19 +384,7 @@ public final class MaintenanceEventsClientImpl implements MaintenanceEventsClien
             response, MaintenanceEventActionResponseInner.class, MaintenanceEventActionResponseInner.class, context);
     }
 
-    /**
-     * Reschedules a maintenance event to a new date and time.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param serverName The name of the server.
-     * @param maintenanceEventId The name of the MaintenanceEventResource.
-     * @param body The content of the action request.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return response model for maintenance event reschedule and apply-now actions on successful completion of
-     * {@link Mono}.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<MaintenanceEventActionResponseInner> rescheduleAsync(String resourceGroupName, String serverName,
         String maintenanceEventId, MaintenanceEventRescheduleRequest body) {
@@ -549,55 +392,22 @@ public final class MaintenanceEventsClientImpl implements MaintenanceEventsClien
             .flatMap(this.client::getLroFinalResultOrError);
     }
 
-    /**
-     * Reschedules a maintenance event to a new date and time.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param serverName The name of the server.
-     * @param maintenanceEventId The name of the MaintenanceEventResource.
-     * @param body The content of the action request.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return response model for maintenance event reschedule and apply-now actions.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public MaintenanceEventActionResponseInner reschedule(String resourceGroupName, String serverName,
         String maintenanceEventId, MaintenanceEventRescheduleRequest body) {
-        return beginReschedule(resourceGroupName, serverName, maintenanceEventId, body).getFinalResult();
+        return reschedule(resourceGroupName, serverName, maintenanceEventId, body, Context.NONE);
     }
 
-    /**
-     * Reschedules a maintenance event to a new date and time.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param serverName The name of the server.
-     * @param maintenanceEventId The name of the MaintenanceEventResource.
-     * @param body The content of the action request.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return response model for maintenance event reschedule and apply-now actions.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public MaintenanceEventActionResponseInner reschedule(String resourceGroupName, String serverName,
         String maintenanceEventId, MaintenanceEventRescheduleRequest body, Context context) {
-        return beginReschedule(resourceGroupName, serverName, maintenanceEventId, body, context).getFinalResult();
+        return this.client.getLroFinalResultOrError(
+            beginReschedule(resourceGroupName, serverName, maintenanceEventId, body, context));
     }
 
-    /**
-     * Applies the maintenance event immediately.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param serverName The name of the server.
-     * @param maintenanceEventId The name of the MaintenanceEventResource.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return response model for maintenance event reschedule and apply-now actions along with {@link Response} on
-     * successful completion of {@link Mono}.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Response<Flux<ByteBuffer>>> applyNowWithResponseAsync(String resourceGroupName, String serverName,
         String maintenanceEventId) {
@@ -622,9 +432,7 @@ public final class MaintenanceEventsClientImpl implements MaintenanceEventsClien
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Response<BinaryData> applyNowWithResponse(String resourceGroupName, String serverName,
         String maintenanceEventId) {
-        final String accept = "application/json";
-        return service.applyNowSync(this.client.getEndpoint(), this.client.getApiVersion(),
-            this.client.getSubscriptionId(), resourceGroupName, serverName, maintenanceEventId, accept, Context.NONE);
+        return applyNowWithResponse(resourceGroupName, serverName, maintenanceEventId, Context.NONE);
     }
 
     /**
@@ -647,18 +455,7 @@ public final class MaintenanceEventsClientImpl implements MaintenanceEventsClien
             this.client.getSubscriptionId(), resourceGroupName, serverName, maintenanceEventId, accept, context);
     }
 
-    /**
-     * Applies the maintenance event immediately.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param serverName The name of the server.
-     * @param maintenanceEventId The name of the MaintenanceEventResource.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the {@link PollerFlux} for polling of response model for maintenance event reschedule and apply-now
-     * actions.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public PollerFlux<PollResult<MaintenanceEventActionResponseInner>, MaintenanceEventActionResponseInner>
         beginApplyNowAsync(String resourceGroupName, String serverName, String maintenanceEventId) {
@@ -669,40 +466,14 @@ public final class MaintenanceEventsClientImpl implements MaintenanceEventsClien
             MaintenanceEventActionResponseInner.class, this.client.getContext());
     }
 
-    /**
-     * Applies the maintenance event immediately.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param serverName The name of the server.
-     * @param maintenanceEventId The name of the MaintenanceEventResource.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the {@link SyncPoller} for polling of response model for maintenance event reschedule and apply-now
-     * actions.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public SyncPoller<PollResult<MaintenanceEventActionResponseInner>, MaintenanceEventActionResponseInner>
         beginApplyNow(String resourceGroupName, String serverName, String maintenanceEventId) {
-        Response<BinaryData> response = applyNowWithResponse(resourceGroupName, serverName, maintenanceEventId);
-        return this.client.<MaintenanceEventActionResponseInner, MaintenanceEventActionResponseInner>getLroResult(
-            response, MaintenanceEventActionResponseInner.class, MaintenanceEventActionResponseInner.class,
-            Context.NONE);
+        return beginApplyNow(resourceGroupName, serverName, maintenanceEventId, Context.NONE);
     }
 
-    /**
-     * Applies the maintenance event immediately.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param serverName The name of the server.
-     * @param maintenanceEventId The name of the MaintenanceEventResource.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the {@link SyncPoller} for polling of response model for maintenance event reschedule and apply-now
-     * actions.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public SyncPoller<PollResult<MaintenanceEventActionResponseInner>, MaintenanceEventActionResponseInner>
         beginApplyNow(String resourceGroupName, String serverName, String maintenanceEventId, Context context) {
@@ -712,18 +483,7 @@ public final class MaintenanceEventsClientImpl implements MaintenanceEventsClien
             response, MaintenanceEventActionResponseInner.class, MaintenanceEventActionResponseInner.class, context);
     }
 
-    /**
-     * Applies the maintenance event immediately.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param serverName The name of the server.
-     * @param maintenanceEventId The name of the MaintenanceEventResource.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return response model for maintenance event reschedule and apply-now actions on successful completion of
-     * {@link Mono}.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<MaintenanceEventActionResponseInner> applyNowAsync(String resourceGroupName, String serverName,
         String maintenanceEventId) {
@@ -731,39 +491,19 @@ public final class MaintenanceEventsClientImpl implements MaintenanceEventsClien
             .flatMap(this.client::getLroFinalResultOrError);
     }
 
-    /**
-     * Applies the maintenance event immediately.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param serverName The name of the server.
-     * @param maintenanceEventId The name of the MaintenanceEventResource.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return response model for maintenance event reschedule and apply-now actions.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public MaintenanceEventActionResponseInner applyNow(String resourceGroupName, String serverName,
         String maintenanceEventId) {
-        return beginApplyNow(resourceGroupName, serverName, maintenanceEventId).getFinalResult();
+        return applyNow(resourceGroupName, serverName, maintenanceEventId, Context.NONE);
     }
 
-    /**
-     * Applies the maintenance event immediately.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param serverName The name of the server.
-     * @param maintenanceEventId The name of the MaintenanceEventResource.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return response model for maintenance event reschedule and apply-now actions.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public MaintenanceEventActionResponseInner applyNow(String resourceGroupName, String serverName,
         String maintenanceEventId, Context context) {
-        return beginApplyNow(resourceGroupName, serverName, maintenanceEventId, context).getFinalResult();
+        return this.client
+            .getLroFinalResultOrError(beginApplyNow(resourceGroupName, serverName, maintenanceEventId, context));
     }
 
     /**
@@ -796,11 +536,7 @@ public final class MaintenanceEventsClientImpl implements MaintenanceEventsClien
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private PagedResponse<MaintenanceEventResourceInner> listNextSinglePage(String nextLink) {
-        final String accept = "application/json";
-        Response<MaintenanceEventResourceListResult> res
-            = service.listNextSync(nextLink, this.client.getEndpoint(), accept, Context.NONE);
-        return new PagedResponseBase<>(res.getRequest(), res.getStatusCode(), res.getHeaders(), res.getValue().value(),
-            res.getValue().nextLink(), null);
+        return listNextSinglePage(nextLink, Context.NONE);
     }
 
     /**

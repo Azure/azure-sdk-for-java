@@ -168,19 +168,7 @@ public final class IdentityAssignmentsClientImpl implements IdentityAssignmentsC
             @HeaderParam("Accept") String accept, Context context);
     }
 
-    /**
-     * Gets a change data capture identity assignment.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param clusterName The name of the HorizonDB cluster.
-     * @param destinationName The caller-selected name of the change data capture destination.
-     * @param assignmentName The caller-selected name of the identity assignment.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return a change data capture identity assignment along with {@link Response} on successful completion of
-     * {@link Mono}.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Response<IdentityAssignmentInner>> getWithResponseAsync(String resourceGroupName, String clusterName,
         String destinationName, String assignmentName) {
@@ -192,18 +180,7 @@ public final class IdentityAssignmentsClientImpl implements IdentityAssignmentsC
             .contextWrite(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext()).readOnly()));
     }
 
-    /**
-     * Gets a change data capture identity assignment.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param clusterName The name of the HorizonDB cluster.
-     * @param destinationName The caller-selected name of the change data capture destination.
-     * @param assignmentName The caller-selected name of the identity assignment.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return a change data capture identity assignment on successful completion of {@link Mono}.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<IdentityAssignmentInner> getAsync(String resourceGroupName, String clusterName, String destinationName,
         String assignmentName) {
@@ -211,19 +188,7 @@ public final class IdentityAssignmentsClientImpl implements IdentityAssignmentsC
             .flatMap(res -> Mono.justOrEmpty(res.getValue()));
     }
 
-    /**
-     * Gets a change data capture identity assignment.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param clusterName The name of the HorizonDB cluster.
-     * @param destinationName The caller-selected name of the change data capture destination.
-     * @param assignmentName The caller-selected name of the identity assignment.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return a change data capture identity assignment along with {@link Response}.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Response<IdentityAssignmentInner> getWithResponse(String resourceGroupName, String clusterName,
         String destinationName, String assignmentName, Context context) {
@@ -232,18 +197,7 @@ public final class IdentityAssignmentsClientImpl implements IdentityAssignmentsC
             resourceGroupName, clusterName, destinationName, assignmentName, accept, context);
     }
 
-    /**
-     * Gets a change data capture identity assignment.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param clusterName The name of the HorizonDB cluster.
-     * @param destinationName The caller-selected name of the change data capture destination.
-     * @param assignmentName The caller-selected name of the identity assignment.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return a change data capture identity assignment.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public IdentityAssignmentInner get(String resourceGroupName, String clusterName, String destinationName,
         String assignmentName) {
@@ -251,22 +205,7 @@ public final class IdentityAssignmentsClientImpl implements IdentityAssignmentsC
             .getValue();
     }
 
-    /**
-     * Creates or idempotently replaces a change data capture identity assignment. The identity resource ID is immutable
-     * and must reference a user-assigned managed identity already attached to the parent cluster. The service also
-     * validates destination permissions, which are not granted by attaching the identity to the cluster.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param clusterName The name of the HorizonDB cluster.
-     * @param destinationName The caller-selected name of the change data capture destination.
-     * @param assignmentName The caller-selected name of the identity assignment.
-     * @param resource Resource create parameters.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return a user-assigned managed identity authorized for a HorizonDB change data capture destination along with
-     * {@link Response} on successful completion of {@link Mono}.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Response<Flux<ByteBuffer>>> createOrReplaceWithResponseAsync(String resourceGroupName,
         String clusterName, String destinationName, String assignmentName, IdentityAssignmentInner resource) {
@@ -298,11 +237,8 @@ public final class IdentityAssignmentsClientImpl implements IdentityAssignmentsC
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Response<BinaryData> createOrReplaceWithResponse(String resourceGroupName, String clusterName,
         String destinationName, String assignmentName, IdentityAssignmentInner resource) {
-        final String contentType = "application/json";
-        final String accept = "application/json";
-        return service.createOrReplaceSync(this.client.getEndpoint(), this.client.getApiVersion(),
-            this.client.getSubscriptionId(), resourceGroupName, clusterName, destinationName, assignmentName,
-            contentType, accept, resource, Context.NONE);
+        return createOrReplaceWithResponse(resourceGroupName, clusterName, destinationName, assignmentName, resource,
+            Context.NONE);
     }
 
     /**
@@ -332,22 +268,7 @@ public final class IdentityAssignmentsClientImpl implements IdentityAssignmentsC
             contentType, accept, resource, context);
     }
 
-    /**
-     * Creates or idempotently replaces a change data capture identity assignment. The identity resource ID is immutable
-     * and must reference a user-assigned managed identity already attached to the parent cluster. The service also
-     * validates destination permissions, which are not granted by attaching the identity to the cluster.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param clusterName The name of the HorizonDB cluster.
-     * @param destinationName The caller-selected name of the change data capture destination.
-     * @param assignmentName The caller-selected name of the identity assignment.
-     * @param resource Resource create parameters.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the {@link PollerFlux} for polling of a user-assigned managed identity authorized for a HorizonDB change
-     * data capture destination.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public PollerFlux<PollResult<IdentityAssignmentInner>, IdentityAssignmentInner> beginCreateOrReplaceAsync(
         String resourceGroupName, String clusterName, String destinationName, String assignmentName,
@@ -359,49 +280,16 @@ public final class IdentityAssignmentsClientImpl implements IdentityAssignmentsC
             this.client.getContext());
     }
 
-    /**
-     * Creates or idempotently replaces a change data capture identity assignment. The identity resource ID is immutable
-     * and must reference a user-assigned managed identity already attached to the parent cluster. The service also
-     * validates destination permissions, which are not granted by attaching the identity to the cluster.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param clusterName The name of the HorizonDB cluster.
-     * @param destinationName The caller-selected name of the change data capture destination.
-     * @param assignmentName The caller-selected name of the identity assignment.
-     * @param resource Resource create parameters.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the {@link SyncPoller} for polling of a user-assigned managed identity authorized for a HorizonDB change
-     * data capture destination.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public SyncPoller<PollResult<IdentityAssignmentInner>, IdentityAssignmentInner> beginCreateOrReplace(
         String resourceGroupName, String clusterName, String destinationName, String assignmentName,
         IdentityAssignmentInner resource) {
-        Response<BinaryData> response
-            = createOrReplaceWithResponse(resourceGroupName, clusterName, destinationName, assignmentName, resource);
-        return this.client.<IdentityAssignmentInner, IdentityAssignmentInner>getLroResult(response,
-            IdentityAssignmentInner.class, IdentityAssignmentInner.class, Context.NONE);
+        return beginCreateOrReplace(resourceGroupName, clusterName, destinationName, assignmentName, resource,
+            Context.NONE);
     }
 
-    /**
-     * Creates or idempotently replaces a change data capture identity assignment. The identity resource ID is immutable
-     * and must reference a user-assigned managed identity already attached to the parent cluster. The service also
-     * validates destination permissions, which are not granted by attaching the identity to the cluster.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param clusterName The name of the HorizonDB cluster.
-     * @param destinationName The caller-selected name of the change data capture destination.
-     * @param assignmentName The caller-selected name of the identity assignment.
-     * @param resource Resource create parameters.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the {@link SyncPoller} for polling of a user-assigned managed identity authorized for a HorizonDB change
-     * data capture destination.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public SyncPoller<PollResult<IdentityAssignmentInner>, IdentityAssignmentInner> beginCreateOrReplace(
         String resourceGroupName, String clusterName, String destinationName, String assignmentName,
@@ -412,22 +300,7 @@ public final class IdentityAssignmentsClientImpl implements IdentityAssignmentsC
             IdentityAssignmentInner.class, IdentityAssignmentInner.class, context);
     }
 
-    /**
-     * Creates or idempotently replaces a change data capture identity assignment. The identity resource ID is immutable
-     * and must reference a user-assigned managed identity already attached to the parent cluster. The service also
-     * validates destination permissions, which are not granted by attaching the identity to the cluster.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param clusterName The name of the HorizonDB cluster.
-     * @param destinationName The caller-selected name of the change data capture destination.
-     * @param assignmentName The caller-selected name of the identity assignment.
-     * @param resource Resource create parameters.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return a user-assigned managed identity authorized for a HorizonDB change data capture destination on successful
-     * completion of {@link Mono}.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<IdentityAssignmentInner> createOrReplaceAsync(String resourceGroupName, String clusterName,
         String destinationName, String assignmentName, IdentityAssignmentInner resource) {
@@ -436,63 +309,22 @@ public final class IdentityAssignmentsClientImpl implements IdentityAssignmentsC
             .flatMap(this.client::getLroFinalResultOrError);
     }
 
-    /**
-     * Creates or idempotently replaces a change data capture identity assignment. The identity resource ID is immutable
-     * and must reference a user-assigned managed identity already attached to the parent cluster. The service also
-     * validates destination permissions, which are not granted by attaching the identity to the cluster.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param clusterName The name of the HorizonDB cluster.
-     * @param destinationName The caller-selected name of the change data capture destination.
-     * @param assignmentName The caller-selected name of the identity assignment.
-     * @param resource Resource create parameters.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return a user-assigned managed identity authorized for a HorizonDB change data capture destination.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public IdentityAssignmentInner createOrReplace(String resourceGroupName, String clusterName, String destinationName,
         String assignmentName, IdentityAssignmentInner resource) {
-        return beginCreateOrReplace(resourceGroupName, clusterName, destinationName, assignmentName, resource)
-            .getFinalResult();
+        return createOrReplace(resourceGroupName, clusterName, destinationName, assignmentName, resource, Context.NONE);
     }
 
-    /**
-     * Creates or idempotently replaces a change data capture identity assignment. The identity resource ID is immutable
-     * and must reference a user-assigned managed identity already attached to the parent cluster. The service also
-     * validates destination permissions, which are not granted by attaching the identity to the cluster.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param clusterName The name of the HorizonDB cluster.
-     * @param destinationName The caller-selected name of the change data capture destination.
-     * @param assignmentName The caller-selected name of the identity assignment.
-     * @param resource Resource create parameters.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return a user-assigned managed identity authorized for a HorizonDB change data capture destination.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public IdentityAssignmentInner createOrReplace(String resourceGroupName, String clusterName, String destinationName,
         String assignmentName, IdentityAssignmentInner resource, Context context) {
-        return beginCreateOrReplace(resourceGroupName, clusterName, destinationName, assignmentName, resource, context)
-            .getFinalResult();
+        return this.client.getLroFinalResultOrError(
+            beginCreateOrReplace(resourceGroupName, clusterName, destinationName, assignmentName, resource, context));
     }
 
-    /**
-     * Deletes an inactive change data capture identity assignment.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param clusterName The name of the HorizonDB cluster.
-     * @param destinationName The caller-selected name of the change data capture destination.
-     * @param assignmentName The caller-selected name of the identity assignment.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the {@link Response} on successful completion of {@link Mono}.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Response<Flux<ByteBuffer>>> deleteWithResponseAsync(String resourceGroupName, String clusterName,
         String destinationName, String assignmentName) {
@@ -516,9 +348,7 @@ public final class IdentityAssignmentsClientImpl implements IdentityAssignmentsC
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Response<BinaryData> deleteWithResponse(String resourceGroupName, String clusterName,
         String destinationName, String assignmentName) {
-        return service.deleteSync(this.client.getEndpoint(), this.client.getApiVersion(),
-            this.client.getSubscriptionId(), resourceGroupName, clusterName, destinationName, assignmentName,
-            Context.NONE);
+        return deleteWithResponse(resourceGroupName, clusterName, destinationName, assignmentName, Context.NONE);
     }
 
     /**
@@ -541,18 +371,7 @@ public final class IdentityAssignmentsClientImpl implements IdentityAssignmentsC
             this.client.getSubscriptionId(), resourceGroupName, clusterName, destinationName, assignmentName, context);
     }
 
-    /**
-     * Deletes an inactive change data capture identity assignment.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param clusterName The name of the HorizonDB cluster.
-     * @param destinationName The caller-selected name of the change data capture destination.
-     * @param assignmentName The caller-selected name of the identity assignment.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the {@link PollerFlux} for polling of long-running operation.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public PollerFlux<PollResult<Void>, Void> beginDeleteAsync(String resourceGroupName, String clusterName,
         String destinationName, String assignmentName) {
@@ -562,39 +381,14 @@ public final class IdentityAssignmentsClientImpl implements IdentityAssignmentsC
             this.client.getContext());
     }
 
-    /**
-     * Deletes an inactive change data capture identity assignment.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param clusterName The name of the HorizonDB cluster.
-     * @param destinationName The caller-selected name of the change data capture destination.
-     * @param assignmentName The caller-selected name of the identity assignment.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the {@link SyncPoller} for polling of long-running operation.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public SyncPoller<PollResult<Void>, Void> beginDelete(String resourceGroupName, String clusterName,
         String destinationName, String assignmentName) {
-        Response<BinaryData> response
-            = deleteWithResponse(resourceGroupName, clusterName, destinationName, assignmentName);
-        return this.client.<Void, Void>getLroResult(response, Void.class, Void.class, Context.NONE);
+        return beginDelete(resourceGroupName, clusterName, destinationName, assignmentName, Context.NONE);
     }
 
-    /**
-     * Deletes an inactive change data capture identity assignment.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param clusterName The name of the HorizonDB cluster.
-     * @param destinationName The caller-selected name of the change data capture destination.
-     * @param assignmentName The caller-selected name of the identity assignment.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the {@link SyncPoller} for polling of long-running operation.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public SyncPoller<PollResult<Void>, Void> beginDelete(String resourceGroupName, String clusterName,
         String destinationName, String assignmentName, Context context) {
@@ -603,18 +397,7 @@ public final class IdentityAssignmentsClientImpl implements IdentityAssignmentsC
         return this.client.<Void, Void>getLroResult(response, Void.class, Void.class, context);
     }
 
-    /**
-     * Deletes an inactive change data capture identity assignment.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param clusterName The name of the HorizonDB cluster.
-     * @param destinationName The caller-selected name of the change data capture destination.
-     * @param assignmentName The caller-selected name of the identity assignment.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return A {@link Mono} that completes when a successful response is received.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Void> deleteAsync(String resourceGroupName, String clusterName, String destinationName,
         String assignmentName) {
@@ -622,38 +405,18 @@ public final class IdentityAssignmentsClientImpl implements IdentityAssignmentsC
             .flatMap(this.client::getLroFinalResultOrError);
     }
 
-    /**
-     * Deletes an inactive change data capture identity assignment.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param clusterName The name of the HorizonDB cluster.
-     * @param destinationName The caller-selected name of the change data capture destination.
-     * @param assignmentName The caller-selected name of the identity assignment.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public void delete(String resourceGroupName, String clusterName, String destinationName, String assignmentName) {
-        beginDelete(resourceGroupName, clusterName, destinationName, assignmentName).getFinalResult();
+        delete(resourceGroupName, clusterName, destinationName, assignmentName, Context.NONE);
     }
 
-    /**
-     * Deletes an inactive change data capture identity assignment.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param clusterName The name of the HorizonDB cluster.
-     * @param destinationName The caller-selected name of the change data capture destination.
-     * @param assignmentName The caller-selected name of the identity assignment.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public void delete(String resourceGroupName, String clusterName, String destinationName, String assignmentName,
         Context context) {
-        beginDelete(resourceGroupName, clusterName, destinationName, assignmentName, context).getFinalResult();
+        this.client.getLroFinalResultOrError(
+            beginDelete(resourceGroupName, clusterName, destinationName, assignmentName, context));
     }
 
     /**
@@ -680,17 +443,7 @@ public final class IdentityAssignmentsClientImpl implements IdentityAssignmentsC
             .contextWrite(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext()).readOnly()));
     }
 
-    /**
-     * Lists identity assignments for a change data capture destination.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param clusterName The name of the HorizonDB cluster.
-     * @param destinationName The caller-selected name of the change data capture destination.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the response of a IdentityAssignment list operation as paginated response with {@link PagedFlux}.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.COLLECTION)
     public PagedFlux<IdentityAssignmentInner> listAsync(String resourceGroupName, String clusterName,
         String destinationName) {
@@ -712,12 +465,7 @@ public final class IdentityAssignmentsClientImpl implements IdentityAssignmentsC
     @ServiceMethod(returns = ReturnType.SINGLE)
     private PagedResponse<IdentityAssignmentInner> listSinglePage(String resourceGroupName, String clusterName,
         String destinationName) {
-        final String accept = "application/json";
-        Response<IdentityAssignmentListResult> res
-            = service.listSync(this.client.getEndpoint(), this.client.getApiVersion(), this.client.getSubscriptionId(),
-                resourceGroupName, clusterName, destinationName, accept, Context.NONE);
-        return new PagedResponseBase<>(res.getRequest(), res.getStatusCode(), res.getHeaders(), res.getValue().value(),
-            res.getValue().nextLink(), null);
+        return listSinglePage(resourceGroupName, clusterName, destinationName, Context.NONE);
     }
 
     /**
@@ -743,36 +491,14 @@ public final class IdentityAssignmentsClientImpl implements IdentityAssignmentsC
             res.getValue().nextLink(), null);
     }
 
-    /**
-     * Lists identity assignments for a change data capture destination.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param clusterName The name of the HorizonDB cluster.
-     * @param destinationName The caller-selected name of the change data capture destination.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the response of a IdentityAssignment list operation as paginated response with {@link PagedIterable}.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.COLLECTION)
     public PagedIterable<IdentityAssignmentInner> list(String resourceGroupName, String clusterName,
         String destinationName) {
-        return new PagedIterable<>(() -> listSinglePage(resourceGroupName, clusterName, destinationName),
-            nextLink -> listNextSinglePage(nextLink));
+        return list(resourceGroupName, clusterName, destinationName, Context.NONE);
     }
 
-    /**
-     * Lists identity assignments for a change data capture destination.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param clusterName The name of the HorizonDB cluster.
-     * @param destinationName The caller-selected name of the change data capture destination.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the response of a IdentityAssignment list operation as paginated response with {@link PagedIterable}.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.COLLECTION)
     public PagedIterable<IdentityAssignmentInner> list(String resourceGroupName, String clusterName,
         String destinationName, Context context) {
@@ -810,11 +536,7 @@ public final class IdentityAssignmentsClientImpl implements IdentityAssignmentsC
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private PagedResponse<IdentityAssignmentInner> listNextSinglePage(String nextLink) {
-        final String accept = "application/json";
-        Response<IdentityAssignmentListResult> res
-            = service.listNextSync(nextLink, this.client.getEndpoint(), accept, Context.NONE);
-        return new PagedResponseBase<>(res.getRequest(), res.getStatusCode(), res.getHeaders(), res.getValue().value(),
-            res.getValue().nextLink(), null);
+        return listNextSinglePage(nextLink, Context.NONE);
     }
 
     /**

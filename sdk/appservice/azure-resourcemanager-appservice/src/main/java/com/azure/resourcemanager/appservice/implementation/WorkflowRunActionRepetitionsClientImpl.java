@@ -114,20 +114,7 @@ public final class WorkflowRunActionRepetitionsClientImpl implements WorkflowRun
             @HeaderParam("Accept") String accept, Context context);
     }
 
-    /**
-     * Get a workflow run action repetition.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param name Site name.
-     * @param workflowName The workflow name.
-     * @param runName The workflow run name.
-     * @param actionName The workflow action name.
-     * @param repetitionName The workflow repetition.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return a workflow run action repetition along with {@link Response} on successful completion of {@link Mono}.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Response<WorkflowRunActionRepetitionDefinitionInner>> getWithResponseAsync(String resourceGroupName,
         String name, String workflowName, String runName, String actionName, String repetitionName) {
@@ -217,20 +204,7 @@ public final class WorkflowRunActionRepetitionsClientImpl implements WorkflowRun
             resourceGroupName, name, workflowName, runName, actionName, repetitionName, accept, context);
     }
 
-    /**
-     * Get a workflow run action repetition.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param name Site name.
-     * @param workflowName The workflow name.
-     * @param runName The workflow run name.
-     * @param actionName The workflow action name.
-     * @param repetitionName The workflow repetition.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return a workflow run action repetition on successful completion of {@link Mono}.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<WorkflowRunActionRepetitionDefinitionInner> getAsync(String resourceGroupName, String name,
         String workflowName, String runName, String actionName, String repetitionName) {
@@ -238,21 +212,7 @@ public final class WorkflowRunActionRepetitionsClientImpl implements WorkflowRun
             .flatMap(res -> Mono.justOrEmpty(res.getValue()));
     }
 
-    /**
-     * Get a workflow run action repetition.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param name Site name.
-     * @param workflowName The workflow name.
-     * @param runName The workflow run name.
-     * @param actionName The workflow action name.
-     * @param repetitionName The workflow repetition.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return a workflow run action repetition along with {@link Response}.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Response<WorkflowRunActionRepetitionDefinitionInner> getWithResponse(String resourceGroupName, String name,
         String workflowName, String runName, String actionName, String repetitionName, Context context) {
@@ -260,20 +220,7 @@ public final class WorkflowRunActionRepetitionsClientImpl implements WorkflowRun
             .block();
     }
 
-    /**
-     * Get a workflow run action repetition.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param name Site name.
-     * @param workflowName The workflow name.
-     * @param runName The workflow run name.
-     * @param actionName The workflow action name.
-     * @param repetitionName The workflow repetition.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return a workflow run action repetition.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public WorkflowRunActionRepetitionDefinitionInner get(String resourceGroupName, String name, String workflowName,
         String runName, String actionName, String repetitionName) {
@@ -385,19 +332,7 @@ public final class WorkflowRunActionRepetitionsClientImpl implements WorkflowRun
                 res.getValue().value(), res.getValue().nextLink(), null));
     }
 
-    /**
-     * Get all of a workflow run action repetitions.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param name Site name.
-     * @param workflowName The workflow name.
-     * @param runName The workflow run name.
-     * @param actionName The workflow action name.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return all of a workflow run action repetitions as paginated response with {@link PagedFlux}.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.COLLECTION)
     public PagedFlux<WorkflowRunActionRepetitionDefinitionInner> listAsync(String resourceGroupName, String name,
         String workflowName, String runName, String actionName) {
@@ -427,39 +362,14 @@ public final class WorkflowRunActionRepetitionsClientImpl implements WorkflowRun
             nextLink -> listNextSinglePageAsync(nextLink, context));
     }
 
-    /**
-     * Get all of a workflow run action repetitions.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param name Site name.
-     * @param workflowName The workflow name.
-     * @param runName The workflow run name.
-     * @param actionName The workflow action name.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return all of a workflow run action repetitions as paginated response with {@link PagedIterable}.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.COLLECTION)
     public PagedIterable<WorkflowRunActionRepetitionDefinitionInner> list(String resourceGroupName, String name,
         String workflowName, String runName, String actionName) {
         return new PagedIterable<>(listAsync(resourceGroupName, name, workflowName, runName, actionName));
     }
 
-    /**
-     * Get all of a workflow run action repetitions.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param name Site name.
-     * @param workflowName The workflow name.
-     * @param runName The workflow run name.
-     * @param actionName The workflow action name.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return all of a workflow run action repetitions as paginated response with {@link PagedIterable}.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.COLLECTION)
     public PagedIterable<WorkflowRunActionRepetitionDefinitionInner> list(String resourceGroupName, String name,
         String workflowName, String runName, String actionName, Context context) {
@@ -575,20 +485,7 @@ public final class WorkflowRunActionRepetitionsClientImpl implements WorkflowRun
                 res.getValue().inputs(), res.getValue().nextLink(), null));
     }
 
-    /**
-     * Lists a workflow run expression trace.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param name Site name.
-     * @param workflowName The workflow name.
-     * @param runName The workflow run name.
-     * @param actionName The workflow action name.
-     * @param repetitionName The workflow repetition.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the expression traces as paginated response with {@link PagedFlux}.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.COLLECTION)
     public PagedFlux<ExpressionRoot> listExpressionTracesAsync(String resourceGroupName, String name,
         String workflowName, String runName, String actionName, String repetitionName) {
@@ -619,20 +516,7 @@ public final class WorkflowRunActionRepetitionsClientImpl implements WorkflowRun
             nextLink -> listExpressionTracesNextSinglePageAsync(nextLink, context));
     }
 
-    /**
-     * Lists a workflow run expression trace.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param name Site name.
-     * @param workflowName The workflow name.
-     * @param runName The workflow run name.
-     * @param actionName The workflow action name.
-     * @param repetitionName The workflow repetition.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the expression traces as paginated response with {@link PagedIterable}.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.COLLECTION)
     public PagedIterable<ExpressionRoot> listExpressionTraces(String resourceGroupName, String name,
         String workflowName, String runName, String actionName, String repetitionName) {
@@ -640,21 +524,7 @@ public final class WorkflowRunActionRepetitionsClientImpl implements WorkflowRun
             listExpressionTracesAsync(resourceGroupName, name, workflowName, runName, actionName, repetitionName));
     }
 
-    /**
-     * Lists a workflow run expression trace.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param name Site name.
-     * @param workflowName The workflow name.
-     * @param runName The workflow run name.
-     * @param actionName The workflow action name.
-     * @param repetitionName The workflow repetition.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the expression traces as paginated response with {@link PagedIterable}.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.COLLECTION)
     public PagedIterable<ExpressionRoot> listExpressionTraces(String resourceGroupName, String name,
         String workflowName, String runName, String actionName, String repetitionName, Context context) {

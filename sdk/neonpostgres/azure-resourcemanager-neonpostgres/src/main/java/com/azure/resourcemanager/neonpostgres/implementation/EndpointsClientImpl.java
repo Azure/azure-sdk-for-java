@@ -210,12 +210,7 @@ public final class EndpointsClientImpl implements EndpointsClient {
     @ServiceMethod(returns = ReturnType.SINGLE)
     private PagedResponse<EndpointInner> listSinglePage(String resourceGroupName, String organizationName,
         String projectName, String branchName) {
-        final String accept = "application/json";
-        Response<EndpointListResult> res
-            = service.listSync(this.client.getEndpoint(), this.client.getApiVersion(), this.client.getSubscriptionId(),
-                resourceGroupName, organizationName, projectName, branchName, accept, Context.NONE);
-        return new PagedResponseBase<>(res.getRequest(), res.getStatusCode(), res.getHeaders(), res.getValue().value(),
-            res.getValue().nextLink(), null);
+        return listSinglePage(resourceGroupName, organizationName, projectName, branchName, Context.NONE);
     }
 
     /**
@@ -242,38 +237,14 @@ public final class EndpointsClientImpl implements EndpointsClient {
             res.getValue().nextLink(), null);
     }
 
-    /**
-     * List Endpoint resources by Branch.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param organizationName Name of the Neon Organizations resource.
-     * @param projectName The name of the Project.
-     * @param branchName The name of the Branch.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the response of a Endpoint list operation as paginated response with {@link PagedIterable}.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.COLLECTION)
     public PagedIterable<EndpointInner> list(String resourceGroupName, String organizationName, String projectName,
         String branchName) {
-        return new PagedIterable<>(() -> listSinglePage(resourceGroupName, organizationName, projectName, branchName),
-            nextLink -> listNextSinglePage(nextLink));
+        return list(resourceGroupName, organizationName, projectName, branchName, Context.NONE);
     }
 
-    /**
-     * List Endpoint resources by Branch.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param organizationName Name of the Neon Organizations resource.
-     * @param projectName The name of the Project.
-     * @param branchName The name of the Branch.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the response of a Endpoint list operation as paginated response with {@link PagedIterable}.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.COLLECTION)
     public PagedIterable<EndpointInner> list(String resourceGroupName, String organizationName, String projectName,
         String branchName, Context context) {
@@ -326,11 +297,8 @@ public final class EndpointsClientImpl implements EndpointsClient {
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Response<BinaryData> createOrUpdateWithResponse(String resourceGroupName, String organizationName,
         String projectName, String branchName, String endpointName, EndpointInner resource) {
-        final String contentType = "application/json";
-        final String accept = "application/json";
-        return service.createOrUpdateSync(this.client.getEndpoint(), this.client.getApiVersion(),
-            this.client.getSubscriptionId(), resourceGroupName, organizationName, projectName, branchName, endpointName,
-            contentType, accept, resource, Context.NONE);
+        return createOrUpdateWithResponse(resourceGroupName, organizationName, projectName, branchName, endpointName,
+            resource, Context.NONE);
     }
 
     /**
@@ -381,44 +349,15 @@ public final class EndpointsClientImpl implements EndpointsClient {
             EndpointInner.class, EndpointInner.class, this.client.getContext());
     }
 
-    /**
-     * Create a Endpoint.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param organizationName Name of the Neon Organizations resource.
-     * @param projectName The name of the Project.
-     * @param branchName The name of the Branch.
-     * @param endpointName The name of the Endpoint.
-     * @param resource Resource create parameters.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the {@link SyncPoller} for polling of the Neon compute endpoint resource type.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public SyncPoller<PollResult<EndpointInner>, EndpointInner> beginCreateOrUpdate(String resourceGroupName,
         String organizationName, String projectName, String branchName, String endpointName, EndpointInner resource) {
-        Response<BinaryData> response = createOrUpdateWithResponse(resourceGroupName, organizationName, projectName,
-            branchName, endpointName, resource);
-        return this.client.<EndpointInner, EndpointInner>getLroResult(response, EndpointInner.class,
-            EndpointInner.class, Context.NONE);
+        return beginCreateOrUpdate(resourceGroupName, organizationName, projectName, branchName, endpointName, resource,
+            Context.NONE);
     }
 
-    /**
-     * Create a Endpoint.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param organizationName Name of the Neon Organizations resource.
-     * @param projectName The name of the Project.
-     * @param branchName The name of the Branch.
-     * @param endpointName The name of the Endpoint.
-     * @param resource Resource create parameters.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the {@link SyncPoller} for polling of the Neon compute endpoint resource type.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public SyncPoller<PollResult<EndpointInner>, EndpointInner> beginCreateOrUpdate(String resourceGroupName,
         String organizationName, String projectName, String branchName, String endpointName, EndpointInner resource,
@@ -450,47 +389,20 @@ public final class EndpointsClientImpl implements EndpointsClient {
             resource).last().flatMap(this.client::getLroFinalResultOrError);
     }
 
-    /**
-     * Create a Endpoint.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param organizationName Name of the Neon Organizations resource.
-     * @param projectName The name of the Project.
-     * @param branchName The name of the Branch.
-     * @param endpointName The name of the Endpoint.
-     * @param resource Resource create parameters.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the Neon compute endpoint resource type.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public EndpointInner createOrUpdate(String resourceGroupName, String organizationName, String projectName,
         String branchName, String endpointName, EndpointInner resource) {
-        return beginCreateOrUpdate(resourceGroupName, organizationName, projectName, branchName, endpointName, resource)
-            .getFinalResult();
+        return createOrUpdate(resourceGroupName, organizationName, projectName, branchName, endpointName, resource,
+            Context.NONE);
     }
 
-    /**
-     * Create a Endpoint.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param organizationName Name of the Neon Organizations resource.
-     * @param projectName The name of the Project.
-     * @param branchName The name of the Branch.
-     * @param endpointName The name of the Endpoint.
-     * @param resource Resource create parameters.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the Neon compute endpoint resource type.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public EndpointInner createOrUpdate(String resourceGroupName, String organizationName, String projectName,
         String branchName, String endpointName, EndpointInner resource, Context context) {
-        return beginCreateOrUpdate(resourceGroupName, organizationName, projectName, branchName, endpointName, resource,
-            context).getFinalResult();
+        return this.client.getLroFinalResultOrError(beginCreateOrUpdate(resourceGroupName, organizationName,
+            projectName, branchName, endpointName, resource, context));
     }
 
     /**
@@ -536,20 +448,7 @@ public final class EndpointsClientImpl implements EndpointsClient {
             .flatMap(ignored -> Mono.empty());
     }
 
-    /**
-     * Delete a Endpoint.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param organizationName Name of the Neon Organizations resource.
-     * @param projectName The name of the Project.
-     * @param branchName The name of the Branch.
-     * @param endpointName The name of the Endpoint.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the {@link Response}.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Response<Void> deleteWithResponse(String resourceGroupName, String organizationName, String projectName,
         String branchName, String endpointName, Context context) {
@@ -558,18 +457,7 @@ public final class EndpointsClientImpl implements EndpointsClient {
             context);
     }
 
-    /**
-     * Delete a Endpoint.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param organizationName Name of the Neon Organizations resource.
-     * @param projectName The name of the Project.
-     * @param branchName The name of the Branch.
-     * @param endpointName The name of the Endpoint.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public void delete(String resourceGroupName, String organizationName, String projectName, String branchName,
         String endpointName) {
@@ -606,11 +494,7 @@ public final class EndpointsClientImpl implements EndpointsClient {
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private PagedResponse<EndpointInner> listNextSinglePage(String nextLink) {
-        final String accept = "application/json";
-        Response<EndpointListResult> res
-            = service.listNextSync(nextLink, this.client.getEndpoint(), accept, Context.NONE);
-        return new PagedResponseBase<>(res.getRequest(), res.getStatusCode(), res.getHeaders(), res.getValue().value(),
-            res.getValue().nextLink(), null);
+        return listNextSinglePage(nextLink, Context.NONE);
     }
 
     /**

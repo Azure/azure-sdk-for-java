@@ -95,14 +95,16 @@ public interface PoolsClient {
      * outlive or be deleted independently from it. When the first pool is created, the service automatically designates
      * it to host the cluster's read-write node when an eligible node is available. A Cluster must contain at least one
      * Pool before a private endpoint connection can be created or approved. This API version supports at most one pool
-     * per cluster; an attempt to create another pool is rejected with 409 Conflict. parameterGroup,
-     * parameterGroupResourceId, and applyMethod are required. When creating a new pool in this API version,
-     * parameterGroupResourceId must identify the corresponding default parameter group; a customer-created parameter
-     * group is rejected. When replacing an existing pool, the request can switch its association in either direction
-     * between the corresponding default parameter group and a customer-created parameter group. applyMethod controls
-     * when dynamic parameter changes become effective. Static parameter changes always require a customer-initiated
-     * Restart; Stop followed by Start and scheduled maintenance do not apply pending changes. Subtype-specific compute
-     * constraints are validated before the resource is changed.
+     * per cluster; an attempt to create another pool is rejected with 409 Conflict. parameterGroup is optional during
+     * creation. When omitted during creation, the service applies the default parameter group compatible with the
+     * parent cluster's PostgreSQL version. When parameterGroup is supplied, parameterGroupResourceId and applyMethod
+     * are required. When creating a new pool in this API version, a supplied parameterGroupResourceId must identify the
+     * corresponding default parameter group; a customer-created parameter group is rejected. When replacing an existing
+     * pool, the request can switch its association in either direction between the corresponding default parameter
+     * group and a customer-created parameter group. applyMethod controls when dynamic parameter changes become
+     * effective. Static parameter changes always require a customer-initiated Restart; Stop followed by Start and
+     * scheduled maintenance do not apply pending changes. Subtype-specific compute constraints are validated before the
+     * resource is changed.
      * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param clusterName The name of the HorizonDB cluster.
@@ -132,14 +134,16 @@ public interface PoolsClient {
      * outlive or be deleted independently from it. When the first pool is created, the service automatically designates
      * it to host the cluster's read-write node when an eligible node is available. A Cluster must contain at least one
      * Pool before a private endpoint connection can be created or approved. This API version supports at most one pool
-     * per cluster; an attempt to create another pool is rejected with 409 Conflict. parameterGroup,
-     * parameterGroupResourceId, and applyMethod are required. When creating a new pool in this API version,
-     * parameterGroupResourceId must identify the corresponding default parameter group; a customer-created parameter
-     * group is rejected. When replacing an existing pool, the request can switch its association in either direction
-     * between the corresponding default parameter group and a customer-created parameter group. applyMethod controls
-     * when dynamic parameter changes become effective. Static parameter changes always require a customer-initiated
-     * Restart; Stop followed by Start and scheduled maintenance do not apply pending changes. Subtype-specific compute
-     * constraints are validated before the resource is changed.
+     * per cluster; an attempt to create another pool is rejected with 409 Conflict. parameterGroup is optional during
+     * creation. When omitted during creation, the service applies the default parameter group compatible with the
+     * parent cluster's PostgreSQL version. When parameterGroup is supplied, parameterGroupResourceId and applyMethod
+     * are required. When creating a new pool in this API version, a supplied parameterGroupResourceId must identify the
+     * corresponding default parameter group; a customer-created parameter group is rejected. When replacing an existing
+     * pool, the request can switch its association in either direction between the corresponding default parameter
+     * group and a customer-created parameter group. applyMethod controls when dynamic parameter changes become
+     * effective. Static parameter changes always require a customer-initiated Restart; Stop followed by Start and
+     * scheduled maintenance do not apply pending changes. Subtype-specific compute constraints are validated before the
+     * resource is changed.
      * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param clusterName The name of the HorizonDB cluster.
@@ -169,14 +173,16 @@ public interface PoolsClient {
      * outlive or be deleted independently from it. When the first pool is created, the service automatically designates
      * it to host the cluster's read-write node when an eligible node is available. A Cluster must contain at least one
      * Pool before a private endpoint connection can be created or approved. This API version supports at most one pool
-     * per cluster; an attempt to create another pool is rejected with 409 Conflict. parameterGroup,
-     * parameterGroupResourceId, and applyMethod are required. When creating a new pool in this API version,
-     * parameterGroupResourceId must identify the corresponding default parameter group; a customer-created parameter
-     * group is rejected. When replacing an existing pool, the request can switch its association in either direction
-     * between the corresponding default parameter group and a customer-created parameter group. applyMethod controls
-     * when dynamic parameter changes become effective. Static parameter changes always require a customer-initiated
-     * Restart; Stop followed by Start and scheduled maintenance do not apply pending changes. Subtype-specific compute
-     * constraints are validated before the resource is changed.
+     * per cluster; an attempt to create another pool is rejected with 409 Conflict. parameterGroup is optional during
+     * creation. When omitted during creation, the service applies the default parameter group compatible with the
+     * parent cluster's PostgreSQL version. When parameterGroup is supplied, parameterGroupResourceId and applyMethod
+     * are required. When creating a new pool in this API version, a supplied parameterGroupResourceId must identify the
+     * corresponding default parameter group; a customer-created parameter group is rejected. When replacing an existing
+     * pool, the request can switch its association in either direction between the corresponding default parameter
+     * group and a customer-created parameter group. applyMethod controls when dynamic parameter changes become
+     * effective. Static parameter changes always require a customer-initiated Restart; Stop followed by Start and
+     * scheduled maintenance do not apply pending changes. Subtype-specific compute constraints are validated before the
+     * resource is changed.
      * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param clusterName The name of the HorizonDB cluster.
@@ -206,14 +212,16 @@ public interface PoolsClient {
      * outlive or be deleted independently from it. When the first pool is created, the service automatically designates
      * it to host the cluster's read-write node when an eligible node is available. A Cluster must contain at least one
      * Pool before a private endpoint connection can be created or approved. This API version supports at most one pool
-     * per cluster; an attempt to create another pool is rejected with 409 Conflict. parameterGroup,
-     * parameterGroupResourceId, and applyMethod are required. When creating a new pool in this API version,
-     * parameterGroupResourceId must identify the corresponding default parameter group; a customer-created parameter
-     * group is rejected. When replacing an existing pool, the request can switch its association in either direction
-     * between the corresponding default parameter group and a customer-created parameter group. applyMethod controls
-     * when dynamic parameter changes become effective. Static parameter changes always require a customer-initiated
-     * Restart; Stop followed by Start and scheduled maintenance do not apply pending changes. Subtype-specific compute
-     * constraints are validated before the resource is changed.
+     * per cluster; an attempt to create another pool is rejected with 409 Conflict. parameterGroup is optional during
+     * creation. When omitted during creation, the service applies the default parameter group compatible with the
+     * parent cluster's PostgreSQL version. When parameterGroup is supplied, parameterGroupResourceId and applyMethod
+     * are required. When creating a new pool in this API version, a supplied parameterGroupResourceId must identify the
+     * corresponding default parameter group; a customer-created parameter group is rejected. When replacing an existing
+     * pool, the request can switch its association in either direction between the corresponding default parameter
+     * group and a customer-created parameter group. applyMethod controls when dynamic parameter changes become
+     * effective. Static parameter changes always require a customer-initiated Restart; Stop followed by Start and
+     * scheduled maintenance do not apply pending changes. Subtype-specific compute constraints are validated before the
+     * resource is changed.
      * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param clusterName The name of the HorizonDB cluster.
@@ -244,14 +252,16 @@ public interface PoolsClient {
      * outlive or be deleted independently from it. When the first pool is created, the service automatically designates
      * it to host the cluster's read-write node when an eligible node is available. A Cluster must contain at least one
      * Pool before a private endpoint connection can be created or approved. This API version supports at most one pool
-     * per cluster; an attempt to create another pool is rejected with 409 Conflict. parameterGroup,
-     * parameterGroupResourceId, and applyMethod are required. When creating a new pool in this API version,
-     * parameterGroupResourceId must identify the corresponding default parameter group; a customer-created parameter
-     * group is rejected. When replacing an existing pool, the request can switch its association in either direction
-     * between the corresponding default parameter group and a customer-created parameter group. applyMethod controls
-     * when dynamic parameter changes become effective. Static parameter changes always require a customer-initiated
-     * Restart; Stop followed by Start and scheduled maintenance do not apply pending changes. Subtype-specific compute
-     * constraints are validated before the resource is changed.
+     * per cluster; an attempt to create another pool is rejected with 409 Conflict. parameterGroup is optional during
+     * creation. When omitted during creation, the service applies the default parameter group compatible with the
+     * parent cluster's PostgreSQL version. When parameterGroup is supplied, parameterGroupResourceId and applyMethod
+     * are required. When creating a new pool in this API version, a supplied parameterGroupResourceId must identify the
+     * corresponding default parameter group; a customer-created parameter group is rejected. When replacing an existing
+     * pool, the request can switch its association in either direction between the corresponding default parameter
+     * group and a customer-created parameter group. applyMethod controls when dynamic parameter changes become
+     * effective. Static parameter changes always require a customer-initiated Restart; Stop followed by Start and
+     * scheduled maintenance do not apply pending changes. Subtype-specific compute constraints are validated before the
+     * resource is changed.
      * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param clusterName The name of the HorizonDB cluster.
@@ -281,14 +291,16 @@ public interface PoolsClient {
      * outlive or be deleted independently from it. When the first pool is created, the service automatically designates
      * it to host the cluster's read-write node when an eligible node is available. A Cluster must contain at least one
      * Pool before a private endpoint connection can be created or approved. This API version supports at most one pool
-     * per cluster; an attempt to create another pool is rejected with 409 Conflict. parameterGroup,
-     * parameterGroupResourceId, and applyMethod are required. When creating a new pool in this API version,
-     * parameterGroupResourceId must identify the corresponding default parameter group; a customer-created parameter
-     * group is rejected. When replacing an existing pool, the request can switch its association in either direction
-     * between the corresponding default parameter group and a customer-created parameter group. applyMethod controls
-     * when dynamic parameter changes become effective. Static parameter changes always require a customer-initiated
-     * Restart; Stop followed by Start and scheduled maintenance do not apply pending changes. Subtype-specific compute
-     * constraints are validated before the resource is changed.
+     * per cluster; an attempt to create another pool is rejected with 409 Conflict. parameterGroup is optional during
+     * creation. When omitted during creation, the service applies the default parameter group compatible with the
+     * parent cluster's PostgreSQL version. When parameterGroup is supplied, parameterGroupResourceId and applyMethod
+     * are required. When creating a new pool in this API version, a supplied parameterGroupResourceId must identify the
+     * corresponding default parameter group; a customer-created parameter group is rejected. When replacing an existing
+     * pool, the request can switch its association in either direction between the corresponding default parameter
+     * group and a customer-created parameter group. applyMethod controls when dynamic parameter changes become
+     * effective. Static parameter changes always require a customer-initiated Restart; Stop followed by Start and
+     * scheduled maintenance do not apply pending changes. Subtype-specific compute constraints are validated before the
+     * resource is changed.
      * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param clusterName The name of the HorizonDB cluster.
@@ -317,14 +329,16 @@ public interface PoolsClient {
      * outlive or be deleted independently from it. When the first pool is created, the service automatically designates
      * it to host the cluster's read-write node when an eligible node is available. A Cluster must contain at least one
      * Pool before a private endpoint connection can be created or approved. This API version supports at most one pool
-     * per cluster; an attempt to create another pool is rejected with 409 Conflict. parameterGroup,
-     * parameterGroupResourceId, and applyMethod are required. When creating a new pool in this API version,
-     * parameterGroupResourceId must identify the corresponding default parameter group; a customer-created parameter
-     * group is rejected. When replacing an existing pool, the request can switch its association in either direction
-     * between the corresponding default parameter group and a customer-created parameter group. applyMethod controls
-     * when dynamic parameter changes become effective. Static parameter changes always require a customer-initiated
-     * Restart; Stop followed by Start and scheduled maintenance do not apply pending changes. Subtype-specific compute
-     * constraints are validated before the resource is changed.
+     * per cluster; an attempt to create another pool is rejected with 409 Conflict. parameterGroup is optional during
+     * creation. When omitted during creation, the service applies the default parameter group compatible with the
+     * parent cluster's PostgreSQL version. When parameterGroup is supplied, parameterGroupResourceId and applyMethod
+     * are required. When creating a new pool in this API version, a supplied parameterGroupResourceId must identify the
+     * corresponding default parameter group; a customer-created parameter group is rejected. When replacing an existing
+     * pool, the request can switch its association in either direction between the corresponding default parameter
+     * group and a customer-created parameter group. applyMethod controls when dynamic parameter changes become
+     * effective. Static parameter changes always require a customer-initiated Restart; Stop followed by Start and
+     * scheduled maintenance do not apply pending changes. Subtype-specific compute constraints are validated before the
+     * resource is changed.
      * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param clusterName The name of the HorizonDB cluster.

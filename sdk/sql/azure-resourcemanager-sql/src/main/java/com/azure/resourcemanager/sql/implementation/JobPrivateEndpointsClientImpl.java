@@ -120,18 +120,7 @@ public final class JobPrivateEndpointsClientImpl implements JobPrivateEndpointsC
             @HeaderParam("Accept") String accept, Context context);
     }
 
-    /**
-     * Gets a private endpoint.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param serverName The name of the server.
-     * @param jobAgentName The name of the job agent to be retrieved.
-     * @param privateEndpointName The name of the private endpoint to get.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return a private endpoint along with {@link Response} on successful completion of {@link Mono}.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Response<JobPrivateEndpointInner>> getWithResponseAsync(String resourceGroupName, String serverName,
         String jobAgentName, String privateEndpointName) {
@@ -209,18 +198,7 @@ public final class JobPrivateEndpointsClientImpl implements JobPrivateEndpointsC
             resourceGroupName, serverName, jobAgentName, privateEndpointName, accept, context);
     }
 
-    /**
-     * Gets a private endpoint.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param serverName The name of the server.
-     * @param jobAgentName The name of the job agent to be retrieved.
-     * @param privateEndpointName The name of the private endpoint to get.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return a private endpoint on successful completion of {@link Mono}.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<JobPrivateEndpointInner> getAsync(String resourceGroupName, String serverName, String jobAgentName,
         String privateEndpointName) {
@@ -228,37 +206,14 @@ public final class JobPrivateEndpointsClientImpl implements JobPrivateEndpointsC
             .flatMap(res -> Mono.justOrEmpty(res.getValue()));
     }
 
-    /**
-     * Gets a private endpoint.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param serverName The name of the server.
-     * @param jobAgentName The name of the job agent to be retrieved.
-     * @param privateEndpointName The name of the private endpoint to get.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return a private endpoint along with {@link Response}.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Response<JobPrivateEndpointInner> getWithResponse(String resourceGroupName, String serverName,
         String jobAgentName, String privateEndpointName, Context context) {
         return getWithResponseAsync(resourceGroupName, serverName, jobAgentName, privateEndpointName, context).block();
     }
 
-    /**
-     * Gets a private endpoint.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param serverName The name of the server.
-     * @param jobAgentName The name of the job agent to be retrieved.
-     * @param privateEndpointName The name of the private endpoint to get.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return a private endpoint.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public JobPrivateEndpointInner get(String resourceGroupName, String serverName, String jobAgentName,
         String privateEndpointName) {
@@ -266,19 +221,7 @@ public final class JobPrivateEndpointsClientImpl implements JobPrivateEndpointsC
             .getValue();
     }
 
-    /**
-     * Creates or updates a private endpoint.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param serverName The name of the server.
-     * @param jobAgentName The name of the job agent to be retrieved.
-     * @param privateEndpointName The name of the private endpoint to get.
-     * @param parameters The requested private endpoint state.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return a job agent private endpoint along with {@link Response} on successful completion of {@link Mono}.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Response<Flux<ByteBuffer>>> createOrUpdateWithResponseAsync(String resourceGroupName, String serverName,
         String jobAgentName, String privateEndpointName, JobPrivateEndpointInner parameters) {
@@ -371,19 +314,7 @@ public final class JobPrivateEndpointsClientImpl implements JobPrivateEndpointsC
             contentType, accept, parameters, context);
     }
 
-    /**
-     * Creates or updates a private endpoint.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param serverName The name of the server.
-     * @param jobAgentName The name of the job agent to be retrieved.
-     * @param privateEndpointName The name of the private endpoint to get.
-     * @param parameters The requested private endpoint state.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the {@link PollerFlux} for polling of a job agent private endpoint.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public PollerFlux<PollResult<JobPrivateEndpointInner>, JobPrivateEndpointInner> beginCreateOrUpdateAsync(
         String resourceGroupName, String serverName, String jobAgentName, String privateEndpointName,
@@ -420,19 +351,7 @@ public final class JobPrivateEndpointsClientImpl implements JobPrivateEndpointsC
             this.client.getHttpPipeline(), JobPrivateEndpointInner.class, JobPrivateEndpointInner.class, context);
     }
 
-    /**
-     * Creates or updates a private endpoint.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param serverName The name of the server.
-     * @param jobAgentName The name of the job agent to be retrieved.
-     * @param privateEndpointName The name of the private endpoint to get.
-     * @param parameters The requested private endpoint state.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the {@link SyncPoller} for polling of a job agent private endpoint.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public SyncPoller<PollResult<JobPrivateEndpointInner>, JobPrivateEndpointInner> beginCreateOrUpdate(
         String resourceGroupName, String serverName, String jobAgentName, String privateEndpointName,
@@ -442,20 +361,7 @@ public final class JobPrivateEndpointsClientImpl implements JobPrivateEndpointsC
             .getSyncPoller();
     }
 
-    /**
-     * Creates or updates a private endpoint.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param serverName The name of the server.
-     * @param jobAgentName The name of the job agent to be retrieved.
-     * @param privateEndpointName The name of the private endpoint to get.
-     * @param parameters The requested private endpoint state.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the {@link SyncPoller} for polling of a job agent private endpoint.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public SyncPoller<PollResult<JobPrivateEndpointInner>, JobPrivateEndpointInner> beginCreateOrUpdate(
         String resourceGroupName, String serverName, String jobAgentName, String privateEndpointName,
@@ -466,19 +372,7 @@ public final class JobPrivateEndpointsClientImpl implements JobPrivateEndpointsC
             .getSyncPoller();
     }
 
-    /**
-     * Creates or updates a private endpoint.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param serverName The name of the server.
-     * @param jobAgentName The name of the job agent to be retrieved.
-     * @param privateEndpointName The name of the private endpoint to get.
-     * @param parameters The requested private endpoint state.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return a job agent private endpoint on successful completion of {@link Mono}.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<JobPrivateEndpointInner> createOrUpdateAsync(String resourceGroupName, String serverName,
         String jobAgentName, String privateEndpointName, JobPrivateEndpointInner parameters) {
@@ -508,19 +402,7 @@ public final class JobPrivateEndpointsClientImpl implements JobPrivateEndpointsC
             context).last().flatMap(this.client::getLroFinalResultOrError);
     }
 
-    /**
-     * Creates or updates a private endpoint.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param serverName The name of the server.
-     * @param jobAgentName The name of the job agent to be retrieved.
-     * @param privateEndpointName The name of the private endpoint to get.
-     * @param parameters The requested private endpoint state.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return a job agent private endpoint.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public JobPrivateEndpointInner createOrUpdate(String resourceGroupName, String serverName, String jobAgentName,
         String privateEndpointName, JobPrivateEndpointInner parameters) {
@@ -528,20 +410,7 @@ public final class JobPrivateEndpointsClientImpl implements JobPrivateEndpointsC
             .block();
     }
 
-    /**
-     * Creates or updates a private endpoint.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param serverName The name of the server.
-     * @param jobAgentName The name of the job agent to be retrieved.
-     * @param privateEndpointName The name of the private endpoint to get.
-     * @param parameters The requested private endpoint state.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return a job agent private endpoint.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public JobPrivateEndpointInner createOrUpdate(String resourceGroupName, String serverName, String jobAgentName,
         String privateEndpointName, JobPrivateEndpointInner parameters, Context context) {
@@ -549,18 +418,7 @@ public final class JobPrivateEndpointsClientImpl implements JobPrivateEndpointsC
             context).block();
     }
 
-    /**
-     * Deletes a private endpoint.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param serverName The name of the server.
-     * @param jobAgentName The name of the job agent to be retrieved.
-     * @param privateEndpointName The name of the private endpoint to get.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the {@link Response} on successful completion of {@link Mono}.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Response<Flux<ByteBuffer>>> deleteWithResponseAsync(String resourceGroupName, String serverName,
         String jobAgentName, String privateEndpointName) {
@@ -634,18 +492,7 @@ public final class JobPrivateEndpointsClientImpl implements JobPrivateEndpointsC
             resourceGroupName, serverName, jobAgentName, privateEndpointName, context);
     }
 
-    /**
-     * Deletes a private endpoint.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param serverName The name of the server.
-     * @param jobAgentName The name of the job agent to be retrieved.
-     * @param privateEndpointName The name of the private endpoint to get.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the {@link PollerFlux} for polling of long-running operation.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public PollerFlux<PollResult<Void>, Void> beginDeleteAsync(String resourceGroupName, String serverName,
         String jobAgentName, String privateEndpointName) {
@@ -678,37 +525,14 @@ public final class JobPrivateEndpointsClientImpl implements JobPrivateEndpointsC
             context);
     }
 
-    /**
-     * Deletes a private endpoint.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param serverName The name of the server.
-     * @param jobAgentName The name of the job agent to be retrieved.
-     * @param privateEndpointName The name of the private endpoint to get.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the {@link SyncPoller} for polling of long-running operation.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public SyncPoller<PollResult<Void>, Void> beginDelete(String resourceGroupName, String serverName,
         String jobAgentName, String privateEndpointName) {
         return this.beginDeleteAsync(resourceGroupName, serverName, jobAgentName, privateEndpointName).getSyncPoller();
     }
 
-    /**
-     * Deletes a private endpoint.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param serverName The name of the server.
-     * @param jobAgentName The name of the job agent to be retrieved.
-     * @param privateEndpointName The name of the private endpoint to get.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the {@link SyncPoller} for polling of long-running operation.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public SyncPoller<PollResult<Void>, Void> beginDelete(String resourceGroupName, String serverName,
         String jobAgentName, String privateEndpointName, Context context) {
@@ -716,18 +540,7 @@ public final class JobPrivateEndpointsClientImpl implements JobPrivateEndpointsC
             .getSyncPoller();
     }
 
-    /**
-     * Deletes a private endpoint.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param serverName The name of the server.
-     * @param jobAgentName The name of the job agent to be retrieved.
-     * @param privateEndpointName The name of the private endpoint to get.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return A {@link Mono} that completes when a successful response is received.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Void> deleteAsync(String resourceGroupName, String serverName, String jobAgentName,
         String privateEndpointName) {
@@ -755,34 +568,13 @@ public final class JobPrivateEndpointsClientImpl implements JobPrivateEndpointsC
             .flatMap(this.client::getLroFinalResultOrError);
     }
 
-    /**
-     * Deletes a private endpoint.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param serverName The name of the server.
-     * @param jobAgentName The name of the job agent to be retrieved.
-     * @param privateEndpointName The name of the private endpoint to get.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public void delete(String resourceGroupName, String serverName, String jobAgentName, String privateEndpointName) {
         deleteAsync(resourceGroupName, serverName, jobAgentName, privateEndpointName).block();
     }
 
-    /**
-     * Deletes a private endpoint.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param serverName The name of the server.
-     * @param jobAgentName The name of the job agent to be retrieved.
-     * @param privateEndpointName The name of the private endpoint to get.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public void delete(String resourceGroupName, String serverName, String jobAgentName, String privateEndpointName,
         Context context) {
@@ -874,17 +666,7 @@ public final class JobPrivateEndpointsClientImpl implements JobPrivateEndpointsC
                 res.getValue().value(), res.getValue().nextLink(), null));
     }
 
-    /**
-     * Gets a list of job agent private endpoints.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param serverName The name of the server.
-     * @param jobAgentName The name of the job agent to be retrieved.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return a list of job agent private endpoints as paginated response with {@link PagedFlux}.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.COLLECTION)
     public PagedFlux<JobPrivateEndpointInner> listByAgentAsync(String resourceGroupName, String serverName,
         String jobAgentName) {
@@ -911,35 +693,14 @@ public final class JobPrivateEndpointsClientImpl implements JobPrivateEndpointsC
             nextLink -> listByAgentNextSinglePageAsync(nextLink, context));
     }
 
-    /**
-     * Gets a list of job agent private endpoints.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param serverName The name of the server.
-     * @param jobAgentName The name of the job agent to be retrieved.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return a list of job agent private endpoints as paginated response with {@link PagedIterable}.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.COLLECTION)
     public PagedIterable<JobPrivateEndpointInner> listByAgent(String resourceGroupName, String serverName,
         String jobAgentName) {
         return new PagedIterable<>(listByAgentAsync(resourceGroupName, serverName, jobAgentName));
     }
 
-    /**
-     * Gets a list of job agent private endpoints.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param serverName The name of the server.
-     * @param jobAgentName The name of the job agent to be retrieved.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return a list of job agent private endpoints as paginated response with {@link PagedIterable}.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.COLLECTION)
     public PagedIterable<JobPrivateEndpointInner> listByAgent(String resourceGroupName, String serverName,
         String jobAgentName, Context context) {

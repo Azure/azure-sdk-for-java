@@ -307,18 +307,7 @@ public final class BulkCreateCustomsClientImpl implements BulkCreateCustomsClien
         return getWithResponseAsync(resourceGroupName, location, name).flatMap(res -> Mono.justOrEmpty(res.getValue()));
     }
 
-    /**
-     * Gets an instance of BulkCreateCustoms.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param location The location name.
-     * @param name The name of the BulkCreateCustom. The value must be an UUID.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return an instance of BulkCreateCustoms along with {@link Response}.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Response<LocationBasedBulkCreateCustomInner> getWithResponse(String resourceGroupName, String location,
         String name, Context context) {
@@ -327,17 +316,7 @@ public final class BulkCreateCustomsClientImpl implements BulkCreateCustomsClien
             resourceGroupName, location, name, accept, context);
     }
 
-    /**
-     * Gets an instance of BulkCreateCustoms.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param location The location name.
-     * @param name The name of the BulkCreateCustom. The value must be an UUID.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return an instance of BulkCreateCustoms.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public LocationBasedBulkCreateCustomInner get(String resourceGroupName, String location, String name) {
         return getWithResponse(resourceGroupName, location, name, Context.NONE).getValue();
@@ -381,17 +360,7 @@ public final class BulkCreateCustomsClientImpl implements BulkCreateCustomsClien
             .flatMap(res -> Mono.justOrEmpty(res.getValue()));
     }
 
-    /**
-     * Get the status of an async operation of a BulkCreateCustom.
-     * 
-     * @param location The location name.
-     * @param asyncOperationId The async operation id.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the status of an async operation of a BulkCreateCustom along with {@link Response}.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Response<OperationStatusResultInner> getAsyncOperationStatusWithResponse(String location,
         String asyncOperationId, Context context) {
@@ -400,16 +369,7 @@ public final class BulkCreateCustomsClientImpl implements BulkCreateCustomsClien
             this.client.getSubscriptionId(), location, asyncOperationId, accept, context);
     }
 
-    /**
-     * Get the status of an async operation of a BulkCreateCustom.
-     * 
-     * @param location The location name.
-     * @param asyncOperationId The async operation id.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the status of an async operation of a BulkCreateCustom.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public OperationStatusResultInner getAsyncOperationStatus(String location, String asyncOperationId) {
         return getAsyncOperationStatusWithResponse(location, asyncOperationId, Context.NONE).getValue();
@@ -455,11 +415,7 @@ public final class BulkCreateCustomsClientImpl implements BulkCreateCustomsClien
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Response<BinaryData> createOrUpdateWithResponse(String resourceGroupName, String location, String name,
         LocationBasedBulkCreateCustomInner resource) {
-        final String contentType = "application/json";
-        final String accept = "application/json";
-        return service.createOrUpdateSync(this.client.getEndpoint(), this.client.getApiVersion(),
-            this.client.getSubscriptionId(), resourceGroupName, location, name, contentType, accept, resource,
-            Context.NONE);
+        return createOrUpdateWithResponse(resourceGroupName, location, name, resource, Context.NONE);
     }
 
     /**
@@ -507,40 +463,15 @@ public final class BulkCreateCustomsClientImpl implements BulkCreateCustomsClien
             LocationBasedBulkCreateCustomInner.class, this.client.getContext());
     }
 
-    /**
-     * Creates or updates BulkCreateCustoms.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param location The location name.
-     * @param name The name of the BulkCreateCustom. The value must be an UUID.
-     * @param resource Resource create parameters.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the {@link SyncPoller} for polling of location based BulkCreateCustom resource.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public SyncPoller<PollResult<LocationBasedBulkCreateCustomInner>, LocationBasedBulkCreateCustomInner>
         beginCreateOrUpdate(String resourceGroupName, String location, String name,
             LocationBasedBulkCreateCustomInner resource) {
-        Response<BinaryData> response = createOrUpdateWithResponse(resourceGroupName, location, name, resource);
-        return this.client.<LocationBasedBulkCreateCustomInner, LocationBasedBulkCreateCustomInner>getLroResult(
-            response, LocationBasedBulkCreateCustomInner.class, LocationBasedBulkCreateCustomInner.class, Context.NONE);
+        return beginCreateOrUpdate(resourceGroupName, location, name, resource, Context.NONE);
     }
 
-    /**
-     * Creates or updates BulkCreateCustoms.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param location The location name.
-     * @param name The name of the BulkCreateCustom. The value must be an UUID.
-     * @param resource Resource create parameters.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the {@link SyncPoller} for polling of location based BulkCreateCustom resource.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public SyncPoller<PollResult<LocationBasedBulkCreateCustomInner>, LocationBasedBulkCreateCustomInner>
         beginCreateOrUpdate(String resourceGroupName, String location, String name,
@@ -570,41 +501,19 @@ public final class BulkCreateCustomsClientImpl implements BulkCreateCustomsClien
             .flatMap(this.client::getLroFinalResultOrError);
     }
 
-    /**
-     * Creates or updates BulkCreateCustoms.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param location The location name.
-     * @param name The name of the BulkCreateCustom. The value must be an UUID.
-     * @param resource Resource create parameters.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return location based BulkCreateCustom resource.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public LocationBasedBulkCreateCustomInner createOrUpdate(String resourceGroupName, String location, String name,
         LocationBasedBulkCreateCustomInner resource) {
-        return beginCreateOrUpdate(resourceGroupName, location, name, resource).getFinalResult();
+        return createOrUpdate(resourceGroupName, location, name, resource, Context.NONE);
     }
 
-    /**
-     * Creates or updates BulkCreateCustoms.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param location The location name.
-     * @param name The name of the BulkCreateCustom. The value must be an UUID.
-     * @param resource Resource create parameters.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return location based BulkCreateCustom resource.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public LocationBasedBulkCreateCustomInner createOrUpdate(String resourceGroupName, String location, String name,
         LocationBasedBulkCreateCustomInner resource, Context context) {
-        return beginCreateOrUpdate(resourceGroupName, location, name, resource, context).getFinalResult();
+        return this.client
+            .getLroFinalResultOrError(beginCreateOrUpdate(resourceGroupName, location, name, resource, context));
     }
 
     /**
@@ -643,8 +552,7 @@ public final class BulkCreateCustomsClientImpl implements BulkCreateCustomsClien
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Response<BinaryData> deleteWithResponse(String resourceGroupName, String location, String name,
         Boolean deleteInstances) {
-        return service.deleteSync(this.client.getEndpoint(), this.client.getApiVersion(),
-            this.client.getSubscriptionId(), resourceGroupName, location, name, deleteInstances, Context.NONE);
+        return deleteWithResponse(resourceGroupName, location, name, deleteInstances, Context.NONE);
     }
 
     /**
@@ -722,43 +630,19 @@ public final class BulkCreateCustomsClientImpl implements BulkCreateCustomsClien
      * @return the {@link SyncPoller} for polling of long-running operation.
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
-    public SyncPoller<PollResult<Void>, Void> beginDelete(String resourceGroupName, String location, String name,
+    private SyncPoller<PollResult<Void>, Void> beginDelete(String resourceGroupName, String location, String name,
         Boolean deleteInstances) {
-        Response<BinaryData> response = deleteWithResponse(resourceGroupName, location, name, deleteInstances);
-        return this.client.<Void, Void>getLroResult(response, Void.class, Void.class, Context.NONE);
+        return beginDelete(resourceGroupName, location, name, deleteInstances, Context.NONE);
     }
 
-    /**
-     * Deletes BulkCreateCustoms.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param location The location name.
-     * @param name The name of the BulkCreateCustom. The value must be an UUID.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the {@link SyncPoller} for polling of long-running operation.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public SyncPoller<PollResult<Void>, Void> beginDelete(String resourceGroupName, String location, String name) {
         final Boolean deleteInstances = null;
-        Response<BinaryData> response = deleteWithResponse(resourceGroupName, location, name, deleteInstances);
-        return this.client.<Void, Void>getLroResult(response, Void.class, Void.class, Context.NONE);
+        return beginDelete(resourceGroupName, location, name, deleteInstances, Context.NONE);
     }
 
-    /**
-     * Deletes BulkCreateCustoms.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param location The location name.
-     * @param name The name of the BulkCreateCustom. The value must be an UUID.
-     * @param deleteInstances When true, deletes all virtual machines created by this BulkAction Operation.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the {@link SyncPoller} for polling of long-running operation.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public SyncPoller<PollResult<Void>, Void> beginDelete(String resourceGroupName, String location, String name,
         Boolean deleteInstances, Context context) {
@@ -802,38 +686,18 @@ public final class BulkCreateCustomsClientImpl implements BulkCreateCustomsClien
             .flatMap(this.client::getLroFinalResultOrError);
     }
 
-    /**
-     * Deletes BulkCreateCustoms.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param location The location name.
-     * @param name The name of the BulkCreateCustom. The value must be an UUID.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public void delete(String resourceGroupName, String location, String name) {
         final Boolean deleteInstances = null;
-        beginDelete(resourceGroupName, location, name, deleteInstances).getFinalResult();
+        delete(resourceGroupName, location, name, deleteInstances, Context.NONE);
     }
 
-    /**
-     * Deletes BulkCreateCustoms.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param location The location name.
-     * @param name The name of the BulkCreateCustom. The value must be an UUID.
-     * @param deleteInstances When true, deletes all virtual machines created by this BulkAction Operation.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public void delete(String resourceGroupName, String location, String name, Boolean deleteInstances,
         Context context) {
-        beginDelete(resourceGroupName, location, name, deleteInstances, context).getFinalResult();
+        this.client.getLroFinalResultOrError(beginDelete(resourceGroupName, location, name, deleteInstances, context));
     }
 
     /**
@@ -869,8 +733,7 @@ public final class BulkCreateCustomsClientImpl implements BulkCreateCustomsClien
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Response<BinaryData> cancelWithResponse(String resourceGroupName, String location, String name) {
-        return service.cancelSync(this.client.getEndpoint(), this.client.getApiVersion(),
-            this.client.getSubscriptionId(), resourceGroupName, location, name, Context.NONE);
+        return cancelWithResponse(resourceGroupName, location, name, Context.NONE);
     }
 
     /**
@@ -911,35 +774,13 @@ public final class BulkCreateCustomsClientImpl implements BulkCreateCustomsClien
             this.client.getContext());
     }
 
-    /**
-     * Cancels BulkCreateCustom instances that have not yet launched.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param location The location name.
-     * @param name The name of the BulkCreateCustom. The value must be an UUID.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the {@link SyncPoller} for polling of long-running operation.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public SyncPoller<PollResult<Void>, Void> beginCancel(String resourceGroupName, String location, String name) {
-        Response<BinaryData> response = cancelWithResponse(resourceGroupName, location, name);
-        return this.client.<Void, Void>getLroResult(response, Void.class, Void.class, Context.NONE);
+        return beginCancel(resourceGroupName, location, name, Context.NONE);
     }
 
-    /**
-     * Cancels BulkCreateCustom instances that have not yet launched.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param location The location name.
-     * @param name The name of the BulkCreateCustom. The value must be an UUID.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the {@link SyncPoller} for polling of long-running operation.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public SyncPoller<PollResult<Void>, Void> beginCancel(String resourceGroupName, String location, String name,
         Context context) {
@@ -964,35 +805,16 @@ public final class BulkCreateCustomsClientImpl implements BulkCreateCustomsClien
             .flatMap(this.client::getLroFinalResultOrError);
     }
 
-    /**
-     * Cancels BulkCreateCustom instances that have not yet launched.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param location The location name.
-     * @param name The name of the BulkCreateCustom. The value must be an UUID.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public void cancel(String resourceGroupName, String location, String name) {
-        beginCancel(resourceGroupName, location, name).getFinalResult();
+        cancel(resourceGroupName, location, name, Context.NONE);
     }
 
-    /**
-     * Cancels BulkCreateCustom instances that have not yet launched.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param location The location name.
-     * @param name The name of the BulkCreateCustom. The value must be an UUID.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public void cancel(String resourceGroupName, String location, String name, Context context) {
-        beginCancel(resourceGroupName, location, name, context).getFinalResult();
+        this.client.getLroFinalResultOrError(beginCancel(resourceGroupName, location, name, context));
     }
 
     /**
@@ -1055,12 +877,7 @@ public final class BulkCreateCustomsClientImpl implements BulkCreateCustomsClien
     @ServiceMethod(returns = ReturnType.SINGLE)
     private PagedResponse<ResourceOperationInner> virtualMachinesGetOperationStatusSinglePage(String resourceGroupName,
         String location, String name) {
-        final String accept = "application/json";
-        Response<BulkCreateCustomOperationStatusListResult> res
-            = service.virtualMachinesGetOperationStatusSync(this.client.getEndpoint(), this.client.getApiVersion(),
-                this.client.getSubscriptionId(), resourceGroupName, location, name, accept, Context.NONE);
-        return new PagedResponseBase<>(res.getRequest(), res.getStatusCode(), res.getHeaders(),
-            res.getValue().results(), res.getValue().nextLink(), null);
+        return virtualMachinesGetOperationStatusSinglePage(resourceGroupName, location, name, Context.NONE);
     }
 
     /**
@@ -1087,38 +904,14 @@ public final class BulkCreateCustomsClientImpl implements BulkCreateCustomsClien
             res.getValue().results(), res.getValue().nextLink(), null);
     }
 
-    /**
-     * Gets the operation status for virtual machines in a BulkCreateCustom operation.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param location The location name.
-     * @param name The name of the BulkCreateCustom. The value must be an UUID.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the operation status for virtual machines in a BulkCreateCustom operation as paginated response with
-     * {@link PagedIterable}.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.COLLECTION)
     public PagedIterable<ResourceOperationInner> virtualMachinesGetOperationStatus(String resourceGroupName,
         String location, String name) {
-        return new PagedIterable<>(() -> virtualMachinesGetOperationStatusSinglePage(resourceGroupName, location, name),
-            nextLink -> virtualMachinesGetOperationStatusNextSinglePage(nextLink));
+        return virtualMachinesGetOperationStatus(resourceGroupName, location, name, Context.NONE);
     }
 
-    /**
-     * Gets the operation status for virtual machines in a BulkCreateCustom operation.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param location The location name.
-     * @param name The name of the BulkCreateCustom. The value must be an UUID.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the operation status for virtual machines in a BulkCreateCustom operation as paginated response with
-     * {@link PagedIterable}.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.COLLECTION)
     public PagedIterable<ResourceOperationInner> virtualMachinesGetOperationStatus(String resourceGroupName,
         String location, String name, Context context) {
@@ -1180,12 +973,7 @@ public final class BulkCreateCustomsClientImpl implements BulkCreateCustomsClien
     @ServiceMethod(returns = ReturnType.SINGLE)
     private PagedResponse<LocationBasedBulkCreateCustomInner> listByResourceGroupSinglePage(String resourceGroupName,
         String location) {
-        final String accept = "application/json";
-        Response<BulkCreateCustomListResult> res
-            = service.listByResourceGroupSync(this.client.getEndpoint(), this.client.getApiVersion(),
-                this.client.getSubscriptionId(), resourceGroupName, location, accept, Context.NONE);
-        return new PagedResponseBase<>(res.getRequest(), res.getStatusCode(), res.getHeaders(), res.getValue().value(),
-            res.getValue().nextLink(), null);
+        return listByResourceGroupSinglePage(resourceGroupName, location, Context.NONE);
     }
 
     /**
@@ -1209,34 +997,14 @@ public final class BulkCreateCustomsClientImpl implements BulkCreateCustomsClien
             res.getValue().nextLink(), null);
     }
 
-    /**
-     * List BulkCreateCustom resources by resource group.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param location The location name.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return list of BulkCreateCustom resources as paginated response with {@link PagedIterable}.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.COLLECTION)
     public PagedIterable<LocationBasedBulkCreateCustomInner> listByResourceGroup(String resourceGroupName,
         String location) {
-        return new PagedIterable<>(() -> listByResourceGroupSinglePage(resourceGroupName, location),
-            nextLink -> listByResourceGroupNextSinglePage(nextLink));
+        return listByResourceGroup(resourceGroupName, location, Context.NONE);
     }
 
-    /**
-     * List BulkCreateCustom resources by resource group.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param location The location name.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return list of BulkCreateCustom resources as paginated response with {@link PagedIterable}.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.COLLECTION)
     public PagedIterable<LocationBasedBulkCreateCustomInner> listByResourceGroup(String resourceGroupName,
         String location, Context context) {
@@ -1291,11 +1059,7 @@ public final class BulkCreateCustomsClientImpl implements BulkCreateCustomsClien
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private PagedResponse<LocationBasedBulkCreateCustomInner> listBySubscriptionSinglePage(String location) {
-        final String accept = "application/json";
-        Response<BulkCreateCustomListResult> res = service.listBySubscriptionSync(this.client.getEndpoint(),
-            this.client.getApiVersion(), this.client.getSubscriptionId(), location, accept, Context.NONE);
-        return new PagedResponseBase<>(res.getRequest(), res.getStatusCode(), res.getHeaders(), res.getValue().value(),
-            res.getValue().nextLink(), null);
+        return listBySubscriptionSinglePage(location, Context.NONE);
     }
 
     /**
@@ -1318,31 +1082,13 @@ public final class BulkCreateCustomsClientImpl implements BulkCreateCustomsClien
             res.getValue().nextLink(), null);
     }
 
-    /**
-     * List BulkCreateCustom resources by subscriptionId.
-     * 
-     * @param location The location name.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return list of BulkCreateCustom resources as paginated response with {@link PagedIterable}.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.COLLECTION)
     public PagedIterable<LocationBasedBulkCreateCustomInner> listBySubscription(String location) {
-        return new PagedIterable<>(() -> listBySubscriptionSinglePage(location),
-            nextLink -> listBySubscriptionNextSinglePage(nextLink));
+        return listBySubscription(location, Context.NONE);
     }
 
-    /**
-     * List BulkCreateCustom resources by subscriptionId.
-     * 
-     * @param location The location name.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return list of BulkCreateCustom resources as paginated response with {@link PagedIterable}.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.COLLECTION)
     public PagedIterable<LocationBasedBulkCreateCustomInner> listBySubscription(String location, Context context) {
         return new PagedIterable<>(() -> listBySubscriptionSinglePage(location, context),
@@ -1383,11 +1129,7 @@ public final class BulkCreateCustomsClientImpl implements BulkCreateCustomsClien
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private PagedResponse<ResourceOperationInner> virtualMachinesGetOperationStatusNextSinglePage(String nextLink) {
-        final String accept = "application/json";
-        Response<BulkCreateCustomOperationStatusListResult> res = service
-            .virtualMachinesGetOperationStatusNextSync(nextLink, this.client.getEndpoint(), accept, Context.NONE);
-        return new PagedResponseBase<>(res.getRequest(), res.getStatusCode(), res.getHeaders(),
-            res.getValue().results(), res.getValue().nextLink(), null);
+        return virtualMachinesGetOperationStatusNextSinglePage(nextLink, Context.NONE);
     }
 
     /**
@@ -1444,11 +1186,7 @@ public final class BulkCreateCustomsClientImpl implements BulkCreateCustomsClien
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private PagedResponse<LocationBasedBulkCreateCustomInner> listByResourceGroupNextSinglePage(String nextLink) {
-        final String accept = "application/json";
-        Response<BulkCreateCustomListResult> res
-            = service.listByResourceGroupNextSync(nextLink, this.client.getEndpoint(), accept, Context.NONE);
-        return new PagedResponseBase<>(res.getRequest(), res.getStatusCode(), res.getHeaders(), res.getValue().value(),
-            res.getValue().nextLink(), null);
+        return listByResourceGroupNextSinglePage(nextLink, Context.NONE);
     }
 
     /**
@@ -1504,11 +1242,7 @@ public final class BulkCreateCustomsClientImpl implements BulkCreateCustomsClien
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private PagedResponse<LocationBasedBulkCreateCustomInner> listBySubscriptionNextSinglePage(String nextLink) {
-        final String accept = "application/json";
-        Response<BulkCreateCustomListResult> res
-            = service.listBySubscriptionNextSync(nextLink, this.client.getEndpoint(), accept, Context.NONE);
-        return new PagedResponseBase<>(res.getRequest(), res.getStatusCode(), res.getHeaders(), res.getValue().value(),
-            res.getValue().nextLink(), null);
+        return listBySubscriptionNextSinglePage(nextLink, Context.NONE);
     }
 
     /**

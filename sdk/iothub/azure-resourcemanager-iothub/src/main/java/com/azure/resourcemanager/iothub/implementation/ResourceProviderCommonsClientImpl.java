@@ -111,19 +111,7 @@ public final class ResourceProviderCommonsClientImpl implements ResourceProvider
         return getSubscriptionQuotaWithResponseAsync().flatMap(res -> Mono.justOrEmpty(res.getValue()));
     }
 
-    /**
-     * Get the number of iot hubs in the subscription
-     * 
-     * Get the number of free and paid iot hubs in the subscription.
-     * 
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ErrorDetailsException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the number of iot hubs in the subscription
-     * 
-     * Get the number of free and paid iot hubs in the subscription along with {@link Response}.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Response<UserSubscriptionQuotaListResultInner> getSubscriptionQuotaWithResponse(Context context) {
         final String accept = "application/json";
@@ -131,17 +119,7 @@ public final class ResourceProviderCommonsClientImpl implements ResourceProvider
             this.client.getSubscriptionId(), accept, context);
     }
 
-    /**
-     * Get the number of iot hubs in the subscription
-     * 
-     * Get the number of free and paid iot hubs in the subscription.
-     * 
-     * @throws ErrorDetailsException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the number of iot hubs in the subscription
-     * 
-     * Get the number of free and paid iot hubs in the subscription.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public UserSubscriptionQuotaListResultInner getSubscriptionQuota() {
         return getSubscriptionQuotaWithResponse(Context.NONE).getValue();

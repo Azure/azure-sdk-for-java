@@ -186,18 +186,7 @@ public final class SharedLimitsClientImpl implements SharedLimitsClient {
         return getWithResponseAsync(location, name).flatMap(res -> Mono.justOrEmpty(res.getValue()));
     }
 
-    /**
-     * Gets the properties of a compute limit shared by the host subscription with its guest subscriptions.
-     * 
-     * @param location The name of the Azure region.
-     * @param name The name of the SharedLimit.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the properties of a compute limit shared by the host subscription with its guest subscriptions along with
-     * {@link Response}.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Response<SharedLimitInner> getWithResponse(String location, String name, Context context) {
         final String accept = "application/json";
@@ -205,16 +194,7 @@ public final class SharedLimitsClientImpl implements SharedLimitsClient {
             location, name, accept, context);
     }
 
-    /**
-     * Gets the properties of a compute limit shared by the host subscription with its guest subscriptions.
-     * 
-     * @param location The name of the Azure region.
-     * @param name The name of the SharedLimit.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the properties of a compute limit shared by the host subscription with its guest subscriptions.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public SharedLimitInner get(String location, String name) {
         return getWithResponse(location, name, Context.NONE).getValue();
@@ -259,18 +239,7 @@ public final class SharedLimitsClientImpl implements SharedLimitsClient {
         return createWithResponseAsync(location, name, resource).flatMap(res -> Mono.justOrEmpty(res.getValue()));
     }
 
-    /**
-     * Enables sharing of a compute limit by the host subscription with its guest subscriptions.
-     * 
-     * @param location The name of the Azure region.
-     * @param name The name of the SharedLimit.
-     * @param resource Resource create parameters.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return compute limits shared by the subscription along with {@link Response}.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Response<SharedLimitInner> createWithResponse(String location, String name, SharedLimitInner resource,
         Context context) {
@@ -280,17 +249,7 @@ public final class SharedLimitsClientImpl implements SharedLimitsClient {
             this.client.getSubscriptionId(), location, name, contentType, accept, resource, context);
     }
 
-    /**
-     * Enables sharing of a compute limit by the host subscription with its guest subscriptions.
-     * 
-     * @param location The name of the Azure region.
-     * @param name The name of the SharedLimit.
-     * @param resource Resource create parameters.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return compute limits shared by the subscription.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public SharedLimitInner create(String location, String name, SharedLimitInner resource) {
         return createWithResponse(location, name, resource, Context.NONE).getValue();
@@ -329,32 +288,14 @@ public final class SharedLimitsClientImpl implements SharedLimitsClient {
         return deleteWithResponseAsync(location, name).flatMap(ignored -> Mono.empty());
     }
 
-    /**
-     * Disables sharing of a compute limit by the host subscription with its guest subscriptions.
-     * 
-     * @param location The name of the Azure region.
-     * @param name The name of the SharedLimit.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the {@link Response}.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Response<Void> deleteWithResponse(String location, String name, Context context) {
         return service.deleteSync(this.client.getEndpoint(), this.client.getApiVersion(),
             this.client.getSubscriptionId(), location, name, context);
     }
 
-    /**
-     * Disables sharing of a compute limit by the host subscription with its guest subscriptions.
-     * 
-     * @param location The name of the Azure region.
-     * @param name The name of the SharedLimit.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public void delete(String location, String name) {
         deleteWithResponse(location, name, Context.NONE);
@@ -407,11 +348,7 @@ public final class SharedLimitsClientImpl implements SharedLimitsClient {
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private PagedResponse<SharedLimitInner> listBySubscriptionLocationResourceSinglePage(String location) {
-        final String accept = "application/json";
-        Response<SharedLimitListResult> res = service.listBySubscriptionLocationResourceSync(this.client.getEndpoint(),
-            this.client.getApiVersion(), this.client.getSubscriptionId(), location, accept, Context.NONE);
-        return new PagedResponseBase<>(res.getRequest(), res.getStatusCode(), res.getHeaders(), res.getValue().value(),
-            res.getValue().nextLink(), null);
+        return listBySubscriptionLocationResourceSinglePage(location, Context.NONE);
     }
 
     /**
@@ -434,31 +371,13 @@ public final class SharedLimitsClientImpl implements SharedLimitsClient {
             res.getValue().nextLink(), null);
     }
 
-    /**
-     * Lists all compute limits shared by the host subscription with its guest subscriptions.
-     * 
-     * @param location The name of the Azure region.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the response of a SharedLimit list operation as paginated response with {@link PagedIterable}.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.COLLECTION)
     public PagedIterable<SharedLimitInner> listBySubscriptionLocationResource(String location) {
-        return new PagedIterable<>(() -> listBySubscriptionLocationResourceSinglePage(location),
-            nextLink -> listBySubscriptionLocationResourceNextSinglePage(nextLink));
+        return listBySubscriptionLocationResource(location, Context.NONE);
     }
 
-    /**
-     * Lists all compute limits shared by the host subscription with its guest subscriptions.
-     * 
-     * @param location The name of the Azure region.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the response of a SharedLimit list operation as paginated response with {@link PagedIterable}.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.COLLECTION)
     public PagedIterable<SharedLimitInner> listBySubscriptionLocationResource(String location, Context context) {
         return new PagedIterable<>(() -> listBySubscriptionLocationResourceSinglePage(location, context),
@@ -498,11 +417,7 @@ public final class SharedLimitsClientImpl implements SharedLimitsClient {
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private PagedResponse<SharedLimitInner> listBySubscriptionLocationResourceNextSinglePage(String nextLink) {
-        final String accept = "application/json";
-        Response<SharedLimitListResult> res = service.listBySubscriptionLocationResourceNextSync(nextLink,
-            this.client.getEndpoint(), accept, Context.NONE);
-        return new PagedResponseBase<>(res.getRequest(), res.getStatusCode(), res.getHeaders(), res.getValue().value(),
-            res.getValue().nextLink(), null);
+        return listBySubscriptionLocationResourceNextSinglePage(nextLink, Context.NONE);
     }
 
     /**

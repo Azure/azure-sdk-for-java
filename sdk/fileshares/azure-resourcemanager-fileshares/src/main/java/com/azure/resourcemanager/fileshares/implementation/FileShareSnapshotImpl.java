@@ -65,10 +65,7 @@ public final class FileShareSnapshotImpl
     }
 
     public FileShareSnapshot create() {
-        this.innerObject = serviceManager.serviceClient()
-            .getFileShareSnapshots()
-            .createOrUpdateFileShareSnapshot(resourceGroupName, resourceName, name, this.innerModel(), Context.NONE);
-        return this;
+        return this.create(Context.NONE);
     }
 
     public FileShareSnapshot create(Context context) {
@@ -90,10 +87,7 @@ public final class FileShareSnapshotImpl
     }
 
     public FileShareSnapshot apply() {
-        this.innerObject = serviceManager.serviceClient()
-            .getFileShareSnapshots()
-            .updateFileShareSnapshot(resourceGroupName, resourceName, name, updateProperties, Context.NONE);
-        return this;
+        return this.apply(Context.NONE);
     }
 
     public FileShareSnapshot apply(Context context) {
@@ -119,11 +113,7 @@ public final class FileShareSnapshotImpl
     }
 
     public FileShareSnapshot refresh() {
-        this.innerObject = serviceManager.serviceClient()
-            .getFileShareSnapshots()
-            .getFileShareSnapshotWithResponse(resourceGroupName, resourceName, name, Context.NONE)
-            .getValue();
-        return this;
+        return this.refresh(Context.NONE);
     }
 
     public FileShareSnapshot refresh(Context context) {

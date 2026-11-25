@@ -124,18 +124,7 @@ public final class ManagedInstanceAzureADOnlyAuthenticationsClientImpl
             @HeaderParam("Accept") String accept, Context context);
     }
 
-    /**
-     * Gets a specific Azure Active Directory only authentication property.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param managedInstanceName The name of the managed instance.
-     * @param authenticationName The name of server azure active directory only authentication.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return a specific Azure Active Directory only authentication property along with {@link Response} on successful
-     * completion of {@link Mono}.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Response<ManagedInstanceAzureADOnlyAuthenticationInner>> getWithResponseAsync(String resourceGroupName,
         String managedInstanceName, AuthenticationName authenticationName) {
@@ -209,17 +198,7 @@ public final class ManagedInstanceAzureADOnlyAuthenticationsClientImpl
             resourceGroupName, managedInstanceName, authenticationName, accept, context);
     }
 
-    /**
-     * Gets a specific Azure Active Directory only authentication property.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param managedInstanceName The name of the managed instance.
-     * @param authenticationName The name of server azure active directory only authentication.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return a specific Azure Active Directory only authentication property on successful completion of {@link Mono}.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<ManagedInstanceAzureADOnlyAuthenticationInner> getAsync(String resourceGroupName,
         String managedInstanceName, AuthenticationName authenticationName) {
@@ -227,56 +206,21 @@ public final class ManagedInstanceAzureADOnlyAuthenticationsClientImpl
             .flatMap(res -> Mono.justOrEmpty(res.getValue()));
     }
 
-    /**
-     * Gets a specific Azure Active Directory only authentication property.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param managedInstanceName The name of the managed instance.
-     * @param authenticationName The name of server azure active directory only authentication.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return a specific Azure Active Directory only authentication property along with {@link Response}.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Response<ManagedInstanceAzureADOnlyAuthenticationInner> getWithResponse(String resourceGroupName,
         String managedInstanceName, AuthenticationName authenticationName, Context context) {
         return getWithResponseAsync(resourceGroupName, managedInstanceName, authenticationName, context).block();
     }
 
-    /**
-     * Gets a specific Azure Active Directory only authentication property.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param managedInstanceName The name of the managed instance.
-     * @param authenticationName The name of server azure active directory only authentication.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return a specific Azure Active Directory only authentication property.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public ManagedInstanceAzureADOnlyAuthenticationInner get(String resourceGroupName, String managedInstanceName,
         AuthenticationName authenticationName) {
         return getWithResponse(resourceGroupName, managedInstanceName, authenticationName, Context.NONE).getValue();
     }
 
-    /**
-     * Sets Server Active Directory only authentication property or updates an existing server Active Directory only
-     * authentication property.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param managedInstanceName The name of the managed instance.
-     * @param authenticationName The name of server azure active directory only authentication.
-     * @param parameters The required parameters for creating or updating an Active Directory only authentication
-     * property.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return azure Active Directory only authentication along with {@link Response} on successful completion of
-     * {@link Mono}.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Response<Flux<ByteBuffer>>> createOrUpdateWithResponseAsync(String resourceGroupName,
         String managedInstanceName, AuthenticationName authenticationName,
@@ -368,20 +312,7 @@ public final class ManagedInstanceAzureADOnlyAuthenticationsClientImpl
             accept, parameters, context);
     }
 
-    /**
-     * Sets Server Active Directory only authentication property or updates an existing server Active Directory only
-     * authentication property.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param managedInstanceName The name of the managed instance.
-     * @param authenticationName The name of server azure active directory only authentication.
-     * @param parameters The required parameters for creating or updating an Active Directory only authentication
-     * property.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the {@link PollerFlux} for polling of azure Active Directory only authentication.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public
         PollerFlux<PollResult<ManagedInstanceAzureADOnlyAuthenticationInner>, ManagedInstanceAzureADOnlyAuthenticationInner>
@@ -425,20 +356,7 @@ public final class ManagedInstanceAzureADOnlyAuthenticationsClientImpl
                 ManagedInstanceAzureADOnlyAuthenticationInner.class, context);
     }
 
-    /**
-     * Sets Server Active Directory only authentication property or updates an existing server Active Directory only
-     * authentication property.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param managedInstanceName The name of the managed instance.
-     * @param authenticationName The name of server azure active directory only authentication.
-     * @param parameters The required parameters for creating or updating an Active Directory only authentication
-     * property.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the {@link SyncPoller} for polling of azure Active Directory only authentication.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public
         SyncPoller<PollResult<ManagedInstanceAzureADOnlyAuthenticationInner>, ManagedInstanceAzureADOnlyAuthenticationInner>
@@ -448,21 +366,7 @@ public final class ManagedInstanceAzureADOnlyAuthenticationsClientImpl
             .getSyncPoller();
     }
 
-    /**
-     * Sets Server Active Directory only authentication property or updates an existing server Active Directory only
-     * authentication property.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param managedInstanceName The name of the managed instance.
-     * @param authenticationName The name of server azure active directory only authentication.
-     * @param parameters The required parameters for creating or updating an Active Directory only authentication
-     * property.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the {@link SyncPoller} for polling of azure Active Directory only authentication.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public
         SyncPoller<PollResult<ManagedInstanceAzureADOnlyAuthenticationInner>, ManagedInstanceAzureADOnlyAuthenticationInner>
@@ -473,20 +377,7 @@ public final class ManagedInstanceAzureADOnlyAuthenticationsClientImpl
             .getSyncPoller();
     }
 
-    /**
-     * Sets Server Active Directory only authentication property or updates an existing server Active Directory only
-     * authentication property.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param managedInstanceName The name of the managed instance.
-     * @param authenticationName The name of server azure active directory only authentication.
-     * @param parameters The required parameters for creating or updating an Active Directory only authentication
-     * property.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return azure Active Directory only authentication on successful completion of {@link Mono}.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<ManagedInstanceAzureADOnlyAuthenticationInner> createOrUpdateAsync(String resourceGroupName,
         String managedInstanceName, AuthenticationName authenticationName,
@@ -519,20 +410,7 @@ public final class ManagedInstanceAzureADOnlyAuthenticationsClientImpl
             .flatMap(this.client::getLroFinalResultOrError);
     }
 
-    /**
-     * Sets Server Active Directory only authentication property or updates an existing server Active Directory only
-     * authentication property.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param managedInstanceName The name of the managed instance.
-     * @param authenticationName The name of server azure active directory only authentication.
-     * @param parameters The required parameters for creating or updating an Active Directory only authentication
-     * property.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return azure Active Directory only authentication.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public ManagedInstanceAzureADOnlyAuthenticationInner createOrUpdate(String resourceGroupName,
         String managedInstanceName, AuthenticationName authenticationName,
@@ -540,21 +418,7 @@ public final class ManagedInstanceAzureADOnlyAuthenticationsClientImpl
         return createOrUpdateAsync(resourceGroupName, managedInstanceName, authenticationName, parameters).block();
     }
 
-    /**
-     * Sets Server Active Directory only authentication property or updates an existing server Active Directory only
-     * authentication property.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param managedInstanceName The name of the managed instance.
-     * @param authenticationName The name of server azure active directory only authentication.
-     * @param parameters The required parameters for creating or updating an Active Directory only authentication
-     * property.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return azure Active Directory only authentication.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public ManagedInstanceAzureADOnlyAuthenticationInner createOrUpdate(String resourceGroupName,
         String managedInstanceName, AuthenticationName authenticationName,
@@ -563,17 +427,7 @@ public final class ManagedInstanceAzureADOnlyAuthenticationsClientImpl
             .block();
     }
 
-    /**
-     * Deletes an existing server Active Directory only authentication property.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param managedInstanceName The name of the managed instance.
-     * @param authenticationName The name of server azure active directory only authentication.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the {@link Response} on successful completion of {@link Mono}.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Response<Flux<ByteBuffer>>> deleteWithResponseAsync(String resourceGroupName,
         String managedInstanceName, AuthenticationName authenticationName) {
@@ -643,17 +497,7 @@ public final class ManagedInstanceAzureADOnlyAuthenticationsClientImpl
             resourceGroupName, managedInstanceName, authenticationName, context);
     }
 
-    /**
-     * Deletes an existing server Active Directory only authentication property.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param managedInstanceName The name of the managed instance.
-     * @param authenticationName The name of server azure active directory only authentication.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the {@link PollerFlux} for polling of long-running operation.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public PollerFlux<PollResult<Void>, Void> beginDeleteAsync(String resourceGroupName, String managedInstanceName,
         AuthenticationName authenticationName) {
@@ -685,35 +529,14 @@ public final class ManagedInstanceAzureADOnlyAuthenticationsClientImpl
             context);
     }
 
-    /**
-     * Deletes an existing server Active Directory only authentication property.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param managedInstanceName The name of the managed instance.
-     * @param authenticationName The name of server azure active directory only authentication.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the {@link SyncPoller} for polling of long-running operation.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public SyncPoller<PollResult<Void>, Void> beginDelete(String resourceGroupName, String managedInstanceName,
         AuthenticationName authenticationName) {
         return this.beginDeleteAsync(resourceGroupName, managedInstanceName, authenticationName).getSyncPoller();
     }
 
-    /**
-     * Deletes an existing server Active Directory only authentication property.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param managedInstanceName The name of the managed instance.
-     * @param authenticationName The name of server azure active directory only authentication.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the {@link SyncPoller} for polling of long-running operation.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public SyncPoller<PollResult<Void>, Void> beginDelete(String resourceGroupName, String managedInstanceName,
         AuthenticationName authenticationName, Context context) {
@@ -721,17 +544,7 @@ public final class ManagedInstanceAzureADOnlyAuthenticationsClientImpl
             .getSyncPoller();
     }
 
-    /**
-     * Deletes an existing server Active Directory only authentication property.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param managedInstanceName The name of the managed instance.
-     * @param authenticationName The name of server azure active directory only authentication.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return A {@link Mono} that completes when a successful response is received.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Void> deleteAsync(String resourceGroupName, String managedInstanceName,
         AuthenticationName authenticationName) {
@@ -758,32 +571,13 @@ public final class ManagedInstanceAzureADOnlyAuthenticationsClientImpl
             .flatMap(this.client::getLroFinalResultOrError);
     }
 
-    /**
-     * Deletes an existing server Active Directory only authentication property.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param managedInstanceName The name of the managed instance.
-     * @param authenticationName The name of server azure active directory only authentication.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public void delete(String resourceGroupName, String managedInstanceName, AuthenticationName authenticationName) {
         deleteAsync(resourceGroupName, managedInstanceName, authenticationName).block();
     }
 
-    /**
-     * Deletes an existing server Active Directory only authentication property.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param managedInstanceName The name of the managed instance.
-     * @param authenticationName The name of server azure active directory only authentication.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public void delete(String resourceGroupName, String managedInstanceName, AuthenticationName authenticationName,
         Context context) {
@@ -870,17 +664,7 @@ public final class ManagedInstanceAzureADOnlyAuthenticationsClientImpl
                 res.getValue().value(), res.getValue().nextLink(), null));
     }
 
-    /**
-     * Gets a list of server Azure Active Directory only authentications.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param managedInstanceName The name of the managed instance.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return a list of server Azure Active Directory only authentications as paginated response with
-     * {@link PagedFlux}.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.COLLECTION)
     public PagedFlux<ManagedInstanceAzureADOnlyAuthenticationInner> listByInstanceAsync(String resourceGroupName,
         String managedInstanceName) {
@@ -907,35 +691,14 @@ public final class ManagedInstanceAzureADOnlyAuthenticationsClientImpl
             nextLink -> listByInstanceNextSinglePageAsync(nextLink, context));
     }
 
-    /**
-     * Gets a list of server Azure Active Directory only authentications.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param managedInstanceName The name of the managed instance.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return a list of server Azure Active Directory only authentications as paginated response with
-     * {@link PagedIterable}.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.COLLECTION)
     public PagedIterable<ManagedInstanceAzureADOnlyAuthenticationInner> listByInstance(String resourceGroupName,
         String managedInstanceName) {
         return new PagedIterable<>(listByInstanceAsync(resourceGroupName, managedInstanceName));
     }
 
-    /**
-     * Gets a list of server Azure Active Directory only authentications.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param managedInstanceName The name of the managed instance.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return a list of server Azure Active Directory only authentications as paginated response with
-     * {@link PagedIterable}.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.COLLECTION)
     public PagedIterable<ManagedInstanceAzureADOnlyAuthenticationInner> listByInstance(String resourceGroupName,
         String managedInstanceName, Context context) {

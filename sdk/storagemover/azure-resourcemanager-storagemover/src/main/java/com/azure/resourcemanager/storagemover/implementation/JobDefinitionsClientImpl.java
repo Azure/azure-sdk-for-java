@@ -304,19 +304,7 @@ public final class JobDefinitionsClientImpl implements JobDefinitionsClient {
             .flatMap(res -> Mono.justOrEmpty(res.getValue()));
     }
 
-    /**
-     * Gets a Job Definition resource.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param storageMoverName The name of the Storage Mover resource.
-     * @param projectName The name of the Project resource.
-     * @param jobDefinitionName The name of the Job Definition resource.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return a Job Definition resource along with {@link Response}.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Response<JobDefinitionInner> getWithResponse(String resourceGroupName, String storageMoverName,
         String projectName, String jobDefinitionName, Context context) {
@@ -325,18 +313,7 @@ public final class JobDefinitionsClientImpl implements JobDefinitionsClient {
             resourceGroupName, storageMoverName, projectName, jobDefinitionName, accept, context);
     }
 
-    /**
-     * Gets a Job Definition resource.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param storageMoverName The name of the Storage Mover resource.
-     * @param projectName The name of the Project resource.
-     * @param jobDefinitionName The name of the Job Definition resource.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return a Job Definition resource.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public JobDefinitionInner get(String resourceGroupName, String storageMoverName, String projectName,
         String jobDefinitionName) {
@@ -391,21 +368,7 @@ public final class JobDefinitionsClientImpl implements JobDefinitionsClient {
             jobDefinition).flatMap(res -> Mono.justOrEmpty(res.getValue()));
     }
 
-    /**
-     * Creates or updates a Job Definition resource, which contains configuration for a single unit of managed data
-     * transfer.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param storageMoverName The name of the Storage Mover resource.
-     * @param projectName The name of the Project resource.
-     * @param jobDefinitionName The name of the Job Definition resource.
-     * @param jobDefinition The jobDefinition parameter.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the Job Definition resource along with {@link Response}.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Response<JobDefinitionInner> createOrUpdateWithResponse(String resourceGroupName, String storageMoverName,
         String projectName, String jobDefinitionName, JobDefinitionInner jobDefinition, Context context) {
@@ -416,20 +379,7 @@ public final class JobDefinitionsClientImpl implements JobDefinitionsClient {
             contentType, accept, jobDefinition, context);
     }
 
-    /**
-     * Creates or updates a Job Definition resource, which contains configuration for a single unit of managed data
-     * transfer.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param storageMoverName The name of the Storage Mover resource.
-     * @param projectName The name of the Project resource.
-     * @param jobDefinitionName The name of the Job Definition resource.
-     * @param jobDefinition The jobDefinition parameter.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the Job Definition resource.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public JobDefinitionInner createOrUpdate(String resourceGroupName, String storageMoverName, String projectName,
         String jobDefinitionName, JobDefinitionInner jobDefinition) {
@@ -483,20 +433,7 @@ public final class JobDefinitionsClientImpl implements JobDefinitionsClient {
             jobDefinition).flatMap(res -> Mono.justOrEmpty(res.getValue()));
     }
 
-    /**
-     * Updates properties for a Job Definition resource. Properties not specified in the request body will be unchanged.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param storageMoverName The name of the Storage Mover resource.
-     * @param projectName The name of the Project resource.
-     * @param jobDefinitionName The name of the Job Definition resource.
-     * @param jobDefinition The jobDefinition parameter.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the Job Definition resource along with {@link Response}.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Response<JobDefinitionInner> updateWithResponse(String resourceGroupName, String storageMoverName,
         String projectName, String jobDefinitionName, JobDefinitionUpdateParameters jobDefinition, Context context) {
@@ -507,19 +444,7 @@ public final class JobDefinitionsClientImpl implements JobDefinitionsClient {
             contentType, accept, jobDefinition, context);
     }
 
-    /**
-     * Updates properties for a Job Definition resource. Properties not specified in the request body will be unchanged.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param storageMoverName The name of the Storage Mover resource.
-     * @param projectName The name of the Project resource.
-     * @param jobDefinitionName The name of the Job Definition resource.
-     * @param jobDefinition The jobDefinition parameter.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the Job Definition resource.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public JobDefinitionInner update(String resourceGroupName, String storageMoverName, String projectName,
         String jobDefinitionName, JobDefinitionUpdateParameters jobDefinition) {
@@ -564,9 +489,7 @@ public final class JobDefinitionsClientImpl implements JobDefinitionsClient {
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Response<BinaryData> deleteWithResponse(String resourceGroupName, String storageMoverName,
         String projectName, String jobDefinitionName) {
-        return service.deleteSync(this.client.getEndpoint(), this.client.getApiVersion(),
-            this.client.getSubscriptionId(), resourceGroupName, storageMoverName, projectName, jobDefinitionName,
-            Context.NONE);
+        return deleteWithResponse(resourceGroupName, storageMoverName, projectName, jobDefinitionName, Context.NONE);
     }
 
     /**
@@ -611,39 +534,14 @@ public final class JobDefinitionsClientImpl implements JobDefinitionsClient {
             this.client.getContext());
     }
 
-    /**
-     * Deletes a Job Definition resource.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param storageMoverName The name of the Storage Mover resource.
-     * @param projectName The name of the Project resource.
-     * @param jobDefinitionName The name of the Job Definition resource.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the {@link SyncPoller} for polling of long-running operation.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public SyncPoller<PollResult<Void>, Void> beginDelete(String resourceGroupName, String storageMoverName,
         String projectName, String jobDefinitionName) {
-        Response<BinaryData> response
-            = deleteWithResponse(resourceGroupName, storageMoverName, projectName, jobDefinitionName);
-        return this.client.<Void, Void>getLroResult(response, Void.class, Void.class, Context.NONE);
+        return beginDelete(resourceGroupName, storageMoverName, projectName, jobDefinitionName, Context.NONE);
     }
 
-    /**
-     * Deletes a Job Definition resource.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param storageMoverName The name of the Storage Mover resource.
-     * @param projectName The name of the Project resource.
-     * @param jobDefinitionName The name of the Job Definition resource.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the {@link SyncPoller} for polling of long-running operation.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public SyncPoller<PollResult<Void>, Void> beginDelete(String resourceGroupName, String storageMoverName,
         String projectName, String jobDefinitionName, Context context) {
@@ -671,39 +569,19 @@ public final class JobDefinitionsClientImpl implements JobDefinitionsClient {
             .flatMap(this.client::getLroFinalResultOrError);
     }
 
-    /**
-     * Deletes a Job Definition resource.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param storageMoverName The name of the Storage Mover resource.
-     * @param projectName The name of the Project resource.
-     * @param jobDefinitionName The name of the Job Definition resource.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public void delete(String resourceGroupName, String storageMoverName, String projectName,
         String jobDefinitionName) {
-        beginDelete(resourceGroupName, storageMoverName, projectName, jobDefinitionName).getFinalResult();
+        delete(resourceGroupName, storageMoverName, projectName, jobDefinitionName, Context.NONE);
     }
 
-    /**
-     * Deletes a Job Definition resource.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param storageMoverName The name of the Storage Mover resource.
-     * @param projectName The name of the Project resource.
-     * @param jobDefinitionName The name of the Job Definition resource.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public void delete(String resourceGroupName, String storageMoverName, String projectName, String jobDefinitionName,
         Context context) {
-        beginDelete(resourceGroupName, storageMoverName, projectName, jobDefinitionName, context).getFinalResult();
+        this.client.getLroFinalResultOrError(
+            beginDelete(resourceGroupName, storageMoverName, projectName, jobDefinitionName, context));
     }
 
     /**
@@ -761,11 +639,7 @@ public final class JobDefinitionsClientImpl implements JobDefinitionsClient {
     @ServiceMethod(returns = ReturnType.SINGLE)
     private PagedResponse<JobDefinitionInner> listSinglePage(String resourceGroupName, String storageMoverName,
         String projectName) {
-        final String accept = "application/json";
-        Response<JobDefinitionList> res = service.listSync(this.client.getEndpoint(), this.client.getApiVersion(),
-            this.client.getSubscriptionId(), resourceGroupName, storageMoverName, projectName, accept, Context.NONE);
-        return new PagedResponseBase<>(res.getRequest(), res.getStatusCode(), res.getHeaders(), res.getValue().value(),
-            res.getValue().nextLink(), null);
+        return listSinglePage(resourceGroupName, storageMoverName, projectName, Context.NONE);
     }
 
     /**
@@ -790,36 +664,14 @@ public final class JobDefinitionsClientImpl implements JobDefinitionsClient {
             res.getValue().nextLink(), null);
     }
 
-    /**
-     * Lists all Job Definitions in a Project.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param storageMoverName The name of the Storage Mover resource.
-     * @param projectName The name of the Project resource.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return list of Job Definitions as paginated response with {@link PagedIterable}.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.COLLECTION)
     public PagedIterable<JobDefinitionInner> list(String resourceGroupName, String storageMoverName,
         String projectName) {
-        return new PagedIterable<>(() -> listSinglePage(resourceGroupName, storageMoverName, projectName),
-            nextLink -> listNextSinglePage(nextLink));
+        return list(resourceGroupName, storageMoverName, projectName, Context.NONE);
     }
 
-    /**
-     * Lists all Job Definitions in a Project.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param storageMoverName The name of the Storage Mover resource.
-     * @param projectName The name of the Project resource.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return list of Job Definitions as paginated response with {@link PagedIterable}.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.COLLECTION)
     public PagedIterable<JobDefinitionInner> list(String resourceGroupName, String storageMoverName, String projectName,
         Context context) {
@@ -869,19 +721,7 @@ public final class JobDefinitionsClientImpl implements JobDefinitionsClient {
             .flatMap(res -> Mono.justOrEmpty(res.getValue()));
     }
 
-    /**
-     * Creates a new Job Run resource for the specified Job Definition and passes it to the Agent for execution.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param storageMoverName The name of the Storage Mover resource.
-     * @param projectName The name of the Project resource.
-     * @param jobDefinitionName The name of the Job Definition resource.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return response that identifies a Job Run along with {@link Response}.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Response<JobRunResourceIdInner> startJobWithResponse(String resourceGroupName, String storageMoverName,
         String projectName, String jobDefinitionName, Context context) {
@@ -891,18 +731,7 @@ public final class JobDefinitionsClientImpl implements JobDefinitionsClient {
             accept, context);
     }
 
-    /**
-     * Creates a new Job Run resource for the specified Job Definition and passes it to the Agent for execution.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param storageMoverName The name of the Storage Mover resource.
-     * @param projectName The name of the Project resource.
-     * @param jobDefinitionName The name of the Job Definition resource.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return response that identifies a Job Run.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public JobRunResourceIdInner startJob(String resourceGroupName, String storageMoverName, String projectName,
         String jobDefinitionName) {
@@ -952,19 +781,7 @@ public final class JobDefinitionsClientImpl implements JobDefinitionsClient {
             .flatMap(res -> Mono.justOrEmpty(res.getValue()));
     }
 
-    /**
-     * Requests the Agent of any active instance of this Job Definition to stop.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param storageMoverName The name of the Storage Mover resource.
-     * @param projectName The name of the Project resource.
-     * @param jobDefinitionName The name of the Job Definition resource.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return response that identifies a Job Run along with {@link Response}.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Response<JobRunResourceIdInner> stopJobWithResponse(String resourceGroupName, String storageMoverName,
         String projectName, String jobDefinitionName, Context context) {
@@ -974,18 +791,7 @@ public final class JobDefinitionsClientImpl implements JobDefinitionsClient {
             accept, context);
     }
 
-    /**
-     * Requests the Agent of any active instance of this Job Definition to stop.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param storageMoverName The name of the Storage Mover resource.
-     * @param projectName The name of the Project resource.
-     * @param jobDefinitionName The name of the Job Definition resource.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return response that identifies a Job Run.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public JobRunResourceIdInner stopJob(String resourceGroupName, String storageMoverName, String projectName,
         String jobDefinitionName) {
@@ -1035,19 +841,7 @@ public final class JobDefinitionsClientImpl implements JobDefinitionsClient {
             .flatMap(res -> Mono.justOrEmpty(res.getValue()));
     }
 
-    /**
-     * Post action to reconcile the running job.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param storageMoverName The name of the Storage Mover resource.
-     * @param projectName The name of the Project resource.
-     * @param jobDefinitionName The name of the Job Definition resource.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return response that identifies a Job Run along with {@link Response}.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Response<JobRunResourceIdInner> reconcileJobWithResponse(String resourceGroupName, String storageMoverName,
         String projectName, String jobDefinitionName, Context context) {
@@ -1057,18 +851,7 @@ public final class JobDefinitionsClientImpl implements JobDefinitionsClient {
             accept, context);
     }
 
-    /**
-     * Post action to reconcile the running job.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param storageMoverName The name of the Storage Mover resource.
-     * @param projectName The name of the Project resource.
-     * @param jobDefinitionName The name of the Job Definition resource.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return response that identifies a Job Run.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public JobRunResourceIdInner reconcileJob(String resourceGroupName, String storageMoverName, String projectName,
         String jobDefinitionName) {
@@ -1105,11 +888,7 @@ public final class JobDefinitionsClientImpl implements JobDefinitionsClient {
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private PagedResponse<JobDefinitionInner> listNextSinglePage(String nextLink) {
-        final String accept = "application/json";
-        Response<JobDefinitionList> res
-            = service.listNextSync(nextLink, this.client.getEndpoint(), accept, Context.NONE);
-        return new PagedResponseBase<>(res.getRequest(), res.getStatusCode(), res.getHeaders(), res.getValue().value(),
-            res.getValue().nextLink(), null);
+        return listNextSinglePage(nextLink, Context.NONE);
     }
 
     /**

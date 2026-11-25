@@ -358,17 +358,7 @@ public final class ReservationsClientImpl implements ReservationsClient {
             .flatMap(res -> Mono.justOrEmpty(res.getValue()));
     }
 
-    /**
-     * Get a reservation.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param reservationName Name of the reservation.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return a reservation along with {@link Response}.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Response<ReservationInner> getByResourceGroupWithResponse(String resourceGroupName, String reservationName,
         Context context) {
@@ -377,16 +367,7 @@ public final class ReservationsClientImpl implements ReservationsClient {
             this.client.getSubscriptionId(), resourceGroupName, reservationName, accept, context);
     }
 
-    /**
-     * Get a reservation.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param reservationName Name of the reservation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return a reservation.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public ReservationInner getByResourceGroup(String resourceGroupName, String reservationName) {
         return getByResourceGroupWithResponse(resourceGroupName, reservationName, Context.NONE).getValue();
@@ -430,11 +411,7 @@ public final class ReservationsClientImpl implements ReservationsClient {
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Response<BinaryData> createWithResponse(String resourceGroupName, String reservationName,
         ReservationInner resource) {
-        final String contentType = "application/json";
-        final String accept = "application/json";
-        return service.createSync(this.client.getEndpoint(), this.client.getApiVersion(),
-            this.client.getSubscriptionId(), resourceGroupName, reservationName, contentType, accept, resource,
-            Context.NONE);
+        return createWithResponse(resourceGroupName, reservationName, resource, Context.NONE);
     }
 
     /**
@@ -478,37 +455,14 @@ public final class ReservationsClientImpl implements ReservationsClient {
             ReservationInner.class, ReservationInner.class, this.client.getContext());
     }
 
-    /**
-     * Create a reservation.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param reservationName Name of the reservation.
-     * @param resource Resource create parameters.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the {@link SyncPoller} for polling of pure Storage cloud service resource type, also called reservation.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public SyncPoller<PollResult<ReservationInner>, ReservationInner> beginCreate(String resourceGroupName,
         String reservationName, ReservationInner resource) {
-        Response<BinaryData> response = createWithResponse(resourceGroupName, reservationName, resource);
-        return this.client.<ReservationInner, ReservationInner>getLroResult(response, ReservationInner.class,
-            ReservationInner.class, Context.NONE);
+        return beginCreate(resourceGroupName, reservationName, resource, Context.NONE);
     }
 
-    /**
-     * Create a reservation.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param reservationName Name of the reservation.
-     * @param resource Resource create parameters.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the {@link SyncPoller} for polling of pure Storage cloud service resource type, also called reservation.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public SyncPoller<PollResult<ReservationInner>, ReservationInner> beginCreate(String resourceGroupName,
         String reservationName, ReservationInner resource, Context context) {
@@ -536,38 +490,17 @@ public final class ReservationsClientImpl implements ReservationsClient {
             .flatMap(this.client::getLroFinalResultOrError);
     }
 
-    /**
-     * Create a reservation.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param reservationName Name of the reservation.
-     * @param resource Resource create parameters.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return pure Storage cloud service resource type, also called reservation.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public ReservationInner create(String resourceGroupName, String reservationName, ReservationInner resource) {
-        return beginCreate(resourceGroupName, reservationName, resource).getFinalResult();
+        return create(resourceGroupName, reservationName, resource, Context.NONE);
     }
 
-    /**
-     * Create a reservation.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param reservationName Name of the reservation.
-     * @param resource Resource create parameters.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return pure Storage cloud service resource type, also called reservation.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public ReservationInner create(String resourceGroupName, String reservationName, ReservationInner resource,
         Context context) {
-        return beginCreate(resourceGroupName, reservationName, resource, context).getFinalResult();
+        return this.client.getLroFinalResultOrError(beginCreate(resourceGroupName, reservationName, resource, context));
     }
 
     /**
@@ -608,11 +541,7 @@ public final class ReservationsClientImpl implements ReservationsClient {
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Response<BinaryData> updateWithResponse(String resourceGroupName, String reservationName,
         ReservationUpdate properties) {
-        final String contentType = "application/json";
-        final String accept = "application/json";
-        return service.updateSync(this.client.getEndpoint(), this.client.getApiVersion(),
-            this.client.getSubscriptionId(), resourceGroupName, reservationName, contentType, accept, properties,
-            Context.NONE);
+        return updateWithResponse(resourceGroupName, reservationName, properties, Context.NONE);
     }
 
     /**
@@ -656,37 +585,14 @@ public final class ReservationsClientImpl implements ReservationsClient {
             ReservationInner.class, ReservationInner.class, this.client.getContext());
     }
 
-    /**
-     * Update a reservation.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param reservationName Name of the reservation.
-     * @param properties The resource properties to be updated.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the {@link SyncPoller} for polling of pure Storage cloud service resource type, also called reservation.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public SyncPoller<PollResult<ReservationInner>, ReservationInner> beginUpdate(String resourceGroupName,
         String reservationName, ReservationUpdate properties) {
-        Response<BinaryData> response = updateWithResponse(resourceGroupName, reservationName, properties);
-        return this.client.<ReservationInner, ReservationInner>getLroResult(response, ReservationInner.class,
-            ReservationInner.class, Context.NONE);
+        return beginUpdate(resourceGroupName, reservationName, properties, Context.NONE);
     }
 
-    /**
-     * Update a reservation.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param reservationName Name of the reservation.
-     * @param properties The resource properties to be updated.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the {@link SyncPoller} for polling of pure Storage cloud service resource type, also called reservation.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public SyncPoller<PollResult<ReservationInner>, ReservationInner> beginUpdate(String resourceGroupName,
         String reservationName, ReservationUpdate properties, Context context) {
@@ -714,38 +620,18 @@ public final class ReservationsClientImpl implements ReservationsClient {
             .flatMap(this.client::getLroFinalResultOrError);
     }
 
-    /**
-     * Update a reservation.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param reservationName Name of the reservation.
-     * @param properties The resource properties to be updated.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return pure Storage cloud service resource type, also called reservation.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public ReservationInner update(String resourceGroupName, String reservationName, ReservationUpdate properties) {
-        return beginUpdate(resourceGroupName, reservationName, properties).getFinalResult();
+        return update(resourceGroupName, reservationName, properties, Context.NONE);
     }
 
-    /**
-     * Update a reservation.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param reservationName Name of the reservation.
-     * @param properties The resource properties to be updated.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return pure Storage cloud service resource type, also called reservation.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public ReservationInner update(String resourceGroupName, String reservationName, ReservationUpdate properties,
         Context context) {
-        return beginUpdate(resourceGroupName, reservationName, properties, context).getFinalResult();
+        return this.client
+            .getLroFinalResultOrError(beginUpdate(resourceGroupName, reservationName, properties, context));
     }
 
     /**
@@ -778,8 +664,7 @@ public final class ReservationsClientImpl implements ReservationsClient {
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Response<BinaryData> deleteWithResponse(String resourceGroupName, String reservationName) {
-        return service.deleteSync(this.client.getEndpoint(), this.client.getApiVersion(),
-            this.client.getSubscriptionId(), resourceGroupName, reservationName, Context.NONE);
+        return deleteWithResponse(resourceGroupName, reservationName, Context.NONE);
     }
 
     /**
@@ -816,33 +701,13 @@ public final class ReservationsClientImpl implements ReservationsClient {
             this.client.getContext());
     }
 
-    /**
-     * Delete a reservation.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param reservationName Name of the reservation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the {@link SyncPoller} for polling of long-running operation.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public SyncPoller<PollResult<Void>, Void> beginDelete(String resourceGroupName, String reservationName) {
-        Response<BinaryData> response = deleteWithResponse(resourceGroupName, reservationName);
-        return this.client.<Void, Void>getLroResult(response, Void.class, Void.class, Context.NONE);
+        return beginDelete(resourceGroupName, reservationName, Context.NONE);
     }
 
-    /**
-     * Delete a reservation.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param reservationName Name of the reservation.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the {@link SyncPoller} for polling of long-running operation.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public SyncPoller<PollResult<Void>, Void> beginDelete(String resourceGroupName, String reservationName,
         Context context) {
@@ -866,33 +731,16 @@ public final class ReservationsClientImpl implements ReservationsClient {
             .flatMap(this.client::getLroFinalResultOrError);
     }
 
-    /**
-     * Delete a reservation.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param reservationName Name of the reservation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public void delete(String resourceGroupName, String reservationName) {
-        beginDelete(resourceGroupName, reservationName).getFinalResult();
+        delete(resourceGroupName, reservationName, Context.NONE);
     }
 
-    /**
-     * Delete a reservation.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param reservationName Name of the reservation.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public void delete(String resourceGroupName, String reservationName, Context context) {
-        beginDelete(resourceGroupName, reservationName, context).getFinalResult();
+        this.client.getLroFinalResultOrError(beginDelete(resourceGroupName, reservationName, context));
     }
 
     /**
@@ -942,11 +790,7 @@ public final class ReservationsClientImpl implements ReservationsClient {
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private PagedResponse<ReservationInner> listByResourceGroupSinglePage(String resourceGroupName) {
-        final String accept = "application/json";
-        Response<ReservationListResult> res = service.listByResourceGroupSync(this.client.getEndpoint(),
-            this.client.getApiVersion(), this.client.getSubscriptionId(), resourceGroupName, accept, Context.NONE);
-        return new PagedResponseBase<>(res.getRequest(), res.getStatusCode(), res.getHeaders(), res.getValue().value(),
-            res.getValue().nextLink(), null);
+        return listByResourceGroupSinglePage(resourceGroupName, Context.NONE);
     }
 
     /**
@@ -968,31 +812,13 @@ public final class ReservationsClientImpl implements ReservationsClient {
             res.getValue().nextLink(), null);
     }
 
-    /**
-     * List reservations by resource group.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the response of a Reservation list operation as paginated response with {@link PagedIterable}.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.COLLECTION)
     public PagedIterable<ReservationInner> listByResourceGroup(String resourceGroupName) {
-        return new PagedIterable<>(() -> listByResourceGroupSinglePage(resourceGroupName),
-            nextLink -> listByResourceGroupNextSinglePage(nextLink));
+        return listByResourceGroup(resourceGroupName, Context.NONE);
     }
 
-    /**
-     * List reservations by resource group.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the response of a Reservation list operation as paginated response with {@link PagedIterable}.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.COLLECTION)
     public PagedIterable<ReservationInner> listByResourceGroup(String resourceGroupName, Context context) {
         return new PagedIterable<>(() -> listByResourceGroupSinglePage(resourceGroupName, context),
@@ -1040,11 +866,7 @@ public final class ReservationsClientImpl implements ReservationsClient {
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private PagedResponse<ReservationInner> listSinglePage() {
-        final String accept = "application/json";
-        Response<ReservationListResult> res = service.listSync(this.client.getEndpoint(), this.client.getApiVersion(),
-            this.client.getSubscriptionId(), accept, Context.NONE);
-        return new PagedResponseBase<>(res.getRequest(), res.getStatusCode(), res.getHeaders(), res.getValue().value(),
-            res.getValue().nextLink(), null);
+        return listSinglePage(Context.NONE);
     }
 
     /**
@@ -1065,27 +887,13 @@ public final class ReservationsClientImpl implements ReservationsClient {
             res.getValue().nextLink(), null);
     }
 
-    /**
-     * List reservations by Azure subscription ID.
-     * 
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the response of a Reservation list operation as paginated response with {@link PagedIterable}.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.COLLECTION)
     public PagedIterable<ReservationInner> list() {
-        return new PagedIterable<>(() -> listSinglePage(), nextLink -> listBySubscriptionNextSinglePage(nextLink));
+        return list(Context.NONE);
     }
 
-    /**
-     * List reservations by Azure subscription ID.
-     * 
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the response of a Reservation list operation as paginated response with {@link PagedIterable}.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.COLLECTION)
     public PagedIterable<ReservationInner> list(Context context) {
         return new PagedIterable<>(() -> listSinglePage(context),
@@ -1129,17 +937,7 @@ public final class ReservationsClientImpl implements ReservationsClient {
             .flatMap(res -> Mono.justOrEmpty(res.getValue()));
     }
 
-    /**
-     * Limits constraining certain resource properties.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param reservationName Name of the reservation.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return limits constraining certain resource properties along with {@link Response}.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Response<LimitDetailsInner> getResourceLimitsWithResponse(String resourceGroupName, String reservationName,
         Context context) {
@@ -1148,16 +946,7 @@ public final class ReservationsClientImpl implements ReservationsClient {
             this.client.getSubscriptionId(), resourceGroupName, reservationName, accept, context);
     }
 
-    /**
-     * Limits constraining certain resource properties.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param reservationName Name of the reservation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return limits constraining certain resource properties.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public LimitDetailsInner getResourceLimits(String resourceGroupName, String reservationName) {
         return getResourceLimitsWithResponse(resourceGroupName, reservationName, Context.NONE).getValue();
@@ -1201,17 +990,7 @@ public final class ReservationsClientImpl implements ReservationsClient {
             .flatMap(res -> Mono.justOrEmpty(res.getValue()));
     }
 
-    /**
-     * Provides various statistics about resources billed via given reservation.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param reservationName Name of the reservation.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return latest billing status for this reservation along with {@link Response}.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Response<ReservationBillingStatusInner> getBillingStatusWithResponse(String resourceGroupName,
         String reservationName, Context context) {
@@ -1220,16 +999,7 @@ public final class ReservationsClientImpl implements ReservationsClient {
             this.client.getSubscriptionId(), resourceGroupName, reservationName, accept, context);
     }
 
-    /**
-     * Provides various statistics about resources billed via given reservation.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param reservationName Name of the reservation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return latest billing status for this reservation.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public ReservationBillingStatusInner getBillingStatus(String resourceGroupName, String reservationName) {
         return getBillingStatusWithResponse(resourceGroupName, reservationName, Context.NONE).getValue();
@@ -1274,18 +1044,7 @@ public final class ReservationsClientImpl implements ReservationsClient {
             .flatMap(res -> Mono.justOrEmpty(res.getValue()));
     }
 
-    /**
-     * Provides a summarized report along with actions for resources billed via given reservation.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param reservationName Name of the reservation.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return represents a billing usage report, including overall status and detailed properties along with
-     * {@link Response}.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Response<ReservationBillingUsageReportInner> getBillingReportWithResponse(String resourceGroupName,
         String reservationName, Context context) {
@@ -1294,16 +1053,7 @@ public final class ReservationsClientImpl implements ReservationsClient {
             this.client.getSubscriptionId(), resourceGroupName, reservationName, accept, context);
     }
 
-    /**
-     * Provides a summarized report along with actions for resources billed via given reservation.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param reservationName Name of the reservation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return represents a billing usage report, including overall status and detailed properties.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public ReservationBillingUsageReportInner getBillingReport(String resourceGroupName, String reservationName) {
         return getBillingReportWithResponse(resourceGroupName, reservationName, Context.NONE).getValue();
@@ -1348,11 +1098,7 @@ public final class ReservationsClientImpl implements ReservationsClient {
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Response<BinaryData> linkSaaSWithResponse(String resourceGroupName, String reservationName,
         LinkSaaSRequest body) {
-        final String contentType = "application/json";
-        final String accept = "application/json";
-        return service.linkSaaSSync(this.client.getEndpoint(), this.client.getApiVersion(),
-            this.client.getSubscriptionId(), resourceGroupName, reservationName, contentType, accept, body,
-            Context.NONE);
+        return linkSaaSWithResponse(resourceGroupName, reservationName, body, Context.NONE);
     }
 
     /**
@@ -1399,41 +1145,14 @@ public final class ReservationsClientImpl implements ReservationsClient {
             ReservationInner.class, ReservationInner.class, this.client.getContext());
     }
 
-    /**
-     * Links a new SaaS to the reservation.
-     * 
-     * A long-running resource action.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param reservationName Name of the reservation.
-     * @param body The content of the action request.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the {@link SyncPoller} for polling of long-running operation.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public SyncPoller<PollResult<ReservationInner>, ReservationInner> beginLinkSaaS(String resourceGroupName,
         String reservationName, LinkSaaSRequest body) {
-        Response<BinaryData> response = linkSaaSWithResponse(resourceGroupName, reservationName, body);
-        return this.client.<ReservationInner, ReservationInner>getLroResult(response, ReservationInner.class,
-            ReservationInner.class, Context.NONE);
+        return beginLinkSaaS(resourceGroupName, reservationName, body, Context.NONE);
     }
 
-    /**
-     * Links a new SaaS to the reservation.
-     * 
-     * A long-running resource action.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param reservationName Name of the reservation.
-     * @param body The content of the action request.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the {@link SyncPoller} for polling of long-running operation.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public SyncPoller<PollResult<ReservationInner>, ReservationInner> beginLinkSaaS(String resourceGroupName,
         String reservationName, LinkSaaSRequest body, Context context) {
@@ -1462,42 +1181,17 @@ public final class ReservationsClientImpl implements ReservationsClient {
             .flatMap(this.client::getLroFinalResultOrError);
     }
 
-    /**
-     * Links a new SaaS to the reservation.
-     * 
-     * A long-running resource action.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param reservationName Name of the reservation.
-     * @param body The content of the action request.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the response.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public ReservationInner linkSaaS(String resourceGroupName, String reservationName, LinkSaaSRequest body) {
-        return beginLinkSaaS(resourceGroupName, reservationName, body).getFinalResult();
+        return linkSaaS(resourceGroupName, reservationName, body, Context.NONE);
     }
 
-    /**
-     * Links a new SaaS to the reservation.
-     * 
-     * A long-running resource action.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param reservationName Name of the reservation.
-     * @param body The content of the action request.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the response.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public ReservationInner linkSaaS(String resourceGroupName, String reservationName, LinkSaaSRequest body,
         Context context) {
-        return beginLinkSaaS(resourceGroupName, reservationName, body, context).getFinalResult();
+        return this.client.getLroFinalResultOrError(beginLinkSaaS(resourceGroupName, reservationName, body, context));
     }
 
     /**
@@ -1538,17 +1232,7 @@ public final class ReservationsClientImpl implements ReservationsClient {
             .flatMap(res -> Mono.justOrEmpty(res.getValue()));
     }
 
-    /**
-     * Returns the latest SaaS linked to the reservation.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param reservationName Name of the reservation.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return response of get latest linked SaaS resource operation along with {@link Response}.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Response<LatestLinkedSaaSResponseInner> latestLinkedSaaSWithResponse(String resourceGroupName,
         String reservationName, Context context) {
@@ -1557,16 +1241,7 @@ public final class ReservationsClientImpl implements ReservationsClient {
             this.client.getSubscriptionId(), resourceGroupName, reservationName, accept, context);
     }
 
-    /**
-     * Returns the latest SaaS linked to the reservation.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param reservationName Name of the reservation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return response of get latest linked SaaS resource operation.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public LatestLinkedSaaSResponseInner latestLinkedSaaS(String resourceGroupName, String reservationName) {
         return latestLinkedSaaSWithResponse(resourceGroupName, reservationName, Context.NONE).getValue();
@@ -1604,11 +1279,7 @@ public final class ReservationsClientImpl implements ReservationsClient {
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private PagedResponse<ReservationInner> listByResourceGroupNextSinglePage(String nextLink) {
-        final String accept = "application/json";
-        Response<ReservationListResult> res
-            = service.listByResourceGroupNextSync(nextLink, this.client.getEndpoint(), accept, Context.NONE);
-        return new PagedResponseBase<>(res.getRequest(), res.getStatusCode(), res.getHeaders(), res.getValue().value(),
-            res.getValue().nextLink(), null);
+        return listByResourceGroupNextSinglePage(nextLink, Context.NONE);
     }
 
     /**
@@ -1662,11 +1333,7 @@ public final class ReservationsClientImpl implements ReservationsClient {
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private PagedResponse<ReservationInner> listBySubscriptionNextSinglePage(String nextLink) {
-        final String accept = "application/json";
-        Response<ReservationListResult> res
-            = service.listBySubscriptionNextSync(nextLink, this.client.getEndpoint(), accept, Context.NONE);
-        return new PagedResponseBase<>(res.getRequest(), res.getStatusCode(), res.getHeaders(), res.getValue().value(),
-            res.getValue().nextLink(), null);
+        return listBySubscriptionNextSinglePage(nextLink, Context.NONE);
     }
 
     /**

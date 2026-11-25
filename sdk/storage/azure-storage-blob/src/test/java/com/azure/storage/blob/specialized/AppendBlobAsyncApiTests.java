@@ -273,6 +273,19 @@ public class AppendBlobAsyncApiTests extends BlobTestBase {
         assertAsyncResponseStatusCode(bc.createIfNotExistsWithResponse(new AppendBlobCreateOptions()), 409);
     }
 
+    @Test
+    public void createIfNotExistsOnABlobOfAnotherType() {
+        String blobName = ccAsync.getBlobAsyncClient(generateBlobName()).getBlobName();
+        bc = ccAsync.getBlobAsyncClient(blobName).getAppendBlobAsyncClient();
+
+        StepVerifier
+            .create(ccAsync.getBlobAsyncClient(blobName)
+                .getBlockBlobAsyncClient()
+                .upload(DATA.getDefaultFlux(), DATA.getDefaultDataSizeLong())
+                .then(bc.createIfNotExists()))
+            .verifyErrorSatisfies(e -> assertExceptionStatusCodeAndMessage(e, 409, BlobErrorCode.INVALID_BLOB_TYPE));
+    }
+
     @ParameterizedTest
     @MethodSource("createHeadersSupplier")
     public void createIfNotExistsHeaders(String cacheControl, String contentDisposition, String contentEncoding,

@@ -63,10 +63,7 @@ public final class FirewallRuleImpl implements FirewallRule, FirewallRule.Defini
     }
 
     public FirewallRule create() {
-        this.innerObject = serviceManager.serviceClient()
-            .getFirewallRules()
-            .createOrUpdate(resourceGroupName, serverName, firewallRuleName, this.innerModel(), Context.NONE);
-        return this;
+        return this.create(Context.NONE);
     }
 
     public FirewallRule create(Context context) {
@@ -87,10 +84,7 @@ public final class FirewallRuleImpl implements FirewallRule, FirewallRule.Defini
     }
 
     public FirewallRule apply() {
-        this.innerObject = serviceManager.serviceClient()
-            .getFirewallRules()
-            .createOrUpdate(resourceGroupName, serverName, firewallRuleName, this.innerModel(), Context.NONE);
-        return this;
+        return this.apply(Context.NONE);
     }
 
     public FirewallRule apply(Context context) {
@@ -116,11 +110,7 @@ public final class FirewallRuleImpl implements FirewallRule, FirewallRule.Defini
     }
 
     public FirewallRule refresh() {
-        this.innerObject = serviceManager.serviceClient()
-            .getFirewallRules()
-            .getWithResponse(resourceGroupName, serverName, firewallRuleName, Context.NONE)
-            .getValue();
-        return this;
+        return this.refresh(Context.NONE);
     }
 
     public FirewallRule refresh(Context context) {

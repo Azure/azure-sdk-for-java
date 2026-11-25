@@ -82,7 +82,7 @@ public final class WebhooksImpl implements Webhooks {
     }
 
     public void deleteByResourceGroup(String reportName, String webhookName) {
-        this.serviceClient().delete(reportName, webhookName);
+        this.deleteByResourceGroupWithResponse(reportName, webhookName, Context.NONE);
     }
 
     public PagedIterable<WebhookResource> list(String reportName) {

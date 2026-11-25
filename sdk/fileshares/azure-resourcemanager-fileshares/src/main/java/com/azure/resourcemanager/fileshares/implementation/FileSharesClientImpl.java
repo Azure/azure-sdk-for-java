@@ -271,18 +271,7 @@ public final class FileSharesClientImpl implements FileSharesClient {
             .flatMap(res -> Mono.justOrEmpty(res.getValue()));
     }
 
-    /**
-     * Get a FileShare.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param resourceName The resource name of the file share, as seen by the administrator through Azure Resource
-     * Manager.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return a FileShare along with {@link Response}.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Response<FileShareInner> getByResourceGroupWithResponse(String resourceGroupName, String resourceName,
         Context context) {
@@ -291,17 +280,7 @@ public final class FileSharesClientImpl implements FileSharesClient {
             this.client.getSubscriptionId(), resourceGroupName, resourceName, accept, context);
     }
 
-    /**
-     * Get a FileShare.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param resourceName The resource name of the file share, as seen by the administrator through Azure Resource
-     * Manager.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return a FileShare.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public FileShareInner getByResourceGroup(String resourceGroupName, String resourceName) {
         return getByResourceGroupWithResponse(resourceGroupName, resourceName, Context.NONE).getValue();
@@ -346,11 +325,7 @@ public final class FileSharesClientImpl implements FileSharesClient {
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Response<BinaryData> createOrUpdateWithResponse(String resourceGroupName, String resourceName,
         FileShareInner resource) {
-        final String contentType = "application/json";
-        final String accept = "application/json";
-        return service.createOrUpdateSync(this.client.getEndpoint(), this.client.getApiVersion(),
-            this.client.getSubscriptionId(), resourceGroupName, resourceName, contentType, accept, resource,
-            Context.NONE);
+        return createOrUpdateWithResponse(resourceGroupName, resourceName, resource, Context.NONE);
     }
 
     /**
@@ -396,39 +371,14 @@ public final class FileSharesClientImpl implements FileSharesClient {
             FileShareInner.class, FileShareInner.class, this.client.getContext());
     }
 
-    /**
-     * Create or update a file share.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param resourceName The resource name of the file share, as seen by the administrator through Azure Resource
-     * Manager.
-     * @param resource Resource create parameters.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the {@link SyncPoller} for polling of file share resource.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public SyncPoller<PollResult<FileShareInner>, FileShareInner> beginCreateOrUpdate(String resourceGroupName,
         String resourceName, FileShareInner resource) {
-        Response<BinaryData> response = createOrUpdateWithResponse(resourceGroupName, resourceName, resource);
-        return this.client.<FileShareInner, FileShareInner>getLroResult(response, FileShareInner.class,
-            FileShareInner.class, Context.NONE);
+        return beginCreateOrUpdate(resourceGroupName, resourceName, resource, Context.NONE);
     }
 
-    /**
-     * Create or update a file share.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param resourceName The resource name of the file share, as seen by the administrator through Azure Resource
-     * Manager.
-     * @param resource Resource create parameters.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the {@link SyncPoller} for polling of file share resource.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public SyncPoller<PollResult<FileShareInner>, FileShareInner> beginCreateOrUpdate(String resourceGroupName,
         String resourceName, FileShareInner resource, Context context) {
@@ -456,40 +406,18 @@ public final class FileSharesClientImpl implements FileSharesClient {
             .flatMap(this.client::getLroFinalResultOrError);
     }
 
-    /**
-     * Create or update a file share.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param resourceName The resource name of the file share, as seen by the administrator through Azure Resource
-     * Manager.
-     * @param resource Resource create parameters.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return file share resource.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public FileShareInner createOrUpdate(String resourceGroupName, String resourceName, FileShareInner resource) {
-        return beginCreateOrUpdate(resourceGroupName, resourceName, resource).getFinalResult();
+        return createOrUpdate(resourceGroupName, resourceName, resource, Context.NONE);
     }
 
-    /**
-     * Create or update a file share.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param resourceName The resource name of the file share, as seen by the administrator through Azure Resource
-     * Manager.
-     * @param resource Resource create parameters.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return file share resource.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public FileShareInner createOrUpdate(String resourceGroupName, String resourceName, FileShareInner resource,
         Context context) {
-        return beginCreateOrUpdate(resourceGroupName, resourceName, resource, context).getFinalResult();
+        return this.client
+            .getLroFinalResultOrError(beginCreateOrUpdate(resourceGroupName, resourceName, resource, context));
     }
 
     /**
@@ -529,11 +457,7 @@ public final class FileSharesClientImpl implements FileSharesClient {
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Response<BinaryData> updateWithResponse(String resourceGroupName, String resourceName,
         FileShareUpdate properties) {
-        final String contentType = "application/json";
-        final String accept = "application/json";
-        return service.updateSync(this.client.getEndpoint(), this.client.getApiVersion(),
-            this.client.getSubscriptionId(), resourceGroupName, resourceName, contentType, accept, properties,
-            Context.NONE);
+        return updateWithResponse(resourceGroupName, resourceName, properties, Context.NONE);
     }
 
     /**
@@ -578,39 +502,14 @@ public final class FileSharesClientImpl implements FileSharesClient {
             FileShareInner.class, FileShareInner.class, this.client.getContext());
     }
 
-    /**
-     * Update a FileShare.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param resourceName The resource name of the file share, as seen by the administrator through Azure Resource
-     * Manager.
-     * @param properties The resource properties to be updated.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the {@link SyncPoller} for polling of file share resource.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public SyncPoller<PollResult<FileShareInner>, FileShareInner> beginUpdate(String resourceGroupName,
         String resourceName, FileShareUpdate properties) {
-        Response<BinaryData> response = updateWithResponse(resourceGroupName, resourceName, properties);
-        return this.client.<FileShareInner, FileShareInner>getLroResult(response, FileShareInner.class,
-            FileShareInner.class, Context.NONE);
+        return beginUpdate(resourceGroupName, resourceName, properties, Context.NONE);
     }
 
-    /**
-     * Update a FileShare.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param resourceName The resource name of the file share, as seen by the administrator through Azure Resource
-     * Manager.
-     * @param properties The resource properties to be updated.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the {@link SyncPoller} for polling of file share resource.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public SyncPoller<PollResult<FileShareInner>, FileShareInner> beginUpdate(String resourceGroupName,
         String resourceName, FileShareUpdate properties, Context context) {
@@ -638,40 +537,17 @@ public final class FileSharesClientImpl implements FileSharesClient {
             .flatMap(this.client::getLroFinalResultOrError);
     }
 
-    /**
-     * Update a FileShare.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param resourceName The resource name of the file share, as seen by the administrator through Azure Resource
-     * Manager.
-     * @param properties The resource properties to be updated.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return file share resource.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public FileShareInner update(String resourceGroupName, String resourceName, FileShareUpdate properties) {
-        return beginUpdate(resourceGroupName, resourceName, properties).getFinalResult();
+        return update(resourceGroupName, resourceName, properties, Context.NONE);
     }
 
-    /**
-     * Update a FileShare.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param resourceName The resource name of the file share, as seen by the administrator through Azure Resource
-     * Manager.
-     * @param properties The resource properties to be updated.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return file share resource.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public FileShareInner update(String resourceGroupName, String resourceName, FileShareUpdate properties,
         Context context) {
-        return beginUpdate(resourceGroupName, resourceName, properties, context).getFinalResult();
+        return this.client.getLroFinalResultOrError(beginUpdate(resourceGroupName, resourceName, properties, context));
     }
 
     /**
@@ -706,8 +582,7 @@ public final class FileSharesClientImpl implements FileSharesClient {
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Response<BinaryData> deleteWithResponse(String resourceGroupName, String resourceName) {
-        return service.deleteSync(this.client.getEndpoint(), this.client.getApiVersion(),
-            this.client.getSubscriptionId(), resourceGroupName, resourceName, Context.NONE);
+        return deleteWithResponse(resourceGroupName, resourceName, Context.NONE);
     }
 
     /**
@@ -746,35 +621,13 @@ public final class FileSharesClientImpl implements FileSharesClient {
             this.client.getContext());
     }
 
-    /**
-     * Delete a FileShare.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param resourceName The resource name of the file share, as seen by the administrator through Azure Resource
-     * Manager.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the {@link SyncPoller} for polling of long-running operation.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public SyncPoller<PollResult<Void>, Void> beginDelete(String resourceGroupName, String resourceName) {
-        Response<BinaryData> response = deleteWithResponse(resourceGroupName, resourceName);
-        return this.client.<Void, Void>getLroResult(response, Void.class, Void.class, Context.NONE);
+        return beginDelete(resourceGroupName, resourceName, Context.NONE);
     }
 
-    /**
-     * Delete a FileShare.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param resourceName The resource name of the file share, as seen by the administrator through Azure Resource
-     * Manager.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the {@link SyncPoller} for polling of long-running operation.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public SyncPoller<PollResult<Void>, Void> beginDelete(String resourceGroupName, String resourceName,
         Context context) {
@@ -798,35 +651,16 @@ public final class FileSharesClientImpl implements FileSharesClient {
         return beginDeleteAsync(resourceGroupName, resourceName).last().flatMap(this.client::getLroFinalResultOrError);
     }
 
-    /**
-     * Delete a FileShare.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param resourceName The resource name of the file share, as seen by the administrator through Azure Resource
-     * Manager.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public void delete(String resourceGroupName, String resourceName) {
-        beginDelete(resourceGroupName, resourceName).getFinalResult();
+        delete(resourceGroupName, resourceName, Context.NONE);
     }
 
-    /**
-     * Delete a FileShare.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param resourceName The resource name of the file share, as seen by the administrator through Azure Resource
-     * Manager.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public void delete(String resourceGroupName, String resourceName, Context context) {
-        beginDelete(resourceGroupName, resourceName, context).getFinalResult();
+        this.client.getLroFinalResultOrError(beginDelete(resourceGroupName, resourceName, context));
     }
 
     /**
@@ -870,11 +704,7 @@ public final class FileSharesClientImpl implements FileSharesClient {
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private PagedResponse<FileShareInner> listSinglePage() {
-        final String accept = "application/json";
-        Response<FileShareListResult> res = service.listSync(this.client.getEndpoint(), this.client.getApiVersion(),
-            this.client.getSubscriptionId(), accept, Context.NONE);
-        return new PagedResponseBase<>(res.getRequest(), res.getStatusCode(), res.getHeaders(), res.getValue().value(),
-            res.getValue().nextLink(), null);
+        return listSinglePage(Context.NONE);
     }
 
     /**
@@ -895,27 +725,13 @@ public final class FileSharesClientImpl implements FileSharesClient {
             res.getValue().nextLink(), null);
     }
 
-    /**
-     * List FileShare resources by subscription ID.
-     * 
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the response of a FileShare list operation as paginated response with {@link PagedIterable}.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.COLLECTION)
     public PagedIterable<FileShareInner> list() {
-        return new PagedIterable<>(() -> listSinglePage(), nextLink -> listBySubscriptionNextSinglePage(nextLink));
+        return list(Context.NONE);
     }
 
-    /**
-     * List FileShare resources by subscription ID.
-     * 
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the response of a FileShare list operation as paginated response with {@link PagedIterable}.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.COLLECTION)
     public PagedIterable<FileShareInner> list(Context context) {
         return new PagedIterable<>(() -> listSinglePage(context),
@@ -969,11 +785,7 @@ public final class FileSharesClientImpl implements FileSharesClient {
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private PagedResponse<FileShareInner> listByResourceGroupSinglePage(String resourceGroupName) {
-        final String accept = "application/json";
-        Response<FileShareListResult> res = service.listByResourceGroupSync(this.client.getEndpoint(),
-            this.client.getApiVersion(), this.client.getSubscriptionId(), resourceGroupName, accept, Context.NONE);
-        return new PagedResponseBase<>(res.getRequest(), res.getStatusCode(), res.getHeaders(), res.getValue().value(),
-            res.getValue().nextLink(), null);
+        return listByResourceGroupSinglePage(resourceGroupName, Context.NONE);
     }
 
     /**
@@ -995,31 +807,13 @@ public final class FileSharesClientImpl implements FileSharesClient {
             res.getValue().nextLink(), null);
     }
 
-    /**
-     * List FileShare resources by resource group.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the response of a FileShare list operation as paginated response with {@link PagedIterable}.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.COLLECTION)
     public PagedIterable<FileShareInner> listByResourceGroup(String resourceGroupName) {
-        return new PagedIterable<>(() -> listByResourceGroupSinglePage(resourceGroupName),
-            nextLink -> listByParentNextSinglePage(nextLink));
+        return listByResourceGroup(resourceGroupName, Context.NONE);
     }
 
-    /**
-     * List FileShare resources by resource group.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the response of a FileShare list operation as paginated response with {@link PagedIterable}.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.COLLECTION)
     public PagedIterable<FileShareInner> listByResourceGroup(String resourceGroupName, Context context) {
         return new PagedIterable<>(() -> listByResourceGroupSinglePage(resourceGroupName, context),
@@ -1064,17 +858,7 @@ public final class FileSharesClientImpl implements FileSharesClient {
         return checkNameAvailabilityWithResponseAsync(location, body).flatMap(res -> Mono.justOrEmpty(res.getValue()));
     }
 
-    /**
-     * Implements local CheckNameAvailability operations.
-     * 
-     * @param location The name of the Azure region.
-     * @param body The CheckAvailability request.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the check availability result along with {@link Response}.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Response<CheckNameAvailabilityResponseInner> checkNameAvailabilityWithResponse(String location,
         CheckNameAvailabilityRequest body, Context context) {
@@ -1084,16 +868,7 @@ public final class FileSharesClientImpl implements FileSharesClient {
             this.client.getSubscriptionId(), location, contentType, accept, body, context);
     }
 
-    /**
-     * Implements local CheckNameAvailability operations.
-     * 
-     * @param location The name of the Azure region.
-     * @param body The CheckAvailability request.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the check availability result.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public CheckNameAvailabilityResponseInner checkNameAvailability(String location,
         CheckNameAvailabilityRequest body) {
@@ -1132,11 +907,7 @@ public final class FileSharesClientImpl implements FileSharesClient {
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private PagedResponse<FileShareInner> listBySubscriptionNextSinglePage(String nextLink) {
-        final String accept = "application/json";
-        Response<FileShareListResult> res
-            = service.listBySubscriptionNextSync(nextLink, this.client.getEndpoint(), accept, Context.NONE);
-        return new PagedResponseBase<>(res.getRequest(), res.getStatusCode(), res.getHeaders(), res.getValue().value(),
-            res.getValue().nextLink(), null);
+        return listBySubscriptionNextSinglePage(nextLink, Context.NONE);
     }
 
     /**
@@ -1189,11 +960,7 @@ public final class FileSharesClientImpl implements FileSharesClient {
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private PagedResponse<FileShareInner> listByParentNextSinglePage(String nextLink) {
-        final String accept = "application/json";
-        Response<FileShareListResult> res
-            = service.listByParentNextSync(nextLink, this.client.getEndpoint(), accept, Context.NONE);
-        return new PagedResponseBase<>(res.getRequest(), res.getStatusCode(), res.getHeaders(), res.getValue().value(),
-            res.getValue().nextLink(), null);
+        return listByParentNextSinglePage(nextLink, Context.NONE);
     }
 
     /**

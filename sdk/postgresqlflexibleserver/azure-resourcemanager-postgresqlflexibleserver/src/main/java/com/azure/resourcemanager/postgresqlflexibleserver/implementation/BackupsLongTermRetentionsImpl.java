@@ -59,13 +59,7 @@ public final class BackupsLongTermRetentionsImpl implements BackupsLongTermReten
 
     public BackupsLongTermRetentionResponse start(String resourceGroupName, String serverName,
         BackupsLongTermRetentionRequest parameters) {
-        BackupsLongTermRetentionResponseInner inner
-            = this.serviceClient().start(resourceGroupName, serverName, parameters);
-        if (inner != null) {
-            return new BackupsLongTermRetentionResponseImpl(inner, this.manager());
-        } else {
-            return null;
-        }
+        return this.start(resourceGroupName, serverName, parameters, Context.NONE);
     }
 
     public BackupsLongTermRetentionResponse start(String resourceGroupName, String serverName,
@@ -98,10 +92,7 @@ public final class BackupsLongTermRetentionsImpl implements BackupsLongTermReten
     }
 
     public PagedIterable<BackupsLongTermRetentionOperation> listByServer(String resourceGroupName, String serverName) {
-        PagedIterable<BackupsLongTermRetentionOperationInner> inner
-            = this.serviceClient().listByServer(resourceGroupName, serverName);
-        return ResourceManagerUtils.mapPage(inner,
-            inner1 -> new BackupsLongTermRetentionOperationImpl(inner1, this.manager()));
+        return this.listByServer(resourceGroupName, serverName, Context.NONE);
     }
 
     public PagedIterable<BackupsLongTermRetentionOperation> listByServer(String resourceGroupName, String serverName,

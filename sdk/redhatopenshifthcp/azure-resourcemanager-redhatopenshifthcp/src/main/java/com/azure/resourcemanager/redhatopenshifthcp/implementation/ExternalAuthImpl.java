@@ -60,11 +60,7 @@ public final class ExternalAuthImpl implements ExternalAuth, ExternalAuth.Defini
     }
 
     public ExternalAuth create() {
-        this.innerObject = serviceManager.serviceClient()
-            .getExternalAuths()
-            .createOrUpdate(resourceGroupName, hcpOpenShiftClusterName, externalAuthName, this.innerModel(),
-                Context.NONE);
-        return this;
+        return this.create(Context.NONE);
     }
 
     public ExternalAuth create(Context context) {
@@ -86,10 +82,7 @@ public final class ExternalAuthImpl implements ExternalAuth, ExternalAuth.Defini
     }
 
     public ExternalAuth apply() {
-        this.innerObject = serviceManager.serviceClient()
-            .getExternalAuths()
-            .update(resourceGroupName, hcpOpenShiftClusterName, externalAuthName, this.innerModel(), Context.NONE);
-        return this;
+        return this.apply(Context.NONE);
     }
 
     public ExternalAuth apply(Context context) {
@@ -115,11 +108,7 @@ public final class ExternalAuthImpl implements ExternalAuth, ExternalAuth.Defini
     }
 
     public ExternalAuth refresh() {
-        this.innerObject = serviceManager.serviceClient()
-            .getExternalAuths()
-            .getWithResponse(resourceGroupName, hcpOpenShiftClusterName, externalAuthName, Context.NONE)
-            .getValue();
-        return this;
+        return this.refresh(Context.NONE);
     }
 
     public ExternalAuth refresh(Context context) {

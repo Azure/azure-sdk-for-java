@@ -45,8 +45,7 @@ public final class BillingStatisticsImpl implements BillingStatistics {
     }
 
     public PagedIterable<BillingStatistic> list(String resourceGroupName, String workspaceName) {
-        PagedIterable<BillingStatisticInner> inner = this.serviceClient().list(resourceGroupName, workspaceName);
-        return ResourceManagerUtils.mapPage(inner, inner1 -> new BillingStatisticImpl(inner1, this.manager()));
+        return this.list(resourceGroupName, workspaceName, Context.NONE);
     }
 
     public PagedIterable<BillingStatistic> list(String resourceGroupName, String workspaceName, Context context) {

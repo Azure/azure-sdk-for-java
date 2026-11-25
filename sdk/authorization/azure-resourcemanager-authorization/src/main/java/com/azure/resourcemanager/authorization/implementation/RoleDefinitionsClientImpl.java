@@ -119,16 +119,7 @@ public final class RoleDefinitionsClientImpl
             @HeaderParam("Accept") String accept, Context context);
     }
 
-    /**
-     * Get role definition by ID (GUID).
-     * 
-     * @param scope The fully qualified Azure Resource manager identifier of the resource.
-     * @param roleDefinitionId The ID of the role definition.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return role definition by ID (GUID) along with {@link Response} on successful completion of {@link Mono}.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Response<RoleDefinitionInner>> getWithResponseAsync(String scope, String roleDefinitionId) {
         if (this.client.getEndpoint() == null) {
@@ -181,63 +172,25 @@ public final class RoleDefinitionsClientImpl
         return service.get(this.client.getEndpoint(), apiVersion, scope, roleDefinitionId, accept, context);
     }
 
-    /**
-     * Get role definition by ID (GUID).
-     * 
-     * @param scope The fully qualified Azure Resource manager identifier of the resource.
-     * @param roleDefinitionId The ID of the role definition.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return role definition by ID (GUID) on successful completion of {@link Mono}.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<RoleDefinitionInner> getAsync(String scope, String roleDefinitionId) {
         return getWithResponseAsync(scope, roleDefinitionId).flatMap(res -> Mono.justOrEmpty(res.getValue()));
     }
 
-    /**
-     * Get role definition by ID (GUID).
-     * 
-     * @param scope The fully qualified Azure Resource manager identifier of the resource.
-     * @param roleDefinitionId The ID of the role definition.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return role definition by ID (GUID) along with {@link Response}.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Response<RoleDefinitionInner> getWithResponse(String scope, String roleDefinitionId, Context context) {
         return getWithResponseAsync(scope, roleDefinitionId, context).block();
     }
 
-    /**
-     * Get role definition by ID (GUID).
-     * 
-     * @param scope The fully qualified Azure Resource manager identifier of the resource.
-     * @param roleDefinitionId The ID of the role definition.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return role definition by ID (GUID).
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public RoleDefinitionInner get(String scope, String roleDefinitionId) {
         return getWithResponse(scope, roleDefinitionId, Context.NONE).getValue();
     }
 
-    /**
-     * Creates or updates a role definition.
-     * 
-     * @param scope The fully qualified Azure Resource manager identifier of the resource.
-     * @param roleDefinitionId The ID of the role definition.
-     * @param roleDefinition The values for the role definition.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return role definition along with {@link Response} on successful completion of {@link Mono}.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Response<RoleDefinitionInner>> createOrUpdateWithResponseAsync(String scope, String roleDefinitionId,
         RoleDefinitionInner roleDefinition) {
@@ -305,17 +258,7 @@ public final class RoleDefinitionsClientImpl
             accept, roleDefinition, context);
     }
 
-    /**
-     * Creates or updates a role definition.
-     * 
-     * @param scope The fully qualified Azure Resource manager identifier of the resource.
-     * @param roleDefinitionId The ID of the role definition.
-     * @param roleDefinition The values for the role definition.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return role definition on successful completion of {@link Mono}.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<RoleDefinitionInner> createOrUpdateAsync(String scope, String roleDefinitionId,
         RoleDefinitionInner roleDefinition) {
@@ -323,51 +266,21 @@ public final class RoleDefinitionsClientImpl
             .flatMap(res -> Mono.justOrEmpty(res.getValue()));
     }
 
-    /**
-     * Creates or updates a role definition.
-     * 
-     * @param scope The fully qualified Azure Resource manager identifier of the resource.
-     * @param roleDefinitionId The ID of the role definition.
-     * @param roleDefinition The values for the role definition.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return role definition along with {@link Response}.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Response<RoleDefinitionInner> createOrUpdateWithResponse(String scope, String roleDefinitionId,
         RoleDefinitionInner roleDefinition, Context context) {
         return createOrUpdateWithResponseAsync(scope, roleDefinitionId, roleDefinition, context).block();
     }
 
-    /**
-     * Creates or updates a role definition.
-     * 
-     * @param scope The fully qualified Azure Resource manager identifier of the resource.
-     * @param roleDefinitionId The ID of the role definition.
-     * @param roleDefinition The values for the role definition.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return role definition.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public RoleDefinitionInner createOrUpdate(String scope, String roleDefinitionId,
         RoleDefinitionInner roleDefinition) {
         return createOrUpdateWithResponse(scope, roleDefinitionId, roleDefinition, Context.NONE).getValue();
     }
 
-    /**
-     * Deletes a role definition.
-     * 
-     * @param scope The fully qualified Azure Resource manager identifier of the resource.
-     * @param roleDefinitionId The ID of the role definition.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return role definition along with {@link Response} on successful completion of {@link Mono}.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Response<RoleDefinitionInner>> deleteWithResponseAsync(String scope, String roleDefinitionId) {
         if (this.client.getEndpoint() == null) {
@@ -419,47 +332,19 @@ public final class RoleDefinitionsClientImpl
         return service.delete(this.client.getEndpoint(), apiVersion, scope, roleDefinitionId, accept, context);
     }
 
-    /**
-     * Deletes a role definition.
-     * 
-     * @param scope The fully qualified Azure Resource manager identifier of the resource.
-     * @param roleDefinitionId The ID of the role definition.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return role definition on successful completion of {@link Mono}.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<RoleDefinitionInner> deleteAsync(String scope, String roleDefinitionId) {
         return deleteWithResponseAsync(scope, roleDefinitionId).flatMap(res -> Mono.justOrEmpty(res.getValue()));
     }
 
-    /**
-     * Deletes a role definition.
-     * 
-     * @param scope The fully qualified Azure Resource manager identifier of the resource.
-     * @param roleDefinitionId The ID of the role definition.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return role definition along with {@link Response}.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Response<RoleDefinitionInner> deleteWithResponse(String scope, String roleDefinitionId, Context context) {
         return deleteWithResponseAsync(scope, roleDefinitionId, context).block();
     }
 
-    /**
-     * Deletes a role definition.
-     * 
-     * @param scope The fully qualified Azure Resource manager identifier of the resource.
-     * @param roleDefinitionId The ID of the role definition.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return role definition.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public RoleDefinitionInner delete(String scope, String roleDefinitionId) {
         return deleteWithResponse(scope, roleDefinitionId, Context.NONE).getValue();
@@ -525,31 +410,13 @@ public final class RoleDefinitionsClientImpl
                 res.getValue().value(), res.getValue().nextLink(), null));
     }
 
-    /**
-     * Get all role definitions that are applicable at scope and above.
-     * 
-     * @param scope The fully qualified Azure Resource manager identifier of the resource.
-     * @param filter The filter to apply on the operation. Use atScopeAndBelow filter to search below the given scope as
-     * well.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return all role definitions that are applicable at scope and above as paginated response with {@link PagedFlux}.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.COLLECTION)
     public PagedFlux<RoleDefinitionInner> listAsync(String scope, String filter) {
         return new PagedFlux<>(() -> listSinglePageAsync(scope, filter), nextLink -> listNextSinglePageAsync(nextLink));
     }
 
-    /**
-     * Get all role definitions that are applicable at scope and above.
-     * 
-     * @param scope The fully qualified Azure Resource manager identifier of the resource.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return all role definitions that are applicable at scope and above as paginated response with {@link PagedFlux}.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.COLLECTION)
     public PagedFlux<RoleDefinitionInner> listAsync(String scope) {
         final String filter = null;
@@ -574,52 +441,20 @@ public final class RoleDefinitionsClientImpl
             nextLink -> listNextSinglePageAsync(nextLink, context));
     }
 
-    /**
-     * Get all role definitions that are applicable at scope and above.
-     * 
-     * @param scope The fully qualified Azure Resource manager identifier of the resource.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return all role definitions that are applicable at scope and above as paginated response with
-     * {@link PagedIterable}.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.COLLECTION)
     public PagedIterable<RoleDefinitionInner> list(String scope) {
         final String filter = null;
         return new PagedIterable<>(listAsync(scope, filter));
     }
 
-    /**
-     * Get all role definitions that are applicable at scope and above.
-     * 
-     * @param scope The fully qualified Azure Resource manager identifier of the resource.
-     * @param filter The filter to apply on the operation. Use atScopeAndBelow filter to search below the given scope as
-     * well.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return all role definitions that are applicable at scope and above as paginated response with
-     * {@link PagedIterable}.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.COLLECTION)
     public PagedIterable<RoleDefinitionInner> list(String scope, String filter, Context context) {
         return new PagedIterable<>(listAsync(scope, filter, context));
     }
 
-    /**
-     * Gets a role definition by ID.
-     * 
-     * @param roleId The fully qualified role definition ID. Use the format,
-     * /subscriptions/{guid}/providers/Microsoft.Authorization/roleDefinitions/{roleDefinitionId} for subscription level
-     * role definitions, or /providers/Microsoft.Authorization/roleDefinitions/{roleDefinitionId} for tenant level role
-     * definitions.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return a role definition by ID along with {@link Response} on successful completion of {@link Mono}.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Response<RoleDefinitionInner>> getByIdWithResponseAsync(String roleId) {
         if (this.client.getEndpoint() == null) {
@@ -664,53 +499,19 @@ public final class RoleDefinitionsClientImpl
         return service.getById(this.client.getEndpoint(), apiVersion, roleId, accept, context);
     }
 
-    /**
-     * Gets a role definition by ID.
-     * 
-     * @param roleId The fully qualified role definition ID. Use the format,
-     * /subscriptions/{guid}/providers/Microsoft.Authorization/roleDefinitions/{roleDefinitionId} for subscription level
-     * role definitions, or /providers/Microsoft.Authorization/roleDefinitions/{roleDefinitionId} for tenant level role
-     * definitions.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return a role definition by ID on successful completion of {@link Mono}.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<RoleDefinitionInner> getByIdAsync(String roleId) {
         return getByIdWithResponseAsync(roleId).flatMap(res -> Mono.justOrEmpty(res.getValue()));
     }
 
-    /**
-     * Gets a role definition by ID.
-     * 
-     * @param roleId The fully qualified role definition ID. Use the format,
-     * /subscriptions/{guid}/providers/Microsoft.Authorization/roleDefinitions/{roleDefinitionId} for subscription level
-     * role definitions, or /providers/Microsoft.Authorization/roleDefinitions/{roleDefinitionId} for tenant level role
-     * definitions.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return a role definition by ID along with {@link Response}.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Response<RoleDefinitionInner> getByIdWithResponse(String roleId, Context context) {
         return getByIdWithResponseAsync(roleId, context).block();
     }
 
-    /**
-     * Gets a role definition by ID.
-     * 
-     * @param roleId The fully qualified role definition ID. Use the format,
-     * /subscriptions/{guid}/providers/Microsoft.Authorization/roleDefinitions/{roleDefinitionId} for subscription level
-     * role definitions, or /providers/Microsoft.Authorization/roleDefinitions/{roleDefinitionId} for tenant level role
-     * definitions.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return a role definition by ID.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public RoleDefinitionInner getById(String roleId) {
         return getByIdWithResponse(roleId, Context.NONE).getValue();

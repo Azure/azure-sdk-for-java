@@ -117,18 +117,7 @@ public final class MajorVersionUpgradePrechecksClientImpl implements MajorVersio
             @HeaderParam("Accept") String accept, Context context);
     }
 
-    /**
-     * Gets information about a major version upgrade precheck for a flexible server.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param serverName The name of the server.
-     * @param precheckValidationId The name of the MajorVersionUpgradePrecheckResource.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return information about a major version upgrade precheck for a flexible server along with {@link Response} on
-     * successful completion of {@link Mono}.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Response<MajorVersionUpgradePrecheckResourceInner>> getWithResponseAsync(String resourceGroupName,
         String serverName, String precheckValidationId) {
@@ -139,18 +128,7 @@ public final class MajorVersionUpgradePrechecksClientImpl implements MajorVersio
             .contextWrite(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext()).readOnly()));
     }
 
-    /**
-     * Gets information about a major version upgrade precheck for a flexible server.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param serverName The name of the server.
-     * @param precheckValidationId The name of the MajorVersionUpgradePrecheckResource.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return information about a major version upgrade precheck for a flexible server on successful completion of
-     * {@link Mono}.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<MajorVersionUpgradePrecheckResourceInner> getAsync(String resourceGroupName, String serverName,
         String precheckValidationId) {
@@ -158,18 +136,7 @@ public final class MajorVersionUpgradePrechecksClientImpl implements MajorVersio
             .flatMap(res -> Mono.justOrEmpty(res.getValue()));
     }
 
-    /**
-     * Gets information about a major version upgrade precheck for a flexible server.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param serverName The name of the server.
-     * @param precheckValidationId The name of the MajorVersionUpgradePrecheckResource.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return information about a major version upgrade precheck for a flexible server along with {@link Response}.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Response<MajorVersionUpgradePrecheckResourceInner> getWithResponse(String resourceGroupName,
         String serverName, String precheckValidationId, Context context) {
@@ -178,17 +145,7 @@ public final class MajorVersionUpgradePrechecksClientImpl implements MajorVersio
             resourceGroupName, serverName, precheckValidationId, accept, context);
     }
 
-    /**
-     * Gets information about a major version upgrade precheck for a flexible server.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param serverName The name of the server.
-     * @param precheckValidationId The name of the MajorVersionUpgradePrecheckResource.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return information about a major version upgrade precheck for a flexible server.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public MajorVersionUpgradePrecheckResourceInner get(String resourceGroupName, String serverName,
         String precheckValidationId) {
@@ -219,17 +176,7 @@ public final class MajorVersionUpgradePrechecksClientImpl implements MajorVersio
             .contextWrite(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext()).readOnly()));
     }
 
-    /**
-     * Lists major version upgrade prechecks for a flexible server.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param serverName The name of the server.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the response of a MajorVersionUpgradePrecheckResource list operation as paginated response with
-     * {@link PagedFlux}.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.COLLECTION)
     public PagedFlux<MajorVersionUpgradePrecheckResourceInner> listAsync(String resourceGroupName, String serverName) {
         return new PagedFlux<>(() -> listSinglePageAsync(resourceGroupName, serverName),
@@ -249,12 +196,7 @@ public final class MajorVersionUpgradePrechecksClientImpl implements MajorVersio
     @ServiceMethod(returns = ReturnType.SINGLE)
     private PagedResponse<MajorVersionUpgradePrecheckResourceInner> listSinglePage(String resourceGroupName,
         String serverName) {
-        final String accept = "application/json";
-        Response<MajorVersionUpgradePrecheckResourceListResult> res
-            = service.listSync(this.client.getEndpoint(), this.client.getApiVersion(), this.client.getSubscriptionId(),
-                resourceGroupName, serverName, accept, Context.NONE);
-        return new PagedResponseBase<>(res.getRequest(), res.getStatusCode(), res.getHeaders(), res.getValue().value(),
-            res.getValue().nextLink(), null);
+        return listSinglePage(resourceGroupName, serverName, Context.NONE);
     }
 
     /**
@@ -279,35 +221,13 @@ public final class MajorVersionUpgradePrechecksClientImpl implements MajorVersio
             res.getValue().nextLink(), null);
     }
 
-    /**
-     * Lists major version upgrade prechecks for a flexible server.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param serverName The name of the server.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the response of a MajorVersionUpgradePrecheckResource list operation as paginated response with
-     * {@link PagedIterable}.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.COLLECTION)
     public PagedIterable<MajorVersionUpgradePrecheckResourceInner> list(String resourceGroupName, String serverName) {
-        return new PagedIterable<>(() -> listSinglePage(resourceGroupName, serverName),
-            nextLink -> listNextSinglePage(nextLink));
+        return list(resourceGroupName, serverName, Context.NONE);
     }
 
-    /**
-     * Lists major version upgrade prechecks for a flexible server.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param serverName The name of the server.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the response of a MajorVersionUpgradePrecheckResource list operation as paginated response with
-     * {@link PagedIterable}.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.COLLECTION)
     public PagedIterable<MajorVersionUpgradePrecheckResourceInner> list(String resourceGroupName, String serverName,
         Context context) {
@@ -346,11 +266,7 @@ public final class MajorVersionUpgradePrechecksClientImpl implements MajorVersio
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private PagedResponse<MajorVersionUpgradePrecheckResourceInner> listNextSinglePage(String nextLink) {
-        final String accept = "application/json";
-        Response<MajorVersionUpgradePrecheckResourceListResult> res
-            = service.listNextSync(nextLink, this.client.getEndpoint(), accept, Context.NONE);
-        return new PagedResponseBase<>(res.getRequest(), res.getStatusCode(), res.getHeaders(), res.getValue().value(),
-            res.getValue().nextLink(), null);
+        return listNextSinglePage(nextLink, Context.NONE);
     }
 
     /**

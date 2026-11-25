@@ -210,22 +210,7 @@ public final class ReplicationProtectionIntentsClientImpl implements Replication
             .flatMap(res -> Mono.justOrEmpty(res.getValue()));
     }
 
-    /**
-     * Gets the details of a Replication protection intent item.
-     * 
-     * Gets the details of an ASR replication protection intent.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param resourceName The name of the Vault.
-     * @param intentObjectName Replication protection intent name.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the details of a Replication protection intent item.
-     * 
-     * Gets the details of an ASR replication protection intent along with {@link Response}.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Response<ReplicationProtectionIntentInner> getWithResponse(String resourceGroupName, String resourceName,
         String intentObjectName, Context context) {
@@ -256,21 +241,7 @@ public final class ReplicationProtectionIntentsClientImpl implements Replication
             resourceGroupName, resourceName, intentObjectName, accept, context);
     }
 
-    /**
-     * Gets the details of a Replication protection intent item.
-     * 
-     * Gets the details of an ASR replication protection intent.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param resourceName The name of the Vault.
-     * @param intentObjectName Replication protection intent name.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the details of a Replication protection intent item.
-     * 
-     * Gets the details of an ASR replication protection intent.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public ReplicationProtectionIntentInner get(String resourceGroupName, String resourceName,
         String intentObjectName) {
@@ -348,21 +319,7 @@ public final class ReplicationProtectionIntentsClientImpl implements Replication
             .flatMap(res -> Mono.justOrEmpty(res.getValue()));
     }
 
-    /**
-     * Create protection intent Resource.
-     * 
-     * The operation to create an ASR replication protection intent item.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param resourceName The name of the Vault.
-     * @param intentObjectName Replication protection intent name.
-     * @param input Create Protection Intent Input.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return replication protection intent along with {@link Response}.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Response<ReplicationProtectionIntentInner> createWithResponse(String resourceGroupName, String resourceName,
         String intentObjectName, CreateProtectionIntentInput input, Context context) {
@@ -400,20 +357,7 @@ public final class ReplicationProtectionIntentsClientImpl implements Replication
             input, context);
     }
 
-    /**
-     * Create protection intent Resource.
-     * 
-     * The operation to create an ASR replication protection intent item.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param resourceName The name of the Vault.
-     * @param intentObjectName Replication protection intent name.
-     * @param input Create Protection Intent Input.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return replication protection intent.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public ReplicationProtectionIntentInner create(String resourceGroupName, String resourceName,
         String intentObjectName, CreateProtectionIntentInput input) {
@@ -529,30 +473,7 @@ public final class ReplicationProtectionIntentsClientImpl implements Replication
     @ServiceMethod(returns = ReturnType.SINGLE)
     private PagedResponse<ReplicationProtectionIntentInner> listSinglePage(String resourceGroupName,
         String resourceName, String skipToken, String takeToken) {
-        if (this.client.getEndpoint() == null) {
-            throw LOGGER.atError()
-                .log(new IllegalArgumentException(
-                    "Parameter this.client.getEndpoint() is required and cannot be null."));
-        }
-        if (this.client.getSubscriptionId() == null) {
-            throw LOGGER.atError()
-                .log(new IllegalArgumentException(
-                    "Parameter this.client.getSubscriptionId() is required and cannot be null."));
-        }
-        if (resourceGroupName == null) {
-            throw LOGGER.atError()
-                .log(new IllegalArgumentException("Parameter resourceGroupName is required and cannot be null."));
-        }
-        if (resourceName == null) {
-            throw LOGGER.atError()
-                .log(new IllegalArgumentException("Parameter resourceName is required and cannot be null."));
-        }
-        final String accept = "application/json";
-        Response<ReplicationProtectionIntentCollection> res
-            = service.listSync(this.client.getEndpoint(), this.client.getApiVersion(), this.client.getSubscriptionId(),
-                resourceGroupName, resourceName, skipToken, takeToken, accept, Context.NONE);
-        return new PagedResponseBase<>(res.getRequest(), res.getStatusCode(), res.getHeaders(), res.getValue().value(),
-            res.getValue().nextLink(), null);
+        return listSinglePage(resourceGroupName, resourceName, skipToken, takeToken, Context.NONE);
     }
 
     /**
@@ -601,47 +522,15 @@ public final class ReplicationProtectionIntentsClientImpl implements Replication
             res.getValue().nextLink(), null);
     }
 
-    /**
-     * Gets the list of replication protection intent objects.
-     * 
-     * Gets the list of ASR replication protection intent objects in the vault.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param resourceName The name of the Vault.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the list of replication protection intent objects.
-     * 
-     * Gets the list of ASR replication protection intent objects in the vault as paginated response with
-     * {@link PagedIterable}.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.COLLECTION)
     public PagedIterable<ReplicationProtectionIntentInner> list(String resourceGroupName, String resourceName) {
         final String skipToken = null;
         final String takeToken = null;
-        return new PagedIterable<>(() -> listSinglePage(resourceGroupName, resourceName, skipToken, takeToken),
-            nextLink -> listNextSinglePage(nextLink));
+        return list(resourceGroupName, resourceName, skipToken, takeToken, Context.NONE);
     }
 
-    /**
-     * Gets the list of replication protection intent objects.
-     * 
-     * Gets the list of ASR replication protection intent objects in the vault.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param resourceName The name of the Vault.
-     * @param skipToken The pagination token.
-     * @param takeToken The page size.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the list of replication protection intent objects.
-     * 
-     * Gets the list of ASR replication protection intent objects in the vault as paginated response with
-     * {@link PagedIterable}.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.COLLECTION)
     public PagedIterable<ReplicationProtectionIntentInner> list(String resourceGroupName, String resourceName,
         String skipToken, String takeToken, Context context) {
@@ -694,20 +583,7 @@ public final class ReplicationProtectionIntentsClientImpl implements Replication
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private PagedResponse<ReplicationProtectionIntentInner> listNextSinglePage(String nextLink) {
-        if (nextLink == null) {
-            throw LOGGER.atError()
-                .log(new IllegalArgumentException("Parameter nextLink is required and cannot be null."));
-        }
-        if (this.client.getEndpoint() == null) {
-            throw LOGGER.atError()
-                .log(new IllegalArgumentException(
-                    "Parameter this.client.getEndpoint() is required and cannot be null."));
-        }
-        final String accept = "application/json";
-        Response<ReplicationProtectionIntentCollection> res
-            = service.listNextSync(nextLink, this.client.getEndpoint(), accept, Context.NONE);
-        return new PagedResponseBase<>(res.getRequest(), res.getStatusCode(), res.getHeaders(), res.getValue().value(),
-            res.getValue().nextLink(), null);
+        return listNextSinglePage(nextLink, Context.NONE);
     }
 
     /**

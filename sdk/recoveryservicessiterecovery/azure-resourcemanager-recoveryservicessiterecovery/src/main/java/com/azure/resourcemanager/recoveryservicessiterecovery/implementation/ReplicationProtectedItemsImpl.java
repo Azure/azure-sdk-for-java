@@ -63,8 +63,8 @@ public final class ReplicationProtectedItemsImpl implements ReplicationProtected
 
     public void purge(String resourceGroupName, String resourceName, String fabricName, String protectionContainerName,
         String replicatedProtectedItemName) {
-        this.serviceClient()
-            .purge(resourceGroupName, resourceName, fabricName, protectionContainerName, replicatedProtectedItemName);
+        this.purge(resourceGroupName, resourceName, fabricName, protectionContainerName, replicatedProtectedItemName,
+            Context.NONE);
     }
 
     public void purge(String resourceGroupName, String resourceName, String fabricName, String protectionContainerName,
@@ -76,10 +76,8 @@ public final class ReplicationProtectedItemsImpl implements ReplicationProtected
 
     public PagedIterable<ReplicationProtectedItem> listByReplicationProtectionContainers(String resourceGroupName,
         String resourceName, String fabricName, String protectionContainerName) {
-        PagedIterable<ReplicationProtectedItemInner> inner = this.serviceClient()
-            .listByReplicationProtectionContainers(resourceGroupName, resourceName, fabricName,
-                protectionContainerName);
-        return ResourceManagerUtils.mapPage(inner, inner1 -> new ReplicationProtectedItemImpl(inner1, this.manager()));
+        return this.listByReplicationProtectionContainers(resourceGroupName, resourceName, fabricName,
+            protectionContainerName, Context.NONE);
     }
 
     public PagedIterable<ReplicationProtectedItem> listByReplicationProtectionContainers(String resourceGroupName,
@@ -92,14 +90,8 @@ public final class ReplicationProtectedItemsImpl implements ReplicationProtected
 
     public ReplicationProtectedItem addDisks(String resourceGroupName, String resourceName, String fabricName,
         String protectionContainerName, String replicatedProtectedItemName, AddDisksInput addDisksInput) {
-        ReplicationProtectedItemInner inner = this.serviceClient()
-            .addDisks(resourceGroupName, resourceName, fabricName, protectionContainerName, replicatedProtectedItemName,
-                addDisksInput);
-        if (inner != null) {
-            return new ReplicationProtectedItemImpl(inner, this.manager());
-        } else {
-            return null;
-        }
+        return this.addDisks(resourceGroupName, resourceName, fabricName, protectionContainerName,
+            replicatedProtectedItemName, addDisksInput, Context.NONE);
     }
 
     public ReplicationProtectedItem addDisks(String resourceGroupName, String resourceName, String fabricName,
@@ -118,14 +110,8 @@ public final class ReplicationProtectedItemsImpl implements ReplicationProtected
     public ReplicationProtectedItem applyRecoveryPoint(String resourceGroupName, String resourceName, String fabricName,
         String protectionContainerName, String replicatedProtectedItemName,
         ApplyRecoveryPointInput applyRecoveryPointInput) {
-        ReplicationProtectedItemInner inner = this.serviceClient()
-            .applyRecoveryPoint(resourceGroupName, resourceName, fabricName, protectionContainerName,
-                replicatedProtectedItemName, applyRecoveryPointInput);
-        if (inner != null) {
-            return new ReplicationProtectedItemImpl(inner, this.manager());
-        } else {
-            return null;
-        }
+        return this.applyRecoveryPoint(resourceGroupName, resourceName, fabricName, protectionContainerName,
+            replicatedProtectedItemName, applyRecoveryPointInput, Context.NONE);
     }
 
     public ReplicationProtectedItem applyRecoveryPoint(String resourceGroupName, String resourceName, String fabricName,
@@ -143,14 +129,8 @@ public final class ReplicationProtectedItemsImpl implements ReplicationProtected
 
     public ReplicationProtectedItem failoverCancel(String resourceGroupName, String resourceName, String fabricName,
         String protectionContainerName, String replicatedProtectedItemName) {
-        ReplicationProtectedItemInner inner = this.serviceClient()
-            .failoverCancel(resourceGroupName, resourceName, fabricName, protectionContainerName,
-                replicatedProtectedItemName);
-        if (inner != null) {
-            return new ReplicationProtectedItemImpl(inner, this.manager());
-        } else {
-            return null;
-        }
+        return this.failoverCancel(resourceGroupName, resourceName, fabricName, protectionContainerName,
+            replicatedProtectedItemName, Context.NONE);
     }
 
     public ReplicationProtectedItem failoverCancel(String resourceGroupName, String resourceName, String fabricName,
@@ -167,14 +147,8 @@ public final class ReplicationProtectedItemsImpl implements ReplicationProtected
 
     public ReplicationProtectedItem failoverCommit(String resourceGroupName, String resourceName, String fabricName,
         String protectionContainerName, String replicatedProtectedItemName) {
-        ReplicationProtectedItemInner inner = this.serviceClient()
-            .failoverCommit(resourceGroupName, resourceName, fabricName, protectionContainerName,
-                replicatedProtectedItemName);
-        if (inner != null) {
-            return new ReplicationProtectedItemImpl(inner, this.manager());
-        } else {
-            return null;
-        }
+        return this.failoverCommit(resourceGroupName, resourceName, fabricName, protectionContainerName,
+            replicatedProtectedItemName, Context.NONE);
     }
 
     public ReplicationProtectedItem failoverCommit(String resourceGroupName, String resourceName, String fabricName,
@@ -191,14 +165,8 @@ public final class ReplicationProtectedItemsImpl implements ReplicationProtected
 
     public ReplicationProtectedItem plannedFailover(String resourceGroupName, String resourceName, String fabricName,
         String protectionContainerName, String replicatedProtectedItemName, PlannedFailoverInput failoverInput) {
-        ReplicationProtectedItemInner inner = this.serviceClient()
-            .plannedFailover(resourceGroupName, resourceName, fabricName, protectionContainerName,
-                replicatedProtectedItemName, failoverInput);
-        if (inner != null) {
-            return new ReplicationProtectedItemImpl(inner, this.manager());
-        } else {
-            return null;
-        }
+        return this.plannedFailover(resourceGroupName, resourceName, fabricName, protectionContainerName,
+            replicatedProtectedItemName, failoverInput, Context.NONE);
     }
 
     public ReplicationProtectedItem plannedFailover(String resourceGroupName, String resourceName, String fabricName,
@@ -216,9 +184,8 @@ public final class ReplicationProtectedItemsImpl implements ReplicationProtected
 
     public void delete(String resourceGroupName, String resourceName, String fabricName, String protectionContainerName,
         String replicatedProtectedItemName, DisableProtectionInput disableProtectionInput) {
-        this.serviceClient()
-            .delete(resourceGroupName, resourceName, fabricName, protectionContainerName, replicatedProtectedItemName,
-                disableProtectionInput);
+        this.delete(resourceGroupName, resourceName, fabricName, protectionContainerName, replicatedProtectedItemName,
+            disableProtectionInput, Context.NONE);
     }
 
     public void delete(String resourceGroupName, String resourceName, String fabricName, String protectionContainerName,
@@ -230,14 +197,8 @@ public final class ReplicationProtectedItemsImpl implements ReplicationProtected
 
     public ReplicationProtectedItem removeDisks(String resourceGroupName, String resourceName, String fabricName,
         String protectionContainerName, String replicatedProtectedItemName, RemoveDisksInput removeDisksInput) {
-        ReplicationProtectedItemInner inner = this.serviceClient()
-            .removeDisks(resourceGroupName, resourceName, fabricName, protectionContainerName,
-                replicatedProtectedItemName, removeDisksInput);
-        if (inner != null) {
-            return new ReplicationProtectedItemImpl(inner, this.manager());
-        } else {
-            return null;
-        }
+        return this.removeDisks(resourceGroupName, resourceName, fabricName, protectionContainerName,
+            replicatedProtectedItemName, removeDisksInput, Context.NONE);
     }
 
     public ReplicationProtectedItem removeDisks(String resourceGroupName, String resourceName, String fabricName,
@@ -255,14 +216,8 @@ public final class ReplicationProtectedItemsImpl implements ReplicationProtected
 
     public ReplicationProtectedItem repairReplication(String resourceGroupName, String resourceName, String fabricName,
         String protectionContainerName, String replicatedProtectedItemName) {
-        ReplicationProtectedItemInner inner = this.serviceClient()
-            .repairReplication(resourceGroupName, resourceName, fabricName, protectionContainerName,
-                replicatedProtectedItemName);
-        if (inner != null) {
-            return new ReplicationProtectedItemImpl(inner, this.manager());
-        } else {
-            return null;
-        }
+        return this.repairReplication(resourceGroupName, resourceName, fabricName, protectionContainerName,
+            replicatedProtectedItemName, Context.NONE);
     }
 
     public ReplicationProtectedItem repairReplication(String resourceGroupName, String resourceName, String fabricName,
@@ -279,14 +234,8 @@ public final class ReplicationProtectedItemsImpl implements ReplicationProtected
 
     public ReplicationProtectedItem reprotect(String resourceGroupName, String resourceName, String fabricName,
         String protectionContainerName, String replicatedProtectedItemName, ReverseReplicationInput reprotectInput) {
-        ReplicationProtectedItemInner inner = this.serviceClient()
-            .reprotect(resourceGroupName, resourceName, fabricName, protectionContainerName,
-                replicatedProtectedItemName, reprotectInput);
-        if (inner != null) {
-            return new ReplicationProtectedItemImpl(inner, this.manager());
-        } else {
-            return null;
-        }
+        return this.reprotect(resourceGroupName, resourceName, fabricName, protectionContainerName,
+            replicatedProtectedItemName, reprotectInput, Context.NONE);
     }
 
     public ReplicationProtectedItem reprotect(String resourceGroupName, String resourceName, String fabricName,
@@ -305,14 +254,8 @@ public final class ReplicationProtectedItemsImpl implements ReplicationProtected
     public ReplicationProtectedItem resolveHealthErrors(String resourceGroupName, String resourceName,
         String fabricName, String protectionContainerName, String replicatedProtectedItemName,
         ResolveHealthInput resolveHealthInput) {
-        ReplicationProtectedItemInner inner = this.serviceClient()
-            .resolveHealthErrors(resourceGroupName, resourceName, fabricName, protectionContainerName,
-                replicatedProtectedItemName, resolveHealthInput);
-        if (inner != null) {
-            return new ReplicationProtectedItemImpl(inner, this.manager());
-        } else {
-            return null;
-        }
+        return this.resolveHealthErrors(resourceGroupName, resourceName, fabricName, protectionContainerName,
+            replicatedProtectedItemName, resolveHealthInput, Context.NONE);
     }
 
     public ReplicationProtectedItem resolveHealthErrors(String resourceGroupName, String resourceName,
@@ -330,14 +273,8 @@ public final class ReplicationProtectedItemsImpl implements ReplicationProtected
 
     public ReplicationProtectedItem switchProvider(String resourceGroupName, String resourceName, String fabricName,
         String protectionContainerName, String replicatedProtectedItemName, SwitchProviderInput switchProviderInput) {
-        ReplicationProtectedItemInner inner = this.serviceClient()
-            .switchProvider(resourceGroupName, resourceName, fabricName, protectionContainerName,
-                replicatedProtectedItemName, switchProviderInput);
-        if (inner != null) {
-            return new ReplicationProtectedItemImpl(inner, this.manager());
-        } else {
-            return null;
-        }
+        return this.switchProvider(resourceGroupName, resourceName, fabricName, protectionContainerName,
+            replicatedProtectedItemName, switchProviderInput, Context.NONE);
     }
 
     public ReplicationProtectedItem switchProvider(String resourceGroupName, String resourceName, String fabricName,
@@ -355,14 +292,8 @@ public final class ReplicationProtectedItemsImpl implements ReplicationProtected
 
     public ReplicationProtectedItem testFailover(String resourceGroupName, String resourceName, String fabricName,
         String protectionContainerName, String replicatedProtectedItemName, TestFailoverInput testfailoverInput) {
-        ReplicationProtectedItemInner inner = this.serviceClient()
-            .testFailover(resourceGroupName, resourceName, fabricName, protectionContainerName,
-                replicatedProtectedItemName, testfailoverInput);
-        if (inner != null) {
-            return new ReplicationProtectedItemImpl(inner, this.manager());
-        } else {
-            return null;
-        }
+        return this.testFailover(resourceGroupName, resourceName, fabricName, protectionContainerName,
+            replicatedProtectedItemName, testfailoverInput, Context.NONE);
     }
 
     public ReplicationProtectedItem testFailover(String resourceGroupName, String resourceName, String fabricName,
@@ -381,14 +312,8 @@ public final class ReplicationProtectedItemsImpl implements ReplicationProtected
     public ReplicationProtectedItem testFailoverCleanup(String resourceGroupName, String resourceName,
         String fabricName, String protectionContainerName, String replicatedProtectedItemName,
         TestFailoverCleanupInput cleanupInput) {
-        ReplicationProtectedItemInner inner = this.serviceClient()
-            .testFailoverCleanup(resourceGroupName, resourceName, fabricName, protectionContainerName,
-                replicatedProtectedItemName, cleanupInput);
-        if (inner != null) {
-            return new ReplicationProtectedItemImpl(inner, this.manager());
-        } else {
-            return null;
-        }
+        return this.testFailoverCleanup(resourceGroupName, resourceName, fabricName, protectionContainerName,
+            replicatedProtectedItemName, cleanupInput, Context.NONE);
     }
 
     public ReplicationProtectedItem testFailoverCleanup(String resourceGroupName, String resourceName,
@@ -406,14 +331,8 @@ public final class ReplicationProtectedItemsImpl implements ReplicationProtected
 
     public ReplicationProtectedItem unplannedFailover(String resourceGroupName, String resourceName, String fabricName,
         String protectionContainerName, String replicatedProtectedItemName, UnplannedFailoverInput failoverInput) {
-        ReplicationProtectedItemInner inner = this.serviceClient()
-            .unplannedFailover(resourceGroupName, resourceName, fabricName, protectionContainerName,
-                replicatedProtectedItemName, failoverInput);
-        if (inner != null) {
-            return new ReplicationProtectedItemImpl(inner, this.manager());
-        } else {
-            return null;
-        }
+        return this.unplannedFailover(resourceGroupName, resourceName, fabricName, protectionContainerName,
+            replicatedProtectedItemName, failoverInput, Context.NONE);
     }
 
     public ReplicationProtectedItem unplannedFailover(String resourceGroupName, String resourceName, String fabricName,
@@ -432,14 +351,8 @@ public final class ReplicationProtectedItemsImpl implements ReplicationProtected
     public ReplicationProtectedItem updateAppliance(String resourceGroupName, String resourceName, String fabricName,
         String protectionContainerName, String replicatedProtectedItemName,
         UpdateApplianceForReplicationProtectedItemInput applianceUpdateInput) {
-        ReplicationProtectedItemInner inner = this.serviceClient()
-            .updateAppliance(resourceGroupName, resourceName, fabricName, protectionContainerName,
-                replicatedProtectedItemName, applianceUpdateInput);
-        if (inner != null) {
-            return new ReplicationProtectedItemImpl(inner, this.manager());
-        } else {
-            return null;
-        }
+        return this.updateAppliance(resourceGroupName, resourceName, fabricName, protectionContainerName,
+            replicatedProtectedItemName, applianceUpdateInput, Context.NONE);
     }
 
     public ReplicationProtectedItem updateAppliance(String resourceGroupName, String resourceName, String fabricName,
@@ -458,14 +371,8 @@ public final class ReplicationProtectedItemsImpl implements ReplicationProtected
     public ReplicationProtectedItem updateMobilityService(String resourceGroupName, String resourceName,
         String fabricName, String protectionContainerName, String replicatedProtectedItemName,
         UpdateMobilityServiceRequest updateMobilityServiceRequest) {
-        ReplicationProtectedItemInner inner = this.serviceClient()
-            .updateMobilityService(resourceGroupName, resourceName, fabricName, protectionContainerName,
-                replicatedProtectedItemName, updateMobilityServiceRequest);
-        if (inner != null) {
-            return new ReplicationProtectedItemImpl(inner, this.manager());
-        } else {
-            return null;
-        }
+        return this.updateMobilityService(resourceGroupName, resourceName, fabricName, protectionContainerName,
+            replicatedProtectedItemName, updateMobilityServiceRequest, Context.NONE);
     }
 
     public ReplicationProtectedItem updateMobilityService(String resourceGroupName, String resourceName,
@@ -484,14 +391,8 @@ public final class ReplicationProtectedItemsImpl implements ReplicationProtected
     public ReplicationProtectedItem reinstallMobilityService(String resourceGroupName, String resourceName,
         String fabricName, String protectionContainerName, String replicatedProtectedItemName,
         ReinstallMobilityServiceRequest updateMobilityServiceRequest) {
-        ReplicationProtectedItemInner inner = this.serviceClient()
-            .reinstallMobilityService(resourceGroupName, resourceName, fabricName, protectionContainerName,
-                replicatedProtectedItemName, updateMobilityServiceRequest);
-        if (inner != null) {
-            return new ReplicationProtectedItemImpl(inner, this.manager());
-        } else {
-            return null;
-        }
+        return this.reinstallMobilityService(resourceGroupName, resourceName, fabricName, protectionContainerName,
+            replicatedProtectedItemName, updateMobilityServiceRequest, Context.NONE);
     }
 
     public ReplicationProtectedItem reinstallMobilityService(String resourceGroupName, String resourceName,
@@ -520,83 +421,25 @@ public final class ReplicationProtectedItemsImpl implements ReplicationProtected
     }
 
     public ReplicationProtectedItem getById(String id) {
-        String resourceGroupName = ResourceManagerUtils.getValueFromIdByParameterName(id,
-            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.RecoveryServices/vaults/{resourceName}/replicationFabrics/{fabricName}/replicationProtectionContainers/{protectionContainerName}/replicationProtectedItems/{replicatedProtectedItemName}",
-            "resourceGroupName");
-        if (resourceGroupName == null) {
-            throw LOGGER.logExceptionAsError(new IllegalArgumentException(
-                String.format("The resource ID '%s' is not valid. Missing path segment 'resourceGroups'.", id)));
-        }
-        String resourceName = ResourceManagerUtils.getValueFromIdByParameterName(id,
-            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.RecoveryServices/vaults/{resourceName}/replicationFabrics/{fabricName}/replicationProtectionContainers/{protectionContainerName}/replicationProtectedItems/{replicatedProtectedItemName}",
-            "resourceName");
-        if (resourceName == null) {
-            throw LOGGER.logExceptionAsError(new IllegalArgumentException(
-                String.format("The resource ID '%s' is not valid. Missing path segment 'vaults'.", id)));
-        }
-        String fabricName = ResourceManagerUtils.getValueFromIdByParameterName(id,
-            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.RecoveryServices/vaults/{resourceName}/replicationFabrics/{fabricName}/replicationProtectionContainers/{protectionContainerName}/replicationProtectedItems/{replicatedProtectedItemName}",
-            "fabricName");
-        if (fabricName == null) {
-            throw LOGGER.logExceptionAsError(new IllegalArgumentException(
-                String.format("The resource ID '%s' is not valid. Missing path segment 'replicationFabrics'.", id)));
-        }
-        String protectionContainerName = ResourceManagerUtils.getValueFromIdByParameterName(id,
-            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.RecoveryServices/vaults/{resourceName}/replicationFabrics/{fabricName}/replicationProtectionContainers/{protectionContainerName}/replicationProtectedItems/{replicatedProtectedItemName}",
-            "protectionContainerName");
-        if (protectionContainerName == null) {
-            throw LOGGER.logExceptionAsError(new IllegalArgumentException(String.format(
-                "The resource ID '%s' is not valid. Missing path segment 'replicationProtectionContainers'.", id)));
-        }
-        String replicatedProtectedItemName = ResourceManagerUtils.getValueFromIdByParameterName(id,
-            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.RecoveryServices/vaults/{resourceName}/replicationFabrics/{fabricName}/replicationProtectionContainers/{protectionContainerName}/replicationProtectedItems/{replicatedProtectedItemName}",
-            "replicatedProtectedItemName");
-        if (replicatedProtectedItemName == null) {
-            throw LOGGER.logExceptionAsError(new IllegalArgumentException(String
-                .format("The resource ID '%s' is not valid. Missing path segment 'replicationProtectedItems'.", id)));
-        }
-        return this
-            .getWithResponse(resourceGroupName, resourceName, fabricName, protectionContainerName,
-                replicatedProtectedItemName, Context.NONE)
-            .getValue();
+        return this.getByIdWithResponse(id, Context.NONE).getValue();
     }
 
     public Response<ReplicationProtectedItem> getByIdWithResponse(String id, Context context) {
-        String resourceGroupName = ResourceManagerUtils.getValueFromIdByParameterName(id,
+        String resourceGroupName = ResourceManagerUtils.getRequiredValueFromIdByParameterName(id,
             "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.RecoveryServices/vaults/{resourceName}/replicationFabrics/{fabricName}/replicationProtectionContainers/{protectionContainerName}/replicationProtectedItems/{replicatedProtectedItemName}",
-            "resourceGroupName");
-        if (resourceGroupName == null) {
-            throw LOGGER.logExceptionAsError(new IllegalArgumentException(
-                String.format("The resource ID '%s' is not valid. Missing path segment 'resourceGroups'.", id)));
-        }
-        String resourceName = ResourceManagerUtils.getValueFromIdByParameterName(id,
+            "resourceGroupName", "resourceGroups", LOGGER);
+        String resourceName = ResourceManagerUtils.getRequiredValueFromIdByParameterName(id,
             "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.RecoveryServices/vaults/{resourceName}/replicationFabrics/{fabricName}/replicationProtectionContainers/{protectionContainerName}/replicationProtectedItems/{replicatedProtectedItemName}",
-            "resourceName");
-        if (resourceName == null) {
-            throw LOGGER.logExceptionAsError(new IllegalArgumentException(
-                String.format("The resource ID '%s' is not valid. Missing path segment 'vaults'.", id)));
-        }
-        String fabricName = ResourceManagerUtils.getValueFromIdByParameterName(id,
+            "resourceName", "vaults", LOGGER);
+        String fabricName = ResourceManagerUtils.getRequiredValueFromIdByParameterName(id,
             "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.RecoveryServices/vaults/{resourceName}/replicationFabrics/{fabricName}/replicationProtectionContainers/{protectionContainerName}/replicationProtectedItems/{replicatedProtectedItemName}",
-            "fabricName");
-        if (fabricName == null) {
-            throw LOGGER.logExceptionAsError(new IllegalArgumentException(
-                String.format("The resource ID '%s' is not valid. Missing path segment 'replicationFabrics'.", id)));
-        }
-        String protectionContainerName = ResourceManagerUtils.getValueFromIdByParameterName(id,
+            "fabricName", "replicationFabrics", LOGGER);
+        String protectionContainerName = ResourceManagerUtils.getRequiredValueFromIdByParameterName(id,
             "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.RecoveryServices/vaults/{resourceName}/replicationFabrics/{fabricName}/replicationProtectionContainers/{protectionContainerName}/replicationProtectedItems/{replicatedProtectedItemName}",
-            "protectionContainerName");
-        if (protectionContainerName == null) {
-            throw LOGGER.logExceptionAsError(new IllegalArgumentException(String.format(
-                "The resource ID '%s' is not valid. Missing path segment 'replicationProtectionContainers'.", id)));
-        }
-        String replicatedProtectedItemName = ResourceManagerUtils.getValueFromIdByParameterName(id,
+            "protectionContainerName", "replicationProtectionContainers", LOGGER);
+        String replicatedProtectedItemName = ResourceManagerUtils.getRequiredValueFromIdByParameterName(id,
             "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.RecoveryServices/vaults/{resourceName}/replicationFabrics/{fabricName}/replicationProtectionContainers/{protectionContainerName}/replicationProtectedItems/{replicatedProtectedItemName}",
-            "replicatedProtectedItemName");
-        if (replicatedProtectedItemName == null) {
-            throw LOGGER.logExceptionAsError(new IllegalArgumentException(String
-                .format("The resource ID '%s' is not valid. Missing path segment 'replicationProtectedItems'.", id)));
-        }
+            "replicatedProtectedItemName", "replicationProtectedItems", LOGGER);
         return this.getWithResponse(resourceGroupName, resourceName, fabricName, protectionContainerName,
             replicatedProtectedItemName, context);
     }

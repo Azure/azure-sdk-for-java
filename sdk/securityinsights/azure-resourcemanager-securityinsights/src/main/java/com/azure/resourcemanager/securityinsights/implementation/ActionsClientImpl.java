@@ -197,19 +197,7 @@ public final class ActionsClientImpl implements ActionsClient {
             .flatMap(res -> Mono.justOrEmpty(res.getValue()));
     }
 
-    /**
-     * Gets the action of alert rule.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param workspaceName The name of the monitor workspace.
-     * @param ruleId Alert rule ID.
-     * @param actionId Action ID.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the action of alert rule along with {@link Response}.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Response<ActionResponseInner> getWithResponse(String resourceGroupName, String workspaceName, String ruleId,
         String actionId, Context context) {
@@ -218,18 +206,7 @@ public final class ActionsClientImpl implements ActionsClient {
             resourceGroupName, workspaceName, ruleId, actionId, accept, context);
     }
 
-    /**
-     * Gets the action of alert rule.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param workspaceName The name of the monitor workspace.
-     * @param ruleId Alert rule ID.
-     * @param actionId Action ID.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the action of alert rule.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public ActionResponseInner get(String resourceGroupName, String workspaceName, String ruleId, String actionId) {
         return getWithResponse(resourceGroupName, workspaceName, ruleId, actionId, Context.NONE).getValue();
@@ -280,20 +257,7 @@ public final class ActionsClientImpl implements ActionsClient {
             .flatMap(res -> Mono.justOrEmpty(res.getValue()));
     }
 
-    /**
-     * Creates or updates the action of alert rule.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param workspaceName The name of the monitor workspace.
-     * @param ruleId Alert rule ID.
-     * @param actionId Action ID.
-     * @param action The action.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return action for alert rule along with {@link Response}.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Response<ActionResponseInner> createOrUpdateWithResponse(String resourceGroupName, String workspaceName,
         String ruleId, String actionId, ActionRequest action, Context context) {
@@ -304,19 +268,7 @@ public final class ActionsClientImpl implements ActionsClient {
             action, context);
     }
 
-    /**
-     * Creates or updates the action of alert rule.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param workspaceName The name of the monitor workspace.
-     * @param ruleId Alert rule ID.
-     * @param actionId Action ID.
-     * @param action The action.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return action for alert rule.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public ActionResponseInner createOrUpdate(String resourceGroupName, String workspaceName, String ruleId,
         String actionId, ActionRequest action) {
@@ -363,19 +315,7 @@ public final class ActionsClientImpl implements ActionsClient {
             .flatMap(ignored -> Mono.empty());
     }
 
-    /**
-     * Delete the action of alert rule.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param workspaceName The name of the monitor workspace.
-     * @param ruleId Alert rule ID.
-     * @param actionId Action ID.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the {@link Response}.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Response<Void> deleteWithResponse(String resourceGroupName, String workspaceName, String ruleId,
         String actionId, Context context) {
@@ -383,17 +323,7 @@ public final class ActionsClientImpl implements ActionsClient {
             this.client.getSubscriptionId(), resourceGroupName, workspaceName, ruleId, actionId, context);
     }
 
-    /**
-     * Delete the action of alert rule.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param workspaceName The name of the monitor workspace.
-     * @param ruleId Alert rule ID.
-     * @param actionId Action ID.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public void delete(String resourceGroupName, String workspaceName, String ruleId, String actionId) {
         deleteWithResponse(resourceGroupName, workspaceName, ruleId, actionId, Context.NONE);
@@ -454,11 +384,7 @@ public final class ActionsClientImpl implements ActionsClient {
     @ServiceMethod(returns = ReturnType.SINGLE)
     private PagedResponse<ActionResponseInner> listByAlertRuleSinglePage(String resourceGroupName, String workspaceName,
         String ruleId) {
-        final String accept = "application/json";
-        Response<ActionsList> res = service.listByAlertRuleSync(this.client.getEndpoint(), this.client.getApiVersion(),
-            this.client.getSubscriptionId(), resourceGroupName, workspaceName, ruleId, accept, Context.NONE);
-        return new PagedResponseBase<>(res.getRequest(), res.getStatusCode(), res.getHeaders(), res.getValue().value(),
-            res.getValue().nextLink(), null);
+        return listByAlertRuleSinglePage(resourceGroupName, workspaceName, ruleId, Context.NONE);
     }
 
     /**
@@ -483,36 +409,14 @@ public final class ActionsClientImpl implements ActionsClient {
             res.getValue().nextLink(), null);
     }
 
-    /**
-     * Gets all actions of alert rule.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param workspaceName The name of the monitor workspace.
-     * @param ruleId Alert rule ID.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return all actions of alert rule as paginated response with {@link PagedIterable}.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.COLLECTION)
     public PagedIterable<ActionResponseInner> listByAlertRule(String resourceGroupName, String workspaceName,
         String ruleId) {
-        return new PagedIterable<>(() -> listByAlertRuleSinglePage(resourceGroupName, workspaceName, ruleId),
-            nextLink -> listByAlertRuleNextSinglePage(nextLink));
+        return listByAlertRule(resourceGroupName, workspaceName, ruleId, Context.NONE);
     }
 
-    /**
-     * Gets all actions of alert rule.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param workspaceName The name of the monitor workspace.
-     * @param ruleId Alert rule ID.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return all actions of alert rule as paginated response with {@link PagedIterable}.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.COLLECTION)
     public PagedIterable<ActionResponseInner> listByAlertRule(String resourceGroupName, String workspaceName,
         String ruleId, Context context) {
@@ -550,11 +454,7 @@ public final class ActionsClientImpl implements ActionsClient {
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private PagedResponse<ActionResponseInner> listByAlertRuleNextSinglePage(String nextLink) {
-        final String accept = "application/json";
-        Response<ActionsList> res
-            = service.listByAlertRuleNextSync(nextLink, this.client.getEndpoint(), accept, Context.NONE);
-        return new PagedResponseBase<>(res.getRequest(), res.getStatusCode(), res.getHeaders(), res.getValue().value(),
-            res.getValue().nextLink(), null);
+        return listByAlertRuleNextSinglePage(nextLink, Context.NONE);
     }
 
     /**

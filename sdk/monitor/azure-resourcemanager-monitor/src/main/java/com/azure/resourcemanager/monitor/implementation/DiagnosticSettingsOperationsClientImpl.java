@@ -112,17 +112,7 @@ public final class DiagnosticSettingsOperationsClientImpl
             @HeaderParam("Accept") String accept, Context context);
     }
 
-    /**
-     * Gets the active diagnostic settings for the specified resource.
-     * 
-     * @param resourceUri The fully qualified Azure Resource manager identifier of the resource.
-     * @param name The name of the diagnostic setting.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the active diagnostic settings for the specified resource along with {@link Response} on successful
-     * completion of {@link Mono}.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Response<DiagnosticSettingsResourceInner>> getWithResponseAsync(String resourceUri, String name) {
         if (this.client.getEndpoint() == null) {
@@ -174,63 +164,25 @@ public final class DiagnosticSettingsOperationsClientImpl
         return service.get(this.client.getEndpoint(), apiVersion, resourceUri, name, accept, context);
     }
 
-    /**
-     * Gets the active diagnostic settings for the specified resource.
-     * 
-     * @param resourceUri The fully qualified Azure Resource manager identifier of the resource.
-     * @param name The name of the diagnostic setting.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the active diagnostic settings for the specified resource on successful completion of {@link Mono}.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<DiagnosticSettingsResourceInner> getAsync(String resourceUri, String name) {
         return getWithResponseAsync(resourceUri, name).flatMap(res -> Mono.justOrEmpty(res.getValue()));
     }
 
-    /**
-     * Gets the active diagnostic settings for the specified resource.
-     * 
-     * @param resourceUri The fully qualified Azure Resource manager identifier of the resource.
-     * @param name The name of the diagnostic setting.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the active diagnostic settings for the specified resource along with {@link Response}.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Response<DiagnosticSettingsResourceInner> getWithResponse(String resourceUri, String name, Context context) {
         return getWithResponseAsync(resourceUri, name, context).block();
     }
 
-    /**
-     * Gets the active diagnostic settings for the specified resource.
-     * 
-     * @param resourceUri The fully qualified Azure Resource manager identifier of the resource.
-     * @param name The name of the diagnostic setting.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the active diagnostic settings for the specified resource.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public DiagnosticSettingsResourceInner get(String resourceUri, String name) {
         return getWithResponse(resourceUri, name, Context.NONE).getValue();
     }
 
-    /**
-     * Creates or updates diagnostic settings for the specified resource.
-     * 
-     * @param resourceUri The fully qualified Azure Resource manager identifier of the resource.
-     * @param name The name of the diagnostic setting.
-     * @param parameters Parameters supplied to the operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the diagnostic setting resource along with {@link Response} on successful completion of {@link Mono}.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Response<DiagnosticSettingsResourceInner>> createOrUpdateWithResponseAsync(String resourceUri,
         String name, DiagnosticSettingsResourceInner parameters) {
@@ -296,17 +248,7 @@ public final class DiagnosticSettingsOperationsClientImpl
             parameters, context);
     }
 
-    /**
-     * Creates or updates diagnostic settings for the specified resource.
-     * 
-     * @param resourceUri The fully qualified Azure Resource manager identifier of the resource.
-     * @param name The name of the diagnostic setting.
-     * @param parameters Parameters supplied to the operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the diagnostic setting resource on successful completion of {@link Mono}.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<DiagnosticSettingsResourceInner> createOrUpdateAsync(String resourceUri, String name,
         DiagnosticSettingsResourceInner parameters) {
@@ -314,51 +256,21 @@ public final class DiagnosticSettingsOperationsClientImpl
             .flatMap(res -> Mono.justOrEmpty(res.getValue()));
     }
 
-    /**
-     * Creates or updates diagnostic settings for the specified resource.
-     * 
-     * @param resourceUri The fully qualified Azure Resource manager identifier of the resource.
-     * @param name The name of the diagnostic setting.
-     * @param parameters Parameters supplied to the operation.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the diagnostic setting resource along with {@link Response}.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Response<DiagnosticSettingsResourceInner> createOrUpdateWithResponse(String resourceUri, String name,
         DiagnosticSettingsResourceInner parameters, Context context) {
         return createOrUpdateWithResponseAsync(resourceUri, name, parameters, context).block();
     }
 
-    /**
-     * Creates or updates diagnostic settings for the specified resource.
-     * 
-     * @param resourceUri The fully qualified Azure Resource manager identifier of the resource.
-     * @param name The name of the diagnostic setting.
-     * @param parameters Parameters supplied to the operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the diagnostic setting resource.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public DiagnosticSettingsResourceInner createOrUpdate(String resourceUri, String name,
         DiagnosticSettingsResourceInner parameters) {
         return createOrUpdateWithResponse(resourceUri, name, parameters, Context.NONE).getValue();
     }
 
-    /**
-     * Deletes existing diagnostic settings for the specified resource.
-     * 
-     * @param resourceUri The fully qualified Azure Resource manager identifier of the resource.
-     * @param name The name of the diagnostic setting.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the {@link Response} on successful completion of {@link Mono}.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Response<Void>> deleteWithResponseAsync(String resourceUri, String name) {
         if (this.client.getEndpoint() == null) {
@@ -405,46 +317,19 @@ public final class DiagnosticSettingsOperationsClientImpl
         return service.delete(this.client.getEndpoint(), apiVersion, resourceUri, name, context);
     }
 
-    /**
-     * Deletes existing diagnostic settings for the specified resource.
-     * 
-     * @param resourceUri The fully qualified Azure Resource manager identifier of the resource.
-     * @param name The name of the diagnostic setting.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return A {@link Mono} that completes when a successful response is received.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Void> deleteAsync(String resourceUri, String name) {
         return deleteWithResponseAsync(resourceUri, name).flatMap(ignored -> Mono.empty());
     }
 
-    /**
-     * Deletes existing diagnostic settings for the specified resource.
-     * 
-     * @param resourceUri The fully qualified Azure Resource manager identifier of the resource.
-     * @param name The name of the diagnostic setting.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the {@link Response}.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Response<Void> deleteWithResponse(String resourceUri, String name, Context context) {
         return deleteWithResponseAsync(resourceUri, name, context).block();
     }
 
-    /**
-     * Deletes existing diagnostic settings for the specified resource.
-     * 
-     * @param resourceUri The fully qualified Azure Resource manager identifier of the resource.
-     * @param name The name of the diagnostic setting.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public void delete(String resourceUri, String name) {
         deleteWithResponse(resourceUri, name, Context.NONE);
@@ -507,16 +392,7 @@ public final class DiagnosticSettingsOperationsClientImpl
                 res.getValue().value(), res.getValue().nextLink(), null));
     }
 
-    /**
-     * Gets the active diagnostic settings list for the specified resource.
-     * 
-     * @param resourceUri The fully qualified Azure Resource manager identifier of the resource.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the active diagnostic settings list for the specified resource as paginated response with
-     * {@link PagedFlux}.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.COLLECTION)
     public PagedFlux<DiagnosticSettingsResourceInner> listAsync(String resourceUri) {
         return new PagedFlux<>(() -> listSinglePageAsync(resourceUri), nextLink -> listNextSinglePageAsync(nextLink));
@@ -539,32 +415,13 @@ public final class DiagnosticSettingsOperationsClientImpl
             nextLink -> listNextSinglePageAsync(nextLink, context));
     }
 
-    /**
-     * Gets the active diagnostic settings list for the specified resource.
-     * 
-     * @param resourceUri The fully qualified Azure Resource manager identifier of the resource.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the active diagnostic settings list for the specified resource as paginated response with
-     * {@link PagedIterable}.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.COLLECTION)
     public PagedIterable<DiagnosticSettingsResourceInner> list(String resourceUri) {
         return new PagedIterable<>(listAsync(resourceUri));
     }
 
-    /**
-     * Gets the active diagnostic settings list for the specified resource.
-     * 
-     * @param resourceUri The fully qualified Azure Resource manager identifier of the resource.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the active diagnostic settings list for the specified resource as paginated response with
-     * {@link PagedIterable}.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.COLLECTION)
     public PagedIterable<DiagnosticSettingsResourceInner> list(String resourceUri, Context context) {
         return new PagedIterable<>(listAsync(resourceUri, context));

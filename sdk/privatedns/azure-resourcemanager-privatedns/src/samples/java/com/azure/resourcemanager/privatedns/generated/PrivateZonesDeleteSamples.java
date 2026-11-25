@@ -9,7 +9,7 @@ package com.azure.resourcemanager.privatedns.generated;
  */
 public final class PrivateZonesDeleteSamples {
     /*
-     * x-ms-original-file: 2024-06-01/PrivateZoneDelete.json
+     * x-ms-original-file: 2026-06-01-preview/PrivateZoneDelete.json
      */
     /**
      * Sample code: DELETE Private DNS Zone.

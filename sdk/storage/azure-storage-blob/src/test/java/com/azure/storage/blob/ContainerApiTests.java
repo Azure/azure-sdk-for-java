@@ -303,6 +303,37 @@ public class ContainerApiTests extends BlobTestBase {
     }
 
     @Test
+    public void createIfNotExistsOnContainerBeingDeleted() {
+        cc.delete();
+
+        BlobStorageException e = assertThrows(BlobStorageException.class, cc::createIfNotExists);
+        assertExceptionStatusCodeAndMessage(e, 409, BlobErrorCode.CONTAINER_BEING_DELETED);
+    }
+
+    @Test
+    public void createOnContainerBeingDeleted() {
+        cc.delete();
+
+        BlobStorageException e = assertThrows(BlobStorageException.class, cc::create);
+        assertExceptionStatusCodeAndMessage(e, 409, BlobErrorCode.CONTAINER_BEING_DELETED);
+    }
+
+    // Live only: it waits for the service to finish deleting the container, typically 30 to 60 seconds (see
+    // createAfterContainerDeleteCompletes). The recorded test above covers the refusal while the delete is in progress.
+    @LiveOnly
+    @Test
+    public void createIfNotExistsAfterContainerDeleteCompletes() {
+        cc.delete();
+
+        Response<Boolean> response
+            = createAfterContainerDeleteCompletes(() -> cc.createIfNotExistsWithResponse(null, null, null));
+
+        assertResponseStatusCode(response, 201);
+        assertTrue(response.getValue());
+        assertTrue(cc.exists());
+    }
+
+    @Test
     public void createIfNotExistsOnAContainerThatAlreadyExistsWithResponse() {
         BlobContainerClient cc = primaryBlobServiceClient.getBlobContainerClient(generateContainerName());
         Response<Boolean> initialResponse = cc.createIfNotExistsWithResponse(null, null, null);

@@ -9,7 +9,7 @@ package com.azure.resourcemanager.redisenterprise.generated;
  */
 public final class ClustersUnlinkMigratedEndpointSamples {
     /*
-     * x-ms-original-file: 2026-09-01/RedisEnterpriseUnlinkMigratedEndpoint.json
+     * x-ms-original-file: 2026-10-01-preview/RedisEnterpriseUnlinkMigratedEndpoint.json
      */
     /**
      * Sample code: RedisEnterpriseUnlinkMigratedEndpoint.

@@ -12,18 +12,14 @@ public final class CostControlConnectionsTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
         CostControlConnections model
-            = BinaryData.fromString("{\"appInsightsConnectionId\":\"vhkhixu\",\"eventGridConnectionId\":\"dtopbob\"}")
-                .toObject(CostControlConnections.class);
-        Assertions.assertEquals("vhkhixu", model.appInsightsConnectionId());
-        Assertions.assertEquals("dtopbob", model.eventGridConnectionId());
+            = BinaryData.fromString("{\"appInsightsConnectionId\":\"e\"}").toObject(CostControlConnections.class);
+        Assertions.assertEquals("e", model.appInsightsConnectionId());
     }
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
-        CostControlConnections model
-            = new CostControlConnections().withAppInsightsConnectionId("vhkhixu").withEventGridConnectionId("dtopbob");
+        CostControlConnections model = new CostControlConnections().withAppInsightsConnectionId("e");
         model = BinaryData.fromObject(model).toObject(CostControlConnections.class);
-        Assertions.assertEquals("vhkhixu", model.appInsightsConnectionId());
-        Assertions.assertEquals("dtopbob", model.eventGridConnectionId());
+        Assertions.assertEquals("e", model.appInsightsConnectionId());
     }
 }

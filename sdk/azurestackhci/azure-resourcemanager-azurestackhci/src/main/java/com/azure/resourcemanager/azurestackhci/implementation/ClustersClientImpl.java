@@ -365,17 +365,7 @@ public final class ClustersClientImpl implements ClustersClient {
             .flatMap(res -> Mono.justOrEmpty(res.getValue()));
     }
 
-    /**
-     * Get HCI cluster.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param clusterName The name of the cluster.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return hCI cluster along with {@link Response}.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Response<ClusterInner> getByResourceGroupWithResponse(String resourceGroupName, String clusterName,
         Context context) {
@@ -384,16 +374,7 @@ public final class ClustersClientImpl implements ClustersClient {
             this.client.getSubscriptionId(), resourceGroupName, clusterName, accept, context);
     }
 
-    /**
-     * Get HCI cluster.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param clusterName The name of the cluster.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return hCI cluster.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public ClusterInner getByResourceGroup(String resourceGroupName, String clusterName) {
         return getByResourceGroupWithResponse(resourceGroupName, clusterName, Context.NONE).getValue();
@@ -438,18 +419,7 @@ public final class ClustersClientImpl implements ClustersClient {
             .flatMap(res -> Mono.justOrEmpty(res.getValue()));
     }
 
-    /**
-     * Create an HCI cluster.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param clusterName The name of the cluster.
-     * @param cluster Details of the HCI cluster.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return cluster details along with {@link Response}.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Response<ClusterInner> createWithResponse(String resourceGroupName, String clusterName, ClusterInner cluster,
         Context context) {
@@ -459,17 +429,7 @@ public final class ClustersClientImpl implements ClustersClient {
             this.client.getSubscriptionId(), resourceGroupName, clusterName, contentType, accept, cluster, context);
     }
 
-    /**
-     * Create an HCI cluster.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param clusterName The name of the cluster.
-     * @param cluster Details of the HCI cluster.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return cluster details.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public ClusterInner create(String resourceGroupName, String clusterName, ClusterInner cluster) {
         return createWithResponse(resourceGroupName, clusterName, cluster, Context.NONE).getValue();
@@ -514,18 +474,7 @@ public final class ClustersClientImpl implements ClustersClient {
             .flatMap(res -> Mono.justOrEmpty(res.getValue()));
     }
 
-    /**
-     * Update an HCI cluster.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param clusterName The name of the cluster.
-     * @param cluster Details of the HCI cluster.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return cluster details along with {@link Response}.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Response<ClusterInner> updateWithResponse(String resourceGroupName, String clusterName, ClusterPatch cluster,
         Context context) {
@@ -535,17 +484,7 @@ public final class ClustersClientImpl implements ClustersClient {
             this.client.getSubscriptionId(), resourceGroupName, clusterName, contentType, accept, cluster, context);
     }
 
-    /**
-     * Update an HCI cluster.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param clusterName The name of the cluster.
-     * @param cluster Details of the HCI cluster.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return cluster details.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public ClusterInner update(String resourceGroupName, String clusterName, ClusterPatch cluster) {
         return updateWithResponse(resourceGroupName, clusterName, cluster, Context.NONE).getValue();
@@ -581,8 +520,7 @@ public final class ClustersClientImpl implements ClustersClient {
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Response<BinaryData> deleteWithResponse(String resourceGroupName, String clusterName) {
-        return service.deleteSync(this.client.getEndpoint(), this.client.getApiVersion(),
-            this.client.getSubscriptionId(), resourceGroupName, clusterName, Context.NONE);
+        return deleteWithResponse(resourceGroupName, clusterName, Context.NONE);
     }
 
     /**
@@ -619,33 +557,13 @@ public final class ClustersClientImpl implements ClustersClient {
             this.client.getContext());
     }
 
-    /**
-     * Delete an HCI cluster.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param clusterName The name of the cluster.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the {@link SyncPoller} for polling of long-running operation.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public SyncPoller<PollResult<Void>, Void> beginDelete(String resourceGroupName, String clusterName) {
-        Response<BinaryData> response = deleteWithResponse(resourceGroupName, clusterName);
-        return this.client.<Void, Void>getLroResult(response, Void.class, Void.class, Context.NONE);
+        return beginDelete(resourceGroupName, clusterName, Context.NONE);
     }
 
-    /**
-     * Delete an HCI cluster.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param clusterName The name of the cluster.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the {@link SyncPoller} for polling of long-running operation.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public SyncPoller<PollResult<Void>, Void> beginDelete(String resourceGroupName, String clusterName,
         Context context) {
@@ -668,33 +586,16 @@ public final class ClustersClientImpl implements ClustersClient {
         return beginDeleteAsync(resourceGroupName, clusterName).last().flatMap(this.client::getLroFinalResultOrError);
     }
 
-    /**
-     * Delete an HCI cluster.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param clusterName The name of the cluster.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public void delete(String resourceGroupName, String clusterName) {
-        beginDelete(resourceGroupName, clusterName).getFinalResult();
+        delete(resourceGroupName, clusterName, Context.NONE);
     }
 
-    /**
-     * Delete an HCI cluster.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param clusterName The name of the cluster.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public void delete(String resourceGroupName, String clusterName, Context context) {
-        beginDelete(resourceGroupName, clusterName, context).getFinalResult();
+        this.client.getLroFinalResultOrError(beginDelete(resourceGroupName, clusterName, context));
     }
 
     /**
@@ -743,11 +644,7 @@ public final class ClustersClientImpl implements ClustersClient {
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private PagedResponse<ClusterInner> listByResourceGroupSinglePage(String resourceGroupName) {
-        final String accept = "application/json";
-        Response<ClusterList> res = service.listByResourceGroupSync(this.client.getEndpoint(),
-            this.client.getApiVersion(), this.client.getSubscriptionId(), resourceGroupName, accept, Context.NONE);
-        return new PagedResponseBase<>(res.getRequest(), res.getStatusCode(), res.getHeaders(), res.getValue().value(),
-            res.getValue().nextLink(), null);
+        return listByResourceGroupSinglePage(resourceGroupName, Context.NONE);
     }
 
     /**
@@ -769,31 +666,13 @@ public final class ClustersClientImpl implements ClustersClient {
             res.getValue().nextLink(), null);
     }
 
-    /**
-     * List all HCI clusters in a resource group.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return list of clusters as paginated response with {@link PagedIterable}.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.COLLECTION)
     public PagedIterable<ClusterInner> listByResourceGroup(String resourceGroupName) {
-        return new PagedIterable<>(() -> listByResourceGroupSinglePage(resourceGroupName),
-            nextLink -> listByResourceGroupNextSinglePage(nextLink));
+        return listByResourceGroup(resourceGroupName, Context.NONE);
     }
 
-    /**
-     * List all HCI clusters in a resource group.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return list of clusters as paginated response with {@link PagedIterable}.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.COLLECTION)
     public PagedIterable<ClusterInner> listByResourceGroup(String resourceGroupName, Context context) {
         return new PagedIterable<>(() -> listByResourceGroupSinglePage(resourceGroupName, context),
@@ -840,11 +719,7 @@ public final class ClustersClientImpl implements ClustersClient {
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private PagedResponse<ClusterInner> listSinglePage() {
-        final String accept = "application/json";
-        Response<ClusterList> res = service.listSync(this.client.getEndpoint(), this.client.getApiVersion(),
-            this.client.getSubscriptionId(), accept, Context.NONE);
-        return new PagedResponseBase<>(res.getRequest(), res.getStatusCode(), res.getHeaders(), res.getValue().value(),
-            res.getValue().nextLink(), null);
+        return listSinglePage(Context.NONE);
     }
 
     /**
@@ -865,27 +740,13 @@ public final class ClustersClientImpl implements ClustersClient {
             res.getValue().nextLink(), null);
     }
 
-    /**
-     * List all HCI clusters in a subscription.
-     * 
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return list of clusters as paginated response with {@link PagedIterable}.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.COLLECTION)
     public PagedIterable<ClusterInner> list() {
-        return new PagedIterable<>(() -> listSinglePage(), nextLink -> listBySubscriptionNextSinglePage(nextLink));
+        return list(Context.NONE);
     }
 
-    /**
-     * List all HCI clusters in a subscription.
-     * 
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return list of clusters as paginated response with {@link PagedIterable}.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.COLLECTION)
     public PagedIterable<ClusterInner> list(Context context) {
         return new PagedIterable<>(() -> listSinglePage(context),
@@ -929,10 +790,7 @@ public final class ClustersClientImpl implements ClustersClient {
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Response<BinaryData> updateSecretsLocationsWithResponse(String resourceGroupName, String clusterName,
         SecretsLocationsChangeRequest body) {
-        final String contentType = "application/json";
-        final String accept = "application/json";
-        return service.updateSecretsLocationsSync(this.client.getEndpoint(), this.client.getApiVersion(),
-            this.client.getSubscriptionId(), resourceGroupName, clusterName, contentType, accept, body, Context.NONE);
+        return updateSecretsLocationsWithResponse(resourceGroupName, clusterName, body, Context.NONE);
     }
 
     /**
@@ -976,37 +834,14 @@ public final class ClustersClientImpl implements ClustersClient {
             ClusterInner.class, ClusterInner.class, this.client.getContext());
     }
 
-    /**
-     * Update cluster secrets locations.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param clusterName The name of the cluster.
-     * @param body The content of the action request.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the {@link SyncPoller} for polling of cluster details.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public SyncPoller<PollResult<ClusterInner>, ClusterInner> beginUpdateSecretsLocations(String resourceGroupName,
         String clusterName, SecretsLocationsChangeRequest body) {
-        Response<BinaryData> response = updateSecretsLocationsWithResponse(resourceGroupName, clusterName, body);
-        return this.client.<ClusterInner, ClusterInner>getLroResult(response, ClusterInner.class, ClusterInner.class,
-            Context.NONE);
+        return beginUpdateSecretsLocations(resourceGroupName, clusterName, body, Context.NONE);
     }
 
-    /**
-     * Update cluster secrets locations.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param clusterName The name of the cluster.
-     * @param body The content of the action request.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the {@link SyncPoller} for polling of cluster details.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public SyncPoller<PollResult<ClusterInner>, ClusterInner> beginUpdateSecretsLocations(String resourceGroupName,
         String clusterName, SecretsLocationsChangeRequest body, Context context) {
@@ -1034,39 +869,19 @@ public final class ClustersClientImpl implements ClustersClient {
             .flatMap(this.client::getLroFinalResultOrError);
     }
 
-    /**
-     * Update cluster secrets locations.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param clusterName The name of the cluster.
-     * @param body The content of the action request.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return cluster details.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public ClusterInner updateSecretsLocations(String resourceGroupName, String clusterName,
         SecretsLocationsChangeRequest body) {
-        return beginUpdateSecretsLocations(resourceGroupName, clusterName, body).getFinalResult();
+        return updateSecretsLocations(resourceGroupName, clusterName, body, Context.NONE);
     }
 
-    /**
-     * Update cluster secrets locations.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param clusterName The name of the cluster.
-     * @param body The content of the action request.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return cluster details.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public ClusterInner updateSecretsLocations(String resourceGroupName, String clusterName,
         SecretsLocationsChangeRequest body, Context context) {
-        return beginUpdateSecretsLocations(resourceGroupName, clusterName, body, context).getFinalResult();
+        return this.client
+            .getLroFinalResultOrError(beginUpdateSecretsLocations(resourceGroupName, clusterName, body, context));
     }
 
     /**
@@ -1105,10 +920,7 @@ public final class ClustersClientImpl implements ClustersClient {
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Response<BinaryData> uploadCertificateWithResponse(String resourceGroupName, String clusterName,
         UploadCertificateRequest uploadCertificateRequest) {
-        final String contentType = "application/json";
-        return service.uploadCertificateSync(this.client.getEndpoint(), this.client.getApiVersion(),
-            this.client.getSubscriptionId(), resourceGroupName, clusterName, contentType, uploadCertificateRequest,
-            Context.NONE);
+        return uploadCertificateWithResponse(resourceGroupName, clusterName, uploadCertificateRequest, Context.NONE);
     }
 
     /**
@@ -1152,37 +964,14 @@ public final class ClustersClientImpl implements ClustersClient {
             this.client.getContext());
     }
 
-    /**
-     * Upload certificate.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param clusterName The name of the cluster.
-     * @param uploadCertificateRequest Upload certificate request.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the {@link SyncPoller} for polling of long-running operation.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public SyncPoller<PollResult<Void>, Void> beginUploadCertificate(String resourceGroupName, String clusterName,
         UploadCertificateRequest uploadCertificateRequest) {
-        Response<BinaryData> response
-            = uploadCertificateWithResponse(resourceGroupName, clusterName, uploadCertificateRequest);
-        return this.client.<Void, Void>getLroResult(response, Void.class, Void.class, Context.NONE);
+        return beginUploadCertificate(resourceGroupName, clusterName, uploadCertificateRequest, Context.NONE);
     }
 
-    /**
-     * Upload certificate.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param clusterName The name of the cluster.
-     * @param uploadCertificateRequest Upload certificate request.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the {@link SyncPoller} for polling of long-running operation.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public SyncPoller<PollResult<Void>, Void> beginUploadCertificate(String resourceGroupName, String clusterName,
         UploadCertificateRequest uploadCertificateRequest, Context context) {
@@ -1209,37 +998,19 @@ public final class ClustersClientImpl implements ClustersClient {
             .flatMap(this.client::getLroFinalResultOrError);
     }
 
-    /**
-     * Upload certificate.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param clusterName The name of the cluster.
-     * @param uploadCertificateRequest Upload certificate request.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public void uploadCertificate(String resourceGroupName, String clusterName,
         UploadCertificateRequest uploadCertificateRequest) {
-        beginUploadCertificate(resourceGroupName, clusterName, uploadCertificateRequest).getFinalResult();
+        uploadCertificate(resourceGroupName, clusterName, uploadCertificateRequest, Context.NONE);
     }
 
-    /**
-     * Upload certificate.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param clusterName The name of the cluster.
-     * @param uploadCertificateRequest Upload certificate request.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public void uploadCertificate(String resourceGroupName, String clusterName,
         UploadCertificateRequest uploadCertificateRequest, Context context) {
-        beginUploadCertificate(resourceGroupName, clusterName, uploadCertificateRequest, context).getFinalResult();
+        this.client.getLroFinalResultOrError(
+            beginUploadCertificate(resourceGroupName, clusterName, uploadCertificateRequest, context));
     }
 
     /**
@@ -1274,9 +1045,7 @@ public final class ClustersClientImpl implements ClustersClient {
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Response<BinaryData> createIdentityWithResponse(String resourceGroupName, String clusterName) {
-        final String accept = "application/json";
-        return service.createIdentitySync(this.client.getEndpoint(), this.client.getApiVersion(),
-            this.client.getSubscriptionId(), resourceGroupName, clusterName, accept, Context.NONE);
+        return createIdentityWithResponse(resourceGroupName, clusterName, Context.NONE);
     }
 
     /**
@@ -1317,35 +1086,14 @@ public final class ClustersClientImpl implements ClustersClient {
             this.client.getContext());
     }
 
-    /**
-     * Create cluster identity.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param clusterName The name of the cluster.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the {@link SyncPoller} for polling of long-running operation.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public SyncPoller<PollResult<ClusterIdentityResponseInner>, ClusterIdentityResponseInner>
         beginCreateIdentity(String resourceGroupName, String clusterName) {
-        Response<BinaryData> response = createIdentityWithResponse(resourceGroupName, clusterName);
-        return this.client.<ClusterIdentityResponseInner, ClusterIdentityResponseInner>getLroResult(response,
-            ClusterIdentityResponseInner.class, ClusterIdentityResponseInner.class, Context.NONE);
+        return beginCreateIdentity(resourceGroupName, clusterName, Context.NONE);
     }
 
-    /**
-     * Create cluster identity.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param clusterName The name of the cluster.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the {@link SyncPoller} for polling of long-running operation.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public SyncPoller<PollResult<ClusterIdentityResponseInner>, ClusterIdentityResponseInner>
         beginCreateIdentity(String resourceGroupName, String clusterName, Context context) {
@@ -1370,35 +1118,16 @@ public final class ClustersClientImpl implements ClustersClient {
             .flatMap(this.client::getLroFinalResultOrError);
     }
 
-    /**
-     * Create cluster identity.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param clusterName The name of the cluster.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the response.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public ClusterIdentityResponseInner createIdentity(String resourceGroupName, String clusterName) {
-        return beginCreateIdentity(resourceGroupName, clusterName).getFinalResult();
+        return createIdentity(resourceGroupName, clusterName, Context.NONE);
     }
 
-    /**
-     * Create cluster identity.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param clusterName The name of the cluster.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the response.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public ClusterIdentityResponseInner createIdentity(String resourceGroupName, String clusterName, Context context) {
-        return beginCreateIdentity(resourceGroupName, clusterName, context).getFinalResult();
+        return this.client.getLroFinalResultOrError(beginCreateIdentity(resourceGroupName, clusterName, context));
     }
 
     /**
@@ -1438,10 +1167,7 @@ public final class ClustersClientImpl implements ClustersClient {
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Response<BinaryData> extendSoftwareAssuranceBenefitWithResponse(String resourceGroupName,
         String clusterName, SoftwareAssuranceChangeRequest softwareAssuranceChangeRequest) {
-        final String contentType = "application/json";
-        final String accept = "application/json";
-        return service.extendSoftwareAssuranceBenefitSync(this.client.getEndpoint(), this.client.getApiVersion(),
-            this.client.getSubscriptionId(), resourceGroupName, clusterName, contentType, accept,
+        return extendSoftwareAssuranceBenefitWithResponse(resourceGroupName, clusterName,
             softwareAssuranceChangeRequest, Context.NONE);
     }
 
@@ -1487,38 +1213,15 @@ public final class ClustersClientImpl implements ClustersClient {
             ClusterInner.class, ClusterInner.class, this.client.getContext());
     }
 
-    /**
-     * Extends Software Assurance Benefit to a cluster.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param clusterName The name of the cluster.
-     * @param softwareAssuranceChangeRequest Software Assurance Change Request Payload.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the {@link SyncPoller} for polling of cluster details.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public SyncPoller<PollResult<ClusterInner>, ClusterInner> beginExtendSoftwareAssuranceBenefit(
         String resourceGroupName, String clusterName, SoftwareAssuranceChangeRequest softwareAssuranceChangeRequest) {
-        Response<BinaryData> response = extendSoftwareAssuranceBenefitWithResponse(resourceGroupName, clusterName,
-            softwareAssuranceChangeRequest);
-        return this.client.<ClusterInner, ClusterInner>getLroResult(response, ClusterInner.class, ClusterInner.class,
+        return beginExtendSoftwareAssuranceBenefit(resourceGroupName, clusterName, softwareAssuranceChangeRequest,
             Context.NONE);
     }
 
-    /**
-     * Extends Software Assurance Benefit to a cluster.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param clusterName The name of the cluster.
-     * @param softwareAssuranceChangeRequest Software Assurance Change Request Payload.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the {@link SyncPoller} for polling of cluster details.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public SyncPoller<PollResult<ClusterInner>, ClusterInner> beginExtendSoftwareAssuranceBenefit(
         String resourceGroupName, String clusterName, SoftwareAssuranceChangeRequest softwareAssuranceChangeRequest,
@@ -1548,41 +1251,20 @@ public final class ClustersClientImpl implements ClustersClient {
             .flatMap(this.client::getLroFinalResultOrError);
     }
 
-    /**
-     * Extends Software Assurance Benefit to a cluster.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param clusterName The name of the cluster.
-     * @param softwareAssuranceChangeRequest Software Assurance Change Request Payload.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return cluster details.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public ClusterInner extendSoftwareAssuranceBenefit(String resourceGroupName, String clusterName,
         SoftwareAssuranceChangeRequest softwareAssuranceChangeRequest) {
-        return beginExtendSoftwareAssuranceBenefit(resourceGroupName, clusterName, softwareAssuranceChangeRequest)
-            .getFinalResult();
+        return extendSoftwareAssuranceBenefit(resourceGroupName, clusterName, softwareAssuranceChangeRequest,
+            Context.NONE);
     }
 
-    /**
-     * Extends Software Assurance Benefit to a cluster.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param clusterName The name of the cluster.
-     * @param softwareAssuranceChangeRequest Software Assurance Change Request Payload.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return cluster details.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public ClusterInner extendSoftwareAssuranceBenefit(String resourceGroupName, String clusterName,
         SoftwareAssuranceChangeRequest softwareAssuranceChangeRequest, Context context) {
-        return beginExtendSoftwareAssuranceBenefit(resourceGroupName, clusterName, softwareAssuranceChangeRequest,
-            context).getFinalResult();
+        return this.client.getLroFinalResultOrError(beginExtendSoftwareAssuranceBenefit(resourceGroupName, clusterName,
+            softwareAssuranceChangeRequest, context));
     }
 
     /**
@@ -1622,11 +1304,7 @@ public final class ClustersClientImpl implements ClustersClient {
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Response<BinaryData> triggerLogCollectionWithResponse(String resourceGroupName, String clusterName,
         LogCollectionRequest logCollectionRequest) {
-        final String contentType = "application/json";
-        final String accept = "application/json";
-        return service.triggerLogCollectionSync(this.client.getEndpoint(), this.client.getApiVersion(),
-            this.client.getSubscriptionId(), resourceGroupName, clusterName, contentType, accept, logCollectionRequest,
-            Context.NONE);
+        return triggerLogCollectionWithResponse(resourceGroupName, clusterName, logCollectionRequest, Context.NONE);
     }
 
     /**
@@ -1671,38 +1349,14 @@ public final class ClustersClientImpl implements ClustersClient {
             ClusterInner.class, ClusterInner.class, this.client.getContext());
     }
 
-    /**
-     * Trigger Log Collection on a cluster.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param clusterName The name of the cluster.
-     * @param logCollectionRequest Trigger Log Collection Request Payload.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the {@link SyncPoller} for polling of cluster details.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public SyncPoller<PollResult<ClusterInner>, ClusterInner> beginTriggerLogCollection(String resourceGroupName,
         String clusterName, LogCollectionRequest logCollectionRequest) {
-        Response<BinaryData> response
-            = triggerLogCollectionWithResponse(resourceGroupName, clusterName, logCollectionRequest);
-        return this.client.<ClusterInner, ClusterInner>getLroResult(response, ClusterInner.class, ClusterInner.class,
-            Context.NONE);
+        return beginTriggerLogCollection(resourceGroupName, clusterName, logCollectionRequest, Context.NONE);
     }
 
-    /**
-     * Trigger Log Collection on a cluster.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param clusterName The name of the cluster.
-     * @param logCollectionRequest Trigger Log Collection Request Payload.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the {@link SyncPoller} for polling of cluster details.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public SyncPoller<PollResult<ClusterInner>, ClusterInner> beginTriggerLogCollection(String resourceGroupName,
         String clusterName, LogCollectionRequest logCollectionRequest, Context context) {
@@ -1730,40 +1384,19 @@ public final class ClustersClientImpl implements ClustersClient {
             .flatMap(this.client::getLroFinalResultOrError);
     }
 
-    /**
-     * Trigger Log Collection on a cluster.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param clusterName The name of the cluster.
-     * @param logCollectionRequest Trigger Log Collection Request Payload.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return cluster details.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public ClusterInner triggerLogCollection(String resourceGroupName, String clusterName,
         LogCollectionRequest logCollectionRequest) {
-        return beginTriggerLogCollection(resourceGroupName, clusterName, logCollectionRequest).getFinalResult();
+        return triggerLogCollection(resourceGroupName, clusterName, logCollectionRequest, Context.NONE);
     }
 
-    /**
-     * Trigger Log Collection on a cluster.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param clusterName The name of the cluster.
-     * @param logCollectionRequest Trigger Log Collection Request Payload.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return cluster details.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public ClusterInner triggerLogCollection(String resourceGroupName, String clusterName,
         LogCollectionRequest logCollectionRequest, Context context) {
-        return beginTriggerLogCollection(resourceGroupName, clusterName, logCollectionRequest, context)
-            .getFinalResult();
+        return this.client.getLroFinalResultOrError(
+            beginTriggerLogCollection(resourceGroupName, clusterName, logCollectionRequest, context));
     }
 
     /**
@@ -1803,11 +1436,7 @@ public final class ClustersClientImpl implements ClustersClient {
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Response<BinaryData> configureRemoteSupportWithResponse(String resourceGroupName, String clusterName,
         RemoteSupportRequest remoteSupportRequest) {
-        final String contentType = "application/json";
-        final String accept = "application/json";
-        return service.configureRemoteSupportSync(this.client.getEndpoint(), this.client.getApiVersion(),
-            this.client.getSubscriptionId(), resourceGroupName, clusterName, contentType, accept, remoteSupportRequest,
-            Context.NONE);
+        return configureRemoteSupportWithResponse(resourceGroupName, clusterName, remoteSupportRequest, Context.NONE);
     }
 
     /**
@@ -1852,38 +1481,14 @@ public final class ClustersClientImpl implements ClustersClient {
             ClusterInner.class, ClusterInner.class, this.client.getContext());
     }
 
-    /**
-     * Configure RemoteSupport on a cluster.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param clusterName The name of the cluster.
-     * @param remoteSupportRequest Configure Remote Support Request Payload.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the {@link SyncPoller} for polling of cluster details.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public SyncPoller<PollResult<ClusterInner>, ClusterInner> beginConfigureRemoteSupport(String resourceGroupName,
         String clusterName, RemoteSupportRequest remoteSupportRequest) {
-        Response<BinaryData> response
-            = configureRemoteSupportWithResponse(resourceGroupName, clusterName, remoteSupportRequest);
-        return this.client.<ClusterInner, ClusterInner>getLroResult(response, ClusterInner.class, ClusterInner.class,
-            Context.NONE);
+        return beginConfigureRemoteSupport(resourceGroupName, clusterName, remoteSupportRequest, Context.NONE);
     }
 
-    /**
-     * Configure RemoteSupport on a cluster.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param clusterName The name of the cluster.
-     * @param remoteSupportRequest Configure Remote Support Request Payload.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the {@link SyncPoller} for polling of cluster details.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public SyncPoller<PollResult<ClusterInner>, ClusterInner> beginConfigureRemoteSupport(String resourceGroupName,
         String clusterName, RemoteSupportRequest remoteSupportRequest, Context context) {
@@ -1911,40 +1516,19 @@ public final class ClustersClientImpl implements ClustersClient {
             .flatMap(this.client::getLroFinalResultOrError);
     }
 
-    /**
-     * Configure RemoteSupport on a cluster.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param clusterName The name of the cluster.
-     * @param remoteSupportRequest Configure Remote Support Request Payload.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return cluster details.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public ClusterInner configureRemoteSupport(String resourceGroupName, String clusterName,
         RemoteSupportRequest remoteSupportRequest) {
-        return beginConfigureRemoteSupport(resourceGroupName, clusterName, remoteSupportRequest).getFinalResult();
+        return configureRemoteSupport(resourceGroupName, clusterName, remoteSupportRequest, Context.NONE);
     }
 
-    /**
-     * Configure RemoteSupport on a cluster.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param clusterName The name of the cluster.
-     * @param remoteSupportRequest Configure Remote Support Request Payload.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return cluster details.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public ClusterInner configureRemoteSupport(String resourceGroupName, String clusterName,
         RemoteSupportRequest remoteSupportRequest, Context context) {
-        return beginConfigureRemoteSupport(resourceGroupName, clusterName, remoteSupportRequest, context)
-            .getFinalResult();
+        return this.client.getLroFinalResultOrError(
+            beginConfigureRemoteSupport(resourceGroupName, clusterName, remoteSupportRequest, context));
     }
 
     /**
@@ -1978,11 +1562,7 @@ public final class ClustersClientImpl implements ClustersClient {
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private PagedResponse<ClusterInner> listByResourceGroupNextSinglePage(String nextLink) {
-        final String accept = "application/json";
-        Response<ClusterList> res
-            = service.listByResourceGroupNextSync(nextLink, this.client.getEndpoint(), accept, Context.NONE);
-        return new PagedResponseBase<>(res.getRequest(), res.getStatusCode(), res.getHeaders(), res.getValue().value(),
-            res.getValue().nextLink(), null);
+        return listByResourceGroupNextSinglePage(nextLink, Context.NONE);
     }
 
     /**
@@ -2035,11 +1615,7 @@ public final class ClustersClientImpl implements ClustersClient {
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private PagedResponse<ClusterInner> listBySubscriptionNextSinglePage(String nextLink) {
-        final String accept = "application/json";
-        Response<ClusterList> res
-            = service.listBySubscriptionNextSync(nextLink, this.client.getEndpoint(), accept, Context.NONE);
-        return new PagedResponseBase<>(res.getRequest(), res.getStatusCode(), res.getHeaders(), res.getValue().value(),
-            res.getValue().nextLink(), null);
+        return listBySubscriptionNextSinglePage(nextLink, Context.NONE);
     }
 
     /**

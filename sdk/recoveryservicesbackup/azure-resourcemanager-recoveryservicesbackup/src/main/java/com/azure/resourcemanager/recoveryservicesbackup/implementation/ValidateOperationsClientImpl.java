@@ -122,9 +122,7 @@ public final class ValidateOperationsClientImpl implements ValidateOperationsCli
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Response<BinaryData> triggerWithResponse(String vaultName, String resourceGroupName,
         ValidateOperationRequestResource parameters) {
-        final String contentType = "application/json";
-        return service.triggerSync(this.client.getEndpoint(), this.client.getApiVersion(), vaultName, resourceGroupName,
-            this.client.getSubscriptionId(), contentType, parameters, Context.NONE);
+        return triggerWithResponse(vaultName, resourceGroupName, parameters, Context.NONE);
     }
 
     /**
@@ -168,38 +166,14 @@ public final class ValidateOperationsClientImpl implements ValidateOperationsCli
             this.client.getContext());
     }
 
-    /**
-     * Validate operation for specified backed up item in the form of an asynchronous operation. Returns tracking
-     * headers which can be tracked using GetValidateOperationResult API.
-     * 
-     * @param vaultName The name of the recovery services vault.
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param parameters resource validate operation request.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the {@link SyncPoller} for polling of long-running operation.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public SyncPoller<PollResult<Void>, Void> beginTrigger(String vaultName, String resourceGroupName,
         ValidateOperationRequestResource parameters) {
-        Response<BinaryData> response = triggerWithResponse(vaultName, resourceGroupName, parameters);
-        return this.client.<Void, Void>getLroResult(response, Void.class, Void.class, Context.NONE);
+        return beginTrigger(vaultName, resourceGroupName, parameters, Context.NONE);
     }
 
-    /**
-     * Validate operation for specified backed up item in the form of an asynchronous operation. Returns tracking
-     * headers which can be tracked using GetValidateOperationResult API.
-     * 
-     * @param vaultName The name of the recovery services vault.
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param parameters resource validate operation request.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the {@link SyncPoller} for polling of long-running operation.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public SyncPoller<PollResult<Void>, Void> beginTrigger(String vaultName, String resourceGroupName,
         ValidateOperationRequestResource parameters, Context context) {
@@ -226,37 +200,16 @@ public final class ValidateOperationsClientImpl implements ValidateOperationsCli
             .flatMap(this.client::getLroFinalResultOrError);
     }
 
-    /**
-     * Validate operation for specified backed up item in the form of an asynchronous operation. Returns tracking
-     * headers which can be tracked using GetValidateOperationResult API.
-     * 
-     * @param vaultName The name of the recovery services vault.
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param parameters resource validate operation request.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public void trigger(String vaultName, String resourceGroupName, ValidateOperationRequestResource parameters) {
-        beginTrigger(vaultName, resourceGroupName, parameters).getFinalResult();
+        trigger(vaultName, resourceGroupName, parameters, Context.NONE);
     }
 
-    /**
-     * Validate operation for specified backed up item in the form of an asynchronous operation. Returns tracking
-     * headers which can be tracked using GetValidateOperationResult API.
-     * 
-     * @param vaultName The name of the recovery services vault.
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param parameters resource validate operation request.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public void trigger(String vaultName, String resourceGroupName, ValidateOperationRequestResource parameters,
         Context context) {
-        beginTrigger(vaultName, resourceGroupName, parameters, context).getFinalResult();
+        this.client.getLroFinalResultOrError(beginTrigger(vaultName, resourceGroupName, parameters, context));
     }
 }

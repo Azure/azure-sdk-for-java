@@ -108,10 +108,7 @@ public final class SolutionResourceImpl
     }
 
     public SolutionResource create() {
-        this.innerObject = serviceManager.serviceClient()
-            .getSolutionOperations()
-            .create(scope, solutionResourceName, this.innerModel(), Context.NONE);
-        return this;
+        return this.create(Context.NONE);
     }
 
     public SolutionResource create(Context context) {
@@ -133,10 +130,7 @@ public final class SolutionResourceImpl
     }
 
     public SolutionResource apply() {
-        this.innerObject = serviceManager.serviceClient()
-            .getSolutionOperations()
-            .update(scope, solutionResourceName, updateSolutionPatchRequestBody, Context.NONE);
-        return this;
+        return this.apply(Context.NONE);
     }
 
     public SolutionResource apply(Context context) {
@@ -157,11 +151,7 @@ public final class SolutionResourceImpl
     }
 
     public SolutionResource refresh() {
-        this.innerObject = serviceManager.serviceClient()
-            .getSolutionOperations()
-            .getWithResponse(scope, solutionResourceName, Context.NONE)
-            .getValue();
-        return this;
+        return this.refresh(Context.NONE);
     }
 
     public SolutionResource refresh(Context context) {

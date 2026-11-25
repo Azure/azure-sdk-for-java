@@ -88,18 +88,7 @@ public final class ServerThreatProtectionSettingsClientImpl implements ServerThr
             @BodyParam("application/json") AdvancedThreatProtectionSettingsModelInner parameters, Context context);
     }
 
-    /**
-     * Creates or updates a server's Advanced Threat Protection settings.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param serverName The name of the server.
-     * @param threatProtectionName Name of the advanced threat protection settings.
-     * @param parameters The Advanced Threat Protection state for the server.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the {@link Response} on successful completion of {@link Mono}.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Response<Flux<ByteBuffer>>> createOrUpdateWithResponseAsync(String resourceGroupName, String serverName,
         ThreatProtectionName threatProtectionName, AdvancedThreatProtectionSettingsModelInner parameters) {
@@ -126,10 +115,8 @@ public final class ServerThreatProtectionSettingsClientImpl implements ServerThr
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Response<BinaryData> createOrUpdateWithResponse(String resourceGroupName, String serverName,
         ThreatProtectionName threatProtectionName, AdvancedThreatProtectionSettingsModelInner parameters) {
-        final String contentType = "application/json";
-        return service.createOrUpdateSync(this.client.getEndpoint(), this.client.getApiVersion(),
-            this.client.getSubscriptionId(), resourceGroupName, serverName, threatProtectionName, contentType,
-            parameters, Context.NONE);
+        return createOrUpdateWithResponse(resourceGroupName, serverName, threatProtectionName, parameters,
+            Context.NONE);
     }
 
     /**
@@ -155,18 +142,7 @@ public final class ServerThreatProtectionSettingsClientImpl implements ServerThr
             parameters, context);
     }
 
-    /**
-     * Creates or updates a server's Advanced Threat Protection settings.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param serverName The name of the server.
-     * @param threatProtectionName Name of the advanced threat protection settings.
-     * @param parameters The Advanced Threat Protection state for the server.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the {@link PollerFlux} for polling of long-running operation.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public
         PollerFlux<PollResult<AdvancedThreatProtectionSettingsModelInner>, AdvancedThreatProtectionSettingsModelInner>
@@ -180,44 +156,16 @@ public final class ServerThreatProtectionSettingsClientImpl implements ServerThr
                 AdvancedThreatProtectionSettingsModelInner.class, this.client.getContext());
     }
 
-    /**
-     * Creates or updates a server's Advanced Threat Protection settings.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param serverName The name of the server.
-     * @param threatProtectionName Name of the advanced threat protection settings.
-     * @param parameters The Advanced Threat Protection state for the server.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the {@link SyncPoller} for polling of long-running operation.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public
         SyncPoller<PollResult<AdvancedThreatProtectionSettingsModelInner>, AdvancedThreatProtectionSettingsModelInner>
         beginCreateOrUpdate(String resourceGroupName, String serverName, ThreatProtectionName threatProtectionName,
             AdvancedThreatProtectionSettingsModelInner parameters) {
-        Response<BinaryData> response
-            = createOrUpdateWithResponse(resourceGroupName, serverName, threatProtectionName, parameters);
-        return this.client
-            .<AdvancedThreatProtectionSettingsModelInner, AdvancedThreatProtectionSettingsModelInner>getLroResult(
-                response, AdvancedThreatProtectionSettingsModelInner.class,
-                AdvancedThreatProtectionSettingsModelInner.class, Context.NONE);
+        return beginCreateOrUpdate(resourceGroupName, serverName, threatProtectionName, parameters, Context.NONE);
     }
 
-    /**
-     * Creates or updates a server's Advanced Threat Protection settings.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param serverName The name of the server.
-     * @param threatProtectionName Name of the advanced threat protection settings.
-     * @param parameters The Advanced Threat Protection state for the server.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the {@link SyncPoller} for polling of long-running operation.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public
         SyncPoller<PollResult<AdvancedThreatProtectionSettingsModelInner>, AdvancedThreatProtectionSettingsModelInner>
@@ -231,18 +179,7 @@ public final class ServerThreatProtectionSettingsClientImpl implements ServerThr
                 AdvancedThreatProtectionSettingsModelInner.class, context);
     }
 
-    /**
-     * Creates or updates a server's Advanced Threat Protection settings.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param serverName The name of the server.
-     * @param threatProtectionName Name of the advanced threat protection settings.
-     * @param parameters The Advanced Threat Protection state for the server.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the response body on successful completion of {@link Mono}.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<AdvancedThreatProtectionSettingsModelInner> createOrUpdateAsync(String resourceGroupName,
         String serverName, ThreatProtectionName threatProtectionName,
@@ -251,42 +188,19 @@ public final class ServerThreatProtectionSettingsClientImpl implements ServerThr
             .flatMap(this.client::getLroFinalResultOrError);
     }
 
-    /**
-     * Creates or updates a server's Advanced Threat Protection settings.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param serverName The name of the server.
-     * @param threatProtectionName Name of the advanced threat protection settings.
-     * @param parameters The Advanced Threat Protection state for the server.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the response.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public AdvancedThreatProtectionSettingsModelInner createOrUpdate(String resourceGroupName, String serverName,
         ThreatProtectionName threatProtectionName, AdvancedThreatProtectionSettingsModelInner parameters) {
-        return beginCreateOrUpdate(resourceGroupName, serverName, threatProtectionName, parameters).getFinalResult();
+        return createOrUpdate(resourceGroupName, serverName, threatProtectionName, parameters, Context.NONE);
     }
 
-    /**
-     * Creates or updates a server's Advanced Threat Protection settings.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param serverName The name of the server.
-     * @param threatProtectionName Name of the advanced threat protection settings.
-     * @param parameters The Advanced Threat Protection state for the server.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the response.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public AdvancedThreatProtectionSettingsModelInner createOrUpdate(String resourceGroupName, String serverName,
         ThreatProtectionName threatProtectionName, AdvancedThreatProtectionSettingsModelInner parameters,
         Context context) {
-        return beginCreateOrUpdate(resourceGroupName, serverName, threatProtectionName, parameters, context)
-            .getFinalResult();
+        return this.client.getLroFinalResultOrError(
+            beginCreateOrUpdate(resourceGroupName, serverName, threatProtectionName, parameters, context));
     }
 }

@@ -47,8 +47,7 @@ public final class ApprovalsImpl implements Approvals {
     }
 
     public PagedIterable<ApprovalResource> listByParent(String resourceUri) {
-        PagedIterable<ApprovalResourceInner> inner = this.serviceClient().listByParent(resourceUri);
-        return ResourceManagerUtils.mapPage(inner, inner1 -> new ApprovalResourceImpl(inner1, this.manager()));
+        return this.listByParent(resourceUri, Context.NONE);
     }
 
     public PagedIterable<ApprovalResource> listByParent(String resourceUri, Context context) {
@@ -57,7 +56,7 @@ public final class ApprovalsImpl implements Approvals {
     }
 
     public void deleteByResourceGroup(String resourceUri, String approvalName) {
-        this.serviceClient().delete(resourceUri, approvalName);
+        this.delete(resourceUri, approvalName, Context.NONE);
     }
 
     public void delete(String resourceUri, String approvalName, Context context) {
@@ -65,12 +64,7 @@ public final class ApprovalsImpl implements Approvals {
     }
 
     public ApprovalActionResponse notifyInitiator(String resourceUri, String approvalName, ApprovalActionRequest body) {
-        ApprovalActionResponseInner inner = this.serviceClient().notifyInitiator(resourceUri, approvalName, body);
-        if (inner != null) {
-            return new ApprovalActionResponseImpl(inner, this.manager());
-        } else {
-            return null;
-        }
+        return this.notifyInitiator(resourceUri, approvalName, body, Context.NONE);
     }
 
     public ApprovalActionResponse notifyInitiator(String resourceUri, String approvalName, ApprovalActionRequest body,
@@ -85,66 +79,28 @@ public final class ApprovalsImpl implements Approvals {
     }
 
     public ApprovalResource getById(String id) {
-        String resourceUri = ResourceManagerUtils.getValueFromIdByParameterName(id,
-            "/{resourceUri}/providers/Microsoft.Mission/approvals/{approvalName}", "resourceUri");
-        if (resourceUri == null) {
-            throw LOGGER.logExceptionAsError(new IllegalArgumentException(
-                String.format("The resource ID '%s' is not valid. Missing path segment 'resourceUri'.", id)));
-        }
-        String approvalName = ResourceManagerUtils.getValueFromIdByParameterName(id,
-            "/{resourceUri}/providers/Microsoft.Mission/approvals/{approvalName}", "approvalName");
-        if (approvalName == null) {
-            throw LOGGER.logExceptionAsError(new IllegalArgumentException(
-                String.format("The resource ID '%s' is not valid. Missing path segment 'approvals'.", id)));
-        }
-        return this.getWithResponse(resourceUri, approvalName, Context.NONE).getValue();
+        return this.getByIdWithResponse(id, Context.NONE).getValue();
     }
 
     public Response<ApprovalResource> getByIdWithResponse(String id, Context context) {
-        String resourceUri = ResourceManagerUtils.getValueFromIdByParameterName(id,
-            "/{resourceUri}/providers/Microsoft.Mission/approvals/{approvalName}", "resourceUri");
-        if (resourceUri == null) {
-            throw LOGGER.logExceptionAsError(new IllegalArgumentException(
-                String.format("The resource ID '%s' is not valid. Missing path segment 'resourceUri'.", id)));
-        }
-        String approvalName = ResourceManagerUtils.getValueFromIdByParameterName(id,
-            "/{resourceUri}/providers/Microsoft.Mission/approvals/{approvalName}", "approvalName");
-        if (approvalName == null) {
-            throw LOGGER.logExceptionAsError(new IllegalArgumentException(
-                String.format("The resource ID '%s' is not valid. Missing path segment 'approvals'.", id)));
-        }
+        String resourceUri = ResourceManagerUtils.getRequiredValueFromIdByParameterName(id,
+            "/{resourceUri}/providers/Microsoft.Mission/approvals/{approvalName}", "resourceUri", "resourceUri",
+            LOGGER);
+        String approvalName = ResourceManagerUtils.getRequiredValueFromIdByParameterName(id,
+            "/{resourceUri}/providers/Microsoft.Mission/approvals/{approvalName}", "approvalName", "approvals", LOGGER);
         return this.getWithResponse(resourceUri, approvalName, context);
     }
 
     public void deleteById(String id) {
-        String resourceUri = ResourceManagerUtils.getValueFromIdByParameterName(id,
-            "/{resourceUri}/providers/Microsoft.Mission/approvals/{approvalName}", "resourceUri");
-        if (resourceUri == null) {
-            throw LOGGER.logExceptionAsError(new IllegalArgumentException(
-                String.format("The resource ID '%s' is not valid. Missing path segment 'resourceUri'.", id)));
-        }
-        String approvalName = ResourceManagerUtils.getValueFromIdByParameterName(id,
-            "/{resourceUri}/providers/Microsoft.Mission/approvals/{approvalName}", "approvalName");
-        if (approvalName == null) {
-            throw LOGGER.logExceptionAsError(new IllegalArgumentException(
-                String.format("The resource ID '%s' is not valid. Missing path segment 'approvals'.", id)));
-        }
-        this.delete(resourceUri, approvalName, Context.NONE);
+        this.deleteByIdWithResponse(id, Context.NONE);
     }
 
     public void deleteByIdWithResponse(String id, Context context) {
-        String resourceUri = ResourceManagerUtils.getValueFromIdByParameterName(id,
-            "/{resourceUri}/providers/Microsoft.Mission/approvals/{approvalName}", "resourceUri");
-        if (resourceUri == null) {
-            throw LOGGER.logExceptionAsError(new IllegalArgumentException(
-                String.format("The resource ID '%s' is not valid. Missing path segment 'resourceUri'.", id)));
-        }
-        String approvalName = ResourceManagerUtils.getValueFromIdByParameterName(id,
-            "/{resourceUri}/providers/Microsoft.Mission/approvals/{approvalName}", "approvalName");
-        if (approvalName == null) {
-            throw LOGGER.logExceptionAsError(new IllegalArgumentException(
-                String.format("The resource ID '%s' is not valid. Missing path segment 'approvals'.", id)));
-        }
+        String resourceUri = ResourceManagerUtils.getRequiredValueFromIdByParameterName(id,
+            "/{resourceUri}/providers/Microsoft.Mission/approvals/{approvalName}", "resourceUri", "resourceUri",
+            LOGGER);
+        String approvalName = ResourceManagerUtils.getRequiredValueFromIdByParameterName(id,
+            "/{resourceUri}/providers/Microsoft.Mission/approvals/{approvalName}", "approvalName", "approvals", LOGGER);
         this.delete(resourceUri, approvalName, context);
     }
 

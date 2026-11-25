@@ -36,7 +36,7 @@ public final class SkuMixPlacementScoresPostWithResponseMockTests {
     @Test
     public void testPostWithResponse() throws Exception {
         String responseStr
-            = "{\"id\":\"mmajtjaodx\",\"placementChoices\":[{\"score\":1341897858,\"skuSplit\":[{\"name\":\"dxkqpx\",\"priority\":\"Spot\",\"capacity\":1684749712,\"zone\":\"ionpimexg\"},{\"name\":\"txgcpodgmaajr\",\"priority\":\"Spot\",\"capacity\":1943379246,\"zone\":\"wzrlovmclwhij\"},{\"name\":\"oejctbzaqsqsy\",\"priority\":\"Spot\",\"capacity\":1302368966,\"zone\":\"fkgukdkexxppof\"}]},{\"score\":2119531336,\"skuSplit\":[{\"name\":\"x\",\"priority\":\"Spot\",\"capacity\":825369958,\"zone\":\"gddtocj\"},{\"name\":\"xhvpmoue\",\"priority\":\"Regular\",\"capacity\":1945947631,\"zone\":\"xibqeojnx\"},{\"name\":\"bzv\",\"priority\":\"Spot\",\"capacity\":1950210271,\"zone\":\"wndeicbtwnp\"},{\"name\":\"aoqvuh\",\"priority\":\"Spot\",\"capacity\":569590311,\"zone\":\"fcyddg\"}]},{\"score\":76474266,\"skuSplit\":[{\"name\":\"t\",\"priority\":\"Spot\",\"capacity\":1041112743,\"zone\":\"wpyeicxmqciwqvh\"},{\"name\":\"hix\",\"priority\":\"Spot\",\"capacity\":950690565,\"zone\":\"topbobjogh\"},{\"name\":\"e\",\"priority\":\"Regular\",\"capacity\":35431541,\"zone\":\"a\"}]},{\"score\":1242660761,\"skuSplit\":[{\"name\":\"z\",\"priority\":\"Spot\",\"capacity\":614962425,\"zone\":\"t\"},{\"name\":\"gvdfgiotkftutq\",\"priority\":\"Regular\",\"capacity\":2113328566,\"zone\":\"xlefgugnxkrx\"}]}],\"validUntil\":\"2021-01-18T17:02:06Z\",\"partialFulfillmentReason\":\"InsufficientCapacity\",\"capacityLimits\":[{\"name\":\"thz\",\"priority\":\"Regular\",\"zone\":\"drabhjybige\",\"limit\":823373191,\"reason\":\"InsufficientCapacity\"},{\"name\":\"fbowskanyk\",\"priority\":\"Spot\",\"zone\":\"cuiywgqyw\",\"limit\":23718852,\"reason\":\"InsufficientCapacity\"}]}";
+            = "{\"id\":\"sm\",\"placementChoices\":[{\"score\":1243889101,\"skuSplit\":[{\"name\":\"exim\",\"priority\":\"Spot\",\"capacity\":998039935,\"zone\":\"cfsf\"},{\"name\":\"s\",\"priority\":\"Spot\",\"capacity\":1143177413,\"zone\":\"ys\"},{\"name\":\"kiiuxhqyudxor\",\"priority\":\"Regular\",\"capacity\":2086943152,\"zone\":\"poczvyifqrvkdvjs\"}]},{\"score\":838682594,\"skuSplit\":[{\"name\":\"mvvd\",\"priority\":\"Spot\",\"capacity\":1391003633,\"zone\":\"kpnpulexxbczwtr\"}]}],\"validUntil\":\"2021-07-26T12:29:54Z\",\"partialFulfillmentReason\":\"InsufficientCapacity\",\"capacityLimits\":[{\"name\":\"qjvsovmyokacs\",\"priority\":\"Regular\",\"zone\":\"lhzdobp\",\"limit\":432282678,\"reason\":\"InsufficientCapacity\"}]}";
 
         HttpClient httpClient
             = response -> Mono.just(new MockHttpResponse(response, 200, responseStr.getBytes(StandardCharsets.UTF_8)));
@@ -46,41 +46,49 @@ public final class SkuMixPlacementScoresPostWithResponseMockTests {
                 new AzureProfile("", "", AzureCloud.AZURE_PUBLIC_CLOUD));
 
         SkuMixPlacementResponse response = manager.skuMixPlacementScores()
-            .postWithResponse("cyshurzafbljjgp",
-                new SkuMixPlacementRequest().withZones(Arrays.asList("qcjm"))
-                    .withCapacityProfile(new SkuMixPlacementCapacityProfile().withCapacity(2092000112)
-                        .withCapacityType(SkuMixPlacementCapacityType.VCPU)
-                        .withPriority(SkuMixPlacementPriority.REGULAR)
+            .postWithResponse("yvxyqjp",
+                new SkuMixPlacementRequest().withZones(Arrays.asList("t", "pngjcrcczsqpjhvm", "ajvnysounqe", "a"))
+                    .withCapacityProfile(new SkuMixPlacementCapacityProfile().withCapacity(1709538743)
+                        .withCapacityType(SkuMixPlacementCapacityType.VM)
+                        .withPriority(SkuMixPlacementPriority.SPOT)
                         .withSpotPriorityProfile(
-                            new SkuMixPlacementSpotPriorityProfile().withMaxPricePerVm(56.99206369319947D))
-                        .withAllocationStrategy(SkuMixPlacementAllocationStrategy.EVICTION_OPTIMIZED)
+                            new SkuMixPlacementSpotPriorityProfile().withMaxPricePerVm(94.26749513394212D))
+                        .withAllocationStrategy(SkuMixPlacementAllocationStrategy.PRIORITIZED)
                         .withOsType(SkuMixPlacementOSType.WINDOWS)
                         .withZoneAllocationPolicy(new SkuMixPlacementZoneAllocationPolicy()
-                            .withDistributionStrategy(SkuMixPlacementZonalDistributionStrategy.PRIORITIZED)
-                            .withZonePreferences(Arrays.asList(new SkuMixPlacementZonePreference().withZone("pku")
-                                .withRank(963090330)
-                                .withTargetMaxCapacity(1185115759)))))
+                            .withDistributionStrategy(SkuMixPlacementZonalDistributionStrategy.BEST_EFFORT_BALANCED)
+                            .withZonePreferences(Arrays.asList(
+                                new SkuMixPlacementZonePreference().withZone("jmcmatuokthfu")
+                                    .withRank(94424945)
+                                    .withTargetMaxCapacity(1445775245),
+                                new SkuMixPlacementZonePreference().withZone("sfcpkvxodpuozm")
+                                    .withRank(466984415)
+                                    .withTargetMaxCapacity(1008080043),
+                                new SkuMixPlacementZonePreference().withZone("gf")
+                                    .withRank(1113167460)
+                                    .withTargetMaxCapacity(1613770943),
+                                new SkuMixPlacementZonePreference().withZone("zyiuokk")
+                                    .withRank(1080863753)
+                                    .withTargetMaxCapacity(2073255975)))))
                     .withInstanceDescription(new SkuMixPlacementInstanceDescription()
-                        .withVmSizes(Arrays.asList(new SkuMixPlacementVMSize().withName("hbzhfepg").withRank(701234104),
-                            new SkuMixPlacementVMSize().withName("e").withRank(1025748151),
-                            new SkuMixPlacementVMSize().withName("ocxscpaierhhbcs").withRank(526297458)))),
+                        .withVmSizes(Arrays.asList(new SkuMixPlacementVMSize().withName("wz").withRank(180468800)))),
                 com.azure.core.util.Context.NONE)
             .getValue();
 
-        Assertions.assertEquals("mmajtjaodx", response.id());
-        Assertions.assertEquals(1341897858, response.placementChoices().get(0).score());
-        Assertions.assertEquals("dxkqpx", response.placementChoices().get(0).skuSplit().get(0).name());
+        Assertions.assertEquals("sm", response.id());
+        Assertions.assertEquals(1243889101, response.placementChoices().get(0).score());
+        Assertions.assertEquals("exim", response.placementChoices().get(0).skuSplit().get(0).name());
         Assertions.assertEquals(SkuMixPlacementPriority.SPOT,
             response.placementChoices().get(0).skuSplit().get(0).priority());
-        Assertions.assertEquals(1684749712, response.placementChoices().get(0).skuSplit().get(0).capacity());
-        Assertions.assertEquals("ionpimexg", response.placementChoices().get(0).skuSplit().get(0).zone());
-        Assertions.assertEquals(OffsetDateTime.parse("2021-01-18T17:02:06Z"), response.validUntil());
+        Assertions.assertEquals(998039935, response.placementChoices().get(0).skuSplit().get(0).capacity());
+        Assertions.assertEquals("cfsf", response.placementChoices().get(0).skuSplit().get(0).zone());
+        Assertions.assertEquals(OffsetDateTime.parse("2021-07-26T12:29:54Z"), response.validUntil());
         Assertions.assertEquals(SkuMixPlacementPartialFulfillmentReason.INSUFFICIENT_CAPACITY,
             response.partialFulfillmentReason());
-        Assertions.assertEquals("thz", response.capacityLimits().get(0).name());
+        Assertions.assertEquals("qjvsovmyokacs", response.capacityLimits().get(0).name());
         Assertions.assertEquals(SkuMixPlacementPriority.REGULAR, response.capacityLimits().get(0).priority());
-        Assertions.assertEquals("drabhjybige", response.capacityLimits().get(0).zone());
-        Assertions.assertEquals(823373191, response.capacityLimits().get(0).limit());
+        Assertions.assertEquals("lhzdobp", response.capacityLimits().get(0).zone());
+        Assertions.assertEquals(432282678, response.capacityLimits().get(0).limit());
         Assertions.assertEquals(SkuMixPlacementCapacityLimitReason.INSUFFICIENT_CAPACITY,
             response.capacityLimits().get(0).reason());
     }

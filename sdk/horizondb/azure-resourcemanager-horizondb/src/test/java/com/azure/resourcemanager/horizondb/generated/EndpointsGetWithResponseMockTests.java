@@ -20,7 +20,7 @@ public final class EndpointsGetWithResponseMockTests {
     @Test
     public void testGetWithResponse() throws Exception {
         String responseStr
-            = "{\"properties\":{\"scope\":\"Cluster\",\"associatedResourceId\":\"qigkx\",\"fullyQualifiedDomainName\":\"bsazgakg\",\"role\":\"ReadWrite\"},\"id\":\"rcmjdmspofapvuh\",\"name\":\"ylnio\",\"type\":\"rz\"}";
+            = "{\"properties\":{\"scope\":\"Pool\",\"associatedResourceId\":\"nlqwzdvpiwhx\",\"fullyQualifiedDomainName\":\"szdtmaajquh\",\"role\":\"ReadWrite\"},\"id\":\"lrjvmtyg\",\"name\":\"bmzyospsps\",\"type\":\"c\"}";
 
         HttpClient httpClient
             = response -> Mono.just(new MockHttpResponse(response, 200, responseStr.getBytes(StandardCharsets.UTF_8)));
@@ -30,7 +30,7 @@ public final class EndpointsGetWithResponseMockTests {
                 new AzureProfile("", "", AzureCloud.AZURE_PUBLIC_CLOUD));
 
         Endpoint response = manager.endpoints()
-            .getWithResponse("vxkdivqihebwtswb", "uwfmduragegizvc", "felisdjub", com.azure.core.util.Context.NONE)
+            .getWithResponse("czytqjtwhauunfpr", "jletlxsmrpddo", "ifamowazi", com.azure.core.util.Context.NONE)
             .getValue();
 
     }

@@ -175,12 +175,7 @@ public final class BackupUsageSummariesClientImpl implements BackupUsageSummarie
     @ServiceMethod(returns = ReturnType.SINGLE)
     private PagedResponse<BackupManagementUsageInner> listSinglePage(String vaultName, String resourceGroupName,
         String filter, String skipToken) {
-        final String accept = "application/json";
-        Response<BackupManagementUsageList> res
-            = service.listSync(this.client.getEndpoint(), this.client.getApiVersion(), vaultName, resourceGroupName,
-                this.client.getSubscriptionId(), filter, skipToken, accept, Context.NONE);
-        return new PagedResponseBase<>(res.getRequest(), res.getStatusCode(), res.getHeaders(), res.getValue().value(),
-            res.getValue().nextLink(), null);
+        return listSinglePage(vaultName, resourceGroupName, filter, skipToken, Context.NONE);
     }
 
     /**
@@ -207,37 +202,15 @@ public final class BackupUsageSummariesClientImpl implements BackupUsageSummarie
             res.getValue().nextLink(), null);
     }
 
-    /**
-     * Fetches the backup management usage summaries of the vault.
-     * 
-     * @param vaultName The name of the recovery services vault.
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return backup management usage for vault as paginated response with {@link PagedIterable}.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.COLLECTION)
     public PagedIterable<BackupManagementUsageInner> list(String vaultName, String resourceGroupName) {
         final String filter = null;
         final String skipToken = null;
-        return new PagedIterable<>(() -> listSinglePage(vaultName, resourceGroupName, filter, skipToken),
-            nextLink -> listNextSinglePage(nextLink));
+        return list(vaultName, resourceGroupName, filter, skipToken, Context.NONE);
     }
 
-    /**
-     * Fetches the backup management usage summaries of the vault.
-     * 
-     * @param vaultName The name of the recovery services vault.
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param filter OData filter options.
-     * @param skipToken skipToken Filter.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return backup management usage for vault as paginated response with {@link PagedIterable}.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.COLLECTION)
     public PagedIterable<BackupManagementUsageInner> list(String vaultName, String resourceGroupName, String filter,
         String skipToken, Context context) {
@@ -275,11 +248,7 @@ public final class BackupUsageSummariesClientImpl implements BackupUsageSummarie
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private PagedResponse<BackupManagementUsageInner> listNextSinglePage(String nextLink) {
-        final String accept = "application/json";
-        Response<BackupManagementUsageList> res
-            = service.listNextSync(nextLink, this.client.getEndpoint(), accept, Context.NONE);
-        return new PagedResponseBase<>(res.getRequest(), res.getStatusCode(), res.getHeaders(), res.getValue().value(),
-            res.getValue().nextLink(), null);
+        return listNextSinglePage(nextLink, Context.NONE);
     }
 
     /**

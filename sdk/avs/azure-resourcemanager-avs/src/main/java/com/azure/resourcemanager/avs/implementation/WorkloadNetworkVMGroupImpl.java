@@ -85,10 +85,7 @@ public final class WorkloadNetworkVMGroupImpl
     }
 
     public WorkloadNetworkVMGroup create() {
-        this.innerObject = serviceManager.serviceClient()
-            .getWorkloadNetworks()
-            .createVMGroup(resourceGroupName, privateCloudName, vmGroupId, this.innerModel(), Context.NONE);
-        return this;
+        return this.create(Context.NONE);
     }
 
     public WorkloadNetworkVMGroup create(Context context) {
@@ -109,10 +106,7 @@ public final class WorkloadNetworkVMGroupImpl
     }
 
     public WorkloadNetworkVMGroup apply() {
-        this.innerObject = serviceManager.serviceClient()
-            .getWorkloadNetworks()
-            .updateVMGroup(resourceGroupName, privateCloudName, vmGroupId, this.innerModel(), Context.NONE);
-        return this;
+        return this.apply(Context.NONE);
     }
 
     public WorkloadNetworkVMGroup apply(Context context) {
@@ -138,11 +132,7 @@ public final class WorkloadNetworkVMGroupImpl
     }
 
     public WorkloadNetworkVMGroup refresh() {
-        this.innerObject = serviceManager.serviceClient()
-            .getWorkloadNetworks()
-            .getVMGroupWithResponse(resourceGroupName, privateCloudName, vmGroupId, Context.NONE)
-            .getValue();
-        return this;
+        return this.refresh(Context.NONE);
     }
 
     public WorkloadNetworkVMGroup refresh(Context context) {
