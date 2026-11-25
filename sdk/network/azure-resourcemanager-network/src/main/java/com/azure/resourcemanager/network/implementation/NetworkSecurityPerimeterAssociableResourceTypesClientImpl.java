@@ -151,16 +151,7 @@ public final class NetworkSecurityPerimeterAssociableResourceTypesClientImpl
                 res.getValue().value(), res.getValue().nextLink(), null));
     }
 
-    /**
-     * Gets the list of resources that are onboarded with NSP. These resources can be associated with a network security
-     * perimeter.
-     * 
-     * @param location The location name.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the list of resources that are onboarded with NSP as paginated response with {@link PagedFlux}.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.COLLECTION)
     public PagedFlux<PerimeterAssociableResourceInner> listAsync(String location) {
         return new PagedFlux<>(() -> listSinglePageAsync(location), nextLink -> listNextSinglePageAsync(nextLink));
@@ -183,32 +174,13 @@ public final class NetworkSecurityPerimeterAssociableResourceTypesClientImpl
             nextLink -> listNextSinglePageAsync(nextLink, context));
     }
 
-    /**
-     * Gets the list of resources that are onboarded with NSP. These resources can be associated with a network security
-     * perimeter.
-     * 
-     * @param location The location name.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the list of resources that are onboarded with NSP as paginated response with {@link PagedIterable}.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.COLLECTION)
     public PagedIterable<PerimeterAssociableResourceInner> list(String location) {
         return new PagedIterable<>(listAsync(location));
     }
 
-    /**
-     * Gets the list of resources that are onboarded with NSP. These resources can be associated with a network security
-     * perimeter.
-     * 
-     * @param location The location name.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the list of resources that are onboarded with NSP as paginated response with {@link PagedIterable}.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.COLLECTION)
     public PagedIterable<PerimeterAssociableResourceInner> list(String location, Context context) {
         return new PagedIterable<>(listAsync(location, context));

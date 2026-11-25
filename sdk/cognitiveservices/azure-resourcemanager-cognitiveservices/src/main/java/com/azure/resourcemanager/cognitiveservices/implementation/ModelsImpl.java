@@ -26,8 +26,7 @@ public final class ModelsImpl implements Models {
     }
 
     public PagedIterable<Model> list(String location) {
-        PagedIterable<ModelInner> inner = this.serviceClient().list(location);
-        return ResourceManagerUtils.mapPage(inner, inner1 -> new ModelImpl(inner1, this.manager()));
+        return this.list(location, Context.NONE);
     }
 
     public PagedIterable<Model> list(String location, Context context) {

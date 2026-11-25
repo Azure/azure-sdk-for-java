@@ -84,10 +84,7 @@ public final class EduEnrollmentImpl implements EduEnrollment, EduEnrollment.Def
     }
 
     public EduEnrollment create() {
-        this.innerObject = serviceManager.serviceClient()
-            .getEduEnrollments()
-            .createOrUpdate(resourceGroupName, enrollmentName, this.innerModel(), Context.NONE);
-        return this;
+        return this.create(Context.NONE);
     }
 
     public EduEnrollment create(Context context) {
@@ -110,11 +107,7 @@ public final class EduEnrollmentImpl implements EduEnrollment, EduEnrollment.Def
     }
 
     public EduEnrollment apply() {
-        this.innerObject = serviceManager.serviceClient()
-            .getEduEnrollments()
-            .updateWithResponse(resourceGroupName, enrollmentName, updateProperties, Context.NONE)
-            .getValue();
-        return this;
+        return this.apply(Context.NONE);
     }
 
     public EduEnrollment apply(Context context) {
@@ -138,11 +131,7 @@ public final class EduEnrollmentImpl implements EduEnrollment, EduEnrollment.Def
     }
 
     public EduEnrollment refresh() {
-        this.innerObject = serviceManager.serviceClient()
-            .getEduEnrollments()
-            .getByResourceGroupWithResponse(resourceGroupName, enrollmentName, Context.NONE)
-            .getValue();
-        return this;
+        return this.refresh(Context.NONE);
     }
 
     public EduEnrollment refresh(Context context) {

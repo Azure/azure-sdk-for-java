@@ -188,22 +188,7 @@ public final class ContainerAppsLabelHistoriesClientImpl implements ContainerApp
             .flatMap(res -> Mono.justOrEmpty(res.getValue()));
     }
 
-    /**
-     * Get the history of a label.
-     * 
-     * Gets the revision history associated with a Container App label.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param containerAppName Name of the Container App.
-     * @param labelName Name of the label.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws DefaultErrorResponseErrorException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the history of a label.
-     * 
-     * Gets the revision history associated with a Container App label along with {@link Response}.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Response<LabelHistoryInner> getLabelHistoryWithResponse(String resourceGroupName, String containerAppName,
         String labelName, Context context) {
@@ -212,21 +197,7 @@ public final class ContainerAppsLabelHistoriesClientImpl implements ContainerApp
             this.client.getSubscriptionId(), resourceGroupName, containerAppName, labelName, accept, context);
     }
 
-    /**
-     * Get the history of a label.
-     * 
-     * Gets the revision history associated with a Container App label.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param containerAppName Name of the Container App.
-     * @param labelName Name of the label.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws DefaultErrorResponseErrorException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the history of a label.
-     * 
-     * Gets the revision history associated with a Container App label.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public LabelHistoryInner getLabelHistory(String resourceGroupName, String containerAppName, String labelName) {
         return getLabelHistoryWithResponse(resourceGroupName, containerAppName, labelName, Context.NONE).getValue();
@@ -273,20 +244,7 @@ public final class ContainerAppsLabelHistoriesClientImpl implements ContainerApp
             .flatMap(ignored -> Mono.empty());
     }
 
-    /**
-     * Delete the history of a label.
-     * 
-     * Deletes the revision history associated with a Container App label.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param containerAppName Name of the Container App.
-     * @param labelName Name of the label.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws DefaultErrorResponseErrorException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the {@link Response}.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Response<Void> deleteLabelHistoryWithResponse(String resourceGroupName, String containerAppName,
         String labelName, Context context) {
@@ -294,18 +252,7 @@ public final class ContainerAppsLabelHistoriesClientImpl implements ContainerApp
             this.client.getSubscriptionId(), resourceGroupName, containerAppName, labelName, context);
     }
 
-    /**
-     * Delete the history of a label.
-     * 
-     * Deletes the revision history associated with a Container App label.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param containerAppName Name of the Container App.
-     * @param labelName Name of the label.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws DefaultErrorResponseErrorException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public void deleteLabelHistory(String resourceGroupName, String containerAppName, String labelName) {
         deleteLabelHistoryWithResponse(resourceGroupName, containerAppName, labelName, Context.NONE);
@@ -400,12 +347,7 @@ public final class ContainerAppsLabelHistoriesClientImpl implements ContainerApp
     @ServiceMethod(returns = ReturnType.SINGLE)
     private PagedResponse<LabelHistoryInner> listLabelHistorySinglePage(String resourceGroupName,
         String containerAppName, String filter) {
-        final String accept = "application/json";
-        Response<LabelHistoryCollection> res
-            = service.listLabelHistorySync(this.client.getEndpoint(), this.client.getApiVersion(),
-                this.client.getSubscriptionId(), resourceGroupName, containerAppName, filter, accept, Context.NONE);
-        return new PagedResponseBase<>(res.getRequest(), res.getStatusCode(), res.getHeaders(), res.getValue().value(),
-            res.getValue().nextLink(), null);
+        return listLabelHistorySinglePage(resourceGroupName, containerAppName, filter, Context.NONE);
     }
 
     /**
@@ -435,43 +377,14 @@ public final class ContainerAppsLabelHistoriesClientImpl implements ContainerApp
             res.getValue().nextLink(), null);
     }
 
-    /**
-     * Get the Label History for a given Container App.
-     * 
-     * Lists the label revision histories for a Container App.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param containerAppName Name of the Container App.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws DefaultErrorResponseErrorException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the Label History for a given Container App.
-     * 
-     * Lists the label revision histories for a Container App as paginated response with {@link PagedIterable}.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.COLLECTION)
     public PagedIterable<LabelHistoryInner> listLabelHistory(String resourceGroupName, String containerAppName) {
         final String filter = null;
-        return new PagedIterable<>(() -> listLabelHistorySinglePage(resourceGroupName, containerAppName, filter),
-            nextLink -> listLabelHistoryNextSinglePage(nextLink));
+        return listLabelHistory(resourceGroupName, containerAppName, filter, Context.NONE);
     }
 
-    /**
-     * Get the Label History for a given Container App.
-     * 
-     * Lists the label revision histories for a Container App.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param containerAppName Name of the Container App.
-     * @param filter The filter to apply on the operation.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws DefaultErrorResponseErrorException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the Label History for a given Container App.
-     * 
-     * Lists the label revision histories for a Container App as paginated response with {@link PagedIterable}.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.COLLECTION)
     public PagedIterable<LabelHistoryInner> listLabelHistory(String resourceGroupName, String containerAppName,
         String filter, Context context) {
@@ -519,11 +432,7 @@ public final class ContainerAppsLabelHistoriesClientImpl implements ContainerApp
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private PagedResponse<LabelHistoryInner> listLabelHistoryNextSinglePage(String nextLink) {
-        final String accept = "application/json";
-        Response<LabelHistoryCollection> res
-            = service.listLabelHistoryNextSync(nextLink, this.client.getEndpoint(), accept, Context.NONE);
-        return new PagedResponseBase<>(res.getRequest(), res.getStatusCode(), res.getHeaders(), res.getValue().value(),
-            res.getValue().nextLink(), null);
+        return listLabelHistoryNextSinglePage(nextLink, Context.NONE);
     }
 
     /**

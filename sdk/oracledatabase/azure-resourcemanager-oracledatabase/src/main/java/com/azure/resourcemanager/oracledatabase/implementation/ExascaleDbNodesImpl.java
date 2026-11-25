@@ -48,9 +48,7 @@ public final class ExascaleDbNodesImpl implements ExascaleDbNodes {
     }
 
     public PagedIterable<ExascaleDbNode> listByParent(String resourceGroupName, String exadbVmClusterName) {
-        PagedIterable<ExascaleDbNodeInner> inner
-            = this.serviceClient().listByParent(resourceGroupName, exadbVmClusterName);
-        return ResourceManagerUtils.mapPage(inner, inner1 -> new ExascaleDbNodeImpl(inner1, this.manager()));
+        return this.listByParent(resourceGroupName, exadbVmClusterName, Context.NONE);
     }
 
     public PagedIterable<ExascaleDbNode> listByParent(String resourceGroupName, String exadbVmClusterName,
@@ -62,13 +60,7 @@ public final class ExascaleDbNodesImpl implements ExascaleDbNodes {
 
     public DbActionResponse action(String resourceGroupName, String exadbVmClusterName, String exascaleDbNodeName,
         DbNodeAction body) {
-        DbActionResponseInner inner
-            = this.serviceClient().action(resourceGroupName, exadbVmClusterName, exascaleDbNodeName, body);
-        if (inner != null) {
-            return new DbActionResponseImpl(inner, this.manager());
-        } else {
-            return null;
-        }
+        return this.action(resourceGroupName, exadbVmClusterName, exascaleDbNodeName, body, Context.NONE);
     }
 
     public DbActionResponse action(String resourceGroupName, String exadbVmClusterName, String exascaleDbNodeName,

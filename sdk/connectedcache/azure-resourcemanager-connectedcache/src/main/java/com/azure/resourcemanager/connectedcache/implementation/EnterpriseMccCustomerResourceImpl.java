@@ -85,10 +85,7 @@ public final class EnterpriseMccCustomerResourceImpl implements EnterpriseMccCus
     }
 
     public EnterpriseMccCustomerResource create() {
-        this.innerObject = serviceManager.serviceClient()
-            .getEnterpriseMccCustomers()
-            .createOrUpdate(resourceGroupName, customerResourceName, this.innerModel(), Context.NONE);
-        return this;
+        return this.create(Context.NONE);
     }
 
     public EnterpriseMccCustomerResource create(Context context) {
@@ -111,11 +108,7 @@ public final class EnterpriseMccCustomerResourceImpl implements EnterpriseMccCus
     }
 
     public EnterpriseMccCustomerResource apply() {
-        this.innerObject = serviceManager.serviceClient()
-            .getEnterpriseMccCustomers()
-            .updateWithResponse(resourceGroupName, customerResourceName, updateProperties, Context.NONE)
-            .getValue();
-        return this;
+        return this.apply(Context.NONE);
     }
 
     public EnterpriseMccCustomerResource apply(Context context) {
@@ -139,11 +132,7 @@ public final class EnterpriseMccCustomerResourceImpl implements EnterpriseMccCus
     }
 
     public EnterpriseMccCustomerResource refresh() {
-        this.innerObject = serviceManager.serviceClient()
-            .getEnterpriseMccCustomers()
-            .getByResourceGroupWithResponse(resourceGroupName, customerResourceName, Context.NONE)
-            .getValue();
-        return this;
+        return this.refresh(Context.NONE);
     }
 
     public EnterpriseMccCustomerResource refresh(Context context) {

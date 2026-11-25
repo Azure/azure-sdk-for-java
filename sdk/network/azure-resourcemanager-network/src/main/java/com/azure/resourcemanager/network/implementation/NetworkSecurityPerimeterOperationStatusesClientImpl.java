@@ -69,17 +69,7 @@ public final class NetworkSecurityPerimeterOperationStatusesClientImpl
             @HeaderParam("Accept") String accept, Context context);
     }
 
-    /**
-     * Gets the operation status for the given operation id.
-     * 
-     * @param location The name of the Azure region.
-     * @param operationId The operation id of the async operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the operation status for the given operation id along with {@link Response} on successful completion of
-     * {@link Mono}.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Response<OperationStatusResultInner>> getWithResponseAsync(String location, String operationId) {
         if (this.client.getEndpoint() == null) {
@@ -140,47 +130,19 @@ public final class NetworkSecurityPerimeterOperationStatusesClientImpl
             operationId, accept, context);
     }
 
-    /**
-     * Gets the operation status for the given operation id.
-     * 
-     * @param location The name of the Azure region.
-     * @param operationId The operation id of the async operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the operation status for the given operation id on successful completion of {@link Mono}.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<OperationStatusResultInner> getAsync(String location, String operationId) {
         return getWithResponseAsync(location, operationId).flatMap(res -> Mono.justOrEmpty(res.getValue()));
     }
 
-    /**
-     * Gets the operation status for the given operation id.
-     * 
-     * @param location The name of the Azure region.
-     * @param operationId The operation id of the async operation.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the operation status for the given operation id along with {@link Response}.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Response<OperationStatusResultInner> getWithResponse(String location, String operationId, Context context) {
         return getWithResponseAsync(location, operationId, context).block();
     }
 
-    /**
-     * Gets the operation status for the given operation id.
-     * 
-     * @param location The name of the Azure region.
-     * @param operationId The operation id of the async operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the operation status for the given operation id.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public OperationStatusResultInner get(String location, String operationId) {
         return getWithResponse(location, operationId, Context.NONE).getValue();

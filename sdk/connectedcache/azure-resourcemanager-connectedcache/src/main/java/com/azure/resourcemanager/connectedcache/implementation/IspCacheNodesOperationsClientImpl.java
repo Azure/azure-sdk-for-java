@@ -336,18 +336,7 @@ public final class IspCacheNodesOperationsClientImpl implements IspCacheNodesOpe
             .flatMap(res -> Mono.justOrEmpty(res.getValue()));
     }
 
-    /**
-     * This api gets ispCacheNode resource information.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param customerResourceName Name of the Customer resource.
-     * @param cacheNodeResourceName Name of the ConnectedCache resource.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return represents the high level Nodes needed to provision cache node resources along with {@link Response}.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Response<IspCacheNodeResourceInner> getWithResponse(String resourceGroupName, String customerResourceName,
         String cacheNodeResourceName, Context context) {
@@ -356,17 +345,7 @@ public final class IspCacheNodesOperationsClientImpl implements IspCacheNodesOpe
             resourceGroupName, customerResourceName, cacheNodeResourceName, accept, context);
     }
 
-    /**
-     * This api gets ispCacheNode resource information.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param customerResourceName Name of the Customer resource.
-     * @param cacheNodeResourceName Name of the ConnectedCache resource.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return represents the high level Nodes needed to provision cache node resources.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public IspCacheNodeResourceInner get(String resourceGroupName, String customerResourceName,
         String cacheNodeResourceName) {
@@ -413,11 +392,8 @@ public final class IspCacheNodesOperationsClientImpl implements IspCacheNodesOpe
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Response<BinaryData> createOrUpdateWithResponse(String resourceGroupName, String customerResourceName,
         String cacheNodeResourceName, IspCacheNodeResourceInner resource) {
-        final String contentType = "application/json";
-        final String accept = "application/json";
-        return service.createOrUpdateSync(this.client.getEndpoint(), this.client.getApiVersion(),
-            this.client.getSubscriptionId(), resourceGroupName, customerResourceName, cacheNodeResourceName,
-            contentType, accept, resource, Context.NONE);
+        return createOrUpdateWithResponse(resourceGroupName, customerResourceName, cacheNodeResourceName, resource,
+            Context.NONE);
     }
 
     /**
@@ -467,43 +443,16 @@ public final class IspCacheNodesOperationsClientImpl implements IspCacheNodesOpe
             this.client.getContext());
     }
 
-    /**
-     * This api creates an ispCacheNode with the specified create parameters.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param customerResourceName Name of the Customer resource.
-     * @param cacheNodeResourceName Name of the ConnectedCache resource.
-     * @param resource Resource create parameters.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the {@link SyncPoller} for polling of represents the high level Nodes needed to provision cache node
-     * resources.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public SyncPoller<PollResult<IspCacheNodeResourceInner>, IspCacheNodeResourceInner> beginCreateOrUpdate(
         String resourceGroupName, String customerResourceName, String cacheNodeResourceName,
         IspCacheNodeResourceInner resource) {
-        Response<BinaryData> response
-            = createOrUpdateWithResponse(resourceGroupName, customerResourceName, cacheNodeResourceName, resource);
-        return this.client.<IspCacheNodeResourceInner, IspCacheNodeResourceInner>getLroResult(response,
-            IspCacheNodeResourceInner.class, IspCacheNodeResourceInner.class, Context.NONE);
+        return beginCreateOrUpdate(resourceGroupName, customerResourceName, cacheNodeResourceName, resource,
+            Context.NONE);
     }
 
-    /**
-     * This api creates an ispCacheNode with the specified create parameters.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param customerResourceName Name of the Customer resource.
-     * @param cacheNodeResourceName Name of the ConnectedCache resource.
-     * @param resource Resource create parameters.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the {@link SyncPoller} for polling of represents the high level Nodes needed to provision cache node
-     * resources.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public SyncPoller<PollResult<IspCacheNodeResourceInner>, IspCacheNodeResourceInner> beginCreateOrUpdate(
         String resourceGroupName, String customerResourceName, String cacheNodeResourceName,
@@ -534,43 +483,19 @@ public final class IspCacheNodesOperationsClientImpl implements IspCacheNodesOpe
             .flatMap(this.client::getLroFinalResultOrError);
     }
 
-    /**
-     * This api creates an ispCacheNode with the specified create parameters.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param customerResourceName Name of the Customer resource.
-     * @param cacheNodeResourceName Name of the ConnectedCache resource.
-     * @param resource Resource create parameters.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return represents the high level Nodes needed to provision cache node resources.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public IspCacheNodeResourceInner createOrUpdate(String resourceGroupName, String customerResourceName,
         String cacheNodeResourceName, IspCacheNodeResourceInner resource) {
-        return beginCreateOrUpdate(resourceGroupName, customerResourceName, cacheNodeResourceName, resource)
-            .getFinalResult();
+        return createOrUpdate(resourceGroupName, customerResourceName, cacheNodeResourceName, resource, Context.NONE);
     }
 
-    /**
-     * This api creates an ispCacheNode with the specified create parameters.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param customerResourceName Name of the Customer resource.
-     * @param cacheNodeResourceName Name of the ConnectedCache resource.
-     * @param resource Resource create parameters.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return represents the high level Nodes needed to provision cache node resources.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public IspCacheNodeResourceInner createOrUpdate(String resourceGroupName, String customerResourceName,
         String cacheNodeResourceName, IspCacheNodeResourceInner resource, Context context) {
-        return beginCreateOrUpdate(resourceGroupName, customerResourceName, cacheNodeResourceName, resource, context)
-            .getFinalResult();
+        return this.client.getLroFinalResultOrError(
+            beginCreateOrUpdate(resourceGroupName, customerResourceName, cacheNodeResourceName, resource, context));
     }
 
     /**
@@ -618,19 +543,7 @@ public final class IspCacheNodesOperationsClientImpl implements IspCacheNodesOpe
             .flatMap(res -> Mono.justOrEmpty(res.getValue()));
     }
 
-    /**
-     * This api updates an existing ispCacheNode resource.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param customerResourceName Name of the Customer resource.
-     * @param cacheNodeResourceName Name of the ConnectedCache resource.
-     * @param properties The resource properties to be updated.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return represents the high level Nodes needed to provision cache node resources along with {@link Response}.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Response<IspCacheNodeResourceInner> updateWithResponse(String resourceGroupName, String customerResourceName,
         String cacheNodeResourceName, ConnectedCachePatchResource properties, Context context) {
@@ -641,18 +554,7 @@ public final class IspCacheNodesOperationsClientImpl implements IspCacheNodesOpe
             contentType, accept, properties, context);
     }
 
-    /**
-     * This api updates an existing ispCacheNode resource.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param customerResourceName Name of the Customer resource.
-     * @param cacheNodeResourceName Name of the ConnectedCache resource.
-     * @param properties The resource properties to be updated.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return represents the high level Nodes needed to provision cache node resources.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public IspCacheNodeResourceInner update(String resourceGroupName, String customerResourceName,
         String cacheNodeResourceName, ConnectedCachePatchResource properties) {
@@ -693,9 +595,7 @@ public final class IspCacheNodesOperationsClientImpl implements IspCacheNodesOpe
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Response<BinaryData> deleteWithResponse(String resourceGroupName, String customerResourceName,
         String cacheNodeResourceName) {
-        return service.deleteSync(this.client.getEndpoint(), this.client.getApiVersion(),
-            this.client.getSubscriptionId(), resourceGroupName, customerResourceName, cacheNodeResourceName,
-            Context.NONE);
+        return deleteWithResponse(resourceGroupName, customerResourceName, cacheNodeResourceName, Context.NONE);
     }
 
     /**
@@ -737,37 +637,14 @@ public final class IspCacheNodesOperationsClientImpl implements IspCacheNodesOpe
             this.client.getContext());
     }
 
-    /**
-     * This api deletes an existing ispCacheNode resource.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param customerResourceName Name of the Customer resource.
-     * @param cacheNodeResourceName Name of the ConnectedCache resource.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the {@link SyncPoller} for polling of long-running operation.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public SyncPoller<PollResult<Void>, Void> beginDelete(String resourceGroupName, String customerResourceName,
         String cacheNodeResourceName) {
-        Response<BinaryData> response
-            = deleteWithResponse(resourceGroupName, customerResourceName, cacheNodeResourceName);
-        return this.client.<Void, Void>getLroResult(response, Void.class, Void.class, Context.NONE);
+        return beginDelete(resourceGroupName, customerResourceName, cacheNodeResourceName, Context.NONE);
     }
 
-    /**
-     * This api deletes an existing ispCacheNode resource.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param customerResourceName Name of the Customer resource.
-     * @param cacheNodeResourceName Name of the ConnectedCache resource.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the {@link SyncPoller} for polling of long-running operation.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public SyncPoller<PollResult<Void>, Void> beginDelete(String resourceGroupName, String customerResourceName,
         String cacheNodeResourceName, Context context) {
@@ -794,36 +671,18 @@ public final class IspCacheNodesOperationsClientImpl implements IspCacheNodesOpe
             .flatMap(this.client::getLroFinalResultOrError);
     }
 
-    /**
-     * This api deletes an existing ispCacheNode resource.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param customerResourceName Name of the Customer resource.
-     * @param cacheNodeResourceName Name of the ConnectedCache resource.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public void delete(String resourceGroupName, String customerResourceName, String cacheNodeResourceName) {
-        beginDelete(resourceGroupName, customerResourceName, cacheNodeResourceName).getFinalResult();
+        delete(resourceGroupName, customerResourceName, cacheNodeResourceName, Context.NONE);
     }
 
-    /**
-     * This api deletes an existing ispCacheNode resource.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param customerResourceName Name of the Customer resource.
-     * @param cacheNodeResourceName Name of the ConnectedCache resource.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public void delete(String resourceGroupName, String customerResourceName, String cacheNodeResourceName,
         Context context) {
-        beginDelete(resourceGroupName, customerResourceName, cacheNodeResourceName, context).getFinalResult();
+        this.client.getLroFinalResultOrError(
+            beginDelete(resourceGroupName, customerResourceName, cacheNodeResourceName, context));
     }
 
     /**
@@ -880,12 +739,7 @@ public final class IspCacheNodesOperationsClientImpl implements IspCacheNodesOpe
     @ServiceMethod(returns = ReturnType.SINGLE)
     private PagedResponse<IspCacheNodeResourceInner> listByIspCustomerResourceSinglePage(String resourceGroupName,
         String customerResourceName) {
-        final String accept = "application/json";
-        Response<IspCacheNodeResourceListResult> res
-            = service.listByIspCustomerResourceSync(this.client.getEndpoint(), this.client.getApiVersion(),
-                this.client.getSubscriptionId(), resourceGroupName, customerResourceName, accept, Context.NONE);
-        return new PagedResponseBase<>(res.getRequest(), res.getStatusCode(), res.getHeaders(), res.getValue().value(),
-            res.getValue().nextLink(), null);
+        return listByIspCustomerResourceSinglePage(resourceGroupName, customerResourceName, Context.NONE);
     }
 
     /**
@@ -910,34 +764,14 @@ public final class IspCacheNodesOperationsClientImpl implements IspCacheNodesOpe
             res.getValue().nextLink(), null);
     }
 
-    /**
-     * This api retrieves information about all ispCacheNode resources under the given subscription and resource group.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param customerResourceName Name of the Customer resource.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the response of a IspCacheNodeResource list operation as paginated response with {@link PagedIterable}.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.COLLECTION)
     public PagedIterable<IspCacheNodeResourceInner> listByIspCustomerResource(String resourceGroupName,
         String customerResourceName) {
-        return new PagedIterable<>(() -> listByIspCustomerResourceSinglePage(resourceGroupName, customerResourceName),
-            nextLink -> listByIspCustomerResourceNextSinglePage(nextLink));
+        return listByIspCustomerResource(resourceGroupName, customerResourceName, Context.NONE);
     }
 
-    /**
-     * This api retrieves information about all ispCacheNode resources under the given subscription and resource group.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param customerResourceName Name of the Customer resource.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the response of a IspCacheNodeResource list operation as paginated response with {@link PagedIterable}.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.COLLECTION)
     public PagedIterable<IspCacheNodeResourceInner> listByIspCustomerResource(String resourceGroupName,
         String customerResourceName, Context context) {
@@ -988,19 +822,7 @@ public final class IspCacheNodesOperationsClientImpl implements IspCacheNodesOpe
             .flatMap(res -> Mono.justOrEmpty(res.getValue()));
     }
 
-    /**
-     * This api gets ispCacheNode resource information.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param customerResourceName Name of the Customer resource.
-     * @param cacheNodeResourceName Name of the ConnectedCache resource.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return represents all Cidr details of the Bgp request for a specific cache node resource along with
-     * {@link Response}.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Response<MccCacheNodeBgpCidrDetailsInner> getBgpCidrsWithResponse(String resourceGroupName,
         String customerResourceName, String cacheNodeResourceName, Context context) {
@@ -1010,17 +832,7 @@ public final class IspCacheNodesOperationsClientImpl implements IspCacheNodesOpe
             context);
     }
 
-    /**
-     * This api gets ispCacheNode resource information.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param customerResourceName Name of the Customer resource.
-     * @param cacheNodeResourceName Name of the ConnectedCache resource.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return represents all Cidr details of the Bgp request for a specific cache node resource.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public MccCacheNodeBgpCidrDetailsInner getBgpCidrs(String resourceGroupName, String customerResourceName,
         String cacheNodeResourceName) {
@@ -1069,18 +881,7 @@ public final class IspCacheNodesOperationsClientImpl implements IspCacheNodesOpe
             cacheNodeResourceName).flatMap(res -> Mono.justOrEmpty(res.getValue()));
     }
 
-    /**
-     * This api gets secrets of the ispCacheNode resource install details.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param customerResourceName Name of the Customer resource.
-     * @param cacheNodeResourceName Name of the ConnectedCache resource.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return mcc cache node resource all install details along with {@link Response}.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Response<MccCacheNodeInstallDetailsInner> getCacheNodeInstallDetailsWithResponse(String resourceGroupName,
         String customerResourceName, String cacheNodeResourceName, Context context) {
@@ -1090,17 +891,7 @@ public final class IspCacheNodesOperationsClientImpl implements IspCacheNodesOpe
             context);
     }
 
-    /**
-     * This api gets secrets of the ispCacheNode resource install details.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param customerResourceName Name of the Customer resource.
-     * @param cacheNodeResourceName Name of the ConnectedCache resource.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return mcc cache node resource all install details.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public MccCacheNodeInstallDetailsInner getCacheNodeInstallDetails(String resourceGroupName,
         String customerResourceName, String cacheNodeResourceName) {
@@ -1149,18 +940,7 @@ public final class IspCacheNodesOperationsClientImpl implements IspCacheNodesOpe
             cacheNodeResourceName).flatMap(res -> Mono.justOrEmpty(res.getValue()));
     }
 
-    /**
-     * This api gets ispCacheNode resource auto update histrory information.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param customerResourceName Name of the Customer resource.
-     * @param cacheNodeResourceName Name of the ConnectedCache resource.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return mcc cache node resource auto update history along with {@link Response}.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Response<MccCacheNodeAutoUpdateHistoryInner> getCacheNodeAutoUpdateHistoryWithResponse(
         String resourceGroupName, String customerResourceName, String cacheNodeResourceName, Context context) {
@@ -1170,17 +950,7 @@ public final class IspCacheNodesOperationsClientImpl implements IspCacheNodesOpe
             context);
     }
 
-    /**
-     * This api gets ispCacheNode resource auto update histrory information.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param customerResourceName Name of the Customer resource.
-     * @param cacheNodeResourceName Name of the ConnectedCache resource.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return mcc cache node resource auto update history.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public MccCacheNodeAutoUpdateHistoryInner getCacheNodeAutoUpdateHistory(String resourceGroupName,
         String customerResourceName, String cacheNodeResourceName) {
@@ -1229,18 +999,7 @@ public final class IspCacheNodesOperationsClientImpl implements IspCacheNodesOpe
             cacheNodeResourceName).flatMap(res -> Mono.justOrEmpty(res.getValue()));
     }
 
-    /**
-     * This api gets ispCacheNode resource issues details histrory information.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param customerResourceName Name of the Customer resource.
-     * @param cacheNodeResourceName Name of the ConnectedCache resource.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return mcc cache node resource issue history along with {@link Response}.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Response<MccCacheNodeIssueHistoryInner> getCacheNodeMccIssueDetailsHistoryWithResponse(
         String resourceGroupName, String customerResourceName, String cacheNodeResourceName, Context context) {
@@ -1250,17 +1009,7 @@ public final class IspCacheNodesOperationsClientImpl implements IspCacheNodesOpe
             context);
     }
 
-    /**
-     * This api gets ispCacheNode resource issues details histrory information.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param customerResourceName Name of the Customer resource.
-     * @param cacheNodeResourceName Name of the ConnectedCache resource.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return mcc cache node resource issue history.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public MccCacheNodeIssueHistoryInner getCacheNodeMccIssueDetailsHistory(String resourceGroupName,
         String customerResourceName, String cacheNodeResourceName) {
@@ -1301,11 +1050,7 @@ public final class IspCacheNodesOperationsClientImpl implements IspCacheNodesOpe
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private PagedResponse<IspCacheNodeResourceInner> listByIspCustomerResourceNextSinglePage(String nextLink) {
-        final String accept = "application/json";
-        Response<IspCacheNodeResourceListResult> res
-            = service.listByIspCustomerResourceNextSync(nextLink, this.client.getEndpoint(), accept, Context.NONE);
-        return new PagedResponseBase<>(res.getRequest(), res.getStatusCode(), res.getHeaders(), res.getValue().value(),
-            res.getValue().nextLink(), null);
+        return listByIspCustomerResourceNextSinglePage(nextLink, Context.NONE);
     }
 
     /**

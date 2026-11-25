@@ -19,6 +19,8 @@ public final class AdvancedThreatProtectionSettingImpl
         com.azure.resourcemanager.security.SecurityManager serviceManager) {
         this.innerObject = innerObject;
         this.serviceManager = serviceManager;
+        this.resourceId = ResourceManagerUtils.getValueFromIdByParameterName(innerObject.id(),
+            "/{resourceId}/providers/Microsoft.Security/advancedThreatProtectionSettings/{settingName}", "resourceId");
     }
 
     public String id() {
@@ -57,11 +59,7 @@ public final class AdvancedThreatProtectionSettingImpl
     }
 
     public AdvancedThreatProtectionSetting create() {
-        this.innerObject = serviceManager.serviceClient()
-            .getAdvancedThreatProtections()
-            .createWithResponse(resourceId, this.innerModel(), Context.NONE)
-            .getValue();
-        return this;
+        return this.create(Context.NONE);
     }
 
     public AdvancedThreatProtectionSetting create(Context context) {
@@ -78,11 +76,7 @@ public final class AdvancedThreatProtectionSettingImpl
     }
 
     public AdvancedThreatProtectionSetting refresh() {
-        this.innerObject = serviceManager.serviceClient()
-            .getAdvancedThreatProtections()
-            .getWithResponse(resourceId, Context.NONE)
-            .getValue();
-        return this;
+        return this.refresh(Context.NONE);
     }
 
     public AdvancedThreatProtectionSetting refresh(Context context) {

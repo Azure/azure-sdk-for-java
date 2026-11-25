@@ -92,11 +92,7 @@ public final class SapApplicationServerInstanceImpl implements SapApplicationSer
     }
 
     public SapApplicationServerInstance create() {
-        this.innerObject = serviceManager.serviceClient()
-            .getSapApplicationServerInstances()
-            .create(resourceGroupName, sapVirtualInstanceName, applicationInstanceName, this.innerModel(),
-                Context.NONE);
-        return this;
+        return this.create(Context.NONE);
     }
 
     public SapApplicationServerInstance create(Context context) {
@@ -119,12 +115,7 @@ public final class SapApplicationServerInstanceImpl implements SapApplicationSer
     }
 
     public SapApplicationServerInstance apply() {
-        this.innerObject = serviceManager.serviceClient()
-            .getSapApplicationServerInstances()
-            .updateWithResponse(resourceGroupName, sapVirtualInstanceName, applicationInstanceName, updateProperties,
-                Context.NONE)
-            .getValue();
-        return this;
+        return this.apply(Context.NONE);
     }
 
     public SapApplicationServerInstance apply(Context context) {
@@ -152,11 +143,7 @@ public final class SapApplicationServerInstanceImpl implements SapApplicationSer
     }
 
     public SapApplicationServerInstance refresh() {
-        this.innerObject = serviceManager.serviceClient()
-            .getSapApplicationServerInstances()
-            .getWithResponse(resourceGroupName, sapVirtualInstanceName, applicationInstanceName, Context.NONE)
-            .getValue();
-        return this;
+        return this.refresh(Context.NONE);
     }
 
     public SapApplicationServerInstance refresh(Context context) {

@@ -110,10 +110,7 @@ public final class FlowImpl implements Flow, Flow.Definition, Flow.Update {
     }
 
     public Flow create() {
-        this.innerObject = serviceManager.serviceClient()
-            .getFlows()
-            .createOrUpdate(resourceGroupName, connectionName, flowName, this.innerModel(), Context.NONE);
-        return this;
+        return this.create(Context.NONE);
     }
 
     public Flow create(Context context) {
@@ -134,10 +131,7 @@ public final class FlowImpl implements Flow, Flow.Definition, Flow.Update {
     }
 
     public Flow apply() {
-        this.innerObject = serviceManager.serviceClient()
-            .getFlows()
-            .createOrUpdate(resourceGroupName, connectionName, flowName, this.innerModel(), Context.NONE);
-        return this;
+        return this.apply(Context.NONE);
     }
 
     public Flow apply(Context context) {
@@ -162,11 +156,7 @@ public final class FlowImpl implements Flow, Flow.Definition, Flow.Update {
     }
 
     public Flow refresh() {
-        this.innerObject = serviceManager.serviceClient()
-            .getFlows()
-            .getWithResponse(resourceGroupName, connectionName, flowName, Context.NONE)
-            .getValue();
-        return this;
+        return this.refresh(Context.NONE);
     }
 
     public Flow refresh(Context context) {

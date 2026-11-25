@@ -164,11 +164,7 @@ public final class ClusterManagerImpl implements ClusterManager, ClusterManager.
     }
 
     public ClusterManager create() {
-        this.innerObject = serviceManager.serviceClient()
-            .getClusterManagers()
-            .createOrUpdate(resourceGroupName, clusterManagerName, this.innerModel(), createIfMatch, createIfNoneMatch,
-                Context.NONE);
-        return this;
+        return this.create(Context.NONE);
     }
 
     public ClusterManager create(Context context) {
@@ -195,12 +191,7 @@ public final class ClusterManagerImpl implements ClusterManager, ClusterManager.
     }
 
     public ClusterManager apply() {
-        this.innerObject = serviceManager.serviceClient()
-            .getClusterManagers()
-            .updateWithResponse(resourceGroupName, clusterManagerName, updateIfMatch, updateIfNoneMatch,
-                updateClusterManagerUpdateParameters, Context.NONE)
-            .getValue();
-        return this;
+        return this.apply(Context.NONE);
     }
 
     public ClusterManager apply(Context context) {
@@ -225,11 +216,7 @@ public final class ClusterManagerImpl implements ClusterManager, ClusterManager.
     }
 
     public ClusterManager refresh() {
-        this.innerObject = serviceManager.serviceClient()
-            .getClusterManagers()
-            .getByResourceGroupWithResponse(resourceGroupName, clusterManagerName, Context.NONE)
-            .getValue();
-        return this;
+        return this.refresh(Context.NONE);
     }
 
     public ClusterManager refresh(Context context) {

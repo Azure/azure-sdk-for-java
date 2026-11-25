@@ -113,18 +113,7 @@ public final class JobCredentialsClientImpl implements JobCredentialsClient {
             @HeaderParam("Accept") String accept, Context context);
     }
 
-    /**
-     * Gets a jobs credential.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param serverName The name of the server.
-     * @param jobAgentName The name of the job agent to be retrieved.
-     * @param credentialName The name of the credential.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return a jobs credential along with {@link Response} on successful completion of {@link Mono}.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Response<JobCredentialInner>> getWithResponseAsync(String resourceGroupName, String serverName,
         String jobAgentName, String credentialName) {
@@ -200,18 +189,7 @@ public final class JobCredentialsClientImpl implements JobCredentialsClient {
             resourceGroupName, serverName, jobAgentName, credentialName, accept, context);
     }
 
-    /**
-     * Gets a jobs credential.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param serverName The name of the server.
-     * @param jobAgentName The name of the job agent to be retrieved.
-     * @param credentialName The name of the credential.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return a jobs credential on successful completion of {@link Mono}.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<JobCredentialInner> getAsync(String resourceGroupName, String serverName, String jobAgentName,
         String credentialName) {
@@ -219,57 +197,21 @@ public final class JobCredentialsClientImpl implements JobCredentialsClient {
             .flatMap(res -> Mono.justOrEmpty(res.getValue()));
     }
 
-    /**
-     * Gets a jobs credential.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param serverName The name of the server.
-     * @param jobAgentName The name of the job agent to be retrieved.
-     * @param credentialName The name of the credential.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return a jobs credential along with {@link Response}.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Response<JobCredentialInner> getWithResponse(String resourceGroupName, String serverName,
         String jobAgentName, String credentialName, Context context) {
         return getWithResponseAsync(resourceGroupName, serverName, jobAgentName, credentialName, context).block();
     }
 
-    /**
-     * Gets a jobs credential.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param serverName The name of the server.
-     * @param jobAgentName The name of the job agent to be retrieved.
-     * @param credentialName The name of the credential.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return a jobs credential.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public JobCredentialInner get(String resourceGroupName, String serverName, String jobAgentName,
         String credentialName) {
         return getWithResponse(resourceGroupName, serverName, jobAgentName, credentialName, Context.NONE).getValue();
     }
 
-    /**
-     * Creates or updates a job credential.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param serverName The name of the server.
-     * @param jobAgentName The name of the job agent to be retrieved.
-     * @param credentialName The name of the credential.
-     * @param parameters The requested job credential state.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return a stored credential that can be used by a job to connect to target databases along with {@link Response}
-     * on successful completion of {@link Mono}.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Response<JobCredentialInner>> createOrUpdateWithResponseAsync(String resourceGroupName,
         String serverName, String jobAgentName, String credentialName, JobCredentialInner parameters) {
@@ -360,20 +302,7 @@ public final class JobCredentialsClientImpl implements JobCredentialsClient {
             accept, parameters, context);
     }
 
-    /**
-     * Creates or updates a job credential.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param serverName The name of the server.
-     * @param jobAgentName The name of the job agent to be retrieved.
-     * @param credentialName The name of the credential.
-     * @param parameters The requested job credential state.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return a stored credential that can be used by a job to connect to target databases on successful completion of
-     * {@link Mono}.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<JobCredentialInner> createOrUpdateAsync(String resourceGroupName, String serverName,
         String jobAgentName, String credentialName, JobCredentialInner parameters) {
@@ -381,20 +310,7 @@ public final class JobCredentialsClientImpl implements JobCredentialsClient {
             .flatMap(res -> Mono.justOrEmpty(res.getValue()));
     }
 
-    /**
-     * Creates or updates a job credential.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param serverName The name of the server.
-     * @param jobAgentName The name of the job agent to be retrieved.
-     * @param credentialName The name of the credential.
-     * @param parameters The requested job credential state.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return a stored credential that can be used by a job to connect to target databases along with {@link Response}.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Response<JobCredentialInner> createOrUpdateWithResponse(String resourceGroupName, String serverName,
         String jobAgentName, String credentialName, JobCredentialInner parameters, Context context) {
@@ -402,19 +318,7 @@ public final class JobCredentialsClientImpl implements JobCredentialsClient {
             context).block();
     }
 
-    /**
-     * Creates or updates a job credential.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param serverName The name of the server.
-     * @param jobAgentName The name of the job agent to be retrieved.
-     * @param credentialName The name of the credential.
-     * @param parameters The requested job credential state.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return a stored credential that can be used by a job to connect to target databases.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public JobCredentialInner createOrUpdate(String resourceGroupName, String serverName, String jobAgentName,
         String credentialName, JobCredentialInner parameters) {
@@ -422,18 +326,7 @@ public final class JobCredentialsClientImpl implements JobCredentialsClient {
             Context.NONE).getValue();
     }
 
-    /**
-     * Deletes a job credential.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param serverName The name of the server.
-     * @param jobAgentName The name of the job agent to be retrieved.
-     * @param credentialName The name of the credential.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the {@link Response} on successful completion of {@link Mono}.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Response<Void>> deleteWithResponseAsync(String resourceGroupName, String serverName,
         String jobAgentName, String credentialName) {
@@ -506,18 +399,7 @@ public final class JobCredentialsClientImpl implements JobCredentialsClient {
             resourceGroupName, serverName, jobAgentName, credentialName, context);
     }
 
-    /**
-     * Deletes a job credential.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param serverName The name of the server.
-     * @param jobAgentName The name of the job agent to be retrieved.
-     * @param credentialName The name of the credential.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return A {@link Mono} that completes when a successful response is received.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Void> deleteAsync(String resourceGroupName, String serverName, String jobAgentName,
         String credentialName) {
@@ -525,36 +407,14 @@ public final class JobCredentialsClientImpl implements JobCredentialsClient {
             .flatMap(ignored -> Mono.empty());
     }
 
-    /**
-     * Deletes a job credential.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param serverName The name of the server.
-     * @param jobAgentName The name of the job agent to be retrieved.
-     * @param credentialName The name of the credential.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the {@link Response}.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Response<Void> deleteWithResponse(String resourceGroupName, String serverName, String jobAgentName,
         String credentialName, Context context) {
         return deleteWithResponseAsync(resourceGroupName, serverName, jobAgentName, credentialName, context).block();
     }
 
-    /**
-     * Deletes a job credential.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param serverName The name of the server.
-     * @param jobAgentName The name of the job agent to be retrieved.
-     * @param credentialName The name of the credential.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public void delete(String resourceGroupName, String serverName, String jobAgentName, String credentialName) {
         deleteWithResponse(resourceGroupName, serverName, jobAgentName, credentialName, Context.NONE);
@@ -643,17 +503,7 @@ public final class JobCredentialsClientImpl implements JobCredentialsClient {
                 res.getValue().value(), res.getValue().nextLink(), null));
     }
 
-    /**
-     * Gets a list of jobs credentials.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param serverName The name of the server.
-     * @param jobAgentName The name of the job agent to be retrieved.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return a list of jobs credentials as paginated response with {@link PagedFlux}.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.COLLECTION)
     public PagedFlux<JobCredentialInner> listByAgentAsync(String resourceGroupName, String serverName,
         String jobAgentName) {
@@ -680,35 +530,14 @@ public final class JobCredentialsClientImpl implements JobCredentialsClient {
             nextLink -> listByAgentNextSinglePageAsync(nextLink, context));
     }
 
-    /**
-     * Gets a list of jobs credentials.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param serverName The name of the server.
-     * @param jobAgentName The name of the job agent to be retrieved.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return a list of jobs credentials as paginated response with {@link PagedIterable}.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.COLLECTION)
     public PagedIterable<JobCredentialInner> listByAgent(String resourceGroupName, String serverName,
         String jobAgentName) {
         return new PagedIterable<>(listByAgentAsync(resourceGroupName, serverName, jobAgentName));
     }
 
-    /**
-     * Gets a list of jobs credentials.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param serverName The name of the server.
-     * @param jobAgentName The name of the job agent to be retrieved.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return a list of jobs credentials as paginated response with {@link PagedIterable}.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.COLLECTION)
     public PagedIterable<JobCredentialInner> listByAgent(String resourceGroupName, String serverName,
         String jobAgentName, Context context) {

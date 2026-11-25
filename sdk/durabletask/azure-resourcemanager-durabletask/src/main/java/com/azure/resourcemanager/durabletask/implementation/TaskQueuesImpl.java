@@ -45,7 +45,7 @@ public final class TaskQueuesImpl implements TaskQueues {
     }
 
     public void delete(String resourceGroupName, String schedulerName, String taskHubName, String taskQueueName) {
-        this.serviceClient().delete(resourceGroupName, schedulerName, taskHubName, taskQueueName);
+        this.delete(resourceGroupName, schedulerName, taskHubName, taskQueueName, Context.NONE);
     }
 
     public void delete(String resourceGroupName, String schedulerName, String taskHubName, String taskQueueName,
@@ -54,9 +54,7 @@ public final class TaskQueuesImpl implements TaskQueues {
     }
 
     public PagedIterable<TaskQueue> listByTaskHub(String resourceGroupName, String schedulerName, String taskHubName) {
-        PagedIterable<TaskQueueInner> inner
-            = this.serviceClient().listByTaskHub(resourceGroupName, schedulerName, taskHubName);
-        return ResourceManagerUtils.mapPage(inner, inner1 -> new TaskQueueImpl(inner1, this.manager()));
+        return this.listByTaskHub(resourceGroupName, schedulerName, taskHubName, Context.NONE);
     }
 
     public PagedIterable<TaskQueue> listByTaskHub(String resourceGroupName, String schedulerName, String taskHubName,
@@ -67,131 +65,42 @@ public final class TaskQueuesImpl implements TaskQueues {
     }
 
     public TaskQueue getById(String id) {
-        String resourceGroupName = ResourceManagerUtils.getValueFromIdByParameterName(id,
-            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.DurableTask/schedulers/{schedulerName}/taskHubs/{taskHubName}/taskQueues/{taskQueueName}",
-            "resourceGroupName");
-        if (resourceGroupName == null) {
-            throw LOGGER.logExceptionAsError(new IllegalArgumentException(
-                String.format("The resource ID '%s' is not valid. Missing path segment 'resourceGroups'.", id)));
-        }
-        String schedulerName = ResourceManagerUtils.getValueFromIdByParameterName(id,
-            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.DurableTask/schedulers/{schedulerName}/taskHubs/{taskHubName}/taskQueues/{taskQueueName}",
-            "schedulerName");
-        if (schedulerName == null) {
-            throw LOGGER.logExceptionAsError(new IllegalArgumentException(
-                String.format("The resource ID '%s' is not valid. Missing path segment 'schedulers'.", id)));
-        }
-        String taskHubName = ResourceManagerUtils.getValueFromIdByParameterName(id,
-            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.DurableTask/schedulers/{schedulerName}/taskHubs/{taskHubName}/taskQueues/{taskQueueName}",
-            "taskHubName");
-        if (taskHubName == null) {
-            throw LOGGER.logExceptionAsError(new IllegalArgumentException(
-                String.format("The resource ID '%s' is not valid. Missing path segment 'taskHubs'.", id)));
-        }
-        String taskQueueName = ResourceManagerUtils.getValueFromIdByParameterName(id,
-            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.DurableTask/schedulers/{schedulerName}/taskHubs/{taskHubName}/taskQueues/{taskQueueName}",
-            "taskQueueName");
-        if (taskQueueName == null) {
-            throw LOGGER.logExceptionAsError(new IllegalArgumentException(
-                String.format("The resource ID '%s' is not valid. Missing path segment 'taskQueues'.", id)));
-        }
-        return this.getWithResponse(resourceGroupName, schedulerName, taskHubName, taskQueueName, Context.NONE)
-            .getValue();
+        return this.getByIdWithResponse(id, Context.NONE).getValue();
     }
 
     public Response<TaskQueue> getByIdWithResponse(String id, Context context) {
-        String resourceGroupName = ResourceManagerUtils.getValueFromIdByParameterName(id,
+        String resourceGroupName = ResourceManagerUtils.getRequiredValueFromIdByParameterName(id,
             "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.DurableTask/schedulers/{schedulerName}/taskHubs/{taskHubName}/taskQueues/{taskQueueName}",
-            "resourceGroupName");
-        if (resourceGroupName == null) {
-            throw LOGGER.logExceptionAsError(new IllegalArgumentException(
-                String.format("The resource ID '%s' is not valid. Missing path segment 'resourceGroups'.", id)));
-        }
-        String schedulerName = ResourceManagerUtils.getValueFromIdByParameterName(id,
+            "resourceGroupName", "resourceGroups", LOGGER);
+        String schedulerName = ResourceManagerUtils.getRequiredValueFromIdByParameterName(id,
             "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.DurableTask/schedulers/{schedulerName}/taskHubs/{taskHubName}/taskQueues/{taskQueueName}",
-            "schedulerName");
-        if (schedulerName == null) {
-            throw LOGGER.logExceptionAsError(new IllegalArgumentException(
-                String.format("The resource ID '%s' is not valid. Missing path segment 'schedulers'.", id)));
-        }
-        String taskHubName = ResourceManagerUtils.getValueFromIdByParameterName(id,
+            "schedulerName", "schedulers", LOGGER);
+        String taskHubName = ResourceManagerUtils.getRequiredValueFromIdByParameterName(id,
             "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.DurableTask/schedulers/{schedulerName}/taskHubs/{taskHubName}/taskQueues/{taskQueueName}",
-            "taskHubName");
-        if (taskHubName == null) {
-            throw LOGGER.logExceptionAsError(new IllegalArgumentException(
-                String.format("The resource ID '%s' is not valid. Missing path segment 'taskHubs'.", id)));
-        }
-        String taskQueueName = ResourceManagerUtils.getValueFromIdByParameterName(id,
+            "taskHubName", "taskHubs", LOGGER);
+        String taskQueueName = ResourceManagerUtils.getRequiredValueFromIdByParameterName(id,
             "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.DurableTask/schedulers/{schedulerName}/taskHubs/{taskHubName}/taskQueues/{taskQueueName}",
-            "taskQueueName");
-        if (taskQueueName == null) {
-            throw LOGGER.logExceptionAsError(new IllegalArgumentException(
-                String.format("The resource ID '%s' is not valid. Missing path segment 'taskQueues'.", id)));
-        }
+            "taskQueueName", "taskQueues", LOGGER);
         return this.getWithResponse(resourceGroupName, schedulerName, taskHubName, taskQueueName, context);
     }
 
     public void deleteById(String id) {
-        String resourceGroupName = ResourceManagerUtils.getValueFromIdByParameterName(id,
-            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.DurableTask/schedulers/{schedulerName}/taskHubs/{taskHubName}/taskQueues/{taskQueueName}",
-            "resourceGroupName");
-        if (resourceGroupName == null) {
-            throw LOGGER.logExceptionAsError(new IllegalArgumentException(
-                String.format("The resource ID '%s' is not valid. Missing path segment 'resourceGroups'.", id)));
-        }
-        String schedulerName = ResourceManagerUtils.getValueFromIdByParameterName(id,
-            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.DurableTask/schedulers/{schedulerName}/taskHubs/{taskHubName}/taskQueues/{taskQueueName}",
-            "schedulerName");
-        if (schedulerName == null) {
-            throw LOGGER.logExceptionAsError(new IllegalArgumentException(
-                String.format("The resource ID '%s' is not valid. Missing path segment 'schedulers'.", id)));
-        }
-        String taskHubName = ResourceManagerUtils.getValueFromIdByParameterName(id,
-            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.DurableTask/schedulers/{schedulerName}/taskHubs/{taskHubName}/taskQueues/{taskQueueName}",
-            "taskHubName");
-        if (taskHubName == null) {
-            throw LOGGER.logExceptionAsError(new IllegalArgumentException(
-                String.format("The resource ID '%s' is not valid. Missing path segment 'taskHubs'.", id)));
-        }
-        String taskQueueName = ResourceManagerUtils.getValueFromIdByParameterName(id,
-            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.DurableTask/schedulers/{schedulerName}/taskHubs/{taskHubName}/taskQueues/{taskQueueName}",
-            "taskQueueName");
-        if (taskQueueName == null) {
-            throw LOGGER.logExceptionAsError(new IllegalArgumentException(
-                String.format("The resource ID '%s' is not valid. Missing path segment 'taskQueues'.", id)));
-        }
-        this.delete(resourceGroupName, schedulerName, taskHubName, taskQueueName, Context.NONE);
+        this.deleteByIdWithResponse(id, Context.NONE);
     }
 
     public void deleteByIdWithResponse(String id, Context context) {
-        String resourceGroupName = ResourceManagerUtils.getValueFromIdByParameterName(id,
+        String resourceGroupName = ResourceManagerUtils.getRequiredValueFromIdByParameterName(id,
             "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.DurableTask/schedulers/{schedulerName}/taskHubs/{taskHubName}/taskQueues/{taskQueueName}",
-            "resourceGroupName");
-        if (resourceGroupName == null) {
-            throw LOGGER.logExceptionAsError(new IllegalArgumentException(
-                String.format("The resource ID '%s' is not valid. Missing path segment 'resourceGroups'.", id)));
-        }
-        String schedulerName = ResourceManagerUtils.getValueFromIdByParameterName(id,
+            "resourceGroupName", "resourceGroups", LOGGER);
+        String schedulerName = ResourceManagerUtils.getRequiredValueFromIdByParameterName(id,
             "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.DurableTask/schedulers/{schedulerName}/taskHubs/{taskHubName}/taskQueues/{taskQueueName}",
-            "schedulerName");
-        if (schedulerName == null) {
-            throw LOGGER.logExceptionAsError(new IllegalArgumentException(
-                String.format("The resource ID '%s' is not valid. Missing path segment 'schedulers'.", id)));
-        }
-        String taskHubName = ResourceManagerUtils.getValueFromIdByParameterName(id,
+            "schedulerName", "schedulers", LOGGER);
+        String taskHubName = ResourceManagerUtils.getRequiredValueFromIdByParameterName(id,
             "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.DurableTask/schedulers/{schedulerName}/taskHubs/{taskHubName}/taskQueues/{taskQueueName}",
-            "taskHubName");
-        if (taskHubName == null) {
-            throw LOGGER.logExceptionAsError(new IllegalArgumentException(
-                String.format("The resource ID '%s' is not valid. Missing path segment 'taskHubs'.", id)));
-        }
-        String taskQueueName = ResourceManagerUtils.getValueFromIdByParameterName(id,
+            "taskHubName", "taskHubs", LOGGER);
+        String taskQueueName = ResourceManagerUtils.getRequiredValueFromIdByParameterName(id,
             "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.DurableTask/schedulers/{schedulerName}/taskHubs/{taskHubName}/taskQueues/{taskQueueName}",
-            "taskQueueName");
-        if (taskQueueName == null) {
-            throw LOGGER.logExceptionAsError(new IllegalArgumentException(
-                String.format("The resource ID '%s' is not valid. Missing path segment 'taskQueues'.", id)));
-        }
+            "taskQueueName", "taskQueues", LOGGER);
         this.delete(resourceGroupName, schedulerName, taskHubName, taskQueueName, context);
     }
 

@@ -209,18 +209,7 @@ public final class SharedLimitCapsClientImpl implements SharedLimitCapsClient {
         return getWithResponseAsync(location, vmFamilyName).flatMap(res -> Mono.justOrEmpty(res.getValue()));
     }
 
-    /**
-     * Gets the shared limit cap configuration for a VM family, as visible to the caller's subscription.
-     * 
-     * @param location The name of the Azure region.
-     * @param vmFamilyName The name of the SharedLimitCap.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the shared limit cap configuration for a VM family, as visible to the caller's subscription along with
-     * {@link Response}.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Response<SharedLimitCapInner> getWithResponse(String location, String vmFamilyName, Context context) {
         final String accept = "application/json";
@@ -228,16 +217,7 @@ public final class SharedLimitCapsClientImpl implements SharedLimitCapsClient {
             location, vmFamilyName, accept, context);
     }
 
-    /**
-     * Gets the shared limit cap configuration for a VM family, as visible to the caller's subscription.
-     * 
-     * @param location The name of the Azure region.
-     * @param vmFamilyName The name of the SharedLimitCap.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the shared limit cap configuration for a VM family, as visible to the caller's subscription.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public SharedLimitCapInner get(String location, String vmFamilyName) {
         return getWithResponse(location, vmFamilyName, Context.NONE).getValue();
@@ -285,19 +265,7 @@ public final class SharedLimitCapsClientImpl implements SharedLimitCapsClient {
             .flatMap(res -> Mono.justOrEmpty(res.getValue()));
     }
 
-    /**
-     * Creates or replaces the shared limit cap configuration for a VM family.
-     * 
-     * @param location The name of the Azure region.
-     * @param vmFamilyName The name of the SharedLimitCap.
-     * @param resource Resource create parameters.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return shared limit cap configuration for a VM family, owned by a host subscription
-     * and propagated to its member subscriptions along with {@link Response}.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Response<SharedLimitCapInner> createOrUpdateWithResponse(String location, String vmFamilyName,
         SharedLimitCapInner resource, Context context) {
@@ -307,18 +275,7 @@ public final class SharedLimitCapsClientImpl implements SharedLimitCapsClient {
             this.client.getSubscriptionId(), location, vmFamilyName, contentType, accept, resource, context);
     }
 
-    /**
-     * Creates or replaces the shared limit cap configuration for a VM family.
-     * 
-     * @param location The name of the Azure region.
-     * @param vmFamilyName The name of the SharedLimitCap.
-     * @param resource Resource create parameters.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return shared limit cap configuration for a VM family, owned by a host subscription
-     * and propagated to its member subscriptions.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public SharedLimitCapInner createOrUpdate(String location, String vmFamilyName, SharedLimitCapInner resource) {
         return createOrUpdateWithResponse(location, vmFamilyName, resource, Context.NONE).getValue();
@@ -359,34 +316,14 @@ public final class SharedLimitCapsClientImpl implements SharedLimitCapsClient {
         return deleteWithResponseAsync(location, vmFamilyName).flatMap(ignored -> Mono.empty());
     }
 
-    /**
-     * Deletes the shared limit cap configuration for a VM family. The caller's subscription is treated as the host
-     * subscription.
-     * 
-     * @param location The name of the Azure region.
-     * @param vmFamilyName The name of the SharedLimitCap.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the {@link Response}.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Response<Void> deleteWithResponse(String location, String vmFamilyName, Context context) {
         return service.deleteSync(this.client.getEndpoint(), this.client.getApiVersion(),
             this.client.getSubscriptionId(), location, vmFamilyName, context);
     }
 
-    /**
-     * Deletes the shared limit cap configuration for a VM family. The caller's subscription is treated as the host
-     * subscription.
-     * 
-     * @param location The name of the Azure region.
-     * @param vmFamilyName The name of the SharedLimitCap.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public void delete(String location, String vmFamilyName) {
         deleteWithResponse(location, vmFamilyName, Context.NONE);
@@ -440,12 +377,7 @@ public final class SharedLimitCapsClientImpl implements SharedLimitCapsClient {
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private PagedResponse<SharedLimitCapInner> listBySubscriptionLocationResourceSinglePage(String location) {
-        final String accept = "application/json";
-        Response<SharedLimitCapListResult> res
-            = service.listBySubscriptionLocationResourceSync(this.client.getEndpoint(), this.client.getApiVersion(),
-                this.client.getSubscriptionId(), location, accept, Context.NONE);
-        return new PagedResponseBase<>(res.getRequest(), res.getStatusCode(), res.getHeaders(), res.getValue().value(),
-            res.getValue().nextLink(), null);
+        return listBySubscriptionLocationResourceSinglePage(location, Context.NONE);
     }
 
     /**
@@ -469,31 +401,13 @@ public final class SharedLimitCapsClientImpl implements SharedLimitCapsClient {
             res.getValue().nextLink(), null);
     }
 
-    /**
-     * Lists all shared limit cap configurations visible to the caller's subscription.
-     * 
-     * @param location The name of the Azure region.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the response of a SharedLimitCap list operation as paginated response with {@link PagedIterable}.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.COLLECTION)
     public PagedIterable<SharedLimitCapInner> listBySubscriptionLocationResource(String location) {
-        return new PagedIterable<>(() -> listBySubscriptionLocationResourceSinglePage(location),
-            nextLink -> listBySubscriptionLocationResourceNextSinglePage(nextLink));
+        return listBySubscriptionLocationResource(location, Context.NONE);
     }
 
-    /**
-     * Lists all shared limit cap configurations visible to the caller's subscription.
-     * 
-     * @param location The name of the Azure region.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the response of a SharedLimitCap list operation as paginated response with {@link PagedIterable}.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.COLLECTION)
     public PagedIterable<SharedLimitCapInner> listBySubscriptionLocationResource(String location, Context context) {
         return new PagedIterable<>(() -> listBySubscriptionLocationResourceSinglePage(location, context),
@@ -546,20 +460,7 @@ public final class SharedLimitCapsClientImpl implements SharedLimitCapsClient {
             .flatMap(res -> Mono.justOrEmpty(res.getValue()));
     }
 
-    /**
-     * Replaces the full set of per-member cap overrides for this shared limit
-     * cap. The supplied array becomes the new complete set of overrides;
-     * supplying an empty array clears all existing overrides.
-     * 
-     * @param location The name of the Azure region.
-     * @param vmFamilyName The name of the SharedLimitCap.
-     * @param body The content of the action request.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return response body for the `setMemberCapOverrides` action along with {@link Response}.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Response<SetMemberCapOverridesResultInner> setMemberCapOverridesWithResponse(String location,
         String vmFamilyName, SetMemberCapOverridesRequest body, Context context) {
@@ -569,19 +470,7 @@ public final class SharedLimitCapsClientImpl implements SharedLimitCapsClient {
             this.client.getSubscriptionId(), location, vmFamilyName, contentType, accept, body, context);
     }
 
-    /**
-     * Replaces the full set of per-member cap overrides for this shared limit
-     * cap. The supplied array becomes the new complete set of overrides;
-     * supplying an empty array clears all existing overrides.
-     * 
-     * @param location The name of the Azure region.
-     * @param vmFamilyName The name of the SharedLimitCap.
-     * @param body The content of the action request.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return response body for the `setMemberCapOverrides` action.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public SetMemberCapOverridesResultInner setMemberCapOverrides(String location, String vmFamilyName,
         SetMemberCapOverridesRequest body) {
@@ -621,11 +510,7 @@ public final class SharedLimitCapsClientImpl implements SharedLimitCapsClient {
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private PagedResponse<SharedLimitCapInner> listBySubscriptionLocationResourceNextSinglePage(String nextLink) {
-        final String accept = "application/json";
-        Response<SharedLimitCapListResult> res = service.listBySubscriptionLocationResourceNextSync(nextLink,
-            this.client.getEndpoint(), accept, Context.NONE);
-        return new PagedResponseBase<>(res.getRequest(), res.getStatusCode(), res.getHeaders(), res.getValue().value(),
-            res.getValue().nextLink(), null);
+        return listBySubscriptionLocationResourceNextSinglePage(nextLink, Context.NONE);
     }
 
     /**

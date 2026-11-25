@@ -254,37 +254,14 @@ public final class TasksClientImpl implements TasksClient {
             .flatMap(res -> Mono.justOrEmpty(res.getValue()));
     }
 
-    /**
-     * Recommended tasks that will help improve the security of the subscription proactively.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param ascLocation The location where ASC stores the data of the subscription. can be retrieved from Get
-     * locations.
-     * @param taskName Name of the task object, will be a GUID.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return security task that we recommend to do in order to strengthen security along with {@link Response}.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Response<SecurityTaskInner> getResourceGroupLevelTaskWithResponse(String resourceGroupName,
         String ascLocation, String taskName, Context context) {
         return getResourceGroupLevelTaskWithResponseAsync(resourceGroupName, ascLocation, taskName, context).block();
     }
 
-    /**
-     * Recommended tasks that will help improve the security of the subscription proactively.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param ascLocation The location where ASC stores the data of the subscription. can be retrieved from Get
-     * locations.
-     * @param taskName Name of the task object, will be a GUID.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return security task that we recommend to do in order to strengthen security.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public SecurityTaskInner getResourceGroupLevelTask(String resourceGroupName, String ascLocation, String taskName) {
         return getResourceGroupLevelTaskWithResponse(resourceGroupName, ascLocation, taskName, Context.NONE).getValue();
@@ -431,36 +408,14 @@ public final class TasksClientImpl implements TasksClient {
             nextLink -> listByResourceGroupNextSinglePageAsync(nextLink, context));
     }
 
-    /**
-     * Recommended tasks that will help improve the security of the subscription proactively.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param ascLocation The location where ASC stores the data of the subscription. can be retrieved from Get
-     * locations.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return list of security task recommendations as paginated response with {@link PagedIterable}.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.COLLECTION)
     public PagedIterable<SecurityTaskInner> listByResourceGroup(String resourceGroupName, String ascLocation) {
         final String filter = null;
         return new PagedIterable<>(listByResourceGroupAsync(resourceGroupName, ascLocation, filter));
     }
 
-    /**
-     * Recommended tasks that will help improve the security of the subscription proactively.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param ascLocation The location where ASC stores the data of the subscription. can be retrieved from Get
-     * locations.
-     * @param filter OData filter. Optional.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return list of security task recommendations as paginated response with {@link PagedIterable}.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.COLLECTION)
     public PagedIterable<SecurityTaskInner> listByResourceGroup(String resourceGroupName, String ascLocation,
         String filter, Context context) {
@@ -578,20 +533,7 @@ public final class TasksClientImpl implements TasksClient {
             taskUpdateActionType).flatMap(ignored -> Mono.empty());
     }
 
-    /**
-     * Recommended tasks that will help improve the security of the subscription proactively.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param ascLocation The location where ASC stores the data of the subscription. can be retrieved from Get
-     * locations.
-     * @param taskName Name of the task object, will be a GUID.
-     * @param taskUpdateActionType Type of the action to do on the task.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the {@link Response}.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Response<Void> updateResourceGroupLevelTaskStateWithResponse(String resourceGroupName, String ascLocation,
         String taskName, TaskUpdateActionType taskUpdateActionType, Context context) {
@@ -599,18 +541,7 @@ public final class TasksClientImpl implements TasksClient {
             taskUpdateActionType, context).block();
     }
 
-    /**
-     * Recommended tasks that will help improve the security of the subscription proactively.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param ascLocation The location where ASC stores the data of the subscription. can be retrieved from Get
-     * locations.
-     * @param taskName Name of the task object, will be a GUID.
-     * @param taskUpdateActionType Type of the action to do on the task.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public void updateResourceGroupLevelTaskState(String resourceGroupName, String ascLocation, String taskName,
         TaskUpdateActionType taskUpdateActionType) {
@@ -710,35 +641,14 @@ public final class TasksClientImpl implements TasksClient {
             .flatMap(res -> Mono.justOrEmpty(res.getValue()));
     }
 
-    /**
-     * Recommended tasks that will help improve the security of the subscription proactively.
-     * 
-     * @param ascLocation The location where ASC stores the data of the subscription. can be retrieved from Get
-     * locations.
-     * @param taskName Name of the task object, will be a GUID.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return security task that we recommend to do in order to strengthen security along with {@link Response}.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Response<SecurityTaskInner> getSubscriptionLevelTaskWithResponse(String ascLocation, String taskName,
         Context context) {
         return getSubscriptionLevelTaskWithResponseAsync(ascLocation, taskName, context).block();
     }
 
-    /**
-     * Recommended tasks that will help improve the security of the subscription proactively.
-     * 
-     * @param ascLocation The location where ASC stores the data of the subscription. can be retrieved from Get
-     * locations.
-     * @param taskName Name of the task object, will be a GUID.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return security task that we recommend to do in order to strengthen security.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public SecurityTaskInner getSubscriptionLevelTask(String ascLocation, String taskName) {
         return getSubscriptionLevelTaskWithResponse(ascLocation, taskName, Context.NONE).getValue();
@@ -868,34 +778,14 @@ public final class TasksClientImpl implements TasksClient {
             nextLink -> listByHomeRegionNextSinglePageAsync(nextLink, context));
     }
 
-    /**
-     * Recommended tasks that will help improve the security of the subscription proactively.
-     * 
-     * @param ascLocation The location where ASC stores the data of the subscription. can be retrieved from Get
-     * locations.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return list of security task recommendations as paginated response with {@link PagedIterable}.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.COLLECTION)
     public PagedIterable<SecurityTaskInner> listByHomeRegion(String ascLocation) {
         final String filter = null;
         return new PagedIterable<>(listByHomeRegionAsync(ascLocation, filter));
     }
 
-    /**
-     * Recommended tasks that will help improve the security of the subscription proactively.
-     * 
-     * @param ascLocation The location where ASC stores the data of the subscription. can be retrieved from Get
-     * locations.
-     * @param filter OData filter. Optional.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return list of security task recommendations as paginated response with {@link PagedIterable}.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.COLLECTION)
     public PagedIterable<SecurityTaskInner> listByHomeRegion(String ascLocation, String filter, Context context) {
         return new PagedIterable<>(listByHomeRegionAsync(ascLocation, filter, context));
@@ -1000,19 +890,7 @@ public final class TasksClientImpl implements TasksClient {
             .flatMap(ignored -> Mono.empty());
     }
 
-    /**
-     * Recommended tasks that will help improve the security of the subscription proactively.
-     * 
-     * @param ascLocation The location where ASC stores the data of the subscription. can be retrieved from Get
-     * locations.
-     * @param taskName Name of the task object, will be a GUID.
-     * @param taskUpdateActionType Type of the action to do on the task.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the {@link Response}.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Response<Void> updateSubscriptionLevelTaskStateWithResponse(String ascLocation, String taskName,
         TaskUpdateActionType taskUpdateActionType, Context context) {
@@ -1020,17 +898,7 @@ public final class TasksClientImpl implements TasksClient {
             .block();
     }
 
-    /**
-     * Recommended tasks that will help improve the security of the subscription proactively.
-     * 
-     * @param ascLocation The location where ASC stores the data of the subscription. can be retrieved from Get
-     * locations.
-     * @param taskName Name of the task object, will be a GUID.
-     * @param taskUpdateActionType Type of the action to do on the task.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public void updateSubscriptionLevelTaskState(String ascLocation, String taskName,
         TaskUpdateActionType taskUpdateActionType) {
@@ -1140,29 +1008,14 @@ public final class TasksClientImpl implements TasksClient {
             nextLink -> listNextSinglePageAsync(nextLink, context));
     }
 
-    /**
-     * Recommended tasks that will help improve the security of the subscription proactively.
-     * 
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return list of security task recommendations as paginated response with {@link PagedIterable}.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.COLLECTION)
     public PagedIterable<SecurityTaskInner> list() {
         final String filter = null;
         return new PagedIterable<>(listAsync(filter));
     }
 
-    /**
-     * Recommended tasks that will help improve the security of the subscription proactively.
-     * 
-     * @param filter OData filter. Optional.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return list of security task recommendations as paginated response with {@link PagedIterable}.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.COLLECTION)
     public PagedIterable<SecurityTaskInner> list(String filter, Context context) {
         return new PagedIterable<>(listAsync(filter, context));

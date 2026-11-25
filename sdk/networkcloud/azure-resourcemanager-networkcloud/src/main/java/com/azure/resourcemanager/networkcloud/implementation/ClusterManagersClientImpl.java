@@ -290,17 +290,7 @@ public final class ClusterManagersClientImpl implements ClusterManagersClient {
             .flatMap(res -> Mono.justOrEmpty(res.getValue()));
     }
 
-    /**
-     * Get the properties of the provided cluster manager.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param clusterManagerName The name of the cluster manager.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the properties of the provided cluster manager along with {@link Response}.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Response<ClusterManagerInner> getByResourceGroupWithResponse(String resourceGroupName,
         String clusterManagerName, Context context) {
@@ -309,16 +299,7 @@ public final class ClusterManagersClientImpl implements ClusterManagersClient {
             this.client.getSubscriptionId(), resourceGroupName, clusterManagerName, accept, context);
     }
 
-    /**
-     * Get the properties of the provided cluster manager.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param clusterManagerName The name of the cluster manager.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the properties of the provided cluster manager.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public ClusterManagerInner getByResourceGroup(String resourceGroupName, String clusterManagerName) {
         return getByResourceGroupWithResponse(resourceGroupName, clusterManagerName, Context.NONE).getValue();
@@ -371,11 +352,8 @@ public final class ClusterManagersClientImpl implements ClusterManagersClient {
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Response<BinaryData> createOrUpdateWithResponse(String resourceGroupName, String clusterManagerName,
         ClusterManagerInner clusterManagerParameters, String ifMatch, String ifNoneMatch) {
-        final String contentType = "application/json";
-        final String accept = "application/json";
-        return service.createOrUpdateSync(this.client.getEndpoint(), this.client.getApiVersion(),
-            this.client.getSubscriptionId(), resourceGroupName, clusterManagerName, ifMatch, ifNoneMatch, contentType,
-            accept, clusterManagerParameters, Context.NONE);
+        return createOrUpdateWithResponse(resourceGroupName, clusterManagerName, clusterManagerParameters, ifMatch,
+            ifNoneMatch, Context.NONE);
     }
 
     /**
@@ -474,52 +452,21 @@ public final class ClusterManagersClientImpl implements ClusterManagersClient {
     private SyncPoller<PollResult<ClusterManagerInner>, ClusterManagerInner> beginCreateOrUpdate(
         String resourceGroupName, String clusterManagerName, ClusterManagerInner clusterManagerParameters,
         String ifMatch, String ifNoneMatch) {
-        Response<BinaryData> response = createOrUpdateWithResponse(resourceGroupName, clusterManagerName,
-            clusterManagerParameters, ifMatch, ifNoneMatch);
-        return this.client.<ClusterManagerInner, ClusterManagerInner>getLroResult(response, ClusterManagerInner.class,
-            ClusterManagerInner.class, Context.NONE);
+        return beginCreateOrUpdate(resourceGroupName, clusterManagerName, clusterManagerParameters, ifMatch,
+            ifNoneMatch, Context.NONE);
     }
 
-    /**
-     * Create a new cluster manager or update properties of the cluster manager if it exists.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param clusterManagerName The name of the cluster manager.
-     * @param clusterManagerParameters The request body.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the {@link SyncPoller} for polling of clusterManager represents a control-plane to manage one or more
-     * on-premises clusters.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public SyncPoller<PollResult<ClusterManagerInner>, ClusterManagerInner> beginCreateOrUpdate(
         String resourceGroupName, String clusterManagerName, ClusterManagerInner clusterManagerParameters) {
         final String ifMatch = null;
         final String ifNoneMatch = null;
-        Response<BinaryData> response = createOrUpdateWithResponse(resourceGroupName, clusterManagerName,
-            clusterManagerParameters, ifMatch, ifNoneMatch);
-        return this.client.<ClusterManagerInner, ClusterManagerInner>getLroResult(response, ClusterManagerInner.class,
-            ClusterManagerInner.class, Context.NONE);
+        return beginCreateOrUpdate(resourceGroupName, clusterManagerName, clusterManagerParameters, ifMatch,
+            ifNoneMatch, Context.NONE);
     }
 
-    /**
-     * Create a new cluster manager or update properties of the cluster manager if it exists.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param clusterManagerName The name of the cluster manager.
-     * @param clusterManagerParameters The request body.
-     * @param ifMatch The ETag of the transformation. Omit this value to always overwrite the current resource. Specify
-     * the last-seen ETag value to prevent accidentally overwriting concurrent changes.
-     * @param ifNoneMatch Set to '*' to allow a new record set to be created, but to prevent updating an existing
-     * resource. Other values will result in error from server as they are not supported.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the {@link SyncPoller} for polling of clusterManager represents a control-plane to manage one or more
-     * on-premises clusters.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public SyncPoller<PollResult<ClusterManagerInner>, ClusterManagerInner> beginCreateOrUpdate(
         String resourceGroupName, String clusterManagerName, ClusterManagerInner clusterManagerParameters,
@@ -574,47 +521,22 @@ public final class ClusterManagersClientImpl implements ClusterManagersClient {
             ifNoneMatch).last().flatMap(this.client::getLroFinalResultOrError);
     }
 
-    /**
-     * Create a new cluster manager or update properties of the cluster manager if it exists.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param clusterManagerName The name of the cluster manager.
-     * @param clusterManagerParameters The request body.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return clusterManager represents a control-plane to manage one or more on-premises clusters.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public ClusterManagerInner createOrUpdate(String resourceGroupName, String clusterManagerName,
         ClusterManagerInner clusterManagerParameters) {
         final String ifMatch = null;
         final String ifNoneMatch = null;
-        return beginCreateOrUpdate(resourceGroupName, clusterManagerName, clusterManagerParameters, ifMatch,
-            ifNoneMatch).getFinalResult();
+        return createOrUpdate(resourceGroupName, clusterManagerName, clusterManagerParameters, ifMatch, ifNoneMatch,
+            Context.NONE);
     }
 
-    /**
-     * Create a new cluster manager or update properties of the cluster manager if it exists.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param clusterManagerName The name of the cluster manager.
-     * @param clusterManagerParameters The request body.
-     * @param ifMatch The ETag of the transformation. Omit this value to always overwrite the current resource. Specify
-     * the last-seen ETag value to prevent accidentally overwriting concurrent changes.
-     * @param ifNoneMatch Set to '*' to allow a new record set to be created, but to prevent updating an existing
-     * resource. Other values will result in error from server as they are not supported.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return clusterManager represents a control-plane to manage one or more on-premises clusters.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public ClusterManagerInner createOrUpdate(String resourceGroupName, String clusterManagerName,
         ClusterManagerInner clusterManagerParameters, String ifMatch, String ifNoneMatch, Context context) {
-        return beginCreateOrUpdate(resourceGroupName, clusterManagerName, clusterManagerParameters, ifMatch,
-            ifNoneMatch, context).getFinalResult();
+        return this.client.getLroFinalResultOrError(beginCreateOrUpdate(resourceGroupName, clusterManagerName,
+            clusterManagerParameters, ifMatch, ifNoneMatch, context));
     }
 
     /**
@@ -667,24 +589,7 @@ public final class ClusterManagersClientImpl implements ClusterManagersClient {
             clusterManagerUpdateParameters).flatMap(res -> Mono.justOrEmpty(res.getValue()));
     }
 
-    /**
-     * Patch properties of the provided cluster manager, or update the tags assigned to the cluster manager. Properties
-     * and tag updates can be done independently.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param clusterManagerName The name of the cluster manager.
-     * @param ifMatch The ETag of the transformation. Omit this value to always overwrite the current resource. Specify
-     * the last-seen ETag value to prevent accidentally overwriting concurrent changes.
-     * @param ifNoneMatch Set to '*' to allow a new record set to be created, but to prevent updating an existing
-     * resource. Other values will result in error from server as they are not supported.
-     * @param clusterManagerUpdateParameters The request body.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return clusterManager represents a control-plane to manage one or more on-premises clusters along with
-     * {@link Response}.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Response<ClusterManagerInner> updateWithResponse(String resourceGroupName, String clusterManagerName,
         String ifMatch, String ifNoneMatch, ClusterManagerPatchParameters clusterManagerUpdateParameters,
@@ -695,17 +600,7 @@ public final class ClusterManagersClientImpl implements ClusterManagersClient {
             clusterManagerUpdateParameters, context);
     }
 
-    /**
-     * Patch properties of the provided cluster manager, or update the tags assigned to the cluster manager. Properties
-     * and tag updates can be done independently.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param clusterManagerName The name of the cluster manager.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return clusterManager represents a control-plane to manage one or more on-premises clusters.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public ClusterManagerInner update(String resourceGroupName, String clusterManagerName) {
         final String ifMatch = null;
@@ -755,8 +650,7 @@ public final class ClusterManagersClientImpl implements ClusterManagersClient {
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Response<BinaryData> deleteWithResponse(String resourceGroupName, String clusterManagerName, String ifMatch,
         String ifNoneMatch) {
-        return service.deleteSync(this.client.getEndpoint(), this.client.getApiVersion(),
-            this.client.getSubscriptionId(), resourceGroupName, clusterManagerName, ifMatch, ifNoneMatch, Context.NONE);
+        return deleteWithResponse(resourceGroupName, clusterManagerName, ifMatch, ifNoneMatch, Context.NONE);
     }
 
     /**
@@ -841,43 +735,18 @@ public final class ClusterManagersClientImpl implements ClusterManagersClient {
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     private SyncPoller<PollResult<Void>, Void> beginDelete(String resourceGroupName, String clusterManagerName,
         String ifMatch, String ifNoneMatch) {
-        Response<BinaryData> response = deleteWithResponse(resourceGroupName, clusterManagerName, ifMatch, ifNoneMatch);
-        return this.client.<Void, Void>getLroResult(response, Void.class, Void.class, Context.NONE);
+        return beginDelete(resourceGroupName, clusterManagerName, ifMatch, ifNoneMatch, Context.NONE);
     }
 
-    /**
-     * Delete the provided cluster manager.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param clusterManagerName The name of the cluster manager.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the {@link SyncPoller} for polling of long-running operation.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public SyncPoller<PollResult<Void>, Void> beginDelete(String resourceGroupName, String clusterManagerName) {
         final String ifMatch = null;
         final String ifNoneMatch = null;
-        Response<BinaryData> response = deleteWithResponse(resourceGroupName, clusterManagerName, ifMatch, ifNoneMatch);
-        return this.client.<Void, Void>getLroResult(response, Void.class, Void.class, Context.NONE);
+        return beginDelete(resourceGroupName, clusterManagerName, ifMatch, ifNoneMatch, Context.NONE);
     }
 
-    /**
-     * Delete the provided cluster manager.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param clusterManagerName The name of the cluster manager.
-     * @param ifMatch The ETag of the transformation. Omit this value to always overwrite the current resource. Specify
-     * the last-seen ETag value to prevent accidentally overwriting concurrent changes.
-     * @param ifNoneMatch Set to '*' to allow a new record set to be created, but to prevent updating an existing
-     * resource. Other values will result in error from server as they are not supported.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the {@link SyncPoller} for polling of long-running operation.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public SyncPoller<PollResult<Void>, Void> beginDelete(String resourceGroupName, String clusterManagerName,
         String ifMatch, String ifNoneMatch, Context context) {
@@ -925,40 +794,20 @@ public final class ClusterManagersClientImpl implements ClusterManagersClient {
             .flatMap(this.client::getLroFinalResultOrError);
     }
 
-    /**
-     * Delete the provided cluster manager.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param clusterManagerName The name of the cluster manager.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public void delete(String resourceGroupName, String clusterManagerName) {
         final String ifMatch = null;
         final String ifNoneMatch = null;
-        beginDelete(resourceGroupName, clusterManagerName, ifMatch, ifNoneMatch).getFinalResult();
+        delete(resourceGroupName, clusterManagerName, ifMatch, ifNoneMatch, Context.NONE);
     }
 
-    /**
-     * Delete the provided cluster manager.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param clusterManagerName The name of the cluster manager.
-     * @param ifMatch The ETag of the transformation. Omit this value to always overwrite the current resource. Specify
-     * the last-seen ETag value to prevent accidentally overwriting concurrent changes.
-     * @param ifNoneMatch Set to '*' to allow a new record set to be created, but to prevent updating an existing
-     * resource. Other values will result in error from server as they are not supported.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public void delete(String resourceGroupName, String clusterManagerName, String ifMatch, String ifNoneMatch,
         Context context) {
-        beginDelete(resourceGroupName, clusterManagerName, ifMatch, ifNoneMatch, context).getFinalResult();
+        this.client.getLroFinalResultOrError(
+            beginDelete(resourceGroupName, clusterManagerName, ifMatch, ifNoneMatch, context));
     }
 
     /**
@@ -1037,12 +886,7 @@ public final class ClusterManagersClientImpl implements ClusterManagersClient {
     @ServiceMethod(returns = ReturnType.SINGLE)
     private PagedResponse<ClusterManagerInner> listByResourceGroupSinglePage(String resourceGroupName, Integer top,
         String skipToken) {
-        final String accept = "application/json";
-        Response<ClusterManagerList> res
-            = service.listByResourceGroupSync(this.client.getEndpoint(), this.client.getApiVersion(),
-                this.client.getSubscriptionId(), resourceGroupName, top, skipToken, accept, Context.NONE);
-        return new PagedResponseBase<>(res.getRequest(), res.getStatusCode(), res.getHeaders(), res.getValue().value(),
-            res.getValue().nextLink(), null);
+        return listByResourceGroupSinglePage(resourceGroupName, top, skipToken, Context.NONE);
     }
 
     /**
@@ -1069,38 +913,15 @@ public final class ClusterManagersClientImpl implements ClusterManagersClient {
             res.getValue().nextLink(), null);
     }
 
-    /**
-     * Get a list of cluster managers in the provided resource group.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return a list of cluster managers in the provided resource group as paginated response with
-     * {@link PagedIterable}.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.COLLECTION)
     public PagedIterable<ClusterManagerInner> listByResourceGroup(String resourceGroupName) {
         final Integer top = null;
         final String skipToken = null;
-        return new PagedIterable<>(() -> listByResourceGroupSinglePage(resourceGroupName, top, skipToken),
-            nextLink -> listByResourceGroupNextSinglePage(nextLink));
+        return listByResourceGroup(resourceGroupName, top, skipToken, Context.NONE);
     }
 
-    /**
-     * Get a list of cluster managers in the provided resource group.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param top The maximum number of resources to return from the operation. Example: '$top=10'.
-     * @param skipToken The opaque token that the server returns to indicate where to continue listing resources from.
-     * This is used for paging through large result sets.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return a list of cluster managers in the provided resource group as paginated response with
-     * {@link PagedIterable}.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.COLLECTION)
     public PagedIterable<ClusterManagerInner> listByResourceGroup(String resourceGroupName, Integer top,
         String skipToken, Context context) {
@@ -1176,11 +997,7 @@ public final class ClusterManagersClientImpl implements ClusterManagersClient {
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private PagedResponse<ClusterManagerInner> listSinglePage(Integer top, String skipToken) {
-        final String accept = "application/json";
-        Response<ClusterManagerList> res = service.listSync(this.client.getEndpoint(), this.client.getApiVersion(),
-            this.client.getSubscriptionId(), top, skipToken, accept, Context.NONE);
-        return new PagedResponseBase<>(res.getRequest(), res.getStatusCode(), res.getHeaders(), res.getValue().value(),
-            res.getValue().nextLink(), null);
+        return listSinglePage(top, skipToken, Context.NONE);
     }
 
     /**
@@ -1204,33 +1021,15 @@ public final class ClusterManagersClientImpl implements ClusterManagersClient {
             res.getValue().nextLink(), null);
     }
 
-    /**
-     * Get a list of cluster managers in the provided subscription.
-     * 
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return a list of cluster managers in the provided subscription as paginated response with {@link PagedIterable}.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.COLLECTION)
     public PagedIterable<ClusterManagerInner> list() {
         final Integer top = null;
         final String skipToken = null;
-        return new PagedIterable<>(() -> listSinglePage(top, skipToken),
-            nextLink -> listBySubscriptionNextSinglePage(nextLink));
+        return list(top, skipToken, Context.NONE);
     }
 
-    /**
-     * Get a list of cluster managers in the provided subscription.
-     * 
-     * @param top The maximum number of resources to return from the operation. Example: '$top=10'.
-     * @param skipToken The opaque token that the server returns to indicate where to continue listing resources from.
-     * This is used for paging through large result sets.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return a list of cluster managers in the provided subscription as paginated response with {@link PagedIterable}.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.COLLECTION)
     public PagedIterable<ClusterManagerInner> list(Integer top, String skipToken, Context context) {
         return new PagedIterable<>(() -> listSinglePage(top, skipToken, context),
@@ -1278,8 +1077,7 @@ public final class ClusterManagersClientImpl implements ClusterManagersClient {
     private Response<BinaryData> updateRelayPrivateEndpointConnectionWithResponse(String resourceGroupName,
         String clusterManagerName,
         ClusterManagerUpdateRelayPrivateEndpointConnectionParameters clusterManagerUpdateRelayPrivateEndpointConnectionParameters) {
-        return service.updateRelayPrivateEndpointConnectionSync(this.client.getEndpoint(), this.client.getApiVersion(),
-            this.client.getSubscriptionId(), resourceGroupName, clusterManagerName,
+        return updateRelayPrivateEndpointConnectionWithResponse(resourceGroupName, clusterManagerName,
             clusterManagerUpdateRelayPrivateEndpointConnectionParameters, Context.NONE);
     }
 
@@ -1372,49 +1170,21 @@ public final class ClusterManagersClientImpl implements ClusterManagersClient {
     private SyncPoller<PollResult<OperationStatusResult>, OperationStatusResult>
         beginUpdateRelayPrivateEndpointConnection(String resourceGroupName, String clusterManagerName,
             ClusterManagerUpdateRelayPrivateEndpointConnectionParameters clusterManagerUpdateRelayPrivateEndpointConnectionParameters) {
-        Response<BinaryData> response = updateRelayPrivateEndpointConnectionWithResponse(resourceGroupName,
-            clusterManagerName, clusterManagerUpdateRelayPrivateEndpointConnectionParameters);
-        return this.client.<OperationStatusResult, OperationStatusResult>getLroResult(response,
-            OperationStatusResult.class, OperationStatusResult.class, Context.NONE);
+        return beginUpdateRelayPrivateEndpointConnection(resourceGroupName, clusterManagerName,
+            clusterManagerUpdateRelayPrivateEndpointConnectionParameters, Context.NONE);
     }
 
-    /**
-     * Update the private endpoint connection for the Azure Relay namespace managed by the specified cluster manager.
-     * Use this operation to approve or reject a pending private endpoint connection request for the relay namespace
-     * managed by the cluster manager.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param clusterManagerName The name of the cluster manager.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the {@link SyncPoller} for polling of long-running operation.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public SyncPoller<PollResult<OperationStatusResult>, OperationStatusResult>
         beginUpdateRelayPrivateEndpointConnection(String resourceGroupName, String clusterManagerName) {
         final ClusterManagerUpdateRelayPrivateEndpointConnectionParameters clusterManagerUpdateRelayPrivateEndpointConnectionParameters
             = null;
-        Response<BinaryData> response = updateRelayPrivateEndpointConnectionWithResponse(resourceGroupName,
-            clusterManagerName, clusterManagerUpdateRelayPrivateEndpointConnectionParameters);
-        return this.client.<OperationStatusResult, OperationStatusResult>getLroResult(response,
-            OperationStatusResult.class, OperationStatusResult.class, Context.NONE);
+        return beginUpdateRelayPrivateEndpointConnection(resourceGroupName, clusterManagerName,
+            clusterManagerUpdateRelayPrivateEndpointConnectionParameters, Context.NONE);
     }
 
-    /**
-     * Update the private endpoint connection for the Azure Relay namespace managed by the specified cluster manager.
-     * Use this operation to approve or reject a pending private endpoint connection request for the relay namespace
-     * managed by the cluster manager.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param clusterManagerName The name of the cluster manager.
-     * @param clusterManagerUpdateRelayPrivateEndpointConnectionParameters The request body.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the {@link SyncPoller} for polling of long-running operation.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public SyncPoller<PollResult<OperationStatusResult>, OperationStatusResult>
         beginUpdateRelayPrivateEndpointConnection(String resourceGroupName, String clusterManagerName,
@@ -1470,48 +1240,24 @@ public final class ClusterManagersClientImpl implements ClusterManagersClient {
                 .flatMap(this.client::getLroFinalResultOrError);
     }
 
-    /**
-     * Update the private endpoint connection for the Azure Relay namespace managed by the specified cluster manager.
-     * Use this operation to approve or reject a pending private endpoint connection request for the relay namespace
-     * managed by the cluster manager.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param clusterManagerName The name of the cluster manager.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the response.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public OperationStatusResult updateRelayPrivateEndpointConnection(String resourceGroupName,
         String clusterManagerName) {
         final ClusterManagerUpdateRelayPrivateEndpointConnectionParameters clusterManagerUpdateRelayPrivateEndpointConnectionParameters
             = null;
-        return beginUpdateRelayPrivateEndpointConnection(resourceGroupName, clusterManagerName,
-            clusterManagerUpdateRelayPrivateEndpointConnectionParameters).getFinalResult();
+        return updateRelayPrivateEndpointConnection(resourceGroupName, clusterManagerName,
+            clusterManagerUpdateRelayPrivateEndpointConnectionParameters, Context.NONE);
     }
 
-    /**
-     * Update the private endpoint connection for the Azure Relay namespace managed by the specified cluster manager.
-     * Use this operation to approve or reject a pending private endpoint connection request for the relay namespace
-     * managed by the cluster manager.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param clusterManagerName The name of the cluster manager.
-     * @param clusterManagerUpdateRelayPrivateEndpointConnectionParameters The request body.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the response.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public OperationStatusResult updateRelayPrivateEndpointConnection(String resourceGroupName,
         String clusterManagerName,
         ClusterManagerUpdateRelayPrivateEndpointConnectionParameters clusterManagerUpdateRelayPrivateEndpointConnectionParameters,
         Context context) {
-        return beginUpdateRelayPrivateEndpointConnection(resourceGroupName, clusterManagerName,
-            clusterManagerUpdateRelayPrivateEndpointConnectionParameters, context).getFinalResult();
+        return this.client.getLroFinalResultOrError(beginUpdateRelayPrivateEndpointConnection(resourceGroupName,
+            clusterManagerName, clusterManagerUpdateRelayPrivateEndpointConnectionParameters, context));
     }
 
     /**
@@ -1546,11 +1292,7 @@ public final class ClusterManagersClientImpl implements ClusterManagersClient {
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private PagedResponse<ClusterManagerInner> listByResourceGroupNextSinglePage(String nextLink) {
-        final String accept = "application/json";
-        Response<ClusterManagerList> res
-            = service.listByResourceGroupNextSync(nextLink, this.client.getEndpoint(), accept, Context.NONE);
-        return new PagedResponseBase<>(res.getRequest(), res.getStatusCode(), res.getHeaders(), res.getValue().value(),
-            res.getValue().nextLink(), null);
+        return listByResourceGroupNextSinglePage(nextLink, Context.NONE);
     }
 
     /**
@@ -1604,11 +1346,7 @@ public final class ClusterManagersClientImpl implements ClusterManagersClient {
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private PagedResponse<ClusterManagerInner> listBySubscriptionNextSinglePage(String nextLink) {
-        final String accept = "application/json";
-        Response<ClusterManagerList> res
-            = service.listBySubscriptionNextSync(nextLink, this.client.getEndpoint(), accept, Context.NONE);
-        return new PagedResponseBase<>(res.getRequest(), res.getStatusCode(), res.getHeaders(), res.getValue().value(),
-            res.getValue().nextLink(), null);
+        return listBySubscriptionNextSinglePage(nextLink, Context.NONE);
     }
 
     /**

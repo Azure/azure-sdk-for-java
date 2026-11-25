@@ -233,19 +233,7 @@ public final class ProjectConnectionsClientImpl implements ProjectConnectionsCli
             .flatMap(res -> Mono.justOrEmpty(res.getValue()));
     }
 
-    /**
-     * Lists Cognitive Services project connection by name.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param accountName The name of Cognitive Services account.
-     * @param projectName The name of Cognitive Services account's project.
-     * @param connectionName Friendly name of the connection.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return connection base resource schema along with {@link Response}.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Response<ConnectionPropertiesV2BasicResourceInner> getWithResponse(String resourceGroupName,
         String accountName, String projectName, String connectionName, Context context) {
@@ -254,18 +242,7 @@ public final class ProjectConnectionsClientImpl implements ProjectConnectionsCli
             resourceGroupName, accountName, projectName, connectionName, accept, context);
     }
 
-    /**
-     * Lists Cognitive Services project connection by name.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param accountName The name of Cognitive Services account.
-     * @param projectName The name of Cognitive Services account's project.
-     * @param connectionName Friendly name of the connection.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return connection base resource schema.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public ConnectionPropertiesV2BasicResourceInner get(String resourceGroupName, String accountName,
         String projectName, String connectionName) {
@@ -317,20 +294,7 @@ public final class ProjectConnectionsClientImpl implements ProjectConnectionsCli
             .flatMap(res -> Mono.justOrEmpty(res.getValue()));
     }
 
-    /**
-     * Create or update Cognitive Services project connection under the specified project.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param accountName The name of Cognitive Services account.
-     * @param projectName The name of Cognitive Services account's project.
-     * @param connectionName Friendly name of the connection.
-     * @param connection The object for creating or updating a new account connection.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return connection base resource schema along with {@link Response}.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Response<ConnectionPropertiesV2BasicResourceInner> createWithResponse(String resourceGroupName,
         String accountName, String projectName, String connectionName,
@@ -341,18 +305,7 @@ public final class ProjectConnectionsClientImpl implements ProjectConnectionsCli
             connection, context);
     }
 
-    /**
-     * Create or update Cognitive Services project connection under the specified project.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param accountName The name of Cognitive Services account.
-     * @param projectName The name of Cognitive Services account's project.
-     * @param connectionName Friendly name of the connection.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return connection base resource schema.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public ConnectionPropertiesV2BasicResourceInner create(String resourceGroupName, String accountName,
         String projectName, String connectionName) {
@@ -405,20 +358,7 @@ public final class ProjectConnectionsClientImpl implements ProjectConnectionsCli
             .flatMap(res -> Mono.justOrEmpty(res.getValue()));
     }
 
-    /**
-     * Update Cognitive Services project connection under the specified project.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param accountName The name of Cognitive Services account.
-     * @param projectName The name of Cognitive Services account's project.
-     * @param connectionName Friendly name of the connection.
-     * @param connection Parameters for account connection update.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return connection base resource schema along with {@link Response}.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Response<ConnectionPropertiesV2BasicResourceInner> updateWithResponse(String resourceGroupName,
         String accountName, String projectName, String connectionName, ConnectionUpdateContent connection,
@@ -429,18 +369,7 @@ public final class ProjectConnectionsClientImpl implements ProjectConnectionsCli
             connection, context);
     }
 
-    /**
-     * Update Cognitive Services project connection under the specified project.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param accountName The name of Cognitive Services account.
-     * @param projectName The name of Cognitive Services account's project.
-     * @param connectionName Friendly name of the connection.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return connection base resource schema.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public ConnectionPropertiesV2BasicResourceInner update(String resourceGroupName, String accountName,
         String projectName, String connectionName) {
@@ -489,19 +418,7 @@ public final class ProjectConnectionsClientImpl implements ProjectConnectionsCli
             .flatMap(ignored -> Mono.empty());
     }
 
-    /**
-     * Delete Cognitive Services project connection by name.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param accountName The name of Cognitive Services account.
-     * @param projectName The name of Cognitive Services account's project.
-     * @param connectionName Friendly name of the connection.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the {@link Response}.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Response<Void> deleteWithResponse(String resourceGroupName, String accountName, String projectName,
         String connectionName, Context context) {
@@ -509,17 +426,7 @@ public final class ProjectConnectionsClientImpl implements ProjectConnectionsCli
             this.client.getSubscriptionId(), resourceGroupName, accountName, projectName, connectionName, context);
     }
 
-    /**
-     * Delete Cognitive Services project connection by name.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param accountName The name of Cognitive Services account.
-     * @param projectName The name of Cognitive Services account's project.
-     * @param connectionName Friendly name of the connection.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public void delete(String resourceGroupName, String accountName, String projectName, String connectionName) {
         deleteWithResponse(resourceGroupName, accountName, projectName, connectionName, Context.NONE);
@@ -617,12 +524,7 @@ public final class ProjectConnectionsClientImpl implements ProjectConnectionsCli
     @ServiceMethod(returns = ReturnType.SINGLE)
     private PagedResponse<ConnectionPropertiesV2BasicResourceInner> listSinglePage(String resourceGroupName,
         String accountName, String projectName, String target, String category, Boolean includeAll) {
-        final String accept = "application/json";
-        Response<ConnectionPropertiesV2BasicResourceArmPaginatedResult> res
-            = service.listSync(this.client.getEndpoint(), this.client.getApiVersion(), this.client.getSubscriptionId(),
-                resourceGroupName, accountName, projectName, target, category, includeAll, accept, Context.NONE);
-        return new PagedResponseBase<>(res.getRequest(), res.getStatusCode(), res.getHeaders(), res.getValue().value(),
-            res.getValue().nextLink(), null);
+        return listSinglePage(resourceGroupName, accountName, projectName, target, category, includeAll, Context.NONE);
     }
 
     /**
@@ -652,44 +554,17 @@ public final class ProjectConnectionsClientImpl implements ProjectConnectionsCli
             res.getValue().nextLink(), null);
     }
 
-    /**
-     * Lists all the available Cognitive Services project connections under the specified project.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param accountName The name of Cognitive Services account.
-     * @param projectName The name of Cognitive Services account's project.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the paginated response with {@link PagedIterable}.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.COLLECTION)
     public PagedIterable<ConnectionPropertiesV2BasicResourceInner> list(String resourceGroupName, String accountName,
         String projectName) {
         final String target = null;
         final String category = null;
         final Boolean includeAll = null;
-        return new PagedIterable<>(
-            () -> listSinglePage(resourceGroupName, accountName, projectName, target, category, includeAll),
-            nextLink -> listNextSinglePage(nextLink));
+        return list(resourceGroupName, accountName, projectName, target, category, includeAll, Context.NONE);
     }
 
-    /**
-     * Lists all the available Cognitive Services project connections under the specified project.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param accountName The name of Cognitive Services account.
-     * @param projectName The name of Cognitive Services account's project.
-     * @param target Target of the connection.
-     * @param category Category of the connection.
-     * @param includeAll query parameter that indicates if get connection call should return both connections and
-     * datastores.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the paginated response with {@link PagedIterable}.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.COLLECTION)
     public PagedIterable<ConnectionPropertiesV2BasicResourceInner> list(String resourceGroupName, String accountName,
         String projectName, String target, String category, Boolean includeAll, Context context) {
@@ -732,11 +607,7 @@ public final class ProjectConnectionsClientImpl implements ProjectConnectionsCli
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private PagedResponse<ConnectionPropertiesV2BasicResourceInner> listNextSinglePage(String nextLink) {
-        final String accept = "application/json";
-        Response<ConnectionPropertiesV2BasicResourceArmPaginatedResult> res
-            = service.listNextSync(nextLink, this.client.getEndpoint(), accept, Context.NONE);
-        return new PagedResponseBase<>(res.getRequest(), res.getStatusCode(), res.getHeaders(), res.getValue().value(),
-            res.getValue().nextLink(), null);
+        return listNextSinglePage(nextLink, Context.NONE);
     }
 
     /**

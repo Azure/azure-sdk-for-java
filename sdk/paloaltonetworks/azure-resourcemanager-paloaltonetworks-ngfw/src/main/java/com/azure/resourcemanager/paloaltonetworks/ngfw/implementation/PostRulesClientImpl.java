@@ -243,17 +243,7 @@ public final class PostRulesClientImpl implements PostRulesClient {
         return getWithResponseAsync(globalRulestackName, priority).flatMap(res -> Mono.justOrEmpty(res.getValue()));
     }
 
-    /**
-     * Get a PostRulesResource.
-     * 
-     * @param globalRulestackName GlobalRulestack resource name.
-     * @param priority Post Rule priority.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return a PostRulesResource along with {@link Response}.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Response<PostRulesResourceInner> getWithResponse(String globalRulestackName, String priority,
         Context context) {
@@ -262,16 +252,7 @@ public final class PostRulesClientImpl implements PostRulesClient {
             accept, context);
     }
 
-    /**
-     * Get a PostRulesResource.
-     * 
-     * @param globalRulestackName GlobalRulestack resource name.
-     * @param priority Post Rule priority.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return a PostRulesResource.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public PostRulesResourceInner get(String globalRulestackName, String priority) {
         return getWithResponse(globalRulestackName, priority, Context.NONE).getValue();
@@ -313,10 +294,7 @@ public final class PostRulesClientImpl implements PostRulesClient {
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Response<BinaryData> createOrUpdateWithResponse(String globalRulestackName, String priority,
         PostRulesResourceInner resource) {
-        final String contentType = "application/json";
-        final String accept = "application/json";
-        return service.createOrUpdateSync(this.client.getEndpoint(), this.client.getApiVersion(), globalRulestackName,
-            priority, contentType, accept, resource, Context.NONE);
+        return createOrUpdateWithResponse(globalRulestackName, priority, resource, Context.NONE);
     }
 
     /**
@@ -361,37 +339,14 @@ public final class PostRulesClientImpl implements PostRulesClient {
             this.client.getContext());
     }
 
-    /**
-     * Create a PostRulesResource.
-     * 
-     * @param globalRulestackName GlobalRulestack resource name.
-     * @param priority Post Rule priority.
-     * @param resource Resource create parameters.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the {@link SyncPoller} for polling of postRulestack rule list.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public SyncPoller<PollResult<PostRulesResourceInner>, PostRulesResourceInner>
         beginCreateOrUpdate(String globalRulestackName, String priority, PostRulesResourceInner resource) {
-        Response<BinaryData> response = createOrUpdateWithResponse(globalRulestackName, priority, resource);
-        return this.client.<PostRulesResourceInner, PostRulesResourceInner>getLroResult(response,
-            PostRulesResourceInner.class, PostRulesResourceInner.class, Context.NONE);
+        return beginCreateOrUpdate(globalRulestackName, priority, resource, Context.NONE);
     }
 
-    /**
-     * Create a PostRulesResource.
-     * 
-     * @param globalRulestackName GlobalRulestack resource name.
-     * @param priority Post Rule priority.
-     * @param resource Resource create parameters.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the {@link SyncPoller} for polling of postRulestack rule list.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public SyncPoller<PollResult<PostRulesResourceInner>, PostRulesResourceInner> beginCreateOrUpdate(
         String globalRulestackName, String priority, PostRulesResourceInner resource, Context context) {
@@ -418,39 +373,19 @@ public final class PostRulesClientImpl implements PostRulesClient {
             .flatMap(this.client::getLroFinalResultOrError);
     }
 
-    /**
-     * Create a PostRulesResource.
-     * 
-     * @param globalRulestackName GlobalRulestack resource name.
-     * @param priority Post Rule priority.
-     * @param resource Resource create parameters.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return postRulestack rule list.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public PostRulesResourceInner createOrUpdate(String globalRulestackName, String priority,
         PostRulesResourceInner resource) {
-        return beginCreateOrUpdate(globalRulestackName, priority, resource).getFinalResult();
+        return createOrUpdate(globalRulestackName, priority, resource, Context.NONE);
     }
 
-    /**
-     * Create a PostRulesResource.
-     * 
-     * @param globalRulestackName GlobalRulestack resource name.
-     * @param priority Post Rule priority.
-     * @param resource Resource create parameters.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return postRulestack rule list.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public PostRulesResourceInner createOrUpdate(String globalRulestackName, String priority,
         PostRulesResourceInner resource, Context context) {
-        return beginCreateOrUpdate(globalRulestackName, priority, resource, context).getFinalResult();
+        return this.client
+            .getLroFinalResultOrError(beginCreateOrUpdate(globalRulestackName, priority, resource, context));
     }
 
     /**
@@ -483,8 +418,7 @@ public final class PostRulesClientImpl implements PostRulesClient {
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Response<BinaryData> deleteWithResponse(String globalRulestackName, String priority) {
-        return service.deleteSync(this.client.getEndpoint(), this.client.getApiVersion(), globalRulestackName, priority,
-            Context.NONE);
+        return deleteWithResponse(globalRulestackName, priority, Context.NONE);
     }
 
     /**
@@ -521,33 +455,13 @@ public final class PostRulesClientImpl implements PostRulesClient {
             this.client.getContext());
     }
 
-    /**
-     * Delete a PostRulesResource.
-     * 
-     * @param globalRulestackName GlobalRulestack resource name.
-     * @param priority Post Rule priority.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the {@link SyncPoller} for polling of long-running operation.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public SyncPoller<PollResult<Void>, Void> beginDelete(String globalRulestackName, String priority) {
-        Response<BinaryData> response = deleteWithResponse(globalRulestackName, priority);
-        return this.client.<Void, Void>getLroResult(response, Void.class, Void.class, Context.NONE);
+        return beginDelete(globalRulestackName, priority, Context.NONE);
     }
 
-    /**
-     * Delete a PostRulesResource.
-     * 
-     * @param globalRulestackName GlobalRulestack resource name.
-     * @param priority Post Rule priority.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the {@link SyncPoller} for polling of long-running operation.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public SyncPoller<PollResult<Void>, Void> beginDelete(String globalRulestackName, String priority,
         Context context) {
@@ -570,33 +484,16 @@ public final class PostRulesClientImpl implements PostRulesClient {
         return beginDeleteAsync(globalRulestackName, priority).last().flatMap(this.client::getLroFinalResultOrError);
     }
 
-    /**
-     * Delete a PostRulesResource.
-     * 
-     * @param globalRulestackName GlobalRulestack resource name.
-     * @param priority Post Rule priority.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public void delete(String globalRulestackName, String priority) {
-        beginDelete(globalRulestackName, priority).getFinalResult();
+        delete(globalRulestackName, priority, Context.NONE);
     }
 
-    /**
-     * Delete a PostRulesResource.
-     * 
-     * @param globalRulestackName GlobalRulestack resource name.
-     * @param priority Post Rule priority.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public void delete(String globalRulestackName, String priority, Context context) {
-        beginDelete(globalRulestackName, priority, context).getFinalResult();
+        this.client.getLroFinalResultOrError(beginDelete(globalRulestackName, priority, context));
     }
 
     /**
@@ -646,11 +543,7 @@ public final class PostRulesClientImpl implements PostRulesClient {
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private PagedResponse<PostRulesResourceInner> listSinglePage(String globalRulestackName) {
-        final String accept = "application/json";
-        Response<PostRulesResourceListResult> res = service.listSync(this.client.getEndpoint(),
-            this.client.getApiVersion(), globalRulestackName, accept, Context.NONE);
-        return new PagedResponseBase<>(res.getRequest(), res.getStatusCode(), res.getHeaders(), res.getValue().value(),
-            res.getValue().nextLink(), null);
+        return listSinglePage(globalRulestackName, Context.NONE);
     }
 
     /**
@@ -672,30 +565,13 @@ public final class PostRulesClientImpl implements PostRulesClient {
             res.getValue().nextLink(), null);
     }
 
-    /**
-     * List PostRulesResource resources by Tenant.
-     * 
-     * @param globalRulestackName GlobalRulestack resource name.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the response of a PostRulesResource list operation as paginated response with {@link PagedIterable}.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.COLLECTION)
     public PagedIterable<PostRulesResourceInner> list(String globalRulestackName) {
-        return new PagedIterable<>(() -> listSinglePage(globalRulestackName), nextLink -> listNextSinglePage(nextLink));
+        return list(globalRulestackName, Context.NONE);
     }
 
-    /**
-     * List PostRulesResource resources by Tenant.
-     * 
-     * @param globalRulestackName GlobalRulestack resource name.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the response of a PostRulesResource list operation as paginated response with {@link PagedIterable}.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.COLLECTION)
     public PagedIterable<PostRulesResourceInner> list(String globalRulestackName, Context context) {
         return new PagedIterable<>(() -> listSinglePage(globalRulestackName, context),
@@ -740,18 +616,7 @@ public final class PostRulesClientImpl implements PostRulesClient {
             .flatMap(res -> Mono.justOrEmpty(res.getValue()));
     }
 
-    /**
-     * Get counters.
-     * 
-     * @param globalRulestackName GlobalRulestack resource name.
-     * @param priority Post Rule priority.
-     * @param firewallName The firewallName parameter.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return counters along with {@link Response}.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Response<RuleCounterInner> getCountersWithResponse(String globalRulestackName, String priority,
         String firewallName, Context context) {
@@ -760,16 +625,7 @@ public final class PostRulesClientImpl implements PostRulesClient {
             priority, firewallName, accept, context);
     }
 
-    /**
-     * Get counters.
-     * 
-     * @param globalRulestackName GlobalRulestack resource name.
-     * @param priority Post Rule priority.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return counters.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public RuleCounterInner getCounters(String globalRulestackName, String priority) {
         final String firewallName = null;
@@ -813,18 +669,7 @@ public final class PostRulesClientImpl implements PostRulesClient {
             .flatMap(ignored -> Mono.empty());
     }
 
-    /**
-     * Refresh counters.
-     * 
-     * @param globalRulestackName GlobalRulestack resource name.
-     * @param priority Post Rule priority.
-     * @param firewallName The firewallName parameter.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the {@link Response}.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Response<Void> refreshCountersWithResponse(String globalRulestackName, String priority, String firewallName,
         Context context) {
@@ -832,15 +677,7 @@ public final class PostRulesClientImpl implements PostRulesClient {
             priority, firewallName, context);
     }
 
-    /**
-     * Refresh counters.
-     * 
-     * @param globalRulestackName GlobalRulestack resource name.
-     * @param priority Post Rule priority.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public void refreshCounters(String globalRulestackName, String priority) {
         final String firewallName = null;
@@ -885,18 +722,7 @@ public final class PostRulesClientImpl implements PostRulesClient {
             .flatMap(res -> Mono.justOrEmpty(res.getValue()));
     }
 
-    /**
-     * Reset counters.
-     * 
-     * @param globalRulestackName GlobalRulestack resource name.
-     * @param priority Post Rule priority.
-     * @param firewallName The firewallName parameter.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return rule counter reset along with {@link Response}.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Response<RuleCounterResetInner> resetCountersWithResponse(String globalRulestackName, String priority,
         String firewallName, Context context) {
@@ -905,16 +731,7 @@ public final class PostRulesClientImpl implements PostRulesClient {
             priority, firewallName, accept, context);
     }
 
-    /**
-     * Reset counters.
-     * 
-     * @param globalRulestackName GlobalRulestack resource name.
-     * @param priority Post Rule priority.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return rule counter reset.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public RuleCounterResetInner resetCounters(String globalRulestackName, String priority) {
         final String firewallName = null;
@@ -951,11 +768,7 @@ public final class PostRulesClientImpl implements PostRulesClient {
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private PagedResponse<PostRulesResourceInner> listNextSinglePage(String nextLink) {
-        final String accept = "application/json";
-        Response<PostRulesResourceListResult> res
-            = service.listNextSync(nextLink, this.client.getEndpoint(), accept, Context.NONE);
-        return new PagedResponseBase<>(res.getRequest(), res.getStatusCode(), res.getHeaders(), res.getValue().value(),
-            res.getValue().nextLink(), null);
+        return listNextSinglePage(nextLink, Context.NONE);
     }
 
     /**

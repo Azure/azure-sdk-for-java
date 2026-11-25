@@ -158,17 +158,7 @@ public final class TuningOptionsOperationsClientImpl implements TuningOptionsOpe
             @HeaderParam("Accept") String accept, Context context);
     }
 
-    /**
-     * Gets the tuning options of a server.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param serverName The name of the server.
-     * @param tuningOption The name of the tuning option.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the tuning options of a server along with {@link Response} on successful completion of {@link Mono}.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Response<TuningOptionsInner>> getWithResponseAsync(String resourceGroupName, String serverName,
         TuningOptionParameterEnum tuningOption) {
@@ -179,17 +169,7 @@ public final class TuningOptionsOperationsClientImpl implements TuningOptionsOpe
             .contextWrite(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext()).readOnly()));
     }
 
-    /**
-     * Gets the tuning options of a server.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param serverName The name of the server.
-     * @param tuningOption The name of the tuning option.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the tuning options of a server on successful completion of {@link Mono}.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<TuningOptionsInner> getAsync(String resourceGroupName, String serverName,
         TuningOptionParameterEnum tuningOption) {
@@ -197,18 +177,7 @@ public final class TuningOptionsOperationsClientImpl implements TuningOptionsOpe
             .flatMap(res -> Mono.justOrEmpty(res.getValue()));
     }
 
-    /**
-     * Gets the tuning options of a server.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param serverName The name of the server.
-     * @param tuningOption The name of the tuning option.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the tuning options of a server along with {@link Response}.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Response<TuningOptionsInner> getWithResponse(String resourceGroupName, String serverName,
         TuningOptionParameterEnum tuningOption, Context context) {
@@ -217,17 +186,7 @@ public final class TuningOptionsOperationsClientImpl implements TuningOptionsOpe
             resourceGroupName, serverName, tuningOption, accept, context);
     }
 
-    /**
-     * Gets the tuning options of a server.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param serverName The name of the server.
-     * @param tuningOption The name of the tuning option.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the tuning options of a server.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public TuningOptionsInner get(String resourceGroupName, String serverName, TuningOptionParameterEnum tuningOption) {
         return getWithResponse(resourceGroupName, serverName, tuningOption, Context.NONE).getValue();
@@ -255,16 +214,7 @@ public final class TuningOptionsOperationsClientImpl implements TuningOptionsOpe
             .contextWrite(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext()).readOnly()));
     }
 
-    /**
-     * Lists the tuning options of a server.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param serverName The name of the server.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return list of server tuning options as paginated response with {@link PagedFlux}.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.COLLECTION)
     public PagedFlux<TuningOptionsInner> listByServerAsync(String resourceGroupName, String serverName) {
         return new PagedFlux<>(() -> listByServerSinglePageAsync(resourceGroupName, serverName),
@@ -283,12 +233,7 @@ public final class TuningOptionsOperationsClientImpl implements TuningOptionsOpe
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private PagedResponse<TuningOptionsInner> listByServerSinglePage(String resourceGroupName, String serverName) {
-        final String accept = "application/json";
-        Response<TuningOptionsList> res
-            = service.listByServerSync(this.client.getEndpoint(), this.client.getApiVersion(),
-                this.client.getSubscriptionId(), resourceGroupName, serverName, accept, Context.NONE);
-        return new PagedResponseBase<>(res.getRequest(), res.getStatusCode(), res.getHeaders(), res.getValue().value(),
-            res.getValue().nextLink(), null);
+        return listByServerSinglePage(resourceGroupName, serverName, Context.NONE);
     }
 
     /**
@@ -313,33 +258,13 @@ public final class TuningOptionsOperationsClientImpl implements TuningOptionsOpe
             res.getValue().nextLink(), null);
     }
 
-    /**
-     * Lists the tuning options of a server.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param serverName The name of the server.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return list of server tuning options as paginated response with {@link PagedIterable}.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.COLLECTION)
     public PagedIterable<TuningOptionsInner> listByServer(String resourceGroupName, String serverName) {
-        return new PagedIterable<>(() -> listByServerSinglePage(resourceGroupName, serverName),
-            nextLink -> listByServerNextSinglePage(nextLink));
+        return listByServer(resourceGroupName, serverName, Context.NONE);
     }
 
-    /**
-     * Lists the tuning options of a server.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param serverName The name of the server.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return list of server tuning options as paginated response with {@link PagedIterable}.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.COLLECTION)
     public PagedIterable<TuningOptionsInner> listByServer(String resourceGroupName, String serverName,
         Context context) {
@@ -373,18 +298,7 @@ public final class TuningOptionsOperationsClientImpl implements TuningOptionsOpe
             .contextWrite(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext()).readOnly()));
     }
 
-    /**
-     * Lists available object recommendations.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param serverName The name of the server.
-     * @param tuningOption The name of the tuning option.
-     * @param recommendationType Recommendations list filter. Retrieves recommendations based on type.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return list of available object recommendations as paginated response with {@link PagedFlux}.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.COLLECTION)
     public PagedFlux<ObjectRecommendationInner> listRecommendationsAsync(String resourceGroupName, String serverName,
         TuningOptionParameterEnum tuningOption, RecommendationTypeParameterEnum recommendationType) {
@@ -393,17 +307,7 @@ public final class TuningOptionsOperationsClientImpl implements TuningOptionsOpe
             nextLink -> listRecommendationsNextSinglePageAsync(nextLink));
     }
 
-    /**
-     * Lists available object recommendations.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param serverName The name of the server.
-     * @param tuningOption The name of the tuning option.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return list of available object recommendations as paginated response with {@link PagedFlux}.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.COLLECTION)
     public PagedFlux<ObjectRecommendationInner> listRecommendationsAsync(String resourceGroupName, String serverName,
         TuningOptionParameterEnum tuningOption) {
@@ -428,12 +332,8 @@ public final class TuningOptionsOperationsClientImpl implements TuningOptionsOpe
     @ServiceMethod(returns = ReturnType.SINGLE)
     private PagedResponse<ObjectRecommendationInner> listRecommendationsSinglePage(String resourceGroupName,
         String serverName, TuningOptionParameterEnum tuningOption, RecommendationTypeParameterEnum recommendationType) {
-        final String accept = "application/json";
-        Response<ObjectRecommendationList> res = service.listRecommendationsSync(this.client.getEndpoint(),
-            this.client.getApiVersion(), this.client.getSubscriptionId(), resourceGroupName, serverName, tuningOption,
-            recommendationType, accept, Context.NONE);
-        return new PagedResponseBase<>(res.getRequest(), res.getStatusCode(), res.getHeaders(), res.getValue().value(),
-            res.getValue().nextLink(), null);
+        return listRecommendationsSinglePage(resourceGroupName, serverName, tuningOption, recommendationType,
+            Context.NONE);
     }
 
     /**
@@ -461,39 +361,15 @@ public final class TuningOptionsOperationsClientImpl implements TuningOptionsOpe
             res.getValue().nextLink(), null);
     }
 
-    /**
-     * Lists available object recommendations.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param serverName The name of the server.
-     * @param tuningOption The name of the tuning option.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return list of available object recommendations as paginated response with {@link PagedIterable}.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.COLLECTION)
     public PagedIterable<ObjectRecommendationInner> listRecommendations(String resourceGroupName, String serverName,
         TuningOptionParameterEnum tuningOption) {
         final RecommendationTypeParameterEnum recommendationType = null;
-        return new PagedIterable<>(
-            () -> listRecommendationsSinglePage(resourceGroupName, serverName, tuningOption, recommendationType),
-            nextLink -> listRecommendationsNextSinglePage(nextLink));
+        return listRecommendations(resourceGroupName, serverName, tuningOption, recommendationType, Context.NONE);
     }
 
-    /**
-     * Lists available object recommendations.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param serverName The name of the server.
-     * @param tuningOption The name of the tuning option.
-     * @param recommendationType Recommendations list filter. Retrieves recommendations based on type.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return list of available object recommendations as paginated response with {@link PagedIterable}.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.COLLECTION)
     public PagedIterable<ObjectRecommendationInner> listRecommendations(String resourceGroupName, String serverName,
         TuningOptionParameterEnum tuningOption, RecommendationTypeParameterEnum recommendationType, Context context) {
@@ -531,11 +407,7 @@ public final class TuningOptionsOperationsClientImpl implements TuningOptionsOpe
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private PagedResponse<TuningOptionsInner> listByServerNextSinglePage(String nextLink) {
-        final String accept = "application/json";
-        Response<TuningOptionsList> res
-            = service.listByServerNextSync(nextLink, this.client.getEndpoint(), accept, Context.NONE);
-        return new PagedResponseBase<>(res.getRequest(), res.getStatusCode(), res.getHeaders(), res.getValue().value(),
-            res.getValue().nextLink(), null);
+        return listByServerNextSinglePage(nextLink, Context.NONE);
     }
 
     /**
@@ -589,11 +461,7 @@ public final class TuningOptionsOperationsClientImpl implements TuningOptionsOpe
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private PagedResponse<ObjectRecommendationInner> listRecommendationsNextSinglePage(String nextLink) {
-        final String accept = "application/json";
-        Response<ObjectRecommendationList> res
-            = service.listRecommendationsNextSync(nextLink, this.client.getEndpoint(), accept, Context.NONE);
-        return new PagedResponseBase<>(res.getRequest(), res.getStatusCode(), res.getHeaders(), res.getValue().value(),
-            res.getValue().nextLink(), null);
+        return listRecommendationsNextSinglePage(nextLink, Context.NONE);
     }
 
     /**

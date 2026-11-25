@@ -222,20 +222,7 @@ public final class ConnectorsClientImpl implements ConnectorsClient {
             .flatMap(res -> Mono.justOrEmpty(res.getValue()));
     }
 
-    /**
-     * Get confluent connector by Name.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param organizationName Organization resource name.
-     * @param environmentId Confluent environment id.
-     * @param clusterId Confluent kafka or schema registry cluster id.
-     * @param connectorName Confluent connector name.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return confluent connector by Name along with {@link Response}.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Response<ConnectorResourceInner> getWithResponse(String resourceGroupName, String organizationName,
         String environmentId, String clusterId, String connectorName, Context context) {
@@ -244,19 +231,7 @@ public final class ConnectorsClientImpl implements ConnectorsClient {
             resourceGroupName, organizationName, environmentId, clusterId, connectorName, accept, context);
     }
 
-    /**
-     * Get confluent connector by Name.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param organizationName Organization resource name.
-     * @param environmentId Confluent environment id.
-     * @param clusterId Confluent kafka or schema registry cluster id.
-     * @param connectorName Confluent connector name.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return confluent connector by Name.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public ConnectorResourceInner get(String resourceGroupName, String organizationName, String environmentId,
         String clusterId, String connectorName) {
@@ -311,21 +286,7 @@ public final class ConnectorsClientImpl implements ConnectorsClient {
             connectorName, body).flatMap(res -> Mono.justOrEmpty(res.getValue()));
     }
 
-    /**
-     * Create confluent connector by Name.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param organizationName Organization resource name.
-     * @param environmentId Confluent environment id.
-     * @param clusterId Confluent kafka or schema registry cluster id.
-     * @param connectorName Confluent connector name.
-     * @param body Confluent Connector resource model.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return details of connector record along with {@link Response}.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Response<ConnectorResourceInner> createOrUpdateWithResponse(String resourceGroupName,
         String organizationName, String environmentId, String clusterId, String connectorName,
@@ -336,19 +297,7 @@ public final class ConnectorsClientImpl implements ConnectorsClient {
             connectorName, accept, body, context);
     }
 
-    /**
-     * Create confluent connector by Name.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param organizationName Organization resource name.
-     * @param environmentId Confluent environment id.
-     * @param clusterId Confluent kafka or schema registry cluster id.
-     * @param connectorName Confluent connector name.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return details of connector record.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public ConnectorResourceInner createOrUpdate(String resourceGroupName, String organizationName,
         String environmentId, String clusterId, String connectorName) {
@@ -396,9 +345,8 @@ public final class ConnectorsClientImpl implements ConnectorsClient {
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Response<BinaryData> deleteWithResponse(String resourceGroupName, String organizationName,
         String environmentId, String clusterId, String connectorName) {
-        return service.deleteSync(this.client.getEndpoint(), this.client.getApiVersion(),
-            this.client.getSubscriptionId(), resourceGroupName, organizationName, environmentId, clusterId,
-            connectorName, Context.NONE);
+        return deleteWithResponse(resourceGroupName, organizationName, environmentId, clusterId, connectorName,
+            Context.NONE);
     }
 
     /**
@@ -445,41 +393,14 @@ public final class ConnectorsClientImpl implements ConnectorsClient {
             this.client.getContext());
     }
 
-    /**
-     * Delete confluent connector by name.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param organizationName Organization resource name.
-     * @param environmentId Confluent environment id.
-     * @param clusterId Confluent kafka or schema registry cluster id.
-     * @param connectorName Confluent connector name.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the {@link SyncPoller} for polling of long-running operation.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public SyncPoller<PollResult<Void>, Void> beginDelete(String resourceGroupName, String organizationName,
         String environmentId, String clusterId, String connectorName) {
-        Response<BinaryData> response
-            = deleteWithResponse(resourceGroupName, organizationName, environmentId, clusterId, connectorName);
-        return this.client.<Void, Void>getLroResult(response, Void.class, Void.class, Context.NONE);
+        return beginDelete(resourceGroupName, organizationName, environmentId, clusterId, connectorName, Context.NONE);
     }
 
-    /**
-     * Delete confluent connector by name.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param organizationName Organization resource name.
-     * @param environmentId Confluent environment id.
-     * @param clusterId Confluent kafka or schema registry cluster id.
-     * @param connectorName Confluent connector name.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the {@link SyncPoller} for polling of long-running operation.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public SyncPoller<PollResult<Void>, Void> beginDelete(String resourceGroupName, String organizationName,
         String environmentId, String clusterId, String connectorName, Context context) {
@@ -508,42 +429,19 @@ public final class ConnectorsClientImpl implements ConnectorsClient {
             .flatMap(this.client::getLroFinalResultOrError);
     }
 
-    /**
-     * Delete confluent connector by name.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param organizationName Organization resource name.
-     * @param environmentId Confluent environment id.
-     * @param clusterId Confluent kafka or schema registry cluster id.
-     * @param connectorName Confluent connector name.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public void delete(String resourceGroupName, String organizationName, String environmentId, String clusterId,
         String connectorName) {
-        beginDelete(resourceGroupName, organizationName, environmentId, clusterId, connectorName).getFinalResult();
+        delete(resourceGroupName, organizationName, environmentId, clusterId, connectorName, Context.NONE);
     }
 
-    /**
-     * Delete confluent connector by name.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param organizationName Organization resource name.
-     * @param environmentId Confluent environment id.
-     * @param clusterId Confluent kafka or schema registry cluster id.
-     * @param connectorName Confluent connector name.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public void delete(String resourceGroupName, String organizationName, String environmentId, String clusterId,
         String connectorName, Context context) {
-        beginDelete(resourceGroupName, organizationName, environmentId, clusterId, connectorName, context)
-            .getFinalResult();
+        this.client.getLroFinalResultOrError(
+            beginDelete(resourceGroupName, organizationName, environmentId, clusterId, connectorName, context));
     }
 
     /**
@@ -636,12 +534,8 @@ public final class ConnectorsClientImpl implements ConnectorsClient {
     @ServiceMethod(returns = ReturnType.SINGLE)
     private PagedResponse<ConnectorResourceInner> listSinglePage(String resourceGroupName, String organizationName,
         String environmentId, String clusterId, Integer pageSize, String pageToken) {
-        final String accept = "application/json";
-        Response<ListConnectorsSuccessResponse> res = service.listSync(this.client.getEndpoint(),
-            this.client.getApiVersion(), this.client.getSubscriptionId(), resourceGroupName, organizationName,
-            environmentId, clusterId, pageSize, pageToken, accept, Context.NONE);
-        return new PagedResponseBase<>(res.getRequest(), res.getStatusCode(), res.getHeaders(), res.getValue().value(),
-            res.getValue().nextLink(), null);
+        return listSinglePage(resourceGroupName, organizationName, environmentId, clusterId, pageSize, pageToken,
+            Context.NONE);
     }
 
     /**
@@ -671,45 +565,16 @@ public final class ConnectorsClientImpl implements ConnectorsClient {
             res.getValue().nextLink(), null);
     }
 
-    /**
-     * Lists all the connectors in a cluster.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param organizationName Organization resource name.
-     * @param environmentId Confluent environment id.
-     * @param clusterId Confluent kafka or schema registry cluster id.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return result of GET request to list connectors in the cluster of a confluent organization as paginated response
-     * with {@link PagedIterable}.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.COLLECTION)
     public PagedIterable<ConnectorResourceInner> list(String resourceGroupName, String organizationName,
         String environmentId, String clusterId) {
         final Integer pageSize = null;
         final String pageToken = null;
-        return new PagedIterable<>(
-            () -> listSinglePage(resourceGroupName, organizationName, environmentId, clusterId, pageSize, pageToken),
-            nextLink -> listNextSinglePage(nextLink));
+        return list(resourceGroupName, organizationName, environmentId, clusterId, pageSize, pageToken, Context.NONE);
     }
 
-    /**
-     * Lists all the connectors in a cluster.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param organizationName Organization resource name.
-     * @param environmentId Confluent environment id.
-     * @param clusterId Confluent kafka or schema registry cluster id.
-     * @param pageSize Pagination size.
-     * @param pageToken An opaque pagination token to fetch the next set of records.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return result of GET request to list connectors in the cluster of a confluent organization as paginated response
-     * with {@link PagedIterable}.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.COLLECTION)
     public PagedIterable<ConnectorResourceInner> list(String resourceGroupName, String organizationName,
         String environmentId, String clusterId, Integer pageSize, String pageToken, Context context) {
@@ -748,11 +613,7 @@ public final class ConnectorsClientImpl implements ConnectorsClient {
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private PagedResponse<ConnectorResourceInner> listNextSinglePage(String nextLink) {
-        final String accept = "application/json";
-        Response<ListConnectorsSuccessResponse> res
-            = service.listNextSync(nextLink, this.client.getEndpoint(), accept, Context.NONE);
-        return new PagedResponseBase<>(res.getRequest(), res.getStatusCode(), res.getHeaders(), res.getValue().value(),
-            res.getValue().nextLink(), null);
+        return listNextSinglePage(nextLink, Context.NONE);
     }
 
     /**

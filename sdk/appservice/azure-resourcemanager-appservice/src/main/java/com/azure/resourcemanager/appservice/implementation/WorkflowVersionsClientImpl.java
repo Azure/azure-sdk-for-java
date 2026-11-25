@@ -91,18 +91,7 @@ public final class WorkflowVersionsClientImpl implements WorkflowVersionsClient 
             @HeaderParam("Accept") String accept, Context context);
     }
 
-    /**
-     * Gets a workflow version.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param name Site name.
-     * @param workflowName The workflow name.
-     * @param versionId The workflow versionId.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return a workflow version along with {@link Response} on successful completion of {@link Mono}.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Response<WorkflowVersionInner>> getWithResponseAsync(String resourceGroupName, String name,
         String workflowName, String versionId) {
@@ -177,18 +166,7 @@ public final class WorkflowVersionsClientImpl implements WorkflowVersionsClient 
             resourceGroupName, name, workflowName, versionId, accept, context);
     }
 
-    /**
-     * Gets a workflow version.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param name Site name.
-     * @param workflowName The workflow name.
-     * @param versionId The workflow versionId.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return a workflow version on successful completion of {@link Mono}.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<WorkflowVersionInner> getAsync(String resourceGroupName, String name, String workflowName,
         String versionId) {
@@ -196,37 +174,14 @@ public final class WorkflowVersionsClientImpl implements WorkflowVersionsClient 
             .flatMap(res -> Mono.justOrEmpty(res.getValue()));
     }
 
-    /**
-     * Gets a workflow version.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param name Site name.
-     * @param workflowName The workflow name.
-     * @param versionId The workflow versionId.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return a workflow version along with {@link Response}.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Response<WorkflowVersionInner> getWithResponse(String resourceGroupName, String name, String workflowName,
         String versionId, Context context) {
         return getWithResponseAsync(resourceGroupName, name, workflowName, versionId, context).block();
     }
 
-    /**
-     * Gets a workflow version.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param name Site name.
-     * @param workflowName The workflow name.
-     * @param versionId The workflow versionId.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return a workflow version.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public WorkflowVersionInner get(String resourceGroupName, String name, String workflowName, String versionId) {
         return getWithResponse(resourceGroupName, name, workflowName, versionId, Context.NONE).getValue();
@@ -317,18 +272,7 @@ public final class WorkflowVersionsClientImpl implements WorkflowVersionsClient 
                 res.getValue().value(), res.getValue().nextLink(), null));
     }
 
-    /**
-     * Gets a list of workflow versions.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param name Site name.
-     * @param workflowName The workflow name.
-     * @param top The number of items to be included in the result.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return a list of workflow versions as paginated response with {@link PagedFlux}.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.COLLECTION)
     public PagedFlux<WorkflowVersionInner> listAsync(String resourceGroupName, String name, String workflowName,
         Integer top) {
@@ -336,17 +280,7 @@ public final class WorkflowVersionsClientImpl implements WorkflowVersionsClient 
             nextLink -> listNextSinglePageAsync(nextLink));
     }
 
-    /**
-     * Gets a list of workflow versions.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param name Site name.
-     * @param workflowName The workflow name.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return a list of workflow versions as paginated response with {@link PagedFlux}.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.COLLECTION)
     public PagedFlux<WorkflowVersionInner> listAsync(String resourceGroupName, String name, String workflowName) {
         final Integer top = null;
@@ -374,36 +308,14 @@ public final class WorkflowVersionsClientImpl implements WorkflowVersionsClient 
             nextLink -> listNextSinglePageAsync(nextLink, context));
     }
 
-    /**
-     * Gets a list of workflow versions.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param name Site name.
-     * @param workflowName The workflow name.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return a list of workflow versions as paginated response with {@link PagedIterable}.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.COLLECTION)
     public PagedIterable<WorkflowVersionInner> list(String resourceGroupName, String name, String workflowName) {
         final Integer top = null;
         return new PagedIterable<>(listAsync(resourceGroupName, name, workflowName, top));
     }
 
-    /**
-     * Gets a list of workflow versions.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param name Site name.
-     * @param workflowName The workflow name.
-     * @param top The number of items to be included in the result.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return a list of workflow versions as paginated response with {@link PagedIterable}.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.COLLECTION)
     public PagedIterable<WorkflowVersionInner> list(String resourceGroupName, String name, String workflowName,
         Integer top, Context context) {

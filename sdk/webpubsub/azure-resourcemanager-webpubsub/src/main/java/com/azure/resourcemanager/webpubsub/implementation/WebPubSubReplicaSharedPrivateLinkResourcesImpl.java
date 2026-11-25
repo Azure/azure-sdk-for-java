@@ -49,13 +49,8 @@ public final class WebPubSubReplicaSharedPrivateLinkResourcesImpl
 
     public SharedPrivateLinkResource createOrUpdate(String resourceGroupName, String resourceName, String replicaName,
         String sharedPrivateLinkResourceName, SharedPrivateLinkResourceInner parameters) {
-        SharedPrivateLinkResourceInner inner = this.serviceClient()
-            .createOrUpdate(resourceGroupName, resourceName, replicaName, sharedPrivateLinkResourceName, parameters);
-        if (inner != null) {
-            return new SharedPrivateLinkResourceImpl(inner, this.manager());
-        } else {
-            return null;
-        }
+        return this.createOrUpdate(resourceGroupName, resourceName, replicaName, sharedPrivateLinkResourceName,
+            parameters, Context.NONE);
     }
 
     public SharedPrivateLinkResource createOrUpdate(String resourceGroupName, String resourceName, String replicaName,
@@ -72,9 +67,7 @@ public final class WebPubSubReplicaSharedPrivateLinkResourcesImpl
 
     public PagedIterable<SharedPrivateLinkResource> list(String resourceGroupName, String resourceName,
         String replicaName) {
-        PagedIterable<SharedPrivateLinkResourceInner> inner
-            = this.serviceClient().list(resourceGroupName, resourceName, replicaName);
-        return ResourceManagerUtils.mapPage(inner, inner1 -> new SharedPrivateLinkResourceImpl(inner1, this.manager()));
+        return this.list(resourceGroupName, resourceName, replicaName, Context.NONE);
     }
 
     public PagedIterable<SharedPrivateLinkResource> list(String resourceGroupName, String resourceName,

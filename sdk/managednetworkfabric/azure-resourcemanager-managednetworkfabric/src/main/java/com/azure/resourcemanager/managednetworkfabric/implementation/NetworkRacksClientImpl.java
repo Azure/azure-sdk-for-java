@@ -254,17 +254,7 @@ public final class NetworkRacksClientImpl implements NetworkRacksClient {
             .flatMap(res -> Mono.justOrEmpty(res.getValue()));
     }
 
-    /**
-     * Get Network Rack resource details.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param networkRackName Name of the Network Rack.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return network Rack resource details along with {@link Response}.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Response<NetworkRackInner> getByResourceGroupWithResponse(String resourceGroupName, String networkRackName,
         Context context) {
@@ -273,16 +263,7 @@ public final class NetworkRacksClientImpl implements NetworkRacksClient {
             this.client.getSubscriptionId(), resourceGroupName, networkRackName, accept, context);
     }
 
-    /**
-     * Get Network Rack resource details.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param networkRackName Name of the Network Rack.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return network Rack resource details.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public NetworkRackInner getByResourceGroup(String resourceGroupName, String networkRackName) {
         return getByResourceGroupWithResponse(resourceGroupName, networkRackName, Context.NONE).getValue();
@@ -324,11 +305,7 @@ public final class NetworkRacksClientImpl implements NetworkRacksClient {
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Response<BinaryData> createWithResponse(String resourceGroupName, String networkRackName,
         NetworkRackInner body) {
-        final String contentType = "application/json";
-        final String accept = "application/json";
-        return service.createSync(this.client.getEndpoint(), this.client.getApiVersion(),
-            this.client.getSubscriptionId(), resourceGroupName, networkRackName, contentType, accept, body,
-            Context.NONE);
+        return createWithResponse(resourceGroupName, networkRackName, body, Context.NONE);
     }
 
     /**
@@ -371,37 +348,14 @@ public final class NetworkRacksClientImpl implements NetworkRacksClient {
             NetworkRackInner.class, NetworkRackInner.class, this.client.getContext());
     }
 
-    /**
-     * Create Network Rack resource.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param networkRackName Name of the Network Rack.
-     * @param body Request payload.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the {@link SyncPoller} for polling of the Network Rack resource definition.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public SyncPoller<PollResult<NetworkRackInner>, NetworkRackInner> beginCreate(String resourceGroupName,
         String networkRackName, NetworkRackInner body) {
-        Response<BinaryData> response = createWithResponse(resourceGroupName, networkRackName, body);
-        return this.client.<NetworkRackInner, NetworkRackInner>getLroResult(response, NetworkRackInner.class,
-            NetworkRackInner.class, Context.NONE);
+        return beginCreate(resourceGroupName, networkRackName, body, Context.NONE);
     }
 
-    /**
-     * Create Network Rack resource.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param networkRackName Name of the Network Rack.
-     * @param body Request payload.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the {@link SyncPoller} for polling of the Network Rack resource definition.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public SyncPoller<PollResult<NetworkRackInner>, NetworkRackInner> beginCreate(String resourceGroupName,
         String networkRackName, NetworkRackInner body, Context context) {
@@ -428,38 +382,17 @@ public final class NetworkRacksClientImpl implements NetworkRacksClient {
             .flatMap(this.client::getLroFinalResultOrError);
     }
 
-    /**
-     * Create Network Rack resource.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param networkRackName Name of the Network Rack.
-     * @param body Request payload.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the Network Rack resource definition.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public NetworkRackInner create(String resourceGroupName, String networkRackName, NetworkRackInner body) {
-        return beginCreate(resourceGroupName, networkRackName, body).getFinalResult();
+        return create(resourceGroupName, networkRackName, body, Context.NONE);
     }
 
-    /**
-     * Create Network Rack resource.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param networkRackName Name of the Network Rack.
-     * @param body Request payload.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the Network Rack resource definition.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public NetworkRackInner create(String resourceGroupName, String networkRackName, NetworkRackInner body,
         Context context) {
-        return beginCreate(resourceGroupName, networkRackName, body, context).getFinalResult();
+        return this.client.getLroFinalResultOrError(beginCreate(resourceGroupName, networkRackName, body, context));
     }
 
     /**
@@ -498,11 +431,7 @@ public final class NetworkRacksClientImpl implements NetworkRacksClient {
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Response<BinaryData> updateWithResponse(String resourceGroupName, String networkRackName,
         NetworkRackPatch body) {
-        final String contentType = "application/json";
-        final String accept = "application/json";
-        return service.updateSync(this.client.getEndpoint(), this.client.getApiVersion(),
-            this.client.getSubscriptionId(), resourceGroupName, networkRackName, contentType, accept, body,
-            Context.NONE);
+        return updateWithResponse(resourceGroupName, networkRackName, body, Context.NONE);
     }
 
     /**
@@ -545,37 +474,14 @@ public final class NetworkRacksClientImpl implements NetworkRacksClient {
             NetworkRackInner.class, NetworkRackInner.class, this.client.getContext());
     }
 
-    /**
-     * Update certain properties of the Network Rack resource.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param networkRackName Name of the Network Rack.
-     * @param body Network Rack properties to update.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the {@link SyncPoller} for polling of the Network Rack resource definition.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public SyncPoller<PollResult<NetworkRackInner>, NetworkRackInner> beginUpdate(String resourceGroupName,
         String networkRackName, NetworkRackPatch body) {
-        Response<BinaryData> response = updateWithResponse(resourceGroupName, networkRackName, body);
-        return this.client.<NetworkRackInner, NetworkRackInner>getLroResult(response, NetworkRackInner.class,
-            NetworkRackInner.class, Context.NONE);
+        return beginUpdate(resourceGroupName, networkRackName, body, Context.NONE);
     }
 
-    /**
-     * Update certain properties of the Network Rack resource.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param networkRackName Name of the Network Rack.
-     * @param body Network Rack properties to update.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the {@link SyncPoller} for polling of the Network Rack resource definition.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public SyncPoller<PollResult<NetworkRackInner>, NetworkRackInner> beginUpdate(String resourceGroupName,
         String networkRackName, NetworkRackPatch body, Context context) {
@@ -602,38 +508,17 @@ public final class NetworkRacksClientImpl implements NetworkRacksClient {
             .flatMap(this.client::getLroFinalResultOrError);
     }
 
-    /**
-     * Update certain properties of the Network Rack resource.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param networkRackName Name of the Network Rack.
-     * @param body Network Rack properties to update.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the Network Rack resource definition.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public NetworkRackInner update(String resourceGroupName, String networkRackName, NetworkRackPatch body) {
-        return beginUpdate(resourceGroupName, networkRackName, body).getFinalResult();
+        return update(resourceGroupName, networkRackName, body, Context.NONE);
     }
 
-    /**
-     * Update certain properties of the Network Rack resource.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param networkRackName Name of the Network Rack.
-     * @param body Network Rack properties to update.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the Network Rack resource definition.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public NetworkRackInner update(String resourceGroupName, String networkRackName, NetworkRackPatch body,
         Context context) {
-        return beginUpdate(resourceGroupName, networkRackName, body, context).getFinalResult();
+        return this.client.getLroFinalResultOrError(beginUpdate(resourceGroupName, networkRackName, body, context));
     }
 
     /**
@@ -666,8 +551,7 @@ public final class NetworkRacksClientImpl implements NetworkRacksClient {
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Response<BinaryData> deleteWithResponse(String resourceGroupName, String networkRackName) {
-        return service.deleteSync(this.client.getEndpoint(), this.client.getApiVersion(),
-            this.client.getSubscriptionId(), resourceGroupName, networkRackName, Context.NONE);
+        return deleteWithResponse(resourceGroupName, networkRackName, Context.NONE);
     }
 
     /**
@@ -704,33 +588,13 @@ public final class NetworkRacksClientImpl implements NetworkRacksClient {
             this.client.getContext());
     }
 
-    /**
-     * Delete Network Rack resource.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param networkRackName Name of the Network Rack.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the {@link SyncPoller} for polling of long-running operation.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public SyncPoller<PollResult<Void>, Void> beginDelete(String resourceGroupName, String networkRackName) {
-        Response<BinaryData> response = deleteWithResponse(resourceGroupName, networkRackName);
-        return this.client.<Void, Void>getLroResult(response, Void.class, Void.class, Context.NONE);
+        return beginDelete(resourceGroupName, networkRackName, Context.NONE);
     }
 
-    /**
-     * Delete Network Rack resource.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param networkRackName Name of the Network Rack.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the {@link SyncPoller} for polling of long-running operation.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public SyncPoller<PollResult<Void>, Void> beginDelete(String resourceGroupName, String networkRackName,
         Context context) {
@@ -754,33 +618,16 @@ public final class NetworkRacksClientImpl implements NetworkRacksClient {
             .flatMap(this.client::getLroFinalResultOrError);
     }
 
-    /**
-     * Delete Network Rack resource.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param networkRackName Name of the Network Rack.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public void delete(String resourceGroupName, String networkRackName) {
-        beginDelete(resourceGroupName, networkRackName).getFinalResult();
+        delete(resourceGroupName, networkRackName, Context.NONE);
     }
 
-    /**
-     * Delete Network Rack resource.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param networkRackName Name of the Network Rack.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public void delete(String resourceGroupName, String networkRackName, Context context) {
-        beginDelete(resourceGroupName, networkRackName, context).getFinalResult();
+        this.client.getLroFinalResultOrError(beginDelete(resourceGroupName, networkRackName, context));
     }
 
     /**
@@ -830,11 +677,7 @@ public final class NetworkRacksClientImpl implements NetworkRacksClient {
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private PagedResponse<NetworkRackInner> listByResourceGroupSinglePage(String resourceGroupName) {
-        final String accept = "application/json";
-        Response<NetworkRacksListResult> res = service.listByResourceGroupSync(this.client.getEndpoint(),
-            this.client.getApiVersion(), this.client.getSubscriptionId(), resourceGroupName, accept, Context.NONE);
-        return new PagedResponseBase<>(res.getRequest(), res.getStatusCode(), res.getHeaders(), res.getValue().value(),
-            res.getValue().nextLink(), null);
+        return listByResourceGroupSinglePage(resourceGroupName, Context.NONE);
     }
 
     /**
@@ -856,31 +699,13 @@ public final class NetworkRacksClientImpl implements NetworkRacksClient {
             res.getValue().nextLink(), null);
     }
 
-    /**
-     * List all Network Rack resources in the given resource group.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return paged collection of NetworkRack items as paginated response with {@link PagedIterable}.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.COLLECTION)
     public PagedIterable<NetworkRackInner> listByResourceGroup(String resourceGroupName) {
-        return new PagedIterable<>(() -> listByResourceGroupSinglePage(resourceGroupName),
-            nextLink -> listByResourceGroupNextSinglePage(nextLink));
+        return listByResourceGroup(resourceGroupName, Context.NONE);
     }
 
-    /**
-     * List all Network Rack resources in the given resource group.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return paged collection of NetworkRack items as paginated response with {@link PagedIterable}.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.COLLECTION)
     public PagedIterable<NetworkRackInner> listByResourceGroup(String resourceGroupName, Context context) {
         return new PagedIterable<>(() -> listByResourceGroupSinglePage(resourceGroupName, context),
@@ -928,11 +753,7 @@ public final class NetworkRacksClientImpl implements NetworkRacksClient {
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private PagedResponse<NetworkRackInner> listSinglePage() {
-        final String accept = "application/json";
-        Response<NetworkRacksListResult> res = service.listSync(this.client.getEndpoint(), this.client.getApiVersion(),
-            this.client.getSubscriptionId(), accept, Context.NONE);
-        return new PagedResponseBase<>(res.getRequest(), res.getStatusCode(), res.getHeaders(), res.getValue().value(),
-            res.getValue().nextLink(), null);
+        return listSinglePage(Context.NONE);
     }
 
     /**
@@ -953,27 +774,13 @@ public final class NetworkRacksClientImpl implements NetworkRacksClient {
             res.getValue().nextLink(), null);
     }
 
-    /**
-     * List all Network Rack resources in the given subscription.
-     * 
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return paged collection of NetworkRack items as paginated response with {@link PagedIterable}.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.COLLECTION)
     public PagedIterable<NetworkRackInner> list() {
-        return new PagedIterable<>(() -> listSinglePage(), nextLink -> listBySubscriptionNextSinglePage(nextLink));
+        return list(Context.NONE);
     }
 
-    /**
-     * List all Network Rack resources in the given subscription.
-     * 
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return paged collection of NetworkRack items as paginated response with {@link PagedIterable}.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.COLLECTION)
     public PagedIterable<NetworkRackInner> list(Context context) {
         return new PagedIterable<>(() -> listSinglePage(context),
@@ -1012,11 +819,7 @@ public final class NetworkRacksClientImpl implements NetworkRacksClient {
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private PagedResponse<NetworkRackInner> listByResourceGroupNextSinglePage(String nextLink) {
-        final String accept = "application/json";
-        Response<NetworkRacksListResult> res
-            = service.listByResourceGroupNextSync(nextLink, this.client.getEndpoint(), accept, Context.NONE);
-        return new PagedResponseBase<>(res.getRequest(), res.getStatusCode(), res.getHeaders(), res.getValue().value(),
-            res.getValue().nextLink(), null);
+        return listByResourceGroupNextSinglePage(nextLink, Context.NONE);
     }
 
     /**
@@ -1070,11 +873,7 @@ public final class NetworkRacksClientImpl implements NetworkRacksClient {
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private PagedResponse<NetworkRackInner> listBySubscriptionNextSinglePage(String nextLink) {
-        final String accept = "application/json";
-        Response<NetworkRacksListResult> res
-            = service.listBySubscriptionNextSync(nextLink, this.client.getEndpoint(), accept, Context.NONE);
-        return new PagedResponseBase<>(res.getRequest(), res.getStatusCode(), res.getHeaders(), res.getValue().value(),
-            res.getValue().nextLink(), null);
+        return listBySubscriptionNextSinglePage(nextLink, Context.NONE);
     }
 
     /**

@@ -88,11 +88,7 @@ public final class IdentityBindingProfileImpl
     }
 
     public IdentityBindingProfile create() {
-        this.innerObject = serviceManager.serviceClient()
-            .getIdentityBindingProfiles()
-            .createOrUpdate(resourceGroupName, fleetName, identityBindingProfileName, this.innerModel(), createIfMatch,
-                createIfNoneMatch, Context.NONE);
-        return this;
+        return this.create(Context.NONE);
     }
 
     public IdentityBindingProfile create(Context context) {
@@ -119,11 +115,7 @@ public final class IdentityBindingProfileImpl
     }
 
     public IdentityBindingProfile apply() {
-        this.innerObject = serviceManager.serviceClient()
-            .getIdentityBindingProfiles()
-            .createOrUpdate(resourceGroupName, fleetName, identityBindingProfileName, this.innerModel(), updateIfMatch,
-                updateIfNoneMatch, Context.NONE);
-        return this;
+        return this.apply(Context.NONE);
     }
 
     public IdentityBindingProfile apply(Context context) {
@@ -150,11 +142,7 @@ public final class IdentityBindingProfileImpl
     }
 
     public IdentityBindingProfile refresh() {
-        this.innerObject = serviceManager.serviceClient()
-            .getIdentityBindingProfiles()
-            .getWithResponse(resourceGroupName, fleetName, identityBindingProfileName, Context.NONE)
-            .getValue();
-        return this;
+        return this.refresh(Context.NONE);
     }
 
     public IdentityBindingProfile refresh(Context context) {

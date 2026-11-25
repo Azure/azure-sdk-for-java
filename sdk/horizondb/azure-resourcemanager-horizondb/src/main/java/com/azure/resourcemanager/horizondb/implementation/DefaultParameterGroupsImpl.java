@@ -28,8 +28,7 @@ public final class DefaultParameterGroupsImpl implements DefaultParameterGroups 
     }
 
     public PagedIterable<DefaultParameterGroup> listBySubscriptionAndRegion(String location) {
-        PagedIterable<DefaultParameterGroupInner> inner = this.serviceClient().listBySubscriptionAndRegion(location);
-        return ResourceManagerUtils.mapPage(inner, inner1 -> new DefaultParameterGroupImpl(inner1, this.manager()));
+        return this.listBySubscriptionAndRegion(location, Context.NONE);
     }
 
     public PagedIterable<DefaultParameterGroup> listBySubscriptionAndRegion(String location, Context context) {

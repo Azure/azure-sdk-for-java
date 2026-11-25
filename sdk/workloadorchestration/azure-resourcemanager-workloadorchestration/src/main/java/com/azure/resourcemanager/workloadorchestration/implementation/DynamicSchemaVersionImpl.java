@@ -69,11 +69,7 @@ public final class DynamicSchemaVersionImpl
     }
 
     public DynamicSchemaVersion create() {
-        this.innerObject = serviceManager.serviceClient()
-            .getDynamicSchemaVersions()
-            .createOrUpdate(resourceGroupName, schemaName, dynamicSchemaName, dynamicSchemaVersionName,
-                this.innerModel(), Context.NONE);
-        return this;
+        return this.create(Context.NONE);
     }
 
     public DynamicSchemaVersion create(Context context) {
@@ -96,12 +92,7 @@ public final class DynamicSchemaVersionImpl
     }
 
     public DynamicSchemaVersion apply() {
-        this.innerObject = serviceManager.serviceClient()
-            .getDynamicSchemaVersions()
-            .updateWithResponse(resourceGroupName, schemaName, dynamicSchemaName, dynamicSchemaVersionName,
-                this.innerModel(), Context.NONE)
-            .getValue();
-        return this;
+        return this.apply(Context.NONE);
     }
 
     public DynamicSchemaVersion apply(Context context) {
@@ -132,11 +123,7 @@ public final class DynamicSchemaVersionImpl
     }
 
     public DynamicSchemaVersion refresh() {
-        this.innerObject = serviceManager.serviceClient()
-            .getDynamicSchemaVersions()
-            .getWithResponse(resourceGroupName, schemaName, dynamicSchemaName, dynamicSchemaVersionName, Context.NONE)
-            .getValue();
-        return this;
+        return this.refresh(Context.NONE);
     }
 
     public DynamicSchemaVersion refresh(Context context) {

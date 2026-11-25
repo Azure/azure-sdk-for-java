@@ -108,11 +108,7 @@ public final class DnsResolverImpl implements DnsResolver, DnsResolver.Definitio
     }
 
     public DnsResolver create() {
-        this.innerObject = serviceManager.serviceClient()
-            .getDnsResolvers()
-            .createOrUpdate(resourceGroupName, dnsResolverName, this.innerModel(), createIfMatch, createIfNoneMatch,
-                Context.NONE);
-        return this;
+        return this.create(Context.NONE);
     }
 
     public DnsResolver create(Context context) {
@@ -138,10 +134,7 @@ public final class DnsResolverImpl implements DnsResolver, DnsResolver.Definitio
     }
 
     public DnsResolver apply() {
-        this.innerObject = serviceManager.serviceClient()
-            .getDnsResolvers()
-            .update(resourceGroupName, dnsResolverName, updateParameters, updateIfMatch, Context.NONE);
-        return this;
+        return this.apply(Context.NONE);
     }
 
     public DnsResolver apply(Context context) {
@@ -164,11 +157,7 @@ public final class DnsResolverImpl implements DnsResolver, DnsResolver.Definitio
     }
 
     public DnsResolver refresh() {
-        this.innerObject = serviceManager.serviceClient()
-            .getDnsResolvers()
-            .getByResourceGroupWithResponse(resourceGroupName, dnsResolverName, Context.NONE)
-            .getValue();
-        return this;
+        return this.refresh(Context.NONE);
     }
 
     public DnsResolver refresh(Context context) {

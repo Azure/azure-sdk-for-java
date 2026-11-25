@@ -23,7 +23,7 @@ public final class StorageTargetOperationsImpl implements StorageTargetOperation
     }
 
     public void flush(String resourceGroupName, String cacheName, String storageTargetName) {
-        this.serviceClient().flush(resourceGroupName, cacheName, storageTargetName);
+        this.flush(resourceGroupName, cacheName, storageTargetName, Context.NONE);
     }
 
     public void flush(String resourceGroupName, String cacheName, String storageTargetName, Context context) {
@@ -31,7 +31,7 @@ public final class StorageTargetOperationsImpl implements StorageTargetOperation
     }
 
     public void suspend(String resourceGroupName, String cacheName, String storageTargetName) {
-        this.serviceClient().suspend(resourceGroupName, cacheName, storageTargetName);
+        this.suspend(resourceGroupName, cacheName, storageTargetName, Context.NONE);
     }
 
     public void suspend(String resourceGroupName, String cacheName, String storageTargetName, Context context) {
@@ -39,7 +39,7 @@ public final class StorageTargetOperationsImpl implements StorageTargetOperation
     }
 
     public void resume(String resourceGroupName, String cacheName, String storageTargetName) {
-        this.serviceClient().resume(resourceGroupName, cacheName, storageTargetName);
+        this.resume(resourceGroupName, cacheName, storageTargetName, Context.NONE);
     }
 
     public void resume(String resourceGroupName, String cacheName, String storageTargetName, Context context) {
@@ -47,7 +47,7 @@ public final class StorageTargetOperationsImpl implements StorageTargetOperation
     }
 
     public void invalidate(String resourceGroupName, String cacheName, String storageTargetName) {
-        this.serviceClient().invalidate(resourceGroupName, cacheName, storageTargetName);
+        this.invalidate(resourceGroupName, cacheName, storageTargetName, Context.NONE);
     }
 
     public void invalidate(String resourceGroupName, String cacheName, String storageTargetName, Context context) {

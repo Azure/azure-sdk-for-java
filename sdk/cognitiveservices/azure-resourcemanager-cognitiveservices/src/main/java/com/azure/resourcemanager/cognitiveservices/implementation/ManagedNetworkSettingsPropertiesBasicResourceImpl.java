@@ -63,10 +63,7 @@ public final class ManagedNetworkSettingsPropertiesBasicResourceImpl
     }
 
     public ManagedNetworkSettingsPropertiesBasicResource create() {
-        this.innerObject = serviceManager.serviceClient()
-            .getManagedNetworkSettingsOperations()
-            .put(resourceGroupName, accountName, managedNetworkName, this.innerModel(), Context.NONE);
-        return this;
+        return this.create(Context.NONE);
     }
 
     public ManagedNetworkSettingsPropertiesBasicResource create(Context context) {
@@ -88,10 +85,7 @@ public final class ManagedNetworkSettingsPropertiesBasicResourceImpl
     }
 
     public ManagedNetworkSettingsPropertiesBasicResource apply() {
-        this.innerObject = serviceManager.serviceClient()
-            .getManagedNetworkSettingsOperations()
-            .patch(resourceGroupName, accountName, managedNetworkName, this.innerModel(), Context.NONE);
-        return this;
+        return this.apply(Context.NONE);
     }
 
     public ManagedNetworkSettingsPropertiesBasicResource apply(Context context) {
@@ -117,11 +111,7 @@ public final class ManagedNetworkSettingsPropertiesBasicResourceImpl
     }
 
     public ManagedNetworkSettingsPropertiesBasicResource refresh() {
-        this.innerObject = serviceManager.serviceClient()
-            .getManagedNetworkSettingsOperations()
-            .getWithResponse(resourceGroupName, accountName, managedNetworkName, Context.NONE)
-            .getValue();
-        return this;
+        return this.refresh(Context.NONE);
     }
 
     public ManagedNetworkSettingsPropertiesBasicResource refresh(Context context) {

@@ -87,18 +87,7 @@ public final class InboundSecurityRuleOperationsClientImpl implements InboundSec
             Context context);
     }
 
-    /**
-     * Retrieves the available specified Network Virtual Appliance Inbound Security Rules Collection.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param networkVirtualApplianceName The name of Network Virtual Appliance.
-     * @param ruleCollectionName The name of the resource that is unique within a resource group. This name can be used
-     * to access the resource.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return nVA Inbound Security Rule resource along with {@link Response} on successful completion of {@link Mono}.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Response<InboundSecurityRuleInner>> getWithResponseAsync(String resourceGroupName,
         String networkVirtualApplianceName, String ruleCollectionName) {
@@ -173,18 +162,7 @@ public final class InboundSecurityRuleOperationsClientImpl implements InboundSec
             networkVirtualApplianceName, ruleCollectionName, accept, context);
     }
 
-    /**
-     * Retrieves the available specified Network Virtual Appliance Inbound Security Rules Collection.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param networkVirtualApplianceName The name of Network Virtual Appliance.
-     * @param ruleCollectionName The name of the resource that is unique within a resource group. This name can be used
-     * to access the resource.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return nVA Inbound Security Rule resource on successful completion of {@link Mono}.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<InboundSecurityRuleInner> getAsync(String resourceGroupName, String networkVirtualApplianceName,
         String ruleCollectionName) {
@@ -192,19 +170,7 @@ public final class InboundSecurityRuleOperationsClientImpl implements InboundSec
             .flatMap(res -> Mono.justOrEmpty(res.getValue()));
     }
 
-    /**
-     * Retrieves the available specified Network Virtual Appliance Inbound Security Rules Collection.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param networkVirtualApplianceName The name of Network Virtual Appliance.
-     * @param ruleCollectionName The name of the resource that is unique within a resource group. This name can be used
-     * to access the resource.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return nVA Inbound Security Rule resource along with {@link Response}.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Response<InboundSecurityRuleInner> getWithResponse(String resourceGroupName,
         String networkVirtualApplianceName, String ruleCollectionName, Context context) {
@@ -212,18 +178,7 @@ public final class InboundSecurityRuleOperationsClientImpl implements InboundSec
             .block();
     }
 
-    /**
-     * Retrieves the available specified Network Virtual Appliance Inbound Security Rules Collection.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param networkVirtualApplianceName The name of Network Virtual Appliance.
-     * @param ruleCollectionName The name of the resource that is unique within a resource group. This name can be used
-     * to access the resource.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return nVA Inbound Security Rule resource.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public InboundSecurityRuleInner get(String resourceGroupName, String networkVirtualApplianceName,
         String ruleCollectionName) {
@@ -231,20 +186,7 @@ public final class InboundSecurityRuleOperationsClientImpl implements InboundSec
             .getValue();
     }
 
-    /**
-     * Creates or updates the specified Network Virtual Appliance Inbound Security Rules.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param networkVirtualApplianceName The name of Network Virtual Appliance.
-     * @param ruleCollectionName The name of the resource that is unique within a resource group. This name can be used
-     * to access the resource.
-     * @param parameters Parameters supplied to the create or update Network Virtual Appliance Inbound Security Rules
-     * operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return nVA Inbound Security Rule resource along with {@link Response} on successful completion of {@link Mono}.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Response<Flux<ByteBuffer>>> createOrUpdateWithResponseAsync(String resourceGroupName,
         String networkVirtualApplianceName, String ruleCollectionName, InboundSecurityRuleInner parameters) {
@@ -336,20 +278,7 @@ public final class InboundSecurityRuleOperationsClientImpl implements InboundSec
             context);
     }
 
-    /**
-     * Creates or updates the specified Network Virtual Appliance Inbound Security Rules.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param networkVirtualApplianceName The name of Network Virtual Appliance.
-     * @param ruleCollectionName The name of the resource that is unique within a resource group. This name can be used
-     * to access the resource.
-     * @param parameters Parameters supplied to the create or update Network Virtual Appliance Inbound Security Rules
-     * operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the {@link PollerFlux} for polling of nVA Inbound Security Rule resource.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public PollerFlux<PollResult<InboundSecurityRuleInner>, InboundSecurityRuleInner> beginCreateOrUpdateAsync(
         String resourceGroupName, String networkVirtualApplianceName, String ruleCollectionName,
@@ -387,20 +316,7 @@ public final class InboundSecurityRuleOperationsClientImpl implements InboundSec
             this.client.getHttpPipeline(), InboundSecurityRuleInner.class, InboundSecurityRuleInner.class, context);
     }
 
-    /**
-     * Creates or updates the specified Network Virtual Appliance Inbound Security Rules.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param networkVirtualApplianceName The name of Network Virtual Appliance.
-     * @param ruleCollectionName The name of the resource that is unique within a resource group. This name can be used
-     * to access the resource.
-     * @param parameters Parameters supplied to the create or update Network Virtual Appliance Inbound Security Rules
-     * operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the {@link SyncPoller} for polling of nVA Inbound Security Rule resource.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public SyncPoller<PollResult<InboundSecurityRuleInner>, InboundSecurityRuleInner> beginCreateOrUpdate(
         String resourceGroupName, String networkVirtualApplianceName, String ruleCollectionName,
@@ -410,21 +326,7 @@ public final class InboundSecurityRuleOperationsClientImpl implements InboundSec
             .getSyncPoller();
     }
 
-    /**
-     * Creates or updates the specified Network Virtual Appliance Inbound Security Rules.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param networkVirtualApplianceName The name of Network Virtual Appliance.
-     * @param ruleCollectionName The name of the resource that is unique within a resource group. This name can be used
-     * to access the resource.
-     * @param parameters Parameters supplied to the create or update Network Virtual Appliance Inbound Security Rules
-     * operation.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the {@link SyncPoller} for polling of nVA Inbound Security Rule resource.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public SyncPoller<PollResult<InboundSecurityRuleInner>, InboundSecurityRuleInner> beginCreateOrUpdate(
         String resourceGroupName, String networkVirtualApplianceName, String ruleCollectionName,
@@ -435,20 +337,7 @@ public final class InboundSecurityRuleOperationsClientImpl implements InboundSec
             .getSyncPoller();
     }
 
-    /**
-     * Creates or updates the specified Network Virtual Appliance Inbound Security Rules.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param networkVirtualApplianceName The name of Network Virtual Appliance.
-     * @param ruleCollectionName The name of the resource that is unique within a resource group. This name can be used
-     * to access the resource.
-     * @param parameters Parameters supplied to the create or update Network Virtual Appliance Inbound Security Rules
-     * operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return nVA Inbound Security Rule resource on successful completion of {@link Mono}.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<InboundSecurityRuleInner> createOrUpdateAsync(String resourceGroupName,
         String networkVirtualApplianceName, String ruleCollectionName, InboundSecurityRuleInner parameters) {
@@ -480,20 +369,7 @@ public final class InboundSecurityRuleOperationsClientImpl implements InboundSec
             context).last().flatMap(this.client::getLroFinalResultOrError);
     }
 
-    /**
-     * Creates or updates the specified Network Virtual Appliance Inbound Security Rules.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param networkVirtualApplianceName The name of Network Virtual Appliance.
-     * @param ruleCollectionName The name of the resource that is unique within a resource group. This name can be used
-     * to access the resource.
-     * @param parameters Parameters supplied to the create or update Network Virtual Appliance Inbound Security Rules
-     * operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return nVA Inbound Security Rule resource.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public InboundSecurityRuleInner createOrUpdate(String resourceGroupName, String networkVirtualApplianceName,
         String ruleCollectionName, InboundSecurityRuleInner parameters) {
@@ -501,21 +377,7 @@ public final class InboundSecurityRuleOperationsClientImpl implements InboundSec
             .block();
     }
 
-    /**
-     * Creates or updates the specified Network Virtual Appliance Inbound Security Rules.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param networkVirtualApplianceName The name of Network Virtual Appliance.
-     * @param ruleCollectionName The name of the resource that is unique within a resource group. This name can be used
-     * to access the resource.
-     * @param parameters Parameters supplied to the create or update Network Virtual Appliance Inbound Security Rules
-     * operation.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return nVA Inbound Security Rule resource.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public InboundSecurityRuleInner createOrUpdate(String resourceGroupName, String networkVirtualApplianceName,
         String ruleCollectionName, InboundSecurityRuleInner parameters, Context context) {

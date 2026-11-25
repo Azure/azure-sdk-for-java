@@ -209,18 +209,7 @@ public final class GroupQuotasClientImpl implements GroupQuotasClient {
         return getWithResponseAsync(managementGroupId, groupQuotaName).flatMap(res -> Mono.justOrEmpty(res.getValue()));
     }
 
-    /**
-     * Gets the GroupQuotas for the name passed. It will return the GroupQuotas properties only. The details on group
-     * quota can be access from the group quota APIs.
-     * 
-     * @param managementGroupId The management group ID.
-     * @param groupQuotaName The GroupQuota name. The name should be unique for the provided context tenantId/MgId.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the GroupQuotas for the name passed along with {@link Response}.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Response<GroupQuotasEntityInner> getWithResponse(String managementGroupId, String groupQuotaName,
         Context context) {
@@ -229,17 +218,7 @@ public final class GroupQuotasClientImpl implements GroupQuotasClient {
             groupQuotaName, accept, context);
     }
 
-    /**
-     * Gets the GroupQuotas for the name passed. It will return the GroupQuotas properties only. The details on group
-     * quota can be access from the group quota APIs.
-     * 
-     * @param managementGroupId The management group ID.
-     * @param groupQuotaName The GroupQuota name. The name should be unique for the provided context tenantId/MgId.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the GroupQuotas for the name passed.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public GroupQuotasEntityInner get(String managementGroupId, String groupQuotaName) {
         return getWithResponse(managementGroupId, groupQuotaName, Context.NONE).getValue();
@@ -291,9 +270,7 @@ public final class GroupQuotasClientImpl implements GroupQuotasClient {
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Response<BinaryData> createOrUpdateWithResponse(String managementGroupId, String groupQuotaName,
         GroupQuotasEntityInner groupQuotaPutRequestBody) {
-        final String accept = "application/json";
-        return service.createOrUpdateSync(this.client.getEndpoint(), this.client.getApiVersion(), managementGroupId,
-            groupQuotaName, accept, groupQuotaPutRequestBody, Context.NONE);
+        return createOrUpdateWithResponse(managementGroupId, groupQuotaName, groupQuotaPutRequestBody, Context.NONE);
     }
 
     /**
@@ -392,54 +369,18 @@ public final class GroupQuotasClientImpl implements GroupQuotasClient {
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     private SyncPoller<PollResult<GroupQuotasEntityInner>, GroupQuotasEntityInner> beginCreateOrUpdate(
         String managementGroupId, String groupQuotaName, GroupQuotasEntityInner groupQuotaPutRequestBody) {
-        Response<BinaryData> response
-            = createOrUpdateWithResponse(managementGroupId, groupQuotaName, groupQuotaPutRequestBody);
-        return this.client.<GroupQuotasEntityInner, GroupQuotasEntityInner>getLroResult(response,
-            GroupQuotasEntityInner.class, GroupQuotasEntityInner.class, Context.NONE);
+        return beginCreateOrUpdate(managementGroupId, groupQuotaName, groupQuotaPutRequestBody, Context.NONE);
     }
 
-    /**
-     * Creates a new GroupQuota for the name passed. A RequestId will be returned by the Service. The status can be
-     * polled periodically. The status Async polling is using standards defined at -
-     * https://github.com/Azure/azure-resource-manager-rpc/blob/master/v1.0/async-api-reference.md#asynchronous-operations.
-     * Use the OperationsStatus URI provided in Azure-AsyncOperation header, the duration will be specified in
-     * retry-after header. Once the operation gets to terminal state - Succeeded | Failed, then the URI will change to
-     * Get URI and full details can be checked.
-     * 
-     * @param managementGroupId The management group ID.
-     * @param groupQuotaName The GroupQuota name. The name should be unique for the provided context tenantId/MgId.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the {@link SyncPoller} for polling of properties and filters for ShareQuota.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public SyncPoller<PollResult<GroupQuotasEntityInner>, GroupQuotasEntityInner>
         beginCreateOrUpdate(String managementGroupId, String groupQuotaName) {
         final GroupQuotasEntityInner groupQuotaPutRequestBody = null;
-        Response<BinaryData> response
-            = createOrUpdateWithResponse(managementGroupId, groupQuotaName, groupQuotaPutRequestBody);
-        return this.client.<GroupQuotasEntityInner, GroupQuotasEntityInner>getLroResult(response,
-            GroupQuotasEntityInner.class, GroupQuotasEntityInner.class, Context.NONE);
+        return beginCreateOrUpdate(managementGroupId, groupQuotaName, groupQuotaPutRequestBody, Context.NONE);
     }
 
-    /**
-     * Creates a new GroupQuota for the name passed. A RequestId will be returned by the Service. The status can be
-     * polled periodically. The status Async polling is using standards defined at -
-     * https://github.com/Azure/azure-resource-manager-rpc/blob/master/v1.0/async-api-reference.md#asynchronous-operations.
-     * Use the OperationsStatus URI provided in Azure-AsyncOperation header, the duration will be specified in
-     * retry-after header. Once the operation gets to terminal state - Succeeded | Failed, then the URI will change to
-     * Get URI and full details can be checked.
-     * 
-     * @param managementGroupId The management group ID.
-     * @param groupQuotaName The GroupQuota name. The name should be unique for the provided context tenantId/MgId.
-     * @param groupQuotaPutRequestBody The GroupQuota body details for creation or update of a GroupQuota entity.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the {@link SyncPoller} for polling of properties and filters for ShareQuota.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public SyncPoller<PollResult<GroupQuotasEntityInner>, GroupQuotasEntityInner> beginCreateOrUpdate(
         String managementGroupId, String groupQuotaName, GroupQuotasEntityInner groupQuotaPutRequestBody,
@@ -495,49 +436,19 @@ public final class GroupQuotasClientImpl implements GroupQuotasClient {
             .flatMap(this.client::getLroFinalResultOrError);
     }
 
-    /**
-     * Creates a new GroupQuota for the name passed. A RequestId will be returned by the Service. The status can be
-     * polled periodically. The status Async polling is using standards defined at -
-     * https://github.com/Azure/azure-resource-manager-rpc/blob/master/v1.0/async-api-reference.md#asynchronous-operations.
-     * Use the OperationsStatus URI provided in Azure-AsyncOperation header, the duration will be specified in
-     * retry-after header. Once the operation gets to terminal state - Succeeded | Failed, then the URI will change to
-     * Get URI and full details can be checked.
-     * 
-     * @param managementGroupId The management group ID.
-     * @param groupQuotaName The GroupQuota name. The name should be unique for the provided context tenantId/MgId.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return properties and filters for ShareQuota.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public GroupQuotasEntityInner createOrUpdate(String managementGroupId, String groupQuotaName) {
         final GroupQuotasEntityInner groupQuotaPutRequestBody = null;
-        return beginCreateOrUpdate(managementGroupId, groupQuotaName, groupQuotaPutRequestBody).getFinalResult();
+        return createOrUpdate(managementGroupId, groupQuotaName, groupQuotaPutRequestBody, Context.NONE);
     }
 
-    /**
-     * Creates a new GroupQuota for the name passed. A RequestId will be returned by the Service. The status can be
-     * polled periodically. The status Async polling is using standards defined at -
-     * https://github.com/Azure/azure-resource-manager-rpc/blob/master/v1.0/async-api-reference.md#asynchronous-operations.
-     * Use the OperationsStatus URI provided in Azure-AsyncOperation header, the duration will be specified in
-     * retry-after header. Once the operation gets to terminal state - Succeeded | Failed, then the URI will change to
-     * Get URI and full details can be checked.
-     * 
-     * @param managementGroupId The management group ID.
-     * @param groupQuotaName The GroupQuota name. The name should be unique for the provided context tenantId/MgId.
-     * @param groupQuotaPutRequestBody The GroupQuota body details for creation or update of a GroupQuota entity.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return properties and filters for ShareQuota.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public GroupQuotasEntityInner createOrUpdate(String managementGroupId, String groupQuotaName,
         GroupQuotasEntityInner groupQuotaPutRequestBody, Context context) {
-        return beginCreateOrUpdate(managementGroupId, groupQuotaName, groupQuotaPutRequestBody, context)
-            .getFinalResult();
+        return this.client.getLroFinalResultOrError(
+            beginCreateOrUpdate(managementGroupId, groupQuotaName, groupQuotaPutRequestBody, context));
     }
 
     /**
@@ -590,9 +501,7 @@ public final class GroupQuotasClientImpl implements GroupQuotasClient {
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Response<BinaryData> updateWithResponse(String managementGroupId, String groupQuotaName,
         GroupQuotasEntityPatch groupQuotasPatchRequestBody) {
-        final String accept = "application/json";
-        return service.updateSync(this.client.getEndpoint(), this.client.getApiVersion(), managementGroupId,
-            groupQuotaName, accept, groupQuotasPatchRequestBody, Context.NONE);
+        return updateWithResponse(managementGroupId, groupQuotaName, groupQuotasPatchRequestBody, Context.NONE);
     }
 
     /**
@@ -699,58 +608,18 @@ public final class GroupQuotasClientImpl implements GroupQuotasClient {
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     private SyncPoller<PollResult<GroupQuotasEntityInner>, GroupQuotasEntityInner> beginUpdate(String managementGroupId,
         String groupQuotaName, GroupQuotasEntityPatch groupQuotasPatchRequestBody) {
-        Response<BinaryData> response
-            = updateWithResponse(managementGroupId, groupQuotaName, groupQuotasPatchRequestBody);
-        return this.client.<GroupQuotasEntityInner, GroupQuotasEntityInner>getLroResult(response,
-            GroupQuotasEntityInner.class, GroupQuotasEntityInner.class, Context.NONE);
+        return beginUpdate(managementGroupId, groupQuotaName, groupQuotasPatchRequestBody, Context.NONE);
     }
 
-    /**
-     * Updates the GroupQuotas for the name passed. A GroupQuotas RequestId will be returned by the Service. The status
-     * can be polled periodically. The status Async polling is using standards defined at -
-     * https://github.com/Azure/azure-resource-manager-rpc/blob/master/v1.0/async-api-reference.md#asynchronous-operations.
-     * Use the OperationsStatus URI provided in Azure-AsyncOperation header, the duration will be specified in
-     * retry-after header. Once the operation gets to terminal state - Succeeded | Failed, then the URI will change to
-     * Get URI and full details can be checked.
-     * Any change in the filters will be applicable to the future quota assignments, existing quota allocated to
-     * subscriptions from the GroupQuotas remains unchanged.
-     * 
-     * @param managementGroupId The management group ID.
-     * @param groupQuotaName The GroupQuota name. The name should be unique for the provided context tenantId/MgId.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the {@link SyncPoller} for polling of properties and filters for ShareQuota.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public SyncPoller<PollResult<GroupQuotasEntityInner>, GroupQuotasEntityInner> beginUpdate(String managementGroupId,
         String groupQuotaName) {
         final GroupQuotasEntityPatch groupQuotasPatchRequestBody = null;
-        Response<BinaryData> response
-            = updateWithResponse(managementGroupId, groupQuotaName, groupQuotasPatchRequestBody);
-        return this.client.<GroupQuotasEntityInner, GroupQuotasEntityInner>getLroResult(response,
-            GroupQuotasEntityInner.class, GroupQuotasEntityInner.class, Context.NONE);
+        return beginUpdate(managementGroupId, groupQuotaName, groupQuotasPatchRequestBody, Context.NONE);
     }
 
-    /**
-     * Updates the GroupQuotas for the name passed. A GroupQuotas RequestId will be returned by the Service. The status
-     * can be polled periodically. The status Async polling is using standards defined at -
-     * https://github.com/Azure/azure-resource-manager-rpc/blob/master/v1.0/async-api-reference.md#asynchronous-operations.
-     * Use the OperationsStatus URI provided in Azure-AsyncOperation header, the duration will be specified in
-     * retry-after header. Once the operation gets to terminal state - Succeeded | Failed, then the URI will change to
-     * Get URI and full details can be checked.
-     * Any change in the filters will be applicable to the future quota assignments, existing quota allocated to
-     * subscriptions from the GroupQuotas remains unchanged.
-     * 
-     * @param managementGroupId The management group ID.
-     * @param groupQuotaName The GroupQuota name. The name should be unique for the provided context tenantId/MgId.
-     * @param groupQuotasPatchRequestBody The GroupQuotas Patch Request.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the {@link SyncPoller} for polling of properties and filters for ShareQuota.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public SyncPoller<PollResult<GroupQuotasEntityInner>, GroupQuotasEntityInner> beginUpdate(String managementGroupId,
         String groupQuotaName, GroupQuotasEntityPatch groupQuotasPatchRequestBody, Context context) {
@@ -809,52 +678,19 @@ public final class GroupQuotasClientImpl implements GroupQuotasClient {
             .flatMap(this.client::getLroFinalResultOrError);
     }
 
-    /**
-     * Updates the GroupQuotas for the name passed. A GroupQuotas RequestId will be returned by the Service. The status
-     * can be polled periodically. The status Async polling is using standards defined at -
-     * https://github.com/Azure/azure-resource-manager-rpc/blob/master/v1.0/async-api-reference.md#asynchronous-operations.
-     * Use the OperationsStatus URI provided in Azure-AsyncOperation header, the duration will be specified in
-     * retry-after header. Once the operation gets to terminal state - Succeeded | Failed, then the URI will change to
-     * Get URI and full details can be checked.
-     * Any change in the filters will be applicable to the future quota assignments, existing quota allocated to
-     * subscriptions from the GroupQuotas remains unchanged.
-     * 
-     * @param managementGroupId The management group ID.
-     * @param groupQuotaName The GroupQuota name. The name should be unique for the provided context tenantId/MgId.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return properties and filters for ShareQuota.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public GroupQuotasEntityInner update(String managementGroupId, String groupQuotaName) {
         final GroupQuotasEntityPatch groupQuotasPatchRequestBody = null;
-        return beginUpdate(managementGroupId, groupQuotaName, groupQuotasPatchRequestBody).getFinalResult();
+        return update(managementGroupId, groupQuotaName, groupQuotasPatchRequestBody, Context.NONE);
     }
 
-    /**
-     * Updates the GroupQuotas for the name passed. A GroupQuotas RequestId will be returned by the Service. The status
-     * can be polled periodically. The status Async polling is using standards defined at -
-     * https://github.com/Azure/azure-resource-manager-rpc/blob/master/v1.0/async-api-reference.md#asynchronous-operations.
-     * Use the OperationsStatus URI provided in Azure-AsyncOperation header, the duration will be specified in
-     * retry-after header. Once the operation gets to terminal state - Succeeded | Failed, then the URI will change to
-     * Get URI and full details can be checked.
-     * Any change in the filters will be applicable to the future quota assignments, existing quota allocated to
-     * subscriptions from the GroupQuotas remains unchanged.
-     * 
-     * @param managementGroupId The management group ID.
-     * @param groupQuotaName The GroupQuota name. The name should be unique for the provided context tenantId/MgId.
-     * @param groupQuotasPatchRequestBody The GroupQuotas Patch Request.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return properties and filters for ShareQuota.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public GroupQuotasEntityInner update(String managementGroupId, String groupQuotaName,
         GroupQuotasEntityPatch groupQuotasPatchRequestBody, Context context) {
-        return beginUpdate(managementGroupId, groupQuotaName, groupQuotasPatchRequestBody, context).getFinalResult();
+        return this.client.getLroFinalResultOrError(
+            beginUpdate(managementGroupId, groupQuotaName, groupQuotasPatchRequestBody, context));
     }
 
     /**
@@ -887,8 +723,7 @@ public final class GroupQuotasClientImpl implements GroupQuotasClient {
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Response<BinaryData> deleteWithResponse(String managementGroupId, String groupQuotaName) {
-        return service.deleteSync(this.client.getEndpoint(), this.client.getApiVersion(), managementGroupId,
-            groupQuotaName, Context.NONE);
+        return deleteWithResponse(managementGroupId, groupQuotaName, Context.NONE);
     }
 
     /**
@@ -925,33 +760,13 @@ public final class GroupQuotasClientImpl implements GroupQuotasClient {
             this.client.getContext());
     }
 
-    /**
-     * Deletes the GroupQuotas for the name passed. All the remaining shareQuota in the GroupQuotas will be lost.
-     * 
-     * @param managementGroupId The management group ID.
-     * @param groupQuotaName The GroupQuota name. The name should be unique for the provided context tenantId/MgId.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the {@link SyncPoller} for polling of long-running operation.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public SyncPoller<PollResult<Void>, Void> beginDelete(String managementGroupId, String groupQuotaName) {
-        Response<BinaryData> response = deleteWithResponse(managementGroupId, groupQuotaName);
-        return this.client.<Void, Void>getLroResult(response, Void.class, Void.class, Context.NONE);
+        return beginDelete(managementGroupId, groupQuotaName, Context.NONE);
     }
 
-    /**
-     * Deletes the GroupQuotas for the name passed. All the remaining shareQuota in the GroupQuotas will be lost.
-     * 
-     * @param managementGroupId The management group ID.
-     * @param groupQuotaName The GroupQuota name. The name should be unique for the provided context tenantId/MgId.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the {@link SyncPoller} for polling of long-running operation.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public SyncPoller<PollResult<Void>, Void> beginDelete(String managementGroupId, String groupQuotaName,
         Context context) {
@@ -975,33 +790,16 @@ public final class GroupQuotasClientImpl implements GroupQuotasClient {
             .flatMap(this.client::getLroFinalResultOrError);
     }
 
-    /**
-     * Deletes the GroupQuotas for the name passed. All the remaining shareQuota in the GroupQuotas will be lost.
-     * 
-     * @param managementGroupId The management group ID.
-     * @param groupQuotaName The GroupQuota name. The name should be unique for the provided context tenantId/MgId.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public void delete(String managementGroupId, String groupQuotaName) {
-        beginDelete(managementGroupId, groupQuotaName).getFinalResult();
+        delete(managementGroupId, groupQuotaName, Context.NONE);
     }
 
-    /**
-     * Deletes the GroupQuotas for the name passed. All the remaining shareQuota in the GroupQuotas will be lost.
-     * 
-     * @param managementGroupId The management group ID.
-     * @param groupQuotaName The GroupQuota name. The name should be unique for the provided context tenantId/MgId.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public void delete(String managementGroupId, String groupQuotaName, Context context) {
-        beginDelete(managementGroupId, groupQuotaName, context).getFinalResult();
+        this.client.getLroFinalResultOrError(beginDelete(managementGroupId, groupQuotaName, context));
     }
 
     /**
@@ -1054,11 +852,7 @@ public final class GroupQuotasClientImpl implements GroupQuotasClient {
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private PagedResponse<GroupQuotasEntityInner> listSinglePage(String managementGroupId) {
-        final String accept = "application/json";
-        Response<GroupQuotaList> res = service.listSync(this.client.getEndpoint(), this.client.getApiVersion(),
-            managementGroupId, accept, Context.NONE);
-        return new PagedResponseBase<>(res.getRequest(), res.getStatusCode(), res.getHeaders(), res.getValue().value(),
-            res.getValue().nextLink(), null);
+        return listSinglePage(managementGroupId, Context.NONE);
     }
 
     /**
@@ -1081,32 +875,13 @@ public final class GroupQuotasClientImpl implements GroupQuotasClient {
             res.getValue().nextLink(), null);
     }
 
-    /**
-     * Lists GroupQuotas for the scope passed. It will return the GroupQuotas QuotaEntity properties only.The details on
-     * group quota can be access from the group quota APIs.
-     * 
-     * @param managementGroupId The management group ID.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return list of Group Quotas at MG level as paginated response with {@link PagedIterable}.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.COLLECTION)
     public PagedIterable<GroupQuotasEntityInner> list(String managementGroupId) {
-        return new PagedIterable<>(() -> listSinglePage(managementGroupId), nextLink -> listNextSinglePage(nextLink));
+        return list(managementGroupId, Context.NONE);
     }
 
-    /**
-     * Lists GroupQuotas for the scope passed. It will return the GroupQuotas QuotaEntity properties only.The details on
-     * group quota can be access from the group quota APIs.
-     * 
-     * @param managementGroupId The management group ID.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return list of Group Quotas at MG level as paginated response with {@link PagedIterable}.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.COLLECTION)
     public PagedIterable<GroupQuotasEntityInner> list(String managementGroupId, Context context) {
         return new PagedIterable<>(() -> listSinglePage(managementGroupId, context),
@@ -1143,10 +918,7 @@ public final class GroupQuotasClientImpl implements GroupQuotasClient {
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private PagedResponse<GroupQuotasEntityInner> listNextSinglePage(String nextLink) {
-        final String accept = "application/json";
-        Response<GroupQuotaList> res = service.listNextSync(nextLink, this.client.getEndpoint(), accept, Context.NONE);
-        return new PagedResponseBase<>(res.getRequest(), res.getStatusCode(), res.getHeaders(), res.getValue().value(),
-            res.getValue().nextLink(), null);
+        return listNextSinglePage(nextLink, Context.NONE);
     }
 
     /**

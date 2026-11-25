@@ -198,18 +198,7 @@ public final class EnrollmentsClientImpl implements EnrollmentsClient {
             .flatMap(res -> Mono.justOrEmpty(res.getValue()));
     }
 
-    /**
-     * Get an Enrollment.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param usagePlanName The name of the usage plan.
-     * @param enrollmentName The name of the enrollment.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return an Enrollment along with {@link Response}.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Response<EnrollmentInner> getWithResponse(String resourceGroupName, String usagePlanName,
         String enrollmentName, Context context) {
@@ -218,17 +207,7 @@ public final class EnrollmentsClientImpl implements EnrollmentsClient {
             resourceGroupName, usagePlanName, enrollmentName, accept, context);
     }
 
-    /**
-     * Get an Enrollment.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param usagePlanName The name of the usage plan.
-     * @param enrollmentName The name of the enrollment.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return an Enrollment.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public EnrollmentInner get(String resourceGroupName, String usagePlanName, String enrollmentName) {
         return getWithResponse(resourceGroupName, usagePlanName, enrollmentName, Context.NONE).getValue();
@@ -274,11 +253,7 @@ public final class EnrollmentsClientImpl implements EnrollmentsClient {
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Response<BinaryData> createOrUpdateWithResponse(String resourceGroupName, String usagePlanName,
         String enrollmentName, EnrollmentInner resource) {
-        final String contentType = "application/json";
-        final String accept = "application/json";
-        return service.createOrUpdateSync(this.client.getEndpoint(), this.client.getApiVersion(),
-            this.client.getSubscriptionId(), resourceGroupName, usagePlanName, enrollmentName, contentType, accept,
-            resource, Context.NONE);
+        return createOrUpdateWithResponse(resourceGroupName, usagePlanName, enrollmentName, resource, Context.NONE);
     }
 
     /**
@@ -325,40 +300,14 @@ public final class EnrollmentsClientImpl implements EnrollmentsClient {
             EnrollmentInner.class, EnrollmentInner.class, this.client.getContext());
     }
 
-    /**
-     * Create or update an Enrollment.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param usagePlanName The name of the usage plan.
-     * @param enrollmentName The name of the enrollment.
-     * @param resource Resource create parameters.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the {@link SyncPoller} for polling of an enrollment that links a usage plan to a service group.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public SyncPoller<PollResult<EnrollmentInner>, EnrollmentInner> beginCreateOrUpdate(String resourceGroupName,
         String usagePlanName, String enrollmentName, EnrollmentInner resource) {
-        Response<BinaryData> response
-            = createOrUpdateWithResponse(resourceGroupName, usagePlanName, enrollmentName, resource);
-        return this.client.<EnrollmentInner, EnrollmentInner>getLroResult(response, EnrollmentInner.class,
-            EnrollmentInner.class, Context.NONE);
+        return beginCreateOrUpdate(resourceGroupName, usagePlanName, enrollmentName, resource, Context.NONE);
     }
 
-    /**
-     * Create or update an Enrollment.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param usagePlanName The name of the usage plan.
-     * @param enrollmentName The name of the enrollment.
-     * @param resource Resource create parameters.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the {@link SyncPoller} for polling of an enrollment that links a usage plan to a service group.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public SyncPoller<PollResult<EnrollmentInner>, EnrollmentInner> beginCreateOrUpdate(String resourceGroupName,
         String usagePlanName, String enrollmentName, EnrollmentInner resource, Context context) {
@@ -387,42 +336,19 @@ public final class EnrollmentsClientImpl implements EnrollmentsClient {
             .flatMap(this.client::getLroFinalResultOrError);
     }
 
-    /**
-     * Create or update an Enrollment.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param usagePlanName The name of the usage plan.
-     * @param enrollmentName The name of the enrollment.
-     * @param resource Resource create parameters.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return an enrollment that links a usage plan to a service group.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public EnrollmentInner createOrUpdate(String resourceGroupName, String usagePlanName, String enrollmentName,
         EnrollmentInner resource) {
-        return beginCreateOrUpdate(resourceGroupName, usagePlanName, enrollmentName, resource).getFinalResult();
+        return createOrUpdate(resourceGroupName, usagePlanName, enrollmentName, resource, Context.NONE);
     }
 
-    /**
-     * Create or update an Enrollment.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param usagePlanName The name of the usage plan.
-     * @param enrollmentName The name of the enrollment.
-     * @param resource Resource create parameters.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return an enrollment that links a usage plan to a service group.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public EnrollmentInner createOrUpdate(String resourceGroupName, String usagePlanName, String enrollmentName,
         EnrollmentInner resource, Context context) {
-        return beginCreateOrUpdate(resourceGroupName, usagePlanName, enrollmentName, resource, context)
-            .getFinalResult();
+        return this.client.getLroFinalResultOrError(
+            beginCreateOrUpdate(resourceGroupName, usagePlanName, enrollmentName, resource, context));
     }
 
     /**
@@ -459,8 +385,7 @@ public final class EnrollmentsClientImpl implements EnrollmentsClient {
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Response<BinaryData> deleteWithResponse(String resourceGroupName, String usagePlanName,
         String enrollmentName) {
-        return service.deleteSync(this.client.getEndpoint(), this.client.getApiVersion(),
-            this.client.getSubscriptionId(), resourceGroupName, usagePlanName, enrollmentName, Context.NONE);
+        return deleteWithResponse(resourceGroupName, usagePlanName, enrollmentName, Context.NONE);
     }
 
     /**
@@ -502,36 +427,14 @@ public final class EnrollmentsClientImpl implements EnrollmentsClient {
             this.client.getContext());
     }
 
-    /**
-     * Delete an Enrollment.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param usagePlanName The name of the usage plan.
-     * @param enrollmentName The name of the enrollment.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the {@link SyncPoller} for polling of long-running operation.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public SyncPoller<PollResult<Void>, Void> beginDelete(String resourceGroupName, String usagePlanName,
         String enrollmentName) {
-        Response<BinaryData> response = deleteWithResponse(resourceGroupName, usagePlanName, enrollmentName);
-        return this.client.<Void, Void>getLroResult(response, Void.class, Void.class, Context.NONE);
+        return beginDelete(resourceGroupName, usagePlanName, enrollmentName, Context.NONE);
     }
 
-    /**
-     * Delete an Enrollment.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param usagePlanName The name of the usage plan.
-     * @param enrollmentName The name of the enrollment.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the {@link SyncPoller} for polling of long-running operation.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public SyncPoller<PollResult<Void>, Void> beginDelete(String resourceGroupName, String usagePlanName,
         String enrollmentName, Context context) {
@@ -556,35 +459,16 @@ public final class EnrollmentsClientImpl implements EnrollmentsClient {
             .flatMap(this.client::getLroFinalResultOrError);
     }
 
-    /**
-     * Delete an Enrollment.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param usagePlanName The name of the usage plan.
-     * @param enrollmentName The name of the enrollment.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public void delete(String resourceGroupName, String usagePlanName, String enrollmentName) {
-        beginDelete(resourceGroupName, usagePlanName, enrollmentName).getFinalResult();
+        delete(resourceGroupName, usagePlanName, enrollmentName, Context.NONE);
     }
 
-    /**
-     * Delete an Enrollment.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param usagePlanName The name of the usage plan.
-     * @param enrollmentName The name of the enrollment.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public void delete(String resourceGroupName, String usagePlanName, String enrollmentName, Context context) {
-        beginDelete(resourceGroupName, usagePlanName, enrollmentName, context).getFinalResult();
+        this.client.getLroFinalResultOrError(beginDelete(resourceGroupName, usagePlanName, enrollmentName, context));
     }
 
     /**
@@ -637,11 +521,7 @@ public final class EnrollmentsClientImpl implements EnrollmentsClient {
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private PagedResponse<EnrollmentInner> listSinglePage(String resourceGroupName, String usagePlanName) {
-        final String accept = "application/json";
-        Response<EnrollmentListResult> res = service.listSync(this.client.getEndpoint(), this.client.getApiVersion(),
-            this.client.getSubscriptionId(), resourceGroupName, usagePlanName, accept, Context.NONE);
-        return new PagedResponseBase<>(res.getRequest(), res.getStatusCode(), res.getHeaders(), res.getValue().value(),
-            res.getValue().nextLink(), null);
+        return listSinglePage(resourceGroupName, usagePlanName, Context.NONE);
     }
 
     /**
@@ -665,33 +545,13 @@ public final class EnrollmentsClientImpl implements EnrollmentsClient {
             res.getValue().nextLink(), null);
     }
 
-    /**
-     * List Enrollments by Usage Plan.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param usagePlanName The name of the usage plan.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the response of a Enrollment list operation as paginated response with {@link PagedIterable}.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.COLLECTION)
     public PagedIterable<EnrollmentInner> list(String resourceGroupName, String usagePlanName) {
-        return new PagedIterable<>(() -> listSinglePage(resourceGroupName, usagePlanName),
-            nextLink -> listNextSinglePage(nextLink));
+        return list(resourceGroupName, usagePlanName, Context.NONE);
     }
 
-    /**
-     * List Enrollments by Usage Plan.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param usagePlanName The name of the usage plan.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the response of a Enrollment list operation as paginated response with {@link PagedIterable}.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.COLLECTION)
     public PagedIterable<EnrollmentInner> list(String resourceGroupName, String usagePlanName, Context context) {
         return new PagedIterable<>(() -> listSinglePage(resourceGroupName, usagePlanName, context),
@@ -728,11 +588,7 @@ public final class EnrollmentsClientImpl implements EnrollmentsClient {
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private PagedResponse<EnrollmentInner> listNextSinglePage(String nextLink) {
-        final String accept = "application/json";
-        Response<EnrollmentListResult> res
-            = service.listNextSync(nextLink, this.client.getEndpoint(), accept, Context.NONE);
-        return new PagedResponseBase<>(res.getRequest(), res.getStatusCode(), res.getHeaders(), res.getValue().value(),
-            res.getValue().nextLink(), null);
+        return listNextSinglePage(nextLink, Context.NONE);
     }
 
     /**

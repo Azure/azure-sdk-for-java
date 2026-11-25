@@ -239,18 +239,7 @@ public final class ClusterAssociationsClientImpl implements ClusterAssociationsC
             .flatMap(res -> Mono.justOrEmpty(res.getValue()));
     }
 
-    /**
-     * Get a ClusterAssociation.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param agentFabricName The name of the AgentFabric.
-     * @param clusterAssociationName The name of the ClusterAssociation.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return a ClusterAssociation along with {@link Response}.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Response<ClusterAssociationInner> getWithResponse(String resourceGroupName, String agentFabricName,
         String clusterAssociationName, Context context) {
@@ -260,17 +249,7 @@ public final class ClusterAssociationsClientImpl implements ClusterAssociationsC
             resourceGroupName, agentFabricName, clusterAssociationName, accept, context);
     }
 
-    /**
-     * Get a ClusterAssociation.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param agentFabricName The name of the AgentFabric.
-     * @param clusterAssociationName The name of the ClusterAssociation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return a ClusterAssociation.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public ClusterAssociationInner get(String resourceGroupName, String agentFabricName,
         String clusterAssociationName) {
@@ -324,12 +303,8 @@ public final class ClusterAssociationsClientImpl implements ClusterAssociationsC
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Response<BinaryData> createOrUpdateWithResponse(String resourceGroupName, String agentFabricName,
         String clusterAssociationName, ClusterAssociationInner resource, ClusterAssociationIfNoneMatch ifNoneMatch) {
-        final String apiVersion = "2026-11-03-preview";
-        final String contentType = "application/json";
-        final String accept = "application/json";
-        return service.createOrUpdateSync(this.client.getEndpoint(), apiVersion, this.client.getSubscriptionId(),
-            resourceGroupName, agentFabricName, clusterAssociationName, ifNoneMatch, contentType, accept, resource,
-            Context.NONE);
+        return createOrUpdateWithResponse(resourceGroupName, agentFabricName, clusterAssociationName, resource,
+            ifNoneMatch, Context.NONE);
     }
 
     /**
@@ -429,51 +404,21 @@ public final class ClusterAssociationsClientImpl implements ClusterAssociationsC
     private SyncPoller<PollResult<ClusterAssociationInner>, ClusterAssociationInner> beginCreateOrUpdate(
         String resourceGroupName, String agentFabricName, String clusterAssociationName,
         ClusterAssociationInner resource, ClusterAssociationIfNoneMatch ifNoneMatch) {
-        Response<BinaryData> response = createOrUpdateWithResponse(resourceGroupName, agentFabricName,
-            clusterAssociationName, resource, ifNoneMatch);
-        return this.client.<ClusterAssociationInner, ClusterAssociationInner>getLroResult(response,
-            ClusterAssociationInner.class, ClusterAssociationInner.class, Context.NONE);
+        return beginCreateOrUpdate(resourceGroupName, agentFabricName, clusterAssociationName, resource, ifNoneMatch,
+            Context.NONE);
     }
 
-    /**
-     * Create a ClusterAssociation.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param agentFabricName The name of the AgentFabric.
-     * @param clusterAssociationName The name of the ClusterAssociation.
-     * @param resource Resource create parameters.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the {@link SyncPoller} for polling of clusterAssociation resource.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public SyncPoller<PollResult<ClusterAssociationInner>, ClusterAssociationInner> beginCreateOrUpdate(
         String resourceGroupName, String agentFabricName, String clusterAssociationName,
         ClusterAssociationInner resource) {
         final ClusterAssociationIfNoneMatch ifNoneMatch = null;
-        Response<BinaryData> response = createOrUpdateWithResponse(resourceGroupName, agentFabricName,
-            clusterAssociationName, resource, ifNoneMatch);
-        return this.client.<ClusterAssociationInner, ClusterAssociationInner>getLroResult(response,
-            ClusterAssociationInner.class, ClusterAssociationInner.class, Context.NONE);
+        return beginCreateOrUpdate(resourceGroupName, agentFabricName, clusterAssociationName, resource, ifNoneMatch,
+            Context.NONE);
     }
 
-    /**
-     * Create a ClusterAssociation.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param agentFabricName The name of the AgentFabric.
-     * @param clusterAssociationName The name of the ClusterAssociation.
-     * @param resource Resource create parameters.
-     * @param ifNoneMatch Set to "*" when creating an association to require that the resource does
-     * not already exist. The service returns 412 Precondition Failed when the
-     * condition is not met.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the {@link SyncPoller} for polling of clusterAssociation resource.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public SyncPoller<PollResult<ClusterAssociationInner>, ClusterAssociationInner> beginCreateOrUpdate(
         String resourceGroupName, String agentFabricName, String clusterAssociationName,
@@ -526,48 +471,22 @@ public final class ClusterAssociationsClientImpl implements ClusterAssociationsC
             ifNoneMatch).last().flatMap(this.client::getLroFinalResultOrError);
     }
 
-    /**
-     * Create a ClusterAssociation.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param agentFabricName The name of the AgentFabric.
-     * @param clusterAssociationName The name of the ClusterAssociation.
-     * @param resource Resource create parameters.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return clusterAssociation resource.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public ClusterAssociationInner createOrUpdate(String resourceGroupName, String agentFabricName,
         String clusterAssociationName, ClusterAssociationInner resource) {
         final ClusterAssociationIfNoneMatch ifNoneMatch = null;
-        return beginCreateOrUpdate(resourceGroupName, agentFabricName, clusterAssociationName, resource, ifNoneMatch)
-            .getFinalResult();
+        return createOrUpdate(resourceGroupName, agentFabricName, clusterAssociationName, resource, ifNoneMatch,
+            Context.NONE);
     }
 
-    /**
-     * Create a ClusterAssociation.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param agentFabricName The name of the AgentFabric.
-     * @param clusterAssociationName The name of the ClusterAssociation.
-     * @param resource Resource create parameters.
-     * @param ifNoneMatch Set to "*" when creating an association to require that the resource does
-     * not already exist. The service returns 412 Precondition Failed when the
-     * condition is not met.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return clusterAssociation resource.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public ClusterAssociationInner createOrUpdate(String resourceGroupName, String agentFabricName,
         String clusterAssociationName, ClusterAssociationInner resource, ClusterAssociationIfNoneMatch ifNoneMatch,
         Context context) {
-        return beginCreateOrUpdate(resourceGroupName, agentFabricName, clusterAssociationName, resource, ifNoneMatch,
-            context).getFinalResult();
+        return this.client.getLroFinalResultOrError(beginCreateOrUpdate(resourceGroupName, agentFabricName,
+            clusterAssociationName, resource, ifNoneMatch, context));
     }
 
     /**
@@ -610,11 +529,7 @@ public final class ClusterAssociationsClientImpl implements ClusterAssociationsC
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Response<BinaryData> updateWithResponse(String resourceGroupName, String agentFabricName,
         String clusterAssociationName, ClusterAssociationUpdate properties) {
-        final String apiVersion = "2026-11-03-preview";
-        final String contentType = "application/json";
-        final String accept = "application/json";
-        return service.updateSync(this.client.getEndpoint(), apiVersion, this.client.getSubscriptionId(),
-            resourceGroupName, agentFabricName, clusterAssociationName, contentType, accept, properties, Context.NONE);
+        return updateWithResponse(resourceGroupName, agentFabricName, clusterAssociationName, properties, Context.NONE);
     }
 
     /**
@@ -663,41 +578,15 @@ public final class ClusterAssociationsClientImpl implements ClusterAssociationsC
             this.client.getContext());
     }
 
-    /**
-     * Update a ClusterAssociation.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param agentFabricName The name of the AgentFabric.
-     * @param clusterAssociationName The name of the ClusterAssociation.
-     * @param properties The resource properties to be updated.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the {@link SyncPoller} for polling of clusterAssociation resource.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public SyncPoller<PollResult<ClusterAssociationInner>, ClusterAssociationInner> beginUpdate(
         String resourceGroupName, String agentFabricName, String clusterAssociationName,
         ClusterAssociationUpdate properties) {
-        Response<BinaryData> response
-            = updateWithResponse(resourceGroupName, agentFabricName, clusterAssociationName, properties);
-        return this.client.<ClusterAssociationInner, ClusterAssociationInner>getLroResult(response,
-            ClusterAssociationInner.class, ClusterAssociationInner.class, Context.NONE);
+        return beginUpdate(resourceGroupName, agentFabricName, clusterAssociationName, properties, Context.NONE);
     }
 
-    /**
-     * Update a ClusterAssociation.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param agentFabricName The name of the AgentFabric.
-     * @param clusterAssociationName The name of the ClusterAssociation.
-     * @param properties The resource properties to be updated.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the {@link SyncPoller} for polling of clusterAssociation resource.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public SyncPoller<PollResult<ClusterAssociationInner>, ClusterAssociationInner> beginUpdate(
         String resourceGroupName, String agentFabricName, String clusterAssociationName,
@@ -727,42 +616,19 @@ public final class ClusterAssociationsClientImpl implements ClusterAssociationsC
             .flatMap(this.client::getLroFinalResultOrError);
     }
 
-    /**
-     * Update a ClusterAssociation.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param agentFabricName The name of the AgentFabric.
-     * @param clusterAssociationName The name of the ClusterAssociation.
-     * @param properties The resource properties to be updated.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return clusterAssociation resource.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public ClusterAssociationInner update(String resourceGroupName, String agentFabricName,
         String clusterAssociationName, ClusterAssociationUpdate properties) {
-        return beginUpdate(resourceGroupName, agentFabricName, clusterAssociationName, properties).getFinalResult();
+        return update(resourceGroupName, agentFabricName, clusterAssociationName, properties, Context.NONE);
     }
 
-    /**
-     * Update a ClusterAssociation.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param agentFabricName The name of the AgentFabric.
-     * @param clusterAssociationName The name of the ClusterAssociation.
-     * @param properties The resource properties to be updated.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return clusterAssociation resource.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public ClusterAssociationInner update(String resourceGroupName, String agentFabricName,
         String clusterAssociationName, ClusterAssociationUpdate properties, Context context) {
-        return beginUpdate(resourceGroupName, agentFabricName, clusterAssociationName, properties, context)
-            .getFinalResult();
+        return this.client.getLroFinalResultOrError(
+            beginUpdate(resourceGroupName, agentFabricName, clusterAssociationName, properties, context));
     }
 
     /**
@@ -836,9 +702,7 @@ public final class ClusterAssociationsClientImpl implements ClusterAssociationsC
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Response<BinaryData> deleteWithResponse(String resourceGroupName, String agentFabricName,
         String clusterAssociationName) {
-        final String apiVersion = "2026-11-03-preview";
-        return service.deleteSync(this.client.getEndpoint(), apiVersion, this.client.getSubscriptionId(),
-            resourceGroupName, agentFabricName, clusterAssociationName, Context.NONE);
+        return deleteWithResponse(resourceGroupName, agentFabricName, clusterAssociationName, Context.NONE);
     }
 
     /**
@@ -917,72 +781,14 @@ public final class ClusterAssociationsClientImpl implements ClusterAssociationsC
             this.client.getContext());
     }
 
-    /**
-     * Deletes the association. Idempotent: returns `202 Accepted` when completion is
-     * asynchronous, and `204 No Content` when it completes synchronously or the
-     * association is already absent.
-     * 
-     * For an association enrolling an ACI SandboxGroup (`clusterResourceId` of type
-     * `Microsoft.ContainerInstance/sandboxGroups`), the service returns
-     * `409 ClusterAssociationNotEmpty` while any Member still references the
-     * SandboxGroup. All such Members must be deleted before the association can be
-     * removed.
-     * 
-     * ```json
-     * {
-     * "error": {
-     * "code": "ClusterAssociationNotEmpty",
-     * "message": "The ClusterAssociation cannot be deleted because one or more members still reference it.",
-     * "target": "properties.clusterResourceId"
-     * }
-     * }
-     * ```.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param agentFabricName The name of the AgentFabric.
-     * @param clusterAssociationName The name of the ClusterAssociation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the {@link SyncPoller} for polling of long-running operation.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public SyncPoller<PollResult<Void>, Void> beginDelete(String resourceGroupName, String agentFabricName,
         String clusterAssociationName) {
-        Response<BinaryData> response = deleteWithResponse(resourceGroupName, agentFabricName, clusterAssociationName);
-        return this.client.<Void, Void>getLroResult(response, Void.class, Void.class, Context.NONE);
+        return beginDelete(resourceGroupName, agentFabricName, clusterAssociationName, Context.NONE);
     }
 
-    /**
-     * Deletes the association. Idempotent: returns `202 Accepted` when completion is
-     * asynchronous, and `204 No Content` when it completes synchronously or the
-     * association is already absent.
-     * 
-     * For an association enrolling an ACI SandboxGroup (`clusterResourceId` of type
-     * `Microsoft.ContainerInstance/sandboxGroups`), the service returns
-     * `409 ClusterAssociationNotEmpty` while any Member still references the
-     * SandboxGroup. All such Members must be deleted before the association can be
-     * removed.
-     * 
-     * ```json
-     * {
-     * "error": {
-     * "code": "ClusterAssociationNotEmpty",
-     * "message": "The ClusterAssociation cannot be deleted because one or more members still reference it.",
-     * "target": "properties.clusterResourceId"
-     * }
-     * }
-     * ```.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param agentFabricName The name of the AgentFabric.
-     * @param clusterAssociationName The name of the ClusterAssociation.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the {@link SyncPoller} for polling of long-running operation.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public SyncPoller<PollResult<Void>, Void> beginDelete(String resourceGroupName, String agentFabricName,
         String clusterAssociationName, Context context) {
@@ -1026,72 +832,18 @@ public final class ClusterAssociationsClientImpl implements ClusterAssociationsC
             .flatMap(this.client::getLroFinalResultOrError);
     }
 
-    /**
-     * Deletes the association. Idempotent: returns `202 Accepted` when completion is
-     * asynchronous, and `204 No Content` when it completes synchronously or the
-     * association is already absent.
-     * 
-     * For an association enrolling an ACI SandboxGroup (`clusterResourceId` of type
-     * `Microsoft.ContainerInstance/sandboxGroups`), the service returns
-     * `409 ClusterAssociationNotEmpty` while any Member still references the
-     * SandboxGroup. All such Members must be deleted before the association can be
-     * removed.
-     * 
-     * ```json
-     * {
-     * "error": {
-     * "code": "ClusterAssociationNotEmpty",
-     * "message": "The ClusterAssociation cannot be deleted because one or more members still reference it.",
-     * "target": "properties.clusterResourceId"
-     * }
-     * }
-     * ```.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param agentFabricName The name of the AgentFabric.
-     * @param clusterAssociationName The name of the ClusterAssociation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public void delete(String resourceGroupName, String agentFabricName, String clusterAssociationName) {
-        beginDelete(resourceGroupName, agentFabricName, clusterAssociationName).getFinalResult();
+        delete(resourceGroupName, agentFabricName, clusterAssociationName, Context.NONE);
     }
 
-    /**
-     * Deletes the association. Idempotent: returns `202 Accepted` when completion is
-     * asynchronous, and `204 No Content` when it completes synchronously or the
-     * association is already absent.
-     * 
-     * For an association enrolling an ACI SandboxGroup (`clusterResourceId` of type
-     * `Microsoft.ContainerInstance/sandboxGroups`), the service returns
-     * `409 ClusterAssociationNotEmpty` while any Member still references the
-     * SandboxGroup. All such Members must be deleted before the association can be
-     * removed.
-     * 
-     * ```json
-     * {
-     * "error": {
-     * "code": "ClusterAssociationNotEmpty",
-     * "message": "The ClusterAssociation cannot be deleted because one or more members still reference it.",
-     * "target": "properties.clusterResourceId"
-     * }
-     * }
-     * ```.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param agentFabricName The name of the AgentFabric.
-     * @param clusterAssociationName The name of the ClusterAssociation.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public void delete(String resourceGroupName, String agentFabricName, String clusterAssociationName,
         Context context) {
-        beginDelete(resourceGroupName, agentFabricName, clusterAssociationName, context).getFinalResult();
+        this.client
+            .getLroFinalResultOrError(beginDelete(resourceGroupName, agentFabricName, clusterAssociationName, context));
     }
 
     /**
@@ -1147,12 +899,7 @@ public final class ClusterAssociationsClientImpl implements ClusterAssociationsC
     @ServiceMethod(returns = ReturnType.SINGLE)
     private PagedResponse<ClusterAssociationInner> listByParentSinglePage(String resourceGroupName,
         String agentFabricName) {
-        final String apiVersion = "2026-11-03-preview";
-        final String accept = "application/json";
-        Response<ClusterAssociationListResult> res = service.listByParentSync(this.client.getEndpoint(), apiVersion,
-            this.client.getSubscriptionId(), resourceGroupName, agentFabricName, accept, Context.NONE);
-        return new PagedResponseBase<>(res.getRequest(), res.getStatusCode(), res.getHeaders(), res.getValue().value(),
-            res.getValue().nextLink(), null);
+        return listByParentSinglePage(resourceGroupName, agentFabricName, Context.NONE);
     }
 
     /**
@@ -1177,33 +924,13 @@ public final class ClusterAssociationsClientImpl implements ClusterAssociationsC
             res.getValue().nextLink(), null);
     }
 
-    /**
-     * List ClusterAssociation resources by AgentFabric.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param agentFabricName The name of the AgentFabric.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the response of a ClusterAssociation list operation as paginated response with {@link PagedIterable}.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.COLLECTION)
     public PagedIterable<ClusterAssociationInner> listByParent(String resourceGroupName, String agentFabricName) {
-        return new PagedIterable<>(() -> listByParentSinglePage(resourceGroupName, agentFabricName),
-            nextLink -> listByParentNextSinglePage(nextLink));
+        return listByParent(resourceGroupName, agentFabricName, Context.NONE);
     }
 
-    /**
-     * List ClusterAssociation resources by AgentFabric.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param agentFabricName The name of the AgentFabric.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the response of a ClusterAssociation list operation as paginated response with {@link PagedIterable}.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.COLLECTION)
     public PagedIterable<ClusterAssociationInner> listByParent(String resourceGroupName, String agentFabricName,
         Context context) {
@@ -1242,11 +969,7 @@ public final class ClusterAssociationsClientImpl implements ClusterAssociationsC
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private PagedResponse<ClusterAssociationInner> listByParentNextSinglePage(String nextLink) {
-        final String accept = "application/json";
-        Response<ClusterAssociationListResult> res
-            = service.listByParentNextSync(nextLink, this.client.getEndpoint(), accept, Context.NONE);
-        return new PagedResponseBase<>(res.getRequest(), res.getStatusCode(), res.getHeaders(), res.getValue().value(),
-            res.getValue().nextLink(), null);
+        return listByParentNextSinglePage(nextLink, Context.NONE);
     }
 
     /**

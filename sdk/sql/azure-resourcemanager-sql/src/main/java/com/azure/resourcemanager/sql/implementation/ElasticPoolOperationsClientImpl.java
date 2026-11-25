@@ -180,17 +180,7 @@ public final class ElasticPoolOperationsClientImpl implements ElasticPoolOperati
                 res.getValue().value(), res.getValue().nextLink(), null));
     }
 
-    /**
-     * Gets a list of operations performed on the elastic pool.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param serverName The name of the server.
-     * @param elasticPoolName The name of the elastic pool.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return a list of operations performed on the elastic pool as paginated response with {@link PagedFlux}.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.COLLECTION)
     public PagedFlux<ElasticPoolOperationInner> listByElasticPoolAsync(String resourceGroupName, String serverName,
         String elasticPoolName) {
@@ -218,53 +208,21 @@ public final class ElasticPoolOperationsClientImpl implements ElasticPoolOperati
             nextLink -> listByElasticPoolNextSinglePageAsync(nextLink, context));
     }
 
-    /**
-     * Gets a list of operations performed on the elastic pool.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param serverName The name of the server.
-     * @param elasticPoolName The name of the elastic pool.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return a list of operations performed on the elastic pool as paginated response with {@link PagedIterable}.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.COLLECTION)
     public PagedIterable<ElasticPoolOperationInner> listByElasticPool(String resourceGroupName, String serverName,
         String elasticPoolName) {
         return new PagedIterable<>(listByElasticPoolAsync(resourceGroupName, serverName, elasticPoolName));
     }
 
-    /**
-     * Gets a list of operations performed on the elastic pool.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param serverName The name of the server.
-     * @param elasticPoolName The name of the elastic pool.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return a list of operations performed on the elastic pool as paginated response with {@link PagedIterable}.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.COLLECTION)
     public PagedIterable<ElasticPoolOperationInner> listByElasticPool(String resourceGroupName, String serverName,
         String elasticPoolName, Context context) {
         return new PagedIterable<>(listByElasticPoolAsync(resourceGroupName, serverName, elasticPoolName, context));
     }
 
-    /**
-     * Cancels the asynchronous operation on the elastic pool.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param serverName The name of the server.
-     * @param elasticPoolName The name of the elastic pool.
-     * @param operationId The operation identifier.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the {@link Response} on successful completion of {@link Mono}.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Response<Void>> cancelWithResponseAsync(String resourceGroupName, String serverName,
         String elasticPoolName, UUID operationId) {
@@ -339,18 +297,7 @@ public final class ElasticPoolOperationsClientImpl implements ElasticPoolOperati
             resourceGroupName, serverName, elasticPoolName, operationId, context);
     }
 
-    /**
-     * Cancels the asynchronous operation on the elastic pool.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param serverName The name of the server.
-     * @param elasticPoolName The name of the elastic pool.
-     * @param operationId The operation identifier.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return A {@link Mono} that completes when a successful response is received.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Void> cancelAsync(String resourceGroupName, String serverName, String elasticPoolName,
         UUID operationId) {
@@ -358,36 +305,14 @@ public final class ElasticPoolOperationsClientImpl implements ElasticPoolOperati
             .flatMap(ignored -> Mono.empty());
     }
 
-    /**
-     * Cancels the asynchronous operation on the elastic pool.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param serverName The name of the server.
-     * @param elasticPoolName The name of the elastic pool.
-     * @param operationId The operation identifier.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the {@link Response}.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Response<Void> cancelWithResponse(String resourceGroupName, String serverName, String elasticPoolName,
         UUID operationId, Context context) {
         return cancelWithResponseAsync(resourceGroupName, serverName, elasticPoolName, operationId, context).block();
     }
 
-    /**
-     * Cancels the asynchronous operation on the elastic pool.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param serverName The name of the server.
-     * @param elasticPoolName The name of the elastic pool.
-     * @param operationId The operation identifier.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public void cancel(String resourceGroupName, String serverName, String elasticPoolName, UUID operationId) {
         cancelWithResponse(resourceGroupName, serverName, elasticPoolName, operationId, Context.NONE);

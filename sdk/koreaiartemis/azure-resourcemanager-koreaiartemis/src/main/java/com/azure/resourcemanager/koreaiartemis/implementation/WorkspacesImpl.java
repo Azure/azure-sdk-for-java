@@ -50,7 +50,7 @@ public final class WorkspacesImpl implements Workspaces {
     }
 
     public void delete(String resourceGroupName, String organizationName, String workspaceName) {
-        this.serviceClient().delete(resourceGroupName, organizationName, workspaceName);
+        this.delete(resourceGroupName, organizationName, workspaceName, Context.NONE);
     }
 
     public void delete(String resourceGroupName, String organizationName, String workspaceName, Context context) {
@@ -58,9 +58,7 @@ public final class WorkspacesImpl implements Workspaces {
     }
 
     public PagedIterable<WorkspaceResource> listByOrganization(String resourceGroupName, String organizationName) {
-        PagedIterable<WorkspaceResourceInner> inner
-            = this.serviceClient().listByOrganization(resourceGroupName, organizationName);
-        return ResourceManagerUtils.mapPage(inner, inner1 -> new WorkspaceResourceImpl(inner1, this.manager()));
+        return this.listByOrganization(resourceGroupName, organizationName, Context.NONE);
     }
 
     public PagedIterable<WorkspaceResource> listByOrganization(String resourceGroupName, String organizationName,
@@ -72,7 +70,7 @@ public final class WorkspacesImpl implements Workspaces {
 
     public void linkSaaS(String resourceGroupName, String organizationName, String workspaceName,
         WorkspaceSaaSData body) {
-        this.serviceClient().linkSaaS(resourceGroupName, organizationName, workspaceName, body);
+        this.linkSaaS(resourceGroupName, organizationName, workspaceName, body, Context.NONE);
     }
 
     public void linkSaaS(String resourceGroupName, String organizationName, String workspaceName,
@@ -118,102 +116,36 @@ public final class WorkspacesImpl implements Workspaces {
     }
 
     public WorkspaceResource getById(String id) {
-        String resourceGroupName = ResourceManagerUtils.getValueFromIdByParameterName(id,
-            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Kore.AgentPlatform/organizations/{organizationName}/workspaces/{workspaceName}",
-            "resourceGroupName");
-        if (resourceGroupName == null) {
-            throw LOGGER.logExceptionAsError(new IllegalArgumentException(
-                String.format("The resource ID '%s' is not valid. Missing path segment 'resourceGroups'.", id)));
-        }
-        String organizationName = ResourceManagerUtils.getValueFromIdByParameterName(id,
-            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Kore.AgentPlatform/organizations/{organizationName}/workspaces/{workspaceName}",
-            "organizationName");
-        if (organizationName == null) {
-            throw LOGGER.logExceptionAsError(new IllegalArgumentException(
-                String.format("The resource ID '%s' is not valid. Missing path segment 'organizations'.", id)));
-        }
-        String workspaceName = ResourceManagerUtils.getValueFromIdByParameterName(id,
-            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Kore.AgentPlatform/organizations/{organizationName}/workspaces/{workspaceName}",
-            "workspaceName");
-        if (workspaceName == null) {
-            throw LOGGER.logExceptionAsError(new IllegalArgumentException(
-                String.format("The resource ID '%s' is not valid. Missing path segment 'workspaces'.", id)));
-        }
-        return this.getWithResponse(resourceGroupName, organizationName, workspaceName, Context.NONE).getValue();
+        return this.getByIdWithResponse(id, Context.NONE).getValue();
     }
 
     public Response<WorkspaceResource> getByIdWithResponse(String id, Context context) {
-        String resourceGroupName = ResourceManagerUtils.getValueFromIdByParameterName(id,
+        String resourceGroupName = ResourceManagerUtils.getRequiredValueFromIdByParameterName(id,
             "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Kore.AgentPlatform/organizations/{organizationName}/workspaces/{workspaceName}",
-            "resourceGroupName");
-        if (resourceGroupName == null) {
-            throw LOGGER.logExceptionAsError(new IllegalArgumentException(
-                String.format("The resource ID '%s' is not valid. Missing path segment 'resourceGroups'.", id)));
-        }
-        String organizationName = ResourceManagerUtils.getValueFromIdByParameterName(id,
+            "resourceGroupName", "resourceGroups", LOGGER);
+        String organizationName = ResourceManagerUtils.getRequiredValueFromIdByParameterName(id,
             "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Kore.AgentPlatform/organizations/{organizationName}/workspaces/{workspaceName}",
-            "organizationName");
-        if (organizationName == null) {
-            throw LOGGER.logExceptionAsError(new IllegalArgumentException(
-                String.format("The resource ID '%s' is not valid. Missing path segment 'organizations'.", id)));
-        }
-        String workspaceName = ResourceManagerUtils.getValueFromIdByParameterName(id,
+            "organizationName", "organizations", LOGGER);
+        String workspaceName = ResourceManagerUtils.getRequiredValueFromIdByParameterName(id,
             "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Kore.AgentPlatform/organizations/{organizationName}/workspaces/{workspaceName}",
-            "workspaceName");
-        if (workspaceName == null) {
-            throw LOGGER.logExceptionAsError(new IllegalArgumentException(
-                String.format("The resource ID '%s' is not valid. Missing path segment 'workspaces'.", id)));
-        }
+            "workspaceName", "workspaces", LOGGER);
         return this.getWithResponse(resourceGroupName, organizationName, workspaceName, context);
     }
 
     public void deleteById(String id) {
-        String resourceGroupName = ResourceManagerUtils.getValueFromIdByParameterName(id,
-            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Kore.AgentPlatform/organizations/{organizationName}/workspaces/{workspaceName}",
-            "resourceGroupName");
-        if (resourceGroupName == null) {
-            throw LOGGER.logExceptionAsError(new IllegalArgumentException(
-                String.format("The resource ID '%s' is not valid. Missing path segment 'resourceGroups'.", id)));
-        }
-        String organizationName = ResourceManagerUtils.getValueFromIdByParameterName(id,
-            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Kore.AgentPlatform/organizations/{organizationName}/workspaces/{workspaceName}",
-            "organizationName");
-        if (organizationName == null) {
-            throw LOGGER.logExceptionAsError(new IllegalArgumentException(
-                String.format("The resource ID '%s' is not valid. Missing path segment 'organizations'.", id)));
-        }
-        String workspaceName = ResourceManagerUtils.getValueFromIdByParameterName(id,
-            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Kore.AgentPlatform/organizations/{organizationName}/workspaces/{workspaceName}",
-            "workspaceName");
-        if (workspaceName == null) {
-            throw LOGGER.logExceptionAsError(new IllegalArgumentException(
-                String.format("The resource ID '%s' is not valid. Missing path segment 'workspaces'.", id)));
-        }
-        this.delete(resourceGroupName, organizationName, workspaceName, Context.NONE);
+        this.deleteByIdWithResponse(id, Context.NONE);
     }
 
     public void deleteByIdWithResponse(String id, Context context) {
-        String resourceGroupName = ResourceManagerUtils.getValueFromIdByParameterName(id,
+        String resourceGroupName = ResourceManagerUtils.getRequiredValueFromIdByParameterName(id,
             "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Kore.AgentPlatform/organizations/{organizationName}/workspaces/{workspaceName}",
-            "resourceGroupName");
-        if (resourceGroupName == null) {
-            throw LOGGER.logExceptionAsError(new IllegalArgumentException(
-                String.format("The resource ID '%s' is not valid. Missing path segment 'resourceGroups'.", id)));
-        }
-        String organizationName = ResourceManagerUtils.getValueFromIdByParameterName(id,
+            "resourceGroupName", "resourceGroups", LOGGER);
+        String organizationName = ResourceManagerUtils.getRequiredValueFromIdByParameterName(id,
             "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Kore.AgentPlatform/organizations/{organizationName}/workspaces/{workspaceName}",
-            "organizationName");
-        if (organizationName == null) {
-            throw LOGGER.logExceptionAsError(new IllegalArgumentException(
-                String.format("The resource ID '%s' is not valid. Missing path segment 'organizations'.", id)));
-        }
-        String workspaceName = ResourceManagerUtils.getValueFromIdByParameterName(id,
+            "organizationName", "organizations", LOGGER);
+        String workspaceName = ResourceManagerUtils.getRequiredValueFromIdByParameterName(id,
             "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Kore.AgentPlatform/organizations/{organizationName}/workspaces/{workspaceName}",
-            "workspaceName");
-        if (workspaceName == null) {
-            throw LOGGER.logExceptionAsError(new IllegalArgumentException(
-                String.format("The resource ID '%s' is not valid. Missing path segment 'workspaces'.", id)));
-        }
+            "workspaceName", "workspaces", LOGGER);
         this.delete(resourceGroupName, organizationName, workspaceName, context);
     }
 

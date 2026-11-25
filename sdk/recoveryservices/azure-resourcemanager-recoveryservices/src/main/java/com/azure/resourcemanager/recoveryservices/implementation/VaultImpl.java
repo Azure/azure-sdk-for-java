@@ -98,10 +98,7 @@ public final class VaultImpl implements Vault, Vault.Definition, Vault.Update {
     }
 
     public Vault create() {
-        this.innerObject = serviceManager.serviceClient()
-            .getVaults()
-            .createOrUpdate(resourceGroupName, vaultName, this.innerModel(), Context.NONE);
-        return this;
+        return this.create(Context.NONE);
     }
 
     public Vault create(Context context) {
@@ -123,10 +120,7 @@ public final class VaultImpl implements Vault, Vault.Definition, Vault.Update {
     }
 
     public Vault apply() {
-        this.innerObject = serviceManager.serviceClient()
-            .getVaults()
-            .update(resourceGroupName, vaultName, updateVault, Context.NONE);
-        return this;
+        return this.apply(Context.NONE);
     }
 
     public Vault apply(Context context) {
@@ -148,11 +142,7 @@ public final class VaultImpl implements Vault, Vault.Definition, Vault.Update {
     }
 
     public Vault refresh() {
-        this.innerObject = serviceManager.serviceClient()
-            .getVaults()
-            .getByResourceGroupWithResponse(resourceGroupName, vaultName, Context.NONE)
-            .getValue();
-        return this;
+        return this.refresh(Context.NONE);
     }
 
     public Vault refresh(Context context) {

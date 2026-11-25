@@ -141,17 +141,7 @@ public final class VirtualHubBgpConnectionsClientImpl implements VirtualHubBgpCo
             @HeaderParam("Accept") String accept, Context context);
     }
 
-    /**
-     * Retrieves the details of a Virtual Hub Bgp Connection.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param virtualHubName The name of the VirtualHub.
-     * @param connectionName The name of the connection.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return virtual Appliance Site resource along with {@link Response} on successful completion of {@link Mono}.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Response<BgpConnectionInner>> getWithResponseAsync(String resourceGroupName, String virtualHubName,
         String connectionName) {
@@ -221,69 +211,27 @@ public final class VirtualHubBgpConnectionsClientImpl implements VirtualHubBgpCo
             virtualHubName, connectionName, accept, context);
     }
 
-    /**
-     * Retrieves the details of a Virtual Hub Bgp Connection.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param virtualHubName The name of the VirtualHub.
-     * @param connectionName The name of the connection.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return virtual Appliance Site resource on successful completion of {@link Mono}.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<BgpConnectionInner> getAsync(String resourceGroupName, String virtualHubName, String connectionName) {
         return getWithResponseAsync(resourceGroupName, virtualHubName, connectionName)
             .flatMap(res -> Mono.justOrEmpty(res.getValue()));
     }
 
-    /**
-     * Retrieves the details of a Virtual Hub Bgp Connection.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param virtualHubName The name of the VirtualHub.
-     * @param connectionName The name of the connection.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return virtual Appliance Site resource along with {@link Response}.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Response<BgpConnectionInner> getWithResponse(String resourceGroupName, String virtualHubName,
         String connectionName, Context context) {
         return getWithResponseAsync(resourceGroupName, virtualHubName, connectionName, context).block();
     }
 
-    /**
-     * Retrieves the details of a Virtual Hub Bgp Connection.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param virtualHubName The name of the VirtualHub.
-     * @param connectionName The name of the connection.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return virtual Appliance Site resource.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public BgpConnectionInner get(String resourceGroupName, String virtualHubName, String connectionName) {
         return getWithResponse(resourceGroupName, virtualHubName, connectionName, Context.NONE).getValue();
     }
 
-    /**
-     * Creates a VirtualHubBgpConnection resource if it doesn't exist else updates the existing VirtualHubBgpConnection.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param virtualHubName The name of the VirtualHub.
-     * @param connectionName The name of the connection.
-     * @param parameters Parameters of Bgp connection.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return virtual Appliance Site resource along with {@link Response} on successful completion of {@link Mono}.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Response<Flux<ByteBuffer>>> createOrUpdateWithResponseAsync(String resourceGroupName,
         String virtualHubName, String connectionName, BgpConnectionInner parameters) {
@@ -367,18 +315,7 @@ public final class VirtualHubBgpConnectionsClientImpl implements VirtualHubBgpCo
             resourceGroupName, virtualHubName, connectionName, contentType, accept, parameters, context);
     }
 
-    /**
-     * Creates a VirtualHubBgpConnection resource if it doesn't exist else updates the existing VirtualHubBgpConnection.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param virtualHubName The name of the VirtualHub.
-     * @param connectionName The name of the connection.
-     * @param parameters Parameters of Bgp connection.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the {@link PollerFlux} for polling of virtual Appliance Site resource.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public PollerFlux<PollResult<BgpConnectionInner>, BgpConnectionInner> beginCreateOrUpdateAsync(
         String resourceGroupName, String virtualHubName, String connectionName, BgpConnectionInner parameters) {
@@ -412,18 +349,7 @@ public final class VirtualHubBgpConnectionsClientImpl implements VirtualHubBgpCo
             BgpConnectionInner.class, BgpConnectionInner.class, context);
     }
 
-    /**
-     * Creates a VirtualHubBgpConnection resource if it doesn't exist else updates the existing VirtualHubBgpConnection.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param virtualHubName The name of the VirtualHub.
-     * @param connectionName The name of the connection.
-     * @param parameters Parameters of Bgp connection.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the {@link SyncPoller} for polling of virtual Appliance Site resource.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public SyncPoller<PollResult<BgpConnectionInner>, BgpConnectionInner> beginCreateOrUpdate(String resourceGroupName,
         String virtualHubName, String connectionName, BgpConnectionInner parameters) {
@@ -431,19 +357,7 @@ public final class VirtualHubBgpConnectionsClientImpl implements VirtualHubBgpCo
             .getSyncPoller();
     }
 
-    /**
-     * Creates a VirtualHubBgpConnection resource if it doesn't exist else updates the existing VirtualHubBgpConnection.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param virtualHubName The name of the VirtualHub.
-     * @param connectionName The name of the connection.
-     * @param parameters Parameters of Bgp connection.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the {@link SyncPoller} for polling of virtual Appliance Site resource.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public SyncPoller<PollResult<BgpConnectionInner>, BgpConnectionInner> beginCreateOrUpdate(String resourceGroupName,
         String virtualHubName, String connectionName, BgpConnectionInner parameters, Context context) {
@@ -451,18 +365,7 @@ public final class VirtualHubBgpConnectionsClientImpl implements VirtualHubBgpCo
             .getSyncPoller();
     }
 
-    /**
-     * Creates a VirtualHubBgpConnection resource if it doesn't exist else updates the existing VirtualHubBgpConnection.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param virtualHubName The name of the VirtualHub.
-     * @param connectionName The name of the connection.
-     * @param parameters Parameters of Bgp connection.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return virtual Appliance Site resource on successful completion of {@link Mono}.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<BgpConnectionInner> createOrUpdateAsync(String resourceGroupName, String virtualHubName,
         String connectionName, BgpConnectionInner parameters) {
@@ -490,54 +393,21 @@ public final class VirtualHubBgpConnectionsClientImpl implements VirtualHubBgpCo
             .flatMap(this.client::getLroFinalResultOrError);
     }
 
-    /**
-     * Creates a VirtualHubBgpConnection resource if it doesn't exist else updates the existing VirtualHubBgpConnection.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param virtualHubName The name of the VirtualHub.
-     * @param connectionName The name of the connection.
-     * @param parameters Parameters of Bgp connection.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return virtual Appliance Site resource.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public BgpConnectionInner createOrUpdate(String resourceGroupName, String virtualHubName, String connectionName,
         BgpConnectionInner parameters) {
         return createOrUpdateAsync(resourceGroupName, virtualHubName, connectionName, parameters).block();
     }
 
-    /**
-     * Creates a VirtualHubBgpConnection resource if it doesn't exist else updates the existing VirtualHubBgpConnection.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param virtualHubName The name of the VirtualHub.
-     * @param connectionName The name of the connection.
-     * @param parameters Parameters of Bgp connection.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return virtual Appliance Site resource.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public BgpConnectionInner createOrUpdate(String resourceGroupName, String virtualHubName, String connectionName,
         BgpConnectionInner parameters, Context context) {
         return createOrUpdateAsync(resourceGroupName, virtualHubName, connectionName, parameters, context).block();
     }
 
-    /**
-     * Deletes a VirtualHubBgpConnection.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param virtualHubName The name of the VirtualHub.
-     * @param connectionName The name of the connection.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the {@link Response} on successful completion of {@link Mono}.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Response<Flux<ByteBuffer>>> deleteWithResponseAsync(String resourceGroupName, String virtualHubName,
         String connectionName) {
@@ -605,17 +475,7 @@ public final class VirtualHubBgpConnectionsClientImpl implements VirtualHubBgpCo
             virtualHubName, connectionName, context);
     }
 
-    /**
-     * Deletes a VirtualHubBgpConnection.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param virtualHubName The name of the VirtualHub.
-     * @param connectionName The name of the connection.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the {@link PollerFlux} for polling of long-running operation.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public PollerFlux<PollResult<Void>, Void> beginDeleteAsync(String resourceGroupName, String virtualHubName,
         String connectionName) {
@@ -647,52 +507,21 @@ public final class VirtualHubBgpConnectionsClientImpl implements VirtualHubBgpCo
             context);
     }
 
-    /**
-     * Deletes a VirtualHubBgpConnection.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param virtualHubName The name of the VirtualHub.
-     * @param connectionName The name of the connection.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the {@link SyncPoller} for polling of long-running operation.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public SyncPoller<PollResult<Void>, Void> beginDelete(String resourceGroupName, String virtualHubName,
         String connectionName) {
         return this.beginDeleteAsync(resourceGroupName, virtualHubName, connectionName).getSyncPoller();
     }
 
-    /**
-     * Deletes a VirtualHubBgpConnection.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param virtualHubName The name of the VirtualHub.
-     * @param connectionName The name of the connection.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the {@link SyncPoller} for polling of long-running operation.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public SyncPoller<PollResult<Void>, Void> beginDelete(String resourceGroupName, String virtualHubName,
         String connectionName, Context context) {
         return this.beginDeleteAsync(resourceGroupName, virtualHubName, connectionName, context).getSyncPoller();
     }
 
-    /**
-     * Deletes a VirtualHubBgpConnection.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param virtualHubName The name of the VirtualHub.
-     * @param connectionName The name of the connection.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return A {@link Mono} that completes when a successful response is received.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Void> deleteAsync(String resourceGroupName, String virtualHubName, String connectionName) {
         return beginDeleteAsync(resourceGroupName, virtualHubName, connectionName).last()
@@ -718,32 +547,13 @@ public final class VirtualHubBgpConnectionsClientImpl implements VirtualHubBgpCo
             .flatMap(this.client::getLroFinalResultOrError);
     }
 
-    /**
-     * Deletes a VirtualHubBgpConnection.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param virtualHubName The name of the VirtualHub.
-     * @param connectionName The name of the connection.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public void delete(String resourceGroupName, String virtualHubName, String connectionName) {
         deleteAsync(resourceGroupName, virtualHubName, connectionName).block();
     }
 
-    /**
-     * Deletes a VirtualHubBgpConnection.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param virtualHubName The name of the VirtualHub.
-     * @param connectionName The name of the connection.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public void delete(String resourceGroupName, String virtualHubName, String connectionName, Context context) {
         deleteAsync(resourceGroupName, virtualHubName, connectionName, context).block();
@@ -826,16 +636,7 @@ public final class VirtualHubBgpConnectionsClientImpl implements VirtualHubBgpCo
                 res.getValue().value(), res.getValue().nextLink(), null));
     }
 
-    /**
-     * Retrieves the details of all VirtualHubBgpConnections.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param virtualHubName The name of the VirtualHub.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return virtualHubBgpConnections list as paginated response with {@link PagedFlux}.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.COLLECTION)
     public PagedFlux<BgpConnectionInner> listAsync(String resourceGroupName, String virtualHubName) {
         return new PagedFlux<>(() -> listSinglePageAsync(resourceGroupName, virtualHubName),
@@ -859,48 +660,19 @@ public final class VirtualHubBgpConnectionsClientImpl implements VirtualHubBgpCo
             nextLink -> listNextSinglePageAsync(nextLink, context));
     }
 
-    /**
-     * Retrieves the details of all VirtualHubBgpConnections.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param virtualHubName The name of the VirtualHub.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return virtualHubBgpConnections list as paginated response with {@link PagedIterable}.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.COLLECTION)
     public PagedIterable<BgpConnectionInner> list(String resourceGroupName, String virtualHubName) {
         return new PagedIterable<>(listAsync(resourceGroupName, virtualHubName));
     }
 
-    /**
-     * Retrieves the details of all VirtualHubBgpConnections.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param virtualHubName The name of the VirtualHub.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return virtualHubBgpConnections list as paginated response with {@link PagedIterable}.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.COLLECTION)
     public PagedIterable<BgpConnectionInner> list(String resourceGroupName, String virtualHubName, Context context) {
         return new PagedIterable<>(listAsync(resourceGroupName, virtualHubName, context));
     }
 
-    /**
-     * Retrieves a list of routes the virtual hub bgp connection has learned.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param hubName The name of the virtual hub.
-     * @param connectionName The name of the bgp connection.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the response body along with {@link Response} on successful completion of {@link Mono}.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Response<Flux<ByteBuffer>>> listLearnedRoutesWithResponseAsync(String resourceGroupName, String hubName,
         String connectionName) {
@@ -970,17 +742,7 @@ public final class VirtualHubBgpConnectionsClientImpl implements VirtualHubBgpCo
             resourceGroupName, hubName, connectionName, accept, context);
     }
 
-    /**
-     * Retrieves a list of routes the virtual hub bgp connection has learned.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param hubName The name of the virtual hub.
-     * @param connectionName The name of the bgp connection.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the {@link PollerFlux} for polling of long-running operation.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public PollerFlux<PollResult<Map<String, List<PeerRoute>>>, Map<String, List<PeerRoute>>>
         beginListLearnedRoutesAsync(String resourceGroupName, String hubName, String connectionName) {
@@ -1016,52 +778,21 @@ public final class VirtualHubBgpConnectionsClientImpl implements VirtualHubBgpCo
             }.getJavaType(), context);
     }
 
-    /**
-     * Retrieves a list of routes the virtual hub bgp connection has learned.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param hubName The name of the virtual hub.
-     * @param connectionName The name of the bgp connection.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the {@link SyncPoller} for polling of long-running operation.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public SyncPoller<PollResult<Map<String, List<PeerRoute>>>, Map<String, List<PeerRoute>>>
         beginListLearnedRoutes(String resourceGroupName, String hubName, String connectionName) {
         return this.beginListLearnedRoutesAsync(resourceGroupName, hubName, connectionName).getSyncPoller();
     }
 
-    /**
-     * Retrieves a list of routes the virtual hub bgp connection has learned.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param hubName The name of the virtual hub.
-     * @param connectionName The name of the bgp connection.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the {@link SyncPoller} for polling of long-running operation.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public SyncPoller<PollResult<Map<String, List<PeerRoute>>>, Map<String, List<PeerRoute>>>
         beginListLearnedRoutes(String resourceGroupName, String hubName, String connectionName, Context context) {
         return this.beginListLearnedRoutesAsync(resourceGroupName, hubName, connectionName, context).getSyncPoller();
     }
 
-    /**
-     * Retrieves a list of routes the virtual hub bgp connection has learned.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param hubName The name of the virtual hub.
-     * @param connectionName The name of the bgp connection.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the response body on successful completion of {@link Mono}.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Map<String, List<PeerRoute>>> listLearnedRoutesAsync(String resourceGroupName, String hubName,
         String connectionName) {
@@ -1088,52 +819,21 @@ public final class VirtualHubBgpConnectionsClientImpl implements VirtualHubBgpCo
             .flatMap(this.client::getLroFinalResultOrError);
     }
 
-    /**
-     * Retrieves a list of routes the virtual hub bgp connection has learned.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param hubName The name of the virtual hub.
-     * @param connectionName The name of the bgp connection.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the response.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Map<String, List<PeerRoute>> listLearnedRoutes(String resourceGroupName, String hubName,
         String connectionName) {
         return listLearnedRoutesAsync(resourceGroupName, hubName, connectionName).block();
     }
 
-    /**
-     * Retrieves a list of routes the virtual hub bgp connection has learned.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param hubName The name of the virtual hub.
-     * @param connectionName The name of the bgp connection.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the response.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Map<String, List<PeerRoute>> listLearnedRoutes(String resourceGroupName, String hubName,
         String connectionName, Context context) {
         return listLearnedRoutesAsync(resourceGroupName, hubName, connectionName, context).block();
     }
 
-    /**
-     * Retrieves a list of routes the virtual hub bgp connection is advertising to the specified peer.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param hubName The name of the virtual hub.
-     * @param connectionName The name of the bgp connection.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the response body along with {@link Response} on successful completion of {@link Mono}.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Response<Flux<ByteBuffer>>> listAdvertisedRoutesWithResponseAsync(String resourceGroupName,
         String hubName, String connectionName) {
@@ -1203,17 +903,7 @@ public final class VirtualHubBgpConnectionsClientImpl implements VirtualHubBgpCo
             resourceGroupName, hubName, connectionName, accept, context);
     }
 
-    /**
-     * Retrieves a list of routes the virtual hub bgp connection is advertising to the specified peer.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param hubName The name of the virtual hub.
-     * @param connectionName The name of the bgp connection.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the {@link PollerFlux} for polling of long-running operation.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public PollerFlux<PollResult<Map<String, List<PeerRoute>>>, Map<String, List<PeerRoute>>>
         beginListAdvertisedRoutesAsync(String resourceGroupName, String hubName, String connectionName) {
@@ -1250,52 +940,21 @@ public final class VirtualHubBgpConnectionsClientImpl implements VirtualHubBgpCo
             }.getJavaType(), context);
     }
 
-    /**
-     * Retrieves a list of routes the virtual hub bgp connection is advertising to the specified peer.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param hubName The name of the virtual hub.
-     * @param connectionName The name of the bgp connection.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the {@link SyncPoller} for polling of long-running operation.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public SyncPoller<PollResult<Map<String, List<PeerRoute>>>, Map<String, List<PeerRoute>>>
         beginListAdvertisedRoutes(String resourceGroupName, String hubName, String connectionName) {
         return this.beginListAdvertisedRoutesAsync(resourceGroupName, hubName, connectionName).getSyncPoller();
     }
 
-    /**
-     * Retrieves a list of routes the virtual hub bgp connection is advertising to the specified peer.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param hubName The name of the virtual hub.
-     * @param connectionName The name of the bgp connection.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the {@link SyncPoller} for polling of long-running operation.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public SyncPoller<PollResult<Map<String, List<PeerRoute>>>, Map<String, List<PeerRoute>>>
         beginListAdvertisedRoutes(String resourceGroupName, String hubName, String connectionName, Context context) {
         return this.beginListAdvertisedRoutesAsync(resourceGroupName, hubName, connectionName, context).getSyncPoller();
     }
 
-    /**
-     * Retrieves a list of routes the virtual hub bgp connection is advertising to the specified peer.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param hubName The name of the virtual hub.
-     * @param connectionName The name of the bgp connection.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the response body on successful completion of {@link Mono}.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Map<String, List<PeerRoute>>> listAdvertisedRoutesAsync(String resourceGroupName, String hubName,
         String connectionName) {
@@ -1322,35 +981,14 @@ public final class VirtualHubBgpConnectionsClientImpl implements VirtualHubBgpCo
             .flatMap(this.client::getLroFinalResultOrError);
     }
 
-    /**
-     * Retrieves a list of routes the virtual hub bgp connection is advertising to the specified peer.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param hubName The name of the virtual hub.
-     * @param connectionName The name of the bgp connection.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the response.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Map<String, List<PeerRoute>> listAdvertisedRoutes(String resourceGroupName, String hubName,
         String connectionName) {
         return listAdvertisedRoutesAsync(resourceGroupName, hubName, connectionName).block();
     }
 
-    /**
-     * Retrieves a list of routes the virtual hub bgp connection is advertising to the specified peer.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param hubName The name of the virtual hub.
-     * @param connectionName The name of the bgp connection.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the response.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Map<String, List<PeerRoute>> listAdvertisedRoutes(String resourceGroupName, String hubName,
         String connectionName, Context context) {

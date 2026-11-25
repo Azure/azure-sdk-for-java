@@ -83,10 +83,7 @@ public final class VirtualEndpointImpl implements VirtualEndpoint, VirtualEndpoi
     }
 
     public VirtualEndpoint create() {
-        this.innerObject = serviceManager.serviceClient()
-            .getVirtualEndpoints()
-            .create(resourceGroupName, serverName, virtualEndpointName, this.innerModel(), Context.NONE);
-        return this;
+        return this.create(Context.NONE);
     }
 
     public VirtualEndpoint create(Context context) {
@@ -109,10 +106,7 @@ public final class VirtualEndpointImpl implements VirtualEndpoint, VirtualEndpoi
     }
 
     public VirtualEndpoint apply() {
-        this.innerObject = serviceManager.serviceClient()
-            .getVirtualEndpoints()
-            .update(resourceGroupName, serverName, virtualEndpointName, updateParameters, Context.NONE);
-        return this;
+        return this.apply(Context.NONE);
     }
 
     public VirtualEndpoint apply(Context context) {
@@ -138,11 +132,7 @@ public final class VirtualEndpointImpl implements VirtualEndpoint, VirtualEndpoi
     }
 
     public VirtualEndpoint refresh() {
-        this.innerObject = serviceManager.serviceClient()
-            .getVirtualEndpoints()
-            .getWithResponse(resourceGroupName, serverName, virtualEndpointName, Context.NONE)
-            .getValue();
-        return this;
+        return this.refresh(Context.NONE);
     }
 
     public VirtualEndpoint refresh(Context context) {

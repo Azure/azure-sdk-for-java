@@ -25,7 +25,7 @@ public final class BackupsUnderVolumesImpl implements BackupsUnderVolumes {
 
     public void migrateBackups(String resourceGroupName, String accountName, String poolName, String volumeName,
         BackupsMigrationRequest body) {
-        this.serviceClient().migrateBackups(resourceGroupName, accountName, poolName, volumeName, body);
+        this.migrateBackups(resourceGroupName, accountName, poolName, volumeName, body, Context.NONE);
     }
 
     public void migrateBackups(String resourceGroupName, String accountName, String poolName, String volumeName,

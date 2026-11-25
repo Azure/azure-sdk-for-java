@@ -147,17 +147,7 @@ public final class DatabaseEditionsClientImpl implements DatabaseEditionsClient 
         return getWithResponseAsync(location, databaseeditionname).flatMap(res -> Mono.justOrEmpty(res.getValue()));
     }
 
-    /**
-     * Get a DatabaseEdition.
-     * 
-     * @param location The name of the Azure region.
-     * @param databaseeditionname DatabaseEdition name.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return a DatabaseEdition along with {@link Response}.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Response<DatabaseEditionInner> getWithResponse(String location, String databaseeditionname,
         Context context) {
@@ -166,16 +156,7 @@ public final class DatabaseEditionsClientImpl implements DatabaseEditionsClient 
             location, databaseeditionname, accept, context);
     }
 
-    /**
-     * Get a DatabaseEdition.
-     * 
-     * @param location The name of the Azure region.
-     * @param databaseeditionname DatabaseEdition name.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return a DatabaseEdition.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public DatabaseEditionInner get(String location, String databaseeditionname) {
         return getWithResponse(location, databaseeditionname, Context.NONE).getValue();
@@ -228,11 +209,7 @@ public final class DatabaseEditionsClientImpl implements DatabaseEditionsClient 
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private PagedResponse<DatabaseEditionInner> listByLocationSinglePage(String location) {
-        final String accept = "application/json";
-        Response<DatabaseEditionListResult> res = service.listByLocationSync(this.client.getEndpoint(),
-            this.client.getApiVersion(), this.client.getSubscriptionId(), location, accept, Context.NONE);
-        return new PagedResponseBase<>(res.getRequest(), res.getStatusCode(), res.getHeaders(), res.getValue().value(),
-            res.getValue().nextLink(), null);
+        return listByLocationSinglePage(location, Context.NONE);
     }
 
     /**
@@ -254,31 +231,13 @@ public final class DatabaseEditionsClientImpl implements DatabaseEditionsClient 
             res.getValue().nextLink(), null);
     }
 
-    /**
-     * List DatabaseEdition resources by SubscriptionLocationResource.
-     * 
-     * @param location The name of the Azure region.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the response of a DatabaseEdition list operation as paginated response with {@link PagedIterable}.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.COLLECTION)
     public PagedIterable<DatabaseEditionInner> listByLocation(String location) {
-        return new PagedIterable<>(() -> listByLocationSinglePage(location),
-            nextLink -> listByLocationNextSinglePage(nextLink));
+        return listByLocation(location, Context.NONE);
     }
 
-    /**
-     * List DatabaseEdition resources by SubscriptionLocationResource.
-     * 
-     * @param location The name of the Azure region.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the response of a DatabaseEdition list operation as paginated response with {@link PagedIterable}.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.COLLECTION)
     public PagedIterable<DatabaseEditionInner> listByLocation(String location, Context context) {
         return new PagedIterable<>(() -> listByLocationSinglePage(location, context),
@@ -316,11 +275,7 @@ public final class DatabaseEditionsClientImpl implements DatabaseEditionsClient 
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private PagedResponse<DatabaseEditionInner> listByLocationNextSinglePage(String nextLink) {
-        final String accept = "application/json";
-        Response<DatabaseEditionListResult> res
-            = service.listByLocationNextSync(nextLink, this.client.getEndpoint(), accept, Context.NONE);
-        return new PagedResponseBase<>(res.getRequest(), res.getStatusCode(), res.getHeaders(), res.getValue().value(),
-            res.getValue().nextLink(), null);
+        return listByLocationNextSinglePage(nextLink, Context.NONE);
     }
 
     /**

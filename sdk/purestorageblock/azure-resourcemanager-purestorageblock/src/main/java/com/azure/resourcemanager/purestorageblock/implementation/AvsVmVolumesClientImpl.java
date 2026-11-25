@@ -213,11 +213,7 @@ public final class AvsVmVolumesClientImpl implements AvsVmVolumesClient {
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Response<BinaryData> updateWithResponse(String resourceGroupName, String storagePoolName, String avsVmId,
         String volumeId, AvsVmVolumeUpdate properties) {
-        final String contentType = "application/json";
-        final String accept = "application/json";
-        return service.updateSync(this.client.getEndpoint(), this.client.getApiVersion(),
-            this.client.getSubscriptionId(), resourceGroupName, storagePoolName, avsVmId, volumeId, contentType, accept,
-            properties, Context.NONE);
+        return updateWithResponse(resourceGroupName, storagePoolName, avsVmId, volumeId, properties, Context.NONE);
     }
 
     /**
@@ -266,42 +262,14 @@ public final class AvsVmVolumesClientImpl implements AvsVmVolumesClient {
             AvsVmVolumeInner.class, AvsVmVolumeInner.class, this.client.getContext());
     }
 
-    /**
-     * Update a volume in an AVS VM.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param storagePoolName Name of the storage pool.
-     * @param avsVmId ID of the AVS VM.
-     * @param volumeId ID of the volume in the AVS VM.
-     * @param properties The resource properties to be updated.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the {@link SyncPoller} for polling of any volume associated to a particular AVS VM.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public SyncPoller<PollResult<AvsVmVolumeInner>, AvsVmVolumeInner> beginUpdate(String resourceGroupName,
         String storagePoolName, String avsVmId, String volumeId, AvsVmVolumeUpdate properties) {
-        Response<BinaryData> response
-            = updateWithResponse(resourceGroupName, storagePoolName, avsVmId, volumeId, properties);
-        return this.client.<AvsVmVolumeInner, AvsVmVolumeInner>getLroResult(response, AvsVmVolumeInner.class,
-            AvsVmVolumeInner.class, Context.NONE);
+        return beginUpdate(resourceGroupName, storagePoolName, avsVmId, volumeId, properties, Context.NONE);
     }
 
-    /**
-     * Update a volume in an AVS VM.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param storagePoolName Name of the storage pool.
-     * @param avsVmId ID of the AVS VM.
-     * @param volumeId ID of the volume in the AVS VM.
-     * @param properties The resource properties to be updated.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the {@link SyncPoller} for polling of any volume associated to a particular AVS VM.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public SyncPoller<PollResult<AvsVmVolumeInner>, AvsVmVolumeInner> beginUpdate(String resourceGroupName,
         String storagePoolName, String avsVmId, String volumeId, AvsVmVolumeUpdate properties, Context context) {
@@ -331,43 +299,19 @@ public final class AvsVmVolumesClientImpl implements AvsVmVolumesClient {
             .flatMap(this.client::getLroFinalResultOrError);
     }
 
-    /**
-     * Update a volume in an AVS VM.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param storagePoolName Name of the storage pool.
-     * @param avsVmId ID of the AVS VM.
-     * @param volumeId ID of the volume in the AVS VM.
-     * @param properties The resource properties to be updated.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return any volume associated to a particular AVS VM.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public AvsVmVolumeInner update(String resourceGroupName, String storagePoolName, String avsVmId, String volumeId,
         AvsVmVolumeUpdate properties) {
-        return beginUpdate(resourceGroupName, storagePoolName, avsVmId, volumeId, properties).getFinalResult();
+        return update(resourceGroupName, storagePoolName, avsVmId, volumeId, properties, Context.NONE);
     }
 
-    /**
-     * Update a volume in an AVS VM.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param storagePoolName Name of the storage pool.
-     * @param avsVmId ID of the AVS VM.
-     * @param volumeId ID of the volume in the AVS VM.
-     * @param properties The resource properties to be updated.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return any volume associated to a particular AVS VM.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public AvsVmVolumeInner update(String resourceGroupName, String storagePoolName, String avsVmId, String volumeId,
         AvsVmVolumeUpdate properties, Context context) {
-        return beginUpdate(resourceGroupName, storagePoolName, avsVmId, volumeId, properties, context).getFinalResult();
+        return this.client.getLroFinalResultOrError(
+            beginUpdate(resourceGroupName, storagePoolName, avsVmId, volumeId, properties, context));
     }
 
     /**
@@ -410,19 +354,7 @@ public final class AvsVmVolumesClientImpl implements AvsVmVolumesClient {
             .flatMap(res -> Mono.justOrEmpty(res.getValue()));
     }
 
-    /**
-     * Get a volume in an AVS VM.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param storagePoolName Name of the storage pool.
-     * @param avsVmId ID of the AVS VM.
-     * @param volumeId ID of the volume in the AVS VM.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return a volume in an AVS VM along with {@link Response}.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Response<AvsVmVolumeInner> getWithResponse(String resourceGroupName, String storagePoolName, String avsVmId,
         String volumeId, Context context) {
@@ -431,18 +363,7 @@ public final class AvsVmVolumesClientImpl implements AvsVmVolumesClient {
             resourceGroupName, storagePoolName, avsVmId, volumeId, accept, context);
     }
 
-    /**
-     * Get a volume in an AVS VM.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param storagePoolName Name of the storage pool.
-     * @param avsVmId ID of the AVS VM.
-     * @param volumeId ID of the volume in the AVS VM.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return a volume in an AVS VM.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public AvsVmVolumeInner get(String resourceGroupName, String storagePoolName, String avsVmId, String volumeId) {
         return getWithResponse(resourceGroupName, storagePoolName, avsVmId, volumeId, Context.NONE).getValue();
@@ -484,8 +405,7 @@ public final class AvsVmVolumesClientImpl implements AvsVmVolumesClient {
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Response<BinaryData> deleteWithResponse(String resourceGroupName, String storagePoolName, String avsVmId,
         String volumeId) {
-        return service.deleteSync(this.client.getEndpoint(), this.client.getApiVersion(),
-            this.client.getSubscriptionId(), resourceGroupName, storagePoolName, avsVmId, volumeId, Context.NONE);
+        return deleteWithResponse(resourceGroupName, storagePoolName, avsVmId, volumeId, Context.NONE);
     }
 
     /**
@@ -529,38 +449,14 @@ public final class AvsVmVolumesClientImpl implements AvsVmVolumesClient {
             this.client.getContext());
     }
 
-    /**
-     * Delete a volume in an AVS VM.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param storagePoolName Name of the storage pool.
-     * @param avsVmId ID of the AVS VM.
-     * @param volumeId ID of the volume in the AVS VM.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the {@link SyncPoller} for polling of long-running operation.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public SyncPoller<PollResult<Void>, Void> beginDelete(String resourceGroupName, String storagePoolName,
         String avsVmId, String volumeId) {
-        Response<BinaryData> response = deleteWithResponse(resourceGroupName, storagePoolName, avsVmId, volumeId);
-        return this.client.<Void, Void>getLroResult(response, Void.class, Void.class, Context.NONE);
+        return beginDelete(resourceGroupName, storagePoolName, avsVmId, volumeId, Context.NONE);
     }
 
-    /**
-     * Delete a volume in an AVS VM.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param storagePoolName Name of the storage pool.
-     * @param avsVmId ID of the AVS VM.
-     * @param volumeId ID of the volume in the AVS VM.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the {@link SyncPoller} for polling of long-running operation.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public SyncPoller<PollResult<Void>, Void> beginDelete(String resourceGroupName, String storagePoolName,
         String avsVmId, String volumeId, Context context) {
@@ -587,38 +483,18 @@ public final class AvsVmVolumesClientImpl implements AvsVmVolumesClient {
             .flatMap(this.client::getLroFinalResultOrError);
     }
 
-    /**
-     * Delete a volume in an AVS VM.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param storagePoolName Name of the storage pool.
-     * @param avsVmId ID of the AVS VM.
-     * @param volumeId ID of the volume in the AVS VM.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public void delete(String resourceGroupName, String storagePoolName, String avsVmId, String volumeId) {
-        beginDelete(resourceGroupName, storagePoolName, avsVmId, volumeId).getFinalResult();
+        delete(resourceGroupName, storagePoolName, avsVmId, volumeId, Context.NONE);
     }
 
-    /**
-     * Delete a volume in an AVS VM.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param storagePoolName Name of the storage pool.
-     * @param avsVmId ID of the AVS VM.
-     * @param volumeId ID of the volume in the AVS VM.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public void delete(String resourceGroupName, String storagePoolName, String avsVmId, String volumeId,
         Context context) {
-        beginDelete(resourceGroupName, storagePoolName, avsVmId, volumeId, context).getFinalResult();
+        this.client
+            .getLroFinalResultOrError(beginDelete(resourceGroupName, storagePoolName, avsVmId, volumeId, context));
     }
 
     /**
@@ -677,12 +553,7 @@ public final class AvsVmVolumesClientImpl implements AvsVmVolumesClient {
     @ServiceMethod(returns = ReturnType.SINGLE)
     private PagedResponse<AvsVmVolumeInner> listByAvsVmSinglePage(String resourceGroupName, String storagePoolName,
         String avsVmId) {
-        final String accept = "application/json";
-        Response<AvsVmVolumeListResult> res
-            = service.listByAvsVmSync(this.client.getEndpoint(), this.client.getApiVersion(),
-                this.client.getSubscriptionId(), resourceGroupName, storagePoolName, avsVmId, accept, Context.NONE);
-        return new PagedResponseBase<>(res.getRequest(), res.getStatusCode(), res.getHeaders(), res.getValue().value(),
-            res.getValue().nextLink(), null);
+        return listByAvsVmSinglePage(resourceGroupName, storagePoolName, avsVmId, Context.NONE);
     }
 
     /**
@@ -708,36 +579,14 @@ public final class AvsVmVolumesClientImpl implements AvsVmVolumesClient {
             res.getValue().nextLink(), null);
     }
 
-    /**
-     * List volumes in an AVS VM.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param storagePoolName Name of the storage pool.
-     * @param avsVmId ID of the AVS VM.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the response of a AvsVmVolume list operation as paginated response with {@link PagedIterable}.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.COLLECTION)
     public PagedIterable<AvsVmVolumeInner> listByAvsVm(String resourceGroupName, String storagePoolName,
         String avsVmId) {
-        return new PagedIterable<>(() -> listByAvsVmSinglePage(resourceGroupName, storagePoolName, avsVmId),
-            nextLink -> listByAvsVmNextSinglePage(nextLink));
+        return listByAvsVm(resourceGroupName, storagePoolName, avsVmId, Context.NONE);
     }
 
-    /**
-     * List volumes in an AVS VM.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param storagePoolName Name of the storage pool.
-     * @param avsVmId ID of the AVS VM.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the response of a AvsVmVolume list operation as paginated response with {@link PagedIterable}.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.COLLECTION)
     public PagedIterable<AvsVmVolumeInner> listByAvsVm(String resourceGroupName, String storagePoolName, String avsVmId,
         Context context) {
@@ -776,11 +625,7 @@ public final class AvsVmVolumesClientImpl implements AvsVmVolumesClient {
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private PagedResponse<AvsVmVolumeInner> listByAvsVmNextSinglePage(String nextLink) {
-        final String accept = "application/json";
-        Response<AvsVmVolumeListResult> res
-            = service.listByAvsVmNextSync(nextLink, this.client.getEndpoint(), accept, Context.NONE);
-        return new PagedResponseBase<>(res.getRequest(), res.getStatusCode(), res.getHeaders(), res.getValue().value(),
-            res.getValue().nextLink(), null);
+        return listByAvsVmNextSinglePage(nextLink, Context.NONE);
     }
 
     /**

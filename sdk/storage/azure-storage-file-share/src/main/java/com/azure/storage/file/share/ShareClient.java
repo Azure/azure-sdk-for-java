@@ -438,6 +438,9 @@ public class ShareClient {
      * <a href="https://docs.microsoft.com/rest/api/storageservices/create-share">Azure Docs</a>.</p>
      *
      * @return {@link ShareInfo} that contains information about the created resource.
+     * @throws ShareStorageException If the share could not be created for any other reason than that it already exists,
+     * for example when a share with the same name is still being deleted (status code 409, error code
+     * ShareBeingDeleted).
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public ShareInfo createIfNotExists() {
@@ -473,6 +476,9 @@ public class ShareClient {
      * @return A reactive {@link Response} signaling completion, whose {@link Response#getValue() value} contains a
      * {@link ShareInfo} containing information about the share. If {@link Response}'s status code is 201, a new
      * share was successfully created. If status code is 409, a share already existed at this location.
+     * @throws ShareStorageException If the share could not be created for any other reason than that it already exists,
+     * for example when a share with the same name is still being deleted (status code 409, error code
+     * ShareBeingDeleted).
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Response<ShareInfo> createIfNotExistsWithResponse(ShareCreateOptions options, Duration timeout,
@@ -480,7 +486,7 @@ public class ShareClient {
         try {
             return createWithResponse(options, timeout, context);
         } catch (ShareStorageException e) {
-            if (e.getStatusCode() == 409 && e.getErrorCode().equals(ShareErrorCode.SHARE_ALREADY_EXISTS)) {
+            if (ModelHelper.isConflictWithErrorCode(e, ShareErrorCode.SHARE_ALREADY_EXISTS)) {
                 HttpResponse res = e.getResponse();
                 return new SimpleResponse<>(res.getRequest(), res.getStatusCode(), res.getHeaders(), null);
             } else {
@@ -1451,6 +1457,9 @@ public class ShareClient {
      *
      * @param directoryName Name of the directory
      * @return The {@link ShareDirectoryClient} used to interact with the directory created.
+     * @throws ShareStorageException If the directory could not be created for any other reason than that it already
+     * exists, for example when a file with the same name already exists at this location (status code 409, error code
+     * ResourceTypeMismatch).
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public ShareDirectoryClient createDirectoryIfNotExists(String directoryName) {
@@ -1495,6 +1504,9 @@ public class ShareClient {
      * @return A {@link Response} whose {@link Response#getValue() value} contains the {@link ShareDirectoryClient}
      * used to interact with the directory created. If {@link Response}'s status code is 201, a new directory was
      * successfully created. If status code is 409, a directory with the same name already existed at this location.
+     * @throws ShareStorageException If the directory could not be created for any other reason than that it already
+     * exists, for example when a file with the same name already exists at this location (status code 409, error code
+     * ResourceTypeMismatch).
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Response<ShareDirectoryClient> createDirectoryIfNotExistsWithResponse(String directoryName,

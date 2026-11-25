@@ -94,10 +94,7 @@ public final class NetworkSecurityGroupImpl
     }
 
     public NetworkSecurityGroup create() {
-        this.innerObject = serviceManager.serviceClient()
-            .getNetworkSecurityGroups()
-            .createOrUpdate(resourceGroupName, networkSecurityGroupName, this.innerModel(), Context.NONE);
-        return this;
+        return this.create(Context.NONE);
     }
 
     public NetworkSecurityGroup create(Context context) {
@@ -120,10 +117,7 @@ public final class NetworkSecurityGroupImpl
     }
 
     public NetworkSecurityGroup apply() {
-        this.innerObject = serviceManager.serviceClient()
-            .getNetworkSecurityGroups()
-            .updateTags(resourceGroupName, networkSecurityGroupName, updateProperties, Context.NONE);
-        return this;
+        return this.apply(Context.NONE);
     }
 
     public NetworkSecurityGroup apply(Context context) {
@@ -146,11 +140,7 @@ public final class NetworkSecurityGroupImpl
     }
 
     public NetworkSecurityGroup refresh() {
-        this.innerObject = serviceManager.serviceClient()
-            .getNetworkSecurityGroups()
-            .getByResourceGroupWithResponse(resourceGroupName, networkSecurityGroupName, Context.NONE)
-            .getValue();
-        return this;
+        return this.refresh(Context.NONE);
     }
 
     public NetworkSecurityGroup refresh(Context context) {

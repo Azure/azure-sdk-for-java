@@ -88,10 +88,7 @@ public final class MemberImpl implements Member, Member.Definition, Member.Updat
     }
 
     public Member create() {
-        this.innerObject = serviceManager.serviceClient()
-            .getMembers()
-            .createOrUpdate(resourceGroupName, agentFabricName, memberName, this.innerModel(), Context.NONE);
-        return this;
+        return this.create(Context.NONE);
     }
 
     public Member create(Context context) {
@@ -113,10 +110,7 @@ public final class MemberImpl implements Member, Member.Definition, Member.Updat
     }
 
     public Member apply() {
-        this.innerObject = serviceManager.serviceClient()
-            .getMembers()
-            .update(resourceGroupName, agentFabricName, memberName, updateProperties, Context.NONE);
-        return this;
+        return this.apply(Context.NONE);
     }
 
     public Member apply(Context context) {
@@ -142,11 +136,7 @@ public final class MemberImpl implements Member, Member.Definition, Member.Updat
     }
 
     public Member refresh() {
-        this.innerObject = serviceManager.serviceClient()
-            .getMembers()
-            .getWithResponse(resourceGroupName, agentFabricName, memberName, Context.NONE)
-            .getValue();
-        return this;
+        return this.refresh(Context.NONE);
     }
 
     public Member refresh(Context context) {

@@ -173,12 +173,8 @@ public final class RecoveryPointsRecommendedForMovesClientImpl implements Recove
     private PagedResponse<RecoveryPointResourceInner> listSinglePage(String vaultName, String resourceGroupName,
         String fabricName, String containerName, String protectedItemName,
         ListRecoveryPointsRecommendedForMoveRequest parameters) {
-        final String accept = "application/json";
-        Response<RecoveryPointResourceList> res = service.listSync(this.client.getEndpoint(),
-            this.client.getApiVersion(), this.client.getSubscriptionId(), resourceGroupName, vaultName, fabricName,
-            containerName, protectedItemName, accept, parameters, Context.NONE);
-        return new PagedResponseBase<>(res.getRequest(), res.getStatusCode(), res.getHeaders(), res.getValue().value(),
-            res.getValue().nextLink(), null);
+        return listSinglePage(vaultName, resourceGroupName, fabricName, containerName, protectedItemName, parameters,
+            Context.NONE);
     }
 
     /**
@@ -208,42 +204,15 @@ public final class RecoveryPointsRecommendedForMovesClientImpl implements Recove
             res.getValue().nextLink(), null);
     }
 
-    /**
-     * Lists the recovery points recommended for move to another tier.
-     * 
-     * @param vaultName The name of the VaultResource.
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param fabricName The name of the BackupFabricResource.
-     * @param containerName Name of the container whose details need to be fetched.
-     * @param protectedItemName Backed up item name whose details are to be fetched.
-     * @param parameters List Recovery points Recommended for Move Request.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return list of RecoveryPoint resources as paginated response with {@link PagedIterable}.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.COLLECTION)
     public PagedIterable<RecoveryPointResourceInner> list(String vaultName, String resourceGroupName, String fabricName,
         String containerName, String protectedItemName, ListRecoveryPointsRecommendedForMoveRequest parameters) {
-        return new PagedIterable<>(() -> listSinglePage(vaultName, resourceGroupName, fabricName, containerName,
-            protectedItemName, parameters), nextLink -> listNextSinglePage(nextLink));
+        return list(vaultName, resourceGroupName, fabricName, containerName, protectedItemName, parameters,
+            Context.NONE);
     }
 
-    /**
-     * Lists the recovery points recommended for move to another tier.
-     * 
-     * @param vaultName The name of the VaultResource.
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param fabricName The name of the BackupFabricResource.
-     * @param containerName Name of the container whose details need to be fetched.
-     * @param protectedItemName Backed up item name whose details are to be fetched.
-     * @param parameters List Recovery points Recommended for Move Request.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return list of RecoveryPoint resources as paginated response with {@link PagedIterable}.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.COLLECTION)
     public PagedIterable<RecoveryPointResourceInner> list(String vaultName, String resourceGroupName, String fabricName,
         String containerName, String protectedItemName, ListRecoveryPointsRecommendedForMoveRequest parameters,
@@ -282,11 +251,7 @@ public final class RecoveryPointsRecommendedForMovesClientImpl implements Recove
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private PagedResponse<RecoveryPointResourceInner> listNextSinglePage(String nextLink) {
-        final String accept = "application/json";
-        Response<RecoveryPointResourceList> res
-            = service.listNextSync(nextLink, this.client.getEndpoint(), accept, Context.NONE);
-        return new PagedResponseBase<>(res.getRequest(), res.getStatusCode(), res.getHeaders(), res.getValue().value(),
-            res.getValue().nextLink(), null);
+        return listNextSinglePage(nextLink, Context.NONE);
     }
 
     /**

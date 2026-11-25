@@ -257,18 +257,7 @@ public final class TablesClientImpl implements TablesClient {
             .flatMap(res -> Mono.justOrEmpty(res.getValue()));
     }
 
-    /**
-     * Gets a Log Analytics workspace table.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param workspaceName The name of the workspace.
-     * @param tableName The name of the table.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return a Log Analytics workspace table along with {@link Response}.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Response<TableInner> getWithResponse(String resourceGroupName, String workspaceName, String tableName,
         Context context) {
@@ -277,17 +266,7 @@ public final class TablesClientImpl implements TablesClient {
             resourceGroupName, workspaceName, tableName, accept, context);
     }
 
-    /**
-     * Gets a Log Analytics workspace table.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param workspaceName The name of the workspace.
-     * @param tableName The name of the table.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return a Log Analytics workspace table.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public TableInner get(String resourceGroupName, String workspaceName, String tableName) {
         return getWithResponse(resourceGroupName, workspaceName, tableName, Context.NONE).getValue();
@@ -332,11 +311,7 @@ public final class TablesClientImpl implements TablesClient {
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Response<BinaryData> createOrUpdateWithResponse(String resourceGroupName, String workspaceName,
         String tableName, TableInner parameters) {
-        final String contentType = "application/json";
-        final String accept = "application/json";
-        return service.createOrUpdateSync(this.client.getEndpoint(), this.client.getApiVersion(),
-            this.client.getSubscriptionId(), resourceGroupName, workspaceName, tableName, contentType, accept,
-            parameters, Context.NONE);
+        return createOrUpdateWithResponse(resourceGroupName, workspaceName, tableName, parameters, Context.NONE);
     }
 
     /**
@@ -383,40 +358,14 @@ public final class TablesClientImpl implements TablesClient {
             TableInner.class, this.client.getContext());
     }
 
-    /**
-     * Update or Create a Log Analytics workspace table.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param workspaceName The name of the workspace.
-     * @param tableName The name of the table.
-     * @param parameters The parameters required to update table properties.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the {@link SyncPoller} for polling of workspace data table definition.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public SyncPoller<PollResult<TableInner>, TableInner> beginCreateOrUpdate(String resourceGroupName,
         String workspaceName, String tableName, TableInner parameters) {
-        Response<BinaryData> response
-            = createOrUpdateWithResponse(resourceGroupName, workspaceName, tableName, parameters);
-        return this.client.<TableInner, TableInner>getLroResult(response, TableInner.class, TableInner.class,
-            Context.NONE);
+        return beginCreateOrUpdate(resourceGroupName, workspaceName, tableName, parameters, Context.NONE);
     }
 
-    /**
-     * Update or Create a Log Analytics workspace table.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param workspaceName The name of the workspace.
-     * @param tableName The name of the table.
-     * @param parameters The parameters required to update table properties.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the {@link SyncPoller} for polling of workspace data table definition.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public SyncPoller<PollResult<TableInner>, TableInner> beginCreateOrUpdate(String resourceGroupName,
         String workspaceName, String tableName, TableInner parameters, Context context) {
@@ -444,41 +393,19 @@ public final class TablesClientImpl implements TablesClient {
             .flatMap(this.client::getLroFinalResultOrError);
     }
 
-    /**
-     * Update or Create a Log Analytics workspace table.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param workspaceName The name of the workspace.
-     * @param tableName The name of the table.
-     * @param parameters The parameters required to update table properties.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return workspace data table definition.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public TableInner createOrUpdate(String resourceGroupName, String workspaceName, String tableName,
         TableInner parameters) {
-        return beginCreateOrUpdate(resourceGroupName, workspaceName, tableName, parameters).getFinalResult();
+        return createOrUpdate(resourceGroupName, workspaceName, tableName, parameters, Context.NONE);
     }
 
-    /**
-     * Update or Create a Log Analytics workspace table.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param workspaceName The name of the workspace.
-     * @param tableName The name of the table.
-     * @param parameters The parameters required to update table properties.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return workspace data table definition.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public TableInner createOrUpdate(String resourceGroupName, String workspaceName, String tableName,
         TableInner parameters, Context context) {
-        return beginCreateOrUpdate(resourceGroupName, workspaceName, tableName, parameters, context).getFinalResult();
+        return this.client.getLroFinalResultOrError(
+            beginCreateOrUpdate(resourceGroupName, workspaceName, tableName, parameters, context));
     }
 
     /**
@@ -520,11 +447,7 @@ public final class TablesClientImpl implements TablesClient {
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Response<BinaryData> updateWithResponse(String resourceGroupName, String workspaceName, String tableName,
         TableInner parameters) {
-        final String contentType = "application/json";
-        final String accept = "application/json";
-        return service.updateSync(this.client.getEndpoint(), this.client.getApiVersion(),
-            this.client.getSubscriptionId(), resourceGroupName, workspaceName, tableName, contentType, accept,
-            parameters, Context.NONE);
+        return updateWithResponse(resourceGroupName, workspaceName, tableName, parameters, Context.NONE);
     }
 
     /**
@@ -571,39 +494,14 @@ public final class TablesClientImpl implements TablesClient {
             TableInner.class, this.client.getContext());
     }
 
-    /**
-     * Update a Log Analytics workspace table.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param workspaceName The name of the workspace.
-     * @param tableName The name of the table.
-     * @param parameters The parameters required to update table properties.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the {@link SyncPoller} for polling of workspace data table definition.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public SyncPoller<PollResult<TableInner>, TableInner> beginUpdate(String resourceGroupName, String workspaceName,
         String tableName, TableInner parameters) {
-        Response<BinaryData> response = updateWithResponse(resourceGroupName, workspaceName, tableName, parameters);
-        return this.client.<TableInner, TableInner>getLroResult(response, TableInner.class, TableInner.class,
-            Context.NONE);
+        return beginUpdate(resourceGroupName, workspaceName, tableName, parameters, Context.NONE);
     }
 
-    /**
-     * Update a Log Analytics workspace table.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param workspaceName The name of the workspace.
-     * @param tableName The name of the table.
-     * @param parameters The parameters required to update table properties.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the {@link SyncPoller} for polling of workspace data table definition.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public SyncPoller<PollResult<TableInner>, TableInner> beginUpdate(String resourceGroupName, String workspaceName,
         String tableName, TableInner parameters, Context context) {
@@ -631,40 +529,18 @@ public final class TablesClientImpl implements TablesClient {
             .flatMap(this.client::getLroFinalResultOrError);
     }
 
-    /**
-     * Update a Log Analytics workspace table.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param workspaceName The name of the workspace.
-     * @param tableName The name of the table.
-     * @param parameters The parameters required to update table properties.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return workspace data table definition.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public TableInner update(String resourceGroupName, String workspaceName, String tableName, TableInner parameters) {
-        return beginUpdate(resourceGroupName, workspaceName, tableName, parameters).getFinalResult();
+        return update(resourceGroupName, workspaceName, tableName, parameters, Context.NONE);
     }
 
-    /**
-     * Update a Log Analytics workspace table.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param workspaceName The name of the workspace.
-     * @param tableName The name of the table.
-     * @param parameters The parameters required to update table properties.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return workspace data table definition.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public TableInner update(String resourceGroupName, String workspaceName, String tableName, TableInner parameters,
         Context context) {
-        return beginUpdate(resourceGroupName, workspaceName, tableName, parameters, context).getFinalResult();
+        return this.client
+            .getLroFinalResultOrError(beginUpdate(resourceGroupName, workspaceName, tableName, parameters, context));
     }
 
     /**
@@ -700,8 +576,7 @@ public final class TablesClientImpl implements TablesClient {
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Response<BinaryData> deleteWithResponse(String resourceGroupName, String workspaceName, String tableName) {
-        return service.deleteSync(this.client.getEndpoint(), this.client.getApiVersion(),
-            this.client.getSubscriptionId(), resourceGroupName, workspaceName, tableName, Context.NONE);
+        return deleteWithResponse(resourceGroupName, workspaceName, tableName, Context.NONE);
     }
 
     /**
@@ -742,36 +617,14 @@ public final class TablesClientImpl implements TablesClient {
             this.client.getContext());
     }
 
-    /**
-     * Delete a Log Analytics workspace table.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param workspaceName The name of the workspace.
-     * @param tableName The name of the table.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the {@link SyncPoller} for polling of long-running operation.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public SyncPoller<PollResult<Void>, Void> beginDelete(String resourceGroupName, String workspaceName,
         String tableName) {
-        Response<BinaryData> response = deleteWithResponse(resourceGroupName, workspaceName, tableName);
-        return this.client.<Void, Void>getLroResult(response, Void.class, Void.class, Context.NONE);
+        return beginDelete(resourceGroupName, workspaceName, tableName, Context.NONE);
     }
 
-    /**
-     * Delete a Log Analytics workspace table.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param workspaceName The name of the workspace.
-     * @param tableName The name of the table.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the {@link SyncPoller} for polling of long-running operation.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public SyncPoller<PollResult<Void>, Void> beginDelete(String resourceGroupName, String workspaceName,
         String tableName, Context context) {
@@ -796,35 +649,16 @@ public final class TablesClientImpl implements TablesClient {
             .flatMap(this.client::getLroFinalResultOrError);
     }
 
-    /**
-     * Delete a Log Analytics workspace table.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param workspaceName The name of the workspace.
-     * @param tableName The name of the table.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public void delete(String resourceGroupName, String workspaceName, String tableName) {
-        beginDelete(resourceGroupName, workspaceName, tableName).getFinalResult();
+        delete(resourceGroupName, workspaceName, tableName, Context.NONE);
     }
 
-    /**
-     * Delete a Log Analytics workspace table.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param workspaceName The name of the workspace.
-     * @param tableName The name of the table.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public void delete(String resourceGroupName, String workspaceName, String tableName, Context context) {
-        beginDelete(resourceGroupName, workspaceName, tableName, context).getFinalResult();
+        this.client.getLroFinalResultOrError(beginDelete(resourceGroupName, workspaceName, tableName, context));
     }
 
     /**
@@ -878,12 +712,7 @@ public final class TablesClientImpl implements TablesClient {
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private PagedResponse<TableInner> listByWorkspaceSinglePage(String resourceGroupName, String workspaceName) {
-        final String accept = "application/json";
-        Response<TablesListResult> res
-            = service.listByWorkspaceSync(this.client.getEndpoint(), this.client.getApiVersion(),
-                this.client.getSubscriptionId(), resourceGroupName, workspaceName, accept, Context.NONE);
-        return new PagedResponseBase<>(res.getRequest(), res.getStatusCode(), res.getHeaders(), res.getValue().value(),
-            res.getValue().nextLink(), null);
+        return listByWorkspaceSinglePage(resourceGroupName, workspaceName, Context.NONE);
     }
 
     /**
@@ -908,35 +737,13 @@ public final class TablesClientImpl implements TablesClient {
             res.getValue().nextLink(), null);
     }
 
-    /**
-     * Gets all the tables for the specified Log Analytics workspace.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param workspaceName The name of the workspace.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return all the tables for the specified Log Analytics workspace as paginated response with
-     * {@link PagedIterable}.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.COLLECTION)
     public PagedIterable<TableInner> listByWorkspace(String resourceGroupName, String workspaceName) {
-        return new PagedIterable<>(() -> listByWorkspaceSinglePage(resourceGroupName, workspaceName),
-            nextLink -> listByWorkspaceNextSinglePage(nextLink));
+        return listByWorkspace(resourceGroupName, workspaceName, Context.NONE);
     }
 
-    /**
-     * Gets all the tables for the specified Log Analytics workspace.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param workspaceName The name of the workspace.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return all the tables for the specified Log Analytics workspace as paginated response with
-     * {@link PagedIterable}.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.COLLECTION)
     public PagedIterable<TableInner> listByWorkspace(String resourceGroupName, String workspaceName, Context context) {
         return new PagedIterable<>(() -> listByWorkspaceSinglePage(resourceGroupName, workspaceName, context),
@@ -981,19 +788,7 @@ public final class TablesClientImpl implements TablesClient {
         return migrateWithResponseAsync(resourceGroupName, workspaceName, tableName).flatMap(ignored -> Mono.empty());
     }
 
-    /**
-     * Migrate a Log Analytics table from support of the Data Collector API and Custom Fields features to support of
-     * Data Collection Rule-based Custom Logs.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param workspaceName The name of the workspace.
-     * @param tableName The name of the table.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the {@link Response}.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Response<Void> migrateWithResponse(String resourceGroupName, String workspaceName, String tableName,
         Context context) {
@@ -1001,17 +796,7 @@ public final class TablesClientImpl implements TablesClient {
             this.client.getSubscriptionId(), resourceGroupName, workspaceName, tableName, context);
     }
 
-    /**
-     * Migrate a Log Analytics table from support of the Data Collector API and Custom Fields features to support of
-     * Data Collection Rule-based Custom Logs.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param workspaceName The name of the workspace.
-     * @param tableName The name of the table.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public void migrate(String resourceGroupName, String workspaceName, String tableName) {
         migrateWithResponse(resourceGroupName, workspaceName, tableName, Context.NONE);
@@ -1054,18 +839,7 @@ public final class TablesClientImpl implements TablesClient {
             .flatMap(ignored -> Mono.empty());
     }
 
-    /**
-     * Cancel a log analytics workspace search results table query run.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param workspaceName The name of the workspace.
-     * @param tableName The name of the table.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the {@link Response}.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Response<Void> cancelSearchWithResponse(String resourceGroupName, String workspaceName, String tableName,
         Context context) {
@@ -1073,16 +847,7 @@ public final class TablesClientImpl implements TablesClient {
             this.client.getSubscriptionId(), resourceGroupName, workspaceName, tableName, context);
     }
 
-    /**
-     * Cancel a log analytics workspace search results table query run.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param workspaceName The name of the workspace.
-     * @param tableName The name of the table.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public void cancelSearch(String resourceGroupName, String workspaceName, String tableName) {
         cancelSearchWithResponse(resourceGroupName, workspaceName, tableName, Context.NONE);
@@ -1119,11 +884,7 @@ public final class TablesClientImpl implements TablesClient {
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private PagedResponse<TableInner> listByWorkspaceNextSinglePage(String nextLink) {
-        final String accept = "application/json";
-        Response<TablesListResult> res
-            = service.listByWorkspaceNextSync(nextLink, this.client.getEndpoint(), accept, Context.NONE);
-        return new PagedResponseBase<>(res.getRequest(), res.getStatusCode(), res.getHeaders(), res.getValue().value(),
-            res.getValue().nextLink(), null);
+        return listByWorkspaceNextSinglePage(nextLink, Context.NONE);
     }
 
     /**

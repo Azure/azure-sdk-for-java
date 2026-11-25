@@ -94,11 +94,7 @@ public final class EnterpriseMccCacheNodeResourceImpl implements EnterpriseMccCa
     }
 
     public EnterpriseMccCacheNodeResource create() {
-        this.innerObject = serviceManager.serviceClient()
-            .getEnterpriseMccCacheNodesOperations()
-            .createOrUpdate(resourceGroupName, customerResourceName, cacheNodeResourceName, this.innerModel(),
-                Context.NONE);
-        return this;
+        return this.create(Context.NONE);
     }
 
     public EnterpriseMccCacheNodeResource create(Context context) {
@@ -121,12 +117,7 @@ public final class EnterpriseMccCacheNodeResourceImpl implements EnterpriseMccCa
     }
 
     public EnterpriseMccCacheNodeResource apply() {
-        this.innerObject = serviceManager.serviceClient()
-            .getEnterpriseMccCacheNodesOperations()
-            .updateWithResponse(resourceGroupName, customerResourceName, cacheNodeResourceName, updateProperties,
-                Context.NONE)
-            .getValue();
-        return this;
+        return this.apply(Context.NONE);
     }
 
     public EnterpriseMccCacheNodeResource apply(Context context) {
@@ -154,11 +145,7 @@ public final class EnterpriseMccCacheNodeResourceImpl implements EnterpriseMccCa
     }
 
     public EnterpriseMccCacheNodeResource refresh() {
-        this.innerObject = serviceManager.serviceClient()
-            .getEnterpriseMccCacheNodesOperations()
-            .getWithResponse(resourceGroupName, customerResourceName, cacheNodeResourceName, Context.NONE)
-            .getValue();
-        return this;
+        return this.refresh(Context.NONE);
     }
 
     public EnterpriseMccCacheNodeResource refresh(Context context) {

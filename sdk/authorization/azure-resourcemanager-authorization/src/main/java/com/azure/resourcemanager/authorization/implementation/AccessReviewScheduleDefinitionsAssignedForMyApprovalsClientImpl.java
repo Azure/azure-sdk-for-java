@@ -137,29 +137,13 @@ public final class AccessReviewScheduleDefinitionsAssignedForMyApprovalsClientIm
                 res.getValue().value(), res.getValue().nextLink(), null));
     }
 
-    /**
-     * Get access review instances assigned for my approval.
-     * 
-     * @param filter The filter to apply on the operation. One custom filter option is supported :
-     * 'assignedToMeToReview()'. When specified $filter=assignedToMeToReview(), only items that are assigned to the
-     * calling user to review are returned.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return access review instances assigned for my approval as paginated response with {@link PagedFlux}.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.COLLECTION)
     public PagedFlux<AccessReviewScheduleDefinitionInner> listAsync(String filter) {
         return new PagedFlux<>(() -> listSinglePageAsync(filter), nextLink -> listNextSinglePageAsync(nextLink));
     }
 
-    /**
-     * Get access review instances assigned for my approval.
-     * 
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return access review instances assigned for my approval as paginated response with {@link PagedFlux}.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.COLLECTION)
     public PagedFlux<AccessReviewScheduleDefinitionInner> listAsync() {
         final String filter = null;
@@ -184,31 +168,14 @@ public final class AccessReviewScheduleDefinitionsAssignedForMyApprovalsClientIm
             nextLink -> listNextSinglePageAsync(nextLink, context));
     }
 
-    /**
-     * Get access review instances assigned for my approval.
-     * 
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return access review instances assigned for my approval as paginated response with {@link PagedIterable}.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.COLLECTION)
     public PagedIterable<AccessReviewScheduleDefinitionInner> list() {
         final String filter = null;
         return new PagedIterable<>(listAsync(filter));
     }
 
-    /**
-     * Get access review instances assigned for my approval.
-     * 
-     * @param filter The filter to apply on the operation. One custom filter option is supported :
-     * 'assignedToMeToReview()'. When specified $filter=assignedToMeToReview(), only items that are assigned to the
-     * calling user to review are returned.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return access review instances assigned for my approval as paginated response with {@link PagedIterable}.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.COLLECTION)
     public PagedIterable<AccessReviewScheduleDefinitionInner> list(String filter, Context context) {
         return new PagedIterable<>(listAsync(filter, context));

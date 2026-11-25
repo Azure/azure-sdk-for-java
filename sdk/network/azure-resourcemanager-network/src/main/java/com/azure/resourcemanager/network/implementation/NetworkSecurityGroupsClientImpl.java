@@ -149,18 +149,7 @@ public final class NetworkSecurityGroupsClientImpl implements InnerSupportsGet<N
             @HeaderParam("Accept") String accept, Context context);
     }
 
-    /**
-     * Gets the specified network security group.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param networkSecurityGroupName The name of the network security group.
-     * @param expand Expands referenced resources.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the specified network security group along with {@link Response} on successful completion of
-     * {@link Mono}.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Response<NetworkSecurityGroupInner>> getByResourceGroupWithResponseAsync(String resourceGroupName,
         String networkSecurityGroupName, String expand) {
@@ -227,16 +216,7 @@ public final class NetworkSecurityGroupsClientImpl implements InnerSupportsGet<N
             resourceGroupName, networkSecurityGroupName, expand, accept, context);
     }
 
-    /**
-     * Gets the specified network security group.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param networkSecurityGroupName The name of the network security group.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the specified network security group on successful completion of {@link Mono}.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<NetworkSecurityGroupInner> getByResourceGroupAsync(String resourceGroupName,
         String networkSecurityGroupName) {
@@ -245,18 +225,7 @@ public final class NetworkSecurityGroupsClientImpl implements InnerSupportsGet<N
             .flatMap(res -> Mono.justOrEmpty(res.getValue()));
     }
 
-    /**
-     * Gets the specified network security group.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param networkSecurityGroupName The name of the network security group.
-     * @param expand Expands referenced resources.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the specified network security group along with {@link Response}.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Response<NetworkSecurityGroupInner> getByResourceGroupWithResponse(String resourceGroupName,
         String networkSecurityGroupName, String expand, Context context) {
@@ -264,16 +233,7 @@ public final class NetworkSecurityGroupsClientImpl implements InnerSupportsGet<N
             .block();
     }
 
-    /**
-     * Gets the specified network security group.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param networkSecurityGroupName The name of the network security group.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the specified network security group.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public NetworkSecurityGroupInner getByResourceGroup(String resourceGroupName, String networkSecurityGroupName) {
         final String expand = null;
@@ -281,17 +241,7 @@ public final class NetworkSecurityGroupsClientImpl implements InnerSupportsGet<N
             .getValue();
     }
 
-    /**
-     * Creates or updates a network security group in the specified resource group.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param networkSecurityGroupName The name of the network security group.
-     * @param parameters Parameters supplied to the create or update network security group operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return networkSecurityGroup resource along with {@link Response} on successful completion of {@link Mono}.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Response<Flux<ByteBuffer>>> createOrUpdateWithResponseAsync(String resourceGroupName,
         String networkSecurityGroupName, NetworkSecurityGroupInner parameters) {
@@ -370,17 +320,7 @@ public final class NetworkSecurityGroupsClientImpl implements InnerSupportsGet<N
             resourceGroupName, networkSecurityGroupName, contentType, accept, parameters, context);
     }
 
-    /**
-     * Creates or updates a network security group in the specified resource group.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param networkSecurityGroupName The name of the network security group.
-     * @param parameters Parameters supplied to the create or update network security group operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the {@link PollerFlux} for polling of networkSecurityGroup resource.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public PollerFlux<PollResult<NetworkSecurityGroupInner>, NetworkSecurityGroupInner> beginCreateOrUpdateAsync(
         String resourceGroupName, String networkSecurityGroupName, NetworkSecurityGroupInner parameters) {
@@ -414,35 +354,14 @@ public final class NetworkSecurityGroupsClientImpl implements InnerSupportsGet<N
             this.client.getHttpPipeline(), NetworkSecurityGroupInner.class, NetworkSecurityGroupInner.class, context);
     }
 
-    /**
-     * Creates or updates a network security group in the specified resource group.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param networkSecurityGroupName The name of the network security group.
-     * @param parameters Parameters supplied to the create or update network security group operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the {@link SyncPoller} for polling of networkSecurityGroup resource.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public SyncPoller<PollResult<NetworkSecurityGroupInner>, NetworkSecurityGroupInner> beginCreateOrUpdate(
         String resourceGroupName, String networkSecurityGroupName, NetworkSecurityGroupInner parameters) {
         return this.beginCreateOrUpdateAsync(resourceGroupName, networkSecurityGroupName, parameters).getSyncPoller();
     }
 
-    /**
-     * Creates or updates a network security group in the specified resource group.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param networkSecurityGroupName The name of the network security group.
-     * @param parameters Parameters supplied to the create or update network security group operation.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the {@link SyncPoller} for polling of networkSecurityGroup resource.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public SyncPoller<PollResult<NetworkSecurityGroupInner>, NetworkSecurityGroupInner> beginCreateOrUpdate(
         String resourceGroupName, String networkSecurityGroupName, NetworkSecurityGroupInner parameters,
@@ -451,17 +370,7 @@ public final class NetworkSecurityGroupsClientImpl implements InnerSupportsGet<N
             .getSyncPoller();
     }
 
-    /**
-     * Creates or updates a network security group in the specified resource group.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param networkSecurityGroupName The name of the network security group.
-     * @param parameters Parameters supplied to the create or update network security group operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return networkSecurityGroup resource on successful completion of {@link Mono}.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<NetworkSecurityGroupInner> createOrUpdateAsync(String resourceGroupName,
         String networkSecurityGroupName, NetworkSecurityGroupInner parameters) {
@@ -488,52 +397,21 @@ public final class NetworkSecurityGroupsClientImpl implements InnerSupportsGet<N
             .flatMap(this.client::getLroFinalResultOrError);
     }
 
-    /**
-     * Creates or updates a network security group in the specified resource group.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param networkSecurityGroupName The name of the network security group.
-     * @param parameters Parameters supplied to the create or update network security group operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return networkSecurityGroup resource.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public NetworkSecurityGroupInner createOrUpdate(String resourceGroupName, String networkSecurityGroupName,
         NetworkSecurityGroupInner parameters) {
         return createOrUpdateAsync(resourceGroupName, networkSecurityGroupName, parameters).block();
     }
 
-    /**
-     * Creates or updates a network security group in the specified resource group.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param networkSecurityGroupName The name of the network security group.
-     * @param parameters Parameters supplied to the create or update network security group operation.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return networkSecurityGroup resource.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public NetworkSecurityGroupInner createOrUpdate(String resourceGroupName, String networkSecurityGroupName,
         NetworkSecurityGroupInner parameters, Context context) {
         return createOrUpdateAsync(resourceGroupName, networkSecurityGroupName, parameters, context).block();
     }
 
-    /**
-     * Updates a network security group tags.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param networkSecurityGroupName The name of the network security group.
-     * @param parameters Parameters supplied to update network security group tags.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return networkSecurityGroup resource along with {@link Response} on successful completion of {@link Mono}.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Response<NetworkSecurityGroupInner>> updateTagsWithResponseAsync(String resourceGroupName,
         String networkSecurityGroupName, TagsObject parameters) {
@@ -612,17 +490,7 @@ public final class NetworkSecurityGroupsClientImpl implements InnerSupportsGet<N
             resourceGroupName, networkSecurityGroupName, contentType, accept, parameters, context);
     }
 
-    /**
-     * Updates a network security group tags.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param networkSecurityGroupName The name of the network security group.
-     * @param parameters Parameters supplied to update network security group tags.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return networkSecurityGroup resource on successful completion of {@link Mono}.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<NetworkSecurityGroupInner> updateTagsAsync(String resourceGroupName, String networkSecurityGroupName,
         TagsObject parameters) {
@@ -630,51 +498,21 @@ public final class NetworkSecurityGroupsClientImpl implements InnerSupportsGet<N
             .flatMap(res -> Mono.justOrEmpty(res.getValue()));
     }
 
-    /**
-     * Updates a network security group tags.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param networkSecurityGroupName The name of the network security group.
-     * @param parameters Parameters supplied to update network security group tags.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return networkSecurityGroup resource along with {@link Response}.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Response<NetworkSecurityGroupInner> updateTagsWithResponse(String resourceGroupName,
         String networkSecurityGroupName, TagsObject parameters, Context context) {
         return updateTagsWithResponseAsync(resourceGroupName, networkSecurityGroupName, parameters, context).block();
     }
 
-    /**
-     * Updates a network security group tags.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param networkSecurityGroupName The name of the network security group.
-     * @param parameters Parameters supplied to update network security group tags.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return networkSecurityGroup resource.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public NetworkSecurityGroupInner updateTags(String resourceGroupName, String networkSecurityGroupName,
         TagsObject parameters) {
         return updateTagsWithResponse(resourceGroupName, networkSecurityGroupName, parameters, Context.NONE).getValue();
     }
 
-    /**
-     * Deletes the specified network security group.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param networkSecurityGroupName The name of the network security group.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the {@link Response} on successful completion of {@link Mono}.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Response<Flux<ByteBuffer>>> deleteWithResponseAsync(String resourceGroupName,
         String networkSecurityGroupName) {
@@ -737,16 +575,7 @@ public final class NetworkSecurityGroupsClientImpl implements InnerSupportsGet<N
             networkSecurityGroupName, context);
     }
 
-    /**
-     * Deletes the specified network security group.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param networkSecurityGroupName The name of the network security group.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the {@link PollerFlux} for polling of long-running operation.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public PollerFlux<PollResult<Void>, Void> beginDeleteAsync(String resourceGroupName,
         String networkSecurityGroupName) {
@@ -776,48 +605,20 @@ public final class NetworkSecurityGroupsClientImpl implements InnerSupportsGet<N
             context);
     }
 
-    /**
-     * Deletes the specified network security group.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param networkSecurityGroupName The name of the network security group.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the {@link SyncPoller} for polling of long-running operation.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public SyncPoller<PollResult<Void>, Void> beginDelete(String resourceGroupName, String networkSecurityGroupName) {
         return this.beginDeleteAsync(resourceGroupName, networkSecurityGroupName).getSyncPoller();
     }
 
-    /**
-     * Deletes the specified network security group.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param networkSecurityGroupName The name of the network security group.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the {@link SyncPoller} for polling of long-running operation.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public SyncPoller<PollResult<Void>, Void> beginDelete(String resourceGroupName, String networkSecurityGroupName,
         Context context) {
         return this.beginDeleteAsync(resourceGroupName, networkSecurityGroupName, context).getSyncPoller();
     }
 
-    /**
-     * Deletes the specified network security group.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param networkSecurityGroupName The name of the network security group.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return A {@link Mono} that completes when a successful response is received.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Void> deleteAsync(String resourceGroupName, String networkSecurityGroupName) {
         return beginDeleteAsync(resourceGroupName, networkSecurityGroupName).last()
@@ -841,30 +642,13 @@ public final class NetworkSecurityGroupsClientImpl implements InnerSupportsGet<N
             .flatMap(this.client::getLroFinalResultOrError);
     }
 
-    /**
-     * Deletes the specified network security group.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param networkSecurityGroupName The name of the network security group.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public void delete(String resourceGroupName, String networkSecurityGroupName) {
         deleteAsync(resourceGroupName, networkSecurityGroupName).block();
     }
 
-    /**
-     * Deletes the specified network security group.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param networkSecurityGroupName The name of the network security group.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public void delete(String resourceGroupName, String networkSecurityGroupName, Context context) {
         deleteAsync(resourceGroupName, networkSecurityGroupName, context).block();
@@ -941,15 +725,7 @@ public final class NetworkSecurityGroupsClientImpl implements InnerSupportsGet<N
                 res.getValue().value(), res.getValue().nextLink(), null));
     }
 
-    /**
-     * Gets all network security groups in a resource group.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return all network security groups in a resource group as paginated response with {@link PagedFlux}.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.COLLECTION)
     public PagedFlux<NetworkSecurityGroupInner> listByResourceGroupAsync(String resourceGroupName) {
         return new PagedFlux<>(() -> listByResourceGroupSinglePageAsync(resourceGroupName),
@@ -972,30 +748,13 @@ public final class NetworkSecurityGroupsClientImpl implements InnerSupportsGet<N
             nextLink -> listNextSinglePageAsync(nextLink, context));
     }
 
-    /**
-     * Gets all network security groups in a resource group.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return all network security groups in a resource group as paginated response with {@link PagedIterable}.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.COLLECTION)
     public PagedIterable<NetworkSecurityGroupInner> listByResourceGroup(String resourceGroupName) {
         return new PagedIterable<>(listByResourceGroupAsync(resourceGroupName));
     }
 
-    /**
-     * Gets all network security groups in a resource group.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return all network security groups in a resource group as paginated response with {@link PagedIterable}.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.COLLECTION)
     public PagedIterable<NetworkSecurityGroupInner> listByResourceGroup(String resourceGroupName, Context context) {
         return new PagedIterable<>(listByResourceGroupAsync(resourceGroupName, context));
@@ -1057,13 +816,7 @@ public final class NetworkSecurityGroupsClientImpl implements InnerSupportsGet<N
                 res.getValue().value(), res.getValue().nextLink(), null));
     }
 
-    /**
-     * Gets all network security groups in a subscription.
-     * 
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return all network security groups in a subscription as paginated response with {@link PagedFlux}.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.COLLECTION)
     public PagedFlux<NetworkSecurityGroupInner> listAsync() {
         return new PagedFlux<>(() -> listSinglePageAsync(), nextLink -> listAllNextSinglePageAsync(nextLink));
@@ -1084,27 +837,13 @@ public final class NetworkSecurityGroupsClientImpl implements InnerSupportsGet<N
             nextLink -> listAllNextSinglePageAsync(nextLink, context));
     }
 
-    /**
-     * Gets all network security groups in a subscription.
-     * 
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return all network security groups in a subscription as paginated response with {@link PagedIterable}.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.COLLECTION)
     public PagedIterable<NetworkSecurityGroupInner> list() {
         return new PagedIterable<>(listAsync());
     }
 
-    /**
-     * Gets all network security groups in a subscription.
-     * 
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return all network security groups in a subscription as paginated response with {@link PagedIterable}.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.COLLECTION)
     public PagedIterable<NetworkSecurityGroupInner> list(Context context) {
         return new PagedIterable<>(listAsync(context));

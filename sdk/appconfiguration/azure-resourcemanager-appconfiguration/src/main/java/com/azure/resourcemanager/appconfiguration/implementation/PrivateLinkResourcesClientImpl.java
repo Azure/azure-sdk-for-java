@@ -160,18 +160,7 @@ public final class PrivateLinkResourcesClientImpl implements PrivateLinkResource
             .flatMap(res -> Mono.justOrEmpty(res.getValue()));
     }
 
-    /**
-     * Gets a private link resource that need to be created for a configuration store.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param configStoreName The name of the configuration store.
-     * @param groupName The name of the private link resource group.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return a private link resource that need to be created for a configuration store along with {@link Response}.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Response<PrivateLinkResourceInner> getWithResponse(String resourceGroupName, String configStoreName,
         String groupName, Context context) {
@@ -180,17 +169,7 @@ public final class PrivateLinkResourcesClientImpl implements PrivateLinkResource
             resourceGroupName, configStoreName, groupName, accept, context);
     }
 
-    /**
-     * Gets a private link resource that need to be created for a configuration store.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param configStoreName The name of the configuration store.
-     * @param groupName The name of the private link resource group.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return a private link resource that need to be created for a configuration store.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public PrivateLinkResourceInner get(String resourceGroupName, String configStoreName, String groupName) {
         return getWithResponse(resourceGroupName, configStoreName, groupName, Context.NONE).getValue();
@@ -252,12 +231,7 @@ public final class PrivateLinkResourcesClientImpl implements PrivateLinkResource
     @ServiceMethod(returns = ReturnType.SINGLE)
     private PagedResponse<PrivateLinkResourceInner> listByConfigurationStoreSinglePage(String resourceGroupName,
         String configStoreName) {
-        final String accept = "application/json";
-        Response<PrivateLinkResourceListResult> res
-            = service.listByConfigurationStoreSync(this.client.getEndpoint(), this.client.getApiVersion(),
-                this.client.getSubscriptionId(), resourceGroupName, configStoreName, accept, Context.NONE);
-        return new PagedResponseBase<>(res.getRequest(), res.getStatusCode(), res.getHeaders(), res.getValue().value(),
-            res.getValue().nextLink(), null);
+        return listByConfigurationStoreSinglePage(resourceGroupName, configStoreName, Context.NONE);
     }
 
     /**
@@ -283,36 +257,14 @@ public final class PrivateLinkResourcesClientImpl implements PrivateLinkResource
             res.getValue().nextLink(), null);
     }
 
-    /**
-     * Gets the private link resources that need to be created for a configuration store.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param configStoreName The name of the configuration store.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the private link resources that need to be created for a configuration store as paginated response with
-     * {@link PagedIterable}.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.COLLECTION)
     public PagedIterable<PrivateLinkResourceInner> listByConfigurationStore(String resourceGroupName,
         String configStoreName) {
-        return new PagedIterable<>(() -> listByConfigurationStoreSinglePage(resourceGroupName, configStoreName),
-            nextLink -> listByConfigurationStoreNextSinglePage(nextLink));
+        return listByConfigurationStore(resourceGroupName, configStoreName, Context.NONE);
     }
 
-    /**
-     * Gets the private link resources that need to be created for a configuration store.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param configStoreName The name of the configuration store.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the private link resources that need to be created for a configuration store as paginated response with
-     * {@link PagedIterable}.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.COLLECTION)
     public PagedIterable<PrivateLinkResourceInner> listByConfigurationStore(String resourceGroupName,
         String configStoreName, Context context) {
@@ -354,11 +306,7 @@ public final class PrivateLinkResourcesClientImpl implements PrivateLinkResource
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private PagedResponse<PrivateLinkResourceInner> listByConfigurationStoreNextSinglePage(String nextLink) {
-        final String accept = "application/json";
-        Response<PrivateLinkResourceListResult> res
-            = service.listByConfigurationStoreNextSync(nextLink, this.client.getEndpoint(), accept, Context.NONE);
-        return new PagedResponseBase<>(res.getRequest(), res.getStatusCode(), res.getHeaders(), res.getValue().value(),
-            res.getValue().nextLink(), null);
+        return listByConfigurationStoreNextSinglePage(nextLink, Context.NONE);
     }
 
     /**

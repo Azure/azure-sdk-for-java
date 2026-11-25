@@ -182,18 +182,7 @@ public final class SentinelOnboardingStatesClientImpl implements SentinelOnboard
             .flatMap(res -> Mono.justOrEmpty(res.getValue()));
     }
 
-    /**
-     * Get Sentinel onboarding state.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param workspaceName The name of the monitor workspace.
-     * @param sentinelOnboardingStateName The Sentinel onboarding state name. Supports - default.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return sentinel onboarding state along with {@link Response}.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Response<SentinelOnboardingStateInner> getWithResponse(String resourceGroupName, String workspaceName,
         String sentinelOnboardingStateName, Context context) {
@@ -202,17 +191,7 @@ public final class SentinelOnboardingStatesClientImpl implements SentinelOnboard
             resourceGroupName, workspaceName, sentinelOnboardingStateName, accept, context);
     }
 
-    /**
-     * Get Sentinel onboarding state.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param workspaceName The name of the monitor workspace.
-     * @param sentinelOnboardingStateName The Sentinel onboarding state name. Supports - default.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return sentinel onboarding state.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public SentinelOnboardingStateInner get(String resourceGroupName, String workspaceName,
         String sentinelOnboardingStateName) {
@@ -262,19 +241,7 @@ public final class SentinelOnboardingStatesClientImpl implements SentinelOnboard
             sentinelOnboardingStateParameter).flatMap(res -> Mono.justOrEmpty(res.getValue()));
     }
 
-    /**
-     * Create Sentinel onboarding state.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param workspaceName The name of the workspace.
-     * @param sentinelOnboardingStateName The Sentinel onboarding state name. Supports - default.
-     * @param sentinelOnboardingStateParameter The Sentinel onboarding state parameter.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return sentinel onboarding state along with {@link Response}.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Response<SentinelOnboardingStateInner> createWithResponse(String resourceGroupName, String workspaceName,
         String sentinelOnboardingStateName, SentinelOnboardingStateInner sentinelOnboardingStateParameter,
@@ -285,17 +252,7 @@ public final class SentinelOnboardingStatesClientImpl implements SentinelOnboard
             sentinelOnboardingStateParameter, context);
     }
 
-    /**
-     * Create Sentinel onboarding state.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param workspaceName The name of the workspace.
-     * @param sentinelOnboardingStateName The Sentinel onboarding state name. Supports - default.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return sentinel onboarding state.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public SentinelOnboardingStateInner create(String resourceGroupName, String workspaceName,
         String sentinelOnboardingStateName) {
@@ -340,18 +297,7 @@ public final class SentinelOnboardingStatesClientImpl implements SentinelOnboard
             .flatMap(ignored -> Mono.empty());
     }
 
-    /**
-     * Delete Sentinel onboarding state.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param workspaceName The name of the monitor workspace.
-     * @param sentinelOnboardingStateName The Sentinel onboarding state name. Supports - default.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the {@link Response}.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Response<Void> deleteWithResponse(String resourceGroupName, String workspaceName,
         String sentinelOnboardingStateName, Context context) {
@@ -359,16 +305,7 @@ public final class SentinelOnboardingStatesClientImpl implements SentinelOnboard
             this.client.getSubscriptionId(), resourceGroupName, workspaceName, sentinelOnboardingStateName, context);
     }
 
-    /**
-     * Delete Sentinel onboarding state.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param workspaceName The name of the monitor workspace.
-     * @param sentinelOnboardingStateName The Sentinel onboarding state name. Supports - default.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public void delete(String resourceGroupName, String workspaceName, String sentinelOnboardingStateName) {
         deleteWithResponse(resourceGroupName, workspaceName, sentinelOnboardingStateName, Context.NONE);
@@ -409,17 +346,7 @@ public final class SentinelOnboardingStatesClientImpl implements SentinelOnboard
         return listWithResponseAsync(resourceGroupName, workspaceName).flatMap(res -> Mono.justOrEmpty(res.getValue()));
     }
 
-    /**
-     * Gets all Sentinel onboarding states.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param workspaceName The name of the workspace.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return all Sentinel onboarding states along with {@link Response}.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Response<SentinelOnboardingStatesListInner> listWithResponse(String resourceGroupName, String workspaceName,
         Context context) {
@@ -428,16 +355,7 @@ public final class SentinelOnboardingStatesClientImpl implements SentinelOnboard
             resourceGroupName, workspaceName, accept, context);
     }
 
-    /**
-     * Gets all Sentinel onboarding states.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param workspaceName The name of the workspace.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return all Sentinel onboarding states.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public SentinelOnboardingStatesListInner list(String resourceGroupName, String workspaceName) {
         return listWithResponse(resourceGroupName, workspaceName, Context.NONE).getValue();

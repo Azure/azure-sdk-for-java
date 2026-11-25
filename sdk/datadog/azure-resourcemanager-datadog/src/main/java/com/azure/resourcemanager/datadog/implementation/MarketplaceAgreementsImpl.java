@@ -28,8 +28,7 @@ public final class MarketplaceAgreementsImpl implements MarketplaceAgreements {
     }
 
     public PagedIterable<DatadogAgreementResource> list() {
-        PagedIterable<DatadogAgreementResourceInner> inner = this.serviceClient().list();
-        return ResourceManagerUtils.mapPage(inner, inner1 -> new DatadogAgreementResourceImpl(inner1, this.manager()));
+        return this.list(Context.NONE);
     }
 
     public PagedIterable<DatadogAgreementResource> list(Context context) {

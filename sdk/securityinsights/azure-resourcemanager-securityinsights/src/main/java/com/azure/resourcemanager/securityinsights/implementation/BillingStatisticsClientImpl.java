@@ -153,18 +153,7 @@ public final class BillingStatisticsClientImpl implements BillingStatisticsClien
             .flatMap(res -> Mono.justOrEmpty(res.getValue()));
     }
 
-    /**
-     * Gets a billing statistic.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param workspaceName The name of the workspace.
-     * @param billingStatisticName The name of the billing statistic.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return a billing statistic along with {@link Response}.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Response<BillingStatisticInner> getWithResponse(String resourceGroupName, String workspaceName,
         String billingStatisticName, Context context) {
@@ -173,17 +162,7 @@ public final class BillingStatisticsClientImpl implements BillingStatisticsClien
             resourceGroupName, workspaceName, billingStatisticName, accept, context);
     }
 
-    /**
-     * Gets a billing statistic.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param workspaceName The name of the workspace.
-     * @param billingStatisticName The name of the billing statistic.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return a billing statistic.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public BillingStatisticInner get(String resourceGroupName, String workspaceName, String billingStatisticName) {
         return getWithResponse(resourceGroupName, workspaceName, billingStatisticName, Context.NONE).getValue();
@@ -240,11 +219,7 @@ public final class BillingStatisticsClientImpl implements BillingStatisticsClien
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private PagedResponse<BillingStatisticInner> listSinglePage(String resourceGroupName, String workspaceName) {
-        final String accept = "application/json";
-        Response<BillingStatisticList> res = service.listSync(this.client.getEndpoint(), this.client.getApiVersion(),
-            this.client.getSubscriptionId(), resourceGroupName, workspaceName, accept, Context.NONE);
-        return new PagedResponseBase<>(res.getRequest(), res.getStatusCode(), res.getHeaders(), res.getValue().value(),
-            res.getValue().nextLink(), null);
+        return listSinglePage(resourceGroupName, workspaceName, Context.NONE);
     }
 
     /**
@@ -268,33 +243,13 @@ public final class BillingStatisticsClientImpl implements BillingStatisticsClien
             res.getValue().nextLink(), null);
     }
 
-    /**
-     * Gets all Microsoft Sentinel billing statistics.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param workspaceName The name of the workspace.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return all Microsoft Sentinel billing statistics as paginated response with {@link PagedIterable}.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.COLLECTION)
     public PagedIterable<BillingStatisticInner> list(String resourceGroupName, String workspaceName) {
-        return new PagedIterable<>(() -> listSinglePage(resourceGroupName, workspaceName),
-            nextLink -> listNextSinglePage(nextLink));
+        return list(resourceGroupName, workspaceName, Context.NONE);
     }
 
-    /**
-     * Gets all Microsoft Sentinel billing statistics.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param workspaceName The name of the workspace.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return all Microsoft Sentinel billing statistics as paginated response with {@link PagedIterable}.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.COLLECTION)
     public PagedIterable<BillingStatisticInner> list(String resourceGroupName, String workspaceName, Context context) {
         return new PagedIterable<>(() -> listSinglePage(resourceGroupName, workspaceName, context),
@@ -331,11 +286,7 @@ public final class BillingStatisticsClientImpl implements BillingStatisticsClien
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private PagedResponse<BillingStatisticInner> listNextSinglePage(String nextLink) {
-        final String accept = "application/json";
-        Response<BillingStatisticList> res
-            = service.listNextSync(nextLink, this.client.getEndpoint(), accept, Context.NONE);
-        return new PagedResponseBase<>(res.getRequest(), res.getStatusCode(), res.getHeaders(), res.getValue().value(),
-            res.getValue().nextLink(), null);
+        return listNextSinglePage(nextLink, Context.NONE);
     }
 
     /**

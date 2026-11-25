@@ -45,12 +45,7 @@ public final class DependencyOfRelationshipsByServiceGroupsImpl implements Depen
 
     public DependencyOfRelationship createOrUpdate(String serviceGroupName, String name,
         DependencyOfRelationshipInner resource) {
-        DependencyOfRelationshipInner inner = this.serviceClient().createOrUpdate(serviceGroupName, name, resource);
-        if (inner != null) {
-            return new DependencyOfRelationshipImpl(inner, this.manager());
-        } else {
-            return null;
-        }
+        return this.createOrUpdate(serviceGroupName, name, resource, Context.NONE);
     }
 
     public DependencyOfRelationship createOrUpdate(String serviceGroupName, String name,
@@ -65,7 +60,7 @@ public final class DependencyOfRelationshipsByServiceGroupsImpl implements Depen
     }
 
     public void deleteByResourceGroup(String serviceGroupName, String name) {
-        this.serviceClient().delete(serviceGroupName, name);
+        this.delete(serviceGroupName, name, Context.NONE);
     }
 
     public void delete(String serviceGroupName, String name, Context context) {
@@ -73,8 +68,7 @@ public final class DependencyOfRelationshipsByServiceGroupsImpl implements Depen
     }
 
     public PagedIterable<DependencyOfRelationship> list(String serviceGroupName) {
-        PagedIterable<DependencyOfRelationshipInner> inner = this.serviceClient().list(serviceGroupName);
-        return ResourceManagerUtils.mapPage(inner, inner1 -> new DependencyOfRelationshipImpl(inner1, this.manager()));
+        return this.list(serviceGroupName, Context.NONE);
     }
 
     public PagedIterable<DependencyOfRelationship> list(String serviceGroupName, Context context) {

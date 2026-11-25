@@ -68,6 +68,7 @@ import java.util.concurrent.atomic.AtomicInteger;
 import java.util.stream.Collectors;
 
 import static org.assertj.core.api.AssertionsForClassTypes.assertThat;
+import static org.assertj.core.api.Assertions.assertThatThrownBy;
 import static org.testng.Assert.assertEquals;
 
 @Test
@@ -101,6 +102,20 @@ public class CosmosSourceConnectorTest extends KafkaCosmosTestSuiteBase {
                 assertThat(configs.get(sourceConfigEntry.getName()).defaultValue).isEqualTo(ConfigDef.NO_DEFAULT_VALUE);
             }
         }
+
+    }
+
+    @Test(groups = "unit")
+    public void changeFeedPollDelayConfig() {
+        ConfigDef.ConfigKey pollDelayConfig = new CosmosSourceConnector()
+            .config()
+            .configKeys()
+            .get("azure.cosmos.source.changeFeed.poll.delay.ms");
+
+        assertThat(pollDelayConfig.defaultValue).isEqualTo(0);
+        pollDelayConfig.validator.ensureValid(pollDelayConfig.name, 0);
+        assertThatThrownBy(() -> pollDelayConfig.validator.ensureValid(pollDelayConfig.name, -1))
+            .isInstanceOf(org.apache.kafka.common.config.ConfigException.class);
     }
 
     @Test(groups = { "kafka", "kafka-emulator" }, timeOut = TIMEOUT)
@@ -1066,6 +1081,7 @@ public class CosmosSourceConnectorTest extends KafkaCosmosTestSuiteBase {
                 CosmosChangeFeedMode.LATEST_VERSION.getName(),
                 true),
             new KafkaCosmosConfigEntry<Integer>("azure.cosmos.source.changeFeed.maxItemCountHint", 1000, true),
+            new KafkaCosmosConfigEntry<Integer>("azure.cosmos.source.changeFeed.poll.delay.ms", 0, true),
             new KafkaCosmosConfigEntry<Integer>("azure.cosmos.source.metadata.poll.delay.ms", 5 * 60 * 1000, true),
             new KafkaCosmosConfigEntry<String>(
                 "azure.cosmos.source.metadata.storage.name",

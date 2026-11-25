@@ -143,15 +143,7 @@ public final class UsagesClientImpl implements UsagesClient {
                 res.getValue().value(), res.getValue().nextLink(), null));
     }
 
-    /**
-     * List network usages for a subscription.
-     * 
-     * @param location The location name.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the list usages operation response as paginated response with {@link PagedFlux}.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.COLLECTION)
     public PagedFlux<UsageInner> listAsync(String location) {
         return new PagedFlux<>(() -> listSinglePageAsync(location), nextLink -> listNextSinglePageAsync(nextLink));
@@ -173,30 +165,13 @@ public final class UsagesClientImpl implements UsagesClient {
             nextLink -> listNextSinglePageAsync(nextLink, context));
     }
 
-    /**
-     * List network usages for a subscription.
-     * 
-     * @param location The location name.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the list usages operation response as paginated response with {@link PagedIterable}.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.COLLECTION)
     public PagedIterable<UsageInner> list(String location) {
         return new PagedIterable<>(listAsync(location));
     }
 
-    /**
-     * List network usages for a subscription.
-     * 
-     * @param location The location name.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the list usages operation response as paginated response with {@link PagedIterable}.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.COLLECTION)
     public PagedIterable<UsageInner> list(String location, Context context) {
         return new PagedIterable<>(listAsync(location, context));
