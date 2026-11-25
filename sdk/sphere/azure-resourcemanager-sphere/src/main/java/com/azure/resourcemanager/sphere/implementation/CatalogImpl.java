@@ -93,10 +93,7 @@ public final class CatalogImpl implements Catalog, Catalog.Definition, Catalog.U
     }
 
     public Catalog create() {
-        this.innerObject = serviceManager.serviceClient()
-            .getCatalogs()
-            .createOrUpdate(resourceGroupName, catalogName, this.innerModel(), Context.NONE);
-        return this;
+        return this.create(Context.NONE);
     }
 
     public Catalog create(Context context) {
@@ -118,11 +115,7 @@ public final class CatalogImpl implements Catalog, Catalog.Definition, Catalog.U
     }
 
     public Catalog apply() {
-        this.innerObject = serviceManager.serviceClient()
-            .getCatalogs()
-            .updateWithResponse(resourceGroupName, catalogName, updateProperties, Context.NONE)
-            .getValue();
-        return this;
+        return this.apply(Context.NONE);
     }
 
     public Catalog apply(Context context) {
@@ -145,11 +138,7 @@ public final class CatalogImpl implements Catalog, Catalog.Definition, Catalog.U
     }
 
     public Catalog refresh() {
-        this.innerObject = serviceManager.serviceClient()
-            .getCatalogs()
-            .getByResourceGroupWithResponse(resourceGroupName, catalogName, Context.NONE)
-            .getValue();
-        return this;
+        return this.refresh(Context.NONE);
     }
 
     public Catalog refresh(Context context) {

@@ -67,11 +67,7 @@ public final class DeploymentImpl implements Deployment, Deployment.Definition, 
     }
 
     public Deployment create() {
-        this.innerObject = serviceManager.serviceClient()
-            .getDeployments()
-            .createOrUpdate(resourceGroupName, catalogName, productName, deviceGroupName, deploymentName,
-                this.innerModel(), Context.NONE);
-        return this;
+        return this.create(Context.NONE);
     }
 
     public Deployment create(Context context) {
@@ -93,11 +89,7 @@ public final class DeploymentImpl implements Deployment, Deployment.Definition, 
     }
 
     public Deployment apply() {
-        this.innerObject = serviceManager.serviceClient()
-            .getDeployments()
-            .createOrUpdate(resourceGroupName, catalogName, productName, deviceGroupName, deploymentName,
-                this.innerModel(), Context.NONE);
-        return this;
+        return this.apply(Context.NONE);
     }
 
     public Deployment apply(Context context) {
@@ -129,11 +121,7 @@ public final class DeploymentImpl implements Deployment, Deployment.Definition, 
     }
 
     public Deployment refresh() {
-        this.innerObject = serviceManager.serviceClient()
-            .getDeployments()
-            .getWithResponse(resourceGroupName, catalogName, productName, deviceGroupName, deploymentName, Context.NONE)
-            .getValue();
-        return this;
+        return this.refresh(Context.NONE);
     }
 
     public Deployment refresh(Context context) {

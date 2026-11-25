@@ -70,11 +70,7 @@ public final class DeviceGroupImpl implements DeviceGroup, DeviceGroup.Definitio
     }
 
     public DeviceGroup create() {
-        this.innerObject = serviceManager.serviceClient()
-            .getDeviceGroups()
-            .createOrUpdate(resourceGroupName, catalogName, productName, deviceGroupName, this.innerModel(),
-                Context.NONE);
-        return this;
+        return this.create(Context.NONE);
     }
 
     public DeviceGroup create(Context context) {
@@ -96,10 +92,7 @@ public final class DeviceGroupImpl implements DeviceGroup, DeviceGroup.Definitio
     }
 
     public DeviceGroup apply() {
-        this.innerObject = serviceManager.serviceClient()
-            .getDeviceGroups()
-            .update(resourceGroupName, catalogName, productName, deviceGroupName, updateProperties, Context.NONE);
-        return this;
+        return this.apply(Context.NONE);
     }
 
     public DeviceGroup apply(Context context) {
@@ -127,11 +120,7 @@ public final class DeviceGroupImpl implements DeviceGroup, DeviceGroup.Definitio
     }
 
     public DeviceGroup refresh() {
-        this.innerObject = serviceManager.serviceClient()
-            .getDeviceGroups()
-            .getWithResponse(resourceGroupName, catalogName, productName, deviceGroupName, Context.NONE)
-            .getValue();
-        return this;
+        return this.refresh(Context.NONE);
     }
 
     public DeviceGroup refresh(Context context) {

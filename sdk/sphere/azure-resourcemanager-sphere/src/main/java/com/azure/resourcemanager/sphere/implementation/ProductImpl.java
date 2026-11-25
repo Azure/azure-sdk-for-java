@@ -68,10 +68,7 @@ public final class ProductImpl implements Product, Product.Definition, Product.U
     }
 
     public Product create() {
-        this.innerObject = serviceManager.serviceClient()
-            .getProducts()
-            .createOrUpdate(resourceGroupName, catalogName, productName, this.innerModel(), Context.NONE);
-        return this;
+        return this.create(Context.NONE);
     }
 
     public Product create(Context context) {
@@ -93,10 +90,7 @@ public final class ProductImpl implements Product, Product.Definition, Product.U
     }
 
     public Product apply() {
-        this.innerObject = serviceManager.serviceClient()
-            .getProducts()
-            .update(resourceGroupName, catalogName, productName, updateProperties, Context.NONE);
-        return this;
+        return this.apply(Context.NONE);
     }
 
     public Product apply(Context context) {
@@ -121,11 +115,7 @@ public final class ProductImpl implements Product, Product.Definition, Product.U
     }
 
     public Product refresh() {
-        this.innerObject = serviceManager.serviceClient()
-            .getProducts()
-            .getWithResponse(resourceGroupName, catalogName, productName, Context.NONE)
-            .getValue();
-        return this;
+        return this.refresh(Context.NONE);
     }
 
     public Product refresh(Context context) {

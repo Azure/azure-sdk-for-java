@@ -222,22 +222,7 @@ public final class DeploymentsClientImpl implements DeploymentsClient {
             .flatMap(res -> Mono.justOrEmpty(res.getValue()));
     }
 
-    /**
-     * Get a Deployment. '.default' and '.unassigned' are system defined values and cannot be used for product or device
-     * group name.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param catalogName Name of catalog.
-     * @param productName Name of product.
-     * @param deviceGroupName Name of device group.
-     * @param deploymentName Deployment name. Use .default for deployment creation and to get the current deployment for
-     * the associated device group.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return a Deployment along with {@link Response}.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Response<DeploymentInner> getWithResponse(String resourceGroupName, String catalogName, String productName,
         String deviceGroupName, String deploymentName, Context context) {
@@ -246,21 +231,7 @@ public final class DeploymentsClientImpl implements DeploymentsClient {
             resourceGroupName, catalogName, productName, deviceGroupName, deploymentName, accept, context);
     }
 
-    /**
-     * Get a Deployment. '.default' and '.unassigned' are system defined values and cannot be used for product or device
-     * group name.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param catalogName Name of catalog.
-     * @param productName Name of product.
-     * @param deviceGroupName Name of device group.
-     * @param deploymentName Deployment name. Use .default for deployment creation and to get the current deployment for
-     * the associated device group.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return a Deployment.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public DeploymentInner get(String resourceGroupName, String catalogName, String productName, String deviceGroupName,
         String deploymentName) {
@@ -317,11 +288,8 @@ public final class DeploymentsClientImpl implements DeploymentsClient {
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Response<BinaryData> createOrUpdateWithResponse(String resourceGroupName, String catalogName,
         String productName, String deviceGroupName, String deploymentName, DeploymentInner resource) {
-        final String contentType = "application/json";
-        final String accept = "application/json";
-        return service.createOrUpdateSync(this.client.getEndpoint(), this.client.getApiVersion(),
-            this.client.getSubscriptionId(), resourceGroupName, catalogName, productName, deviceGroupName,
-            deploymentName, contentType, accept, resource, Context.NONE);
+        return createOrUpdateWithResponse(resourceGroupName, catalogName, productName, deviceGroupName, deploymentName,
+            resource, Context.NONE);
     }
 
     /**
@@ -377,49 +345,16 @@ public final class DeploymentsClientImpl implements DeploymentsClient {
             DeploymentInner.class, DeploymentInner.class, this.client.getContext());
     }
 
-    /**
-     * Create a Deployment. '.default' and '.unassigned' are system defined values and cannot be used for product or
-     * device group name.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param catalogName Name of catalog.
-     * @param productName Name of product.
-     * @param deviceGroupName Name of device group.
-     * @param deploymentName Deployment name. Use .default for deployment creation and to get the current deployment for
-     * the associated device group.
-     * @param resource Resource create parameters.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the {@link SyncPoller} for polling of a deployment resource belonging to a device group resource.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public SyncPoller<PollResult<DeploymentInner>, DeploymentInner> beginCreateOrUpdate(String resourceGroupName,
         String catalogName, String productName, String deviceGroupName, String deploymentName,
         DeploymentInner resource) {
-        Response<BinaryData> response = createOrUpdateWithResponse(resourceGroupName, catalogName, productName,
-            deviceGroupName, deploymentName, resource);
-        return this.client.<DeploymentInner, DeploymentInner>getLroResult(response, DeploymentInner.class,
-            DeploymentInner.class, Context.NONE);
+        return beginCreateOrUpdate(resourceGroupName, catalogName, productName, deviceGroupName, deploymentName,
+            resource, Context.NONE);
     }
 
-    /**
-     * Create a Deployment. '.default' and '.unassigned' are system defined values and cannot be used for product or
-     * device group name.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param catalogName Name of catalog.
-     * @param productName Name of product.
-     * @param deviceGroupName Name of device group.
-     * @param deploymentName Deployment name. Use .default for deployment creation and to get the current deployment for
-     * the associated device group.
-     * @param resource Resource create parameters.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the {@link SyncPoller} for polling of a deployment resource belonging to a device group resource.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public SyncPoller<PollResult<DeploymentInner>, DeploymentInner> beginCreateOrUpdate(String resourceGroupName,
         String catalogName, String productName, String deviceGroupName, String deploymentName, DeploymentInner resource,
@@ -453,51 +388,20 @@ public final class DeploymentsClientImpl implements DeploymentsClient {
             resource).last().flatMap(this.client::getLroFinalResultOrError);
     }
 
-    /**
-     * Create a Deployment. '.default' and '.unassigned' are system defined values and cannot be used for product or
-     * device group name.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param catalogName Name of catalog.
-     * @param productName Name of product.
-     * @param deviceGroupName Name of device group.
-     * @param deploymentName Deployment name. Use .default for deployment creation and to get the current deployment for
-     * the associated device group.
-     * @param resource Resource create parameters.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return a deployment resource belonging to a device group resource.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public DeploymentInner createOrUpdate(String resourceGroupName, String catalogName, String productName,
         String deviceGroupName, String deploymentName, DeploymentInner resource) {
-        return beginCreateOrUpdate(resourceGroupName, catalogName, productName, deviceGroupName, deploymentName,
-            resource).getFinalResult();
+        return createOrUpdate(resourceGroupName, catalogName, productName, deviceGroupName, deploymentName, resource,
+            Context.NONE);
     }
 
-    /**
-     * Create a Deployment. '.default' and '.unassigned' are system defined values and cannot be used for product or
-     * device group name.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param catalogName Name of catalog.
-     * @param productName Name of product.
-     * @param deviceGroupName Name of device group.
-     * @param deploymentName Deployment name. Use .default for deployment creation and to get the current deployment for
-     * the associated device group.
-     * @param resource Resource create parameters.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return a deployment resource belonging to a device group resource.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public DeploymentInner createOrUpdate(String resourceGroupName, String catalogName, String productName,
         String deviceGroupName, String deploymentName, DeploymentInner resource, Context context) {
-        return beginCreateOrUpdate(resourceGroupName, catalogName, productName, deviceGroupName, deploymentName,
-            resource, context).getFinalResult();
+        return this.client.getLroFinalResultOrError(beginCreateOrUpdate(resourceGroupName, catalogName, productName,
+            deviceGroupName, deploymentName, resource, context));
     }
 
     /**
@@ -543,9 +447,8 @@ public final class DeploymentsClientImpl implements DeploymentsClient {
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Response<BinaryData> deleteWithResponse(String resourceGroupName, String catalogName, String productName,
         String deviceGroupName, String deploymentName) {
-        return service.deleteSync(this.client.getEndpoint(), this.client.getApiVersion(),
-            this.client.getSubscriptionId(), resourceGroupName, catalogName, productName, deviceGroupName,
-            deploymentName, Context.NONE);
+        return deleteWithResponse(resourceGroupName, catalogName, productName, deviceGroupName, deploymentName,
+            Context.NONE);
     }
 
     /**
@@ -596,45 +499,14 @@ public final class DeploymentsClientImpl implements DeploymentsClient {
             this.client.getContext());
     }
 
-    /**
-     * Delete a Deployment. '.default' and '.unassigned' are system defined values and cannot be used for product or
-     * device group name.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param catalogName Name of catalog.
-     * @param productName Name of product.
-     * @param deviceGroupName Name of device group.
-     * @param deploymentName Deployment name. Use .default for deployment creation and to get the current deployment for
-     * the associated device group.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the {@link SyncPoller} for polling of long-running operation.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public SyncPoller<PollResult<Void>, Void> beginDelete(String resourceGroupName, String catalogName,
         String productName, String deviceGroupName, String deploymentName) {
-        Response<BinaryData> response
-            = deleteWithResponse(resourceGroupName, catalogName, productName, deviceGroupName, deploymentName);
-        return this.client.<Void, Void>getLroResult(response, Void.class, Void.class, Context.NONE);
+        return beginDelete(resourceGroupName, catalogName, productName, deviceGroupName, deploymentName, Context.NONE);
     }
 
-    /**
-     * Delete a Deployment. '.default' and '.unassigned' are system defined values and cannot be used for product or
-     * device group name.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param catalogName Name of catalog.
-     * @param productName Name of product.
-     * @param deviceGroupName Name of device group.
-     * @param deploymentName Deployment name. Use .default for deployment creation and to get the current deployment for
-     * the associated device group.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the {@link SyncPoller} for polling of long-running operation.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public SyncPoller<PollResult<Void>, Void> beginDelete(String resourceGroupName, String catalogName,
         String productName, String deviceGroupName, String deploymentName, Context context) {
@@ -665,46 +537,19 @@ public final class DeploymentsClientImpl implements DeploymentsClient {
             .flatMap(this.client::getLroFinalResultOrError);
     }
 
-    /**
-     * Delete a Deployment. '.default' and '.unassigned' are system defined values and cannot be used for product or
-     * device group name.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param catalogName Name of catalog.
-     * @param productName Name of product.
-     * @param deviceGroupName Name of device group.
-     * @param deploymentName Deployment name. Use .default for deployment creation and to get the current deployment for
-     * the associated device group.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public void delete(String resourceGroupName, String catalogName, String productName, String deviceGroupName,
         String deploymentName) {
-        beginDelete(resourceGroupName, catalogName, productName, deviceGroupName, deploymentName).getFinalResult();
+        delete(resourceGroupName, catalogName, productName, deviceGroupName, deploymentName, Context.NONE);
     }
 
-    /**
-     * Delete a Deployment. '.default' and '.unassigned' are system defined values and cannot be used for product or
-     * device group name.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param catalogName Name of catalog.
-     * @param productName Name of product.
-     * @param deviceGroupName Name of device group.
-     * @param deploymentName Deployment name. Use .default for deployment creation and to get the current deployment for
-     * the associated device group.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public void delete(String resourceGroupName, String catalogName, String productName, String deviceGroupName,
         String deploymentName, Context context) {
-        beginDelete(resourceGroupName, catalogName, productName, deviceGroupName, deploymentName, context)
-            .getFinalResult();
+        this.client.getLroFinalResultOrError(
+            beginDelete(resourceGroupName, catalogName, productName, deviceGroupName, deploymentName, context));
     }
 
     /**
@@ -809,12 +654,8 @@ public final class DeploymentsClientImpl implements DeploymentsClient {
     @ServiceMethod(returns = ReturnType.SINGLE)
     private PagedResponse<DeploymentInner> listByDeviceGroupSinglePage(String resourceGroupName, String catalogName,
         String productName, String deviceGroupName, String filter, Integer top, Integer skip, Integer maxpagesize) {
-        final String accept = "application/json";
-        Response<DeploymentListResult> res = service.listByDeviceGroupSync(this.client.getEndpoint(),
-            this.client.getApiVersion(), this.client.getSubscriptionId(), resourceGroupName, filter, top, skip,
-            maxpagesize, catalogName, productName, deviceGroupName, accept, Context.NONE);
-        return new PagedResponseBase<>(res.getRequest(), res.getStatusCode(), res.getHeaders(), res.getValue().value(),
-            res.getValue().nextLink(), null);
+        return listByDeviceGroupSinglePage(resourceGroupName, catalogName, productName, deviceGroupName, filter, top,
+            skip, maxpagesize, Context.NONE);
     }
 
     /**
@@ -847,19 +688,7 @@ public final class DeploymentsClientImpl implements DeploymentsClient {
             res.getValue().nextLink(), null);
     }
 
-    /**
-     * List Deployment resources by DeviceGroup. '.default' and '.unassigned' are system defined values and cannot be
-     * used for product or device group name.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param catalogName Name of catalog.
-     * @param productName Name of product.
-     * @param deviceGroupName Name of device group.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the response of a Deployment list operation as paginated response with {@link PagedIterable}.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.COLLECTION)
     public PagedIterable<DeploymentInner> listByDeviceGroup(String resourceGroupName, String catalogName,
         String productName, String deviceGroupName) {
@@ -867,28 +696,11 @@ public final class DeploymentsClientImpl implements DeploymentsClient {
         final Integer top = null;
         final Integer skip = null;
         final Integer maxpagesize = null;
-        return new PagedIterable<>(() -> listByDeviceGroupSinglePage(resourceGroupName, catalogName, productName,
-            deviceGroupName, filter, top, skip, maxpagesize), nextLink -> listByDeviceGroupNextSinglePage(nextLink));
+        return listByDeviceGroup(resourceGroupName, catalogName, productName, deviceGroupName, filter, top, skip,
+            maxpagesize, Context.NONE);
     }
 
-    /**
-     * List Deployment resources by DeviceGroup. '.default' and '.unassigned' are system defined values and cannot be
-     * used for product or device group name.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param catalogName Name of catalog.
-     * @param productName Name of product.
-     * @param deviceGroupName Name of device group.
-     * @param filter Filter the result list using the given expression.
-     * @param top The number of result items to return.
-     * @param skip The number of result items to skip.
-     * @param maxpagesize The maximum number of result items per page.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the response of a Deployment list operation as paginated response with {@link PagedIterable}.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.COLLECTION)
     public PagedIterable<DeploymentInner> listByDeviceGroup(String resourceGroupName, String catalogName,
         String productName, String deviceGroupName, String filter, Integer top, Integer skip, Integer maxpagesize,
@@ -929,11 +741,7 @@ public final class DeploymentsClientImpl implements DeploymentsClient {
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private PagedResponse<DeploymentInner> listByDeviceGroupNextSinglePage(String nextLink) {
-        final String accept = "application/json";
-        Response<DeploymentListResult> res
-            = service.listByDeviceGroupNextSync(nextLink, this.client.getEndpoint(), accept, Context.NONE);
-        return new PagedResponseBase<>(res.getRequest(), res.getStatusCode(), res.getHeaders(), res.getValue().value(),
-            res.getValue().nextLink(), null);
+        return listByDeviceGroupNextSinglePage(nextLink, Context.NONE);
     }
 
     /**

@@ -60,10 +60,7 @@ public final class ImageImpl implements Image, Image.Definition, Image.Update {
     }
 
     public Image create() {
-        this.innerObject = serviceManager.serviceClient()
-            .getImages()
-            .createOrUpdate(resourceGroupName, catalogName, imageName, this.innerModel(), Context.NONE);
-        return this;
+        return this.create(Context.NONE);
     }
 
     public Image create(Context context) {
@@ -84,10 +81,7 @@ public final class ImageImpl implements Image, Image.Definition, Image.Update {
     }
 
     public Image apply() {
-        this.innerObject = serviceManager.serviceClient()
-            .getImages()
-            .createOrUpdate(resourceGroupName, catalogName, imageName, this.innerModel(), Context.NONE);
-        return this;
+        return this.apply(Context.NONE);
     }
 
     public Image apply(Context context) {
@@ -112,11 +106,7 @@ public final class ImageImpl implements Image, Image.Definition, Image.Update {
     }
 
     public Image refresh() {
-        this.innerObject = serviceManager.serviceClient()
-            .getImages()
-            .getWithResponse(resourceGroupName, catalogName, imageName, Context.NONE)
-            .getValue();
-        return this;
+        return this.refresh(Context.NONE);
     }
 
     public Image refresh(Context context) {

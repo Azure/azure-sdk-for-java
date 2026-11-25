@@ -264,21 +264,7 @@ public final class DevicesClientImpl implements DevicesClient {
             .flatMap(res -> Mono.justOrEmpty(res.getValue()));
     }
 
-    /**
-     * Get a Device. Use '.unassigned' or '.default' for the device group and product names when a device does not
-     * belong to a device group and product.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param catalogName Name of catalog.
-     * @param productName Name of product.
-     * @param deviceGroupName Name of device group.
-     * @param deviceName Device name.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return a Device along with {@link Response}.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Response<DeviceInner> getWithResponse(String resourceGroupName, String catalogName, String productName,
         String deviceGroupName, String deviceName, Context context) {
@@ -287,20 +273,7 @@ public final class DevicesClientImpl implements DevicesClient {
             resourceGroupName, catalogName, productName, deviceGroupName, deviceName, accept, context);
     }
 
-    /**
-     * Get a Device. Use '.unassigned' or '.default' for the device group and product names when a device does not
-     * belong to a device group and product.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param catalogName Name of catalog.
-     * @param productName Name of product.
-     * @param deviceGroupName Name of device group.
-     * @param deviceName Device name.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return a Device.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public DeviceInner get(String resourceGroupName, String catalogName, String productName, String deviceGroupName,
         String deviceName) {
@@ -354,11 +327,8 @@ public final class DevicesClientImpl implements DevicesClient {
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Response<BinaryData> createOrUpdateWithResponse(String resourceGroupName, String catalogName,
         String productName, String deviceGroupName, String deviceName, DeviceInner resource) {
-        final String contentType = "application/json";
-        final String accept = "application/json";
-        return service.createOrUpdateSync(this.client.getEndpoint(), this.client.getApiVersion(),
-            this.client.getSubscriptionId(), resourceGroupName, catalogName, productName, deviceGroupName, deviceName,
-            contentType, accept, resource, Context.NONE);
+        return createOrUpdateWithResponse(resourceGroupName, catalogName, productName, deviceGroupName, deviceName,
+            resource, Context.NONE);
     }
 
     /**
@@ -411,46 +381,15 @@ public final class DevicesClientImpl implements DevicesClient {
             DeviceInner.class, DeviceInner.class, this.client.getContext());
     }
 
-    /**
-     * Create a Device. Use '.unassigned' or '.default' for the device group and product names to claim a device to the
-     * catalog only.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param catalogName Name of catalog.
-     * @param productName Name of product.
-     * @param deviceGroupName Name of device group.
-     * @param deviceName Device name.
-     * @param resource Resource create parameters.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the {@link SyncPoller} for polling of a device resource belonging to a device group resource.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public SyncPoller<PollResult<DeviceInner>, DeviceInner> beginCreateOrUpdate(String resourceGroupName,
         String catalogName, String productName, String deviceGroupName, String deviceName, DeviceInner resource) {
-        Response<BinaryData> response = createOrUpdateWithResponse(resourceGroupName, catalogName, productName,
-            deviceGroupName, deviceName, resource);
-        return this.client.<DeviceInner, DeviceInner>getLroResult(response, DeviceInner.class, DeviceInner.class,
+        return beginCreateOrUpdate(resourceGroupName, catalogName, productName, deviceGroupName, deviceName, resource,
             Context.NONE);
     }
 
-    /**
-     * Create a Device. Use '.unassigned' or '.default' for the device group and product names to claim a device to the
-     * catalog only.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param catalogName Name of catalog.
-     * @param productName Name of product.
-     * @param deviceGroupName Name of device group.
-     * @param deviceName Device name.
-     * @param resource Resource create parameters.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the {@link SyncPoller} for polling of a device resource belonging to a device group resource.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public SyncPoller<PollResult<DeviceInner>, DeviceInner> beginCreateOrUpdate(String resourceGroupName,
         String catalogName, String productName, String deviceGroupName, String deviceName, DeviceInner resource,
@@ -483,49 +422,20 @@ public final class DevicesClientImpl implements DevicesClient {
             resource).last().flatMap(this.client::getLroFinalResultOrError);
     }
 
-    /**
-     * Create a Device. Use '.unassigned' or '.default' for the device group and product names to claim a device to the
-     * catalog only.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param catalogName Name of catalog.
-     * @param productName Name of product.
-     * @param deviceGroupName Name of device group.
-     * @param deviceName Device name.
-     * @param resource Resource create parameters.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return a device resource belonging to a device group resource.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public DeviceInner createOrUpdate(String resourceGroupName, String catalogName, String productName,
         String deviceGroupName, String deviceName, DeviceInner resource) {
-        return beginCreateOrUpdate(resourceGroupName, catalogName, productName, deviceGroupName, deviceName, resource)
-            .getFinalResult();
+        return createOrUpdate(resourceGroupName, catalogName, productName, deviceGroupName, deviceName, resource,
+            Context.NONE);
     }
 
-    /**
-     * Create a Device. Use '.unassigned' or '.default' for the device group and product names to claim a device to the
-     * catalog only.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param catalogName Name of catalog.
-     * @param productName Name of product.
-     * @param deviceGroupName Name of device group.
-     * @param deviceName Device name.
-     * @param resource Resource create parameters.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return a device resource belonging to a device group resource.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public DeviceInner createOrUpdate(String resourceGroupName, String catalogName, String productName,
         String deviceGroupName, String deviceName, DeviceInner resource, Context context) {
-        return beginCreateOrUpdate(resourceGroupName, catalogName, productName, deviceGroupName, deviceName, resource,
-            context).getFinalResult();
+        return this.client.getLroFinalResultOrError(beginCreateOrUpdate(resourceGroupName, catalogName, productName,
+            deviceGroupName, deviceName, resource, context));
     }
 
     /**
@@ -574,11 +484,8 @@ public final class DevicesClientImpl implements DevicesClient {
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Response<BinaryData> updateWithResponse(String resourceGroupName, String catalogName, String productName,
         String deviceGroupName, String deviceName, DeviceUpdate properties) {
-        final String contentType = "application/json";
-        final String accept = "application/json";
-        return service.updateSync(this.client.getEndpoint(), this.client.getApiVersion(),
-            this.client.getSubscriptionId(), resourceGroupName, catalogName, productName, deviceGroupName, deviceName,
-            contentType, accept, properties, Context.NONE);
+        return updateWithResponse(resourceGroupName, catalogName, productName, deviceGroupName, deviceName, properties,
+            Context.NONE);
     }
 
     /**
@@ -631,46 +538,15 @@ public final class DevicesClientImpl implements DevicesClient {
             DeviceInner.class, DeviceInner.class, this.client.getContext());
     }
 
-    /**
-     * Update a Device. Use '.unassigned' or '.default' for the device group and product names to move a device to the
-     * catalog level.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param catalogName Name of catalog.
-     * @param productName Name of product.
-     * @param deviceGroupName Name of device group.
-     * @param deviceName Device name.
-     * @param properties The resource properties to be updated.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the {@link SyncPoller} for polling of a device resource belonging to a device group resource.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public SyncPoller<PollResult<DeviceInner>, DeviceInner> beginUpdate(String resourceGroupName, String catalogName,
         String productName, String deviceGroupName, String deviceName, DeviceUpdate properties) {
-        Response<BinaryData> response
-            = updateWithResponse(resourceGroupName, catalogName, productName, deviceGroupName, deviceName, properties);
-        return this.client.<DeviceInner, DeviceInner>getLroResult(response, DeviceInner.class, DeviceInner.class,
+        return beginUpdate(resourceGroupName, catalogName, productName, deviceGroupName, deviceName, properties,
             Context.NONE);
     }
 
-    /**
-     * Update a Device. Use '.unassigned' or '.default' for the device group and product names to move a device to the
-     * catalog level.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param catalogName Name of catalog.
-     * @param productName Name of product.
-     * @param deviceGroupName Name of device group.
-     * @param deviceName Device name.
-     * @param properties The resource properties to be updated.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the {@link SyncPoller} for polling of a device resource belonging to a device group resource.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public SyncPoller<PollResult<DeviceInner>, DeviceInner> beginUpdate(String resourceGroupName, String catalogName,
         String productName, String deviceGroupName, String deviceName, DeviceUpdate properties, Context context) {
@@ -703,49 +579,20 @@ public final class DevicesClientImpl implements DevicesClient {
             .flatMap(this.client::getLroFinalResultOrError);
     }
 
-    /**
-     * Update a Device. Use '.unassigned' or '.default' for the device group and product names to move a device to the
-     * catalog level.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param catalogName Name of catalog.
-     * @param productName Name of product.
-     * @param deviceGroupName Name of device group.
-     * @param deviceName Device name.
-     * @param properties The resource properties to be updated.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return a device resource belonging to a device group resource.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public DeviceInner update(String resourceGroupName, String catalogName, String productName, String deviceGroupName,
         String deviceName, DeviceUpdate properties) {
-        return beginUpdate(resourceGroupName, catalogName, productName, deviceGroupName, deviceName, properties)
-            .getFinalResult();
+        return update(resourceGroupName, catalogName, productName, deviceGroupName, deviceName, properties,
+            Context.NONE);
     }
 
-    /**
-     * Update a Device. Use '.unassigned' or '.default' for the device group and product names to move a device to the
-     * catalog level.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param catalogName Name of catalog.
-     * @param productName Name of product.
-     * @param deviceGroupName Name of device group.
-     * @param deviceName Device name.
-     * @param properties The resource properties to be updated.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return a device resource belonging to a device group resource.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public DeviceInner update(String resourceGroupName, String catalogName, String productName, String deviceGroupName,
         String deviceName, DeviceUpdate properties, Context context) {
-        return beginUpdate(resourceGroupName, catalogName, productName, deviceGroupName, deviceName, properties,
-            context).getFinalResult();
+        return this.client.getLroFinalResultOrError(
+            beginUpdate(resourceGroupName, catalogName, productName, deviceGroupName, deviceName, properties, context));
     }
 
     /**
@@ -787,8 +634,7 @@ public final class DevicesClientImpl implements DevicesClient {
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Response<BinaryData> deleteWithResponse(String resourceGroupName, String catalogName, String productName,
         String deviceGroupName, String deviceName) {
-        return service.deleteSync(this.client.getEndpoint(), this.client.getApiVersion(),
-            this.client.getSubscriptionId(), resourceGroupName, catalogName, productName, deviceGroupName, deviceName,
+        return deleteWithResponse(resourceGroupName, catalogName, productName, deviceGroupName, deviceName,
             Context.NONE);
     }
 
@@ -836,41 +682,14 @@ public final class DevicesClientImpl implements DevicesClient {
             this.client.getContext());
     }
 
-    /**
-     * Delete a Device.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param catalogName Name of catalog.
-     * @param productName Name of product.
-     * @param deviceGroupName Name of device group.
-     * @param deviceName Device name.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the {@link SyncPoller} for polling of long-running operation.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public SyncPoller<PollResult<Void>, Void> beginDelete(String resourceGroupName, String catalogName,
         String productName, String deviceGroupName, String deviceName) {
-        Response<BinaryData> response
-            = deleteWithResponse(resourceGroupName, catalogName, productName, deviceGroupName, deviceName);
-        return this.client.<Void, Void>getLroResult(response, Void.class, Void.class, Context.NONE);
+        return beginDelete(resourceGroupName, catalogName, productName, deviceGroupName, deviceName, Context.NONE);
     }
 
-    /**
-     * Delete a Device.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param catalogName Name of catalog.
-     * @param productName Name of product.
-     * @param deviceGroupName Name of device group.
-     * @param deviceName Device name.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the {@link SyncPoller} for polling of long-running operation.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public SyncPoller<PollResult<Void>, Void> beginDelete(String resourceGroupName, String catalogName,
         String productName, String deviceGroupName, String deviceName, Context context) {
@@ -899,41 +718,19 @@ public final class DevicesClientImpl implements DevicesClient {
             .flatMap(this.client::getLroFinalResultOrError);
     }
 
-    /**
-     * Delete a Device.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param catalogName Name of catalog.
-     * @param productName Name of product.
-     * @param deviceGroupName Name of device group.
-     * @param deviceName Device name.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public void delete(String resourceGroupName, String catalogName, String productName, String deviceGroupName,
         String deviceName) {
-        beginDelete(resourceGroupName, catalogName, productName, deviceGroupName, deviceName).getFinalResult();
+        delete(resourceGroupName, catalogName, productName, deviceGroupName, deviceName, Context.NONE);
     }
 
-    /**
-     * Delete a Device.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param catalogName Name of catalog.
-     * @param productName Name of product.
-     * @param deviceGroupName Name of device group.
-     * @param deviceName Device name.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public void delete(String resourceGroupName, String catalogName, String productName, String deviceGroupName,
         String deviceName, Context context) {
-        beginDelete(resourceGroupName, catalogName, productName, deviceGroupName, deviceName, context).getFinalResult();
+        this.client.getLroFinalResultOrError(
+            beginDelete(resourceGroupName, catalogName, productName, deviceGroupName, deviceName, context));
     }
 
     /**
@@ -1000,12 +797,7 @@ public final class DevicesClientImpl implements DevicesClient {
     @ServiceMethod(returns = ReturnType.SINGLE)
     private PagedResponse<DeviceInner> listByDeviceGroupSinglePage(String resourceGroupName, String catalogName,
         String productName, String deviceGroupName) {
-        final String accept = "application/json";
-        Response<DeviceListResult> res = service.listByDeviceGroupSync(this.client.getEndpoint(),
-            this.client.getApiVersion(), this.client.getSubscriptionId(), resourceGroupName, catalogName, productName,
-            deviceGroupName, accept, Context.NONE);
-        return new PagedResponseBase<>(res.getRequest(), res.getStatusCode(), res.getHeaders(), res.getValue().value(),
-            res.getValue().nextLink(), null);
+        return listByDeviceGroupSinglePage(resourceGroupName, catalogName, productName, deviceGroupName, Context.NONE);
     }
 
     /**
@@ -1033,41 +825,14 @@ public final class DevicesClientImpl implements DevicesClient {
             res.getValue().nextLink(), null);
     }
 
-    /**
-     * List Device resources by DeviceGroup. '.default' and '.unassigned' are system defined values and cannot be used
-     * for product or device group name.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param catalogName Name of catalog.
-     * @param productName Name of product.
-     * @param deviceGroupName Name of device group.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the response of a Device list operation as paginated response with {@link PagedIterable}.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.COLLECTION)
     public PagedIterable<DeviceInner> listByDeviceGroup(String resourceGroupName, String catalogName,
         String productName, String deviceGroupName) {
-        return new PagedIterable<>(
-            () -> listByDeviceGroupSinglePage(resourceGroupName, catalogName, productName, deviceGroupName),
-            nextLink -> listByDeviceGroupNextSinglePage(nextLink));
+        return listByDeviceGroup(resourceGroupName, catalogName, productName, deviceGroupName, Context.NONE);
     }
 
-    /**
-     * List Device resources by DeviceGroup. '.default' and '.unassigned' are system defined values and cannot be used
-     * for product or device group name.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param catalogName Name of catalog.
-     * @param productName Name of product.
-     * @param deviceGroupName Name of device group.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the response of a Device list operation as paginated response with {@link PagedIterable}.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.COLLECTION)
     public PagedIterable<DeviceInner> listByDeviceGroup(String resourceGroupName, String catalogName,
         String productName, String deviceGroupName, Context context) {
@@ -1125,11 +890,8 @@ public final class DevicesClientImpl implements DevicesClient {
     private Response<BinaryData> generateCapabilityImageWithResponse(String resourceGroupName, String catalogName,
         String productName, String deviceGroupName, String deviceName,
         GenerateCapabilityImageRequest generateDeviceCapabilityRequest) {
-        final String contentType = "application/json";
-        final String accept = "application/json";
-        return service.generateCapabilityImageSync(this.client.getEndpoint(), this.client.getApiVersion(),
-            this.client.getSubscriptionId(), resourceGroupName, catalogName, productName, deviceGroupName, deviceName,
-            contentType, accept, generateDeviceCapabilityRequest, Context.NONE);
+        return generateCapabilityImageWithResponse(resourceGroupName, catalogName, productName, deviceGroupName,
+            deviceName, generateDeviceCapabilityRequest, Context.NONE);
     }
 
     /**
@@ -1185,47 +947,16 @@ public final class DevicesClientImpl implements DevicesClient {
             SignedCapabilityImageResponseInner.class, this.client.getContext());
     }
 
-    /**
-     * Generates the capability image for the device. Use '.unassigned' or '.default' for the device group and product
-     * names to generate the image for a device that does not belong to a specific device group and product.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param catalogName Name of catalog.
-     * @param productName Name of product.
-     * @param deviceGroupName Name of device group.
-     * @param deviceName Device name.
-     * @param generateDeviceCapabilityRequest Generate capability image request body.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the {@link SyncPoller} for polling of signed device capability image response.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public SyncPoller<PollResult<SignedCapabilityImageResponseInner>, SignedCapabilityImageResponseInner>
         beginGenerateCapabilityImage(String resourceGroupName, String catalogName, String productName,
             String deviceGroupName, String deviceName, GenerateCapabilityImageRequest generateDeviceCapabilityRequest) {
-        Response<BinaryData> response = generateCapabilityImageWithResponse(resourceGroupName, catalogName, productName,
-            deviceGroupName, deviceName, generateDeviceCapabilityRequest);
-        return this.client.<SignedCapabilityImageResponseInner, SignedCapabilityImageResponseInner>getLroResult(
-            response, SignedCapabilityImageResponseInner.class, SignedCapabilityImageResponseInner.class, Context.NONE);
+        return beginGenerateCapabilityImage(resourceGroupName, catalogName, productName, deviceGroupName, deviceName,
+            generateDeviceCapabilityRequest, Context.NONE);
     }
 
-    /**
-     * Generates the capability image for the device. Use '.unassigned' or '.default' for the device group and product
-     * names to generate the image for a device that does not belong to a specific device group and product.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param catalogName Name of catalog.
-     * @param productName Name of product.
-     * @param deviceGroupName Name of device group.
-     * @param deviceName Device name.
-     * @param generateDeviceCapabilityRequest Generate capability image request body.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the {@link SyncPoller} for polling of signed device capability image response.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public SyncPoller<PollResult<SignedCapabilityImageResponseInner>, SignedCapabilityImageResponseInner>
         beginGenerateCapabilityImage(String resourceGroupName, String catalogName, String productName,
@@ -1260,51 +991,22 @@ public final class DevicesClientImpl implements DevicesClient {
             deviceName, generateDeviceCapabilityRequest).last().flatMap(this.client::getLroFinalResultOrError);
     }
 
-    /**
-     * Generates the capability image for the device. Use '.unassigned' or '.default' for the device group and product
-     * names to generate the image for a device that does not belong to a specific device group and product.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param catalogName Name of catalog.
-     * @param productName Name of product.
-     * @param deviceGroupName Name of device group.
-     * @param deviceName Device name.
-     * @param generateDeviceCapabilityRequest Generate capability image request body.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return signed device capability image response.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public SignedCapabilityImageResponseInner generateCapabilityImage(String resourceGroupName, String catalogName,
         String productName, String deviceGroupName, String deviceName,
         GenerateCapabilityImageRequest generateDeviceCapabilityRequest) {
-        return beginGenerateCapabilityImage(resourceGroupName, catalogName, productName, deviceGroupName, deviceName,
-            generateDeviceCapabilityRequest).getFinalResult();
+        return generateCapabilityImage(resourceGroupName, catalogName, productName, deviceGroupName, deviceName,
+            generateDeviceCapabilityRequest, Context.NONE);
     }
 
-    /**
-     * Generates the capability image for the device. Use '.unassigned' or '.default' for the device group and product
-     * names to generate the image for a device that does not belong to a specific device group and product.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param catalogName Name of catalog.
-     * @param productName Name of product.
-     * @param deviceGroupName Name of device group.
-     * @param deviceName Device name.
-     * @param generateDeviceCapabilityRequest Generate capability image request body.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return signed device capability image response.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public SignedCapabilityImageResponseInner generateCapabilityImage(String resourceGroupName, String catalogName,
         String productName, String deviceGroupName, String deviceName,
         GenerateCapabilityImageRequest generateDeviceCapabilityRequest, Context context) {
-        return beginGenerateCapabilityImage(resourceGroupName, catalogName, productName, deviceGroupName, deviceName,
-            generateDeviceCapabilityRequest, context).getFinalResult();
+        return this.client.getLroFinalResultOrError(beginGenerateCapabilityImage(resourceGroupName, catalogName,
+            productName, deviceGroupName, deviceName, generateDeviceCapabilityRequest, context));
     }
 
     /**
@@ -1338,11 +1040,7 @@ public final class DevicesClientImpl implements DevicesClient {
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private PagedResponse<DeviceInner> listByDeviceGroupNextSinglePage(String nextLink) {
-        final String accept = "application/json";
-        Response<DeviceListResult> res
-            = service.listByDeviceGroupNextSync(nextLink, this.client.getEndpoint(), accept, Context.NONE);
-        return new PagedResponseBase<>(res.getRequest(), res.getStatusCode(), res.getHeaders(), res.getValue().value(),
-            res.getValue().nextLink(), null);
+        return listByDeviceGroupNextSinglePage(nextLink, Context.NONE);
     }
 
     /**

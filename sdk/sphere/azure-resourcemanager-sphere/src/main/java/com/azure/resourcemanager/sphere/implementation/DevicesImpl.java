@@ -50,7 +50,7 @@ public final class DevicesImpl implements Devices {
 
     public void delete(String resourceGroupName, String catalogName, String productName, String deviceGroupName,
         String deviceName) {
-        this.serviceClient().delete(resourceGroupName, catalogName, productName, deviceGroupName, deviceName);
+        this.delete(resourceGroupName, catalogName, productName, deviceGroupName, deviceName, Context.NONE);
     }
 
     public void delete(String resourceGroupName, String catalogName, String productName, String deviceGroupName,
@@ -60,9 +60,7 @@ public final class DevicesImpl implements Devices {
 
     public PagedIterable<Device> listByDeviceGroup(String resourceGroupName, String catalogName, String productName,
         String deviceGroupName) {
-        PagedIterable<DeviceInner> inner
-            = this.serviceClient().listByDeviceGroup(resourceGroupName, catalogName, productName, deviceGroupName);
-        return ResourceManagerUtils.mapPage(inner, inner1 -> new DeviceImpl(inner1, this.manager()));
+        return this.listByDeviceGroup(resourceGroupName, catalogName, productName, deviceGroupName, Context.NONE);
     }
 
     public PagedIterable<Device> listByDeviceGroup(String resourceGroupName, String catalogName, String productName,
@@ -75,14 +73,8 @@ public final class DevicesImpl implements Devices {
     public SignedCapabilityImageResponse generateCapabilityImage(String resourceGroupName, String catalogName,
         String productName, String deviceGroupName, String deviceName,
         GenerateCapabilityImageRequest generateDeviceCapabilityRequest) {
-        SignedCapabilityImageResponseInner inner = this.serviceClient()
-            .generateCapabilityImage(resourceGroupName, catalogName, productName, deviceGroupName, deviceName,
-                generateDeviceCapabilityRequest);
-        if (inner != null) {
-            return new SignedCapabilityImageResponseImpl(inner, this.manager());
-        } else {
-            return null;
-        }
+        return this.generateCapabilityImage(resourceGroupName, catalogName, productName, deviceGroupName, deviceName,
+            generateDeviceCapabilityRequest, Context.NONE);
     }
 
     public SignedCapabilityImageResponse generateCapabilityImage(String resourceGroupName, String catalogName,
@@ -99,160 +91,48 @@ public final class DevicesImpl implements Devices {
     }
 
     public Device getById(String id) {
-        String resourceGroupName = ResourceManagerUtils.getValueFromIdByParameterName(id,
-            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.AzureSphere/catalogs/{catalogName}/products/{productName}/deviceGroups/{deviceGroupName}/devices/{deviceName}",
-            "resourceGroupName");
-        if (resourceGroupName == null) {
-            throw LOGGER.logExceptionAsError(new IllegalArgumentException(
-                String.format("The resource ID '%s' is not valid. Missing path segment 'resourceGroups'.", id)));
-        }
-        String catalogName = ResourceManagerUtils.getValueFromIdByParameterName(id,
-            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.AzureSphere/catalogs/{catalogName}/products/{productName}/deviceGroups/{deviceGroupName}/devices/{deviceName}",
-            "catalogName");
-        if (catalogName == null) {
-            throw LOGGER.logExceptionAsError(new IllegalArgumentException(
-                String.format("The resource ID '%s' is not valid. Missing path segment 'catalogs'.", id)));
-        }
-        String productName = ResourceManagerUtils.getValueFromIdByParameterName(id,
-            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.AzureSphere/catalogs/{catalogName}/products/{productName}/deviceGroups/{deviceGroupName}/devices/{deviceName}",
-            "productName");
-        if (productName == null) {
-            throw LOGGER.logExceptionAsError(new IllegalArgumentException(
-                String.format("The resource ID '%s' is not valid. Missing path segment 'products'.", id)));
-        }
-        String deviceGroupName = ResourceManagerUtils.getValueFromIdByParameterName(id,
-            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.AzureSphere/catalogs/{catalogName}/products/{productName}/deviceGroups/{deviceGroupName}/devices/{deviceName}",
-            "deviceGroupName");
-        if (deviceGroupName == null) {
-            throw LOGGER.logExceptionAsError(new IllegalArgumentException(
-                String.format("The resource ID '%s' is not valid. Missing path segment 'deviceGroups'.", id)));
-        }
-        String deviceName = ResourceManagerUtils.getValueFromIdByParameterName(id,
-            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.AzureSphere/catalogs/{catalogName}/products/{productName}/deviceGroups/{deviceGroupName}/devices/{deviceName}",
-            "deviceName");
-        if (deviceName == null) {
-            throw LOGGER.logExceptionAsError(new IllegalArgumentException(
-                String.format("The resource ID '%s' is not valid. Missing path segment 'devices'.", id)));
-        }
-        return this
-            .getWithResponse(resourceGroupName, catalogName, productName, deviceGroupName, deviceName, Context.NONE)
-            .getValue();
+        return this.getByIdWithResponse(id, Context.NONE).getValue();
     }
 
     public Response<Device> getByIdWithResponse(String id, Context context) {
-        String resourceGroupName = ResourceManagerUtils.getValueFromIdByParameterName(id,
+        String resourceGroupName = ResourceManagerUtils.getRequiredValueFromIdByParameterName(id,
             "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.AzureSphere/catalogs/{catalogName}/products/{productName}/deviceGroups/{deviceGroupName}/devices/{deviceName}",
-            "resourceGroupName");
-        if (resourceGroupName == null) {
-            throw LOGGER.logExceptionAsError(new IllegalArgumentException(
-                String.format("The resource ID '%s' is not valid. Missing path segment 'resourceGroups'.", id)));
-        }
-        String catalogName = ResourceManagerUtils.getValueFromIdByParameterName(id,
+            "resourceGroupName", "resourceGroups", LOGGER);
+        String catalogName = ResourceManagerUtils.getRequiredValueFromIdByParameterName(id,
             "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.AzureSphere/catalogs/{catalogName}/products/{productName}/deviceGroups/{deviceGroupName}/devices/{deviceName}",
-            "catalogName");
-        if (catalogName == null) {
-            throw LOGGER.logExceptionAsError(new IllegalArgumentException(
-                String.format("The resource ID '%s' is not valid. Missing path segment 'catalogs'.", id)));
-        }
-        String productName = ResourceManagerUtils.getValueFromIdByParameterName(id,
+            "catalogName", "catalogs", LOGGER);
+        String productName = ResourceManagerUtils.getRequiredValueFromIdByParameterName(id,
             "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.AzureSphere/catalogs/{catalogName}/products/{productName}/deviceGroups/{deviceGroupName}/devices/{deviceName}",
-            "productName");
-        if (productName == null) {
-            throw LOGGER.logExceptionAsError(new IllegalArgumentException(
-                String.format("The resource ID '%s' is not valid. Missing path segment 'products'.", id)));
-        }
-        String deviceGroupName = ResourceManagerUtils.getValueFromIdByParameterName(id,
+            "productName", "products", LOGGER);
+        String deviceGroupName = ResourceManagerUtils.getRequiredValueFromIdByParameterName(id,
             "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.AzureSphere/catalogs/{catalogName}/products/{productName}/deviceGroups/{deviceGroupName}/devices/{deviceName}",
-            "deviceGroupName");
-        if (deviceGroupName == null) {
-            throw LOGGER.logExceptionAsError(new IllegalArgumentException(
-                String.format("The resource ID '%s' is not valid. Missing path segment 'deviceGroups'.", id)));
-        }
-        String deviceName = ResourceManagerUtils.getValueFromIdByParameterName(id,
+            "deviceGroupName", "deviceGroups", LOGGER);
+        String deviceName = ResourceManagerUtils.getRequiredValueFromIdByParameterName(id,
             "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.AzureSphere/catalogs/{catalogName}/products/{productName}/deviceGroups/{deviceGroupName}/devices/{deviceName}",
-            "deviceName");
-        if (deviceName == null) {
-            throw LOGGER.logExceptionAsError(new IllegalArgumentException(
-                String.format("The resource ID '%s' is not valid. Missing path segment 'devices'.", id)));
-        }
+            "deviceName", "devices", LOGGER);
         return this.getWithResponse(resourceGroupName, catalogName, productName, deviceGroupName, deviceName, context);
     }
 
     public void deleteById(String id) {
-        String resourceGroupName = ResourceManagerUtils.getValueFromIdByParameterName(id,
-            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.AzureSphere/catalogs/{catalogName}/products/{productName}/deviceGroups/{deviceGroupName}/devices/{deviceName}",
-            "resourceGroupName");
-        if (resourceGroupName == null) {
-            throw LOGGER.logExceptionAsError(new IllegalArgumentException(
-                String.format("The resource ID '%s' is not valid. Missing path segment 'resourceGroups'.", id)));
-        }
-        String catalogName = ResourceManagerUtils.getValueFromIdByParameterName(id,
-            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.AzureSphere/catalogs/{catalogName}/products/{productName}/deviceGroups/{deviceGroupName}/devices/{deviceName}",
-            "catalogName");
-        if (catalogName == null) {
-            throw LOGGER.logExceptionAsError(new IllegalArgumentException(
-                String.format("The resource ID '%s' is not valid. Missing path segment 'catalogs'.", id)));
-        }
-        String productName = ResourceManagerUtils.getValueFromIdByParameterName(id,
-            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.AzureSphere/catalogs/{catalogName}/products/{productName}/deviceGroups/{deviceGroupName}/devices/{deviceName}",
-            "productName");
-        if (productName == null) {
-            throw LOGGER.logExceptionAsError(new IllegalArgumentException(
-                String.format("The resource ID '%s' is not valid. Missing path segment 'products'.", id)));
-        }
-        String deviceGroupName = ResourceManagerUtils.getValueFromIdByParameterName(id,
-            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.AzureSphere/catalogs/{catalogName}/products/{productName}/deviceGroups/{deviceGroupName}/devices/{deviceName}",
-            "deviceGroupName");
-        if (deviceGroupName == null) {
-            throw LOGGER.logExceptionAsError(new IllegalArgumentException(
-                String.format("The resource ID '%s' is not valid. Missing path segment 'deviceGroups'.", id)));
-        }
-        String deviceName = ResourceManagerUtils.getValueFromIdByParameterName(id,
-            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.AzureSphere/catalogs/{catalogName}/products/{productName}/deviceGroups/{deviceGroupName}/devices/{deviceName}",
-            "deviceName");
-        if (deviceName == null) {
-            throw LOGGER.logExceptionAsError(new IllegalArgumentException(
-                String.format("The resource ID '%s' is not valid. Missing path segment 'devices'.", id)));
-        }
-        this.delete(resourceGroupName, catalogName, productName, deviceGroupName, deviceName, Context.NONE);
+        this.deleteByIdWithResponse(id, Context.NONE);
     }
 
     public void deleteByIdWithResponse(String id, Context context) {
-        String resourceGroupName = ResourceManagerUtils.getValueFromIdByParameterName(id,
+        String resourceGroupName = ResourceManagerUtils.getRequiredValueFromIdByParameterName(id,
             "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.AzureSphere/catalogs/{catalogName}/products/{productName}/deviceGroups/{deviceGroupName}/devices/{deviceName}",
-            "resourceGroupName");
-        if (resourceGroupName == null) {
-            throw LOGGER.logExceptionAsError(new IllegalArgumentException(
-                String.format("The resource ID '%s' is not valid. Missing path segment 'resourceGroups'.", id)));
-        }
-        String catalogName = ResourceManagerUtils.getValueFromIdByParameterName(id,
+            "resourceGroupName", "resourceGroups", LOGGER);
+        String catalogName = ResourceManagerUtils.getRequiredValueFromIdByParameterName(id,
             "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.AzureSphere/catalogs/{catalogName}/products/{productName}/deviceGroups/{deviceGroupName}/devices/{deviceName}",
-            "catalogName");
-        if (catalogName == null) {
-            throw LOGGER.logExceptionAsError(new IllegalArgumentException(
-                String.format("The resource ID '%s' is not valid. Missing path segment 'catalogs'.", id)));
-        }
-        String productName = ResourceManagerUtils.getValueFromIdByParameterName(id,
+            "catalogName", "catalogs", LOGGER);
+        String productName = ResourceManagerUtils.getRequiredValueFromIdByParameterName(id,
             "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.AzureSphere/catalogs/{catalogName}/products/{productName}/deviceGroups/{deviceGroupName}/devices/{deviceName}",
-            "productName");
-        if (productName == null) {
-            throw LOGGER.logExceptionAsError(new IllegalArgumentException(
-                String.format("The resource ID '%s' is not valid. Missing path segment 'products'.", id)));
-        }
-        String deviceGroupName = ResourceManagerUtils.getValueFromIdByParameterName(id,
+            "productName", "products", LOGGER);
+        String deviceGroupName = ResourceManagerUtils.getRequiredValueFromIdByParameterName(id,
             "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.AzureSphere/catalogs/{catalogName}/products/{productName}/deviceGroups/{deviceGroupName}/devices/{deviceName}",
-            "deviceGroupName");
-        if (deviceGroupName == null) {
-            throw LOGGER.logExceptionAsError(new IllegalArgumentException(
-                String.format("The resource ID '%s' is not valid. Missing path segment 'deviceGroups'.", id)));
-        }
-        String deviceName = ResourceManagerUtils.getValueFromIdByParameterName(id,
+            "deviceGroupName", "deviceGroups", LOGGER);
+        String deviceName = ResourceManagerUtils.getRequiredValueFromIdByParameterName(id,
             "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.AzureSphere/catalogs/{catalogName}/products/{productName}/deviceGroups/{deviceGroupName}/devices/{deviceName}",
-            "deviceName");
-        if (deviceName == null) {
-            throw LOGGER.logExceptionAsError(new IllegalArgumentException(
-                String.format("The resource ID '%s' is not valid. Missing path segment 'devices'.", id)));
-        }
+            "deviceName", "devices", LOGGER);
         this.delete(resourceGroupName, catalogName, productName, deviceGroupName, deviceName, context);
     }
 

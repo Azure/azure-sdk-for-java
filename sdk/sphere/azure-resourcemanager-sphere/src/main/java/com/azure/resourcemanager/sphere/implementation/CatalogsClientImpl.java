@@ -449,17 +449,7 @@ public final class CatalogsClientImpl implements CatalogsClient {
             .flatMap(res -> Mono.justOrEmpty(res.getValue()));
     }
 
-    /**
-     * Get a Catalog.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param catalogName Name of catalog.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return a Catalog along with {@link Response}.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Response<CatalogInner> getByResourceGroupWithResponse(String resourceGroupName, String catalogName,
         Context context) {
@@ -468,16 +458,7 @@ public final class CatalogsClientImpl implements CatalogsClient {
             this.client.getSubscriptionId(), resourceGroupName, catalogName, accept, context);
     }
 
-    /**
-     * Get a Catalog.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param catalogName Name of catalog.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return a Catalog.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public CatalogInner getByResourceGroup(String resourceGroupName, String catalogName) {
         return getByResourceGroupWithResponse(resourceGroupName, catalogName, Context.NONE).getValue();
@@ -520,11 +501,7 @@ public final class CatalogsClientImpl implements CatalogsClient {
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Response<BinaryData> createOrUpdateWithResponse(String resourceGroupName, String catalogName,
         CatalogInner resource) {
-        final String contentType = "application/json";
-        final String accept = "application/json";
-        return service.createOrUpdateSync(this.client.getEndpoint(), this.client.getApiVersion(),
-            this.client.getSubscriptionId(), resourceGroupName, catalogName, contentType, accept, resource,
-            Context.NONE);
+        return createOrUpdateWithResponse(resourceGroupName, catalogName, resource, Context.NONE);
     }
 
     /**
@@ -568,37 +545,14 @@ public final class CatalogsClientImpl implements CatalogsClient {
             CatalogInner.class, CatalogInner.class, this.client.getContext());
     }
 
-    /**
-     * Create a Catalog.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param catalogName Name of catalog.
-     * @param resource Resource create parameters.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the {@link SyncPoller} for polling of an Azure Sphere catalog.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public SyncPoller<PollResult<CatalogInner>, CatalogInner> beginCreateOrUpdate(String resourceGroupName,
         String catalogName, CatalogInner resource) {
-        Response<BinaryData> response = createOrUpdateWithResponse(resourceGroupName, catalogName, resource);
-        return this.client.<CatalogInner, CatalogInner>getLroResult(response, CatalogInner.class, CatalogInner.class,
-            Context.NONE);
+        return beginCreateOrUpdate(resourceGroupName, catalogName, resource, Context.NONE);
     }
 
-    /**
-     * Create a Catalog.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param catalogName Name of catalog.
-     * @param resource Resource create parameters.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the {@link SyncPoller} for polling of an Azure Sphere catalog.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public SyncPoller<PollResult<CatalogInner>, CatalogInner> beginCreateOrUpdate(String resourceGroupName,
         String catalogName, CatalogInner resource, Context context) {
@@ -625,38 +579,18 @@ public final class CatalogsClientImpl implements CatalogsClient {
             .flatMap(this.client::getLroFinalResultOrError);
     }
 
-    /**
-     * Create a Catalog.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param catalogName Name of catalog.
-     * @param resource Resource create parameters.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return an Azure Sphere catalog.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public CatalogInner createOrUpdate(String resourceGroupName, String catalogName, CatalogInner resource) {
-        return beginCreateOrUpdate(resourceGroupName, catalogName, resource).getFinalResult();
+        return createOrUpdate(resourceGroupName, catalogName, resource, Context.NONE);
     }
 
-    /**
-     * Create a Catalog.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param catalogName Name of catalog.
-     * @param resource Resource create parameters.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return an Azure Sphere catalog.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public CatalogInner createOrUpdate(String resourceGroupName, String catalogName, CatalogInner resource,
         Context context) {
-        return beginCreateOrUpdate(resourceGroupName, catalogName, resource, context).getFinalResult();
+        return this.client
+            .getLroFinalResultOrError(beginCreateOrUpdate(resourceGroupName, catalogName, resource, context));
     }
 
     /**
@@ -697,18 +631,7 @@ public final class CatalogsClientImpl implements CatalogsClient {
             .flatMap(res -> Mono.justOrEmpty(res.getValue()));
     }
 
-    /**
-     * Update a Catalog.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param catalogName Name of catalog.
-     * @param properties The resource properties to be updated.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return an Azure Sphere catalog along with {@link Response}.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Response<CatalogInner> updateWithResponse(String resourceGroupName, String catalogName,
         CatalogUpdate properties, Context context) {
@@ -718,17 +641,7 @@ public final class CatalogsClientImpl implements CatalogsClient {
             this.client.getSubscriptionId(), resourceGroupName, catalogName, contentType, accept, properties, context);
     }
 
-    /**
-     * Update a Catalog.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param catalogName Name of catalog.
-     * @param properties The resource properties to be updated.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return an Azure Sphere catalog.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public CatalogInner update(String resourceGroupName, String catalogName, CatalogUpdate properties) {
         return updateWithResponse(resourceGroupName, catalogName, properties, Context.NONE).getValue();
@@ -764,8 +677,7 @@ public final class CatalogsClientImpl implements CatalogsClient {
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Response<BinaryData> deleteWithResponse(String resourceGroupName, String catalogName) {
-        return service.deleteSync(this.client.getEndpoint(), this.client.getApiVersion(),
-            this.client.getSubscriptionId(), resourceGroupName, catalogName, Context.NONE);
+        return deleteWithResponse(resourceGroupName, catalogName, Context.NONE);
     }
 
     /**
@@ -802,33 +714,13 @@ public final class CatalogsClientImpl implements CatalogsClient {
             this.client.getContext());
     }
 
-    /**
-     * Delete a Catalog.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param catalogName Name of catalog.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the {@link SyncPoller} for polling of long-running operation.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public SyncPoller<PollResult<Void>, Void> beginDelete(String resourceGroupName, String catalogName) {
-        Response<BinaryData> response = deleteWithResponse(resourceGroupName, catalogName);
-        return this.client.<Void, Void>getLroResult(response, Void.class, Void.class, Context.NONE);
+        return beginDelete(resourceGroupName, catalogName, Context.NONE);
     }
 
-    /**
-     * Delete a Catalog.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param catalogName Name of catalog.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the {@link SyncPoller} for polling of long-running operation.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public SyncPoller<PollResult<Void>, Void> beginDelete(String resourceGroupName, String catalogName,
         Context context) {
@@ -851,33 +743,16 @@ public final class CatalogsClientImpl implements CatalogsClient {
         return beginDeleteAsync(resourceGroupName, catalogName).last().flatMap(this.client::getLroFinalResultOrError);
     }
 
-    /**
-     * Delete a Catalog.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param catalogName Name of catalog.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public void delete(String resourceGroupName, String catalogName) {
-        beginDelete(resourceGroupName, catalogName).getFinalResult();
+        delete(resourceGroupName, catalogName, Context.NONE);
     }
 
-    /**
-     * Delete a Catalog.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param catalogName Name of catalog.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public void delete(String resourceGroupName, String catalogName, Context context) {
-        beginDelete(resourceGroupName, catalogName, context).getFinalResult();
+        this.client.getLroFinalResultOrError(beginDelete(resourceGroupName, catalogName, context));
     }
 
     /**
@@ -927,11 +802,7 @@ public final class CatalogsClientImpl implements CatalogsClient {
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private PagedResponse<CatalogInner> listByResourceGroupSinglePage(String resourceGroupName) {
-        final String accept = "application/json";
-        Response<CatalogListResult> res = service.listByResourceGroupSync(this.client.getEndpoint(),
-            this.client.getApiVersion(), this.client.getSubscriptionId(), resourceGroupName, accept, Context.NONE);
-        return new PagedResponseBase<>(res.getRequest(), res.getStatusCode(), res.getHeaders(), res.getValue().value(),
-            res.getValue().nextLink(), null);
+        return listByResourceGroupSinglePage(resourceGroupName, Context.NONE);
     }
 
     /**
@@ -953,31 +824,13 @@ public final class CatalogsClientImpl implements CatalogsClient {
             res.getValue().nextLink(), null);
     }
 
-    /**
-     * List Catalog resources by resource group.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the response of a Catalog list operation as paginated response with {@link PagedIterable}.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.COLLECTION)
     public PagedIterable<CatalogInner> listByResourceGroup(String resourceGroupName) {
-        return new PagedIterable<>(() -> listByResourceGroupSinglePage(resourceGroupName),
-            nextLink -> listByResourceGroupNextSinglePage(nextLink));
+        return listByResourceGroup(resourceGroupName, Context.NONE);
     }
 
-    /**
-     * List Catalog resources by resource group.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the response of a Catalog list operation as paginated response with {@link PagedIterable}.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.COLLECTION)
     public PagedIterable<CatalogInner> listByResourceGroup(String resourceGroupName, Context context) {
         return new PagedIterable<>(() -> listByResourceGroupSinglePage(resourceGroupName, context),
@@ -1025,11 +878,7 @@ public final class CatalogsClientImpl implements CatalogsClient {
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private PagedResponse<CatalogInner> listSinglePage() {
-        final String accept = "application/json";
-        Response<CatalogListResult> res = service.listSync(this.client.getEndpoint(), this.client.getApiVersion(),
-            this.client.getSubscriptionId(), accept, Context.NONE);
-        return new PagedResponseBase<>(res.getRequest(), res.getStatusCode(), res.getHeaders(), res.getValue().value(),
-            res.getValue().nextLink(), null);
+        return listSinglePage(Context.NONE);
     }
 
     /**
@@ -1050,27 +899,13 @@ public final class CatalogsClientImpl implements CatalogsClient {
             res.getValue().nextLink(), null);
     }
 
-    /**
-     * List Catalog resources by subscription ID.
-     * 
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the response of a Catalog list operation as paginated response with {@link PagedIterable}.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.COLLECTION)
     public PagedIterable<CatalogInner> list() {
-        return new PagedIterable<>(() -> listSinglePage(), nextLink -> listBySubscriptionNextSinglePage(nextLink));
+        return list(Context.NONE);
     }
 
-    /**
-     * List Catalog resources by subscription ID.
-     * 
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the response of a Catalog list operation as paginated response with {@link PagedIterable}.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.COLLECTION)
     public PagedIterable<CatalogInner> list(Context context) {
         return new PagedIterable<>(() -> listSinglePage(context),
@@ -1114,17 +949,7 @@ public final class CatalogsClientImpl implements CatalogsClient {
             .flatMap(res -> Mono.justOrEmpty(res.getValue()));
     }
 
-    /**
-     * Counts devices in catalog.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param catalogName Name of catalog.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return response to the action call for count devices in a catalog along with {@link Response}.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Response<CountDevicesResponseInner> countDevicesWithResponse(String resourceGroupName, String catalogName,
         Context context) {
@@ -1133,16 +958,7 @@ public final class CatalogsClientImpl implements CatalogsClient {
             this.client.getSubscriptionId(), resourceGroupName, catalogName, accept, context);
     }
 
-    /**
-     * Counts devices in catalog.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param catalogName Name of catalog.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return response to the action call for count devices in a catalog.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public CountDevicesResponseInner countDevices(String resourceGroupName, String catalogName) {
         return countDevicesWithResponse(resourceGroupName, catalogName, Context.NONE).getValue();
@@ -1236,12 +1052,7 @@ public final class CatalogsClientImpl implements CatalogsClient {
     @ServiceMethod(returns = ReturnType.SINGLE)
     private PagedResponse<DeploymentInner> listDeploymentsSinglePage(String resourceGroupName, String catalogName,
         String filter, Integer top, Integer skip, Integer maxpagesize) {
-        final String accept = "application/json";
-        Response<DeploymentListResult> res = service.listDeploymentsSync(this.client.getEndpoint(),
-            this.client.getApiVersion(), this.client.getSubscriptionId(), resourceGroupName, filter, top, skip,
-            maxpagesize, catalogName, accept, Context.NONE);
-        return new PagedResponseBase<>(res.getRequest(), res.getStatusCode(), res.getHeaders(), res.getValue().value(),
-            res.getValue().nextLink(), null);
+        return listDeploymentsSinglePage(resourceGroupName, catalogName, filter, top, skip, maxpagesize, Context.NONE);
     }
 
     /**
@@ -1270,42 +1081,17 @@ public final class CatalogsClientImpl implements CatalogsClient {
             res.getValue().nextLink(), null);
     }
 
-    /**
-     * Lists deployments for catalog.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param catalogName Name of catalog.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the response of a Deployment list operation as paginated response with {@link PagedIterable}.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.COLLECTION)
     public PagedIterable<DeploymentInner> listDeployments(String resourceGroupName, String catalogName) {
         final String filter = null;
         final Integer top = null;
         final Integer skip = null;
         final Integer maxpagesize = null;
-        return new PagedIterable<>(
-            () -> listDeploymentsSinglePage(resourceGroupName, catalogName, filter, top, skip, maxpagesize),
-            nextLink -> listDeploymentsNextSinglePage(nextLink));
+        return listDeployments(resourceGroupName, catalogName, filter, top, skip, maxpagesize, Context.NONE);
     }
 
-    /**
-     * Lists deployments for catalog.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param catalogName Name of catalog.
-     * @param filter Filter the result list using the given expression.
-     * @param top The number of result items to return.
-     * @param skip The number of result items to skip.
-     * @param maxpagesize The maximum number of result items per page.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the response of a Deployment list operation as paginated response with {@link PagedIterable}.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.COLLECTION)
     public PagedIterable<DeploymentInner> listDeployments(String resourceGroupName, String catalogName, String filter,
         Integer top, Integer skip, Integer maxpagesize, Context context) {
@@ -1410,12 +1196,8 @@ public final class CatalogsClientImpl implements CatalogsClient {
     private PagedResponse<DeviceGroupInner> listDeviceGroupsSinglePage(String resourceGroupName, String catalogName,
         ListDeviceGroupsRequest listDeviceGroupsRequest, String filter, Integer top, Integer skip,
         Integer maxpagesize) {
-        final String accept = "application/json";
-        Response<DeviceGroupListResult> res = service.listDeviceGroupsSync(this.client.getEndpoint(),
-            this.client.getApiVersion(), this.client.getSubscriptionId(), resourceGroupName, filter, top, skip,
-            maxpagesize, catalogName, accept, listDeviceGroupsRequest, Context.NONE);
-        return new PagedResponseBase<>(res.getRequest(), res.getStatusCode(), res.getHeaders(), res.getValue().value(),
-            res.getValue().nextLink(), null);
+        return listDeviceGroupsSinglePage(resourceGroupName, catalogName, listDeviceGroupsRequest, filter, top, skip,
+            maxpagesize, Context.NONE);
     }
 
     /**
@@ -1446,17 +1228,7 @@ public final class CatalogsClientImpl implements CatalogsClient {
             res.getValue().nextLink(), null);
     }
 
-    /**
-     * List the device groups for the catalog.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param catalogName Name of catalog.
-     * @param listDeviceGroupsRequest List device groups for catalog.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the response of a DeviceGroup list operation as paginated response with {@link PagedIterable}.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.COLLECTION)
     public PagedIterable<DeviceGroupInner> listDeviceGroups(String resourceGroupName, String catalogName,
         ListDeviceGroupsRequest listDeviceGroupsRequest) {
@@ -1464,27 +1236,11 @@ public final class CatalogsClientImpl implements CatalogsClient {
         final Integer top = null;
         final Integer skip = null;
         final Integer maxpagesize = null;
-        return new PagedIterable<>(() -> listDeviceGroupsSinglePage(resourceGroupName, catalogName,
-            listDeviceGroupsRequest, filter, top, skip, maxpagesize),
-            nextLink -> listDeviceGroupsNextSinglePage(nextLink));
+        return listDeviceGroups(resourceGroupName, catalogName, listDeviceGroupsRequest, filter, top, skip, maxpagesize,
+            Context.NONE);
     }
 
-    /**
-     * List the device groups for the catalog.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param catalogName Name of catalog.
-     * @param listDeviceGroupsRequest List device groups for catalog.
-     * @param filter Filter the result list using the given expression.
-     * @param top The number of result items to return.
-     * @param skip The number of result items to skip.
-     * @param maxpagesize The maximum number of result items per page.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the response of a DeviceGroup list operation as paginated response with {@link PagedIterable}.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.COLLECTION)
     public PagedIterable<DeviceGroupInner> listDeviceGroups(String resourceGroupName, String catalogName,
         ListDeviceGroupsRequest listDeviceGroupsRequest, String filter, Integer top, Integer skip, Integer maxpagesize,
@@ -1582,12 +1338,8 @@ public final class CatalogsClientImpl implements CatalogsClient {
     @ServiceMethod(returns = ReturnType.SINGLE)
     private PagedResponse<DeviceInsightInner> listDeviceInsightsSinglePage(String resourceGroupName, String catalogName,
         String filter, Integer top, Integer skip, Integer maxpagesize) {
-        final String accept = "application/json";
-        Response<PagedDeviceInsight> res = service.listDeviceInsightsSync(this.client.getEndpoint(),
-            this.client.getApiVersion(), this.client.getSubscriptionId(), resourceGroupName, filter, top, skip,
-            maxpagesize, catalogName, accept, Context.NONE);
-        return new PagedResponseBase<>(res.getRequest(), res.getStatusCode(), res.getHeaders(), res.getValue().value(),
-            res.getValue().nextLink(), null);
+        return listDeviceInsightsSinglePage(resourceGroupName, catalogName, filter, top, skip, maxpagesize,
+            Context.NONE);
     }
 
     /**
@@ -1616,42 +1368,17 @@ public final class CatalogsClientImpl implements CatalogsClient {
             res.getValue().nextLink(), null);
     }
 
-    /**
-     * Lists device insights for catalog.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param catalogName Name of catalog.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return paged collection of DeviceInsight items as paginated response with {@link PagedIterable}.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.COLLECTION)
     public PagedIterable<DeviceInsightInner> listDeviceInsights(String resourceGroupName, String catalogName) {
         final String filter = null;
         final Integer top = null;
         final Integer skip = null;
         final Integer maxpagesize = null;
-        return new PagedIterable<>(
-            () -> listDeviceInsightsSinglePage(resourceGroupName, catalogName, filter, top, skip, maxpagesize),
-            nextLink -> listDeviceInsightsNextSinglePage(nextLink));
+        return listDeviceInsights(resourceGroupName, catalogName, filter, top, skip, maxpagesize, Context.NONE);
     }
 
-    /**
-     * Lists device insights for catalog.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param catalogName Name of catalog.
-     * @param filter Filter the result list using the given expression.
-     * @param top The number of result items to return.
-     * @param skip The number of result items to skip.
-     * @param maxpagesize The maximum number of result items per page.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return paged collection of DeviceInsight items as paginated response with {@link PagedIterable}.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.COLLECTION)
     public PagedIterable<DeviceInsightInner> listDeviceInsights(String resourceGroupName, String catalogName,
         String filter, Integer top, Integer skip, Integer maxpagesize, Context context) {
@@ -1748,12 +1475,7 @@ public final class CatalogsClientImpl implements CatalogsClient {
     @ServiceMethod(returns = ReturnType.SINGLE)
     private PagedResponse<DeviceInner> listDevicesSinglePage(String resourceGroupName, String catalogName,
         String filter, Integer top, Integer skip, Integer maxpagesize) {
-        final String accept = "application/json";
-        Response<DeviceListResult> res = service.listDevicesSync(this.client.getEndpoint(), this.client.getApiVersion(),
-            this.client.getSubscriptionId(), resourceGroupName, filter, top, skip, maxpagesize, catalogName, accept,
-            Context.NONE);
-        return new PagedResponseBase<>(res.getRequest(), res.getStatusCode(), res.getHeaders(), res.getValue().value(),
-            res.getValue().nextLink(), null);
+        return listDevicesSinglePage(resourceGroupName, catalogName, filter, top, skip, maxpagesize, Context.NONE);
     }
 
     /**
@@ -1782,42 +1504,17 @@ public final class CatalogsClientImpl implements CatalogsClient {
             res.getValue().nextLink(), null);
     }
 
-    /**
-     * Lists devices for catalog.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param catalogName Name of catalog.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the response of a Device list operation as paginated response with {@link PagedIterable}.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.COLLECTION)
     public PagedIterable<DeviceInner> listDevices(String resourceGroupName, String catalogName) {
         final String filter = null;
         final Integer top = null;
         final Integer skip = null;
         final Integer maxpagesize = null;
-        return new PagedIterable<>(
-            () -> listDevicesSinglePage(resourceGroupName, catalogName, filter, top, skip, maxpagesize),
-            nextLink -> listDevicesNextSinglePage(nextLink));
+        return listDevices(resourceGroupName, catalogName, filter, top, skip, maxpagesize, Context.NONE);
     }
 
-    /**
-     * Lists devices for catalog.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param catalogName Name of catalog.
-     * @param filter Filter the result list using the given expression.
-     * @param top The number of result items to return.
-     * @param skip The number of result items to skip.
-     * @param maxpagesize The maximum number of result items per page.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the response of a Device list operation as paginated response with {@link PagedIterable}.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.COLLECTION)
     public PagedIterable<DeviceInner> listDevices(String resourceGroupName, String catalogName, String filter,
         Integer top, Integer skip, Integer maxpagesize, Context context) {
@@ -1862,10 +1559,7 @@ public final class CatalogsClientImpl implements CatalogsClient {
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Response<BinaryData> uploadImageWithResponse(String resourceGroupName, String catalogName,
         ImageInner uploadImageRequest) {
-        final String contentType = "application/json";
-        return service.uploadImageSync(this.client.getEndpoint(), this.client.getApiVersion(),
-            this.client.getSubscriptionId(), resourceGroupName, catalogName, contentType, uploadImageRequest,
-            Context.NONE);
+        return uploadImageWithResponse(resourceGroupName, catalogName, uploadImageRequest, Context.NONE);
     }
 
     /**
@@ -1908,36 +1602,14 @@ public final class CatalogsClientImpl implements CatalogsClient {
             this.client.getContext());
     }
 
-    /**
-     * Creates an image. Use this action when the image ID is unknown.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param catalogName Name of catalog.
-     * @param uploadImageRequest Image upload request body.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the {@link SyncPoller} for polling of long-running operation.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public SyncPoller<PollResult<Void>, Void> beginUploadImage(String resourceGroupName, String catalogName,
         ImageInner uploadImageRequest) {
-        Response<BinaryData> response = uploadImageWithResponse(resourceGroupName, catalogName, uploadImageRequest);
-        return this.client.<Void, Void>getLroResult(response, Void.class, Void.class, Context.NONE);
+        return beginUploadImage(resourceGroupName, catalogName, uploadImageRequest, Context.NONE);
     }
 
-    /**
-     * Creates an image. Use this action when the image ID is unknown.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param catalogName Name of catalog.
-     * @param uploadImageRequest Image upload request body.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the {@link SyncPoller} for polling of long-running operation.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public SyncPoller<PollResult<Void>, Void> beginUploadImage(String resourceGroupName, String catalogName,
         ImageInner uploadImageRequest, Context context) {
@@ -1963,36 +1635,18 @@ public final class CatalogsClientImpl implements CatalogsClient {
             .flatMap(this.client::getLroFinalResultOrError);
     }
 
-    /**
-     * Creates an image. Use this action when the image ID is unknown.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param catalogName Name of catalog.
-     * @param uploadImageRequest Image upload request body.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public void uploadImage(String resourceGroupName, String catalogName, ImageInner uploadImageRequest) {
-        beginUploadImage(resourceGroupName, catalogName, uploadImageRequest).getFinalResult();
+        uploadImage(resourceGroupName, catalogName, uploadImageRequest, Context.NONE);
     }
 
-    /**
-     * Creates an image. Use this action when the image ID is unknown.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param catalogName Name of catalog.
-     * @param uploadImageRequest Image upload request body.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public void uploadImage(String resourceGroupName, String catalogName, ImageInner uploadImageRequest,
         Context context) {
-        beginUploadImage(resourceGroupName, catalogName, uploadImageRequest, context).getFinalResult();
+        this.client
+            .getLroFinalResultOrError(beginUploadImage(resourceGroupName, catalogName, uploadImageRequest, context));
     }
 
     /**
@@ -2027,11 +1681,7 @@ public final class CatalogsClientImpl implements CatalogsClient {
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private PagedResponse<CatalogInner> listByResourceGroupNextSinglePage(String nextLink) {
-        final String accept = "application/json";
-        Response<CatalogListResult> res
-            = service.listByResourceGroupNextSync(nextLink, this.client.getEndpoint(), accept, Context.NONE);
-        return new PagedResponseBase<>(res.getRequest(), res.getStatusCode(), res.getHeaders(), res.getValue().value(),
-            res.getValue().nextLink(), null);
+        return listByResourceGroupNextSinglePage(nextLink, Context.NONE);
     }
 
     /**
@@ -2085,11 +1735,7 @@ public final class CatalogsClientImpl implements CatalogsClient {
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private PagedResponse<CatalogInner> listBySubscriptionNextSinglePage(String nextLink) {
-        final String accept = "application/json";
-        Response<CatalogListResult> res
-            = service.listBySubscriptionNextSync(nextLink, this.client.getEndpoint(), accept, Context.NONE);
-        return new PagedResponseBase<>(res.getRequest(), res.getStatusCode(), res.getHeaders(), res.getValue().value(),
-            res.getValue().nextLink(), null);
+        return listBySubscriptionNextSinglePage(nextLink, Context.NONE);
     }
 
     /**
@@ -2142,11 +1788,7 @@ public final class CatalogsClientImpl implements CatalogsClient {
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private PagedResponse<DeploymentInner> listDeploymentsNextSinglePage(String nextLink) {
-        final String accept = "application/json";
-        Response<DeploymentListResult> res
-            = service.listDeploymentsNextSync(nextLink, this.client.getEndpoint(), accept, Context.NONE);
-        return new PagedResponseBase<>(res.getRequest(), res.getStatusCode(), res.getHeaders(), res.getValue().value(),
-            res.getValue().nextLink(), null);
+        return listDeploymentsNextSinglePage(nextLink, Context.NONE);
     }
 
     /**
@@ -2199,11 +1841,7 @@ public final class CatalogsClientImpl implements CatalogsClient {
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private PagedResponse<DeviceGroupInner> listDeviceGroupsNextSinglePage(String nextLink) {
-        final String accept = "application/json";
-        Response<DeviceGroupListResult> res
-            = service.listDeviceGroupsNextSync(nextLink, this.client.getEndpoint(), accept, Context.NONE);
-        return new PagedResponseBase<>(res.getRequest(), res.getStatusCode(), res.getHeaders(), res.getValue().value(),
-            res.getValue().nextLink(), null);
+        return listDeviceGroupsNextSinglePage(nextLink, Context.NONE);
     }
 
     /**
@@ -2257,11 +1895,7 @@ public final class CatalogsClientImpl implements CatalogsClient {
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private PagedResponse<DeviceInsightInner> listDeviceInsightsNextSinglePage(String nextLink) {
-        final String accept = "application/json";
-        Response<PagedDeviceInsight> res
-            = service.listDeviceInsightsNextSync(nextLink, this.client.getEndpoint(), accept, Context.NONE);
-        return new PagedResponseBase<>(res.getRequest(), res.getStatusCode(), res.getHeaders(), res.getValue().value(),
-            res.getValue().nextLink(), null);
+        return listDeviceInsightsNextSinglePage(nextLink, Context.NONE);
     }
 
     /**
@@ -2314,11 +1948,7 @@ public final class CatalogsClientImpl implements CatalogsClient {
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private PagedResponse<DeviceInner> listDevicesNextSinglePage(String nextLink) {
-        final String accept = "application/json";
-        Response<DeviceListResult> res
-            = service.listDevicesNextSync(nextLink, this.client.getEndpoint(), accept, Context.NONE);
-        return new PagedResponseBase<>(res.getRequest(), res.getStatusCode(), res.getHeaders(), res.getValue().value(),
-            res.getValue().nextLink(), null);
+        return listDevicesNextSinglePage(nextLink, Context.NONE);
     }
 
     /**

@@ -204,18 +204,7 @@ public final class CertificatesClientImpl implements CertificatesClient {
             .flatMap(res -> Mono.justOrEmpty(res.getValue()));
     }
 
-    /**
-     * Get a Certificate.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param catalogName Name of catalog.
-     * @param serialNumber Serial number of the certificate. Use '.default' to get current active certificate.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return a Certificate along with {@link Response}.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Response<CertificateInner> getWithResponse(String resourceGroupName, String catalogName, String serialNumber,
         Context context) {
@@ -224,17 +213,7 @@ public final class CertificatesClientImpl implements CertificatesClient {
             resourceGroupName, catalogName, serialNumber, accept, context);
     }
 
-    /**
-     * Get a Certificate.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param catalogName Name of catalog.
-     * @param serialNumber Serial number of the certificate. Use '.default' to get current active certificate.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return a Certificate.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public CertificateInner get(String resourceGroupName, String catalogName, String serialNumber) {
         return getWithResponse(resourceGroupName, catalogName, serialNumber, Context.NONE).getValue();
@@ -328,12 +307,7 @@ public final class CertificatesClientImpl implements CertificatesClient {
     @ServiceMethod(returns = ReturnType.SINGLE)
     private PagedResponse<CertificateInner> listByCatalogSinglePage(String resourceGroupName, String catalogName,
         String filter, Integer top, Integer skip, Integer maxpagesize) {
-        final String accept = "application/json";
-        Response<CertificateListResult> res = service.listByCatalogSync(this.client.getEndpoint(),
-            this.client.getApiVersion(), this.client.getSubscriptionId(), resourceGroupName, filter, top, skip,
-            maxpagesize, catalogName, accept, Context.NONE);
-        return new PagedResponseBase<>(res.getRequest(), res.getStatusCode(), res.getHeaders(), res.getValue().value(),
-            res.getValue().nextLink(), null);
+        return listByCatalogSinglePage(resourceGroupName, catalogName, filter, top, skip, maxpagesize, Context.NONE);
     }
 
     /**
@@ -362,42 +336,17 @@ public final class CertificatesClientImpl implements CertificatesClient {
             res.getValue().nextLink(), null);
     }
 
-    /**
-     * List Certificate resources by Catalog.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param catalogName Name of catalog.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the response of a Certificate list operation as paginated response with {@link PagedIterable}.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.COLLECTION)
     public PagedIterable<CertificateInner> listByCatalog(String resourceGroupName, String catalogName) {
         final String filter = null;
         final Integer top = null;
         final Integer skip = null;
         final Integer maxpagesize = null;
-        return new PagedIterable<>(
-            () -> listByCatalogSinglePage(resourceGroupName, catalogName, filter, top, skip, maxpagesize),
-            nextLink -> listByCatalogNextSinglePage(nextLink));
+        return listByCatalog(resourceGroupName, catalogName, filter, top, skip, maxpagesize, Context.NONE);
     }
 
-    /**
-     * List Certificate resources by Catalog.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param catalogName Name of catalog.
-     * @param filter Filter the result list using the given expression.
-     * @param top The number of result items to return.
-     * @param skip The number of result items to skip.
-     * @param maxpagesize The maximum number of result items per page.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the response of a Certificate list operation as paginated response with {@link PagedIterable}.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.COLLECTION)
     public PagedIterable<CertificateInner> listByCatalog(String resourceGroupName, String catalogName, String filter,
         Integer top, Integer skip, Integer maxpagesize, Context context) {
@@ -445,18 +394,7 @@ public final class CertificatesClientImpl implements CertificatesClient {
             .flatMap(res -> Mono.justOrEmpty(res.getValue()));
     }
 
-    /**
-     * Retrieves cert chain.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param catalogName Name of catalog.
-     * @param serialNumber Serial number of the certificate. Use '.default' to get current active certificate.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the certificate chain response along with {@link Response}.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Response<CertificateChainResponseInner> retrieveCertChainWithResponse(String resourceGroupName,
         String catalogName, String serialNumber, Context context) {
@@ -465,17 +403,7 @@ public final class CertificatesClientImpl implements CertificatesClient {
             this.client.getSubscriptionId(), resourceGroupName, catalogName, serialNumber, accept, context);
     }
 
-    /**
-     * Retrieves cert chain.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param catalogName Name of catalog.
-     * @param serialNumber Serial number of the certificate. Use '.default' to get current active certificate.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the certificate chain response.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public CertificateChainResponseInner retrieveCertChain(String resourceGroupName, String catalogName,
         String serialNumber) {
@@ -526,19 +454,7 @@ public final class CertificatesClientImpl implements CertificatesClient {
             proofOfPossessionNonceRequest).flatMap(res -> Mono.justOrEmpty(res.getValue()));
     }
 
-    /**
-     * Gets the proof of possession nonce.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param catalogName Name of catalog.
-     * @param serialNumber Serial number of the certificate. Use '.default' to get current active certificate.
-     * @param proofOfPossessionNonceRequest Proof of possession nonce request body.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the proof of possession nonce along with {@link Response}.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Response<ProofOfPossessionNonceResponseInner> retrieveProofOfPossessionNonceWithResponse(
         String resourceGroupName, String catalogName, String serialNumber,
@@ -550,18 +466,7 @@ public final class CertificatesClientImpl implements CertificatesClient {
             proofOfPossessionNonceRequest, context);
     }
 
-    /**
-     * Gets the proof of possession nonce.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param catalogName Name of catalog.
-     * @param serialNumber Serial number of the certificate. Use '.default' to get current active certificate.
-     * @param proofOfPossessionNonceRequest Proof of possession nonce request body.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the proof of possession nonce.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public ProofOfPossessionNonceResponseInner retrieveProofOfPossessionNonce(String resourceGroupName,
         String catalogName, String serialNumber, ProofOfPossessionNonceRequest proofOfPossessionNonceRequest) {
@@ -600,11 +505,7 @@ public final class CertificatesClientImpl implements CertificatesClient {
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private PagedResponse<CertificateInner> listByCatalogNextSinglePage(String nextLink) {
-        final String accept = "application/json";
-        Response<CertificateListResult> res
-            = service.listByCatalogNextSync(nextLink, this.client.getEndpoint(), accept, Context.NONE);
-        return new PagedResponseBase<>(res.getRequest(), res.getStatusCode(), res.getHeaders(), res.getValue().value(),
-            res.getValue().nextLink(), null);
+        return listByCatalogNextSinglePage(nextLink, Context.NONE);
     }
 
     /**

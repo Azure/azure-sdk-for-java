@@ -200,18 +200,7 @@ public final class ImagesClientImpl implements ImagesClient {
             .flatMap(res -> Mono.justOrEmpty(res.getValue()));
     }
 
-    /**
-     * Get a Image.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param catalogName Name of catalog.
-     * @param imageName Image name. Use an image GUID for GA versions of the API.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return a Image along with {@link Response}.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Response<ImageInner> getWithResponse(String resourceGroupName, String catalogName, String imageName,
         Context context) {
@@ -220,17 +209,7 @@ public final class ImagesClientImpl implements ImagesClient {
             resourceGroupName, catalogName, imageName, accept, context);
     }
 
-    /**
-     * Get a Image.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param catalogName Name of catalog.
-     * @param imageName Image name. Use an image GUID for GA versions of the API.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return a Image.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public ImageInner get(String resourceGroupName, String catalogName, String imageName) {
         return getWithResponse(resourceGroupName, catalogName, imageName, Context.NONE).getValue();
@@ -276,11 +255,7 @@ public final class ImagesClientImpl implements ImagesClient {
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Response<BinaryData> createOrUpdateWithResponse(String resourceGroupName, String catalogName,
         String imageName, ImageInner resource) {
-        final String contentType = "application/json";
-        final String accept = "application/json";
-        return service.createOrUpdateSync(this.client.getEndpoint(), this.client.getApiVersion(),
-            this.client.getSubscriptionId(), resourceGroupName, catalogName, imageName, contentType, accept, resource,
-            Context.NONE);
+        return createOrUpdateWithResponse(resourceGroupName, catalogName, imageName, resource, Context.NONE);
     }
 
     /**
@@ -327,39 +302,14 @@ public final class ImagesClientImpl implements ImagesClient {
             ImageInner.class, this.client.getContext());
     }
 
-    /**
-     * Create a Image.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param catalogName Name of catalog.
-     * @param imageName Image name. Use an image GUID for GA versions of the API.
-     * @param resource Resource create parameters.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the {@link SyncPoller} for polling of an image resource belonging to a catalog resource.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public SyncPoller<PollResult<ImageInner>, ImageInner> beginCreateOrUpdate(String resourceGroupName,
         String catalogName, String imageName, ImageInner resource) {
-        Response<BinaryData> response = createOrUpdateWithResponse(resourceGroupName, catalogName, imageName, resource);
-        return this.client.<ImageInner, ImageInner>getLroResult(response, ImageInner.class, ImageInner.class,
-            Context.NONE);
+        return beginCreateOrUpdate(resourceGroupName, catalogName, imageName, resource, Context.NONE);
     }
 
-    /**
-     * Create a Image.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param catalogName Name of catalog.
-     * @param imageName Image name. Use an image GUID for GA versions of the API.
-     * @param resource Resource create parameters.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the {@link SyncPoller} for polling of an image resource belonging to a catalog resource.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public SyncPoller<PollResult<ImageInner>, ImageInner> beginCreateOrUpdate(String resourceGroupName,
         String catalogName, String imageName, ImageInner resource, Context context) {
@@ -387,41 +337,19 @@ public final class ImagesClientImpl implements ImagesClient {
             .flatMap(this.client::getLroFinalResultOrError);
     }
 
-    /**
-     * Create a Image.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param catalogName Name of catalog.
-     * @param imageName Image name. Use an image GUID for GA versions of the API.
-     * @param resource Resource create parameters.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return an image resource belonging to a catalog resource.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public ImageInner createOrUpdate(String resourceGroupName, String catalogName, String imageName,
         ImageInner resource) {
-        return beginCreateOrUpdate(resourceGroupName, catalogName, imageName, resource).getFinalResult();
+        return createOrUpdate(resourceGroupName, catalogName, imageName, resource, Context.NONE);
     }
 
-    /**
-     * Create a Image.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param catalogName Name of catalog.
-     * @param imageName Image name. Use an image GUID for GA versions of the API.
-     * @param resource Resource create parameters.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return an image resource belonging to a catalog resource.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public ImageInner createOrUpdate(String resourceGroupName, String catalogName, String imageName,
         ImageInner resource, Context context) {
-        return beginCreateOrUpdate(resourceGroupName, catalogName, imageName, resource, context).getFinalResult();
+        return this.client.getLroFinalResultOrError(
+            beginCreateOrUpdate(resourceGroupName, catalogName, imageName, resource, context));
     }
 
     /**
@@ -457,8 +385,7 @@ public final class ImagesClientImpl implements ImagesClient {
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Response<BinaryData> deleteWithResponse(String resourceGroupName, String catalogName, String imageName) {
-        return service.deleteSync(this.client.getEndpoint(), this.client.getApiVersion(),
-            this.client.getSubscriptionId(), resourceGroupName, catalogName, imageName, Context.NONE);
+        return deleteWithResponse(resourceGroupName, catalogName, imageName, Context.NONE);
     }
 
     /**
@@ -499,36 +426,14 @@ public final class ImagesClientImpl implements ImagesClient {
             this.client.getContext());
     }
 
-    /**
-     * Delete a Image.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param catalogName Name of catalog.
-     * @param imageName Image name. Use an image GUID for GA versions of the API.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the {@link SyncPoller} for polling of long-running operation.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public SyncPoller<PollResult<Void>, Void> beginDelete(String resourceGroupName, String catalogName,
         String imageName) {
-        Response<BinaryData> response = deleteWithResponse(resourceGroupName, catalogName, imageName);
-        return this.client.<Void, Void>getLroResult(response, Void.class, Void.class, Context.NONE);
+        return beginDelete(resourceGroupName, catalogName, imageName, Context.NONE);
     }
 
-    /**
-     * Delete a Image.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param catalogName Name of catalog.
-     * @param imageName Image name. Use an image GUID for GA versions of the API.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the {@link SyncPoller} for polling of long-running operation.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public SyncPoller<PollResult<Void>, Void> beginDelete(String resourceGroupName, String catalogName,
         String imageName, Context context) {
@@ -553,35 +458,16 @@ public final class ImagesClientImpl implements ImagesClient {
             .flatMap(this.client::getLroFinalResultOrError);
     }
 
-    /**
-     * Delete a Image.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param catalogName Name of catalog.
-     * @param imageName Image name. Use an image GUID for GA versions of the API.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public void delete(String resourceGroupName, String catalogName, String imageName) {
-        beginDelete(resourceGroupName, catalogName, imageName).getFinalResult();
+        delete(resourceGroupName, catalogName, imageName, Context.NONE);
     }
 
-    /**
-     * Delete a Image.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param catalogName Name of catalog.
-     * @param imageName Image name. Use an image GUID for GA versions of the API.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public void delete(String resourceGroupName, String catalogName, String imageName, Context context) {
-        beginDelete(resourceGroupName, catalogName, imageName, context).getFinalResult();
+        this.client.getLroFinalResultOrError(beginDelete(resourceGroupName, catalogName, imageName, context));
     }
 
     /**
@@ -672,12 +558,7 @@ public final class ImagesClientImpl implements ImagesClient {
     @ServiceMethod(returns = ReturnType.SINGLE)
     private PagedResponse<ImageInner> listByCatalogSinglePage(String resourceGroupName, String catalogName,
         String filter, Integer top, Integer skip, Integer maxpagesize) {
-        final String accept = "application/json";
-        Response<ImageListResult> res = service.listByCatalogSync(this.client.getEndpoint(),
-            this.client.getApiVersion(), this.client.getSubscriptionId(), resourceGroupName, filter, top, skip,
-            maxpagesize, catalogName, accept, Context.NONE);
-        return new PagedResponseBase<>(res.getRequest(), res.getStatusCode(), res.getHeaders(), res.getValue().value(),
-            res.getValue().nextLink(), null);
+        return listByCatalogSinglePage(resourceGroupName, catalogName, filter, top, skip, maxpagesize, Context.NONE);
     }
 
     /**
@@ -706,42 +587,17 @@ public final class ImagesClientImpl implements ImagesClient {
             res.getValue().nextLink(), null);
     }
 
-    /**
-     * List Image resources by Catalog.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param catalogName Name of catalog.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the response of a Image list operation as paginated response with {@link PagedIterable}.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.COLLECTION)
     public PagedIterable<ImageInner> listByCatalog(String resourceGroupName, String catalogName) {
         final String filter = null;
         final Integer top = null;
         final Integer skip = null;
         final Integer maxpagesize = null;
-        return new PagedIterable<>(
-            () -> listByCatalogSinglePage(resourceGroupName, catalogName, filter, top, skip, maxpagesize),
-            nextLink -> listByCatalogNextSinglePage(nextLink));
+        return listByCatalog(resourceGroupName, catalogName, filter, top, skip, maxpagesize, Context.NONE);
     }
 
-    /**
-     * List Image resources by Catalog.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param catalogName Name of catalog.
-     * @param filter Filter the result list using the given expression.
-     * @param top The number of result items to return.
-     * @param skip The number of result items to skip.
-     * @param maxpagesize The maximum number of result items per page.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the response of a Image list operation as paginated response with {@link PagedIterable}.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.COLLECTION)
     public PagedIterable<ImageInner> listByCatalog(String resourceGroupName, String catalogName, String filter,
         Integer top, Integer skip, Integer maxpagesize, Context context) {
@@ -781,11 +637,7 @@ public final class ImagesClientImpl implements ImagesClient {
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private PagedResponse<ImageInner> listByCatalogNextSinglePage(String nextLink) {
-        final String accept = "application/json";
-        Response<ImageListResult> res
-            = service.listByCatalogNextSync(nextLink, this.client.getEndpoint(), accept, Context.NONE);
-        return new PagedResponseBase<>(res.getRequest(), res.getStatusCode(), res.getHeaders(), res.getValue().value(),
-            res.getValue().nextLink(), null);
+        return listByCatalogNextSinglePage(nextLink, Context.NONE);
     }
 
     /**

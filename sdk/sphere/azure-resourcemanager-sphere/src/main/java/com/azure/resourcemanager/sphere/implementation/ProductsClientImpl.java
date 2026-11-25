@@ -277,18 +277,7 @@ public final class ProductsClientImpl implements ProductsClient {
             .flatMap(res -> Mono.justOrEmpty(res.getValue()));
     }
 
-    /**
-     * Get a Product. '.default' and '.unassigned' are system defined values and cannot be used for product name.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param catalogName Name of catalog.
-     * @param productName Name of product.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return a Product along with {@link Response}.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Response<ProductInner> getWithResponse(String resourceGroupName, String catalogName, String productName,
         Context context) {
@@ -297,17 +286,7 @@ public final class ProductsClientImpl implements ProductsClient {
             resourceGroupName, catalogName, productName, accept, context);
     }
 
-    /**
-     * Get a Product. '.default' and '.unassigned' are system defined values and cannot be used for product name.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param catalogName Name of catalog.
-     * @param productName Name of product.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return a Product.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public ProductInner get(String resourceGroupName, String catalogName, String productName) {
         return getWithResponse(resourceGroupName, catalogName, productName, Context.NONE).getValue();
@@ -353,11 +332,7 @@ public final class ProductsClientImpl implements ProductsClient {
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Response<BinaryData> createOrUpdateWithResponse(String resourceGroupName, String catalogName,
         String productName, ProductInner resource) {
-        final String contentType = "application/json";
-        final String accept = "application/json";
-        return service.createOrUpdateSync(this.client.getEndpoint(), this.client.getApiVersion(),
-            this.client.getSubscriptionId(), resourceGroupName, catalogName, productName, contentType, accept, resource,
-            Context.NONE);
+        return createOrUpdateWithResponse(resourceGroupName, catalogName, productName, resource, Context.NONE);
     }
 
     /**
@@ -404,40 +379,14 @@ public final class ProductsClientImpl implements ProductsClient {
             ProductInner.class, ProductInner.class, this.client.getContext());
     }
 
-    /**
-     * Create a Product. '.default' and '.unassigned' are system defined values and cannot be used for product name.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param catalogName Name of catalog.
-     * @param productName Name of product.
-     * @param resource Resource create parameters.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the {@link SyncPoller} for polling of a product resource belonging to a catalog resource.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public SyncPoller<PollResult<ProductInner>, ProductInner> beginCreateOrUpdate(String resourceGroupName,
         String catalogName, String productName, ProductInner resource) {
-        Response<BinaryData> response
-            = createOrUpdateWithResponse(resourceGroupName, catalogName, productName, resource);
-        return this.client.<ProductInner, ProductInner>getLroResult(response, ProductInner.class, ProductInner.class,
-            Context.NONE);
+        return beginCreateOrUpdate(resourceGroupName, catalogName, productName, resource, Context.NONE);
     }
 
-    /**
-     * Create a Product. '.default' and '.unassigned' are system defined values and cannot be used for product name.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param catalogName Name of catalog.
-     * @param productName Name of product.
-     * @param resource Resource create parameters.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the {@link SyncPoller} for polling of a product resource belonging to a catalog resource.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public SyncPoller<PollResult<ProductInner>, ProductInner> beginCreateOrUpdate(String resourceGroupName,
         String catalogName, String productName, ProductInner resource, Context context) {
@@ -466,41 +415,19 @@ public final class ProductsClientImpl implements ProductsClient {
             .flatMap(this.client::getLroFinalResultOrError);
     }
 
-    /**
-     * Create a Product. '.default' and '.unassigned' are system defined values and cannot be used for product name.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param catalogName Name of catalog.
-     * @param productName Name of product.
-     * @param resource Resource create parameters.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return a product resource belonging to a catalog resource.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public ProductInner createOrUpdate(String resourceGroupName, String catalogName, String productName,
         ProductInner resource) {
-        return beginCreateOrUpdate(resourceGroupName, catalogName, productName, resource).getFinalResult();
+        return createOrUpdate(resourceGroupName, catalogName, productName, resource, Context.NONE);
     }
 
-    /**
-     * Create a Product. '.default' and '.unassigned' are system defined values and cannot be used for product name.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param catalogName Name of catalog.
-     * @param productName Name of product.
-     * @param resource Resource create parameters.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return a product resource belonging to a catalog resource.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public ProductInner createOrUpdate(String resourceGroupName, String catalogName, String productName,
         ProductInner resource, Context context) {
-        return beginCreateOrUpdate(resourceGroupName, catalogName, productName, resource, context).getFinalResult();
+        return this.client.getLroFinalResultOrError(
+            beginCreateOrUpdate(resourceGroupName, catalogName, productName, resource, context));
     }
 
     /**
@@ -543,11 +470,7 @@ public final class ProductsClientImpl implements ProductsClient {
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Response<BinaryData> updateWithResponse(String resourceGroupName, String catalogName, String productName,
         ProductUpdate properties) {
-        final String contentType = "application/json";
-        final String accept = "application/json";
-        return service.updateSync(this.client.getEndpoint(), this.client.getApiVersion(),
-            this.client.getSubscriptionId(), resourceGroupName, catalogName, productName, contentType, accept,
-            properties, Context.NONE);
+        return updateWithResponse(resourceGroupName, catalogName, productName, properties, Context.NONE);
     }
 
     /**
@@ -594,39 +517,14 @@ public final class ProductsClientImpl implements ProductsClient {
             ProductInner.class, ProductInner.class, this.client.getContext());
     }
 
-    /**
-     * Update a Product. '.default' and '.unassigned' are system defined values and cannot be used for product name.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param catalogName Name of catalog.
-     * @param productName Name of product.
-     * @param properties The resource properties to be updated.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the {@link SyncPoller} for polling of a product resource belonging to a catalog resource.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public SyncPoller<PollResult<ProductInner>, ProductInner> beginUpdate(String resourceGroupName, String catalogName,
         String productName, ProductUpdate properties) {
-        Response<BinaryData> response = updateWithResponse(resourceGroupName, catalogName, productName, properties);
-        return this.client.<ProductInner, ProductInner>getLroResult(response, ProductInner.class, ProductInner.class,
-            Context.NONE);
+        return beginUpdate(resourceGroupName, catalogName, productName, properties, Context.NONE);
     }
 
-    /**
-     * Update a Product. '.default' and '.unassigned' are system defined values and cannot be used for product name.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param catalogName Name of catalog.
-     * @param productName Name of product.
-     * @param properties The resource properties to be updated.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the {@link SyncPoller} for polling of a product resource belonging to a catalog resource.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public SyncPoller<PollResult<ProductInner>, ProductInner> beginUpdate(String resourceGroupName, String catalogName,
         String productName, ProductUpdate properties, Context context) {
@@ -655,41 +553,19 @@ public final class ProductsClientImpl implements ProductsClient {
             .flatMap(this.client::getLroFinalResultOrError);
     }
 
-    /**
-     * Update a Product. '.default' and '.unassigned' are system defined values and cannot be used for product name.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param catalogName Name of catalog.
-     * @param productName Name of product.
-     * @param properties The resource properties to be updated.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return a product resource belonging to a catalog resource.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public ProductInner update(String resourceGroupName, String catalogName, String productName,
         ProductUpdate properties) {
-        return beginUpdate(resourceGroupName, catalogName, productName, properties).getFinalResult();
+        return update(resourceGroupName, catalogName, productName, properties, Context.NONE);
     }
 
-    /**
-     * Update a Product. '.default' and '.unassigned' are system defined values and cannot be used for product name.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param catalogName Name of catalog.
-     * @param productName Name of product.
-     * @param properties The resource properties to be updated.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return a product resource belonging to a catalog resource.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public ProductInner update(String resourceGroupName, String catalogName, String productName,
         ProductUpdate properties, Context context) {
-        return beginUpdate(resourceGroupName, catalogName, productName, properties, context).getFinalResult();
+        return this.client
+            .getLroFinalResultOrError(beginUpdate(resourceGroupName, catalogName, productName, properties, context));
     }
 
     /**
@@ -725,8 +601,7 @@ public final class ProductsClientImpl implements ProductsClient {
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Response<BinaryData> deleteWithResponse(String resourceGroupName, String catalogName, String productName) {
-        return service.deleteSync(this.client.getEndpoint(), this.client.getApiVersion(),
-            this.client.getSubscriptionId(), resourceGroupName, catalogName, productName, Context.NONE);
+        return deleteWithResponse(resourceGroupName, catalogName, productName, Context.NONE);
     }
 
     /**
@@ -767,36 +642,14 @@ public final class ProductsClientImpl implements ProductsClient {
             this.client.getContext());
     }
 
-    /**
-     * Delete a Product. '.default' and '.unassigned' are system defined values and cannot be used for product name'.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param catalogName Name of catalog.
-     * @param productName Name of product.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the {@link SyncPoller} for polling of long-running operation.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public SyncPoller<PollResult<Void>, Void> beginDelete(String resourceGroupName, String catalogName,
         String productName) {
-        Response<BinaryData> response = deleteWithResponse(resourceGroupName, catalogName, productName);
-        return this.client.<Void, Void>getLroResult(response, Void.class, Void.class, Context.NONE);
+        return beginDelete(resourceGroupName, catalogName, productName, Context.NONE);
     }
 
-    /**
-     * Delete a Product. '.default' and '.unassigned' are system defined values and cannot be used for product name'.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param catalogName Name of catalog.
-     * @param productName Name of product.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the {@link SyncPoller} for polling of long-running operation.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public SyncPoller<PollResult<Void>, Void> beginDelete(String resourceGroupName, String catalogName,
         String productName, Context context) {
@@ -821,35 +674,16 @@ public final class ProductsClientImpl implements ProductsClient {
             .flatMap(this.client::getLroFinalResultOrError);
     }
 
-    /**
-     * Delete a Product. '.default' and '.unassigned' are system defined values and cannot be used for product name'.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param catalogName Name of catalog.
-     * @param productName Name of product.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public void delete(String resourceGroupName, String catalogName, String productName) {
-        beginDelete(resourceGroupName, catalogName, productName).getFinalResult();
+        delete(resourceGroupName, catalogName, productName, Context.NONE);
     }
 
-    /**
-     * Delete a Product. '.default' and '.unassigned' are system defined values and cannot be used for product name'.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param catalogName Name of catalog.
-     * @param productName Name of product.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public void delete(String resourceGroupName, String catalogName, String productName, Context context) {
-        beginDelete(resourceGroupName, catalogName, productName, context).getFinalResult();
+        this.client.getLroFinalResultOrError(beginDelete(resourceGroupName, catalogName, productName, context));
     }
 
     /**
@@ -903,12 +737,7 @@ public final class ProductsClientImpl implements ProductsClient {
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private PagedResponse<ProductInner> listByCatalogSinglePage(String resourceGroupName, String catalogName) {
-        final String accept = "application/json";
-        Response<ProductListResult> res
-            = service.listByCatalogSync(this.client.getEndpoint(), this.client.getApiVersion(),
-                this.client.getSubscriptionId(), resourceGroupName, catalogName, accept, Context.NONE);
-        return new PagedResponseBase<>(res.getRequest(), res.getStatusCode(), res.getHeaders(), res.getValue().value(),
-            res.getValue().nextLink(), null);
+        return listByCatalogSinglePage(resourceGroupName, catalogName, Context.NONE);
     }
 
     /**
@@ -933,33 +762,13 @@ public final class ProductsClientImpl implements ProductsClient {
             res.getValue().nextLink(), null);
     }
 
-    /**
-     * List Product resources by Catalog.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param catalogName Name of catalog.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the response of a Product list operation as paginated response with {@link PagedIterable}.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.COLLECTION)
     public PagedIterable<ProductInner> listByCatalog(String resourceGroupName, String catalogName) {
-        return new PagedIterable<>(() -> listByCatalogSinglePage(resourceGroupName, catalogName),
-            nextLink -> listByCatalogNextSinglePage(nextLink));
+        return listByCatalog(resourceGroupName, catalogName, Context.NONE);
     }
 
-    /**
-     * List Product resources by Catalog.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param catalogName Name of catalog.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the response of a Product list operation as paginated response with {@link PagedIterable}.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.COLLECTION)
     public PagedIterable<ProductInner> listByCatalog(String resourceGroupName, String catalogName, Context context) {
         return new PagedIterable<>(() -> listByCatalogSinglePage(resourceGroupName, catalogName, context),
@@ -1008,19 +817,7 @@ public final class ProductsClientImpl implements ProductsClient {
             .flatMap(res -> Mono.justOrEmpty(res.getValue()));
     }
 
-    /**
-     * Counts devices in product. '.default' and '.unassigned' are system defined values and cannot be used for product
-     * name.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param catalogName Name of catalog.
-     * @param productName Name of product.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return response to the action call for count devices in a catalog along with {@link Response}.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Response<CountDevicesResponseInner> countDevicesWithResponse(String resourceGroupName, String catalogName,
         String productName, Context context) {
@@ -1029,18 +826,7 @@ public final class ProductsClientImpl implements ProductsClient {
             this.client.getSubscriptionId(), resourceGroupName, catalogName, productName, accept, context);
     }
 
-    /**
-     * Counts devices in product. '.default' and '.unassigned' are system defined values and cannot be used for product
-     * name.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param catalogName Name of catalog.
-     * @param productName Name of product.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return response to the action call for count devices in a catalog.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public CountDevicesResponseInner countDevices(String resourceGroupName, String catalogName, String productName) {
         return countDevicesWithResponse(resourceGroupName, catalogName, productName, Context.NONE).getValue();
@@ -1107,12 +893,7 @@ public final class ProductsClientImpl implements ProductsClient {
     @ServiceMethod(returns = ReturnType.SINGLE)
     private PagedResponse<DeviceGroupInner> generateDefaultDeviceGroupsSinglePage(String resourceGroupName,
         String catalogName, String productName) {
-        final String accept = "application/json";
-        Response<DeviceGroupListResult> res
-            = service.generateDefaultDeviceGroupsSync(this.client.getEndpoint(), this.client.getApiVersion(),
-                this.client.getSubscriptionId(), resourceGroupName, catalogName, productName, accept, Context.NONE);
-        return new PagedResponseBase<>(res.getRequest(), res.getStatusCode(), res.getHeaders(), res.getValue().value(),
-            res.getValue().nextLink(), null);
+        return generateDefaultDeviceGroupsSinglePage(resourceGroupName, catalogName, productName, Context.NONE);
     }
 
     /**
@@ -1139,39 +920,14 @@ public final class ProductsClientImpl implements ProductsClient {
             res.getValue().nextLink(), null);
     }
 
-    /**
-     * Generates default device groups for the product. '.default' and '.unassigned' are system defined values and
-     * cannot be used for product name.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param catalogName Name of catalog.
-     * @param productName Name of product.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the response of a DeviceGroup list operation as paginated response with {@link PagedIterable}.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.COLLECTION)
     public PagedIterable<DeviceGroupInner> generateDefaultDeviceGroups(String resourceGroupName, String catalogName,
         String productName) {
-        return new PagedIterable<>(
-            () -> generateDefaultDeviceGroupsSinglePage(resourceGroupName, catalogName, productName),
-            nextLink -> generateDefaultDeviceGroupsNextSinglePage(nextLink));
+        return generateDefaultDeviceGroups(resourceGroupName, catalogName, productName, Context.NONE);
     }
 
-    /**
-     * Generates default device groups for the product. '.default' and '.unassigned' are system defined values and
-     * cannot be used for product name.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param catalogName Name of catalog.
-     * @param productName Name of product.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the response of a DeviceGroup list operation as paginated response with {@link PagedIterable}.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.COLLECTION)
     public PagedIterable<DeviceGroupInner> generateDefaultDeviceGroups(String resourceGroupName, String catalogName,
         String productName, Context context) {
@@ -1211,11 +967,7 @@ public final class ProductsClientImpl implements ProductsClient {
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private PagedResponse<ProductInner> listByCatalogNextSinglePage(String nextLink) {
-        final String accept = "application/json";
-        Response<ProductListResult> res
-            = service.listByCatalogNextSync(nextLink, this.client.getEndpoint(), accept, Context.NONE);
-        return new PagedResponseBase<>(res.getRequest(), res.getStatusCode(), res.getHeaders(), res.getValue().value(),
-            res.getValue().nextLink(), null);
+        return listByCatalogNextSinglePage(nextLink, Context.NONE);
     }
 
     /**
@@ -1268,11 +1020,7 @@ public final class ProductsClientImpl implements ProductsClient {
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private PagedResponse<DeviceGroupInner> generateDefaultDeviceGroupsNextSinglePage(String nextLink) {
-        final String accept = "application/json";
-        Response<DeviceGroupListResult> res
-            = service.generateDefaultDeviceGroupsNextSync(nextLink, this.client.getEndpoint(), accept, Context.NONE);
-        return new PagedResponseBase<>(res.getRequest(), res.getStatusCode(), res.getHeaders(), res.getValue().value(),
-            res.getValue().nextLink(), null);
+        return generateDefaultDeviceGroupsNextSinglePage(nextLink, Context.NONE);
     }
 
     /**

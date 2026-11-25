@@ -281,20 +281,7 @@ public final class DeviceGroupsClientImpl implements DeviceGroupsClient {
             .flatMap(res -> Mono.justOrEmpty(res.getValue()));
     }
 
-    /**
-     * Get a DeviceGroup. '.default' and '.unassigned' are system defined values and cannot be used for product or
-     * device group name.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param catalogName Name of catalog.
-     * @param productName Name of product.
-     * @param deviceGroupName Name of device group.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return a DeviceGroup along with {@link Response}.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Response<DeviceGroupInner> getWithResponse(String resourceGroupName, String catalogName, String productName,
         String deviceGroupName, Context context) {
@@ -303,19 +290,7 @@ public final class DeviceGroupsClientImpl implements DeviceGroupsClient {
             resourceGroupName, catalogName, productName, deviceGroupName, accept, context);
     }
 
-    /**
-     * Get a DeviceGroup. '.default' and '.unassigned' are system defined values and cannot be used for product or
-     * device group name.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param catalogName Name of catalog.
-     * @param productName Name of product.
-     * @param deviceGroupName Name of device group.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return a DeviceGroup.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public DeviceGroupInner get(String resourceGroupName, String catalogName, String productName,
         String deviceGroupName) {
@@ -366,11 +341,8 @@ public final class DeviceGroupsClientImpl implements DeviceGroupsClient {
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Response<BinaryData> createOrUpdateWithResponse(String resourceGroupName, String catalogName,
         String productName, String deviceGroupName, DeviceGroupInner resource) {
-        final String contentType = "application/json";
-        final String accept = "application/json";
-        return service.createOrUpdateSync(this.client.getEndpoint(), this.client.getApiVersion(),
-            this.client.getSubscriptionId(), resourceGroupName, catalogName, productName, deviceGroupName, contentType,
-            accept, resource, Context.NONE);
+        return createOrUpdateWithResponse(resourceGroupName, catalogName, productName, deviceGroupName, resource,
+            Context.NONE);
     }
 
     /**
@@ -422,44 +394,15 @@ public final class DeviceGroupsClientImpl implements DeviceGroupsClient {
             DeviceGroupInner.class, DeviceGroupInner.class, this.client.getContext());
     }
 
-    /**
-     * Create a DeviceGroup. '.default' and '.unassigned' are system defined values and cannot be used for product or
-     * device group name.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param catalogName Name of catalog.
-     * @param productName Name of product.
-     * @param deviceGroupName Name of device group.
-     * @param resource Resource create parameters.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the {@link SyncPoller} for polling of a device group resource belonging to a product resource.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public SyncPoller<PollResult<DeviceGroupInner>, DeviceGroupInner> beginCreateOrUpdate(String resourceGroupName,
         String catalogName, String productName, String deviceGroupName, DeviceGroupInner resource) {
-        Response<BinaryData> response
-            = createOrUpdateWithResponse(resourceGroupName, catalogName, productName, deviceGroupName, resource);
-        return this.client.<DeviceGroupInner, DeviceGroupInner>getLroResult(response, DeviceGroupInner.class,
-            DeviceGroupInner.class, Context.NONE);
+        return beginCreateOrUpdate(resourceGroupName, catalogName, productName, deviceGroupName, resource,
+            Context.NONE);
     }
 
-    /**
-     * Create a DeviceGroup. '.default' and '.unassigned' are system defined values and cannot be used for product or
-     * device group name.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param catalogName Name of catalog.
-     * @param productName Name of product.
-     * @param deviceGroupName Name of device group.
-     * @param resource Resource create parameters.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the {@link SyncPoller} for polling of a device group resource belonging to a product resource.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public SyncPoller<PollResult<DeviceGroupInner>, DeviceGroupInner> beginCreateOrUpdate(String resourceGroupName,
         String catalogName, String productName, String deviceGroupName, DeviceGroupInner resource, Context context) {
@@ -490,47 +433,19 @@ public final class DeviceGroupsClientImpl implements DeviceGroupsClient {
             .flatMap(this.client::getLroFinalResultOrError);
     }
 
-    /**
-     * Create a DeviceGroup. '.default' and '.unassigned' are system defined values and cannot be used for product or
-     * device group name.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param catalogName Name of catalog.
-     * @param productName Name of product.
-     * @param deviceGroupName Name of device group.
-     * @param resource Resource create parameters.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return a device group resource belonging to a product resource.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public DeviceGroupInner createOrUpdate(String resourceGroupName, String catalogName, String productName,
         String deviceGroupName, DeviceGroupInner resource) {
-        return beginCreateOrUpdate(resourceGroupName, catalogName, productName, deviceGroupName, resource)
-            .getFinalResult();
+        return createOrUpdate(resourceGroupName, catalogName, productName, deviceGroupName, resource, Context.NONE);
     }
 
-    /**
-     * Create a DeviceGroup. '.default' and '.unassigned' are system defined values and cannot be used for product or
-     * device group name.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param catalogName Name of catalog.
-     * @param productName Name of product.
-     * @param deviceGroupName Name of device group.
-     * @param resource Resource create parameters.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return a device group resource belonging to a product resource.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public DeviceGroupInner createOrUpdate(String resourceGroupName, String catalogName, String productName,
         String deviceGroupName, DeviceGroupInner resource, Context context) {
-        return beginCreateOrUpdate(resourceGroupName, catalogName, productName, deviceGroupName, resource, context)
-            .getFinalResult();
+        return this.client.getLroFinalResultOrError(
+            beginCreateOrUpdate(resourceGroupName, catalogName, productName, deviceGroupName, resource, context));
     }
 
     /**
@@ -577,11 +492,8 @@ public final class DeviceGroupsClientImpl implements DeviceGroupsClient {
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Response<BinaryData> updateWithResponse(String resourceGroupName, String catalogName, String productName,
         String deviceGroupName, DeviceGroupUpdate properties) {
-        final String contentType = "application/json";
-        final String accept = "application/json";
-        return service.updateSync(this.client.getEndpoint(), this.client.getApiVersion(),
-            this.client.getSubscriptionId(), resourceGroupName, catalogName, productName, deviceGroupName, contentType,
-            accept, properties, Context.NONE);
+        return updateWithResponse(resourceGroupName, catalogName, productName, deviceGroupName, properties,
+            Context.NONE);
     }
 
     /**
@@ -632,44 +544,14 @@ public final class DeviceGroupsClientImpl implements DeviceGroupsClient {
             DeviceGroupInner.class, DeviceGroupInner.class, this.client.getContext());
     }
 
-    /**
-     * Update a DeviceGroup. '.default' and '.unassigned' are system defined values and cannot be used for product or
-     * device group name.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param catalogName Name of catalog.
-     * @param productName Name of product.
-     * @param deviceGroupName Name of device group.
-     * @param properties The resource properties to be updated.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the {@link SyncPoller} for polling of a device group resource belonging to a product resource.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public SyncPoller<PollResult<DeviceGroupInner>, DeviceGroupInner> beginUpdate(String resourceGroupName,
         String catalogName, String productName, String deviceGroupName, DeviceGroupUpdate properties) {
-        Response<BinaryData> response
-            = updateWithResponse(resourceGroupName, catalogName, productName, deviceGroupName, properties);
-        return this.client.<DeviceGroupInner, DeviceGroupInner>getLroResult(response, DeviceGroupInner.class,
-            DeviceGroupInner.class, Context.NONE);
+        return beginUpdate(resourceGroupName, catalogName, productName, deviceGroupName, properties, Context.NONE);
     }
 
-    /**
-     * Update a DeviceGroup. '.default' and '.unassigned' are system defined values and cannot be used for product or
-     * device group name.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param catalogName Name of catalog.
-     * @param productName Name of product.
-     * @param deviceGroupName Name of device group.
-     * @param properties The resource properties to be updated.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the {@link SyncPoller} for polling of a device group resource belonging to a product resource.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public SyncPoller<PollResult<DeviceGroupInner>, DeviceGroupInner> beginUpdate(String resourceGroupName,
         String catalogName, String productName, String deviceGroupName, DeviceGroupUpdate properties, Context context) {
@@ -700,46 +582,19 @@ public final class DeviceGroupsClientImpl implements DeviceGroupsClient {
             .flatMap(this.client::getLroFinalResultOrError);
     }
 
-    /**
-     * Update a DeviceGroup. '.default' and '.unassigned' are system defined values and cannot be used for product or
-     * device group name.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param catalogName Name of catalog.
-     * @param productName Name of product.
-     * @param deviceGroupName Name of device group.
-     * @param properties The resource properties to be updated.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return a device group resource belonging to a product resource.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public DeviceGroupInner update(String resourceGroupName, String catalogName, String productName,
         String deviceGroupName, DeviceGroupUpdate properties) {
-        return beginUpdate(resourceGroupName, catalogName, productName, deviceGroupName, properties).getFinalResult();
+        return update(resourceGroupName, catalogName, productName, deviceGroupName, properties, Context.NONE);
     }
 
-    /**
-     * Update a DeviceGroup. '.default' and '.unassigned' are system defined values and cannot be used for product or
-     * device group name.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param catalogName Name of catalog.
-     * @param productName Name of product.
-     * @param deviceGroupName Name of device group.
-     * @param properties The resource properties to be updated.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return a device group resource belonging to a product resource.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public DeviceGroupInner update(String resourceGroupName, String catalogName, String productName,
         String deviceGroupName, DeviceGroupUpdate properties, Context context) {
-        return beginUpdate(resourceGroupName, catalogName, productName, deviceGroupName, properties, context)
-            .getFinalResult();
+        return this.client.getLroFinalResultOrError(
+            beginUpdate(resourceGroupName, catalogName, productName, deviceGroupName, properties, context));
     }
 
     /**
@@ -780,9 +635,7 @@ public final class DeviceGroupsClientImpl implements DeviceGroupsClient {
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Response<BinaryData> deleteWithResponse(String resourceGroupName, String catalogName, String productName,
         String deviceGroupName) {
-        return service.deleteSync(this.client.getEndpoint(), this.client.getApiVersion(),
-            this.client.getSubscriptionId(), resourceGroupName, catalogName, productName, deviceGroupName,
-            Context.NONE);
+        return deleteWithResponse(resourceGroupName, catalogName, productName, deviceGroupName, Context.NONE);
     }
 
     /**
@@ -828,41 +681,14 @@ public final class DeviceGroupsClientImpl implements DeviceGroupsClient {
             this.client.getContext());
     }
 
-    /**
-     * Delete a DeviceGroup. '.default' and '.unassigned' are system defined values and cannot be used for product or
-     * device group name.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param catalogName Name of catalog.
-     * @param productName Name of product.
-     * @param deviceGroupName Name of device group.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the {@link SyncPoller} for polling of long-running operation.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public SyncPoller<PollResult<Void>, Void> beginDelete(String resourceGroupName, String catalogName,
         String productName, String deviceGroupName) {
-        Response<BinaryData> response
-            = deleteWithResponse(resourceGroupName, catalogName, productName, deviceGroupName);
-        return this.client.<Void, Void>getLroResult(response, Void.class, Void.class, Context.NONE);
+        return beginDelete(resourceGroupName, catalogName, productName, deviceGroupName, Context.NONE);
     }
 
-    /**
-     * Delete a DeviceGroup. '.default' and '.unassigned' are system defined values and cannot be used for product or
-     * device group name.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param catalogName Name of catalog.
-     * @param productName Name of product.
-     * @param deviceGroupName Name of device group.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the {@link SyncPoller} for polling of long-running operation.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public SyncPoller<PollResult<Void>, Void> beginDelete(String resourceGroupName, String catalogName,
         String productName, String deviceGroupName, Context context) {
@@ -891,40 +717,18 @@ public final class DeviceGroupsClientImpl implements DeviceGroupsClient {
             .flatMap(this.client::getLroFinalResultOrError);
     }
 
-    /**
-     * Delete a DeviceGroup. '.default' and '.unassigned' are system defined values and cannot be used for product or
-     * device group name.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param catalogName Name of catalog.
-     * @param productName Name of product.
-     * @param deviceGroupName Name of device group.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public void delete(String resourceGroupName, String catalogName, String productName, String deviceGroupName) {
-        beginDelete(resourceGroupName, catalogName, productName, deviceGroupName).getFinalResult();
+        delete(resourceGroupName, catalogName, productName, deviceGroupName, Context.NONE);
     }
 
-    /**
-     * Delete a DeviceGroup. '.default' and '.unassigned' are system defined values and cannot be used for product or
-     * device group name.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param catalogName Name of catalog.
-     * @param productName Name of product.
-     * @param deviceGroupName Name of device group.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public void delete(String resourceGroupName, String catalogName, String productName, String deviceGroupName,
         Context context) {
-        beginDelete(resourceGroupName, catalogName, productName, deviceGroupName, context).getFinalResult();
+        this.client.getLroFinalResultOrError(
+            beginDelete(resourceGroupName, catalogName, productName, deviceGroupName, context));
     }
 
     /**
@@ -1022,12 +826,8 @@ public final class DeviceGroupsClientImpl implements DeviceGroupsClient {
     @ServiceMethod(returns = ReturnType.SINGLE)
     private PagedResponse<DeviceGroupInner> listByProductSinglePage(String resourceGroupName, String catalogName,
         String productName, String filter, Integer top, Integer skip, Integer maxpagesize) {
-        final String accept = "application/json";
-        Response<DeviceGroupListResult> res = service.listByProductSync(this.client.getEndpoint(),
-            this.client.getApiVersion(), this.client.getSubscriptionId(), resourceGroupName, filter, top, skip,
-            maxpagesize, catalogName, productName, accept, Context.NONE);
-        return new PagedResponseBase<>(res.getRequest(), res.getStatusCode(), res.getHeaders(), res.getValue().value(),
-            res.getValue().nextLink(), null);
+        return listByProductSinglePage(resourceGroupName, catalogName, productName, filter, top, skip, maxpagesize,
+            Context.NONE);
     }
 
     /**
@@ -1058,18 +858,7 @@ public final class DeviceGroupsClientImpl implements DeviceGroupsClient {
             res.getValue().nextLink(), null);
     }
 
-    /**
-     * List DeviceGroup resources by Product. '.default' and '.unassigned' are system defined values and cannot be used
-     * for product name.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param catalogName Name of catalog.
-     * @param productName Name of product.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the response of a DeviceGroup list operation as paginated response with {@link PagedIterable}.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.COLLECTION)
     public PagedIterable<DeviceGroupInner> listByProduct(String resourceGroupName, String catalogName,
         String productName) {
@@ -1077,28 +866,10 @@ public final class DeviceGroupsClientImpl implements DeviceGroupsClient {
         final Integer top = null;
         final Integer skip = null;
         final Integer maxpagesize = null;
-        return new PagedIterable<>(
-            () -> listByProductSinglePage(resourceGroupName, catalogName, productName, filter, top, skip, maxpagesize),
-            nextLink -> listByProductNextSinglePage(nextLink));
+        return listByProduct(resourceGroupName, catalogName, productName, filter, top, skip, maxpagesize, Context.NONE);
     }
 
-    /**
-     * List DeviceGroup resources by Product. '.default' and '.unassigned' are system defined values and cannot be used
-     * for product name.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param catalogName Name of catalog.
-     * @param productName Name of product.
-     * @param filter Filter the result list using the given expression.
-     * @param top The number of result items to return.
-     * @param skip The number of result items to skip.
-     * @param maxpagesize The maximum number of result items per page.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the response of a DeviceGroup list operation as paginated response with {@link PagedIterable}.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.COLLECTION)
     public PagedIterable<DeviceGroupInner> listByProduct(String resourceGroupName, String catalogName,
         String productName, String filter, Integer top, Integer skip, Integer maxpagesize, Context context) {
@@ -1148,9 +919,7 @@ public final class DeviceGroupsClientImpl implements DeviceGroupsClient {
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Response<BinaryData> claimDevicesWithResponse(String resourceGroupName, String catalogName,
         String productName, String deviceGroupName, ClaimDevicesRequest claimDevicesRequest) {
-        final String contentType = "application/json";
-        return service.claimDevicesSync(this.client.getEndpoint(), this.client.getApiVersion(),
-            this.client.getSubscriptionId(), resourceGroupName, catalogName, productName, deviceGroupName, contentType,
+        return claimDevicesWithResponse(resourceGroupName, catalogName, productName, deviceGroupName,
             claimDevicesRequest, Context.NONE);
     }
 
@@ -1201,43 +970,15 @@ public final class DeviceGroupsClientImpl implements DeviceGroupsClient {
             this.client.getContext());
     }
 
-    /**
-     * Bulk claims the devices. Use '.unassigned' or '.default' for the device group and product names when bulk
-     * claiming devices to a catalog only.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param catalogName Name of catalog.
-     * @param productName Name of product.
-     * @param deviceGroupName Name of device group.
-     * @param claimDevicesRequest Bulk claim devices request body.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the {@link SyncPoller} for polling of long-running operation.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public SyncPoller<PollResult<Void>, Void> beginClaimDevices(String resourceGroupName, String catalogName,
         String productName, String deviceGroupName, ClaimDevicesRequest claimDevicesRequest) {
-        Response<BinaryData> response = claimDevicesWithResponse(resourceGroupName, catalogName, productName,
-            deviceGroupName, claimDevicesRequest);
-        return this.client.<Void, Void>getLroResult(response, Void.class, Void.class, Context.NONE);
+        return beginClaimDevices(resourceGroupName, catalogName, productName, deviceGroupName, claimDevicesRequest,
+            Context.NONE);
     }
 
-    /**
-     * Bulk claims the devices. Use '.unassigned' or '.default' for the device group and product names when bulk
-     * claiming devices to a catalog only.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param catalogName Name of catalog.
-     * @param productName Name of product.
-     * @param deviceGroupName Name of device group.
-     * @param claimDevicesRequest Bulk claim devices request body.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the {@link SyncPoller} for polling of long-running operation.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public SyncPoller<PollResult<Void>, Void> beginClaimDevices(String resourceGroupName, String catalogName,
         String productName, String deviceGroupName, ClaimDevicesRequest claimDevicesRequest, Context context) {
@@ -1268,45 +1009,19 @@ public final class DeviceGroupsClientImpl implements DeviceGroupsClient {
             .flatMap(this.client::getLroFinalResultOrError);
     }
 
-    /**
-     * Bulk claims the devices. Use '.unassigned' or '.default' for the device group and product names when bulk
-     * claiming devices to a catalog only.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param catalogName Name of catalog.
-     * @param productName Name of product.
-     * @param deviceGroupName Name of device group.
-     * @param claimDevicesRequest Bulk claim devices request body.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public void claimDevices(String resourceGroupName, String catalogName, String productName, String deviceGroupName,
         ClaimDevicesRequest claimDevicesRequest) {
-        beginClaimDevices(resourceGroupName, catalogName, productName, deviceGroupName, claimDevicesRequest)
-            .getFinalResult();
+        claimDevices(resourceGroupName, catalogName, productName, deviceGroupName, claimDevicesRequest, Context.NONE);
     }
 
-    /**
-     * Bulk claims the devices. Use '.unassigned' or '.default' for the device group and product names when bulk
-     * claiming devices to a catalog only.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param catalogName Name of catalog.
-     * @param productName Name of product.
-     * @param deviceGroupName Name of device group.
-     * @param claimDevicesRequest Bulk claim devices request body.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public void claimDevices(String resourceGroupName, String catalogName, String productName, String deviceGroupName,
         ClaimDevicesRequest claimDevicesRequest, Context context) {
-        beginClaimDevices(resourceGroupName, catalogName, productName, deviceGroupName, claimDevicesRequest, context)
-            .getFinalResult();
+        this.client.getLroFinalResultOrError(beginClaimDevices(resourceGroupName, catalogName, productName,
+            deviceGroupName, claimDevicesRequest, context));
     }
 
     /**
@@ -1354,20 +1069,7 @@ public final class DeviceGroupsClientImpl implements DeviceGroupsClient {
             .flatMap(res -> Mono.justOrEmpty(res.getValue()));
     }
 
-    /**
-     * Counts devices in device group. '.default' and '.unassigned' are system defined values and cannot be used for
-     * product or device group name.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param catalogName Name of catalog.
-     * @param productName Name of product.
-     * @param deviceGroupName Name of device group.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return response to the action call for count devices in a catalog along with {@link Response}.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Response<CountDevicesResponseInner> countDevicesWithResponse(String resourceGroupName, String catalogName,
         String productName, String deviceGroupName, Context context) {
@@ -1377,19 +1079,7 @@ public final class DeviceGroupsClientImpl implements DeviceGroupsClient {
             context);
     }
 
-    /**
-     * Counts devices in device group. '.default' and '.unassigned' are system defined values and cannot be used for
-     * product or device group name.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param catalogName Name of catalog.
-     * @param productName Name of product.
-     * @param deviceGroupName Name of device group.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return response to the action call for count devices in a catalog.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public CountDevicesResponseInner countDevices(String resourceGroupName, String catalogName, String productName,
         String deviceGroupName) {
@@ -1428,11 +1118,7 @@ public final class DeviceGroupsClientImpl implements DeviceGroupsClient {
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private PagedResponse<DeviceGroupInner> listByProductNextSinglePage(String nextLink) {
-        final String accept = "application/json";
-        Response<DeviceGroupListResult> res
-            = service.listByProductNextSync(nextLink, this.client.getEndpoint(), accept, Context.NONE);
-        return new PagedResponseBase<>(res.getRequest(), res.getStatusCode(), res.getHeaders(), res.getValue().value(),
-            res.getValue().nextLink(), null);
+        return listByProductNextSinglePage(nextLink, Context.NONE);
     }
 
     /**

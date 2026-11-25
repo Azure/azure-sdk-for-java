@@ -73,11 +73,7 @@ public final class DeviceImpl implements Device, Device.Definition, Device.Updat
     }
 
     public Device create() {
-        this.innerObject = serviceManager.serviceClient()
-            .getDevices()
-            .createOrUpdate(resourceGroupName, catalogName, productName, deviceGroupName, deviceName, this.innerModel(),
-                Context.NONE);
-        return this;
+        return this.create(Context.NONE);
     }
 
     public Device create(Context context) {
@@ -100,11 +96,7 @@ public final class DeviceImpl implements Device, Device.Definition, Device.Updat
     }
 
     public Device apply() {
-        this.innerObject = serviceManager.serviceClient()
-            .getDevices()
-            .update(resourceGroupName, catalogName, productName, deviceGroupName, deviceName, updateProperties,
-                Context.NONE);
-        return this;
+        return this.apply(Context.NONE);
     }
 
     public Device apply(Context context) {
@@ -136,11 +128,7 @@ public final class DeviceImpl implements Device, Device.Definition, Device.Updat
     }
 
     public Device refresh() {
-        this.innerObject = serviceManager.serviceClient()
-            .getDevices()
-            .getWithResponse(resourceGroupName, catalogName, productName, deviceGroupName, deviceName, Context.NONE)
-            .getValue();
-        return this;
+        return this.refresh(Context.NONE);
     }
 
     public Device refresh(Context context) {
