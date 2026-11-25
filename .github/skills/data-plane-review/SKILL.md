@@ -43,7 +43,8 @@ scope, orchestration, verification, and output only.
    configuration when present. Use unchanged files to verify existing
    documentation, samples, and tests; findings still require changed evidence.
 3. Build the changed public API picture before applying individual rules.
-   Read the workflow's API review manifest. For each pinned-head bundle, read
+   Read the workflow's API review manifest from its exact environment path,
+   without glob discovery. For each pinned-head bundle, read the exact listed
    `api.metadata.yml` and use `api.md` as the complete inventory of public
    clients, builders, operations, models, exceptions, and module exports.
    The snapshot is uncommitted review evidence generated from the pinned PR

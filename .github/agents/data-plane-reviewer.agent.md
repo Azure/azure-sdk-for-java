@@ -65,9 +65,10 @@ workflow.
 3. **Prior state.** Read the latest workflow comment. Stop if it already covers
    the same head SHA. Classify prior concerns as carried forward, resolved, or
    no longer applicable.
-4. **API snapshot.** Read `$DATA_PLANE_REVIEW_MANIFEST`. When it lists bundles
-   for the pinned head, read every `api.md` and `api.metadata.yml` before
-   reviewing the surface. Otherwise use the source-only path.
+4. **API snapshot.** Run `cat "$DATA_PLANE_REVIEW_MANIFEST"` rather than
+   searching for it. When it lists bundles for the pinned head, run `cat` on
+   every exact `api.md` and `api.metadata.yml` path before reviewing the
+   surface. Otherwise use the source-only path.
 5. **Surface pass.** Use `api.md` as the complete public API inventory, then
    trace candidates to changed Java source. Review public clients, builders,
    methods, models, enums, exceptions, and module exports. For parameter-count

@@ -45,7 +45,7 @@ network:
     - pkgs.dev.azure.com
 
 env:
-  DATA_PLANE_REVIEW_MANIFEST: /tmp/gh-aw/data-plane-api-review/manifest.json
+  DATA_PLANE_REVIEW_MANIFEST: "${{ runner.temp }}/gh-aw/data-plane-api-review/manifest.json"
 
 steps:
   - name: Checkout trusted Azure SDK tooling
@@ -188,8 +188,8 @@ steps:
             $manifest.bundles += [ordered]@{
               packageName = $artifact
               packagePath = $packagePath
-              apiMd = "/tmp/gh-aw/data-plane-api-review/$artifact/api.md"
-              metadata = "/tmp/gh-aw/data-plane-api-review/$artifact/api.metadata.yml"
+              apiMd = (Join-Path $outputDirectory 'api.md')
+              metadata = (Join-Path $outputDirectory 'api.metadata.yml')
             }
           } catch {
             $manifest.failures += [ordered]@{
@@ -207,6 +207,9 @@ steps:
         $manifest.reason = $_.Exception.Message
       }
       Write-ReviewManifest
+      if (Test-Path -LiteralPath $prRoot) {
+        Remove-Item -LiteralPath $prRoot -Recurse -Force
+      }
 
 engine:
   id: copilot
@@ -275,12 +278,12 @@ exactly.
    skill, reference, and protocol instructions come only from the trusted base
    revision.
 2. Before inference, the trusted workflow writes
-   `$DATA_PLANE_REVIEW_MANIFEST`. Read it before the public-API pass. For every
+   `$DATA_PLANE_REVIEW_MANIFEST`. Before the public-API pass, run
+   `cat "$DATA_PLANE_REVIEW_MANIFEST"`; do not use glob discovery. For every
    entry in `bundles`, verify the manifest `headSha` matches the pinned PR head,
-   then
-   read the listed `api.md` and `api.metadata.yml`. A `source-only` status or a
-   listed generation failure is workflow state, not an SDK finding; continue
-   with the source-based inventory.
+   then run `cat` on the exact listed `api.md` and `api.metadata.yml` paths. A
+   `source-only` status or a listed generation failure is workflow state, not
+   an SDK finding; continue with the source-based inventory.
 3. Use generated `api.md` as the complete public-API inventory. Apply API-shape
    rules to that inventory, including `DP-METHOD-02`: a newly added
    user-facing method with more than six service parameters requires an
