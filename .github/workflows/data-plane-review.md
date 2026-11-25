@@ -45,7 +45,7 @@ network:
     - pkgs.dev.azure.com
 
 env:
-  DATA_PLANE_REVIEW_MANIFEST: "${{ runner.temp }}/gh-aw/data-plane-api-review/manifest.json"
+  DATA_PLANE_REVIEW_MANIFEST: /tmp/gh-aw/data-plane-api-review/manifest.json
 
 steps:
   - name: Checkout trusted Azure SDK tooling
@@ -78,7 +78,7 @@ steps:
       $hostRoot = Join-Path $env:RUNNER_TEMP 'gh-aw'
       $toolJar = Join-Path $hostRoot 'api-review-tools/api-review-maven-plugin.jar'
       $prRoot = Join-Path $hostRoot 'data-plane-review-pr'
-      $outputRoot = Join-Path $hostRoot 'data-plane-api-review'
+      $outputRoot = '/tmp/gh-aw/data-plane-api-review'
       $manifestPath = Join-Path $outputRoot 'manifest.json'
       $manifest = [ordered]@{
         schemaVersion = 1
