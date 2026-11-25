@@ -30,7 +30,7 @@ Use this client library in an application server to:
 <dependency>
     <groupId>com.azure</groupId>
     <artifactId>azure-messaging-webpubsub-chat</artifactId>
-    <version>1.0.0-beta.2</version>
+    <version>1.0.0</version>
 </dependency>
 ```
 [//]: # ({x-version-update-end})
@@ -156,7 +156,7 @@ ChatPermission publishPermission = ChatPermission.ROOM_PUBLISH_MESSAGE;
 
 The following examples are independent operations. Where an operation refers to
 `general`, `alice`, or `announcements`, the corresponding resources must already
-exist. All examples use the default `2026-08-01-preview` API version.
+exist. All examples use the default `2026-11-01` API version.
 
 ### Create a custom role
 
