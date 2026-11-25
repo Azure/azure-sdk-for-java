@@ -57,10 +57,7 @@ public final class SchemaReferenceImpl implements SchemaReference, SchemaReferen
     }
 
     public SchemaReference create() {
-        this.innerObject = serviceManager.serviceClient()
-            .getSchemaReferences()
-            .createOrUpdate(resourceUri, schemaReferenceName, this.innerModel(), Context.NONE);
-        return this;
+        return this.create(Context.NONE);
     }
 
     public SchemaReference create(Context context) {
@@ -82,11 +79,7 @@ public final class SchemaReferenceImpl implements SchemaReference, SchemaReferen
     }
 
     public SchemaReference apply() {
-        this.innerObject = serviceManager.serviceClient()
-            .getSchemaReferences()
-            .updateWithResponse(resourceUri, schemaReferenceName, this.innerModel(), Context.NONE)
-            .getValue();
-        return this;
+        return this.apply(Context.NONE);
     }
 
     public SchemaReference apply(Context context) {
@@ -108,11 +101,7 @@ public final class SchemaReferenceImpl implements SchemaReference, SchemaReferen
     }
 
     public SchemaReference refresh() {
-        this.innerObject = serviceManager.serviceClient()
-            .getSchemaReferences()
-            .getWithResponse(resourceUri, schemaReferenceName, Context.NONE)
-            .getValue();
-        return this;
+        return this.refresh(Context.NONE);
     }
 
     public SchemaReference refresh(Context context) {

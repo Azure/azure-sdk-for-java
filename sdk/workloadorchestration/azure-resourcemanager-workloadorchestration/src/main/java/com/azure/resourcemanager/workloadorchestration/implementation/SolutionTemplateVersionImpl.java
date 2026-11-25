@@ -69,11 +69,7 @@ public final class SolutionTemplateVersionImpl
     }
 
     public SolutionTemplateVersion create() {
-        this.innerObject = serviceManager.serviceClient()
-            .getSolutionTemplateVersions()
-            .createOrUpdate(resourceGroupName, solutionTemplateName, solutionTemplateVersionName, this.innerModel(),
-                Context.NONE);
-        return this;
+        return this.create(Context.NONE);
     }
 
     public SolutionTemplateVersion create(Context context) {
@@ -96,12 +92,7 @@ public final class SolutionTemplateVersionImpl
     }
 
     public SolutionTemplateVersion apply() {
-        this.innerObject = serviceManager.serviceClient()
-            .getSolutionTemplateVersions()
-            .updateWithResponse(resourceGroupName, solutionTemplateName, solutionTemplateVersionName, this.innerModel(),
-                Context.NONE)
-            .getValue();
-        return this;
+        return this.apply(Context.NONE);
     }
 
     public SolutionTemplateVersion apply(Context context) {
@@ -129,11 +120,7 @@ public final class SolutionTemplateVersionImpl
     }
 
     public SolutionTemplateVersion refresh() {
-        this.innerObject = serviceManager.serviceClient()
-            .getSolutionTemplateVersions()
-            .getWithResponse(resourceGroupName, solutionTemplateName, solutionTemplateVersionName, Context.NONE)
-            .getValue();
-        return this;
+        return this.refresh(Context.NONE);
     }
 
     public SolutionTemplateVersion refresh(Context context) {

@@ -46,7 +46,7 @@ public final class SolutionDeploymentsImpl implements SolutionDeployments {
     }
 
     public void deleteByResourceGroup(String resourceGroupName, String solutionDeploymentName) {
-        this.serviceClient().delete(resourceGroupName, solutionDeploymentName);
+        this.delete(resourceGroupName, solutionDeploymentName, Context.NONE);
     }
 
     public void delete(String resourceGroupName, String solutionDeploymentName, Context context) {
@@ -54,8 +54,7 @@ public final class SolutionDeploymentsImpl implements SolutionDeployments {
     }
 
     public PagedIterable<SolutionDeployment> listByResourceGroup(String resourceGroupName) {
-        PagedIterable<SolutionDeploymentInner> inner = this.serviceClient().listByResourceGroup(resourceGroupName);
-        return ResourceManagerUtils.mapPage(inner, inner1 -> new SolutionDeploymentImpl(inner1, this.manager()));
+        return this.listByResourceGroup(resourceGroupName, Context.NONE);
     }
 
     public PagedIterable<SolutionDeployment> listByResourceGroup(String resourceGroupName, Context context) {
@@ -65,8 +64,7 @@ public final class SolutionDeploymentsImpl implements SolutionDeployments {
     }
 
     public PagedIterable<SolutionDeployment> list() {
-        PagedIterable<SolutionDeploymentInner> inner = this.serviceClient().list();
-        return ResourceManagerUtils.mapPage(inner, inner1 -> new SolutionDeploymentImpl(inner1, this.manager()));
+        return this.list(Context.NONE);
     }
 
     public PagedIterable<SolutionDeployment> list(Context context) {
@@ -75,74 +73,30 @@ public final class SolutionDeploymentsImpl implements SolutionDeployments {
     }
 
     public SolutionDeployment getById(String id) {
-        String resourceGroupName = ResourceManagerUtils.getValueFromIdByParameterName(id,
-            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Edge/solutionDeployments/{solutionDeploymentName}",
-            "resourceGroupName");
-        if (resourceGroupName == null) {
-            throw LOGGER.logExceptionAsError(new IllegalArgumentException(
-                String.format("The resource ID '%s' is not valid. Missing path segment 'resourceGroups'.", id)));
-        }
-        String solutionDeploymentName = ResourceManagerUtils.getValueFromIdByParameterName(id,
-            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Edge/solutionDeployments/{solutionDeploymentName}",
-            "solutionDeploymentName");
-        if (solutionDeploymentName == null) {
-            throw LOGGER.logExceptionAsError(new IllegalArgumentException(
-                String.format("The resource ID '%s' is not valid. Missing path segment 'solutionDeployments'.", id)));
-        }
-        return this.getByResourceGroupWithResponse(resourceGroupName, solutionDeploymentName, Context.NONE).getValue();
+        return this.getByIdWithResponse(id, Context.NONE).getValue();
     }
 
     public Response<SolutionDeployment> getByIdWithResponse(String id, Context context) {
-        String resourceGroupName = ResourceManagerUtils.getValueFromIdByParameterName(id,
+        String resourceGroupName = ResourceManagerUtils.getRequiredValueFromIdByParameterName(id,
             "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Edge/solutionDeployments/{solutionDeploymentName}",
-            "resourceGroupName");
-        if (resourceGroupName == null) {
-            throw LOGGER.logExceptionAsError(new IllegalArgumentException(
-                String.format("The resource ID '%s' is not valid. Missing path segment 'resourceGroups'.", id)));
-        }
-        String solutionDeploymentName = ResourceManagerUtils.getValueFromIdByParameterName(id,
+            "resourceGroupName", "resourceGroups", LOGGER);
+        String solutionDeploymentName = ResourceManagerUtils.getRequiredValueFromIdByParameterName(id,
             "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Edge/solutionDeployments/{solutionDeploymentName}",
-            "solutionDeploymentName");
-        if (solutionDeploymentName == null) {
-            throw LOGGER.logExceptionAsError(new IllegalArgumentException(
-                String.format("The resource ID '%s' is not valid. Missing path segment 'solutionDeployments'.", id)));
-        }
+            "solutionDeploymentName", "solutionDeployments", LOGGER);
         return this.getByResourceGroupWithResponse(resourceGroupName, solutionDeploymentName, context);
     }
 
     public void deleteById(String id) {
-        String resourceGroupName = ResourceManagerUtils.getValueFromIdByParameterName(id,
-            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Edge/solutionDeployments/{solutionDeploymentName}",
-            "resourceGroupName");
-        if (resourceGroupName == null) {
-            throw LOGGER.logExceptionAsError(new IllegalArgumentException(
-                String.format("The resource ID '%s' is not valid. Missing path segment 'resourceGroups'.", id)));
-        }
-        String solutionDeploymentName = ResourceManagerUtils.getValueFromIdByParameterName(id,
-            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Edge/solutionDeployments/{solutionDeploymentName}",
-            "solutionDeploymentName");
-        if (solutionDeploymentName == null) {
-            throw LOGGER.logExceptionAsError(new IllegalArgumentException(
-                String.format("The resource ID '%s' is not valid. Missing path segment 'solutionDeployments'.", id)));
-        }
-        this.delete(resourceGroupName, solutionDeploymentName, Context.NONE);
+        this.deleteByIdWithResponse(id, Context.NONE);
     }
 
     public void deleteByIdWithResponse(String id, Context context) {
-        String resourceGroupName = ResourceManagerUtils.getValueFromIdByParameterName(id,
+        String resourceGroupName = ResourceManagerUtils.getRequiredValueFromIdByParameterName(id,
             "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Edge/solutionDeployments/{solutionDeploymentName}",
-            "resourceGroupName");
-        if (resourceGroupName == null) {
-            throw LOGGER.logExceptionAsError(new IllegalArgumentException(
-                String.format("The resource ID '%s' is not valid. Missing path segment 'resourceGroups'.", id)));
-        }
-        String solutionDeploymentName = ResourceManagerUtils.getValueFromIdByParameterName(id,
+            "resourceGroupName", "resourceGroups", LOGGER);
+        String solutionDeploymentName = ResourceManagerUtils.getRequiredValueFromIdByParameterName(id,
             "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Edge/solutionDeployments/{solutionDeploymentName}",
-            "solutionDeploymentName");
-        if (solutionDeploymentName == null) {
-            throw LOGGER.logExceptionAsError(new IllegalArgumentException(
-                String.format("The resource ID '%s' is not valid. Missing path segment 'solutionDeployments'.", id)));
-        }
+            "solutionDeploymentName", "solutionDeployments", LOGGER);
         this.delete(resourceGroupName, solutionDeploymentName, context);
     }
 

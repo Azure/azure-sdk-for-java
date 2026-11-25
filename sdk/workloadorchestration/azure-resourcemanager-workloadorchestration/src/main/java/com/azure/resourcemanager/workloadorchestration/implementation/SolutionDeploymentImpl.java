@@ -90,10 +90,7 @@ public final class SolutionDeploymentImpl
     }
 
     public SolutionDeployment create() {
-        this.innerObject = serviceManager.serviceClient()
-            .getSolutionDeployments()
-            .createOrUpdate(resourceGroupName, solutionDeploymentName, this.innerModel(), Context.NONE);
-        return this;
+        return this.create(Context.NONE);
     }
 
     public SolutionDeployment create(Context context) {
@@ -116,11 +113,7 @@ public final class SolutionDeploymentImpl
     }
 
     public SolutionDeployment apply() {
-        this.innerObject = serviceManager.serviceClient()
-            .getSolutionDeployments()
-            .updateWithResponse(resourceGroupName, solutionDeploymentName, updateProperties, Context.NONE)
-            .getValue();
-        return this;
+        return this.apply(Context.NONE);
     }
 
     public SolutionDeployment apply(Context context) {
@@ -144,11 +137,7 @@ public final class SolutionDeploymentImpl
     }
 
     public SolutionDeployment refresh() {
-        this.innerObject = serviceManager.serviceClient()
-            .getSolutionDeployments()
-            .getByResourceGroupWithResponse(resourceGroupName, solutionDeploymentName, Context.NONE)
-            .getValue();
-        return this;
+        return this.refresh(Context.NONE);
     }
 
     public SolutionDeployment refresh(Context context) {

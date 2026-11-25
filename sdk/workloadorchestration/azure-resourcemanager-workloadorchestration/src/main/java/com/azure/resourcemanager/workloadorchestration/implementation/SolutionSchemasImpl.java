@@ -49,9 +49,8 @@ public final class SolutionSchemasImpl implements SolutionSchemas {
 
     public PagedIterable<SolutionSchema> listBySolutionTemplateVersion(String resourceGroupName,
         String solutionTemplateName, String solutionTemplateVersionName) {
-        PagedIterable<SolutionSchemaInner> inner = this.serviceClient()
-            .listBySolutionTemplateVersion(resourceGroupName, solutionTemplateName, solutionTemplateVersionName);
-        return ResourceManagerUtils.mapPage(inner, inner1 -> new SolutionSchemaImpl(inner1, this.manager()));
+        return this.listBySolutionTemplateVersion(resourceGroupName, solutionTemplateName, solutionTemplateVersionName,
+            Context.NONE);
     }
 
     public PagedIterable<SolutionSchema> listBySolutionTemplateVersion(String resourceGroupName,

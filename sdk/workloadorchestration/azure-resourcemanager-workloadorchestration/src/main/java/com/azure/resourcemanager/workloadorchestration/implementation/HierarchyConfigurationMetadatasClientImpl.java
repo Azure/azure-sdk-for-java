@@ -155,17 +155,7 @@ public final class HierarchyConfigurationMetadatasClientImpl implements Hierarch
             .flatMap(res -> Mono.justOrEmpty(res.getValue()));
     }
 
-    /**
-     * Get a Hierarchy Configuration Metadata resource.
-     * 
-     * @param resourceUri The fully qualified Azure Resource manager identifier of the resource.
-     * @param hierarchyConfigurationMetadataName Name of the hierarchy configuration metadata.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return a Hierarchy Configuration Metadata resource along with {@link Response}.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Response<HierarchyConfigurationMetadataInner> getWithResponse(String resourceUri,
         String hierarchyConfigurationMetadataName, Context context) {
@@ -174,16 +164,7 @@ public final class HierarchyConfigurationMetadatasClientImpl implements Hierarch
             hierarchyConfigurationMetadataName, accept, context);
     }
 
-    /**
-     * Get a Hierarchy Configuration Metadata resource.
-     * 
-     * @param resourceUri The fully qualified Azure Resource manager identifier of the resource.
-     * @param hierarchyConfigurationMetadataName Name of the hierarchy configuration metadata.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return a Hierarchy Configuration Metadata resource.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public HierarchyConfigurationMetadataInner get(String resourceUri, String hierarchyConfigurationMetadataName) {
         return getWithResponse(resourceUri, hierarchyConfigurationMetadataName, Context.NONE).getValue();
@@ -237,11 +218,7 @@ public final class HierarchyConfigurationMetadatasClientImpl implements Hierarch
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private PagedResponse<HierarchyConfigurationMetadataInner> listByParentSinglePage(String resourceUri) {
-        final String accept = "application/json";
-        Response<HierarchyConfigurationMetadataListResult> res = service.listByParentSync(this.client.getEndpoint(),
-            this.client.getApiVersion(), resourceUri, accept, Context.NONE);
-        return new PagedResponseBase<>(res.getRequest(), res.getStatusCode(), res.getHeaders(), res.getValue().value(),
-            res.getValue().nextLink(), null);
+        return listByParentSinglePage(resourceUri, Context.NONE);
     }
 
     /**
@@ -264,33 +241,13 @@ public final class HierarchyConfigurationMetadatasClientImpl implements Hierarch
             res.getValue().nextLink(), null);
     }
 
-    /**
-     * List Solution resources.
-     * 
-     * @param resourceUri The fully qualified Azure Resource manager identifier of the resource.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the response of a HierarchyConfigurationMetadata list operation as paginated response with
-     * {@link PagedIterable}.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.COLLECTION)
     public PagedIterable<HierarchyConfigurationMetadataInner> listByParent(String resourceUri) {
-        return new PagedIterable<>(() -> listByParentSinglePage(resourceUri),
-            nextLink -> listByParentNextSinglePage(nextLink));
+        return listByParent(resourceUri, Context.NONE);
     }
 
-    /**
-     * List Solution resources.
-     * 
-     * @param resourceUri The fully qualified Azure Resource manager identifier of the resource.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the response of a HierarchyConfigurationMetadata list operation as paginated response with
-     * {@link PagedIterable}.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.COLLECTION)
     public PagedIterable<HierarchyConfigurationMetadataInner> listByParent(String resourceUri, Context context) {
         return new PagedIterable<>(() -> listByParentSinglePage(resourceUri, context),
@@ -328,11 +285,7 @@ public final class HierarchyConfigurationMetadatasClientImpl implements Hierarch
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private PagedResponse<HierarchyConfigurationMetadataInner> listByParentNextSinglePage(String nextLink) {
-        final String accept = "application/json";
-        Response<HierarchyConfigurationMetadataListResult> res
-            = service.listByParentNextSync(nextLink, this.client.getEndpoint(), accept, Context.NONE);
-        return new PagedResponseBase<>(res.getRequest(), res.getStatusCode(), res.getHeaders(), res.getValue().value(),
-            res.getValue().nextLink(), null);
+        return listByParentNextSinglePage(nextLink, Context.NONE);
     }
 
     /**

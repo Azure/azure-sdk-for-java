@@ -164,18 +164,7 @@ public final class HierarchyConfigurationMetadataVersionsClientImpl
             hierarchyConfigurationMetadataVersionName).flatMap(res -> Mono.justOrEmpty(res.getValue()));
     }
 
-    /**
-     * Get a Hierarchy Configuration Metadata Version resource.
-     * 
-     * @param resourceUri The fully qualified Azure Resource manager identifier of the resource.
-     * @param hierarchyConfigurationMetadataName Name of the hierarchy configuration metadata.
-     * @param hierarchyConfigurationMetadataVersionName Name of the hierarchy configuration metadata version.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return a Hierarchy Configuration Metadata Version resource along with {@link Response}.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Response<HierarchyConfigurationMetadataVersionInner> getWithResponse(String resourceUri,
         String hierarchyConfigurationMetadataName, String hierarchyConfigurationMetadataVersionName, Context context) {
@@ -184,17 +173,7 @@ public final class HierarchyConfigurationMetadataVersionsClientImpl
             hierarchyConfigurationMetadataName, hierarchyConfigurationMetadataVersionName, accept, context);
     }
 
-    /**
-     * Get a Hierarchy Configuration Metadata Version resource.
-     * 
-     * @param resourceUri The fully qualified Azure Resource manager identifier of the resource.
-     * @param hierarchyConfigurationMetadataName Name of the hierarchy configuration metadata.
-     * @param hierarchyConfigurationMetadataVersionName Name of the hierarchy configuration metadata version.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return a Hierarchy Configuration Metadata Version resource.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public HierarchyConfigurationMetadataVersionInner get(String resourceUri, String hierarchyConfigurationMetadataName,
         String hierarchyConfigurationMetadataVersionName) {
@@ -257,12 +236,7 @@ public final class HierarchyConfigurationMetadataVersionsClientImpl
     @ServiceMethod(returns = ReturnType.SINGLE)
     private PagedResponse<HierarchyConfigurationMetadataVersionInner> listByParentSinglePage(String resourceUri,
         String hierarchyConfigurationMetadataName) {
-        final String accept = "application/json";
-        Response<HierarchyConfigurationMetadataVersionListResult> res
-            = service.listByParentSync(this.client.getEndpoint(), this.client.getApiVersion(), resourceUri,
-                hierarchyConfigurationMetadataName, accept, Context.NONE);
-        return new PagedResponseBase<>(res.getRequest(), res.getStatusCode(), res.getHeaders(), res.getValue().value(),
-            res.getValue().nextLink(), null);
+        return listByParentSinglePage(resourceUri, hierarchyConfigurationMetadataName, Context.NONE);
     }
 
     /**
@@ -287,36 +261,14 @@ public final class HierarchyConfigurationMetadataVersionsClientImpl
             res.getValue().nextLink(), null);
     }
 
-    /**
-     * List Hierarchy Configuration Metadata Version resources.
-     * 
-     * @param resourceUri The fully qualified Azure Resource manager identifier of the resource.
-     * @param hierarchyConfigurationMetadataName Name of the hierarchy configuration metadata.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the response of a HierarchyConfigurationMetadataVersion list operation as paginated response with
-     * {@link PagedIterable}.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.COLLECTION)
     public PagedIterable<HierarchyConfigurationMetadataVersionInner> listByParent(String resourceUri,
         String hierarchyConfigurationMetadataName) {
-        return new PagedIterable<>(() -> listByParentSinglePage(resourceUri, hierarchyConfigurationMetadataName),
-            nextLink -> listByParentNextSinglePage(nextLink));
+        return listByParent(resourceUri, hierarchyConfigurationMetadataName, Context.NONE);
     }
 
-    /**
-     * List Hierarchy Configuration Metadata Version resources.
-     * 
-     * @param resourceUri The fully qualified Azure Resource manager identifier of the resource.
-     * @param hierarchyConfigurationMetadataName Name of the hierarchy configuration metadata.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the response of a HierarchyConfigurationMetadataVersion list operation as paginated response with
-     * {@link PagedIterable}.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.COLLECTION)
     public PagedIterable<HierarchyConfigurationMetadataVersionInner> listByParent(String resourceUri,
         String hierarchyConfigurationMetadataName, Context context) {
@@ -358,11 +310,7 @@ public final class HierarchyConfigurationMetadataVersionsClientImpl
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private PagedResponse<HierarchyConfigurationMetadataVersionInner> listByParentNextSinglePage(String nextLink) {
-        final String accept = "application/json";
-        Response<HierarchyConfigurationMetadataVersionListResult> res
-            = service.listByParentNextSync(nextLink, this.client.getEndpoint(), accept, Context.NONE);
-        return new PagedResponseBase<>(res.getRequest(), res.getStatusCode(), res.getHeaders(), res.getValue().value(),
-            res.getValue().nextLink(), null);
+        return listByParentNextSinglePage(nextLink, Context.NONE);
     }
 
     /**

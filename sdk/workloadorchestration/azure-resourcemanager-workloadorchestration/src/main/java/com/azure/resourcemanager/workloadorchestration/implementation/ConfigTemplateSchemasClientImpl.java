@@ -168,19 +168,7 @@ public final class ConfigTemplateSchemasClientImpl implements ConfigTemplateSche
             configTemplateSchemaName).flatMap(res -> Mono.justOrEmpty(res.getValue()));
     }
 
-    /**
-     * Get a ConfigTemplateSchema Resource.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param configTemplateName The name of the ConfigTemplate.
-     * @param configTemplateVersionName The name of the ConfigTemplateVersion.
-     * @param configTemplateSchemaName The name of the ConfigTemplateSchemaProperties.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return a ConfigTemplateSchema Resource along with {@link Response}.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Response<ConfigTemplateSchemaInner> getWithResponse(String resourceGroupName, String configTemplateName,
         String configTemplateVersionName, String configTemplateSchemaName, Context context) {
@@ -190,18 +178,7 @@ public final class ConfigTemplateSchemasClientImpl implements ConfigTemplateSche
             context);
     }
 
-    /**
-     * Get a ConfigTemplateSchema Resource.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param configTemplateName The name of the ConfigTemplate.
-     * @param configTemplateVersionName The name of the ConfigTemplateVersion.
-     * @param configTemplateSchemaName The name of the ConfigTemplateSchemaProperties.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return a ConfigTemplateSchema Resource.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public ConfigTemplateSchemaInner get(String resourceGroupName, String configTemplateName,
         String configTemplateVersionName, String configTemplateSchemaName) {
@@ -266,12 +243,8 @@ public final class ConfigTemplateSchemasClientImpl implements ConfigTemplateSche
     @ServiceMethod(returns = ReturnType.SINGLE)
     private PagedResponse<ConfigTemplateSchemaInner> listByConfigTemplateVersionSinglePage(String resourceGroupName,
         String configTemplateName, String configTemplateVersionName) {
-        final String accept = "application/json";
-        Response<ConfigTemplateSchemaListResult> res = service.listByConfigTemplateVersionSync(
-            this.client.getEndpoint(), this.client.getApiVersion(), this.client.getSubscriptionId(), resourceGroupName,
-            configTemplateName, configTemplateVersionName, accept, Context.NONE);
-        return new PagedResponseBase<>(res.getRequest(), res.getStatusCode(), res.getHeaders(), res.getValue().value(),
-            res.getValue().nextLink(), null);
+        return listByConfigTemplateVersionSinglePage(resourceGroupName, configTemplateName, configTemplateVersionName,
+            Context.NONE);
     }
 
     /**
@@ -297,36 +270,15 @@ public final class ConfigTemplateSchemasClientImpl implements ConfigTemplateSche
             res.getValue().nextLink(), null);
     }
 
-    /**
-     * List by ConfigTemplateVersion.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param configTemplateName The name of the ConfigTemplate.
-     * @param configTemplateVersionName The name of the ConfigTemplateVersion.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the response of a ConfigTemplateSchema list operation as paginated response with {@link PagedIterable}.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.COLLECTION)
     public PagedIterable<ConfigTemplateSchemaInner> listByConfigTemplateVersion(String resourceGroupName,
         String configTemplateName, String configTemplateVersionName) {
-        return new PagedIterable<>(() -> listByConfigTemplateVersionSinglePage(resourceGroupName, configTemplateName,
-            configTemplateVersionName), nextLink -> listByConfigTemplateVersionNextSinglePage(nextLink));
+        return listByConfigTemplateVersion(resourceGroupName, configTemplateName, configTemplateVersionName,
+            Context.NONE);
     }
 
-    /**
-     * List by ConfigTemplateVersion.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param configTemplateName The name of the ConfigTemplate.
-     * @param configTemplateVersionName The name of the ConfigTemplateVersion.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the response of a ConfigTemplateSchema list operation as paginated response with {@link PagedIterable}.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.COLLECTION)
     public PagedIterable<ConfigTemplateSchemaInner> listByConfigTemplateVersion(String resourceGroupName,
         String configTemplateName, String configTemplateVersionName, Context context) {
@@ -368,11 +320,7 @@ public final class ConfigTemplateSchemasClientImpl implements ConfigTemplateSche
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private PagedResponse<ConfigTemplateSchemaInner> listByConfigTemplateVersionNextSinglePage(String nextLink) {
-        final String accept = "application/json";
-        Response<ConfigTemplateSchemaListResult> res
-            = service.listByConfigTemplateVersionNextSync(nextLink, this.client.getEndpoint(), accept, Context.NONE);
-        return new PagedResponseBase<>(res.getRequest(), res.getStatusCode(), res.getHeaders(), res.getValue().value(),
-            res.getValue().nextLink(), null);
+        return listByConfigTemplateVersionNextSinglePage(nextLink, Context.NONE);
     }
 
     /**

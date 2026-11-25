@@ -236,18 +236,7 @@ public final class ConfigTemplateMetadatasClientImpl implements ConfigTemplateMe
             .flatMap(res -> Mono.justOrEmpty(res.getValue()));
     }
 
-    /**
-     * Get a ConfigTemplateMetadata Resource.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param configTemplateName The name of the ConfigTemplate.
-     * @param configTemplateMetadataName The name of the ConfigTemplateMetadataProperties.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return a ConfigTemplateMetadata Resource along with {@link Response}.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Response<ConfigTemplateMetadataInner> getWithResponse(String resourceGroupName, String configTemplateName,
         String configTemplateMetadataName, Context context) {
@@ -256,17 +245,7 @@ public final class ConfigTemplateMetadatasClientImpl implements ConfigTemplateMe
             resourceGroupName, configTemplateName, configTemplateMetadataName, accept, context);
     }
 
-    /**
-     * Get a ConfigTemplateMetadata Resource.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param configTemplateName The name of the ConfigTemplate.
-     * @param configTemplateMetadataName The name of the ConfigTemplateMetadataProperties.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return a ConfigTemplateMetadata Resource.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public ConfigTemplateMetadataInner get(String resourceGroupName, String configTemplateName,
         String configTemplateMetadataName) {
@@ -313,11 +292,8 @@ public final class ConfigTemplateMetadatasClientImpl implements ConfigTemplateMe
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Response<BinaryData> createOrUpdateWithResponse(String resourceGroupName, String configTemplateName,
         String configTemplateMetadataName, ConfigTemplateMetadataInner resource) {
-        final String contentType = "application/json";
-        final String accept = "application/json";
-        return service.createOrUpdateSync(this.client.getEndpoint(), this.client.getApiVersion(),
-            this.client.getSubscriptionId(), resourceGroupName, configTemplateName, configTemplateMetadataName,
-            contentType, accept, resource, Context.NONE);
+        return createOrUpdateWithResponse(resourceGroupName, configTemplateName, configTemplateMetadataName, resource,
+            Context.NONE);
     }
 
     /**
@@ -366,41 +342,16 @@ public final class ConfigTemplateMetadatasClientImpl implements ConfigTemplateMe
             this.client.getContext());
     }
 
-    /**
-     * Create or update a ConfigTemplateMetadata Resource.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param configTemplateName The name of the ConfigTemplate.
-     * @param configTemplateMetadataName The name of the ConfigTemplateMetadataProperties.
-     * @param resource Resource create parameters.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the {@link SyncPoller} for polling of configTemplateMetadata Resource.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public SyncPoller<PollResult<ConfigTemplateMetadataInner>, ConfigTemplateMetadataInner> beginCreateOrUpdate(
         String resourceGroupName, String configTemplateName, String configTemplateMetadataName,
         ConfigTemplateMetadataInner resource) {
-        Response<BinaryData> response
-            = createOrUpdateWithResponse(resourceGroupName, configTemplateName, configTemplateMetadataName, resource);
-        return this.client.<ConfigTemplateMetadataInner, ConfigTemplateMetadataInner>getLroResult(response,
-            ConfigTemplateMetadataInner.class, ConfigTemplateMetadataInner.class, Context.NONE);
+        return beginCreateOrUpdate(resourceGroupName, configTemplateName, configTemplateMetadataName, resource,
+            Context.NONE);
     }
 
-    /**
-     * Create or update a ConfigTemplateMetadata Resource.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param configTemplateName The name of the ConfigTemplate.
-     * @param configTemplateMetadataName The name of the ConfigTemplateMetadataProperties.
-     * @param resource Resource create parameters.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the {@link SyncPoller} for polling of configTemplateMetadata Resource.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public SyncPoller<PollResult<ConfigTemplateMetadataInner>, ConfigTemplateMetadataInner> beginCreateOrUpdate(
         String resourceGroupName, String configTemplateName, String configTemplateMetadataName,
@@ -431,43 +382,20 @@ public final class ConfigTemplateMetadatasClientImpl implements ConfigTemplateMe
             .flatMap(this.client::getLroFinalResultOrError);
     }
 
-    /**
-     * Create or update a ConfigTemplateMetadata Resource.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param configTemplateName The name of the ConfigTemplate.
-     * @param configTemplateMetadataName The name of the ConfigTemplateMetadataProperties.
-     * @param resource Resource create parameters.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return configTemplateMetadata Resource.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public ConfigTemplateMetadataInner createOrUpdate(String resourceGroupName, String configTemplateName,
         String configTemplateMetadataName, ConfigTemplateMetadataInner resource) {
-        return beginCreateOrUpdate(resourceGroupName, configTemplateName, configTemplateMetadataName, resource)
-            .getFinalResult();
+        return createOrUpdate(resourceGroupName, configTemplateName, configTemplateMetadataName, resource,
+            Context.NONE);
     }
 
-    /**
-     * Create or update a ConfigTemplateMetadata Resource.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param configTemplateName The name of the ConfigTemplate.
-     * @param configTemplateMetadataName The name of the ConfigTemplateMetadataProperties.
-     * @param resource Resource create parameters.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return configTemplateMetadata Resource.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public ConfigTemplateMetadataInner createOrUpdate(String resourceGroupName, String configTemplateName,
         String configTemplateMetadataName, ConfigTemplateMetadataInner resource, Context context) {
-        return beginCreateOrUpdate(resourceGroupName, configTemplateName, configTemplateMetadataName, resource, context)
-            .getFinalResult();
+        return this.client.getLroFinalResultOrError(
+            beginCreateOrUpdate(resourceGroupName, configTemplateName, configTemplateMetadataName, resource, context));
     }
 
     /**
@@ -509,11 +437,8 @@ public final class ConfigTemplateMetadatasClientImpl implements ConfigTemplateMe
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Response<BinaryData> updateWithResponse(String resourceGroupName, String configTemplateName,
         String configTemplateMetadataName, ConfigTemplateMetadataUpdate properties) {
-        final String contentType = "application/json";
-        final String accept = "application/json";
-        return service.updateSync(this.client.getEndpoint(), this.client.getApiVersion(),
-            this.client.getSubscriptionId(), resourceGroupName, configTemplateName, configTemplateMetadataName,
-            contentType, accept, properties, Context.NONE);
+        return updateWithResponse(resourceGroupName, configTemplateName, configTemplateMetadataName, properties,
+            Context.NONE);
     }
 
     /**
@@ -562,41 +487,15 @@ public final class ConfigTemplateMetadatasClientImpl implements ConfigTemplateMe
             this.client.getContext());
     }
 
-    /**
-     * Update a ConfigTemplateMetadata Resource.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param configTemplateName The name of the ConfigTemplate.
-     * @param configTemplateMetadataName The name of the ConfigTemplateMetadataProperties.
-     * @param properties The resource properties to be updated.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the {@link SyncPoller} for polling of configTemplateMetadata Resource.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public SyncPoller<PollResult<ConfigTemplateMetadataInner>, ConfigTemplateMetadataInner> beginUpdate(
         String resourceGroupName, String configTemplateName, String configTemplateMetadataName,
         ConfigTemplateMetadataUpdate properties) {
-        Response<BinaryData> response
-            = updateWithResponse(resourceGroupName, configTemplateName, configTemplateMetadataName, properties);
-        return this.client.<ConfigTemplateMetadataInner, ConfigTemplateMetadataInner>getLroResult(response,
-            ConfigTemplateMetadataInner.class, ConfigTemplateMetadataInner.class, Context.NONE);
+        return beginUpdate(resourceGroupName, configTemplateName, configTemplateMetadataName, properties, Context.NONE);
     }
 
-    /**
-     * Update a ConfigTemplateMetadata Resource.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param configTemplateName The name of the ConfigTemplate.
-     * @param configTemplateMetadataName The name of the ConfigTemplateMetadataProperties.
-     * @param properties The resource properties to be updated.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the {@link SyncPoller} for polling of configTemplateMetadata Resource.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public SyncPoller<PollResult<ConfigTemplateMetadataInner>, ConfigTemplateMetadataInner> beginUpdate(
         String resourceGroupName, String configTemplateName, String configTemplateMetadataName,
@@ -626,43 +525,19 @@ public final class ConfigTemplateMetadatasClientImpl implements ConfigTemplateMe
             .flatMap(this.client::getLroFinalResultOrError);
     }
 
-    /**
-     * Update a ConfigTemplateMetadata Resource.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param configTemplateName The name of the ConfigTemplate.
-     * @param configTemplateMetadataName The name of the ConfigTemplateMetadataProperties.
-     * @param properties The resource properties to be updated.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return configTemplateMetadata Resource.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public ConfigTemplateMetadataInner update(String resourceGroupName, String configTemplateName,
         String configTemplateMetadataName, ConfigTemplateMetadataUpdate properties) {
-        return beginUpdate(resourceGroupName, configTemplateName, configTemplateMetadataName, properties)
-            .getFinalResult();
+        return update(resourceGroupName, configTemplateName, configTemplateMetadataName, properties, Context.NONE);
     }
 
-    /**
-     * Update a ConfigTemplateMetadata Resource.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param configTemplateName The name of the ConfigTemplate.
-     * @param configTemplateMetadataName The name of the ConfigTemplateMetadataProperties.
-     * @param properties The resource properties to be updated.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return configTemplateMetadata Resource.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public ConfigTemplateMetadataInner update(String resourceGroupName, String configTemplateName,
         String configTemplateMetadataName, ConfigTemplateMetadataUpdate properties, Context context) {
-        return beginUpdate(resourceGroupName, configTemplateName, configTemplateMetadataName, properties, context)
-            .getFinalResult();
+        return this.client.getLroFinalResultOrError(
+            beginUpdate(resourceGroupName, configTemplateName, configTemplateMetadataName, properties, context));
     }
 
     /**
@@ -700,9 +575,7 @@ public final class ConfigTemplateMetadatasClientImpl implements ConfigTemplateMe
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Response<BinaryData> deleteWithResponse(String resourceGroupName, String configTemplateName,
         String configTemplateMetadataName) {
-        return service.deleteSync(this.client.getEndpoint(), this.client.getApiVersion(),
-            this.client.getSubscriptionId(), resourceGroupName, configTemplateName, configTemplateMetadataName,
-            Context.NONE);
+        return deleteWithResponse(resourceGroupName, configTemplateName, configTemplateMetadataName, Context.NONE);
     }
 
     /**
@@ -745,37 +618,14 @@ public final class ConfigTemplateMetadatasClientImpl implements ConfigTemplateMe
             this.client.getContext());
     }
 
-    /**
-     * Delete a ConfigTemplateMetadata Resource.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param configTemplateName The name of the ConfigTemplate.
-     * @param configTemplateMetadataName The name of the ConfigTemplateMetadataProperties.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the {@link SyncPoller} for polling of long-running operation.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public SyncPoller<PollResult<Void>, Void> beginDelete(String resourceGroupName, String configTemplateName,
         String configTemplateMetadataName) {
-        Response<BinaryData> response
-            = deleteWithResponse(resourceGroupName, configTemplateName, configTemplateMetadataName);
-        return this.client.<Void, Void>getLroResult(response, Void.class, Void.class, Context.NONE);
+        return beginDelete(resourceGroupName, configTemplateName, configTemplateMetadataName, Context.NONE);
     }
 
-    /**
-     * Delete a ConfigTemplateMetadata Resource.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param configTemplateName The name of the ConfigTemplate.
-     * @param configTemplateMetadataName The name of the ConfigTemplateMetadataProperties.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the {@link SyncPoller} for polling of long-running operation.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public SyncPoller<PollResult<Void>, Void> beginDelete(String resourceGroupName, String configTemplateName,
         String configTemplateMetadataName, Context context) {
@@ -802,36 +652,18 @@ public final class ConfigTemplateMetadatasClientImpl implements ConfigTemplateMe
             .flatMap(this.client::getLroFinalResultOrError);
     }
 
-    /**
-     * Delete a ConfigTemplateMetadata Resource.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param configTemplateName The name of the ConfigTemplate.
-     * @param configTemplateMetadataName The name of the ConfigTemplateMetadataProperties.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public void delete(String resourceGroupName, String configTemplateName, String configTemplateMetadataName) {
-        beginDelete(resourceGroupName, configTemplateName, configTemplateMetadataName).getFinalResult();
+        delete(resourceGroupName, configTemplateName, configTemplateMetadataName, Context.NONE);
     }
 
-    /**
-     * Delete a ConfigTemplateMetadata Resource.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param configTemplateName The name of the ConfigTemplate.
-     * @param configTemplateMetadataName The name of the ConfigTemplateMetadataProperties.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public void delete(String resourceGroupName, String configTemplateName, String configTemplateMetadataName,
         Context context) {
-        beginDelete(resourceGroupName, configTemplateName, configTemplateMetadataName, context).getFinalResult();
+        this.client.getLroFinalResultOrError(
+            beginDelete(resourceGroupName, configTemplateName, configTemplateMetadataName, context));
     }
 
     /**
@@ -887,12 +719,7 @@ public final class ConfigTemplateMetadatasClientImpl implements ConfigTemplateMe
     @ServiceMethod(returns = ReturnType.SINGLE)
     private PagedResponse<ConfigTemplateMetadataInner> listByConfigTemplateSinglePage(String resourceGroupName,
         String configTemplateName) {
-        final String accept = "application/json";
-        Response<ConfigTemplateMetadataListResult> res
-            = service.listByConfigTemplateSync(this.client.getEndpoint(), this.client.getApiVersion(),
-                this.client.getSubscriptionId(), resourceGroupName, configTemplateName, accept, Context.NONE);
-        return new PagedResponseBase<>(res.getRequest(), res.getStatusCode(), res.getHeaders(), res.getValue().value(),
-            res.getValue().nextLink(), null);
+        return listByConfigTemplateSinglePage(resourceGroupName, configTemplateName, Context.NONE);
     }
 
     /**
@@ -917,34 +744,14 @@ public final class ConfigTemplateMetadatasClientImpl implements ConfigTemplateMe
             res.getValue().nextLink(), null);
     }
 
-    /**
-     * List by ConfigTemplate.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param configTemplateName The name of the ConfigTemplate.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the response of a ConfigTemplateMetadata list operation as paginated response with {@link PagedIterable}.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.COLLECTION)
     public PagedIterable<ConfigTemplateMetadataInner> listByConfigTemplate(String resourceGroupName,
         String configTemplateName) {
-        return new PagedIterable<>(() -> listByConfigTemplateSinglePage(resourceGroupName, configTemplateName),
-            nextLink -> listByConfigTemplateNextSinglePage(nextLink));
+        return listByConfigTemplate(resourceGroupName, configTemplateName, Context.NONE);
     }
 
-    /**
-     * List by ConfigTemplate.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param configTemplateName The name of the ConfigTemplate.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the response of a ConfigTemplateMetadata list operation as paginated response with {@link PagedIterable}.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.COLLECTION)
     public PagedIterable<ConfigTemplateMetadataInner> listByConfigTemplate(String resourceGroupName,
         String configTemplateName, Context context) {
@@ -984,11 +791,7 @@ public final class ConfigTemplateMetadatasClientImpl implements ConfigTemplateMe
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private PagedResponse<ConfigTemplateMetadataInner> listByConfigTemplateNextSinglePage(String nextLink) {
-        final String accept = "application/json";
-        Response<ConfigTemplateMetadataListResult> res
-            = service.listByConfigTemplateNextSync(nextLink, this.client.getEndpoint(), accept, Context.NONE);
-        return new PagedResponseBase<>(res.getRequest(), res.getStatusCode(), res.getHeaders(), res.getValue().value(),
-            res.getValue().nextLink(), null);
+        return listByConfigTemplateNextSinglePage(nextLink, Context.NONE);
     }
 
     /**

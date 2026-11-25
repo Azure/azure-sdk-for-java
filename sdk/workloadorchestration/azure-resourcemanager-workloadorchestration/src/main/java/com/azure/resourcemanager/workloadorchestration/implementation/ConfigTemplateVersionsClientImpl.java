@@ -291,11 +291,8 @@ public final class ConfigTemplateVersionsClientImpl implements ConfigTemplateVer
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Response<BinaryData> createOrUpdateWithResponse(String resourceGroupName, String configTemplateName,
         String configTemplateVersionName, ConfigTemplateVersionInner resource) {
-        final String contentType = "application/json";
-        final String accept = "application/json";
-        return service.createOrUpdateSync(this.client.getEndpoint(), this.client.getApiVersion(),
-            this.client.getSubscriptionId(), resourceGroupName, configTemplateName, configTemplateVersionName,
-            contentType, accept, resource, Context.NONE);
+        return createOrUpdateWithResponse(resourceGroupName, configTemplateName, configTemplateVersionName, resource,
+            Context.NONE);
     }
 
     /**
@@ -344,41 +341,16 @@ public final class ConfigTemplateVersionsClientImpl implements ConfigTemplateVer
             this.client.getContext());
     }
 
-    /**
-     * Create or update a Config Template Version Resource.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param configTemplateName The name of the ConfigTemplate.
-     * @param configTemplateVersionName The name of the ConfigTemplateVersion.
-     * @param resource Resource create parameters.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the {@link SyncPoller} for polling of config Template Version Resource.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public SyncPoller<PollResult<ConfigTemplateVersionInner>, ConfigTemplateVersionInner> beginCreateOrUpdate(
         String resourceGroupName, String configTemplateName, String configTemplateVersionName,
         ConfigTemplateVersionInner resource) {
-        Response<BinaryData> response
-            = createOrUpdateWithResponse(resourceGroupName, configTemplateName, configTemplateVersionName, resource);
-        return this.client.<ConfigTemplateVersionInner, ConfigTemplateVersionInner>getLroResult(response,
-            ConfigTemplateVersionInner.class, ConfigTemplateVersionInner.class, Context.NONE);
+        return beginCreateOrUpdate(resourceGroupName, configTemplateName, configTemplateVersionName, resource,
+            Context.NONE);
     }
 
-    /**
-     * Create or update a Config Template Version Resource.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param configTemplateName The name of the ConfigTemplate.
-     * @param configTemplateVersionName The name of the ConfigTemplateVersion.
-     * @param resource Resource create parameters.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the {@link SyncPoller} for polling of config Template Version Resource.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public SyncPoller<PollResult<ConfigTemplateVersionInner>, ConfigTemplateVersionInner> beginCreateOrUpdate(
         String resourceGroupName, String configTemplateName, String configTemplateVersionName,
@@ -409,43 +381,19 @@ public final class ConfigTemplateVersionsClientImpl implements ConfigTemplateVer
             .flatMap(this.client::getLroFinalResultOrError);
     }
 
-    /**
-     * Create or update a Config Template Version Resource.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param configTemplateName The name of the ConfigTemplate.
-     * @param configTemplateVersionName The name of the ConfigTemplateVersion.
-     * @param resource Resource create parameters.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return config Template Version Resource.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public ConfigTemplateVersionInner createOrUpdate(String resourceGroupName, String configTemplateName,
         String configTemplateVersionName, ConfigTemplateVersionInner resource) {
-        return beginCreateOrUpdate(resourceGroupName, configTemplateName, configTemplateVersionName, resource)
-            .getFinalResult();
+        return createOrUpdate(resourceGroupName, configTemplateName, configTemplateVersionName, resource, Context.NONE);
     }
 
-    /**
-     * Create or update a Config Template Version Resource.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param configTemplateName The name of the ConfigTemplate.
-     * @param configTemplateVersionName The name of the ConfigTemplateVersion.
-     * @param resource Resource create parameters.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return config Template Version Resource.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public ConfigTemplateVersionInner createOrUpdate(String resourceGroupName, String configTemplateName,
         String configTemplateVersionName, ConfigTemplateVersionInner resource, Context context) {
-        return beginCreateOrUpdate(resourceGroupName, configTemplateName, configTemplateVersionName, resource, context)
-            .getFinalResult();
+        return this.client.getLroFinalResultOrError(
+            beginCreateOrUpdate(resourceGroupName, configTemplateName, configTemplateVersionName, resource, context));
     }
 
     /**
@@ -491,19 +439,7 @@ public final class ConfigTemplateVersionsClientImpl implements ConfigTemplateVer
             .flatMap(res -> Mono.justOrEmpty(res.getValue()));
     }
 
-    /**
-     * Update a Config Template Version Resource.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param configTemplateName The name of the ConfigTemplate.
-     * @param configTemplateVersionName The name of the ConfigTemplateVersion.
-     * @param properties The resource properties to be updated.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return config Template Version Resource along with {@link Response}.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Response<ConfigTemplateVersionInner> updateWithResponse(String resourceGroupName, String configTemplateName,
         String configTemplateVersionName, ConfigTemplateVersionInner properties, Context context) {
@@ -514,18 +450,7 @@ public final class ConfigTemplateVersionsClientImpl implements ConfigTemplateVer
             contentType, accept, properties, context);
     }
 
-    /**
-     * Update a Config Template Version Resource.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param configTemplateName The name of the ConfigTemplate.
-     * @param configTemplateVersionName The name of the ConfigTemplateVersion.
-     * @param properties The resource properties to be updated.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return config Template Version Resource.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public ConfigTemplateVersionInner update(String resourceGroupName, String configTemplateName,
         String configTemplateVersionName, ConfigTemplateVersionInner properties) {
@@ -566,9 +491,7 @@ public final class ConfigTemplateVersionsClientImpl implements ConfigTemplateVer
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Response<BinaryData> deleteWithResponse(String resourceGroupName, String configTemplateName,
         String configTemplateVersionName) {
-        return service.deleteSync(this.client.getEndpoint(), this.client.getApiVersion(),
-            this.client.getSubscriptionId(), resourceGroupName, configTemplateName, configTemplateVersionName,
-            Context.NONE);
+        return deleteWithResponse(resourceGroupName, configTemplateName, configTemplateVersionName, Context.NONE);
     }
 
     /**
@@ -610,37 +533,14 @@ public final class ConfigTemplateVersionsClientImpl implements ConfigTemplateVer
             this.client.getContext());
     }
 
-    /**
-     * Delete a Config Template Version Resource.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param configTemplateName The name of the ConfigTemplate.
-     * @param configTemplateVersionName The name of the ConfigTemplateVersion.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the {@link SyncPoller} for polling of long-running operation.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public SyncPoller<PollResult<Void>, Void> beginDelete(String resourceGroupName, String configTemplateName,
         String configTemplateVersionName) {
-        Response<BinaryData> response
-            = deleteWithResponse(resourceGroupName, configTemplateName, configTemplateVersionName);
-        return this.client.<Void, Void>getLroResult(response, Void.class, Void.class, Context.NONE);
+        return beginDelete(resourceGroupName, configTemplateName, configTemplateVersionName, Context.NONE);
     }
 
-    /**
-     * Delete a Config Template Version Resource.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param configTemplateName The name of the ConfigTemplate.
-     * @param configTemplateVersionName The name of the ConfigTemplateVersion.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the {@link SyncPoller} for polling of long-running operation.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public SyncPoller<PollResult<Void>, Void> beginDelete(String resourceGroupName, String configTemplateName,
         String configTemplateVersionName, Context context) {
@@ -667,36 +567,18 @@ public final class ConfigTemplateVersionsClientImpl implements ConfigTemplateVer
             .flatMap(this.client::getLroFinalResultOrError);
     }
 
-    /**
-     * Delete a Config Template Version Resource.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param configTemplateName The name of the ConfigTemplate.
-     * @param configTemplateVersionName The name of the ConfigTemplateVersion.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public void delete(String resourceGroupName, String configTemplateName, String configTemplateVersionName) {
-        beginDelete(resourceGroupName, configTemplateName, configTemplateVersionName).getFinalResult();
+        delete(resourceGroupName, configTemplateName, configTemplateVersionName, Context.NONE);
     }
 
-    /**
-     * Delete a Config Template Version Resource.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param configTemplateName The name of the ConfigTemplate.
-     * @param configTemplateVersionName The name of the ConfigTemplateVersion.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public void delete(String resourceGroupName, String configTemplateName, String configTemplateVersionName,
         Context context) {
-        beginDelete(resourceGroupName, configTemplateName, configTemplateVersionName, context).getFinalResult();
+        this.client.getLroFinalResultOrError(
+            beginDelete(resourceGroupName, configTemplateName, configTemplateVersionName, context));
     }
 
     /**

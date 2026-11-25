@@ -1926,10 +1926,7 @@ public final class TargetsClientImpl implements TargetsClient {
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Response<BinaryData> unstageSolutionVersionWithResponse(String resourceGroupName, String targetName,
         SolutionVersionParameter body) {
-        final String contentType = "application/json";
-        final String accept = "application/json";
-        return service.unstageSolutionVersionSync(this.client.getEndpoint(), this.client.getApiVersion(),
-            this.client.getSubscriptionId(), resourceGroupName, targetName, contentType, accept, body, Context.NONE);
+        return unstageSolutionVersionWithResponse(resourceGroupName, targetName, body, Context.NONE);
     }
 
     /**
@@ -1973,37 +1970,14 @@ public final class TargetsClientImpl implements TargetsClient {
             SolutionVersionInner.class, SolutionVersionInner.class, this.client.getContext());
     }
 
-    /**
-     * Post request to unstage solution version.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param targetName Name of the target.
-     * @param body The content of the action request.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the {@link SyncPoller} for polling of solution Version Resource.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public SyncPoller<PollResult<SolutionVersionInner>, SolutionVersionInner>
         beginUnstageSolutionVersion(String resourceGroupName, String targetName, SolutionVersionParameter body) {
-        Response<BinaryData> response = unstageSolutionVersionWithResponse(resourceGroupName, targetName, body);
-        return this.client.<SolutionVersionInner, SolutionVersionInner>getLroResult(response,
-            SolutionVersionInner.class, SolutionVersionInner.class, Context.NONE);
+        return beginUnstageSolutionVersion(resourceGroupName, targetName, body, Context.NONE);
     }
 
-    /**
-     * Post request to unstage solution version.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param targetName Name of the target.
-     * @param body The content of the action request.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the {@link SyncPoller} for polling of solution Version Resource.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public SyncPoller<PollResult<SolutionVersionInner>, SolutionVersionInner> beginUnstageSolutionVersion(
         String resourceGroupName, String targetName, SolutionVersionParameter body, Context context) {
@@ -2031,39 +2005,19 @@ public final class TargetsClientImpl implements TargetsClient {
             .flatMap(this.client::getLroFinalResultOrError);
     }
 
-    /**
-     * Post request to unstage solution version.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param targetName Name of the target.
-     * @param body The content of the action request.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return solution Version Resource.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public SolutionVersionInner unstageSolutionVersion(String resourceGroupName, String targetName,
         SolutionVersionParameter body) {
-        return beginUnstageSolutionVersion(resourceGroupName, targetName, body).getFinalResult();
+        return unstageSolutionVersion(resourceGroupName, targetName, body, Context.NONE);
     }
 
-    /**
-     * Post request to unstage solution version.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param targetName Name of the target.
-     * @param body The content of the action request.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return solution Version Resource.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public SolutionVersionInner unstageSolutionVersion(String resourceGroupName, String targetName,
         SolutionVersionParameter body, Context context) {
-        return beginUnstageSolutionVersion(resourceGroupName, targetName, body, context).getFinalResult();
+        return this.client
+            .getLroFinalResultOrError(beginUnstageSolutionVersion(resourceGroupName, targetName, body, context));
     }
 
     /**

@@ -173,12 +173,7 @@ public final class TargetsImpl implements Targets {
 
     public SolutionVersion unstageSolutionVersion(String resourceGroupName, String targetName,
         SolutionVersionParameter body) {
-        SolutionVersionInner inner = this.serviceClient().unstageSolutionVersion(resourceGroupName, targetName, body);
-        if (inner != null) {
-            return new SolutionVersionImpl(inner, this.manager());
-        } else {
-            return null;
-        }
+        return this.unstageSolutionVersion(resourceGroupName, targetName, body, Context.NONE);
     }
 
     public SolutionVersion unstageSolutionVersion(String resourceGroupName, String targetName,

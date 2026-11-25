@@ -47,7 +47,7 @@ public final class ConfigTemplateMetadatasImpl implements ConfigTemplateMetadata
     }
 
     public void delete(String resourceGroupName, String configTemplateName, String configTemplateMetadataName) {
-        this.serviceClient().delete(resourceGroupName, configTemplateName, configTemplateMetadataName);
+        this.delete(resourceGroupName, configTemplateName, configTemplateMetadataName, Context.NONE);
     }
 
     public void delete(String resourceGroupName, String configTemplateName, String configTemplateMetadataName,
@@ -57,9 +57,7 @@ public final class ConfigTemplateMetadatasImpl implements ConfigTemplateMetadata
 
     public PagedIterable<ConfigTemplateMetadata> listByConfigTemplate(String resourceGroupName,
         String configTemplateName) {
-        PagedIterable<ConfigTemplateMetadataInner> inner
-            = this.serviceClient().listByConfigTemplate(resourceGroupName, configTemplateName);
-        return ResourceManagerUtils.mapPage(inner, inner1 -> new ConfigTemplateMetadataImpl(inner1, this.manager()));
+        return this.listByConfigTemplate(resourceGroupName, configTemplateName, Context.NONE);
     }
 
     public PagedIterable<ConfigTemplateMetadata> listByConfigTemplate(String resourceGroupName,
@@ -70,103 +68,36 @@ public final class ConfigTemplateMetadatasImpl implements ConfigTemplateMetadata
     }
 
     public ConfigTemplateMetadata getById(String id) {
-        String resourceGroupName = ResourceManagerUtils.getValueFromIdByParameterName(id,
-            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Edge/configTemplates/{configTemplateName}/configTemplateMetadatas/{configTemplateMetadataName}",
-            "resourceGroupName");
-        if (resourceGroupName == null) {
-            throw LOGGER.logExceptionAsError(new IllegalArgumentException(
-                String.format("The resource ID '%s' is not valid. Missing path segment 'resourceGroups'.", id)));
-        }
-        String configTemplateName = ResourceManagerUtils.getValueFromIdByParameterName(id,
-            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Edge/configTemplates/{configTemplateName}/configTemplateMetadatas/{configTemplateMetadataName}",
-            "configTemplateName");
-        if (configTemplateName == null) {
-            throw LOGGER.logExceptionAsError(new IllegalArgumentException(
-                String.format("The resource ID '%s' is not valid. Missing path segment 'configTemplates'.", id)));
-        }
-        String configTemplateMetadataName = ResourceManagerUtils.getValueFromIdByParameterName(id,
-            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Edge/configTemplates/{configTemplateName}/configTemplateMetadatas/{configTemplateMetadataName}",
-            "configTemplateMetadataName");
-        if (configTemplateMetadataName == null) {
-            throw LOGGER.logExceptionAsError(new IllegalArgumentException(String
-                .format("The resource ID '%s' is not valid. Missing path segment 'configTemplateMetadatas'.", id)));
-        }
-        return this.getWithResponse(resourceGroupName, configTemplateName, configTemplateMetadataName, Context.NONE)
-            .getValue();
+        return this.getByIdWithResponse(id, Context.NONE).getValue();
     }
 
     public Response<ConfigTemplateMetadata> getByIdWithResponse(String id, Context context) {
-        String resourceGroupName = ResourceManagerUtils.getValueFromIdByParameterName(id,
+        String resourceGroupName = ResourceManagerUtils.getRequiredValueFromIdByParameterName(id,
             "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Edge/configTemplates/{configTemplateName}/configTemplateMetadatas/{configTemplateMetadataName}",
-            "resourceGroupName");
-        if (resourceGroupName == null) {
-            throw LOGGER.logExceptionAsError(new IllegalArgumentException(
-                String.format("The resource ID '%s' is not valid. Missing path segment 'resourceGroups'.", id)));
-        }
-        String configTemplateName = ResourceManagerUtils.getValueFromIdByParameterName(id,
+            "resourceGroupName", "resourceGroups", LOGGER);
+        String configTemplateName = ResourceManagerUtils.getRequiredValueFromIdByParameterName(id,
             "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Edge/configTemplates/{configTemplateName}/configTemplateMetadatas/{configTemplateMetadataName}",
-            "configTemplateName");
-        if (configTemplateName == null) {
-            throw LOGGER.logExceptionAsError(new IllegalArgumentException(
-                String.format("The resource ID '%s' is not valid. Missing path segment 'configTemplates'.", id)));
-        }
-        String configTemplateMetadataName = ResourceManagerUtils.getValueFromIdByParameterName(id,
+            "configTemplateName", "configTemplates", LOGGER);
+        String configTemplateMetadataName = ResourceManagerUtils.getRequiredValueFromIdByParameterName(id,
             "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Edge/configTemplates/{configTemplateName}/configTemplateMetadatas/{configTemplateMetadataName}",
-            "configTemplateMetadataName");
-        if (configTemplateMetadataName == null) {
-            throw LOGGER.logExceptionAsError(new IllegalArgumentException(String
-                .format("The resource ID '%s' is not valid. Missing path segment 'configTemplateMetadatas'.", id)));
-        }
+            "configTemplateMetadataName", "configTemplateMetadatas", LOGGER);
         return this.getWithResponse(resourceGroupName, configTemplateName, configTemplateMetadataName, context);
     }
 
     public void deleteById(String id) {
-        String resourceGroupName = ResourceManagerUtils.getValueFromIdByParameterName(id,
-            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Edge/configTemplates/{configTemplateName}/configTemplateMetadatas/{configTemplateMetadataName}",
-            "resourceGroupName");
-        if (resourceGroupName == null) {
-            throw LOGGER.logExceptionAsError(new IllegalArgumentException(
-                String.format("The resource ID '%s' is not valid. Missing path segment 'resourceGroups'.", id)));
-        }
-        String configTemplateName = ResourceManagerUtils.getValueFromIdByParameterName(id,
-            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Edge/configTemplates/{configTemplateName}/configTemplateMetadatas/{configTemplateMetadataName}",
-            "configTemplateName");
-        if (configTemplateName == null) {
-            throw LOGGER.logExceptionAsError(new IllegalArgumentException(
-                String.format("The resource ID '%s' is not valid. Missing path segment 'configTemplates'.", id)));
-        }
-        String configTemplateMetadataName = ResourceManagerUtils.getValueFromIdByParameterName(id,
-            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Edge/configTemplates/{configTemplateName}/configTemplateMetadatas/{configTemplateMetadataName}",
-            "configTemplateMetadataName");
-        if (configTemplateMetadataName == null) {
-            throw LOGGER.logExceptionAsError(new IllegalArgumentException(String
-                .format("The resource ID '%s' is not valid. Missing path segment 'configTemplateMetadatas'.", id)));
-        }
-        this.delete(resourceGroupName, configTemplateName, configTemplateMetadataName, Context.NONE);
+        this.deleteByIdWithResponse(id, Context.NONE);
     }
 
     public void deleteByIdWithResponse(String id, Context context) {
-        String resourceGroupName = ResourceManagerUtils.getValueFromIdByParameterName(id,
+        String resourceGroupName = ResourceManagerUtils.getRequiredValueFromIdByParameterName(id,
             "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Edge/configTemplates/{configTemplateName}/configTemplateMetadatas/{configTemplateMetadataName}",
-            "resourceGroupName");
-        if (resourceGroupName == null) {
-            throw LOGGER.logExceptionAsError(new IllegalArgumentException(
-                String.format("The resource ID '%s' is not valid. Missing path segment 'resourceGroups'.", id)));
-        }
-        String configTemplateName = ResourceManagerUtils.getValueFromIdByParameterName(id,
+            "resourceGroupName", "resourceGroups", LOGGER);
+        String configTemplateName = ResourceManagerUtils.getRequiredValueFromIdByParameterName(id,
             "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Edge/configTemplates/{configTemplateName}/configTemplateMetadatas/{configTemplateMetadataName}",
-            "configTemplateName");
-        if (configTemplateName == null) {
-            throw LOGGER.logExceptionAsError(new IllegalArgumentException(
-                String.format("The resource ID '%s' is not valid. Missing path segment 'configTemplates'.", id)));
-        }
-        String configTemplateMetadataName = ResourceManagerUtils.getValueFromIdByParameterName(id,
+            "configTemplateName", "configTemplates", LOGGER);
+        String configTemplateMetadataName = ResourceManagerUtils.getRequiredValueFromIdByParameterName(id,
             "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Edge/configTemplates/{configTemplateName}/configTemplateMetadatas/{configTemplateMetadataName}",
-            "configTemplateMetadataName");
-        if (configTemplateMetadataName == null) {
-            throw LOGGER.logExceptionAsError(new IllegalArgumentException(String
-                .format("The resource ID '%s' is not valid. Missing path segment 'configTemplateMetadatas'.", id)));
-        }
+            "configTemplateMetadataName", "configTemplateMetadatas", LOGGER);
         this.delete(resourceGroupName, configTemplateName, configTemplateMetadataName, context);
     }
 

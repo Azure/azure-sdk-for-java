@@ -46,9 +46,7 @@ public final class HierarchyConfigurationMetadatasImpl implements HierarchyConfi
     }
 
     public PagedIterable<HierarchyConfigurationMetadata> listByParent(String resourceUri) {
-        PagedIterable<HierarchyConfigurationMetadataInner> inner = this.serviceClient().listByParent(resourceUri);
-        return ResourceManagerUtils.mapPage(inner,
-            inner1 -> new HierarchyConfigurationMetadataImpl(inner1, this.manager()));
+        return this.listByParent(resourceUri, Context.NONE);
     }
 
     public PagedIterable<HierarchyConfigurationMetadata> listByParent(String resourceUri, Context context) {

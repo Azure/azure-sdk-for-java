@@ -581,9 +581,7 @@ public final class ConfigTemplatesClientImpl implements ConfigTemplatesClient {
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Response<BinaryData> linkToHierarchiesWithResponse(String resourceGroupName, String configTemplateName,
         HierarchySelector body) {
-        final String contentType = "application/json";
-        return service.linkToHierarchiesSync(this.client.getEndpoint(), this.client.getApiVersion(),
-            this.client.getSubscriptionId(), resourceGroupName, configTemplateName, contentType, body, Context.NONE);
+        return linkToHierarchiesWithResponse(resourceGroupName, configTemplateName, body, Context.NONE);
     }
 
     /**
@@ -626,36 +624,14 @@ public final class ConfigTemplatesClientImpl implements ConfigTemplatesClient {
             this.client.getContext());
     }
 
-    /**
-     * Apply a Config Template to a particular hierarchy node.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param configTemplateName The name of the ConfigTemplate.
-     * @param body The content of the action request.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the {@link SyncPoller} for polling of long-running operation.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public SyncPoller<PollResult<Void>, Void> beginLinkToHierarchies(String resourceGroupName,
         String configTemplateName, HierarchySelector body) {
-        Response<BinaryData> response = linkToHierarchiesWithResponse(resourceGroupName, configTemplateName, body);
-        return this.client.<Void, Void>getLroResult(response, Void.class, Void.class, Context.NONE);
+        return beginLinkToHierarchies(resourceGroupName, configTemplateName, body, Context.NONE);
     }
 
-    /**
-     * Apply a Config Template to a particular hierarchy node.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param configTemplateName The name of the ConfigTemplate.
-     * @param body The content of the action request.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the {@link SyncPoller} for polling of long-running operation.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public SyncPoller<PollResult<Void>, Void> beginLinkToHierarchies(String resourceGroupName,
         String configTemplateName, HierarchySelector body, Context context) {
@@ -682,36 +658,18 @@ public final class ConfigTemplatesClientImpl implements ConfigTemplatesClient {
             .flatMap(this.client::getLroFinalResultOrError);
     }
 
-    /**
-     * Apply a Config Template to a particular hierarchy node.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param configTemplateName The name of the ConfigTemplate.
-     * @param body The content of the action request.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public void linkToHierarchies(String resourceGroupName, String configTemplateName, HierarchySelector body) {
-        beginLinkToHierarchies(resourceGroupName, configTemplateName, body).getFinalResult();
+        linkToHierarchies(resourceGroupName, configTemplateName, body, Context.NONE);
     }
 
-    /**
-     * Apply a Config Template to a particular hierarchy node.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param configTemplateName The name of the ConfigTemplate.
-     * @param body The content of the action request.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public void linkToHierarchies(String resourceGroupName, String configTemplateName, HierarchySelector body,
         Context context) {
-        beginLinkToHierarchies(resourceGroupName, configTemplateName, body, context).getFinalResult();
+        this.client
+            .getLroFinalResultOrError(beginLinkToHierarchies(resourceGroupName, configTemplateName, body, context));
     }
 
     /**
@@ -750,9 +708,7 @@ public final class ConfigTemplatesClientImpl implements ConfigTemplatesClient {
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Response<BinaryData> unLinkFromHierarchiesWithResponse(String resourceGroupName, String configTemplateName,
         HierarchySelector body) {
-        final String contentType = "application/json";
-        return service.unLinkFromHierarchiesSync(this.client.getEndpoint(), this.client.getApiVersion(),
-            this.client.getSubscriptionId(), resourceGroupName, configTemplateName, contentType, body, Context.NONE);
+        return unLinkFromHierarchiesWithResponse(resourceGroupName, configTemplateName, body, Context.NONE);
     }
 
     /**
@@ -795,36 +751,14 @@ public final class ConfigTemplatesClientImpl implements ConfigTemplatesClient {
             this.client.getContext());
     }
 
-    /**
-     * Remove a Config Template from a particular hierarchy node.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param configTemplateName The name of the ConfigTemplate.
-     * @param body The content of the action request.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the {@link SyncPoller} for polling of long-running operation.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public SyncPoller<PollResult<Void>, Void> beginUnLinkFromHierarchies(String resourceGroupName,
         String configTemplateName, HierarchySelector body) {
-        Response<BinaryData> response = unLinkFromHierarchiesWithResponse(resourceGroupName, configTemplateName, body);
-        return this.client.<Void, Void>getLroResult(response, Void.class, Void.class, Context.NONE);
+        return beginUnLinkFromHierarchies(resourceGroupName, configTemplateName, body, Context.NONE);
     }
 
-    /**
-     * Remove a Config Template from a particular hierarchy node.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param configTemplateName The name of the ConfigTemplate.
-     * @param body The content of the action request.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the {@link SyncPoller} for polling of long-running operation.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public SyncPoller<PollResult<Void>, Void> beginUnLinkFromHierarchies(String resourceGroupName,
         String configTemplateName, HierarchySelector body, Context context) {
@@ -851,36 +785,18 @@ public final class ConfigTemplatesClientImpl implements ConfigTemplatesClient {
             .flatMap(this.client::getLroFinalResultOrError);
     }
 
-    /**
-     * Remove a Config Template from a particular hierarchy node.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param configTemplateName The name of the ConfigTemplate.
-     * @param body The content of the action request.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public void unLinkFromHierarchies(String resourceGroupName, String configTemplateName, HierarchySelector body) {
-        beginUnLinkFromHierarchies(resourceGroupName, configTemplateName, body).getFinalResult();
+        unLinkFromHierarchies(resourceGroupName, configTemplateName, body, Context.NONE);
     }
 
-    /**
-     * Remove a Config Template from a particular hierarchy node.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param configTemplateName The name of the ConfigTemplate.
-     * @param body The content of the action request.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public void unLinkFromHierarchies(String resourceGroupName, String configTemplateName, HierarchySelector body,
         Context context) {
-        beginUnLinkFromHierarchies(resourceGroupName, configTemplateName, body, context).getFinalResult();
+        this.client
+            .getLroFinalResultOrError(beginUnLinkFromHierarchies(resourceGroupName, configTemplateName, body, context));
     }
 
     /**

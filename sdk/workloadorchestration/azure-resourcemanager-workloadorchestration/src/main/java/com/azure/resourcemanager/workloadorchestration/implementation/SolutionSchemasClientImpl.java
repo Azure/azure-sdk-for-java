@@ -167,19 +167,7 @@ public final class SolutionSchemasClientImpl implements SolutionSchemasClient {
             solutionSchemaName).flatMap(res -> Mono.justOrEmpty(res.getValue()));
     }
 
-    /**
-     * Get a SolutionSchema Resource.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param solutionTemplateName The name of the SolutionTemplate.
-     * @param solutionTemplateVersionName The name of the SolutionTemplateVersion.
-     * @param solutionSchemaName The name of the SolutionSchemaProperties.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return a SolutionSchema Resource along with {@link Response}.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Response<SolutionSchemaInner> getWithResponse(String resourceGroupName, String solutionTemplateName,
         String solutionTemplateVersionName, String solutionSchemaName, Context context) {
@@ -188,18 +176,7 @@ public final class SolutionSchemasClientImpl implements SolutionSchemasClient {
             resourceGroupName, solutionTemplateName, solutionTemplateVersionName, solutionSchemaName, accept, context);
     }
 
-    /**
-     * Get a SolutionSchema Resource.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param solutionTemplateName The name of the SolutionTemplate.
-     * @param solutionTemplateVersionName The name of the SolutionTemplateVersion.
-     * @param solutionSchemaName The name of the SolutionSchemaProperties.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return a SolutionSchema Resource.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public SolutionSchemaInner get(String resourceGroupName, String solutionTemplateName,
         String solutionTemplateVersionName, String solutionSchemaName) {
@@ -265,12 +242,8 @@ public final class SolutionSchemasClientImpl implements SolutionSchemasClient {
     @ServiceMethod(returns = ReturnType.SINGLE)
     private PagedResponse<SolutionSchemaInner> listBySolutionTemplateVersionSinglePage(String resourceGroupName,
         String solutionTemplateName, String solutionTemplateVersionName) {
-        final String accept = "application/json";
-        Response<SolutionSchemaListResult> res = service.listBySolutionTemplateVersionSync(this.client.getEndpoint(),
-            this.client.getApiVersion(), this.client.getSubscriptionId(), resourceGroupName, solutionTemplateName,
-            solutionTemplateVersionName, accept, Context.NONE);
-        return new PagedResponseBase<>(res.getRequest(), res.getStatusCode(), res.getHeaders(), res.getValue().value(),
-            res.getValue().nextLink(), null);
+        return listBySolutionTemplateVersionSinglePage(resourceGroupName, solutionTemplateName,
+            solutionTemplateVersionName, Context.NONE);
     }
 
     /**
@@ -296,37 +269,15 @@ public final class SolutionSchemasClientImpl implements SolutionSchemasClient {
             res.getValue().nextLink(), null);
     }
 
-    /**
-     * List by SolutionTemplateVersion.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param solutionTemplateName The name of the SolutionTemplate.
-     * @param solutionTemplateVersionName The name of the SolutionTemplateVersion.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the response of a SolutionSchema list operation as paginated response with {@link PagedIterable}.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.COLLECTION)
     public PagedIterable<SolutionSchemaInner> listBySolutionTemplateVersion(String resourceGroupName,
         String solutionTemplateName, String solutionTemplateVersionName) {
-        return new PagedIterable<>(() -> listBySolutionTemplateVersionSinglePage(resourceGroupName,
-            solutionTemplateName, solutionTemplateVersionName),
-            nextLink -> listBySolutionTemplateVersionNextSinglePage(nextLink));
+        return listBySolutionTemplateVersion(resourceGroupName, solutionTemplateName, solutionTemplateVersionName,
+            Context.NONE);
     }
 
-    /**
-     * List by SolutionTemplateVersion.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param solutionTemplateName The name of the SolutionTemplate.
-     * @param solutionTemplateVersionName The name of the SolutionTemplateVersion.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the response of a SolutionSchema list operation as paginated response with {@link PagedIterable}.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.COLLECTION)
     public PagedIterable<SolutionSchemaInner> listBySolutionTemplateVersion(String resourceGroupName,
         String solutionTemplateName, String solutionTemplateVersionName, Context context) {
@@ -367,11 +318,7 @@ public final class SolutionSchemasClientImpl implements SolutionSchemasClient {
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private PagedResponse<SolutionSchemaInner> listBySolutionTemplateVersionNextSinglePage(String nextLink) {
-        final String accept = "application/json";
-        Response<SolutionSchemaListResult> res
-            = service.listBySolutionTemplateVersionNextSync(nextLink, this.client.getEndpoint(), accept, Context.NONE);
-        return new PagedResponseBase<>(res.getRequest(), res.getStatusCode(), res.getHeaders(), res.getValue().value(),
-            res.getValue().nextLink(), null);
+        return listBySolutionTemplateVersionNextSinglePage(nextLink, Context.NONE);
     }
 
     /**

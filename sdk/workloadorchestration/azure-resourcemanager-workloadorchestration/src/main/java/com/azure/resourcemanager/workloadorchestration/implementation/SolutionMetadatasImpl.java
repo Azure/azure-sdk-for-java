@@ -45,8 +45,7 @@ public final class SolutionMetadatasImpl implements SolutionMetadatas {
     }
 
     public PagedIterable<SolutionMetadata> listByParent(String resourceUri) {
-        PagedIterable<SolutionMetadataInner> inner = this.serviceClient().listByParent(resourceUri);
-        return ResourceManagerUtils.mapPage(inner, inner1 -> new SolutionMetadataImpl(inner1, this.manager()));
+        return this.listByParent(resourceUri, Context.NONE);
     }
 
     public PagedIterable<SolutionMetadata> listByParent(String resourceUri, Context context) {

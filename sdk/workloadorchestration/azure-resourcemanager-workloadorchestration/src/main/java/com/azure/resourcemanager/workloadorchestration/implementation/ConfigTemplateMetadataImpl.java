@@ -69,11 +69,7 @@ public final class ConfigTemplateMetadataImpl
     }
 
     public ConfigTemplateMetadata create() {
-        this.innerObject = serviceManager.serviceClient()
-            .getConfigTemplateMetadatas()
-            .createOrUpdate(resourceGroupName, configTemplateName, configTemplateMetadataName, this.innerModel(),
-                Context.NONE);
-        return this;
+        return this.create(Context.NONE);
     }
 
     public ConfigTemplateMetadata create(Context context) {
@@ -97,10 +93,7 @@ public final class ConfigTemplateMetadataImpl
     }
 
     public ConfigTemplateMetadata apply() {
-        this.innerObject = serviceManager.serviceClient()
-            .getConfigTemplateMetadatas()
-            .update(resourceGroupName, configTemplateName, configTemplateMetadataName, updateProperties, Context.NONE);
-        return this;
+        return this.apply(Context.NONE);
     }
 
     public ConfigTemplateMetadata apply(Context context) {
@@ -126,11 +119,7 @@ public final class ConfigTemplateMetadataImpl
     }
 
     public ConfigTemplateMetadata refresh() {
-        this.innerObject = serviceManager.serviceClient()
-            .getConfigTemplateMetadatas()
-            .getWithResponse(resourceGroupName, configTemplateName, configTemplateMetadataName, Context.NONE)
-            .getValue();
-        return this;
+        return this.refresh(Context.NONE);
     }
 
     public ConfigTemplateMetadata refresh(Context context) {

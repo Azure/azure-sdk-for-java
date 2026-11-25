@@ -52,7 +52,7 @@ public final class ConfigTemplatesImpl implements ConfigTemplates {
     }
 
     public void linkToHierarchies(String resourceGroupName, String configTemplateName, HierarchySelector body) {
-        this.serviceClient().linkToHierarchies(resourceGroupName, configTemplateName, body);
+        this.linkToHierarchies(resourceGroupName, configTemplateName, body, Context.NONE);
     }
 
     public void linkToHierarchies(String resourceGroupName, String configTemplateName, HierarchySelector body,
@@ -61,7 +61,7 @@ public final class ConfigTemplatesImpl implements ConfigTemplates {
     }
 
     public void unLinkFromHierarchies(String resourceGroupName, String configTemplateName, HierarchySelector body) {
-        this.serviceClient().unLinkFromHierarchies(resourceGroupName, configTemplateName, body);
+        this.unLinkFromHierarchies(resourceGroupName, configTemplateName, body, Context.NONE);
     }
 
     public void unLinkFromHierarchies(String resourceGroupName, String configTemplateName, HierarchySelector body,

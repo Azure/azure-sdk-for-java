@@ -160,18 +160,7 @@ public final class SolutionMetadataVersionsClientImpl implements SolutionMetadat
             .flatMap(res -> Mono.justOrEmpty(res.getValue()));
     }
 
-    /**
-     * Get a Solution resource.
-     * 
-     * @param resourceUri The fully qualified Azure Resource manager identifier of the resource.
-     * @param solutionMetadataName Name of the solution metadata.
-     * @param solutionMetadataVersionName Name of the solution metadata version.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return a Solution resource along with {@link Response}.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Response<SolutionMetadataVersionInner> getWithResponse(String resourceUri, String solutionMetadataName,
         String solutionMetadataVersionName, Context context) {
@@ -180,17 +169,7 @@ public final class SolutionMetadataVersionsClientImpl implements SolutionMetadat
             solutionMetadataName, solutionMetadataVersionName, accept, context);
     }
 
-    /**
-     * Get a Solution resource.
-     * 
-     * @param resourceUri The fully qualified Azure Resource manager identifier of the resource.
-     * @param solutionMetadataName Name of the solution metadata.
-     * @param solutionMetadataVersionName Name of the solution metadata version.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return a Solution resource.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public SolutionMetadataVersionInner get(String resourceUri, String solutionMetadataName,
         String solutionMetadataVersionName) {
@@ -249,11 +228,7 @@ public final class SolutionMetadataVersionsClientImpl implements SolutionMetadat
     @ServiceMethod(returns = ReturnType.SINGLE)
     private PagedResponse<SolutionMetadataVersionInner> listByParentSinglePage(String resourceUri,
         String solutionMetadataName) {
-        final String accept = "application/json";
-        Response<SolutionMetadataVersionListResult> res = service.listByParentSync(this.client.getEndpoint(),
-            this.client.getApiVersion(), resourceUri, solutionMetadataName, accept, Context.NONE);
-        return new PagedResponseBase<>(res.getRequest(), res.getStatusCode(), res.getHeaders(), res.getValue().value(),
-            res.getValue().nextLink(), null);
+        return listByParentSinglePage(resourceUri, solutionMetadataName, Context.NONE);
     }
 
     /**
@@ -277,35 +252,13 @@ public final class SolutionMetadataVersionsClientImpl implements SolutionMetadat
             res.getValue().nextLink(), null);
     }
 
-    /**
-     * List Solution resources.
-     * 
-     * @param resourceUri The fully qualified Azure Resource manager identifier of the resource.
-     * @param solutionMetadataName Name of the solution metadata.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the response of a SolutionMetadataVersion list operation as paginated response with
-     * {@link PagedIterable}.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.COLLECTION)
     public PagedIterable<SolutionMetadataVersionInner> listByParent(String resourceUri, String solutionMetadataName) {
-        return new PagedIterable<>(() -> listByParentSinglePage(resourceUri, solutionMetadataName),
-            nextLink -> listByParentNextSinglePage(nextLink));
+        return listByParent(resourceUri, solutionMetadataName, Context.NONE);
     }
 
-    /**
-     * List Solution resources.
-     * 
-     * @param resourceUri The fully qualified Azure Resource manager identifier of the resource.
-     * @param solutionMetadataName Name of the solution metadata.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the response of a SolutionMetadataVersion list operation as paginated response with
-     * {@link PagedIterable}.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.COLLECTION)
     public PagedIterable<SolutionMetadataVersionInner> listByParent(String resourceUri, String solutionMetadataName,
         Context context) {
@@ -344,11 +297,7 @@ public final class SolutionMetadataVersionsClientImpl implements SolutionMetadat
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private PagedResponse<SolutionMetadataVersionInner> listByParentNextSinglePage(String nextLink) {
-        final String accept = "application/json";
-        Response<SolutionMetadataVersionListResult> res
-            = service.listByParentNextSync(nextLink, this.client.getEndpoint(), accept, Context.NONE);
-        return new PagedResponseBase<>(res.getRequest(), res.getStatusCode(), res.getHeaders(), res.getValue().value(),
-            res.getValue().nextLink(), null);
+        return listByParentNextSinglePage(nextLink, Context.NONE);
     }
 
     /**

@@ -49,9 +49,8 @@ public final class ConfigTemplateSchemasImpl implements ConfigTemplateSchemas {
 
     public PagedIterable<ConfigTemplateSchema> listByConfigTemplateVersion(String resourceGroupName,
         String configTemplateName, String configTemplateVersionName) {
-        PagedIterable<ConfigTemplateSchemaInner> inner = this.serviceClient()
-            .listByConfigTemplateVersion(resourceGroupName, configTemplateName, configTemplateVersionName);
-        return ResourceManagerUtils.mapPage(inner, inner1 -> new ConfigTemplateSchemaImpl(inner1, this.manager()));
+        return this.listByConfigTemplateVersion(resourceGroupName, configTemplateName, configTemplateVersionName,
+            Context.NONE);
     }
 
     public PagedIterable<ConfigTemplateSchema> listByConfigTemplateVersion(String resourceGroupName,

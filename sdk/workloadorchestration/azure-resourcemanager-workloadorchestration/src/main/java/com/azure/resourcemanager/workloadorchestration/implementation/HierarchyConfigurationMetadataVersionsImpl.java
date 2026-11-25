@@ -49,10 +49,7 @@ public final class HierarchyConfigurationMetadataVersionsImpl implements Hierarc
 
     public PagedIterable<HierarchyConfigurationMetadataVersion> listByParent(String resourceUri,
         String hierarchyConfigurationMetadataName) {
-        PagedIterable<HierarchyConfigurationMetadataVersionInner> inner
-            = this.serviceClient().listByParent(resourceUri, hierarchyConfigurationMetadataName);
-        return ResourceManagerUtils.mapPage(inner,
-            inner1 -> new HierarchyConfigurationMetadataVersionImpl(inner1, this.manager()));
+        return this.listByParent(resourceUri, hierarchyConfigurationMetadataName, Context.NONE);
     }
 
     public PagedIterable<HierarchyConfigurationMetadataVersion> listByParent(String resourceUri,

@@ -255,17 +255,7 @@ public final class SolutionDeploymentsClientImpl implements SolutionDeploymentsC
             .flatMap(res -> Mono.justOrEmpty(res.getValue()));
     }
 
-    /**
-     * Get a SolutionDeployment Resource.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param solutionDeploymentName The name of the SolutionDeployment.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return a SolutionDeployment Resource along with {@link Response}.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Response<SolutionDeploymentInner> getByResourceGroupWithResponse(String resourceGroupName,
         String solutionDeploymentName, Context context) {
@@ -274,16 +264,7 @@ public final class SolutionDeploymentsClientImpl implements SolutionDeploymentsC
             this.client.getSubscriptionId(), resourceGroupName, solutionDeploymentName, accept, context);
     }
 
-    /**
-     * Get a SolutionDeployment Resource.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param solutionDeploymentName The name of the SolutionDeployment.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return a SolutionDeployment Resource.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public SolutionDeploymentInner getByResourceGroup(String resourceGroupName, String solutionDeploymentName) {
         return getByResourceGroupWithResponse(resourceGroupName, solutionDeploymentName, Context.NONE).getValue();
@@ -326,11 +307,7 @@ public final class SolutionDeploymentsClientImpl implements SolutionDeploymentsC
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Response<BinaryData> createOrUpdateWithResponse(String resourceGroupName, String solutionDeploymentName,
         SolutionDeploymentInner resource) {
-        final String contentType = "application/json";
-        final String accept = "application/json";
-        return service.createOrUpdateSync(this.client.getEndpoint(), this.client.getApiVersion(),
-            this.client.getSubscriptionId(), resourceGroupName, solutionDeploymentName, contentType, accept, resource,
-            Context.NONE);
+        return createOrUpdateWithResponse(resourceGroupName, solutionDeploymentName, resource, Context.NONE);
     }
 
     /**
@@ -376,37 +353,14 @@ public final class SolutionDeploymentsClientImpl implements SolutionDeploymentsC
             this.client.getContext());
     }
 
-    /**
-     * Create or update a SolutionDeployment Resource.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param solutionDeploymentName The name of the SolutionDeployment.
-     * @param resource Resource create parameters.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the {@link SyncPoller} for polling of solution Deployment Resource.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public SyncPoller<PollResult<SolutionDeploymentInner>, SolutionDeploymentInner>
         beginCreateOrUpdate(String resourceGroupName, String solutionDeploymentName, SolutionDeploymentInner resource) {
-        Response<BinaryData> response = createOrUpdateWithResponse(resourceGroupName, solutionDeploymentName, resource);
-        return this.client.<SolutionDeploymentInner, SolutionDeploymentInner>getLroResult(response,
-            SolutionDeploymentInner.class, SolutionDeploymentInner.class, Context.NONE);
+        return beginCreateOrUpdate(resourceGroupName, solutionDeploymentName, resource, Context.NONE);
     }
 
-    /**
-     * Create or update a SolutionDeployment Resource.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param solutionDeploymentName The name of the SolutionDeployment.
-     * @param resource Resource create parameters.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the {@link SyncPoller} for polling of solution Deployment Resource.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public SyncPoller<PollResult<SolutionDeploymentInner>, SolutionDeploymentInner> beginCreateOrUpdate(
         String resourceGroupName, String solutionDeploymentName, SolutionDeploymentInner resource, Context context) {
@@ -434,39 +388,19 @@ public final class SolutionDeploymentsClientImpl implements SolutionDeploymentsC
             .flatMap(this.client::getLroFinalResultOrError);
     }
 
-    /**
-     * Create or update a SolutionDeployment Resource.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param solutionDeploymentName The name of the SolutionDeployment.
-     * @param resource Resource create parameters.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return solution Deployment Resource.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public SolutionDeploymentInner createOrUpdate(String resourceGroupName, String solutionDeploymentName,
         SolutionDeploymentInner resource) {
-        return beginCreateOrUpdate(resourceGroupName, solutionDeploymentName, resource).getFinalResult();
+        return createOrUpdate(resourceGroupName, solutionDeploymentName, resource, Context.NONE);
     }
 
-    /**
-     * Create or update a SolutionDeployment Resource.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param solutionDeploymentName The name of the SolutionDeployment.
-     * @param resource Resource create parameters.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return solution Deployment Resource.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public SolutionDeploymentInner createOrUpdate(String resourceGroupName, String solutionDeploymentName,
         SolutionDeploymentInner resource, Context context) {
-        return beginCreateOrUpdate(resourceGroupName, solutionDeploymentName, resource, context).getFinalResult();
+        return this.client.getLroFinalResultOrError(
+            beginCreateOrUpdate(resourceGroupName, solutionDeploymentName, resource, context));
     }
 
     /**
@@ -510,18 +444,7 @@ public final class SolutionDeploymentsClientImpl implements SolutionDeploymentsC
             .flatMap(res -> Mono.justOrEmpty(res.getValue()));
     }
 
-    /**
-     * update a SolutionDeployment Resource.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param solutionDeploymentName The name of the SolutionDeployment.
-     * @param properties The resource properties to be updated.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return solution Deployment Resource along with {@link Response}.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Response<SolutionDeploymentInner> updateWithResponse(String resourceGroupName, String solutionDeploymentName,
         SolutionDeploymentUpdate properties, Context context) {
@@ -532,17 +455,7 @@ public final class SolutionDeploymentsClientImpl implements SolutionDeploymentsC
             context);
     }
 
-    /**
-     * update a SolutionDeployment Resource.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param solutionDeploymentName The name of the SolutionDeployment.
-     * @param properties The resource properties to be updated.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return solution Deployment Resource.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public SolutionDeploymentInner update(String resourceGroupName, String solutionDeploymentName,
         SolutionDeploymentUpdate properties) {
@@ -580,8 +493,7 @@ public final class SolutionDeploymentsClientImpl implements SolutionDeploymentsC
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Response<BinaryData> deleteWithResponse(String resourceGroupName, String solutionDeploymentName) {
-        return service.deleteSync(this.client.getEndpoint(), this.client.getApiVersion(),
-            this.client.getSubscriptionId(), resourceGroupName, solutionDeploymentName, Context.NONE);
+        return deleteWithResponse(resourceGroupName, solutionDeploymentName, Context.NONE);
     }
 
     /**
@@ -620,33 +532,13 @@ public final class SolutionDeploymentsClientImpl implements SolutionDeploymentsC
             this.client.getContext());
     }
 
-    /**
-     * Delete a SolutionDeployment Resource.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param solutionDeploymentName The name of the SolutionDeployment.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the {@link SyncPoller} for polling of long-running operation.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public SyncPoller<PollResult<Void>, Void> beginDelete(String resourceGroupName, String solutionDeploymentName) {
-        Response<BinaryData> response = deleteWithResponse(resourceGroupName, solutionDeploymentName);
-        return this.client.<Void, Void>getLroResult(response, Void.class, Void.class, Context.NONE);
+        return beginDelete(resourceGroupName, solutionDeploymentName, Context.NONE);
     }
 
-    /**
-     * Delete a SolutionDeployment Resource.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param solutionDeploymentName The name of the SolutionDeployment.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the {@link SyncPoller} for polling of long-running operation.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public SyncPoller<PollResult<Void>, Void> beginDelete(String resourceGroupName, String solutionDeploymentName,
         Context context) {
@@ -670,33 +562,16 @@ public final class SolutionDeploymentsClientImpl implements SolutionDeploymentsC
             .flatMap(this.client::getLroFinalResultOrError);
     }
 
-    /**
-     * Delete a SolutionDeployment Resource.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param solutionDeploymentName The name of the SolutionDeployment.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public void delete(String resourceGroupName, String solutionDeploymentName) {
-        beginDelete(resourceGroupName, solutionDeploymentName).getFinalResult();
+        delete(resourceGroupName, solutionDeploymentName, Context.NONE);
     }
 
-    /**
-     * Delete a SolutionDeployment Resource.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param solutionDeploymentName The name of the SolutionDeployment.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public void delete(String resourceGroupName, String solutionDeploymentName, Context context) {
-        beginDelete(resourceGroupName, solutionDeploymentName, context).getFinalResult();
+        this.client.getLroFinalResultOrError(beginDelete(resourceGroupName, solutionDeploymentName, context));
     }
 
     /**
@@ -746,11 +621,7 @@ public final class SolutionDeploymentsClientImpl implements SolutionDeploymentsC
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private PagedResponse<SolutionDeploymentInner> listByResourceGroupSinglePage(String resourceGroupName) {
-        final String accept = "application/json";
-        Response<SolutionDeploymentListResult> res = service.listByResourceGroupSync(this.client.getEndpoint(),
-            this.client.getApiVersion(), this.client.getSubscriptionId(), resourceGroupName, accept, Context.NONE);
-        return new PagedResponseBase<>(res.getRequest(), res.getStatusCode(), res.getHeaders(), res.getValue().value(),
-            res.getValue().nextLink(), null);
+        return listByResourceGroupSinglePage(resourceGroupName, Context.NONE);
     }
 
     /**
@@ -773,31 +644,13 @@ public final class SolutionDeploymentsClientImpl implements SolutionDeploymentsC
             res.getValue().nextLink(), null);
     }
 
-    /**
-     * List by specified resource group.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the response of a SolutionDeployment list operation as paginated response with {@link PagedIterable}.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.COLLECTION)
     public PagedIterable<SolutionDeploymentInner> listByResourceGroup(String resourceGroupName) {
-        return new PagedIterable<>(() -> listByResourceGroupSinglePage(resourceGroupName),
-            nextLink -> listByResourceGroupNextSinglePage(nextLink));
+        return listByResourceGroup(resourceGroupName, Context.NONE);
     }
 
-    /**
-     * List by specified resource group.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the response of a SolutionDeployment list operation as paginated response with {@link PagedIterable}.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.COLLECTION)
     public PagedIterable<SolutionDeploymentInner> listByResourceGroup(String resourceGroupName, Context context) {
         return new PagedIterable<>(() -> listByResourceGroupSinglePage(resourceGroupName, context),
@@ -845,11 +698,7 @@ public final class SolutionDeploymentsClientImpl implements SolutionDeploymentsC
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private PagedResponse<SolutionDeploymentInner> listSinglePage() {
-        final String accept = "application/json";
-        Response<SolutionDeploymentListResult> res = service.listSync(this.client.getEndpoint(),
-            this.client.getApiVersion(), this.client.getSubscriptionId(), accept, Context.NONE);
-        return new PagedResponseBase<>(res.getRequest(), res.getStatusCode(), res.getHeaders(), res.getValue().value(),
-            res.getValue().nextLink(), null);
+        return listSinglePage(Context.NONE);
     }
 
     /**
@@ -870,27 +719,13 @@ public final class SolutionDeploymentsClientImpl implements SolutionDeploymentsC
             res.getValue().nextLink(), null);
     }
 
-    /**
-     * List by subscription.
-     * 
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the response of a SolutionDeployment list operation as paginated response with {@link PagedIterable}.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.COLLECTION)
     public PagedIterable<SolutionDeploymentInner> list() {
-        return new PagedIterable<>(() -> listSinglePage(), nextLink -> listBySubscriptionNextSinglePage(nextLink));
+        return list(Context.NONE);
     }
 
-    /**
-     * List by subscription.
-     * 
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the response of a SolutionDeployment list operation as paginated response with {@link PagedIterable}.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.COLLECTION)
     public PagedIterable<SolutionDeploymentInner> list(Context context) {
         return new PagedIterable<>(() -> listSinglePage(context),
@@ -929,11 +764,7 @@ public final class SolutionDeploymentsClientImpl implements SolutionDeploymentsC
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private PagedResponse<SolutionDeploymentInner> listByResourceGroupNextSinglePage(String nextLink) {
-        final String accept = "application/json";
-        Response<SolutionDeploymentListResult> res
-            = service.listByResourceGroupNextSync(nextLink, this.client.getEndpoint(), accept, Context.NONE);
-        return new PagedResponseBase<>(res.getRequest(), res.getStatusCode(), res.getHeaders(), res.getValue().value(),
-            res.getValue().nextLink(), null);
+        return listByResourceGroupNextSinglePage(nextLink, Context.NONE);
     }
 
     /**
@@ -987,11 +818,7 @@ public final class SolutionDeploymentsClientImpl implements SolutionDeploymentsC
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private PagedResponse<SolutionDeploymentInner> listBySubscriptionNextSinglePage(String nextLink) {
-        final String accept = "application/json";
-        Response<SolutionDeploymentListResult> res
-            = service.listBySubscriptionNextSync(nextLink, this.client.getEndpoint(), accept, Context.NONE);
-        return new PagedResponseBase<>(res.getRequest(), res.getStatusCode(), res.getHeaders(), res.getValue().value(),
-            res.getValue().nextLink(), null);
+        return listBySubscriptionNextSinglePage(nextLink, Context.NONE);
     }
 
     /**

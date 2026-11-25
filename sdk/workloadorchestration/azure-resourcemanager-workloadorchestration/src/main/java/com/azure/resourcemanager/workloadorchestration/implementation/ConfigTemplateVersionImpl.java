@@ -65,11 +65,7 @@ public final class ConfigTemplateVersionImpl
     }
 
     public ConfigTemplateVersion create() {
-        this.innerObject = serviceManager.serviceClient()
-            .getConfigTemplateVersions()
-            .createOrUpdate(resourceGroupName, configTemplateName, configTemplateVersionName, this.innerModel(),
-                Context.NONE);
-        return this;
+        return this.create(Context.NONE);
     }
 
     public ConfigTemplateVersion create(Context context) {
@@ -92,12 +88,7 @@ public final class ConfigTemplateVersionImpl
     }
 
     public ConfigTemplateVersion apply() {
-        this.innerObject = serviceManager.serviceClient()
-            .getConfigTemplateVersions()
-            .updateWithResponse(resourceGroupName, configTemplateName, configTemplateVersionName, this.innerModel(),
-                Context.NONE)
-            .getValue();
-        return this;
+        return this.apply(Context.NONE);
     }
 
     public ConfigTemplateVersion apply(Context context) {
@@ -125,11 +116,7 @@ public final class ConfigTemplateVersionImpl
     }
 
     public ConfigTemplateVersion refresh() {
-        this.innerObject = serviceManager.serviceClient()
-            .getConfigTemplateVersions()
-            .getWithResponse(resourceGroupName, configTemplateName, configTemplateVersionName, Context.NONE)
-            .getValue();
-        return this;
+        return this.refresh(Context.NONE);
     }
 
     public ConfigTemplateVersion refresh(Context context) {

@@ -47,9 +47,7 @@ public final class SolutionMetadataVersionsImpl implements SolutionMetadataVersi
     }
 
     public PagedIterable<SolutionMetadataVersion> listByParent(String resourceUri, String solutionMetadataName) {
-        PagedIterable<SolutionMetadataVersionInner> inner
-            = this.serviceClient().listByParent(resourceUri, solutionMetadataName);
-        return ResourceManagerUtils.mapPage(inner, inner1 -> new SolutionMetadataVersionImpl(inner1, this.manager()));
+        return this.listByParent(resourceUri, solutionMetadataName, Context.NONE);
     }
 
     public PagedIterable<SolutionMetadataVersion> listByParent(String resourceUri, String solutionMetadataName,
