@@ -16,7 +16,7 @@ the Data-Plane Review Critic.
 | Required response | Populated verdict-table skeleton |
 
 Missing or malformed PR, session SHA, findings, or response skeleton produces one
-`FAIL / missing-inputs` verdict.
+`REJECT / missing-inputs` verdict.
 
 ## Dispatch template
 
@@ -38,7 +38,7 @@ Prior workflow comment: <comment|none>
 Copy the block below exactly without code fences or this heading. Change only
 each `<verdict>`, downgrade target, reason, and the summary counts. Keep target
 and reason as `--` for `PASS`. For `DOWNGRADE`, use an exact lower target and
-`over-escalated`. For `FAIL`, keep target as `--` and use one exact reason
+`over-escalated`. For `REJECT`, keep target as `--` and use one exact reason
 code. The first output line must remain `## Data-Plane Review Critique`.
 
 ## Data-Plane Review Critique
@@ -50,7 +50,7 @@ code. The first output line must remain `## Data-Plane Review Critique`.
 | --- | --- | --- | --- | --- | --- |
 | 1 | [<actual-rule-id>] `<actual-path:line>` | <new|carried-forward> | <verdict> | -- | -- |
 
-**Summary:** <n> PASS, <n> DOWNGRADE, <n> FAIL
+**Summary:** <n> PASS, <n> DOWNGRADE, <n> REJECT
 ```
 
 The reviewer adds one pre-populated row per candidate. The critic must not
@@ -63,7 +63,7 @@ columns.
 | --- | --- | --- |
 | `PASS` | Independently verified | Keep; target and reason remain `--` |
 | `DOWNGRADE` | Real but overstated | Apply the explicit lower target |
-| `FAIL` | Unverified, duplicate, out of scope, or incorrect | Drop; target remains `--` |
+| `REJECT` | Unverified, duplicate, out of scope, or incorrect | Drop; target remains `--` |
 
 ## Reason codes
 
@@ -73,7 +73,7 @@ columns.
 `harmful-fix`, and `out-of-scope`.
 
 `PASS` uses target and reason `--`. `DOWNGRADE` uses target `Warning`,
-`Suggestion`, or `Question` and reason `over-escalated`. `FAIL` uses target
+`Suggestion`, or `Question` and reason `over-escalated`. `REJECT` uses target
 `--` and exactly one reason code from this list. Free-text reasons are invalid.
 
 ## Severity ceilings
@@ -92,5 +92,5 @@ on a `YOU SHOULD` or `YOU SHOULD NOT` statement cannot be Blocking.
 The output is malformed unless it has the exact heading and metadata fields,
 one row per supplied finding, the declared columns, unchanged candidate states,
 a valid target and reason combination, and a verdict spelled exactly `PASS`,
-`DOWNGRADE`, or `FAIL`. Synonyms such as `Confirmed` are invalid. If dispatch
+`DOWNGRADE`, or `REJECT`. Synonyms such as `Confirmed` are invalid. If dispatch
 fails or the critique is malformed, the reviewer uses `noop`.

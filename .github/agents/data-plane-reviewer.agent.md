@@ -94,8 +94,8 @@ workflow.
    and reason cells with `--`. Instruct the critic to copy it, change verdicts,
    downgrade targets, reasons, and summary counts only. Accept only the
    protocol's exact heading, metadata, row count, columns, states, targets,
-   reason codes, and `PASS|DOWNGRADE|FAIL` verdicts. Do not normalize synonyms.
-   `FAIL` drops a finding and `DOWNGRADE` applies its explicit target. A
+   reason codes, and `PASS|DOWNGRADE|REJECT` verdicts. Do not normalize
+   synonyms. `REJECT` drops a finding and `DOWNGRADE` applies its explicit target. A
    malformed critique produces `noop`; there is no unattended override.
 11. **Report.** Emit the complete current-state report or the no-findings form
     from the skill. If the complete visible state matches the prior comment,

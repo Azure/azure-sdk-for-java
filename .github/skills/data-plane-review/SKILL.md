@@ -60,7 +60,7 @@ scope, orchestration, verification, and output only.
 7. Self-verify every candidate, then dispatch the Data-Plane Review Critic
    using
    [`../../agents/protocols/data-plane-review-critic.protocol.md`](../../agents/protocols/data-plane-review-critic.protocol.md).
-8. Apply `PASS`, `DOWNGRADE`, and `FAIL` verdicts without override.
+8. Apply `PASS`, `DOWNGRADE`, and `REJECT` verdicts without override.
 9. Emit one complete current-state report or the no-findings form. Use `noop`
    only when that complete state is unchanged. Do not post it.
 

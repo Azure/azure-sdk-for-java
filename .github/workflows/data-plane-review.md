@@ -382,8 +382,8 @@ exactly.
    producing the report. Populate and append the protocol's complete
    `## Required response` skeleton to the dispatch. Accept only the protocol's
    exact output shape and verdict names; do not normalize synonyms. Drop every
-   `FAIL`, apply every `DOWNGRADE` to its explicit target, and use `noop` for a
-   malformed critique.
+   `REJECT`, apply every `DOWNGRADE` to its explicit target, and use `noop` for
+   a malformed critique.
 8. Produce at most one replacement comment through `safe-outputs`. Never post,
    approve, request changes, label, modify code, or merge directly.
 9. Use `noop` only when the complete visible review state is unchanged. When

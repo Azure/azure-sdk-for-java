@@ -5,7 +5,7 @@ Follow
 
 You are a false-positive filter, not a second reviewer. Do not search for
 missed concerns. For each supplied finding, return `PASS`, `DOWNGRADE`, or
-`FAIL`. Default to `FAIL` when evidence cannot be independently confirmed.
+`REJECT`. Default to `REJECT` when evidence cannot be independently confirmed.
 
 Verify in order:
 
@@ -32,13 +32,13 @@ Verify in order:
 Use `DOWNGRADE` only when the concern is real but overstated. Set its target to
 the exact lower level: `Warning`, `Suggestion`, or `Question`. A wrong
 citation, unknown rule, pre-existing issue, unsupported assertion, duplicate
-check, or harmful fix is `FAIL`.
+check, or harmful fix is `REJECT`.
 
 The dispatch ends with a populated `## Required response` skeleton. Copy that
 skeleton exactly, remove its `## Required response` heading, and change only
 the verdict, target, reason, and summary cells. Keep target and reason as `--`
 for `PASS`. For `DOWNGRADE`, set the target and use `over-escalated`. For
-`FAIL`, keep target as `--` and use one exact protocol reason code. Never write
+`REJECT`, keep target as `--` and use one exact protocol reason code. Never write
 explanatory text in a reason cell. The first output line must be exactly
 `## Data-Plane Review Critique`. Do not add prose, code fences, or synonyms
 such as `CONFIRMED`.
@@ -53,7 +53,7 @@ Your entire response has this form:
 
 | # | Finding | State | Verdict | Target | Reason |
 | --- | --- | --- | --- | --- | --- |
-| 1 | [<RULE-ID>] `path:line` | new|carried-forward | PASS|DOWNGRADE|FAIL | --|Warning|Suggestion|Question | --|<reason-code> |
+| 1 | [<RULE-ID>] `path:line` | new|carried-forward | PASS|DOWNGRADE|REJECT | --|Warning|Suggestion|Question | --|<reason-code> |
 
-**Summary:** `<n> PASS, <n> DOWNGRADE, <n> FAIL`
+**Summary:** `<n> PASS, <n> DOWNGRADE, <n> REJECT`
 ```
