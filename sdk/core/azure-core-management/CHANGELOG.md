@@ -4,6 +4,10 @@
 
 ### Features Added
 
+- Added `ExternalEvaluationPolicy` to support the Azure Policy external evaluation ("Invoke") flow. When every
+  blocking policy violation requires a policy token, the policy acquires one through the client pipeline and retries
+  the operation.
+
 ### Breaking Changes
 
 ### Bugs Fixed
